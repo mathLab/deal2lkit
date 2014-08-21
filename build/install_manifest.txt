@@ -1,0 +1,8 @@
+/Users/heltai/dealii-sak/lib/libdealii-sak.debug.dylib
+/Users/heltai/dealii-sak/lib/libdealii-sak.release.dylib
+/Users/heltai/dealii-sak/include/domain.h
+/Users/heltai/dealii-sak/include/error_handler.h
+/Users/heltai/dealii-sak/include/output_processor.h
+/Users/heltai/dealii-sak/include/post_processor.h
+/Users/heltai/dealii-sak/include/utilities.h
+/Users/heltai/dealii-sak/include/vector_space.h

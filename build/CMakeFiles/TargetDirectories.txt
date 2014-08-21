@@ -1,0 +1,2 @@
+/Users/heltai/c++/dealii-sak/build/CMakeFiles/dealii-sak.debug.dir
+/Users/heltai/c++/dealii-sak/build/CMakeFiles/dealii-sak.release.dir

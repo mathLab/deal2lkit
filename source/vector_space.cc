@@ -1,6 +1,3 @@
-#ifndef lpcm_vspace_templates_h
-#define lpcm_vspace_templates_h
-
 #include "../include/vector_space.h"
 #include <base/logstream.h>
 #include <grid/grid_generator.h>
@@ -21,8 +18,8 @@
 
 using namespace std;
 
-template <int dim> 
-VectorSpace<dim>::VectorSpace() :
+template <int dim, int spacedim> 
+VectorSpace<dim, spacedim>::VectorSpace() :
     fe(0, "Vector Space FE"),
     dh(0, "Vector Space This DH"),
     last_dh(0, "Vector Space Last DH"),
@@ -32,9 +29,9 @@ VectorSpace<dim>::VectorSpace() :
     mapping(0, "Vetor Space Mapping")
 {}
 
-template <int dim>
-VectorSpace<dim>::VectorSpace(ParameterHandler &prm, 
-			      Triangulation<dim> &dd,
+template <int dim, int spacedim>
+VectorSpace<dim, spacedim>::VectorSpace(ParameterHandler &prm, 
+			      Triangulation<dim, spacedim> &dd,
 			      const unsigned int n_mpi,
 			      const unsigned int this_mpi) :
     fe(0, "Vector Space FE"),
@@ -50,8 +47,8 @@ VectorSpace<dim>::VectorSpace(ParameterHandler &prm,
   reinit(prm, dd, n_mpi, this_mpi);
 }
 
-template <int dim> 
-VectorSpace<dim>::~VectorSpace()
+template <int dim, int spacedim> 
+VectorSpace<dim, spacedim>::~VectorSpace()
 {
   // Get rid of the dof handler object.
   smart_delete(dh);
@@ -63,8 +60,8 @@ VectorSpace<dim>::~VectorSpace()
   smart_delete(mapping);
 }
 
-template <int dim>
-void VectorSpace<dim>::save_step() {
+template <int dim, int spacedim>
+void VectorSpace<dim, spacedim>::save_step() {
   deallog.push("Save");
   // Get rid of old dh and triangulation
   last_dh->clear();
@@ -82,8 +79,8 @@ void VectorSpace<dim>::save_step() {
 }
 
 
-template <int dim>
-void VectorSpace<dim>::save_step_and_reinit() {
+template <int dim, int spacedim>
+void VectorSpace<dim, spacedim>::save_step_and_reinit() {
   deallog.push("Save");
   deallog << "Swapping tria and dh with old_tria and old_dh." << std::endl;
   // Swap dofhandler.
@@ -96,8 +93,8 @@ void VectorSpace<dim>::save_step_and_reinit() {
 }
 
 
-template <int dim>
-void VectorSpace<dim>::refine_globally() 
+template <int dim, int spacedim>
+void VectorSpace<dim, spacedim>::refine_globally() 
 {
     deallog.push("GlobalRefinement");
     tria->refine_global (1);
@@ -105,8 +102,8 @@ void VectorSpace<dim>::refine_globally()
     deallog.pop();
 }
 
-template <int dim>
-void VectorSpace<dim>::flag_for_refinement(Vector<float> &error) 
+template <int dim, int spacedim>
+void VectorSpace<dim, spacedim>::flag_for_refinement(Vector<float> &error) 
 {
     deallog.push("Refining");
     deallog << "Strategy: " << refinement_strategy << std::endl;
@@ -136,8 +133,8 @@ void VectorSpace<dim>::flag_for_refinement(Vector<float> &error)
 
 
 
-template <int dim>
-void VectorSpace<dim>::reorder(int level,
+template <int dim, int spacedim>
+void VectorSpace<dim, spacedim>::reorder(int level,
 			       std::vector<unsigned int> target_comps) {
 
   if(level<0) level = dh->get_tria().n_levels()-1;
@@ -145,18 +142,18 @@ void VectorSpace<dim>::reorder(int level,
   // Renumber by subdomain association only if needed
   if(n_mpi_processes > 1) {
     deallog << "Renumbering subdomain wise." << std::endl;
-    DoFRenumbering::subdomain_wise(static_cast<DoFHandler<dim>&>(*dh));
+    DoFRenumbering::subdomain_wise(static_cast<DoFHandler<dim, spacedim>&>(*dh));
   }
   
   for(unsigned int i=0; i<ordering.size(); ++i) {
     if(ordering[i] == "cuth") {
       deallog << "Renumbering with Cuthill McKee algorithm." << std::endl;
-      DoFRenumbering::Cuthill_McKee(static_cast<DoFHandler<dim>&>(*dh));
+      DoFRenumbering::Cuthill_McKee(static_cast<DoFHandler<dim, spacedim>&>(*dh));
     } else if(ordering[i] == "comp") {
       deallog << "Renumbering component wise." << std::endl;
-      DoFRenumbering::component_wise(static_cast<DoFHandler<dim>&>(*dh), target_comps);
+      DoFRenumbering::component_wise(static_cast<DoFHandler<dim, spacedim>&>(*dh), target_comps);
     } else if(ordering[i] == "upwind") {
-      DoFRenumbering::downstream(static_cast<DoFHandler<dim>&>(*dh), wind);
+      DoFRenumbering::downstream(static_cast<DoFHandler<dim, spacedim>&>(*dh), wind);
     } else if(ordering[i] == "none") {}
     else {
       AssertThrow(false, ExcMessage("This Reordering not implemented"));
@@ -165,9 +162,9 @@ void VectorSpace<dim>::reorder(int level,
     
 }
 
-template <int dim>
-void VectorSpace<dim>::measure_mesh() {
-  typename Triangulation<dim>::active_cell_iterator cell, endc;
+template <int dim, int spacedim>
+void VectorSpace<dim, spacedim>::measure_mesh() {
+  typename Triangulation<dim, spacedim>::active_cell_iterator cell, endc;
   endc = tria->end();
   h_max = 0;
   h_min = 1000;
@@ -179,9 +176,9 @@ void VectorSpace<dim>::measure_mesh() {
 	  << "Min diameter of a cell: " << h_min << std::endl;
 }
 
-template <int dim>
-void VectorSpace<dim>::reinit(ParameterHandler &prm, 
-			      Triangulation<dim> &dd,
+template <int dim, int spacedim>
+void VectorSpace<dim, spacedim>::reinit(ParameterHandler &prm, 
+			      Triangulation<dim, spacedim> &dd,
 			      const unsigned int n_mpi,
 			      const unsigned int this_mpi,
 			      const std::string space_name) 
@@ -201,7 +198,7 @@ void VectorSpace<dim>::reinit(ParameterHandler &prm,
   parse_parameters(prm, space_name);
 
   // generate Finite element
-  FiniteElement<dim> * fe_p=0;
+  FiniteElement<dim, spacedim> * fe_p=0;
     
   try {
       fe_p = FETools::get_fe_from_name<dim>(fe_name);
@@ -209,34 +206,34 @@ void VectorSpace<dim>::reinit(ParameterHandler &prm,
 
     // Did not recognize the finite element to use. Try your own
     // one...
-    // fe_p = new FESystem<dim>(FE_BGH<dim>(2),1, FE_DGP<dim>(1), 1);
+    // fe_p = new FESystem<dim, spacedim>(FE_BGH<dim, spacedim>(2),1, FE_DGP<dim, spacedim>(1), 1);
     throw;
   }
   fe = fe_p;
   deallog << "Finite Element Space: " << fe->get_name() << endl;
 
   if(map_type == 0) {
-    mapping= new MappingCartesian<dim>();
+    mapping= new MappingCartesian<dim, spacedim>();
   } else {
-    mapping = new MappingQ<dim>(map_type);
+    mapping = new MappingQ<dim, spacedim>(map_type);
   }
     
   // Store a pointer to the triangulation
   coarse = &dd;
 
   // Now generate an empty triangulation.
-  last_tria = new Triangulation<dim>();
+  last_tria = new Triangulation<dim, spacedim>();
   
   // And a copy of the pristine version of the triangulation.
-  tria = new Triangulation<dim>();
+  tria = new Triangulation<dim, spacedim>();
   tria->copy_triangulation(*coarse);
 
   // And we initialize the current triangulation.
   initialize_mesh();
 
   // Generate new DoFHandlers
-  dh = new MGDoFHandler<dim>(*tria);
-  last_dh = new MGDoFHandler<dim>(*last_tria);
+  dh = new DoFHandler<dim, spacedim>(*tria);
+  last_dh = new DoFHandler<dim, spacedim>(*last_tria);
   
   // Now generates the boundary maps
   std::vector<std::vector<std::string> > bcs;
@@ -297,8 +294,8 @@ void VectorSpace<dim>::reinit(ParameterHandler &prm,
 
 
 
-template <int dim>
-void VectorSpace<dim>::reinit() {
+template <int dim, int spacedim>
+void VectorSpace<dim, spacedim>::reinit() {
   // In this case, we only get rid of the current dofhandler
   // and triangulation, assuming they have already been saved.
   dh->clear();
@@ -307,8 +304,8 @@ void VectorSpace<dim>::reinit() {
   tria->copy_triangulation(*coarse);
 }
 
-template <int dim>
-void VectorSpace<dim>::initialize_mesh() 
+template <int dim, int spacedim>
+void VectorSpace<dim, spacedim>::initialize_mesh() 
 {
   deallog.push("InitializeMesh");
   tria->refine_global (global_refinement);
@@ -318,8 +315,8 @@ void VectorSpace<dim>::initialize_mesh()
   deallog.pop();
 }
 
-template <int dim>
-void VectorSpace<dim>::redistribute_dofs(std::vector<unsigned int> target_components ) {
+template <int dim, int spacedim>
+void VectorSpace<dim, spacedim>::redistribute_dofs(std::vector<unsigned int> target_components ) {
     // Repartition the triangulation
     if(n_mpi_processes > 1) 
       GridTools::partition_triangulation (n_mpi_processes, *tria);
@@ -338,13 +335,13 @@ void VectorSpace<dim>::redistribute_dofs(std::vector<unsigned int> target_compon
     
     reorder(-1, target_components);
     hang.clear();
-    DoFTools::make_hanging_node_constraints ((const DoFHandler<dim>&)*dh, hang);
+    DoFTools::make_hanging_node_constraints ((const DoFHandler<dim, spacedim>&)*dh, hang);
     hang.close();
     deallog << "Number of constrained DOFS: " << hang.n_constraints() << std::endl;
 }
 
-template <int dim>
-void VectorSpace<dim>::declare_parameters(ParameterHandler &prm, const std::string space_name) 
+template <int dim, int spacedim>
+void VectorSpace<dim, spacedim>::declare_parameters(ParameterHandler &prm, const std::string space_name) 
 {
 
    prm.enter_subsection(space_name);
@@ -402,8 +399,8 @@ void VectorSpace<dim>::declare_parameters(ParameterHandler &prm, const std::stri
     prm.leave_subsection();
 }
 
-    template <int dim>
-void VectorSpace<dim>::parse_parameters(ParameterHandler &prm, const std::string space_name) 
+    template <int dim, int spacedim>
+void VectorSpace<dim, spacedim>::parse_parameters(ParameterHandler &prm, const std::string space_name) 
 {
     prm.enter_subsection(space_name);
 
@@ -439,9 +436,9 @@ void VectorSpace<dim>::parse_parameters(ParameterHandler &prm, const std::string
 }
 
 
-template <int dim>
-void VectorSpace<dim>::interpolate_dirichlet_bc(const Function<dim> & f,  
-						std::map<unsigned int, double> & bvalues) 
+template <int dim, int spacedim>
+void VectorSpace<dim, spacedim>::interpolate_dirichlet_bc(const Function<spacedim> & f,  
+							  std::map<unsigned int, double> & bvalues) 
 {
   deallog.push("DBC");
   std::map<char, std::vector<bool> >::iterator 
@@ -456,9 +453,10 @@ void VectorSpace<dim>::interpolate_dirichlet_bc(const Function<dim> & f,
         deallog << (int) id << " :";
     const unsigned int n_components = fe->n_components();
     for(unsigned int i=0; i < n_components; ++i) {
-      if(filter[i]) ;//deallog << i << ", ";
+      if(filter[i]) 
+	;//deallog << i << ", ";
     }
-    VectorTools::interpolate_boundary_values(*mapping, (const DoFHandler<dim>&) *dh, 
+    VectorTools::interpolate_boundary_values(*mapping, (const DoFHandler<dim, spacedim>&) *dh, 
 					     // Dirichlet boundary only...
 					     id, f, bvalues, filter);
     deallog << " #: " << bvalues.size() - last_counted << std::endl;
@@ -470,8 +468,8 @@ void VectorSpace<dim>::interpolate_dirichlet_bc(const Function<dim> & f,
 
 
 
-template <int dim>
-void VectorSpace<dim>::count_dofs(std::vector<unsigned int> target_components) {
+template <int dim, int spacedim>
+void VectorSpace<dim, spacedim>::count_dofs(std::vector<unsigned int> target_components) {
   // Count dofs per processor
   local_dofs_per_process.resize(n_mpi_processes);
   
@@ -496,7 +494,7 @@ void VectorSpace<dim>::count_dofs(std::vector<unsigned int> target_components) {
     // Count dofs per blocks.
     dofs_per_block.resize( number_of_blocks );
 
-    DoFTools::count_dofs_per_component ( (const DoFHandler<dim>&)*dh, dofs_per_block, false, target_components);
+    DoFTools::count_dofs_per_component ( (const DoFHandler<dim, spacedim>&)*dh, dofs_per_block, false, target_components);
     
     while(dofs_per_block.size() > number_of_blocks) {
       deallog << "Old Deal.II!!!!"<< std::endl;
@@ -584,4 +582,10 @@ void VectorSpace<dim>::count_dofs(std::vector<unsigned int> target_components) {
   // Now save the number of local dofs...
   n_local_dofs = local_dofs_per_process[this_mpi_process];
 }
-#endif
+
+
+template class VectorSpace<1,1>;
+// template class VectorSpace<1,2>;
+template class VectorSpace<2,2>;
+// template class VectorSpace<2,3>;
+template class VectorSpace<3,3>;

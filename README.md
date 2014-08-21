@@ -55,36 +55,21 @@ or cloned using git
 
 The library can then be compiled by running
 
-	cd ans-ifem
-	cmake -DDEAL_II_DIR=/path/to/deal.II .
+	mkdir build
+	cd build
+	cmake -DDEAL_II_DIR=/path/to/deal.II ..
 	make
+
+You can modify the resulting `CMakeCache.txt` to set a different 
+installation path, or you can call cmake with the additional
+option `-DCMAKE_INSTALL_PREFIX=/path/to/install/dir`. 
 	
 3. Running instructions:
 ========================
 
-Once the program has been compiled, it can be run by typing 
-
-	./ifem
-
-or 
-
-	./ifem parameters.prm
-
-in the directory ans-ifem.
-The program uses parameter files to set its runtime variables. The
-file 
-
-	immersed_fem.prm 
-
-is an example of such files, and it is the default one used if none is
-specified at run time. If the specified file does not exists, the
-program will attempt to create one with default values for you. 
-The directory 
-
-	prms/
-
-contains all parameter files used to produce the results presented in
-the paper.
+Once the library has been compiled, you can link it in your own deal.II 
+codes by using the provided example `CMakeLists-small.txt` or 
+`CMakeLists-big.txt` in the directory `utilities`.
 
 4. Extensive documentation:
 ===========================

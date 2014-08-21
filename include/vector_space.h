@@ -16,7 +16,7 @@ using namespace dealii;
   VectorSpace object. Anything related to the definition of the
   Hilbert space that makes up the pde problem lives in this class.
 */
-template <int dim>
+template <int dim, int spacedim=dim>
 class VectorSpace : public Subscriptor
 {
   public:
@@ -27,7 +27,7 @@ class VectorSpace : public Subscriptor
       parameter file and setting pointers to the given
       triangulation. */
   VectorSpace (ParameterHandler &prm, 
-	       Triangulation<dim> &dd,
+	       Triangulation<dim, spacedim> &dd,
 	       const unsigned int n_mpi_processes=1,
 	       const unsigned int this_mpi_process=0);
 
@@ -37,7 +37,7 @@ class VectorSpace : public Subscriptor
   /** Reinit. The state of this object after calling reinit, is
       the same as after the full constructor is used.*/
   void reinit(ParameterHandler &prm, 
-	      Triangulation<dim> &dd,
+	      Triangulation<dim, spacedim> &dd,
 	      const unsigned int n_mpi_processes=1,
 	      const unsigned int this_mpi_process=0,
 	      const std::string space_name="Vector Space Parameters");
@@ -92,7 +92,7 @@ class VectorSpace : public Subscriptor
   /** Interpolate Boundary Conditions. Generates the boundary
       conditions for the problem. This will be used after the assembly
       procedures. */
-  void interpolate_dirichlet_bc(const Function<dim> & f,  
+  void interpolate_dirichlet_bc(const Function<spacedim> & f,  
 				std::map<unsigned int, double> & bvalues);
    
   /** Return reference to finite element.*/
@@ -101,12 +101,12 @@ class VectorSpace : public Subscriptor
   }
 
   /** Return reference to current dof handler.*/
-  inline MGDoFHandler<dim,dim> & get_dh() {
+  inline DoFHandler<dim,dim> & get_dh() {
     return *dh;
   }
 
   /** Return reference to previous dof handler.*/
-  inline MGDoFHandler<dim,dim> & get_last_dh() {
+  inline DoFHandler<dim,dim> & get_last_dh() {
       return *last_dh;
   }
 
@@ -116,12 +116,12 @@ class VectorSpace : public Subscriptor
   }
 
   /** Return reference to current triangulation..*/
-  inline Triangulation<dim> & get_last_tria() {
+  inline Triangulation<dim, spacedim> & get_last_tria() {
       return *last_tria;
   }
 
   /** Return reference to coarse triangulation..*/
-  inline Triangulation<dim> & get_coarse_tria() {
+  inline Triangulation<dim, spacedim> & get_coarse_tria() {
     return *coarse;
   }
 
@@ -131,7 +131,7 @@ class VectorSpace : public Subscriptor
   }
       
   /** Return reference to mapping.*/
-  inline Mapping<dim> & get_mapping() {
+  inline Mapping<dim, spacedim> & get_mapping() {
     return *mapping;
   }
 
@@ -142,12 +142,12 @@ class VectorSpace : public Subscriptor
   }
 
   /** Return constant reference to current dof handler.*/
-  inline const MGDoFHandler<dim,dim> & get_dh() const {
+  inline const DoFHandler<dim,dim> & get_dh() const {
     return *dh;
   }
 
   /** Return constant reference to previous dof handler.*/
-  inline const MGDoFHandler<dim,dim> & get_last_dh() const {
+  inline const DoFHandler<dim,dim> & get_last_dh() const {
       return *last_dh;
   }
 
@@ -247,10 +247,10 @@ private:
   SmartPointer<FiniteElement<dim,dim> > fe;
 
   /** Pointer to the dofhandler used */
-  SmartPointer<MGDoFHandler<dim,dim> > dh;
+  SmartPointer<DoFHandler<dim,dim> > dh;
 
   /** Pointer to the last dofhandler used */
-  SmartPointer<MGDoFHandler<dim,dim> > last_dh;
+  SmartPointer<DoFHandler<dim,dim> > last_dh;
 
   /** Pointer to a pristine coarse triangulation. */
   SmartPointer<Triangulation<dim,dim> > coarse;
@@ -320,6 +320,16 @@ private:
   unsigned int max_cells;
     
   /** The wind direction, in case we order the mesh upwind. */
-  Point<dim> wind;
+  Point<spacedim> wind;
+  
+  template <typename TYPE>
+  void smart_delete (SmartPointer<TYPE> &sp) {
+    if(sp) {
+      TYPE * p = sp;
+      sp = 0;
+    delete p;
+    }
+  };
+
 };
 #endif
