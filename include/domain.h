@@ -1,21 +1,21 @@
-#ifndef DOMAIN_H
-#define DOMAIN_H
+#ifndef __mathlab_DOMAIN_H
+#define __mathlab_DOMAIN_H
 #include <fstream>
 
-#include <grid/grid_refinement.h>
-#include <grid/tria.h>
-#include <grid/grid_out.h>
-#include <base/parameter_handler.h>
-#include <base/path_search.h>
-#include <fe/mapping.h>
-#include <dofs/dof_handler.h>
+#include <deal.II/grid/grid_refinement.h>
+#include <deal.II/grid/tria.h>
+#include <deal.II/grid/grid_out.h>
+#include <deal.II/base/parameter_handler.h>
+#include <deal.II/base/path_search.h>
+#include <deal.II/fe/mapping.h>
+#include <deal.II/dofs/dof_handler.h>
 
 using namespace dealii;
 
 /** 
   Domain object. 
 */
-template <int dim>
+template <int dim, int spacedim=dim>
 class Domain : public Subscriptor
 {
   public:
@@ -48,10 +48,10 @@ class Domain : public Subscriptor
       void output_mesh() const;
 
       /** Reference to the triangulation. */
-      inline Triangulation<dim> & get_tria() {
-	Assert(initialized, ExcNotInitialized());
-	return tria;
-      }
+  inline Triangulation<dim, spacedim> & get_tria() {
+    Assert(initialized, ExcNotInitialized());
+    return tria;
+  }
 
   private:
       bool initialized;
@@ -65,7 +65,7 @@ class Domain : public Subscriptor
       std::string output_mesh_file_name;
       
       /** Holds the coarse triangulation. */
-      Triangulation<dim>   tria;
+  Triangulation<dim, spacedim>   tria;
       /** Helper class to output the grid. */
       GridOut gridout;
 };
