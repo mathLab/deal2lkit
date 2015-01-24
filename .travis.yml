@@ -1,0 +1,12 @@
+language: cpp
+compiler:
+- clang
+- gcc
+deploy:
+  provider: releases
+  api_key:
+  skip_cleanup: true
+    secure: JBIOZ2GRmxWduUKtM6E623y4lju4P7nKsa+DYh2qwrlSqQDrDoRPwGt9LW8T8l9CiMhvKbXTdzEsmQMdtHGzRW2GV9VU/lsugMTEGJMtjd/ly0dwTyscBhnBudLnk/z1lZB/wKgxi2r+fmsthRctvtzkIK8uRBqA0ivkAD9wFRU=
+  file: ~/test.txt
+  on:
+    repo: luca-heltai/dealii-sak
