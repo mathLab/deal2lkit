@@ -15,7 +15,8 @@ before_install:
 script:
     - mkdir build
     - cd build
-    - cmake -DDEAL_II_DIR=/home/travis/dealii-inst -GNinja -DCMAKE_INSTALL_PREFIX=/home/travis/dealii-sak-inst ..
+    - export DEAL_II_DIR=/home/travis/dealii-inst
+    - cmake -GNinja -DCMAKE_INSTALL_PREFIX=/home/travis/dealii-sak-inst ..
     - ninja -j4 install
     - tar cvfz /home/travis/dealii-sak-CI-build.tgz /home/travis/dealii-sak-inst
 deploy:
