@@ -11,5 +11,4 @@ deploy:
   skip_cleanup: true
   on:
     repo: luca-heltai/dealii-sak
-    branch: master
     tags: true
