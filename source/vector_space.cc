@@ -1,22 +1,22 @@
 #include "vector_space.h"
 #include "utilities.h"
 
-#include <base/logstream.h>
-#include <grid/grid_generator.h>
-#include <grid/grid_in.h>
-#include <grid/grid_out.h>
-#include <grid/tria_iterator.h>
-#include <grid/tria_accessor.h>
-#include <fe/mapping_cartesian.h>
-#include <fe/mapping_q.h>
-#include <fe/fe.h>
-#include <base/utilities.h>
-#include <dofs/dof_renumbering.h>
-#include <dofs/dof_tools.h>
-#include <numerics/solution_transfer.h>
-#include <numerics/vector_tools.h>
-#include <grid/grid_tools.h>
-#include <grid/grid_refinement.h>
+#include <deal.II/base/logstream.h>
+#include <deal.II/grid/grid_generator.h>
+#include <deal.II/grid/grid_in.h>
+#include <deal.II/grid/grid_out.h>
+#include <deal.II/grid/tria_iterator.h>
+#include <deal.II/grid/tria_accessor.h>
+#include <deal.II/fe/mapping_cartesian.h>
+#include <deal.II/fe/mapping_q.h>
+#include <deal.II/fe/fe.h>
+#include <deal.II/base/utilities.h>
+#include <deal.II/dofs/dof_renumbering.h>
+#include <deal.II/dofs/dof_tools.h>
+#include <deal.II/numerics/solution_transfer.h>
+#include <deal.II/numerics/vector_tools.h>
+#include <deal.II/grid/grid_tools.h>
+#include <deal.II/grid/grid_refinement.h>
 
 using namespace std;
 
@@ -109,7 +109,7 @@ void VectorSpace<dim, spacedim>::flag_for_refinement(Vector<float> &error)
 	GridRefinement::refine_and_coarsen_fixed_fraction(*tria, error, 
 							  top_fraction, bottom_fraction);
     } else if(refinement_strategy == "optimize") {
-      GridRefinement::refine_and_coarsen_optimize(*tria, error);
+       GridRefinement::refine_and_coarsen_optimize(*tria, error);
     } else {
       Assert(false, ExcInternalError());
     }
@@ -137,8 +137,8 @@ void VectorSpace<dim, spacedim>::reorder(int level,
     } else if(ordering[i] == "comp") {
       deallog << "Renumbering component wise." << std::endl;
       DoFRenumbering::component_wise(static_cast<DoFHandler<dim, spacedim>&>(*dh), target_comps);
-    } else if(ordering[i] == "upwind") {
-      DoFRenumbering::downstream(static_cast<DoFHandler<dim, spacedim>&>(*dh), wind);
+    // } else if(ordering[i] == "upwind") {
+    //   DoFRenumbering::downstream(static_cast<DoFHandler<dim, spacedim>&>(*dh), wind);
     } else if(ordering[i] == "none") {}
     else {
       AssertThrow(false, ExcMessage("This Reordering not implemented"));
@@ -566,8 +566,8 @@ void VectorSpace<dim, spacedim>::count_dofs(std::vector<unsigned int> target_com
 
 
 template class VectorSpace<1,1>;
-template class VectorSpace<1,2>;
-template class VectorSpace<1,3>;
+// template class VectorSpace<1,2>;
+// template class VectorSpace<1,3>;
 template class VectorSpace<2,2>;
-template class VectorSpace<2,3>;
+// template class VectorSpace<2,3>;
 template class VectorSpace<3,3>;
