@@ -71,3 +71,5 @@ if(BUILD_DOCUMENTATION)
     SOURCES ${PROJECT_BINARY_DIR}/Doxyfile)
   install(DIRECTORY ${PROJECT_BINARY_DIR}/doc/html DESTINATION doc)
 endif()
+
+include(tests)
