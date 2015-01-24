@@ -1,32 +1,33 @@
-#ifndef VECTOR_SPACE_H
-#define VECTOR_SPACE_H
+#ifndef __dealii_boundary_condition_h
+#define __dealii_boundary_condition_h
 
 #include <deal.II/base/parameter_handler.h>
-#include <deal.II/base/smartpointer.h>
-#include <deal.II/fe/fe_tools.h>
-#include <deal.II/fe/mapping.h>
-#include <deal.II/grid/persistent_tria.h>
-#include <deal.II/dofs/dof_handler.h>
-#include <deal.II/lac/constraint_matrix.h>
-#include <deal.II/numerics/solution_transfer.h>
-
-#include "parameter_acceptor.h"
+#include <deal.II/grid/tria.h>
 
 using namespace dealii;
 
 /** 
-  VectorSpace object. Anything related to the definition of the
-  Hilbert space that makes up the pde problem lives in this class.
+  BoundaryCondition object. Anything related to the definition of any
+  type of boundary condition, allowing you to map indices (typically a
+  set of boundary_ids from a Triangulation<dim,spacedim>) to
+  functions.
 */
-template <int dim, int spacedim=dim>
-class VectorSpace : public ParameterAcceptor
+template <int spacedim>
+class BoundaryCondition : public Subscriptor
 {
   public:
   
-  /** Set all internal pointers to invalid pointers, and set the name of this class. */
-  VectorSpace (const std::string name);
+  /** Empty constructor. */
+  VectorSpace ();
+  /** Full constructor. It initializes this object by reading a
+      parameter file and setting pointers to the given
+      triangulation. */
+  VectorSpace (ParameterHandler &prm, 
+	       Triangulation<dim, spacedim> &dd,
+	       const unsigned int n_mpi_processes=1,
+	       const unsigned int this_mpi_process=0);
 
-  /** Destructor. Clears all created pointers. */
+  /** Destructor. Clears the created pointers. */
   ~VectorSpace ();
   
   /** Reinit. The state of this object after calling reinit, is
@@ -34,7 +35,8 @@ class VectorSpace : public ParameterAcceptor
   void reinit(ParameterHandler &prm, 
 	      Triangulation<dim, spacedim> &dd,
 	      const unsigned int n_mpi_processes=1,
-	      const unsigned int this_mpi_process=0);
+	      const unsigned int this_mpi_process=0,
+	      const std::string space_name="Vector Space Parameters");
 
   /** Reset the internal status of the current triangulation, leaving
       untouched all the rest. The status of this object is as if the
@@ -44,10 +46,10 @@ class VectorSpace : public ParameterAcceptor
   void reinit();
   
   /** Parse the parameter file. */
-  virtual void parse_parameters(ParameterHandler &prm);
+  void parse_parameters(ParameterHandler &prm, const std::string space_name);
 
   /** Generate entries in the given parameter file. */
-  virtual void declare_parameters(ParameterHandler &prm);
+  static void declare_parameters(ParameterHandler &prm, const std::string space_name="Vector Space Parameters");
 
   /** Initialize the mesh. */
   void initialize_mesh();
@@ -90,22 +92,22 @@ class VectorSpace : public ParameterAcceptor
 				std::map<unsigned int, double> & bvalues);
    
   /** Return reference to finite element.*/
-  inline FiniteElement<dim, spacedim> & get_fe() {
+  inline FiniteElement<dim,dim> & get_fe() {
     return *fe;
   }
 
   /** Return reference to current dof handler.*/
-  inline DoFHandler<dim, spacedim> & get_dh() {
+  inline DoFHandler<dim,dim> & get_dh() {
     return *dh;
   }
 
   /** Return reference to previous dof handler.*/
-  inline DoFHandler<dim, spacedim> & get_last_dh() {
+  inline DoFHandler<dim,dim> & get_last_dh() {
       return *last_dh;
   }
 
   /** Return reference to current triangulation..*/
-  inline Triangulation<dim, spacedim> & get_tria() {
+  inline Triangulation<dim,dim> & get_tria() {
     return *tria;
   }
 
@@ -131,32 +133,32 @@ class VectorSpace : public ParameterAcceptor
 
       
   /** Return constant reference to finite element.*/
-  inline const FiniteElement<dim, spacedim> & get_fe() const {
+  inline const FiniteElement<dim,dim> & get_fe() const {
     return *fe;
   }
 
   /** Return constant reference to current dof handler.*/
-  inline const DoFHandler<dim, spacedim> & get_dh() const {
+  inline const DoFHandler<dim,dim> & get_dh() const {
     return *dh;
   }
 
   /** Return constant reference to previous dof handler.*/
-  inline const DoFHandler<dim, spacedim> & get_last_dh() const {
+  inline const DoFHandler<dim,dim> & get_last_dh() const {
       return *last_dh;
   }
 
   /** Return reference to current triangulation..*/
-  inline const Triangulation<dim, spacedim> & get_tria() const {
+  inline const Triangulation<dim,dim> & get_tria() const {
     return *tria;
   }
 
   /** Return reference to coarse triangulation..*/
-  inline const Triangulation<dim, spacedim> & get_coarse_tria() const {
+  inline const Triangulation<dim,dim> & get_coarse_tria() const {
     return *coarse;
   }
 
   /** Return reference to current triangulation..*/
-  inline const Triangulation<dim, spacedim> & get_last_tria() const {
+  inline const Triangulation<dim,dim> & get_last_tria() const {
       return *last_tria;
   }
 
@@ -166,7 +168,7 @@ class VectorSpace : public ParameterAcceptor
   }
       
   /** Return reference to mapping.*/
-  inline const Mapping<dim, spacedim> & get_mapping() const {
+  inline const Mapping<dim,dim> & get_mapping() const {
     return *mapping;
   }
   
@@ -225,7 +227,6 @@ class VectorSpace : public ParameterAcceptor
   /** Other Boundary Indicators. */
   std::map<char, std::vector<bool> > other_bc;
 private:
-  const std::string name;
   
   /** For internal use. Counts the dofs per block, block and what not. */
   void count_dofs(std::vector<unsigned int> target_components);
@@ -239,27 +240,27 @@ private:
   std::vector<std::string> o_bc;
       
   /** Pointer to the finite element used. */
-  SmartPointer<FiniteElement<dim,spacedim> > fe;
+  SmartPointer<FiniteElement<dim,dim> > fe;
 
   /** Pointer to the dofhandler used */
-  SmartPointer<DoFHandler<dim,spacedim> > dh;
+  SmartPointer<DoFHandler<dim,dim> > dh;
 
   /** Pointer to the last dofhandler used */
-  SmartPointer<DoFHandler<dim,spacedim> > last_dh;
+  SmartPointer<DoFHandler<dim,dim> > last_dh;
 
   /** Pointer to a pristine coarse triangulation. */
-  SmartPointer<Triangulation<dim,spacedim> > coarse;
+  SmartPointer<Triangulation<dim,dim> > coarse;
 
   /** Pointer to the current triangulation used */
-  SmartPointer<Triangulation<dim,spacedim> > tria;
+  SmartPointer<Triangulation<dim,dim> > tria;
 
   /** Pointer to the previous triangulation used. */
-  SmartPointer<Triangulation<dim,spacedim> > last_tria;
+  SmartPointer<Triangulation<dim,dim> > last_tria;
 
   /** Finite Element Mapping. Various mappings are supported. If the 
       mapping parameter is 0, then cartesian mapping is used. Else Qn, with 
       n the mapping parameter. */
-  SmartPointer<Mapping<dim,spacedim> > mapping;
+  SmartPointer<Mapping<dim,dim> > mapping;
 
   /** Constraint Matrix. */
   ConstraintMatrix hang;
@@ -316,6 +317,15 @@ private:
     
   /** The wind direction, in case we order the mesh upwind. */
   Point<spacedim> wind;
+  
+  template <typename TYPE>
+  void smart_delete (SmartPointer<TYPE> &sp) {
+    if(sp) {
+      TYPE * p = sp;
+      sp = 0;
+    delete p;
+    }
+  };
 
 };
 #endif
