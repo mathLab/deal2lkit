@@ -11,7 +11,7 @@ before_install:
     - sudo apt-get install cmake
     - sudo apt-get install ninja-build
     - wget https://github.com/luca-heltai/dealii/releases/download/v8.3.pre.5/dealii-travis-CI-build.tgz
-    - tar xvfz dealii-travis-CI-build.tgz -C /
+    - tar xfz dealii-travis-CI-build.tgz -C /
 script:
     - mkdir build
     - cd build
