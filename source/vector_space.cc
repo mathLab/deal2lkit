@@ -1,4 +1,6 @@
-#include "../include/vector_space.h"
+#include "vector_space.h"
+#include "utilities.h"
+
 #include <base/logstream.h>
 #include <grid/grid_generator.h>
 #include <grid/grid_in.h>
@@ -19,33 +21,16 @@
 using namespace std;
 
 template <int dim, int spacedim> 
-VectorSpace<dim, spacedim>::VectorSpace() :
+VectorSpace<dim, spacedim>::VectorSpace(const std::string name) :
+  ParameterAcceptor(name),
     fe(0, "Vector Space FE"),
     dh(0, "Vector Space This DH"),
     last_dh(0, "Vector Space Last DH"),
     coarse(0, "Vector Space Coarse Grid"),
     tria(0, "Vector Space This Grid"),
     last_tria(0, "Vector Space Last Grid"),
-    mapping(0, "Vetor Space Mapping")
+    mapping(0, "Vector Space Mapping")
 {}
-
-template <int dim, int spacedim>
-VectorSpace<dim, spacedim>::VectorSpace(ParameterHandler &prm, 
-			      Triangulation<dim, spacedim> &dd,
-			      const unsigned int n_mpi,
-			      const unsigned int this_mpi) :
-    fe(0, "Vector Space FE"),
-    dh(0, "Vector Space This DH"),
-    last_dh(0, "Vector Space Last DH"),
-    coarse(0, "Vector Space Coarse Grid"),
-    tria(0, "Vector Space This Grid"),
-    last_tria(0, "Vector Space Last Grid"),
-    mapping(0, "Vetor Space Mapping"),
-    n_mpi_processes(n_mpi),
-    this_mpi_process(this_mpi)
-{
-  reinit(prm, dd, n_mpi, this_mpi);
-}
 
 template <int dim, int spacedim> 
 VectorSpace<dim, spacedim>::~VectorSpace()
@@ -178,10 +163,9 @@ void VectorSpace<dim, spacedim>::measure_mesh() {
 
 template <int dim, int spacedim>
 void VectorSpace<dim, spacedim>::reinit(ParameterHandler &prm, 
-			      Triangulation<dim, spacedim> &dd,
-			      const unsigned int n_mpi,
-			      const unsigned int this_mpi,
-			      const std::string space_name) 
+					Triangulation<dim, spacedim> &dd,
+					const unsigned int n_mpi,
+					const unsigned int this_mpi) 
 {
   deallog.push("VECTORSPACE");
   n_mpi_processes = n_mpi;
@@ -195,13 +179,13 @@ void VectorSpace<dim, spacedim>::reinit(ParameterHandler &prm,
   smart_delete(last_tria);
 
   // Parse Parameters
-  parse_parameters(prm, space_name);
+  parse_parameters(prm);
 
   // generate Finite element
   FiniteElement<dim, spacedim> * fe_p=0;
     
   try {
-      fe_p = FETools::get_fe_from_name<dim>(fe_name);
+    fe_p = FETools::get_fe_by_name<dim,spacedim>(fe_name);
   } catch (...) {
 
     // Did not recognize the finite element to use. Try your own
@@ -212,11 +196,11 @@ void VectorSpace<dim, spacedim>::reinit(ParameterHandler &prm,
   fe = fe_p;
   deallog << "Finite Element Space: " << fe->get_name() << endl;
 
-  if(map_type == 0) {
-    mapping= new MappingCartesian<dim, spacedim>();
-  } else {
-    mapping = new MappingQ<dim, spacedim>(map_type);
-  }
+  // if(map_type == 0) {
+  //   mapping= new MappingCartesian<dim, spacedim>();
+  // } else {
+  mapping = new MappingQ<dim, spacedim>(map_type);
+    //  }
     
   // Store a pointer to the triangulation
   coarse = &dd;
@@ -341,68 +325,65 @@ void VectorSpace<dim, spacedim>::redistribute_dofs(std::vector<unsigned int> tar
 }
 
 template <int dim, int spacedim>
-void VectorSpace<dim, spacedim>::declare_parameters(ParameterHandler &prm, const std::string space_name) 
+void VectorSpace<dim, spacedim>::declare_parameters(ParameterHandler &prm) 
 {
-
-   prm.enter_subsection(space_name);
-
-    prm.declare_entry ("Finite element space", "FE_Q(1)", 
-		       Patterns::Anything(),
-		       "The finite element space to use. For vector "
-		       "finite elements use the notation "
-		       "FESystem[FE_Q(2)^2-FE_DGP(1)] (e.g. Navier-Stokes). ");
-
-    prm.declare_entry ("Mapping degree", "1", Patterns::Integer(),
-		       "Degree of the mapping. If 0 is used, then a Cartesian mapping is assumed.");
-    prm.declare_entry ("Dof ordering", "cuth, comp", Patterns::Anything(),
-		       "Ordering of the degrees of freedom: none, comp, cuth, upwind.");
-    prm.declare_entry ("Wind direction", ".01, .01, 1", Patterns::Anything(),
-		       "Direction of the wind for upwind ordering of the mesh. ");
-
-    prm.declare_entry ("Dirichlet boundary map", "1:0", Patterns::Anything(),
-		       "Boundary indicator, followed by semicolomn and a list"
-		       " of components to which this boundary conditions apply. "
-		       "More boundary indicators can be separated by semicolumn. "
-		       "1:0,1,4 ; 2,4:0,2");
-    prm.declare_entry ("Neumann boundary map", "2:0", Patterns::Anything(),
-		       "Boundary indicators, followed by semicolomn and a list of "
-		       "components to which this boundary conditions apply. More "
-		       "boundary indicators can be separated by semicolumn. "
-		       "1:0,1,4 ; 2,4:0,2");
-    prm.declare_entry ("Other boundary map", "3:0", Patterns::Anything(),
-		       "Boundary indicator, followed by semicolomn and a list of "
-		       "components to which this boundary conditions apply. More "
-		       "boundary indicators can be separated by semicolumn. "
-		       "1:0,1,4 ; 2,4:0,2");
-    
-    prm.enter_subsection("Grid Parameters");
-    
-    prm.declare_entry ("Global refinement", "4", Patterns::Integer());
-    prm.declare_entry ("Distortion coefficient", "0", Patterns::Double(),
-		       "If this number is greater than zero, the mesh is distorted"
-		       " upon refinement in order to disrupt its structureness.");
-    
-    prm.declare_entry("Refinement strategy", 
-		      "fixed_number", Patterns::Selection("fixed_number|fixed_fraction|optimize|global"),
-		      "fixed_number: the Top/Bottom threshold fraction of cells are flagged for "
-		      "refinement/coarsening. "
-		      "fixed_fraction: the cells whose error is Top/Bottom fraction of the total "
-		      "are refined/coarsened. optmized: try to reach optimal error distribution, "
-		      "assuming error is divided by 4 upon refining. global: refine all cells.");
-    prm.declare_entry("Bottom fraction", ".3", Patterns::Double());
-    prm.declare_entry("Top fraction", ".3", Patterns::Double());
-    prm.declare_entry("Max number of cells", "0", Patterns::Integer(),
-		      "A number of zero means no limit. ");
-    prm.leave_subsection();
+  prm.declare_entry ("Finite element space", "FE_Q(1)", 
+		     Patterns::Anything(),
+		     "The finite element space to use. For vector "
+		     "finite elements use the notation "
+		     "FESystem[FE_Q(2)^2-FE_DGP(1)] (e.g. Navier-Stokes). ");
   
-    
-    prm.leave_subsection();
+  prm.declare_entry ("Mapping degree", "1", Patterns::Integer(),
+		     "Degree of the mapping. If 0 is used, then a Cartesian mapping is assumed. " 
+		     "If -1 is used, then the first dim components of the Finite Element "
+		     "space are used to initialize an Euler vector, and MappingQEulerian is used.");
+  
+  prm.declare_entry ("Dof ordering", "cuth, comp", Patterns::Anything(),
+		     "Ordering of the degrees of freedom: none, comp, cuth, upwind.");
+  prm.declare_entry ("Wind direction", ".01, .1, 1", Patterns::Anything(),
+		     "Direction of the wind for upwind ordering of the mesh. ");
+  
+  prm.declare_entry ("Dirichlet boundary map", "1:0", Patterns::Anything(),
+		     "Boundary indicator, followed by semicolomn and a list"
+		     " of components to which this boundary conditions apply. "
+		     "More boundary indicators can be separated by semicolumn. "
+		     "1:0,1,4 ; 2,4:0,2");
+  prm.declare_entry ("Neumann boundary map", "2:0", Patterns::Anything(),
+		     "Boundary indicators, followed by semicolomn and a list of "
+		     "components to which this boundary conditions apply. More "
+		     "boundary indicators can be separated by semicolumn. "
+		     "1:0,1,4 ; 2,4:0,2");
+  prm.declare_entry ("Other boundary map", "3:0", Patterns::Anything(),
+		     "Boundary indicator, followed by semicolomn and a list of "
+		     "components to which this boundary conditions apply. More "
+		     "boundary indicators can be separated by semicolumn. "
+		     "1:0,1,4 ; 2,4:0,2");
+  
+  prm.enter_subsection("Grid Parameters");
+  
+  prm.declare_entry ("Global refinement", "4", Patterns::Integer());
+  prm.declare_entry ("Distortion coefficient", "0", Patterns::Double(),
+		     "If this number is greater than zero, the mesh is distorted"
+		     " upon refinement in order to disrupt its structureness.");
+  
+  prm.declare_entry("Refinement strategy", 
+		    "fixed_number", Patterns::Selection("fixed_number|fixed_fraction|optimize|global"),
+		    "fixed_number: the Top/Bottom threshold fraction of cells are flagged for "
+		    "refinement/coarsening. "
+		    "fixed_fraction: the cells whose error is Top/Bottom fraction of the total "
+		    "are refined/coarsened. optmized: try to reach optimal error distribution, "
+		    "assuming error is divided by 4 upon refining. global: refine all cells.");
+  prm.declare_entry("Bottom fraction", ".3", Patterns::Double());
+  prm.declare_entry("Top fraction", ".3", Patterns::Double());
+  prm.declare_entry("Max number of cells", "0", Patterns::Integer(),
+		    "A number of zero means no limit. ");
+  prm.leave_subsection();
 }
 
     template <int dim, int spacedim>
-void VectorSpace<dim, spacedim>::parse_parameters(ParameterHandler &prm, const std::string space_name) 
+void VectorSpace<dim, spacedim>::parse_parameters(ParameterHandler &prm) 
 {
-    prm.enter_subsection(space_name);
+    prm.enter_subsection(this->section_name);
 
     fe_name = prm.get ("Finite element space"); 
     map_type = prm.get_integer("Mapping degree");
@@ -585,7 +566,8 @@ void VectorSpace<dim, spacedim>::count_dofs(std::vector<unsigned int> target_com
 
 
 template class VectorSpace<1,1>;
-// template class VectorSpace<1,2>;
+template class VectorSpace<1,2>;
+template class VectorSpace<1,3>;
 template class VectorSpace<2,2>;
-// template class VectorSpace<2,3>;
+template class VectorSpace<2,3>;
 template class VectorSpace<3,3>;

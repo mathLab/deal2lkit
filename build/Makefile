@@ -249,6 +249,33 @@ source/output_processor.cc.s:
 	$(MAKE) -f CMakeFiles/dealii-sak.release.dir/build.make CMakeFiles/dealii-sak.release.dir/source/output_processor.cc.s
 .PHONY : source/output_processor.cc.s
 
+source/parameter_acceptor.o: source/parameter_acceptor.cc.o
+.PHONY : source/parameter_acceptor.o
+
+# target to build an object file
+source/parameter_acceptor.cc.o:
+	$(MAKE) -f CMakeFiles/dealii-sak.debug.dir/build.make CMakeFiles/dealii-sak.debug.dir/source/parameter_acceptor.cc.o
+	$(MAKE) -f CMakeFiles/dealii-sak.release.dir/build.make CMakeFiles/dealii-sak.release.dir/source/parameter_acceptor.cc.o
+.PHONY : source/parameter_acceptor.cc.o
+
+source/parameter_acceptor.i: source/parameter_acceptor.cc.i
+.PHONY : source/parameter_acceptor.i
+
+# target to preprocess a source file
+source/parameter_acceptor.cc.i:
+	$(MAKE) -f CMakeFiles/dealii-sak.debug.dir/build.make CMakeFiles/dealii-sak.debug.dir/source/parameter_acceptor.cc.i
+	$(MAKE) -f CMakeFiles/dealii-sak.release.dir/build.make CMakeFiles/dealii-sak.release.dir/source/parameter_acceptor.cc.i
+.PHONY : source/parameter_acceptor.cc.i
+
+source/parameter_acceptor.s: source/parameter_acceptor.cc.s
+.PHONY : source/parameter_acceptor.s
+
+# target to generate assembly for a file
+source/parameter_acceptor.cc.s:
+	$(MAKE) -f CMakeFiles/dealii-sak.debug.dir/build.make CMakeFiles/dealii-sak.debug.dir/source/parameter_acceptor.cc.s
+	$(MAKE) -f CMakeFiles/dealii-sak.release.dir/build.make CMakeFiles/dealii-sak.release.dir/source/parameter_acceptor.cc.s
+.PHONY : source/parameter_acceptor.cc.s
+
 source/post_processor.o: source/post_processor.cc.o
 .PHONY : source/post_processor.o
 
@@ -353,6 +380,9 @@ help:
 	@echo "... source/output_processor.o"
 	@echo "... source/output_processor.i"
 	@echo "... source/output_processor.s"
+	@echo "... source/parameter_acceptor.o"
+	@echo "... source/parameter_acceptor.i"
+	@echo "... source/parameter_acceptor.s"
 	@echo "... source/post_processor.o"
 	@echo "... source/post_processor.i"
 	@echo "... source/post_processor.s"

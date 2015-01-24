@@ -121,9 +121,32 @@ CMakeFiles/dealii-sak.debug.dir/source/output_processor.cc.o.provides: CMakeFile
 
 CMakeFiles/dealii-sak.debug.dir/source/output_processor.cc.o.provides.build: CMakeFiles/dealii-sak.debug.dir/source/output_processor.cc.o
 
+CMakeFiles/dealii-sak.debug.dir/source/parameter_acceptor.cc.o: CMakeFiles/dealii-sak.debug.dir/flags.make
+CMakeFiles/dealii-sak.debug.dir/source/parameter_acceptor.cc.o: ../source/parameter_acceptor.cc
+	$(CMAKE_COMMAND) -E cmake_progress_report /Users/heltai/c++/dealii-sak/build/CMakeFiles $(CMAKE_PROGRESS_4)
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/dealii-sak.debug.dir/source/parameter_acceptor.cc.o"
+	/Library/deal.II-bundle/openmpi-1.6.5/bin/mpic++   $(CXX_DEFINES) $(CXX_FLAGS) -O0 -ggdb -o CMakeFiles/dealii-sak.debug.dir/source/parameter_acceptor.cc.o -c /Users/heltai/c++/dealii-sak/source/parameter_acceptor.cc
+
+CMakeFiles/dealii-sak.debug.dir/source/parameter_acceptor.cc.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/dealii-sak.debug.dir/source/parameter_acceptor.cc.i"
+	/Library/deal.II-bundle/openmpi-1.6.5/bin/mpic++  $(CXX_DEFINES) $(CXX_FLAGS) -O0 -ggdb -E /Users/heltai/c++/dealii-sak/source/parameter_acceptor.cc > CMakeFiles/dealii-sak.debug.dir/source/parameter_acceptor.cc.i
+
+CMakeFiles/dealii-sak.debug.dir/source/parameter_acceptor.cc.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/dealii-sak.debug.dir/source/parameter_acceptor.cc.s"
+	/Library/deal.II-bundle/openmpi-1.6.5/bin/mpic++  $(CXX_DEFINES) $(CXX_FLAGS) -O0 -ggdb -S /Users/heltai/c++/dealii-sak/source/parameter_acceptor.cc -o CMakeFiles/dealii-sak.debug.dir/source/parameter_acceptor.cc.s
+
+CMakeFiles/dealii-sak.debug.dir/source/parameter_acceptor.cc.o.requires:
+.PHONY : CMakeFiles/dealii-sak.debug.dir/source/parameter_acceptor.cc.o.requires
+
+CMakeFiles/dealii-sak.debug.dir/source/parameter_acceptor.cc.o.provides: CMakeFiles/dealii-sak.debug.dir/source/parameter_acceptor.cc.o.requires
+	$(MAKE) -f CMakeFiles/dealii-sak.debug.dir/build.make CMakeFiles/dealii-sak.debug.dir/source/parameter_acceptor.cc.o.provides.build
+.PHONY : CMakeFiles/dealii-sak.debug.dir/source/parameter_acceptor.cc.o.provides
+
+CMakeFiles/dealii-sak.debug.dir/source/parameter_acceptor.cc.o.provides.build: CMakeFiles/dealii-sak.debug.dir/source/parameter_acceptor.cc.o
+
 CMakeFiles/dealii-sak.debug.dir/source/post_processor.cc.o: CMakeFiles/dealii-sak.debug.dir/flags.make
 CMakeFiles/dealii-sak.debug.dir/source/post_processor.cc.o: ../source/post_processor.cc
-	$(CMAKE_COMMAND) -E cmake_progress_report /Users/heltai/c++/dealii-sak/build/CMakeFiles $(CMAKE_PROGRESS_4)
+	$(CMAKE_COMMAND) -E cmake_progress_report /Users/heltai/c++/dealii-sak/build/CMakeFiles $(CMAKE_PROGRESS_5)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/dealii-sak.debug.dir/source/post_processor.cc.o"
 	/Library/deal.II-bundle/openmpi-1.6.5/bin/mpic++   $(CXX_DEFINES) $(CXX_FLAGS) -O0 -ggdb -o CMakeFiles/dealii-sak.debug.dir/source/post_processor.cc.o -c /Users/heltai/c++/dealii-sak/source/post_processor.cc
 
@@ -146,7 +169,7 @@ CMakeFiles/dealii-sak.debug.dir/source/post_processor.cc.o.provides.build: CMake
 
 CMakeFiles/dealii-sak.debug.dir/source/utilities.cc.o: CMakeFiles/dealii-sak.debug.dir/flags.make
 CMakeFiles/dealii-sak.debug.dir/source/utilities.cc.o: ../source/utilities.cc
-	$(CMAKE_COMMAND) -E cmake_progress_report /Users/heltai/c++/dealii-sak/build/CMakeFiles $(CMAKE_PROGRESS_5)
+	$(CMAKE_COMMAND) -E cmake_progress_report /Users/heltai/c++/dealii-sak/build/CMakeFiles $(CMAKE_PROGRESS_6)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/dealii-sak.debug.dir/source/utilities.cc.o"
 	/Library/deal.II-bundle/openmpi-1.6.5/bin/mpic++   $(CXX_DEFINES) $(CXX_FLAGS) -O0 -ggdb -o CMakeFiles/dealii-sak.debug.dir/source/utilities.cc.o -c /Users/heltai/c++/dealii-sak/source/utilities.cc
 
@@ -169,7 +192,7 @@ CMakeFiles/dealii-sak.debug.dir/source/utilities.cc.o.provides.build: CMakeFiles
 
 CMakeFiles/dealii-sak.debug.dir/source/vector_space.cc.o: CMakeFiles/dealii-sak.debug.dir/flags.make
 CMakeFiles/dealii-sak.debug.dir/source/vector_space.cc.o: ../source/vector_space.cc
-	$(CMAKE_COMMAND) -E cmake_progress_report /Users/heltai/c++/dealii-sak/build/CMakeFiles $(CMAKE_PROGRESS_6)
+	$(CMAKE_COMMAND) -E cmake_progress_report /Users/heltai/c++/dealii-sak/build/CMakeFiles $(CMAKE_PROGRESS_7)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/dealii-sak.debug.dir/source/vector_space.cc.o"
 	/Library/deal.II-bundle/openmpi-1.6.5/bin/mpic++   $(CXX_DEFINES) $(CXX_FLAGS) -O0 -ggdb -o CMakeFiles/dealii-sak.debug.dir/source/vector_space.cc.o -c /Users/heltai/c++/dealii-sak/source/vector_space.cc
 
@@ -195,6 +218,7 @@ dealii__sak_debug_OBJECTS = \
 "CMakeFiles/dealii-sak.debug.dir/source/domain.cc.o" \
 "CMakeFiles/dealii-sak.debug.dir/source/error_handler.cc.o" \
 "CMakeFiles/dealii-sak.debug.dir/source/output_processor.cc.o" \
+"CMakeFiles/dealii-sak.debug.dir/source/parameter_acceptor.cc.o" \
 "CMakeFiles/dealii-sak.debug.dir/source/post_processor.cc.o" \
 "CMakeFiles/dealii-sak.debug.dir/source/utilities.cc.o" \
 "CMakeFiles/dealii-sak.debug.dir/source/vector_space.cc.o"
@@ -205,11 +229,12 @@ dealii__sak_debug_EXTERNAL_OBJECTS =
 libdealii-sak.debug.dylib: CMakeFiles/dealii-sak.debug.dir/source/domain.cc.o
 libdealii-sak.debug.dylib: CMakeFiles/dealii-sak.debug.dir/source/error_handler.cc.o
 libdealii-sak.debug.dylib: CMakeFiles/dealii-sak.debug.dir/source/output_processor.cc.o
+libdealii-sak.debug.dylib: CMakeFiles/dealii-sak.debug.dir/source/parameter_acceptor.cc.o
 libdealii-sak.debug.dylib: CMakeFiles/dealii-sak.debug.dir/source/post_processor.cc.o
 libdealii-sak.debug.dylib: CMakeFiles/dealii-sak.debug.dir/source/utilities.cc.o
 libdealii-sak.debug.dylib: CMakeFiles/dealii-sak.debug.dir/source/vector_space.cc.o
 libdealii-sak.debug.dylib: CMakeFiles/dealii-sak.debug.dir/build.make
-libdealii-sak.debug.dylib: /Library/deal.II-bundle/deal.II-rev33096/lib/libdeal_II.g.dylib
+libdealii-sak.debug.dylib: /Library/deal.II-bundle/deal.II-v8.2pre_v1/lib/libdeal_II.g.dylib
 libdealii-sak.debug.dylib: /usr/lib/libbz2.dylib
 libdealii-sak.debug.dylib: /usr/lib/libz.dylib
 libdealii-sak.debug.dylib: /Library/deal.II-bundle/trilinos-11.6.1/lib/libmesquite.dylib
@@ -317,6 +342,7 @@ CMakeFiles/dealii-sak.debug.dir/build: libdealii-sak.debug.dylib
 CMakeFiles/dealii-sak.debug.dir/requires: CMakeFiles/dealii-sak.debug.dir/source/domain.cc.o.requires
 CMakeFiles/dealii-sak.debug.dir/requires: CMakeFiles/dealii-sak.debug.dir/source/error_handler.cc.o.requires
 CMakeFiles/dealii-sak.debug.dir/requires: CMakeFiles/dealii-sak.debug.dir/source/output_processor.cc.o.requires
+CMakeFiles/dealii-sak.debug.dir/requires: CMakeFiles/dealii-sak.debug.dir/source/parameter_acceptor.cc.o.requires
 CMakeFiles/dealii-sak.debug.dir/requires: CMakeFiles/dealii-sak.debug.dir/source/post_processor.cc.o.requires
 CMakeFiles/dealii-sak.debug.dir/requires: CMakeFiles/dealii-sak.debug.dir/source/utilities.cc.o.requires
 CMakeFiles/dealii-sak.debug.dir/requires: CMakeFiles/dealii-sak.debug.dir/source/vector_space.cc.o.requires

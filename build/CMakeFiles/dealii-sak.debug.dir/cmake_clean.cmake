@@ -2,6 +2,7 @@ FILE(REMOVE_RECURSE
   "CMakeFiles/dealii-sak.debug.dir/source/domain.cc.o"
   "CMakeFiles/dealii-sak.debug.dir/source/error_handler.cc.o"
   "CMakeFiles/dealii-sak.debug.dir/source/output_processor.cc.o"
+  "CMakeFiles/dealii-sak.debug.dir/source/parameter_acceptor.cc.o"
   "CMakeFiles/dealii-sak.debug.dir/source/post_processor.cc.o"
   "CMakeFiles/dealii-sak.debug.dir/source/utilities.cc.o"
   "CMakeFiles/dealii-sak.debug.dir/source/vector_space.cc.o"
