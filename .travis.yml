@@ -12,3 +12,4 @@ deploy:
   on:
     repo: luca-heltai/dealii-sak
     tags: true
+    all_branches: true
