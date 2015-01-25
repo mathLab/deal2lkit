@@ -1,5 +1,4 @@
 ## ---------------------------------------------------------------------
-## $Id$
 ##
 ## Copyright (C) 2013, 2014 by the deal.II authors
 ##
@@ -103,7 +102,6 @@ MACRO(DEAL_II_ADD_TEST _category _test_name _comparison_file)
     STRING(TOUPPER ${_expect} _expect)
   ENDIF()
 
-
   FOREACH(_build ${DEAL_II_BUILD_TYPES})
 
     ITEM_MATCHES(_match "${_build}" ${_configuration})
@@ -165,13 +163,14 @@ MACRO(DEAL_II_ADD_TEST _category _test_name _comparison_file)
           RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/${_target}"
           )
         SET_PROPERTY(TARGET ${_target} APPEND PROPERTY
-          INCLUDE_DIRECTORIES "${DEAL_II_INCLUDE_DIRS}"
+          INCLUDE_DIRECTORIES "${DEAL_II_INCLUDE_DIRS};${SAK_SOURCE_DIR}/include"
           )
         SET_PROPERTY(TARGET ${_target} APPEND PROPERTY
           COMPILE_DEFINITIONS
             SOURCE_DIR="${CMAKE_CURRENT_SOURCE_DIR}"
           )
-        TARGET_LINK_LIBRARIES(${_target} ${DEAL_II_TARGET_${_build}})
+        FIND_LIBRARY(SAK_LIB dealii-sak.${_build} ${SAK_BINARY_DIR})
+        TARGET_LINK_LIBRARIES(${_target} ${DEAL_II_TARGET_${_build}} ${SAK_LIB})
       ENDIF()
 
       #
@@ -191,13 +190,13 @@ MACRO(DEAL_II_ADD_TEST _category _test_name _comparison_file)
               && cat ${_test_directory}/failing_output
               && exit 1)
         COMMAND
-          ${PERL_EXECUTABLE} -pi ${DEAL_II_SOURCE_DIR}/tests/normalize.pl
+          ${PERL_EXECUTABLE} -pi ${SAK_SOURCE_DIR}/tests/normalize.pl
                                  ${_test_directory}/output
         WORKING_DIRECTORY
           ${_test_directory}
         DEPENDS
           ${_target}
-          ${DEAL_II_SOURCE_DIR}/tests/normalize.pl
+          ${SAK_SOURCE_DIR}/tests/normalize.pl
         )
       ADD_CUSTOM_COMMAND(OUTPUT ${_test_directory}/diff
         COMMAND rm -f ${_test_directory}/failing_diff
@@ -249,9 +248,9 @@ MACRO(DEAL_II_ADD_TEST _category _test_name _comparison_file)
           -DTRGT=${_diff_target}
           -DTEST=${_test_full}
           -DEXPECT=${_expect}
-          -DDEAL_II_BINARY_DIR=${CMAKE_BINARY_DIR}
+          -DSAK_BINARY_DIR=${CMAKE_BINARY_DIR}
           -DGUARD_FILE=${CMAKE_CURRENT_BINARY_DIR}/${_target}/interrupt_guard.cc
-          -P ${DEAL_II_SOURCE_DIR}/tests/run_test.cmake
+          -P ${SAK_SOURCE_DIR}/tests/run_test.cmake
         WORKING_DIRECTORY ${_test_directory}
         )
       SET_TESTS_PROPERTIES(${_test_full} PROPERTIES

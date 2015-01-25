@@ -1,5 +1,4 @@
 ## ---------------------------------------------------------------------
-## $Id$
 ##
 ## Copyright (C) 2013 by the deal.II authors
 ##
@@ -29,7 +28,7 @@ MACRO(DEAL_II_PICKUP_TESTS)
 
   GET_FILENAME_COMPONENT(_category ${CMAKE_CURRENT_SOURCE_DIR} NAME)
 
-  SET(DEAL_II_SOURCE_DIR) # avoid a bogus warning
+  SET(APP_SOURCE_DIR) # avoid a bogus warning
 
   FILE(GLOB _tests "*.output")
   FOREACH(_test ${_tests})

@@ -72,4 +72,4 @@ if(BUILD_DOCUMENTATION)
   install(DIRECTORY ${PROJECT_BINARY_DIR}/doc/html DESTINATION doc)
 endif()
 
-include(tests)
+ADD_SUBDIRECTORY(tests)
