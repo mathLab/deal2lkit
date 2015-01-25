@@ -17,9 +17,7 @@ script:
     - cd build
     - export DEAL_II_DIR=/home/travis/dealii-inst
     - cmake -GNinja -DCMAKE_INSTALL_PREFIX=/home/travis/dealii-sak-inst ..
-    - ninja -j4 install
-    - ninja -j4 setup_tests
-    - ctest -j4 
+    - ninja -j4 install && ninja -j4 setup_tests && ctest -j4
     - tar cvfz /home/travis/dealii-sak-CI-build.tgz /home/travis/dealii-sak-inst
 deploy:
   provider: releases
