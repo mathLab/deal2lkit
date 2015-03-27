@@ -51,12 +51,18 @@ public:
   std::string get_section_name() const;
 
 private: 
-  /** A list containing all constructed classes of type
-      ParameterAcceptor. */
+  /**
+   * A list containing all constructed classes of type
+   * ParameterAcceptor.
+   */
   static std::vector<SmartPointer<ParameterAcceptor> > class_list;
+  
+  /**
+   * A list containing all section names for the parameter handler.
+   */
   static std::vector<std::string> section_names;
 
-  /** The index of this specific class within the class list.*/
+  /** The index of this specific class within the class list. */
   const unsigned int acceptor_id;    
 
 protected:
