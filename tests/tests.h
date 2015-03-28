@@ -49,47 +49,47 @@ namespace Testing
 {
 int rand(bool reseed=false, int seed=1) throw()
 {
-  static int r[32];
-  static int k;
-  static bool inited=false;
-  if (!inited || reseed)
+    static int r[32];
+    static int k;
+    static bool inited=false;
+    if (!inited || reseed)
     {
-      //srand treats a seed 0 as 1 for some reason
-      r[0]=(seed==0)?1:seed;
+        //srand treats a seed 0 as 1 for some reason
+        r[0]=(seed==0)?1:seed;
 
-      for (int i=1; i<31; i++)
+        for (int i=1; i<31; i++)
         {
-          r[i] = (16807LL * r[i-1]) % 2147483647;
-          if (r[i] < 0)
-            r[i] += 2147483647;
+            r[i] = (16807LL * r[i-1]) % 2147483647;
+            if (r[i] < 0)
+                r[i] += 2147483647;
         }
-      k=31;
-      for (int i=31; i<34; i++)
+        k=31;
+        for (int i=31; i<34; i++)
         {
-          r[k%32] = r[(k+32-31)%32];
-          k=(k+1)%32;
+            r[k%32] = r[(k+32-31)%32];
+            k=(k+1)%32;
         }
 
-      for (int i=34; i<344; i++)
+        for (int i=34; i<344; i++)
         {
-          r[k%32] = r[(k+32-31)%32] + r[(k+32-3)%32];
-          k=(k+1)%32;
+            r[k%32] = r[(k+32-31)%32] + r[(k+32-3)%32];
+            k=(k+1)%32;
         }
-      inited=true;
-      if (reseed==true)
-        return 0;// do not generate new no
+        inited=true;
+        if (reseed==true)
+            return 0;// do not generate new no
     }
 
-  r[k%32] = r[(k+32-31)%32] + r[(k+32-3)%32];
-  int ret = r[k%32];
-  k=(k+1)%32;
-  return (unsigned int)ret >> 1;
+    r[k%32] = r[(k+32-31)%32] + r[(k+32-3)%32];
+    int ret = r[k%32];
+    k=(k+1)%32;
+    return (unsigned int)ret >> 1;
 }
 
 // reseed our random number generator
 void srand(int seed) throw()
 {
-  rand(true, seed);
+    rand(true, seed);
 }
 }
 
@@ -99,18 +99,18 @@ void srand(int seed) throw()
 // and then delete it
 void cat_file(const char *filename)
 {
-  std::ifstream in(filename);
-  Assert (in, dealii::ExcIO());
+    std::ifstream in(filename);
+    Assert (in, dealii::ExcIO());
 
-  while (in)
+    while (in)
     {
-      std::string s;
-      std::getline(in, s);
-      dealii::deallog.get_file_stream() << s << "\n";
+        std::string s;
+        std::getline(in, s);
+        dealii::deallog.get_file_stream() << s << "\n";
     }
-  in.close();
+    in.close();
 
-  std::remove (filename);
+    std::remove (filename);
 }
 
 
@@ -124,8 +124,8 @@ void cat_file(const char *filename)
  */
 void sort_file_contents (const std::string &filename)
 {
-  int error = std::system ((std::string ("LC_ALL=C sort ") + filename + " -o " + filename).c_str());
-  Assert (error == 0, ExcInternalError());
+    int error = std::system ((std::string ("LC_ALL=C sort ") + filename + " -o " + filename).c_str());
+    Assert (error == 0, ExcInternalError());
 }
 
 
@@ -139,9 +139,9 @@ void sort_file_contents (const std::string &filename)
  */
 void unify_pretty_function (const std::string &filename)
 {
-  int error = std::system ((std::string ("sed -i -e 's/ \\&/ \\& /g' -e 's/ & ,/\\&,/g' -e 's/ \\& )/\\&)/g' -e 's/ \\& /\\& /g' -e 's/^DEAL::virtual /DEAL::/g' ") + filename).c_str());
+    int error = std::system ((std::string ("sed -i -e 's/ \\&/ \\& /g' -e 's/ & ,/\\&,/g' -e 's/ \\& )/\\&)/g' -e 's/ \\& /\\& /g' -e 's/^DEAL::virtual /DEAL::/g' ") + filename).c_str());
 
-  Assert (error == 0, ExcInternalError());
+    Assert (error == 0, ExcInternalError());
 }
 
 
@@ -162,10 +162,10 @@ void unify_pretty_function (const std::string &filename)
 #ifndef DEAL_II_WITH_MPI
 struct LimitConcurrency
 {
-  LimitConcurrency ()
-  {
-    multithread_info.set_thread_limit (5);
-  }
+    LimitConcurrency ()
+    {
+        multithread_info.set_thread_limit (5);
+    }
 } limit_concurrency;
 #endif
 
@@ -176,8 +176,8 @@ struct LimitConcurrency
 
 namespace
 {
-  void check_petsc_allocations()
-  {
+void check_petsc_allocations()
+{
     PetscStageLog stageLog;
     PetscLogGetStageLog(&stageLog);
 
@@ -185,28 +185,28 @@ namespace
     // stageLog->stageInfo->classLog->classInfo[i].id is always -1, so we look
     // it up in stageLog->classLog, make sure it has the same number of entries:
     Assert(stageLog->stageInfo->classLog->numClasses == stageLog->classLog->numClasses,
-	   dealii::ExcInternalError());
+           dealii::ExcInternalError());
 
     bool errors = false;
-    for (int i=0;i<stageLog->stageInfo->classLog->numClasses;++i)
-      {
-	if (stageLog->stageInfo->classLog->classInfo[i].destructions !=
-	    stageLog->stageInfo->classLog->classInfo[i].creations)
-	  {
-	    errors = true;
-	    std::cerr << "ERROR: PETSc objects leaking of type '"
-		      << stageLog->classLog->classInfo[i].name << "'"
-		      << " with "
-		      << stageLog->stageInfo->classLog->classInfo[i].creations
-		      << " creations and only "
-		      << stageLog->stageInfo->classLog->classInfo[i].destructions
-		      << " destructions." << std::endl;
-	  }
-      }
+    for (int i=0; i<stageLog->stageInfo->classLog->numClasses; ++i)
+    {
+        if (stageLog->stageInfo->classLog->classInfo[i].destructions !=
+                stageLog->stageInfo->classLog->classInfo[i].creations)
+        {
+            errors = true;
+            std::cerr << "ERROR: PETSc objects leaking of type '"
+                      << stageLog->classLog->classInfo[i].name << "'"
+                      << " with "
+                      << stageLog->stageInfo->classLog->classInfo[i].creations
+                      << " creations and only "
+                      << stageLog->stageInfo->classLog->classInfo[i].destructions
+                      << " destructions." << std::endl;
+        }
+    }
 
     if (errors)
-      throw dealii::ExcMessage("PETSc memory leak");
-  }
+        throw dealii::ExcMessage("PETSc memory leak");
+}
 }
 #endif
 
@@ -225,14 +225,14 @@ std::ofstream deallogfile;
 void
 initlog(bool console=false)
 {
-  deallogname = "output";
-  deallogfile.open(deallogname.c_str());
-  deallog.attach(deallogfile);
-  if (!console)
-    deallog.depth_console(0);
+    deallogname = "output";
+    deallogfile.open(deallogname.c_str());
+    deallog.attach(deallogfile);
+    if (!console)
+        deallog.depth_console(0);
 
 //TODO: Remove this line and replace by test_mode()
-  deallog.threshold_float(1.e-8);
+    deallog.threshold_float(1.e-8);
 }
 
 
@@ -241,21 +241,21 @@ void
 mpi_initlog(bool console=false)
 {
 #ifdef DEAL_II_WITH_MPI
-  unsigned int myid = Utilities::MPI::this_mpi_process (MPI_COMM_WORLD);
-  if (myid == 0)
+    unsigned int myid = Utilities::MPI::this_mpi_process (MPI_COMM_WORLD);
+    if (myid == 0)
     {
-      deallogname = "output";
-      deallogfile.open(deallogname.c_str());
-      deallog.attach(deallogfile);
-      if (!console)
-        deallog.depth_console(0);
+        deallogname = "output";
+        deallogfile.open(deallogname.c_str());
+        deallog.attach(deallogfile);
+        if (!console)
+            deallog.depth_console(0);
 
 //TODO: Remove this line and replace by test_mode()
-      deallog.threshold_float(1.e-8);
+        deallog.threshold_float(1.e-8);
     }
 #else
-  // can't use this function if not using MPI
-  Assert (false, ExcInternalError());
+    // can't use this function if not using MPI
+    Assert (false, ExcInternalError());
 #endif
 }
 
@@ -265,71 +265,71 @@ mpi_initlog(bool console=false)
    on proc 0 */
 struct MPILogInitAll
 {
-  MPILogInitAll(bool console=false)
-  {
+    MPILogInitAll(bool console=false)
+    {
 #ifdef DEAL_II_WITH_MPI
-    unsigned int myid = Utilities::MPI::this_mpi_process (MPI_COMM_WORLD);
-    deallogname = "output";
-    if (myid != 0)
-      deallogname = deallogname + Utilities::int_to_string(myid);
-    deallogfile.open(deallogname.c_str());
-    deallog.attach(deallogfile);
-    if (!console)
-      deallog.depth_console(0);
+        unsigned int myid = Utilities::MPI::this_mpi_process (MPI_COMM_WORLD);
+        deallogname = "output";
+        if (myid != 0)
+            deallogname = deallogname + Utilities::int_to_string(myid);
+        deallogfile.open(deallogname.c_str());
+        deallog.attach(deallogfile);
+        if (!console)
+            deallog.depth_console(0);
 
 //TODO: Remove this line and replace by test_mode()
-    deallog.threshold_float(1.e-8);
-    deallog.push(Utilities::int_to_string(myid));
+        deallog.threshold_float(1.e-8);
+        deallog.push(Utilities::int_to_string(myid));
 #else
-    // can't use this function if not using MPI
-    Assert (false, ExcInternalError());
+        // can't use this function if not using MPI
+        Assert (false, ExcInternalError());
 #endif
-  }
+    }
 
-  ~MPILogInitAll()
-  {
+    ~MPILogInitAll()
+    {
 #ifdef DEAL_II_WITH_MPI
-    unsigned int myid = Utilities::MPI::this_mpi_process (MPI_COMM_WORLD);
-    unsigned int nproc = Utilities::MPI::n_mpi_processes (MPI_COMM_WORLD);
+        unsigned int myid = Utilities::MPI::this_mpi_process (MPI_COMM_WORLD);
+        unsigned int nproc = Utilities::MPI::n_mpi_processes (MPI_COMM_WORLD);
 
-    deallog.pop();
+        deallog.pop();
 
-    if (myid!=0)
-      {
-        deallog.detach();
-        deallogfile.close();
-      }
+        if (myid!=0)
+        {
+            deallog.detach();
+            deallogfile.close();
+        }
 
-    MPI_Barrier(MPI_COMM_WORLD);
+        MPI_Barrier(MPI_COMM_WORLD);
 
 #ifdef DEAL_II_WITH_PETSC
-    check_petsc_allocations();
-    MPI_Barrier(MPI_COMM_WORLD);
+        check_petsc_allocations();
+        MPI_Barrier(MPI_COMM_WORLD);
 #endif
 
-    if (myid==0)
-      {
-        for (unsigned int i=1; i<nproc; ++i)
-          {
-            std::string filename = "output" + Utilities::int_to_string(i);
-            std::ifstream in(filename.c_str());
-            Assert (in, ExcIO());
+        if (myid==0)
+        {
+            for (unsigned int i=1; i<nproc; ++i)
+            {
+                std::string filename = "output" + Utilities::int_to_string(i);
+                std::ifstream in(filename.c_str());
+                Assert (in, ExcIO());
 
-            while (in)
-              {
-                std::string s;
-                std::getline(in, s);
-                deallog.get_file_stream() << s << "\n";
-              }
-            in.close();
-            std::remove (filename.c_str());
-          }
-      }
+                while (in)
+                {
+                    std::string s;
+                    std::getline(in, s);
+                    deallog.get_file_stream() << s << "\n";
+                }
+                in.close();
+                std::remove (filename.c_str());
+            }
+        }
 #else
-    // can't use this function if not using MPI
-    Assert (false, ExcInternalError());
+        // can't use this function if not using MPI
+        Assert (false, ExcInternalError());
 #endif
-  }
+    }
 
 };
 
@@ -344,8 +344,8 @@ struct MPILogInitAll
 DEAL_II_NAMESPACE_OPEN
 namespace deal_II_exceptions
 {
-  extern bool abort_on_exception;
-  extern bool show_stacktrace;
+extern bool abort_on_exception;
+extern bool show_stacktrace;
 }
 DEAL_II_NAMESPACE_CLOSE
 
@@ -353,26 +353,26 @@ DEAL_II_NAMESPACE_CLOSE
 void new_tbb_assertion_handler(const char *file, int line, const char *expr,
                                const char *comment)
 {
-  // Print out the original assertion message
-  std::cerr << "TBB assertion:" << std::endl;
-  std::cerr << "Assertion " << expr << " failed on line " << line << " of file "
-            << file << std::endl;
-  std::cerr << "Detailed description: " << comment << std::endl;
+    // Print out the original assertion message
+    std::cerr << "TBB assertion:" << std::endl;
+    std::cerr << "Assertion " << expr << " failed on line " << line << " of file "
+              << file << std::endl;
+    std::cerr << "Detailed description: " << comment << std::endl;
 
-  // Reenable abort and stacktraces:
-  deal_II_exceptions::abort_on_exception = true;
-  deal_II_exceptions::show_stacktrace = true;
+    // Reenable abort and stacktraces:
+    deal_II_exceptions::abort_on_exception = true;
+    deal_II_exceptions::show_stacktrace = true;
 
-  // And abort with a deal.II exception:
-  Assert(false, ExcMessage("TBB Exception, see above"));
+    // And abort with a deal.II exception:
+    Assert(false, ExcMessage("TBB Exception, see above"));
 }
 
 struct SetTBBAssertionHandler
 {
-  SetTBBAssertionHandler ()
-  {
-    ::tbb::set_assertion_handler(new_tbb_assertion_handler);
-  }
+    SetTBBAssertionHandler ()
+    {
+        ::tbb::set_assertion_handler(new_tbb_assertion_handler);
+    }
 } set_tbb_assertion_handler;
 
 #endif /*TBB_DO_ASSERT*/
@@ -390,10 +390,10 @@ DEAL_II_NAMESPACE_OPEN
 
 struct SwitchOffStacktrace
 {
-  SwitchOffStacktrace ()
-  {
-    deal_II_exceptions::suppress_stacktrace_in_exceptions ();
-  }
+    SwitchOffStacktrace ()
+    {
+        deal_II_exceptions::suppress_stacktrace_in_exceptions ();
+    }
 } deal_II_stacktrace_dummy;
 
 
@@ -403,23 +403,23 @@ struct SwitchOffStacktrace
 
 namespace internal
 {
-  namespace Vector
-  {
-    extern unsigned int minimum_parallel_grain_size;
-  }
-  namespace SparseMatrix
-  {
-    extern unsigned int minimum_parallel_grain_size;
-  }
+namespace Vector
+{
+extern unsigned int minimum_parallel_grain_size;
+}
+namespace SparseMatrix
+{
+extern unsigned int minimum_parallel_grain_size;
+}
 }
 
 struct SetGrainSizes
 {
-  SetGrainSizes ()
-  {
-    internal::Vector::minimum_parallel_grain_size = 2;
-    internal::SparseMatrix::minimum_parallel_grain_size = 2;
-  }
+    SetGrainSizes ()
+    {
+        internal::Vector::minimum_parallel_grain_size = 2;
+        internal::SparseMatrix::minimum_parallel_grain_size = 2;
+    }
 } set_grain_sizes;
 
 DEAL_II_NAMESPACE_CLOSE

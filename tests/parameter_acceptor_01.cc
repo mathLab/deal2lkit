@@ -1,6 +1,6 @@
 //-----------------------------------------------------------
 //
-//    Copyright (C) 2014 by the deal.II authors 
+//    Copyright (C) 2014 by the deal.II authors
 //
 //    This file is subject to LGPL and may not be distributed
 //    without copyright and license information. Please refer
@@ -18,19 +18,19 @@
 template<int dim>
 class Test : public ParameterAcceptor {
 public:
-  virtual void declare_parameters(ParameterHandler &prm) {
-    prm.declare_entry("A double", "0.0", Patterns::Double(),
-		      "Documentation");
-  };
-  
-  virtual void parse_parameters(ParameterHandler &prm) {
-    deallog << "Double: "
-	    << prm.get_double("A double") << std::endl;
-  };
+    virtual void declare_parameters(ParameterHandler &prm) {
+        prm.declare_entry("A double", "0.0", Patterns::Double(),
+                          "Documentation");
+    };
+
+    virtual void parse_parameters(ParameterHandler &prm) {
+        deallog << "Double: "
+                << prm.get_double("A double") << std::endl;
+    };
 };
 
 
-int main () 
+int main ()
 {
     initlog();
     Test<2> a;

@@ -17,27 +17,29 @@ using namespace dealii;
  */
 template <typename TYPE>
 void smart_delete (SmartPointer<TYPE> &sp) {
-  if(sp) {
-    TYPE * p = sp;
-    sp = 0;
-    delete p;
-  }
+    if(sp) {
+        TYPE * p = sp;
+        sp = 0;
+        delete p;
+    }
 }
 
 // Anonymous namespace, to hide implementation detail for the type
 // function below
 namespace {
-  struct handle {
+struct handle {
     char* p;
     handle(char* ptr) : p(ptr) { }
-    ~handle() { std::free(p); }
-  };
-  
-  std::string demangle(const char* name) {
+    ~handle() {
+        std::free(p);
+    }
+};
+
+std::string demangle(const char* name) {
     int status = -4; // some arbitrary value to eliminate the compiler warning
     handle result( abi::__cxa_demangle(name, NULL, NULL, &status) );
     return (status==0) ? result.p : name ;
-  };
+};
 }
 
 /**
@@ -45,7 +47,7 @@ namespace {
  */
 template <class T>
 std::string type(const T& t) {
-  return demangle(typeid(t).name());
+    return demangle(typeid(t).name());
 };
 
 #endif

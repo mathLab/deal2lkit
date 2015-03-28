@@ -11,7 +11,7 @@
 
 using namespace std;
 
-template <int dim, int spacedim> 
+template <int dim, int spacedim>
 Domain<dim,spacedim>::Domain() :
     search_mesh("MESH", 1)
 {
@@ -25,15 +25,15 @@ Domain<dim,spacedim>::Domain(ParameterHandler &prm) :
     reinit(prm);
 }
 
-template <int dim, int spacedim> 
+template <int dim, int spacedim>
 Domain<dim,spacedim>::~Domain()
 {
-  //     tria.clear();
+    //     tria.clear();
 }
 
 
 template <int dim, int spacedim>
-void Domain<dim,spacedim>::reinit(ParameterHandler &prm) 
+void Domain<dim,spacedim>::reinit(ParameterHandler &prm)
 {
     deallog.push("DOMAIN");
     parse_parameters(prm);
@@ -45,16 +45,16 @@ void Domain<dim,spacedim>::reinit(ParameterHandler &prm)
 
 
 template <int dim, int spacedim>
-void Domain<dim,spacedim>::declare_parameters(ParameterHandler &prm) 
+void Domain<dim,spacedim>::declare_parameters(ParameterHandler &prm)
 {
     prm.enter_subsection("Domain Parameters");
     prm.declare_entry ("Read domain mesh from file", "false", Patterns::Bool(),
-		       "If this is false, then the input mesh file below is ignored and a hyper-cube is created.");
+                       "If this is false, then the input mesh file below is ignored and a hyper-cube is created.");
     prm.declare_entry ("Path of domain mesh files", "mesh/", Patterns::Anything());
-    prm.declare_entry ("Input mesh file", "square", Patterns::Anything()); 
-    prm.declare_entry ("Input mesh format", "ucd", 
-		       Patterns::Selection(GridIn<dim>::get_format_names())); 
-    prm.declare_entry ("Output mesh file", "square_out", Patterns::Anything()); 
+    prm.declare_entry ("Input mesh file", "square", Patterns::Anything());
+    prm.declare_entry ("Input mesh format", "ucd",
+                       Patterns::Selection(GridIn<dim>::get_format_names()));
+    prm.declare_entry ("Output mesh file", "square_out", Patterns::Anything());
 
     prm.enter_subsection("Grid Out Parameters");
     GridOut::declare_parameters(prm);
@@ -64,8 +64,8 @@ void Domain<dim,spacedim>::declare_parameters(ParameterHandler &prm)
 
 }
 
-    template <int dim, int spacedim>
-void Domain<dim,spacedim>::parse_parameters(ParameterHandler &prm) 
+template <int dim, int spacedim>
+void Domain<dim,spacedim>::parse_parameters(ParameterHandler &prm)
 {
     prm.enter_subsection("Domain Parameters");
     read_mesh		= prm.get_bool ("Read domain mesh from file");
@@ -82,41 +82,41 @@ void Domain<dim,spacedim>::parse_parameters(ParameterHandler &prm)
 }
 
 template <int dim, int spacedim>
-void Domain<dim,spacedim>::create_mesh() 
+void Domain<dim,spacedim>::create_mesh()
 {
-  if(read_mesh) {
-    GridIn<dim,spacedim> grid_in;
-    grid_in.attach_triangulation (tria);
-    string mfilen = search_mesh.find
-      (input_mesh_file_name, 
-       grid_in.default_suffix(grid_in.parse_format(input_mesh_format)), 
-       "r");
-    ifstream mfile(mfilen.c_str());
-    grid_in.read(mfile, GridIn<dim,spacedim>::parse_format(input_mesh_format));
-  } else {
-      Point<spacedim> corner;
-      for(unsigned int d=0; d<dim; ++d) corner[d] = 1.;
-    GridGenerator::hyper_rectangle (tria, Point<spacedim>(), corner, true);
+    if(read_mesh) {
+        GridIn<dim,spacedim> grid_in;
+        grid_in.attach_triangulation (tria);
+        string mfilen = search_mesh.find
+                        (input_mesh_file_name,
+                         grid_in.default_suffix(grid_in.parse_format(input_mesh_format)),
+                         "r");
+        ifstream mfile(mfilen.c_str());
+        grid_in.read(mfile, GridIn<dim,spacedim>::parse_format(input_mesh_format));
+    } else {
+        Point<spacedim> corner;
+        for(unsigned int d=0; d<dim; ++d) corner[d] = 1.;
+        GridGenerator::hyper_rectangle (tria, Point<spacedim>(), corner, true);
 //        GridTools::partition_triangulation (n_mpi_processes, tria);
-  }
-  initialized = true;
+    }
+    initialized = true;
 }
-  
+
 
 template <int dim, int spacedim>
 void Domain<dim,spacedim>::output_mesh(std::ostream &out) const {
-  Assert(initialized, ExcNotInitialized());
-  gridout.write (tria, out);
+    Assert(initialized, ExcNotInitialized());
+    gridout.write (tria, out);
 }
 
 
 template <int dim, int spacedim>
 void Domain<dim,spacedim>::output_mesh() const {
-  if(gridout.default_suffix() != "") {
-    std::ofstream out_file ((output_mesh_file_name + gridout.default_suffix()).c_str());
-    output_mesh(out_file);
-    out_file.close();
-  }
+    if(gridout.default_suffix() != "") {
+        std::ofstream out_file ((output_mesh_file_name + gridout.default_suffix()).c_str());
+        output_mesh(out_file);
+        out_file.close();
+    }
 }
 
 
