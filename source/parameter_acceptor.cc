@@ -1,6 +1,7 @@
 #include "parameter_acceptor.h"
 #include "utilities.h"
 
+#include <deal.II/base/point.h>
 
 // Static empty class list
 std::vector<SmartPointer<ParameterAcceptor> > ParameterAcceptor::class_list;
@@ -44,17 +45,38 @@ void ParameterAcceptor::parse_parameters(ParameterHandler &prm) {
         if(it->second.type() == typeid(std::string *)) {
             *(boost::any_cast<std::string*>(it->second)) = prm.get(it->first);
         }
-        if(it->second.type() == typeid(double *)) {
+        else if(it->second.type() == typeid(double *)) {
             *(boost::any_cast<double*>(it->second)) = prm.get_double(it->first);
         }
-        if(it->second.type() == typeid(int *)) {
+        else if(it->second.type() == typeid(int *)) {
             *(boost::any_cast<int*>(it->second)) = prm.get_integer(it->first);
         }
-        if(it->second.type() == typeid(unsigned int *)) {
+        else if(it->second.type() == typeid(unsigned int *)) {
             *(boost::any_cast<unsigned int*>(it->second)) = prm.get_integer(it->first);
         }
-        if(it->second.type() == typeid(bool *)) {
+        else if(it->second.type() == typeid(bool *)) {
             *(boost::any_cast<bool*>(it->second)) = prm.get_bool(it->first);
+        }
+        // Here we have the difficult types...
+        // First all point types.
+        else if(it->second.type() == typeid(Point<2> *)) {
+            std::vector<double> p =
+                Utilities::string_to_double(Utilities::split_string_list(prm.get(it->first)));
+            AssertDimension(p.size(), 2);
+
+            Point<2> &pp = *(boost::any_cast<Point<2>*>(it->second));
+            pp[0] = p[0];
+            pp[1] = p[1];
+        }
+        else if(it->second.type() == typeid(Point<3> *)) {
+            std::vector<double> p =
+                Utilities::string_to_double(Utilities::split_string_list(prm.get(it->first)));
+            AssertDimension(p.size(), 3);
+
+            Point<3> &pp = *(boost::any_cast<Point<3>*>(it->second));
+            pp[0] = p[0];
+            pp[1] = p[1];
+            pp[2] = p[2];
         }
     }
 }
