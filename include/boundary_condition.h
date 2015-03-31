@@ -13,7 +13,7 @@ using namespace dealii;
   functions.
 */
 template <int spacedim>
-class BoundaryCondition : public Subscriptor
+class BoundaryCondition : public ParameterAcceptor
 {
 public:
 
