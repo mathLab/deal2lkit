@@ -4,9 +4,10 @@
 #include <deal.II/base/parameter_handler.h>
 #include <deal.II/grid/tria.h>
 #include <deal.II/distributed/tria.h>
-
-
+#include <deal.II/grid/manifold_lib.h>
+#include <deal.II/grid/grid_generator.h>
 #include "parameter_acceptor.h"
+//#include <mpi.h>
 
 using namespace dealii;
 
@@ -55,6 +56,12 @@ public:
        */
     parallel::distributed::Triangulation<dim, spacedim> * distributed(MPI_Comm mpi_communicator);
 
+    std::string create_default_value(std::vector<unsigned int> input);
+
+    std::string create_default_value(std::vector<double> input);
+
+    std::string create_default_value(Point<spacedim> input);
+
 private:
     typename Triangulation<dim,spacedim>::MeshSmoothing
     get_smoothing();
@@ -68,6 +75,19 @@ private:
      * The grid to generate. Use the name "file" to read from a file.
      */
     std::string grid_name;
+
+    /**
+     * The optional argument for the grid generators. We choose two doubles and two points.
+     */
+    double double_option_one;
+
+    double double_option_two;
+
+    Point<spacedim> point_option_one;
+
+    Point<spacedim> point_option_two;
+
+    unsigned int un_int_option_one;
 
     /**
      * Grid file name.
