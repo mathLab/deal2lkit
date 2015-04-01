@@ -25,31 +25,13 @@ section 5 and 6 of this file for further information on this license.
 1. Deal.II Requirements:
 ========================
 
-The distributed source code requires the deal.II 8.0 library or
-greater. It is used regularly with the development release of deal.II,
-and a CMakeLists.txt file which will allow you to compile it with
-later deal.II versions has been included.
+The distributed source code requires the deal.II 8.3 library or
+greater. It is used regularly with the development release of deal.II.
 
-In what follows, we assume that the user has installed the deal.II
-library in the directory
-
-	DEAL_II_DIR
-
-and that the user has defined the enviroment variable `DEAL_II_DIR` to
-point to the correct location. If this enviroment variable is not set,
-the user should specify it by hand when running cmake in order for
-cmake to properly locate the deal.II library. 
-  
 2. Installation procedure:
 ==========================
 
-The provided archive should be unzipped in a dedicated 
-subdirectory, with the commands
-
-	cd PATH_WHERE_YOU_WANT_THIS_CODE
-	tar xvfz dealii-sak.tgz
-	
-or cloned using git
+Clone the Swiss Army Knife using 
 
 	git clone https://github.com/luca-heltai/dealii-sak.git
 
@@ -60,18 +42,15 @@ The library can then be compiled by running
 	cmake -DDEAL_II_DIR=/path/to/deal.II ..
 	make
 
+and tested using 
+    
+	make test
+
 You can modify the resulting `CMakeCache.txt` to set a different 
 installation path, or you can call cmake with the additional
 option `-DCMAKE_INSTALL_PREFIX=/path/to/install/dir`. 
 	
-3. Running instructions:
-========================
-
-Once the library has been compiled, you can link it in your own deal.II 
-codes by using the provided example `CMakeLists-small.txt` or 
-`CMakeLists-big.txt` in the directory `utilities`.
-
-4. Extensive documentation:
+3. Extensive documentation:
 ===========================
 
 If the user has the program Doxygen installed, a complete and
