@@ -39,6 +39,5 @@ int main ()
       VectorTools::interpolate(dh, Functions::CosineFunction<2>(1), sol);
       eh.error_from_exact(dh, sol, Functions::CosineFunction<2>(1));
     }
-    eh.output_table();
-    
+    eh.output_table(deallog.get_file_stream());
 }

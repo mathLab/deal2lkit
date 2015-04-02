@@ -28,7 +28,7 @@ void ErrorHandler<ntables>::declare_parameters (ParameterHandler &prm)
 {
     prm.declare_entry ("Write error files", "false", Patterns::Bool());
     prm.declare_entry ("Output error tables", "true", Patterns::Bool());
-    prm.declare_entry ("Error file format", "tex", Patterns::Selection("tex|txt"));
+    prm.declare_entry ("Error file format", "tex", Patterns::Selection("tex|txt|gpl|org"));
     prm.declare_entry ("Compute error", "true", Patterns::Bool());
     prm.declare_entry ("Table names", "error", Patterns::List(Patterns::Anything(), 1, ntables),
                        "Comma separated list of table names. ");
@@ -147,7 +147,7 @@ void ErrorHandler<ntables>::parse_parameters (ParameterHandler &prm)
 }
 
 template <int ntables>
-void ErrorHandler<ntables>::output_table (const unsigned int table_no) {
+void ErrorHandler<ntables>::output_table (std::ostream &out, const unsigned int table_no) {
     if (compute_error) {
         AssertThrow(initialized, ExcNotInitialized());
         AssertThrow(table_no < names.size(), ExcIndexRange(table_no, 0, names.size()));
@@ -166,7 +166,7 @@ void ErrorHandler<ntables>::output_table (const unsigned int table_no) {
                 tables[table_no].evaluate_all_convergence_rates(rate_keys[table_no], ConvergenceTable::reduction_rate_log2);
         }
 
-        if(output_error) tables[table_no].write_text(std::cout);
+        if(output_error) tables[table_no].write_text(out);
 
         if(write_error) {
             std::string filename = names[table_no] +
@@ -174,10 +174,16 @@ void ErrorHandler<ntables>::output_table (const unsigned int table_no) {
 
             std::ofstream table_file(filename.c_str());
 
-            if(error_file_format != "txt")
+            if(error_file_format == "tex")
                 tables[table_no].write_tex(table_file);
-            else
+            else if(error_file_format == "txt")
                 tables[table_no].write_text(table_file);
+	    else if(error_file_format == "gpl")
+	      tables[table_no].write_text(table_file,
+					  TableHandler::table_with_separate_column_description);
+	    else if(error_file_format == "org")
+	      tables[table_no].write_text(table_file,
+					  TableHandler::org_mode_table);
             table_file.close();
         }
     }

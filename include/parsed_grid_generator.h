@@ -54,7 +54,9 @@ public:
        * occured. It's the user's responsability to destroy the created
        * grid once it is no longer needed.
        */
+#ifdef DEAL_II_WITH_MPI
     parallel::distributed::Triangulation<dim, spacedim> * distributed(MPI_Comm mpi_communicator);
+#endif
 
     std::string create_default_value(std::vector<unsigned int> input);
 

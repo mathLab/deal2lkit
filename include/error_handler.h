@@ -85,7 +85,7 @@ public:
                     const VEC &, unsigned int table_no = 0, double dt=0.);
 
     /** By default output first table. */
-    void output_table(const unsigned int table_no=0);
+  void output_table(std::ostream &out=std::cout, const unsigned int table_no=0);
 
 private:
     /** Error results.*/
@@ -229,8 +229,6 @@ void ErrorHandler<ntables>::error_from_exact(const DoFHandler<dim,spacedim> & dh
         AssertThrow(exact.n_components == types[table_no].size(),
                     ExcDimensionMismatch(exact.n_components, types[table_no].size()));
 
-        deallog.push("Error");
-        deallog << "Calculating Errors." << std::endl;
         std::vector< std::vector<double> > error( exact.n_components, std::vector<double>(4));
         const unsigned int n_active_cells = dh.get_tria().n_active_cells();
         const unsigned int n_dofs=dh.n_dofs();
@@ -261,8 +259,6 @@ void ErrorHandler<ntables>::error_from_exact(const DoFHandler<dim,spacedim> & dh
 
         for(unsigned int component=0; component < exact.n_components; ++component) {
             NormFlags norm = types[table_no][component];
-
-            deallog << "Error flags: " << norm << std::endl;
 
             // Select one Component
             ComponentSelectFunction<dim> select_component ( component, 1. , exact.n_components);
@@ -409,7 +405,6 @@ void ErrorHandler<ntables>::error_from_exact(const DoFHandler<dim,spacedim> & dh
                 }
             }
         }
-        deallog.pop();
     }
 }
 
