@@ -69,7 +69,11 @@ namespace LA
 #include <fstream>
 #include <iostream>
 
-namespace Step40
+#include "parsed_grid_generator.h"
+#include "parsed_finite_element.h"
+#include "utilities.h"
+
+namespace ParallelLaplace
 {
   using namespace dealii;
 
@@ -93,10 +97,10 @@ namespace Step40
 
     MPI_Comm                                  mpi_communicator;
 
-    parallel::distributed::Triangulation<dim> *triangulation;
+    SmartPointer<parallel::distributed::Triangulation<dim> > triangulation;
 
-    DoFHandler<dim>                           *dof_handler;
-    FiniteElement<dim,dim>                                *fe;
+    SmartPointer<DoFHandler<dim> >                           dof_handler;
+    SmartPointer<FiniteElement<dim,dim> >                               fe;
 
     IndexSet                                  locally_owned_dofs;
     IndexSet                                  locally_relevant_dofs;
@@ -132,7 +136,10 @@ namespace Step40
   template <int dim>
   LaplaceProblem<dim>::~LaplaceProblem ()
   {
-    dof_handler.clear ();
+    dof_handler->clear ();
+    smart_delete(dof_handler);
+    smart_delete(fe);
+    smart_delete(triangulation);
   }
 
 
@@ -142,10 +149,10 @@ namespace Step40
   {
     TimerOutput::Scope t(computing_timer, "setup");
 
-    dof_handler.distribute_dofs (fe);
+    dof_handler->distribute_dofs (*fe);
 
-    locally_owned_dofs = dof_handler.locally_owned_dofs ();
-    DoFTools::extract_locally_relevant_dofs (dof_handler,
+    locally_owned_dofs = dof_handler->locally_owned_dofs ();
+    DoFTools::extract_locally_relevant_dofs (*dof_handler,
                                              locally_relevant_dofs);
 
     locally_relevant_solution.reinit (locally_owned_dofs,
@@ -154,19 +161,19 @@ namespace Step40
 
     constraints.clear ();
     constraints.reinit (locally_relevant_dofs);
-    DoFTools::make_hanging_node_constraints (dof_handler, constraints);
-    VectorTools::interpolate_boundary_values (dof_handler,
+    DoFTools::make_hanging_node_constraints (*dof_handler, constraints);
+    VectorTools::interpolate_boundary_values (*dof_handler,
                                               0,
                                               ZeroFunction<dim>(),
                                               constraints);
     constraints.close ();
 
-    CompressedSimpleSparsityPattern csp (locally_relevant_dofs);
+    DynamicSparsityPattern csp (locally_relevant_dofs);
 
-    DoFTools::make_sparsity_pattern (dof_handler, csp,
+    DoFTools::make_sparsity_pattern (*dof_handler, csp,
                                      constraints, false);
     SparsityTools::distribute_sparsity_pattern (csp,
-                                                dof_handler.n_locally_owned_dofs_per_processor(),
+                                                dof_handler->n_locally_owned_dofs_per_processor(),
                                                 mpi_communicator,
                                                 locally_relevant_dofs);
 
@@ -186,12 +193,12 @@ namespace Step40
 
     const QGauss<dim>  quadrature_formula(3);
 
-    FEValues<dim> fe_values (fe, quadrature_formula,
+    FEValues<dim> fe_values (*fe, quadrature_formula,
                              update_values    |  update_gradients |
                              update_quadrature_points |
                              update_JxW_values);
 
-    const unsigned int   dofs_per_cell = fe.dofs_per_cell;
+    const unsigned int   dofs_per_cell = fe->dofs_per_cell;
     const unsigned int   n_q_points    = quadrature_formula.size();
 
     FullMatrix<double>   cell_matrix (dofs_per_cell, dofs_per_cell);
@@ -200,8 +207,8 @@ namespace Step40
     std::vector<types::global_dof_index> local_dof_indices (dofs_per_cell);
 
     typename DoFHandler<dim>::active_cell_iterator
-    cell = dof_handler.begin_active(),
-    endc = dof_handler.end();
+    cell = dof_handler->begin_active(),
+    endc = dof_handler->end();
     for (; cell!=endc; ++cell)
       if (cell->is_locally_owned())
         {
@@ -255,7 +262,7 @@ namespace Step40
     LA::MPI::Vector
     completely_distributed_solution (locally_owned_dofs, mpi_communicator);
 
-    SolverControl solver_control (dof_handler.n_dofs(), 1e-12);
+    SolverControl solver_control (dof_handler->n_dofs(), 1e-12);
 
     LA::SolverCG solver(solver_control, mpi_communicator);
     LA::MPI::PreconditionAMG preconditioner;
@@ -289,7 +296,7 @@ namespace Step40
     TimerOutput::Scope t(computing_timer, "refine");
 
     Vector<float> estimated_error_per_cell (triangulation->n_active_cells());
-    KellyErrorEstimator<dim>::estimate (dof_handler,
+    KellyErrorEstimator<dim>::estimate (*dof_handler,
                                         QGauss<dim-1>(3),
                                         typename FunctionMap<dim>::type(),
                                         locally_relevant_solution,
@@ -298,7 +305,7 @@ namespace Step40
     refine_and_coarsen_fixed_number (*triangulation,
                                      estimated_error_per_cell,
                                      0.3, 0.03);
-    triangulation.execute_coarsening_and_refinement ();
+    triangulation->execute_coarsening_and_refinement ();
   }
 
 
@@ -308,7 +315,7 @@ namespace Step40
   void LaplaceProblem<dim>::output_results (const unsigned int cycle) const
   {
     DataOut<dim> data_out;
-    data_out.attach_dof_handler (dof_handler);
+    data_out.attach_dof_handler (*dof_handler);
     data_out.add_data_vector (locally_relevant_solution, "u");
 
     Vector<float> subdomain (triangulation->n_active_cells());
@@ -351,21 +358,22 @@ namespace Step40
     //                (Triangulation<dim>::smoothing_on_refinement |
     //                 Triangulation<dim>::smoothing_on_coarsening)),
 
-    ParsedGridGenerator<2,2> pgg("Cube");
+    ParsedGridGenerator<dim,dim> pgg("Cube");
 
-    ParsedFiniteElement<2,2> fe_builder22("FE_Q");
+    ParsedFiniteElement<dim,dim> fe_builder("FE_Q");
 
     ParameterAcceptor::initialize("params.prm");
 
-    triangulation = pgg.distributed();
-    dof_handler = new DoFHandler<2>(*triangulation);
+    triangulation = pgg.distributed(mpi_communicator);
+
+    dof_handler = new DoFHandler<dim>(*triangulation);
                                //GridGenerator::hyper_cube (triangulation, -1, 1);
 
     std::cout << "Number of active cells: "
               << triangulation->n_active_cells()
               << std::endl;
 
-    fe=fe_builder22();
+    fe=fe_builder();
 
   }
 
@@ -374,31 +382,12 @@ namespace Step40
   void LaplaceProblem<dim>::run ()
   {
     const unsigned int n_cycles = 8;
+    make_grid_fe();
     for (unsigned int cycle=0; cycle<n_cycles; ++cycle)
       {
         pcout << "Cycle " << cycle << ':' << std::endl;
 
-        if (cycle == 0)
-          {
-
-            // GridGenerator::hyper_cube (triangulation);
-            // triangulation.refine_global (5);
-            ParameterHandler prm;
-            ParsedGridGenerator<2,2> pgg("Cube");
-            prm.read_input_from_string(""
-                                       "subsection Cube\n"
-                                       "  set Grid to generate = subhypercube \n"
-                                        "  set First additional double input for the grid = -0. \n"
-                                       "  set Second additional double input for the grid = 1. \n"
-                                       "  set Unsigned int input for the grid = 5 \n"
-                                       "end\n");
-
-            ParameterAcceptor::parse_all_parameters(prm);
-            triangulation = pgg.distributed();
-            //GridGenerator::hyper_cube (triangulation, -1, 1);
-
-          }
-        else
+        if (cycle != 0)
           refine_grid ();
 
         setup_system ();
@@ -407,7 +396,7 @@ namespace Step40
               << triangulation->n_global_active_cells()
               << std::endl
               << "   Number of degrees of freedom: "
-              << dof_handler.n_dofs()
+              << dof_handler->n_dofs()
               << std::endl;
 
         assemble_system ();
@@ -435,7 +424,7 @@ int main(int argc, char *argv[])
   try
     {
       using namespace dealii;
-      using namespace Step40;
+      using namespace ParallelLaplace;
 
       Utilities::MPI::MPI_InitFinalize mpi_initialization(argc, argv, 1);
       deallog.depth_console (0);

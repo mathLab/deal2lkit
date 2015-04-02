@@ -117,24 +117,47 @@ void ParsedGridGenerator<dim, spacedim>::declare_parameters(ParameterHandler &pr
 
 }
 
+
+template <int dim, int spacedim>
+parallel::distributed::Triangulation<dim, spacedim> *
+ParsedGridGenerator<dim, spacedim>::distributed(MPI_Comm comm) {
+    Assert(grid_name != "", ExcNotInitialized());
+    auto tria = new parallel::distributed::Triangulation<dim,spacedim>
+      (comm);//, get_smoothing());
+
+      create(*tria);
+    return tria;
+}
+// triangulation (mpi_communicator,
+//                    typename Triangulation<dim>::MeshSmoothing
+//                    (Triangulation<dim>::smoothing_on_refinement |
+//                     Triangulation<dim>::smoothing_on_coarsening)),
+
 template <int dim, int spacedim>
 Triangulation<dim, spacedim> *
 ParsedGridGenerator<dim, spacedim>::serial() {
     Assert(grid_name != "", ExcNotInitialized());
     auto tria = new Triangulation<dim,spacedim>(get_smoothing());
+    create(*tria);
+    return tria;
+}
 
+template <int dim, int spacedim>
+void ParsedGridGenerator<dim, spacedim>::create(Triangulation<dim,spacedim> &tria)
+{
+    Assert(grid_name != "", ExcNotInitialized());
     if(grid_name == "unit_hypercube") {
-      GridGenerator::hyper_cube(*tria);
+      GridGenerator::hyper_cube(tria);
     }
     else if(grid_name == "hypercube")
     {
       Point<spacedim> center;
 
       if(double_option_one > double_option_two)
-        GridGenerator::hyper_cube (*tria,
+        GridGenerator::hyper_cube (tria,
                                     double_option_two, double_option_one);
       else
-        GridGenerator::hyper_cube (*tria,
+        GridGenerator::hyper_cube (tria,
                                     double_option_one, double_option_two);
 
 
@@ -143,21 +166,21 @@ ParsedGridGenerator<dim, spacedim>::serial() {
 
       if(double_option_one > double_option_two)
       {
-        GridGenerator::hyper_cube (*tria,
+        GridGenerator::hyper_cube (tria,
                                     double_option_two, double_option_one);
-        tria->refine_global( un_int_option_one);
+        tria.refine_global( un_int_option_one);
       }
       else
       {
-        GridGenerator::hyper_cube (*tria,
+        GridGenerator::hyper_cube (tria,
                                     double_option_one, double_option_two);
-        tria->refine_global( un_int_option_one);
+        tria.refine_global( un_int_option_one);
 
       }
     }
     else if(grid_name == "hyperrectangle")
     {
-      GridGenerator::hyper_rectangle (*tria,
+      GridGenerator::hyper_rectangle (tria,
                                        point_option_two, point_option_one);
     }
     // TO BE DONE WHEN POSSIBLE
@@ -166,7 +189,7 @@ ParsedGridGenerator<dim, spacedim>::serial() {
     //   Point<spacedim> center;
     //   double radius=1.;
     //
-    //   GridGenerator::hyper_ball (*tria,
+    //   GridGenerator::hyper_ball (tria,
     //                               center, radius);
     //   }
     // else if(grid_name == "subhyperrectangle"){
@@ -176,7 +199,7 @@ ParsedGridGenerator<dim, spacedim>::serial() {
     //   std::vector<unsigned int> refinement(spacedim);
     //   for(unsigned int i=0; i<spacedim;++i)
     //     refinement[i] = un_int_option_one;
-    //   GridGenerator::subdivided_hyper_rectangle (*tria, refinement,
+    //   GridGenerator::subdivided_hyper_rectangle (tria, refinement,
     //                                    point_option_two, point_option_one);
     //   }
     //   else
@@ -185,7 +208,6 @@ ParsedGridGenerator<dim, spacedim>::serial() {
     // }
 
 
-    return tria;
 }
 
 namespace {
