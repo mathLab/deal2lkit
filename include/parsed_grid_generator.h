@@ -48,6 +48,8 @@ public:
    */
   Triangulation<dim, spacedim> *serial();
 
+    void create(Triangulation<dim, spacedim> &tria);
+
   /**
      * Return a pointer to a newly created Triangulation. It will
      * throw an exception if called before any parsing has

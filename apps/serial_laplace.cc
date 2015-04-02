@@ -59,11 +59,11 @@ using namespace dealii;
 
 
 
-class Step3
+class SerialLaplace
 {
 public:
-  Step3 ();
-  ~Step3 ();
+  SerialLaplace ();
+  ~SerialLaplace ();
 
   void run ();
 
@@ -87,10 +87,10 @@ private:
 };
 
 
-Step3::Step3 ()
+SerialLaplace::SerialLaplace ()
 {}
 
-Step3::~Step3 ()
+SerialLaplace::~SerialLaplace ()
 {
   smart_delete(dof_handler);
   smart_delete(fe);
@@ -98,7 +98,7 @@ Step3::~Step3 ()
 }
 
 
-void Step3::make_grid_fe ()
+void SerialLaplace::make_grid_fe ()
 {
 
   ParsedGridGenerator<2,2> pgg("Cube");
@@ -122,7 +122,7 @@ void Step3::make_grid_fe ()
 
 
 
-void Step3::setup_system ()
+void SerialLaplace::setup_system ()
 {
   dof_handler->distribute_dofs (*fe);
   std::cout << "Number of degrees of freedom: "
@@ -141,7 +141,7 @@ void Step3::setup_system ()
 
 
 
-void Step3::assemble_system ()
+void SerialLaplace::assemble_system ()
 {
   QGauss<2>  quadrature_formula(2);
   FEValues<2> fe_values (*fe, quadrature_formula,
@@ -204,7 +204,7 @@ void Step3::assemble_system ()
 
 
 
-void Step3::solve ()
+void SerialLaplace::solve ()
 {
   SolverControl           solver_control (1000, 1e-12);
   SolverCG<>              solver (solver_control);
@@ -215,7 +215,7 @@ void Step3::solve ()
 
 
 
-void Step3::output_results () const
+void SerialLaplace::output_results () const
 {
   DataOut<2> data_out;
   data_out.attach_dof_handler (*dof_handler);
@@ -228,7 +228,7 @@ void Step3::output_results () const
 
 
 
-void Step3::run ()
+void SerialLaplace::run ()
 {
   make_grid_fe ();
   setup_system ();
@@ -241,7 +241,7 @@ void Step3::run ()
 
 int main ()
 {
-  Step3 laplace_problem;
+  SerialLaplace laplace_problem;
   laplace_problem.run ();
 
   return 0;
