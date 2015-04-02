@@ -31,6 +31,7 @@ std::string ParameterAcceptor::get_section_name() const
 void
 ParameterAcceptor::initialize(const std::string filename)
 {
+  prm.clear();
   declare_all_parameters(prm);
   if (filename != "")
     prm.read_input(filename);
