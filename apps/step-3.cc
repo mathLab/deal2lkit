@@ -52,7 +52,7 @@
 
 
 #include "parsed_grid_generator.h"
-
+#include "parsed_finite_element.h"
 using namespace dealii;
 
 
@@ -66,15 +66,15 @@ public:
 
 
 private:
-  void make_grid ();
+  void make_grid_fe ();
   void setup_system ();
   void assemble_system ();
   void solve ();
   void output_results () const;
 
   Triangulation<2>     *triangulation;
-  FE_Q<2>              fe;
-  DoFHandler<2>        dof_handler;
+  FiniteElement<2,2>              *fe;
+  DoFHandler<2>        *dof_handler;
 
   SparsityPattern      sparsity_pattern;
   SparseMatrix<double> system_matrix;
@@ -85,33 +85,29 @@ private:
 
 
 Step3::Step3 ()
-  :
-//  fe (1),
-  dof_handler (*triangulation)
 {}
 
 
 
 void Step3::make_grid_fe ()
 {
-  ParameterHandler prm;
-  ParsedFiniteElement<2,2> fe_builder22;
-  ParsedGridGenerator<2,2> pgg("Cube");
-  prm.read_input_from_string(""
-                             "subsection Cube\n"
-                             "  set Grid to generate = subhypercube \n"
-                              "  set First additional double input for the grid = -1. \n"
-                             "  set Second additional double input for the grid = 1. \n"
-                             "  set Unsigned int input for the grid = 5 \n"
-                             "end\n");
 
-  ParameterAcceptor::parse_all_parameters(prm);
+  ParsedGridGenerator<2,2> pgg("Cube");
+
+  ParsedFiniteElement<2,2> fe_builder22("FE_Q");
+
+  ParameterAcceptor::initialize("params.prm");
+
   triangulation = pgg.serial();
-  //GridGenerator::hyper_cube (triangulation, -1, 1);
+  dof_handler = new DoFHandler<2>(*triangulation);
+                             //GridGenerator::hyper_cube (triangulation, -1, 1);
 
   std::cout << "Number of active cells: "
             << triangulation->n_active_cells()
             << std::endl;
+
+  fe=fe_builder22();
+
 }
 
 
@@ -119,12 +115,12 @@ void Step3::make_grid_fe ()
 
 void Step3::setup_system ()
 {
-  dof_handler.distribute_dofs (fe);
+  dof_handler.distribute_dofs (*fe);
   std::cout << "Number of degrees of freedom: "
             << dof_handler.n_dofs()
             << std::endl;
 
-  CompressedSparsityPattern c_sparsity(dof_handler.n_dofs());
+  DynamicSparsityPattern c_sparsity(dof_handler.n_dofs());
   DoFTools::make_sparsity_pattern (dof_handler, c_sparsity);
   sparsity_pattern.copy_from(c_sparsity);
 
@@ -139,10 +135,10 @@ void Step3::setup_system ()
 void Step3::assemble_system ()
 {
   QGauss<2>  quadrature_formula(2);
-  FEValues<2> fe_values (fe, quadrature_formula,
+  FEValues<2> fe_values (*fe, quadrature_formula,
                          update_values | update_gradients | update_JxW_values);
 
-  const unsigned int   dofs_per_cell = fe.dofs_per_cell;
+  const unsigned int   dofs_per_cell = fe->dofs_per_cell;
   const unsigned int   n_q_points    = quadrature_formula.size();
 
   FullMatrix<double>   cell_matrix (dofs_per_cell, dofs_per_cell);
@@ -225,7 +221,7 @@ void Step3::output_results () const
 
 void Step3::run ()
 {
-  make_grid ();
+  make_grid_fe ();
   setup_system ();
   assemble_system ();
   solve ();
