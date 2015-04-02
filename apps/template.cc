@@ -12,6 +12,7 @@
 #include <deal.II/base/mpi.h>
 #include "utilities.h"
 #include "parameter_acceptor.h"
+#include <iostream>
 
 using namespace dealii;
 
@@ -69,4 +70,3 @@ int main (int argc, char **argv)
 
     return 0;
 }
-

@@ -20,6 +20,7 @@
 template<int dim, int spacedim>
 void test(ParsedGridGenerator<dim, spacedim> &pgg) {
   auto tria = pgg.serial();
+  tria->refine_global(3);
   GridOut go;
   go.write_msh(*tria, deallog.get_file_stream());
   std::ofstream ofile(("/tmp/mesh_"+Utilities::int_to_string(dim)
@@ -31,7 +32,7 @@ int main ()
     initlog();
     ParsedGridGenerator<2,2> a("Unit cube");
     ParsedGridGenerator<2,2> b();
-    
+
     ParameterHandler prm;
     ParameterAcceptor::declare_all_parameters(prm);
     prm.read_input_from_string(""

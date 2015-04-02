@@ -31,7 +31,7 @@ struct handle {
     char* p;
     handle(char* ptr) : p(ptr) { }
     ~handle() {
-        std::free(p);
+        delete p;
     }
 };
 
