@@ -13,7 +13,7 @@
 
 #include "error_handler.h"
 #include "parsed_grid_generator.h"
-#include <deal.II/base/function.h>
+#include <deal.II/base/function_lib.h>
 #include <deal.II/fe/fe_q.h>
 #include <deal.II/dofs/dof_handler.h>
 
@@ -25,11 +25,20 @@ int main ()
     ErrorHandler<> eh; // Only one table
 
     ParameterAcceptor::initialize();
+    ParameterAcceptor::prm.log_parameters(deallog);
     
     auto tria = gg.serial();
 
     FE_Q<2> fe(1);
     DoFHandler<2> dh(*tria);
-    dh.distribute_dofs(fe);
+
+    for(unsigned int i=0; i<5; ++i) {
+      tria->refine_global(1);
+      dh.distribute_dofs(fe);
+      Vector<double> sol(dh.n_dofs());
+      VectorTools::interpolate(dh, Functions::CosineFunction<2>(1), sol);
+      eh.error_from_exact(dh, sol, Functions::CosineFunction<2>(1));
+    }
+    eh.output_table();
     
 }
