@@ -89,13 +89,14 @@ namespace Step40
     void solve ();
     void refine_grid ();
     void output_results (const unsigned int cycle) const;
+    void make_grid_fe();
 
     MPI_Comm                                  mpi_communicator;
 
     parallel::distributed::Triangulation<dim> *triangulation;
 
-    DoFHandler<dim>                           dof_handler;
-    FE_Q<dim>                                 fe;
+    DoFHandler<dim>                           *dof_handler;
+    FiniteElement<dim,dim>                                *fe;
 
     IndexSet                                  locally_owned_dofs;
     IndexSet                                  locally_relevant_dofs;
@@ -117,12 +118,6 @@ namespace Step40
   LaplaceProblem<dim>::LaplaceProblem ()
     :
     mpi_communicator (MPI_COMM_WORLD),
-    *triangulation (mpi_communicator,
-                   typename Triangulation<dim>::MeshSmoothing
-                   (Triangulation<dim>::smoothing_on_refinement |
-                    Triangulation<dim>::smoothing_on_coarsening)),
-    dof_handler (*triangulation),
-    fe (2),
     pcout (std::cout,
            (Utilities::MPI::this_mpi_process(mpi_communicator)
             == 0)),
@@ -348,7 +343,31 @@ namespace Step40
       }
   }
 
+  template<int dim>
+  void LaplaceProblem<dim>::make_grid_fe ()
+  {
+    // triangulation =*triangulation (mpi_communicator,
+    //                typename Triangulation<dim>::MeshSmoothing
+    //                (Triangulation<dim>::smoothing_on_refinement |
+    //                 Triangulation<dim>::smoothing_on_coarsening)),
 
+    ParsedGridGenerator<2,2> pgg("Cube");
+
+    ParsedFiniteElement<2,2> fe_builder22("FE_Q");
+
+    ParameterAcceptor::initialize("params.prm");
+
+    triangulation = pgg.distributed();
+    dof_handler = new DoFHandler<2>(*triangulation);
+                               //GridGenerator::hyper_cube (triangulation, -1, 1);
+
+    std::cout << "Number of active cells: "
+              << triangulation->n_active_cells()
+              << std::endl;
+
+    fe=fe_builder22();
+
+  }
 
 
   template <int dim>
