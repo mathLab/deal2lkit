@@ -84,6 +84,15 @@ void ParameterAcceptor::parse_parameters(ParameterHandler &prm)
         }
       // Here we have the difficult types...
       // First all point types.
+      else if (it->second.type() == typeid(Point<1> *))
+        {
+          std::vector<double> p =
+            Utilities::string_to_double(Utilities::split_string_list(prm.get(it->first)));
+          AssertDimension(p.size(), 1);
+
+          Point<1> &pp = *(boost::any_cast<Point<1>*>(it->second));
+          pp[0] = p[0];
+        }
       else if (it->second.type() == typeid(Point<2> *))
         {
           std::vector<double> p =
