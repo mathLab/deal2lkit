@@ -60,7 +60,7 @@ void ParsedGridGenerator<dim, spacedim>::declare_parameters(ParameterHandler &pr
                   " unit_hypershell: create a unit hypersphere\n"
                   " hypercube: create a unit hypercube using the additional input\n"
                   );
- 
+
     add_parameter(prm, &mesh_smoothing,
                   "Mesh smoothing alogrithm", "none",
                   Patterns::MultipleSelection("none|"
