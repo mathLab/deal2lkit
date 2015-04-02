@@ -53,6 +53,8 @@
 
 #include "parsed_grid_generator.h"
 #include "parsed_finite_element.h"
+#include "utilities.h"
+
 using namespace dealii;
 
 
@@ -61,6 +63,7 @@ class Step3
 {
 public:
   Step3 ();
+  ~Step3 ();
 
   void run ();
 
@@ -72,9 +75,9 @@ private:
   void solve ();
   void output_results () const;
 
-  Triangulation<2>     *triangulation;
-  FiniteElement<2,2>              *fe;
-  DoFHandler<2>        *dof_handler;
+  SmartPointer<Triangulation<2> >    triangulation;
+  SmartPointer<FiniteElement<2,2> >             fe;
+  SmartPointer<DoFHandler<2> >       dof_handler;
 
   SparsityPattern      sparsity_pattern;
   SparseMatrix<double> system_matrix;
@@ -87,6 +90,12 @@ private:
 Step3::Step3 ()
 {}
 
+Step3::~Step3 ()
+{
+  smart_delete(dof_handler);
+  smart_delete(fe);
+  smart_delete(triangulation);
+}
 
 
 void Step3::make_grid_fe ()
