@@ -105,6 +105,15 @@ void ParameterAcceptor::parse_parameters(ParameterHandler &prm)
           pp[1] = p[1];
           pp[2] = p[2];
         }
+      else if (it->second.type() == typeid(std::vector<std::string> *))
+        {
+          std::vector<std::string> &string_list = *(boost::any_cast<std::vector<std::string>*>(it->second));
+          string_list = Utilities::split_string_list(prm.get(it->first));
+        }
+      else
+        {
+          AssertThrow(false, ExcNotImplemented());
+        }
     }
 }
 
