@@ -19,54 +19,55 @@ template <int dim, int spacedim=dim>
 class Domain : public Subscriptor
 {
 public:
-    /** Empty constructor. */
-    Domain ();
+  /** Empty constructor. */
+  Domain ();
 
-    /** Full constructor. */
-    Domain (ParameterHandler &prm);
+  /** Full constructor. */
+  Domain (ParameterHandler &prm);
 
-    ~Domain ();
+  ~Domain ();
 
-    /** Reinit. */
-    void reinit(ParameterHandler &prm);
+  /** Reinit. */
+  void reinit(ParameterHandler &prm);
 
-    /** Read mesh file name, etc. */
-    void parse_parameters(ParameterHandler &prm);
+  /** Read mesh file name, etc. */
+  void parse_parameters(ParameterHandler &prm);
 
-    /** Generate entries in the given parameter file. */
-    static void declare_parameters(ParameterHandler &prm);
+  /** Generate entries in the given parameter file. */
+  static void declare_parameters(ParameterHandler &prm);
 
-    /** Generate the mesh. In this program, the mesh can be read from an
-    input file generated with gmsh (http://www.geuz.org/gmsh/). */
-    void create_mesh ();
+  /** Generate the mesh. In this program, the mesh can be read from an
+  input file generated with gmsh (http://www.geuz.org/gmsh/). */
+  void create_mesh ();
 
-    /** Write the mesh. */
-    void output_mesh(std::ostream &out) const;
+  /** Write the mesh. */
+  void output_mesh(std::ostream &out) const;
 
 
-    /** Write the mesh on the file specified by the parameter handler. */
-    void output_mesh() const;
+  /** Write the mesh on the file specified by the parameter handler. */
+  void output_mesh() const;
 
-    /** Reference to the triangulation. */
-    inline Triangulation<dim, spacedim> & get_tria() {
-        Assert(initialized, ExcNotInitialized());
-        return tria;
-    }
+  /** Reference to the triangulation. */
+  inline Triangulation<dim, spacedim> &get_tria()
+  {
+    Assert(initialized, ExcNotInitialized());
+    return tria;
+  }
 
 private:
-    bool initialized;
+  bool initialized;
 
-    bool read_mesh;
+  bool read_mesh;
 
-    PathSearch search_mesh;
+  PathSearch search_mesh;
 
-    std::string input_mesh_file_name;
-    std::string input_mesh_format;
-    std::string output_mesh_file_name;
+  std::string input_mesh_file_name;
+  std::string input_mesh_format;
+  std::string output_mesh_file_name;
 
-    /** Holds the coarse triangulation. */
-    Triangulation<dim, spacedim>   tria;
-    /** Helper class to output the grid. */
-    GridOut gridout;
+  /** Holds the coarse triangulation. */
+  Triangulation<dim, spacedim>   tria;
+  /** Helper class to output the grid. */
+  GridOut gridout;
 };
 #endif

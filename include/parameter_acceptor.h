@@ -30,19 +30,19 @@ using namespace dealii;
 class ParameterAcceptor : public Subscriptor
 {
 public:
-    /**
-     * The constructor adds this class to the list of acceptors. If a
-     * section name is specified, then this is used to scope the
-     * parameters in the given section, otherwise a pretty printed
-     * version of the derived class is used.
-     */
-    ParameterAcceptor(const std::string section_name="");
+  /**
+   * The constructor adds this class to the list of acceptors. If a
+   * section name is specified, then this is used to scope the
+   * parameters in the given section, otherwise a pretty printed
+   * version of the derived class is used.
+   */
+  ParameterAcceptor(const std::string section_name="");
 
-    /**
-     * The destructor sets to zero the pointer relative to this index,
-     * so that it is safe to destroy the mother class.
-     */
-    ~ParameterAcceptor();
+  /**
+   * The destructor sets to zero the pointer relative to this index,
+   * so that it is safe to destroy the mother class.
+   */
+  ~ParameterAcceptor();
 
 
   /**
@@ -52,74 +52,75 @@ public:
    */
   static void initialize(const std::string filename="");
 
-    /**
-     * Parse the parameter file. This function enters the subsection
-     * returned by get_section_name() for each derived class, and parse
-     * all parameters that were added using add_parameter().
-     */
-    virtual void parse_parameters(ParameterHandler &prm);
+  /**
+   * Parse the parameter file. This function enters the subsection
+   * returned by get_section_name() for each derived class, and parse
+   * all parameters that were added using add_parameter().
+   */
+  virtual void parse_parameters(ParameterHandler &prm);
 
-    /**
-     * Parse parameter call back. This function is called at the end
-     * of parse_parameters, to allow users to process their parameters
-     * right after they have been parsed. The default implementation
-     * is empty.
-     *
-     * You can use this function, for example, to create a quadrature
-     * rule after you have read how many quadrature points you wanted
-     * to use from the parameter file.
-     */
-    virtual void parse_parameters_call_back();
-
-
-    /**
-     * Generate entries in the given parameter file. Derived classes
-     * need to overload this one. If you want to make sure the
-     * automatic assignement of variables work, you should fill this
-     * function only with calls to the add_parameter() method.
-     */
-    virtual void declare_parameters(ParameterHandler &prm) = 0;
+  /**
+   * Parse parameter call back. This function is called at the end
+   * of parse_parameters, to allow users to process their parameters
+   * right after they have been parsed. The default implementation
+   * is empty.
+   *
+   * You can use this function, for example, to create a quadrature
+   * rule after you have read how many quadrature points you wanted
+   * to use from the parameter file.
+   */
+  virtual void parse_parameters_call_back();
 
 
-    /**
-     * Parse the given ParameterHandler. This function enters the
-     * subsection returned by get_section_name() for each derived class,
-     * and parses all parameters that were added using add_parameter().
-     */
-    static void parse_all_parameters(ParameterHandler &prm);
+  /**
+   * Generate entries in the given parameter file. Derived classes
+   * need to overload this one. If you want to make sure the
+   * automatic assignement of variables work, you should fill this
+   * function only with calls to the add_parameter() method.
+   */
+  virtual void declare_parameters(ParameterHandler &prm) = 0;
 
 
-    /**
-     * Initialize the ParameterHandler with all derived classes
-     * parameters.This function enters the subsection returned by
-     * get_section_name() for each derived class, and declares all
-     * parameters that were added using add_parameter().
-     */
-    static void declare_all_parameters(ParameterHandler &prm);
+  /**
+   * Parse the given ParameterHandler. This function enters the
+   * subsection returned by get_section_name() for each derived class,
+   * and parses all parameters that were added using add_parameter().
+   */
+  static void parse_all_parameters(ParameterHandler &prm);
 
 
-    /**
-     * Return the section name of this class. If a name was provided
-     * at construction time, then that name is returned, otherwise it
-     * returns the name of this class, pretty printed.
-     */
-    std::string get_section_name() const;
+  /**
+   * Initialize the ParameterHandler with all derived classes
+   * parameters.This function enters the subsection returned by
+   * get_section_name() for each derived class, and declares all
+   * parameters that were added using add_parameter().
+   */
+  static void declare_all_parameters(ParameterHandler &prm);
 
 
-    /**
-     * Add a parameter the given parameter list. A pointer to the
-     * parameter is stored, so that every time the default
-     * parse_parameters() function is called, this parameter is
-     * updated with the value contained in prm.
-     */
-    template <class T>
-    void add_parameter(ParameterHandler &prm, T *parameter,
-                       const std::string &entry, const std::string &default_value,
-                       const Patterns::PatternBase &pattern=Patterns::Anything(),
-                       const std::string &documentation=std::string()) {
-        prm.declare_entry(entry, default_value, pattern, documentation);
-        parameters[entry] = boost::any(parameter);
-    }
+  /**
+   * Return the section name of this class. If a name was provided
+   * at construction time, then that name is returned, otherwise it
+   * returns the name of this class, pretty printed.
+   */
+  std::string get_section_name() const;
+
+
+  /**
+   * Add a parameter the given parameter list. A pointer to the
+   * parameter is stored, so that every time the default
+   * parse_parameters() function is called, this parameter is
+   * updated with the value contained in prm.
+   */
+  template <class T>
+  void add_parameter(ParameterHandler &prm, T *parameter,
+                     const std::string &entry, const std::string &default_value,
+                     const Patterns::PatternBase &pattern=Patterns::Anything(),
+                     const std::string &documentation=std::string())
+  {
+    prm.declare_entry(entry, default_value, pattern, documentation);
+    parameters[entry] = boost::any(parameter);
+  }
 
   /**
    * Static parameter. This is used if the user does not provide one.
@@ -127,23 +128,23 @@ public:
   static ParameterHandler prm;
 
 private:
-    /**
-     * A list containing all constructed classes of type
-     * ParameterAcceptor.
-     */
-    static std::vector<SmartPointer<ParameterAcceptor> > class_list;
+  /**
+   * A list containing all constructed classes of type
+   * ParameterAcceptor.
+   */
+  static std::vector<SmartPointer<ParameterAcceptor> > class_list;
 
-    /** The index of this specific class within the class list. */
-    const unsigned int acceptor_id;
+  /** The index of this specific class within the class list. */
+  const unsigned int acceptor_id;
 
-    /**
-     * A map of parameters that are initialized in this class with the
-     * function add_parameter.
-     */
-    std::map<std::string, boost::any> parameters;
+  /**
+   * A map of parameters that are initialized in this class with the
+   * function add_parameter.
+   */
+  std::map<std::string, boost::any> parameters;
 
 protected:
-    /** The subsection name for this class. */
-    const std::string section_name;
+  /** The subsection name for this class. */
+  const std::string section_name;
 };
 #endif

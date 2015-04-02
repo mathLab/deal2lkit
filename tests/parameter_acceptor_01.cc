@@ -16,27 +16,30 @@
 #include "parameter_acceptor.h"
 
 template<int dim>
-class Test : public ParameterAcceptor {
+class Test : public ParameterAcceptor
+{
 public:
-    virtual void declare_parameters(ParameterHandler &prm) {
-        prm.declare_entry("A double", "0.0", Patterns::Double(),
-                          "Documentation");
-    };
+  virtual void declare_parameters(ParameterHandler &prm)
+  {
+    prm.declare_entry("A double", "0.0", Patterns::Double(),
+                      "Documentation");
+  };
 
-    virtual void parse_parameters(ParameterHandler &prm) {
-        deallog << "Double: "
-                << prm.get_double("A double") << std::endl;
-    };
+  virtual void parse_parameters(ParameterHandler &prm)
+  {
+    deallog << "Double: "
+            << prm.get_double("A double") << std::endl;
+  };
 };
 
 
 int main ()
 {
-    initlog();
-    Test<2> a;
-    Test<1> b;
+  initlog();
+  Test<2> a;
+  Test<1> b;
 
-    ParameterHandler prm;
-    a.declare_all_parameters(prm);
-    prm.log_parameters(deallog);
+  ParameterHandler prm;
+  a.declare_all_parameters(prm);
+  prm.log_parameters(deallog);
 }

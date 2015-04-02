@@ -3,25 +3,26 @@
 
 template <int dim, int spacedim>
 ParsedFiniteElement<dim, spacedim>::ParsedFiniteElement(std::string name) :
-    ParameterAcceptor(name)
+  ParameterAcceptor(name)
 {}
 
 template <int dim, int spacedim>
 void ParsedFiniteElement<dim, spacedim>::declare_parameters(ParameterHandler &prm)
 {
-    add_parameter(prm, &fe_name,
-                  "Finite element space", "FE_Q(1)",
-                  Patterns::Anything(),
-                  "The finite element space to use. For vector "
-                  "finite elements use the notation "
-                  "FESystem[FE_Q(2)^2-FE_DGP(1)] (e.g. Navier-Stokes). ");
+  add_parameter(prm, &fe_name,
+                "Finite element space", "FE_Q(1)",
+                Patterns::Anything(),
+                "The finite element space to use. For vector "
+                "finite elements use the notation "
+                "FESystem[FE_Q(2)^2-FE_DGP(1)] (e.g. Navier-Stokes). ");
 }
 
 template <int dim, int spacedim>
 FiniteElement<dim,spacedim> *
-ParsedFiniteElement<dim, spacedim>::operator()() {
-    Assert(fe_name != "", ExcNotInitialized());
-    return FETools::get_fe_by_name<dim,spacedim>(fe_name);
+ParsedFiniteElement<dim, spacedim>::operator()()
+{
+  Assert(fe_name != "", ExcNotInitialized());
+  return FETools::get_fe_by_name<dim,spacedim>(fe_name);
 }
 
 

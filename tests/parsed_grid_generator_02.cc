@@ -18,31 +18,32 @@
 #include <deal.II/base/utilities.h>
 
 template<int dim, int spacedim>
-void test(ParsedGridGenerator<dim, spacedim> &pgg) {
+void test(ParsedGridGenerator<dim, spacedim> &pgg)
+{
   auto tria = pgg.serial();
   tria->refine_global(3);
   GridOut go;
   go.write_msh(*tria, deallog.get_file_stream());
   std::ofstream ofile(("/tmp/mesh_"+Utilities::int_to_string(dim)
-		       +Utilities::int_to_string(spacedim)+".msh").c_str());
+                       +Utilities::int_to_string(spacedim)+".msh").c_str());
 }
 
 int main ()
 {
-    initlog();
-    ParsedGridGenerator<2,2> a("Unit cube");
-    ParsedGridGenerator<2,2> b();
+  initlog();
+  ParsedGridGenerator<2,2> a("Unit cube");
+  ParsedGridGenerator<2,2> b();
 
-    ParameterHandler prm;
-    ParameterAcceptor::declare_all_parameters(prm);
-    prm.read_input_from_string(""
-                               "subsection ParsedGridGenerator<2,2>\n"
-			       "  set Grid name = file \n"
-                               "  set Grid file name = 1.0\n"
-                               "end\n");
+  ParameterHandler prm;
+  ParameterAcceptor::declare_all_parameters(prm);
+  prm.read_input_from_string(""
+                             "subsection ParsedGridGenerator<2,2>\n"
+                             "  set Grid name = file \n"
+                             "  set Grid file name = 1.0\n"
+                             "end\n");
 
-    prm.log_parameters(deallog);
-    ParameterAcceptor::parse_all_parameters(prm);
+  prm.log_parameters(deallog);
+  ParameterAcceptor::parse_all_parameters(prm);
 
-    test(a);
+  test(a);
 }

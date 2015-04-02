@@ -16,38 +16,45 @@ using namespace dealii;
  * utility does precisely this.
  */
 template <typename TYPE>
-void smart_delete (SmartPointer<TYPE> &sp) {
-    if(sp) {
-        TYPE * p = sp;
-        sp = 0;
-        delete p;
+void smart_delete (SmartPointer<TYPE> &sp)
+{
+  if (sp)
+    {
+      TYPE *p = sp;
+      sp = 0;
+      delete p;
     }
 }
 
 // Anonymous namespace, to hide implementation detail for the type
 // function below
-namespace {
-struct handle {
-    char* p;
-    handle(char* ptr) : p(ptr) { }
-    ~handle() {
-        delete p;
+namespace
+{
+  struct handle
+  {
+    char *p;
+    handle(char *ptr) : p(ptr) { }
+    ~handle()
+    {
+      delete p;
     }
-};
+  };
 
-std::string demangle(const char* name) {
+  std::string demangle(const char *name)
+  {
     int status = -4; // some arbitrary value to eliminate the compiler warning
     handle result( abi::__cxa_demangle(name, NULL, NULL, &status) );
     return (status==0) ? result.p : name ;
-};
+  };
 }
 
 /**
  * Return a human readable name of the type passed as argument.
  */
 template <class T>
-std::string type(const T& t) {
-    return demangle(typeid(t).name());
+std::string type(const T &t)
+{
+  return demangle(typeid(t).name());
 };
 
 #endif

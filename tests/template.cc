@@ -13,6 +13,6 @@
 
 int main ()
 {
-    initlog();
-    deallog << 0 << std::endl;
+  initlog();
+  deallog << 0 << std::endl;
 }

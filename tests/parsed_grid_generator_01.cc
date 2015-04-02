@@ -18,31 +18,32 @@
 #include <deal.II/base/utilities.h>
 
 template<int dim, int spacedim>
-void test(ParsedGridGenerator<dim, spacedim> &pgg) {
+void test(ParsedGridGenerator<dim, spacedim> &pgg)
+{
   auto tria = pgg.serial();
   GridOut go;
   go.write_msh(*tria, deallog.get_file_stream());
   std::ofstream ofile(("/tmp/mesh_"+Utilities::int_to_string(dim)
-		       +Utilities::int_to_string(spacedim)+".msh").c_str());
+                       +Utilities::int_to_string(spacedim)+".msh").c_str());
 }
 
 int main ()
 {
-    initlog();
-    ParsedGridGenerator<1,1> a;
-    ParsedGridGenerator<1,2> b;
-    ParsedGridGenerator<2,2> c;
-    ParsedGridGenerator<2,3> d;
-    ParsedGridGenerator<3,3> e;
-    
-    ParameterHandler prm;
-    ParameterAcceptor::declare_all_parameters(prm);
-    prm.log_parameters(deallog);
-    ParameterAcceptor::parse_all_parameters(prm);
+  initlog();
+  ParsedGridGenerator<1,1> a;
+  ParsedGridGenerator<1,2> b;
+  ParsedGridGenerator<2,2> c;
+  ParsedGridGenerator<2,3> d;
+  ParsedGridGenerator<3,3> e;
 
-    test(a);
-    test(b);
-    test(c);
-    test(d);
-    test(e);
+  ParameterHandler prm;
+  ParameterAcceptor::declare_all_parameters(prm);
+  prm.log_parameters(deallog);
+  ParameterAcceptor::parse_all_parameters(prm);
+
+  test(a);
+  test(b);
+  test(c);
+  test(d);
+  test(e);
 }

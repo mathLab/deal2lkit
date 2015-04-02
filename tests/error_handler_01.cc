@@ -19,25 +19,26 @@
 
 int main ()
 {
-    initlog();
-    
-    ParsedGridGenerator<2> gg;
-    ErrorHandler<> eh; // Only one table
+  initlog();
 
-    ParameterAcceptor::initialize();
-    ParameterAcceptor::prm.log_parameters(deallog);
-    
-    auto tria = gg.serial();
+  ParsedGridGenerator<2> gg;
+  ErrorHandler<> eh; // Only one table
 
-    FE_Q<2> fe(1);
-    DoFHandler<2> dh(*tria);
+  ParameterAcceptor::initialize();
+  ParameterAcceptor::prm.log_parameters(deallog);
 
-    for(unsigned int i=0; i<5; ++i) {
+  auto tria = gg.serial();
+
+  FE_Q<2> fe(1);
+  DoFHandler<2> dh(*tria);
+
+  for (unsigned int i=0; i<5; ++i)
+    {
       tria->refine_global(1);
       dh.distribute_dofs(fe);
       Vector<double> sol(dh.n_dofs());
       VectorTools::interpolate(dh, Functions::CosineFunction<2>(1), sol);
       eh.error_from_exact(dh, sol, Functions::CosineFunction<2>(1));
     }
-    eh.output_table(deallog.get_file_stream());
+  eh.output_table(deallog.get_file_stream());
 }

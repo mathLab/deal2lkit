@@ -18,12 +18,13 @@
 #include <deal.II/base/utilities.h>
 
 template<int dim, int spacedim>
-void test(ParsedGridGenerator<dim, spacedim> &pgg) {
+void test(ParsedGridGenerator<dim, spacedim> &pgg)
+{
   auto tria = pgg.serial();
   GridOut go;
   go.write_msh(*tria, deallog.get_file_stream());
   std::ofstream ofile(("/tmp/mesh_"+Utilities::int_to_string(dim)
-		       +Utilities::int_to_string(spacedim)+".msh").c_str());
+                       +Utilities::int_to_string(spacedim)+".msh").c_str());
 }
 
 // prm.read_input_from_string(""
@@ -39,43 +40,43 @@ void test(ParsedGridGenerator<dim, spacedim> &pgg) {
 
 int main ()
 {
-    initlog();
-    ParsedGridGenerator<2,2> a("Rectangle");
-    ParsedGridGenerator<2,2> b("Rectangle with points");
+  initlog();
+  ParsedGridGenerator<2,2> a("Rectangle");
+  ParsedGridGenerator<2,2> b("Rectangle with points");
 
-    ParameterHandler prm;
+  ParameterHandler prm;
 
-    Point<2> p1, p2;
-    std::string string1, string2, string3;
+  Point<2> p1, p2;
+  std::string string1, string2, string3;
 
-    p1[0] = -1.;
-    p1[1] = -2.;
-    p2[0] = 1.;
-    p2[1] = 2.;
+  p1[0] = -1.;
+  p1[1] = -2.;
+  p2[0] = 1.;
+  p2[1] = 2.;
 
 
-    string1 = b.create_default_value(p1);
-    string2 = b.create_default_value(p2);
-    ParameterAcceptor::declare_all_parameters(prm);
+  string1 = b.create_default_value(p1);
+  string2 = b.create_default_value(p2);
+  ParameterAcceptor::declare_all_parameters(prm);
 
-    prm.read_input_from_string(""
-                               "subsection Rectangle\n"
-                               "  set Grid to generate = hyperrectangle \n"
-			                         "  set First additional Point<spacedim> input for the grid = -1., -2. \n"
-                               "  set Second additional Point<spacedim> input for the grid = 1., 2. \n"
-                               "end\n");
+  prm.read_input_from_string(""
+                             "subsection Rectangle\n"
+                             "  set Grid to generate = hyperrectangle \n"
+                             "  set First additional Point<spacedim> input for the grid = -1., -2. \n"
+                             "  set Second additional Point<spacedim> input for the grid = 1., 2. \n"
+                             "end\n");
 
-    string3 = ""
-              "subsection Rectangle with points\n"
-              "  set Grid to generate = hyperrectangle \n"
-              "  set First additional Point<spacedim> input for the grid = "+ string1 +" \n"
-              "  set Second additional Point<spacedim> input for the grid = "+ string2 +" \n"
-              "end\n";
-    prm.read_input_from_string(string3.c_str());
+  string3 = ""
+            "subsection Rectangle with points\n"
+            "  set Grid to generate = hyperrectangle \n"
+            "  set First additional Point<spacedim> input for the grid = "+ string1 +" \n"
+            "  set Second additional Point<spacedim> input for the grid = "+ string2 +" \n"
+            "end\n";
+  prm.read_input_from_string(string3.c_str());
 
-    prm.log_parameters(deallog);
-    ParameterAcceptor::parse_all_parameters(prm);
+  prm.log_parameters(deallog);
+  ParameterAcceptor::parse_all_parameters(prm);
 
-    test(a);
-    test(b);
+  test(a);
+  test(b);
 }

@@ -17,49 +17,52 @@
 #include <deal.II/base/point.h>
 
 template<int dim>
-class Test : public ParameterAcceptor {
+class Test : public ParameterAcceptor
+{
 public:
-    virtual void declare_parameters(ParameterHandler &prm) {
-        std::string def = "0.";
-        for(int i=1; i<dim; ++i)
-            def += ",0.";
-        add_parameter(prm, &p, "A point", def, Patterns::List(Patterns::Double(), dim, dim));
-    };
+  virtual void declare_parameters(ParameterHandler &prm)
+  {
+    std::string def = "0.";
+    for (int i=1; i<dim; ++i)
+      def += ",0.";
+    add_parameter(prm, &p, "A point", def, Patterns::List(Patterns::Double(), dim, dim));
+  };
 
-    void log_info() {
-        deallog << "My type: " << type(*this) << std::endl
-                << "p: " << p << std::endl;
-    }
+  void log_info()
+  {
+    deallog << "My type: " << type(*this) << std::endl
+            << "p: " << p << std::endl;
+  }
 
 private:
-    Point<dim> p;
+  Point<dim> p;
 };
 
 
 int main ()
 {
-    initlog();
-    Test<1> a;
-    Test<2> b;
-    Test<3> c;
+  initlog();
+  Test<1> a;
+  Test<2> b;
+  Test<3> c;
 
-    ParameterHandler prm;
-    ParameterAcceptor::declare_all_parameters(prm);
-    prm.read_input_from_string(""
-                               "subsection Test<1>\n"
-                               "  set A point = 1.0\n"
-                               "end\n"
-                               "subsection Test<2>\n"
-                               "  set A point = 1.0, 2.0\n"
-                               "end\n"
-                               "subsection Test<3>\n"
-                               "  set A point = 1.0, 2.0, 3.0\n"
-                               "end\n");
+  ParameterHandler prm;
+  ParameterAcceptor::declare_all_parameters(prm);
+  prm.read_input_from_string(""
+                             "subsection Test<1>\n"
+                             "  set A point = 1.0\n"
+                             "end\n"
+                             "subsection Test<2>\n"
+                             "  set A point = 1.0, 2.0\n"
+                             "end\n"
+                             "subsection Test<3>\n"
+                             "  set A point = 1.0, 2.0, 3.0\n"
+                             "end\n");
 
-    prm.log_parameters(deallog);
-    ParameterAcceptor::parse_all_parameters(prm);
+  prm.log_parameters(deallog);
+  ParameterAcceptor::parse_all_parameters(prm);
 
-    a.log_info();
-    b.log_info();
-    c.log_info();
+  a.log_info();
+  b.log_info();
+  c.log_info();
 }
