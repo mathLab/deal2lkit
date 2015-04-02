@@ -44,6 +44,14 @@ public:
      */
     ~ParameterAcceptor();
 
+
+  /**
+   * Call declare_all_parameters(), read filename (if it is present as
+   * input parameter) and parse_all_parameters() on the static member
+   * prm.
+   */
+  static void initialize(const std::string filename="");
+
     /**
      * Parse the parameter file. This function enters the subsection
      * returned by get_section_name() for each derived class, and parse
@@ -112,6 +120,11 @@ public:
         prm.declare_entry(entry, default_value, pattern, documentation);
         parameters[entry] = boost::any(parameter);
     }
+
+  /**
+   * Static parameter. This is used if the user does not provide one.
+   */
+  static ParameterHandler prm;
 
 private:
     /**
