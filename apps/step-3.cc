@@ -115,19 +115,19 @@ void Step3::make_grid_fe ()
 
 void Step3::setup_system ()
 {
-  dof_handler.distribute_dofs (*fe);
+  dof_handler->distribute_dofs (*fe);
   std::cout << "Number of degrees of freedom: "
-            << dof_handler.n_dofs()
+            << dof_handler->n_dofs()
             << std::endl;
 
-  DynamicSparsityPattern c_sparsity(dof_handler.n_dofs());
-  DoFTools::make_sparsity_pattern (dof_handler, c_sparsity);
+  DynamicSparsityPattern c_sparsity(dof_handler->n_dofs());
+  DoFTools::make_sparsity_pattern (*dof_handler, c_sparsity);
   sparsity_pattern.copy_from(c_sparsity);
 
   system_matrix.reinit (sparsity_pattern);
 
-  solution.reinit (dof_handler.n_dofs());
-  system_rhs.reinit (dof_handler.n_dofs());
+  solution.reinit (dof_handler->n_dofs());
+  system_rhs.reinit (dof_handler->n_dofs());
 }
 
 
@@ -147,8 +147,8 @@ void Step3::assemble_system ()
   std::vector<types::global_dof_index> local_dof_indices (dofs_per_cell);
 
   DoFHandler<2>::active_cell_iterator
-  cell = dof_handler.begin_active(),
-  endc = dof_handler.end();
+  cell = dof_handler->begin_active(),
+  endc = dof_handler->end();
   for (; cell!=endc; ++cell)
     {
       fe_values.reinit (cell);
@@ -183,7 +183,7 @@ void Step3::assemble_system ()
 
 
   std::map<types::global_dof_index,double> boundary_values;
-  VectorTools::interpolate_boundary_values (dof_handler,
+  VectorTools::interpolate_boundary_values (*dof_handler,
                                             0,
                                             ZeroFunction<2>(),
                                             boundary_values);
@@ -209,7 +209,7 @@ void Step3::solve ()
 void Step3::output_results () const
 {
   DataOut<2> data_out;
-  data_out.attach_dof_handler (dof_handler);
+  data_out.attach_dof_handler (*dof_handler);
   data_out.add_data_vector (solution, "solution");
   data_out.build_patches ();
 
