@@ -21,11 +21,8 @@ template<int dim, int spacedim>
 void test(ParsedGridGenerator<dim, spacedim> &pgg)
 {
   auto tria = pgg.serial();
-  tria->refine_global(3);
   GridOut go;
   go.write_msh(*tria, deallog.get_file_stream());
-  std::ofstream ofile(("/tmp/mesh_"+Utilities::int_to_string(dim)
-                       +Utilities::int_to_string(spacedim)+".msh").c_str());
 }
 
 int main ()
