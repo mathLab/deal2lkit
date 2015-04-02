@@ -17,21 +17,20 @@
 #include <vector>
 #include <string>
 
-template <int dim, typename VECTOR>
-ErrorHandler<dim,VECTOR>::ErrorHandler ()
+template <int ntables>
+ErrorHandler<ntables>::ErrorHandler ()
 {
     initialized = false;
 }
 
-template <int dim, typename VECTOR>
-void ErrorHandler<dim,VECTOR>::declare_parameters (ParameterHandler &prm,
-        unsigned int ntables)
+template <int ntables>
+void ErrorHandler<ntables>::declare_parameters (ParameterHandler &prm)
 {
     prm.declare_entry ("Write error files", "false", Patterns::Bool());
     prm.declare_entry ("Output error tables", "true", Patterns::Bool());
     prm.declare_entry ("Error file format", "tex", Patterns::Selection("tex|txt"));
     prm.declare_entry ("Compute error", "true", Patterns::Bool());
-    prm.declare_entry ("Table names", "error", Patterns::Anything(),
+    prm.declare_entry ("Table names", "error", Patterns::List(Patterns::Anything(), 1, ntables),
                        "Comma separated list of table names. ");
     prm.declare_entry ("Solution names", "u", Patterns::Anything(),
                        "Comma separated list of names for the components. This "
@@ -73,8 +72,8 @@ void ErrorHandler<dim,VECTOR>::declare_parameters (ParameterHandler &prm,
     }
 }
 
-template <int dim, typename VECTOR>
-void ErrorHandler<dim,VECTOR>::parse_parameters (ParameterHandler &prm)
+template <int ntables>
+void ErrorHandler<ntables>::parse_parameters (ParameterHandler &prm)
 {
     write_error = prm.get_bool ("Write error files");
     output_error = prm.get_bool ("Output error tables");
@@ -87,6 +86,8 @@ void ErrorHandler<dim,VECTOR>::parse_parameters (ParameterHandler &prm)
 
     if (all_names != "") {
         names = Utilities::split_string_list(all_names);
+	Assert(names.size() <= ntables,
+	       ExcMessage("You tried to construct more tables than you have compiled for."));
         types.resize(names.size(), std::vector<NormFlags> (headers.size()));
         add_rates.resize(names.size());
         tables.resize(names.size());
@@ -145,8 +146,8 @@ void ErrorHandler<dim,VECTOR>::parse_parameters (ParameterHandler &prm)
     initialized = true;
 }
 
-template <int dim, typename VECTOR>
-void ErrorHandler<dim,VECTOR>::output_table (const unsigned int table_no) {
+template <int ntables>
+void ErrorHandler<ntables>::output_table (const unsigned int table_no) {
     if (compute_error) {
         AssertThrow(initialized, ExcNotInitialized());
         AssertThrow(table_no < names.size(), ExcIndexRange(table_no, 0, names.size()));
@@ -182,215 +183,7 @@ void ErrorHandler<dim,VECTOR>::output_table (const unsigned int table_no) {
     }
 }
 
-template <int dim, typename VECTOR>
-void ErrorHandler<dim,VECTOR>::difference(const DoFHandler<dim> & dh,
-        const VECTOR &solution1,
-        const VECTOR &solution2,
-        unsigned int table_no,
-        double dt) {
-    AssertThrow(solution1.size() == solution2.size(), ExcDimensionMismatch(
-                    solution1.size(), solution2.size()));
-    VECTOR solution(solution1);
-    solution -= solution2;
-    error_from_exact(dh, solution,
-                     ConstantFunction<dim>(0, headers.size()), table_no, dt);
-}
-
-
-template <int dim, typename VECTOR>
-void ErrorHandler<dim,VECTOR>::error_from_exact(const DoFHandler<dim> & dh,
-        const VECTOR &solution,
-        const Function<dim> &exact,
-        unsigned int table_no,
-        double dt)
-{
-    if (compute_error) {
-        AssertThrow(initialized, ExcNotInitialized());
-        AssertThrow(table_no < types.size(), ExcIndexRange(table_no, 0, names.size()));
-        AssertThrow(exact.n_components == types[table_no].size(),
-                    ExcDimensionMismatch(exact.n_components, types[table_no].size()));
-
-        deallog.push("Error");
-        deallog << "Calculating Errors." << std::endl;
-        std::vector< std::vector<double> > error( exact.n_components, std::vector<double>(4));
-        const unsigned int n_active_cells = dh.get_tria().n_active_cells();
-        const unsigned int n_dofs=dh.n_dofs();
-
-        if(extras[table_no]["cells"]) {
-            tables[table_no].add_value("cells", n_active_cells);
-            tables[table_no].set_tex_caption("cells", "\\# cells");
-            tables[table_no].set_tex_format("cells", "r");
-        }
-        if(extras[table_no]["dofs"]) {
-            tables[table_no].add_value("dofs", n_dofs);
-            tables[table_no].set_tex_caption("dofs", "\\# dofs");
-            tables[table_no].set_tex_format("dofs", "r");
-        }
-        if(extras[table_no]["dt"]) {
-            tables[table_no].add_value("dt", dt);
-            tables[table_no].set_tex_caption("dt", "\\Delta t");
-            tables[table_no].set_tex_format("dt", "r");
-        }
-
-        bool compute_Linfty = false;
-        bool compute_L2 = false;
-        bool compute_W1infty = false;
-        bool compute_H1 = false;
-        bool add_this = false;
-
-        unsigned int last_non_add = 0;
-
-        for(unsigned int component=0; component < exact.n_components; ++component) {
-            NormFlags norm = types[table_no][component];
-
-            deallog << "Error flags: " << norm << std::endl;
-
-            // Select one Component
-            ComponentSelectFunction<dim> select_component ( component, 1. , exact.n_components);
-
-            Vector<float> difference_per_cell (dh.get_tria().n_active_cells());
-
-            QGauss<dim> q_gauss((dh.get_fe().degree+1) * 2);
-
-            // The add bit is set
-            add_this = (norm & AddUp);
-
-            if(!add_this) {
-                last_non_add	= component;
-                compute_L2	= ( norm & L2 );
-                compute_H1	= ( norm & H1 );
-                compute_W1infty = ( norm & W1infty ) ;
-                compute_Linfty	= ( norm & Linfty );
-            }
-            // if add is set, we do not modify the previous selection
-
-            if(compute_L2) {
-                VectorTools::integrate_difference (//mapping,
-                    dh, //dof_handler,
-                    solution,
-                    exact,
-                    difference_per_cell,
-                    q_gauss,
-                    VectorTools::L2_norm,
-                    &select_component );
-            }
-
-            const double L2_error = difference_per_cell.l2_norm();
-            difference_per_cell = 0;
-
-            if(compute_H1) {
-                VectorTools::integrate_difference (//mapping,
-                    dh, //dof_handler,
-                    solution,
-                    exact,
-                    difference_per_cell,
-                    q_gauss,
-                    VectorTools::H1_norm,
-                    &select_component );
-            }
-            const double H1_error = difference_per_cell.l2_norm();
-            difference_per_cell = 0;
-
-            if(compute_W1infty) {
-                VectorTools::integrate_difference (//mapping,
-                    dh, //dof_handler,
-                    solution,
-                    exact,
-                    difference_per_cell,
-                    q_gauss,
-                    VectorTools::W1infty_norm,
-                    &select_component );
-            }
-
-            const double W1inf_error = difference_per_cell.linfty_norm();
-
-            if(compute_Linfty) {
-                VectorTools::integrate_difference (//mapping,
-                    dh, //dof_handler,
-                    solution,
-                    exact,
-                    difference_per_cell,
-                    q_gauss,
-                    VectorTools::Linfty_norm,
-                    &select_component );
-            }
-
-            const double Linf_error = difference_per_cell.linfty_norm();
-
-            if(add_this) {
-                AssertThrow(component, ExcMessage("Cannot add on first component!"));
-
-                error[last_non_add][0] = std::max(error[last_non_add][0], Linf_error);
-                error[last_non_add][1] += L2_error;
-                error[last_non_add][2] = std::max(error[last_non_add][2], W1inf_error);
-                error[last_non_add][3] += H1_error;
-
-            } else {
-
-                error[component][0] = Linf_error;
-                error[component][1] = L2_error;
-                error[component][2] = W1inf_error;
-                error[component][3] = H1_error;
-
-            }
-        }
-
-        for(unsigned int j=0; j<exact.n_components; ++j) {
-            NormFlags norm = types[table_no][j];
-            // If this was added, don't do anything
-            if( !(norm & AddUp) ) {
-                if(norm & Linfty) {
-                    std::string name = headers[j] + "_Linfty";
-                    std::string latex_name = "$\\| " +
-                                             latex_headers[j] + " - " +
-                                             latex_headers[j] +"_h \\|_\\infty $";
-                    double this_error =  error[j][0];
-
-                    tables[table_no].add_value(name, this_error);
-                    tables[table_no].set_precision(name, 3);
-                    tables[table_no].set_scientific(name, true);
-                    tables[table_no].set_tex_caption(name, latex_name);
-                }
-
-                if(norm & L2) {
-                    std::string name = headers[j] + "_L2";
-                    std::string latex_name = "$\\| " +
-                                             latex_headers[j] + " - " +
-                                             latex_headers[j] +"_h \\|_0 $";
-                    double this_error =  error[j][1];
-
-                    tables[table_no].add_value(name, this_error);
-                    tables[table_no].set_precision(name, 3);
-                    tables[table_no].set_scientific(name, true);
-                    tables[table_no].set_tex_caption(name, latex_name);
-                }
-                if(norm & W1infty) {
-                    std::string name = headers[j] + "_W1infty";
-                    std::string latex_name = "$\\| " +
-                                             latex_headers[j] + " - " +
-                                             latex_headers[j] +"_h \\|_{1,\\infty} $";
-                    double this_error =  error[j][2];
-
-                    tables[table_no].add_value(name, this_error);
-                    tables[table_no].set_precision(name, 3);
-                    tables[table_no].set_scientific(name, true);
-                    tables[table_no].set_tex_caption(name, latex_name);
-                }
-                if(norm & H1) {
-                    std::string name = headers[j] + "_H1";
-                    std::string latex_name = "$\\| " +
-                                             latex_headers[j] + " - " +
-                                             latex_headers[j] +"_h \\|_1 $";
-                    double this_error =  error[j][3];
-
-                    tables[table_no].add_value(name, this_error);
-                    tables[table_no].set_precision(name, 3);
-                    tables[table_no].set_scientific(name, true);
-                    tables[table_no].set_tex_caption(name, latex_name);
-                }
-            }
-        }
-        deallog.pop();
-    }
-}
-
+template class ErrorHandler<1>;
+template class ErrorHandler<2>;
+template class ErrorHandler<3>;
+template class ErrorHandler<4>;
