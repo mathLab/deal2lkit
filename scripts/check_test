@@ -1,18 +1,18 @@
 #!/bin/sh
 
 if [ -z "$1" ]; then
-    echo "Usage: 
+    echo "Usage:
 $0 regexp
 
-Will check the generated output with the expected output using 
-cwdiff, and give you the opportunity to accept new results. 
+Will check the generated output with the expected output using
+cwdiff, and give you the opportunity to accept new results.
 "
     exit 0
 fi
 
-FILE=`ctest -N | grep $1 | awk '{print $NF}'`
+FILE=`ctest -N | grep $1 | head -n 1 | awk '{print $NF}'`
 
-if [ -z "$FILE" ]; then 
+if [ -z "$FILE" ]; then
     echo "Using $1, I could not find any corresponding test..."
     exit
 fi
@@ -22,7 +22,7 @@ SRC=`grep SOURCE_DIR CMakeCache.txt | awk -F"=" '{print $2}'`
 CMP=$SRC/${FILE/debug/output}
 CMP=${CMP/release/output}
 
-if [ ! -f $FILE/output ]; then 
+if [ ! -f $FILE/output ]; then
     echo "File $FILE/output does not exist. Some other problem occurred."
     echo "Running ctest in verbose mode:"
     ctest -V -R $FILE
@@ -33,7 +33,7 @@ if [ ! -f $CMP ]; then
     prompt="Please select a file to compare to:"
     PS3="$prompt "
     options=(`ls ${CMP/output/}*output`)
-    select opt in "${options[@]}" "Quit" ; do 
+    select opt in "${options[@]}" "Quit" ; do
 	if (( REPLY == 1 + ${#options[@]} )) ; then
 	    exit
 
@@ -43,7 +43,7 @@ if [ ! -f $CMP ]; then
 	    break
 	else
 	    echo "Invalid option. Try another one."
-	fi  
+	fi
     done
 fi
 
@@ -60,4 +60,3 @@ select opt in "Yes" "No"; do
 	exit
     fi
 done
-
