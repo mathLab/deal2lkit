@@ -9,7 +9,7 @@ using namespace dealii;
 /**
  * A SAK wrapper for dealii::Functions::ParsedFunction. The template
  * integegers specify the dimension of points this function accepts,
- * and the number of components. 
+ * and the number of components.
  */
 template<int dim, int ncomponents=1>
 class ParsedFunction : public ParameterAcceptor, Functions::ParsedFunction<dim>
@@ -17,14 +17,14 @@ class ParsedFunction : public ParameterAcceptor, Functions::ParsedFunction<dim>
 public:
   /**
    * Constructor: takes an optional name for the section.
-   */ 
+   */
   ParsedFunction(std::string name="");
 
   /**
    * Calls the underlying function of ParsedFunction.
    */
   virtual void declare_parameters(ParameterHandler &prm);
-  
+
 };
 
 // ============================================================
@@ -39,7 +39,8 @@ ParsedFunction<dim, ncomponents>::ParsedFunction(std::string name) :
 
 
 template<int dim, int ncomponents>
-void ParsedFunction<dim, ncomponents>:: declare_parameters(ParameterHandler &prm) {
+void ParsedFunction<dim, ncomponents>:: declare_parameters(ParameterHandler &prm)
+{
   Functions::ParsedFunction<dim>::declare_parameters(prm, ncomponents);
 }
 

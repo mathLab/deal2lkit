@@ -21,5 +21,5 @@ int main ()
   ParameterAcceptor::initialize();
   ParameterAcceptor::prm.log_parameters(deallog);
 
-  
+
 }
