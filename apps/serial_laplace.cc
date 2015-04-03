@@ -109,7 +109,7 @@ void SerialLaplace::make_grid_fe ()
 
   triangulation = pgg.serial();
   dof_handler = new DoFHandler<2>(*triangulation);
-                             //GridGenerator::hyper_cube (triangulation, -1, 1);
+  //GridGenerator::hyper_cube (triangulation, -1, 1);
 
   std::cout << "Number of active cells: "
             << triangulation->n_active_cells()

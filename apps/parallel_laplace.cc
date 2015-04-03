@@ -367,7 +367,7 @@ namespace ParallelLaplace
     triangulation = pgg.distributed(mpi_communicator);
 
     dof_handler = new DoFHandler<dim>(*triangulation);
-                               //GridGenerator::hyper_cube (triangulation, -1, 1);
+    //GridGenerator::hyper_cube (triangulation, -1, 1);
 
     std::cout << "Number of active cells: "
               << triangulation->n_active_cells()
