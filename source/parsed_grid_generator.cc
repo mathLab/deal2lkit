@@ -1,6 +1,24 @@
 #include <deal.II/base/config.h>
 #include "parsed_grid_generator.h"
 #include <deal.II/grid/grid_generator.h>
+#include <deal.II/grid/grid_in.h>
+#include <deal.II/grid/grid_out.h>
+
+#include <fstream>
+
+std::string extension(const std::string &filename)
+{
+  std::string::size_type idx;
+  idx = filename.rfind('.');
+  if (idx != std::string::npos)
+    {
+      return filename.substr(idx+1);
+    }
+  else
+    {
+      return "";
+    }
+}
 
 template <int dim, int spacedim>
 ParsedGridGenerator<dim, spacedim>::ParsedGridGenerator(std::string name) :
@@ -8,7 +26,7 @@ ParsedGridGenerator<dim, spacedim>::ParsedGridGenerator(std::string name) :
 {}
 
 template <int dim, int spacedim>
-std::string ParsedGridGenerator<dim, spacedim>::create_default_value(Point<spacedim> input)
+std::string ParsedGridGenerator<dim, spacedim>::create_default_value(const Point<spacedim> &input)
 {
   std::ostringstream strs;
   strs << input[0];
@@ -20,7 +38,7 @@ std::string ParsedGridGenerator<dim, spacedim>::create_default_value(Point<space
 }
 
 template <int dim, int spacedim>
-std::string ParsedGridGenerator<dim, spacedim>::create_default_value(std::vector<double> input)
+std::string ParsedGridGenerator<dim, spacedim>::create_default_value(const std::vector<double> &input)
 {
   std::ostringstream strs;
   strs << input[0];
@@ -32,7 +50,7 @@ std::string ParsedGridGenerator<dim, spacedim>::create_default_value(std::vector
 }
 
 template <int dim, int spacedim>
-std::string ParsedGridGenerator<dim, spacedim>::create_default_value(std::vector<unsigned int> input)
+std::string ParsedGridGenerator<dim, spacedim>::create_default_value(const std::vector<unsigned int> &input)
 {
   std::string def = Utilities::int_to_string(input[0]);
   for (unsigned int i=1; i<input.size(); ++i)
@@ -77,8 +95,8 @@ void ParsedGridGenerator<dim, spacedim>::declare_parameters(ParameterHandler &pr
                                             "smoothing_on_coarsening|"
                                             "maximum_smoothing"));
 
-  add_parameter(prm, &grid_file_name,
-                "Grid file name", "",
+  add_parameter(prm, &input_grid_file_name,
+                "Input grid file name", "",
                 Patterns::FileName(),
                 "Name of the input grid. All supported deal.II formats. "
                 "The extestion will be used to decide what "
@@ -115,6 +133,12 @@ void ParsedGridGenerator<dim, spacedim>::declare_parameters(ParameterHandler &pr
                 "Unsigned int to be used in the generation of the grid. "
                 "The use of it will depend on the specific grid.");
 
+  add_parameter(prm, &output_grid_file_name,
+                "Output grid file name", "",
+                Patterns::FileName(),
+                "Name of the output grid. All supported deal.II formats. "
+                "The extestion will be used to decide what "
+                "grid format to use. If empty, no grid will be written.");
 
 }
 
@@ -204,7 +228,58 @@ void ParsedGridGenerator<dim, spacedim>::create(Triangulation<dim,spacedim> &tri
   //     Assert(true, ExcInternalError("dim != spacedim not supported"))
   //
   // }
+  else if (grid_name == "file")
+    {
+      GridIn<dim, spacedim> gi;
+      gi.attach_triangulation(tria);
+
+      std::ifstream in(input_grid_file_name.c_str());
+      AssertThrow(in, ExcIO());
+
+      auto ext = extension(input_grid_file_name);
+      if (ext == "vtk")
+        gi.read_vtk(in);
+      else if (ext == "msh")
+        gi.read_msh(in);
+      else if (ext == "ucd")
+        gi.read_ucd(in);
+      else if (ext == "unv")
+        gi.read_unv(in);
+      else
+        Assert(false, ExcNotImplemented());
+    }
+  else
+    Assert(false, ExcInternalError("Unrecognized grid."));
+
 }
+
+template <int dim, int spacedim>
+void ParsedGridGenerator<dim, spacedim>::write(const Triangulation<dim,spacedim> &tria) const
+{
+  if (output_grid_file_name != "")
+    {
+      GridOut go;
+      std::ofstream out(output_grid_file_name.c_str());
+      AssertThrow(out, ExcIO());
+
+      go.set_flags(GridOutFlags::Msh(true, true));
+      go.set_flags(GridOutFlags::Ucd(false,true, true));
+
+      auto ext = extension(output_grid_file_name);
+      if (ext == "vtk")
+        go.write_vtk(tria, out);
+      else if (ext == "msh")
+        go.write_msh(tria, out);
+      else if (ext == "ucd")
+        go.write_ucd(tria, out);
+      else if (ext == "vtu")
+        go.write_vtu(tria, out);
+      else
+        Assert(false, ExcNotImplemented());
+      out.close();
+    }
+}
+
 
 namespace
 {
@@ -260,7 +335,6 @@ ParsedGridGenerator<dim, spacedim>::get_smoothing()
 
 template class ParsedGridGenerator<1,1>;
 template class ParsedGridGenerator<1,2>;
-template class ParsedGridGenerator<1,3>;
 template class ParsedGridGenerator<2,2>;
 template class ParsedGridGenerator<2,3>;
 template class ParsedGridGenerator<3,3>;

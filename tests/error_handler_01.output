@@ -13,9 +13,10 @@ DEAL:parameters:ErrorHandler<1>:Table 0::List of error norms to compute: Linfty,
 DEAL:parameters:ErrorHandler<1>:Table 0::Rate key: 
 DEAL:parameters:ParsedGridGenerator<2, 2>::First additional Point<spacedim> input for the grid: 0,0
 DEAL:parameters:ParsedGridGenerator<2, 2>::First additional double input for the grid: 1.
-DEAL:parameters:ParsedGridGenerator<2, 2>::Grid file name: 
 DEAL:parameters:ParsedGridGenerator<2, 2>::Grid to generate: unit_hypercube
+DEAL:parameters:ParsedGridGenerator<2, 2>::Input grid file name: 
 DEAL:parameters:ParsedGridGenerator<2, 2>::Mesh smoothing alogrithm: none
+DEAL:parameters:ParsedGridGenerator<2, 2>::Output grid file name: 
 DEAL:parameters:ParsedGridGenerator<2, 2>::Second additional Point<spacedim> input for the grid: 0,0
 DEAL:parameters:ParsedGridGenerator<2, 2>::Second additional double input for the grid: 0.5
 DEAL:parameters:ParsedGridGenerator<2, 2>::Unsigned int input for the grid: 1
