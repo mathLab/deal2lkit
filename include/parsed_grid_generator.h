@@ -60,11 +60,14 @@ public:
   parallel::distributed::Triangulation<dim, spacedim> *distributed(MPI_Comm mpi_communicator);
 #endif
 
-  std::string create_default_value(std::vector<unsigned int> input);
+  std::string create_default_value(const std::vector<unsigned int> &input);
 
-  std::string create_default_value(std::vector<double> input);
+  std::string create_default_value(const std::vector<double> &input);
 
-  std::string create_default_value(Point<spacedim> input);
+  std::string create_default_value(const Point<spacedim> &input);
+
+
+  void write(const Triangulation<dim, spacedim> &tria) const;
 
 private:
   typename Triangulation<dim,spacedim>::MeshSmoothing
@@ -96,7 +99,9 @@ private:
   /**
    * Grid file name.
    */
-  std::string grid_file_name;
+  std::string input_grid_file_name;
+
+  std::string output_grid_file_name;
 };
 
 #endif

@@ -1,9 +1,10 @@
 
 DEAL:parameters:Unit cube::First additional Point<spacedim> input for the grid: 0,0
 DEAL:parameters:Unit cube::First additional double input for the grid: 1.
-DEAL:parameters:Unit cube::Grid file name: 
 DEAL:parameters:Unit cube::Grid to generate: unit_hypercube
+DEAL:parameters:Unit cube::Input grid file name: 
 DEAL:parameters:Unit cube::Mesh smoothing alogrithm: none
+DEAL:parameters:Unit cube::Output grid file name: 
 DEAL:parameters:Unit cube::Second additional Point<spacedim> input for the grid: 0,0
 DEAL:parameters:Unit cube::Second additional double input for the grid: 0.5
 DEAL:parameters:Unit cube::Unsigned int input for the grid: 1
