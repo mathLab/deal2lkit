@@ -233,7 +233,7 @@ void ParsedGridGenerator<dim, spacedim>::create(Triangulation<dim,spacedim> &tri
       GridIn<dim, spacedim> gi;
       gi.attach_triangulation(tria);
 
-      std::ifstream in(input_grid_file_name);
+      std::ifstream in(input_grid_file_name.c_str());
       AssertThrow(in, ExcIO());
 
       auto ext = extension(input_grid_file_name);
