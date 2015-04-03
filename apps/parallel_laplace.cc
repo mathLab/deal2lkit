@@ -18,10 +18,12 @@
  *         Timo Heister, University of Goettingen, 2009, 2010
  */
 
-
+#include <deal.II/base/config.h>
 #include <deal.II/base/quadrature_lib.h>
 #include <deal.II/base/function.h>
 #include <deal.II/base/timer.h>
+
+#ifdef DEAL_II_WITH_MPI
 
 #include <deal.II/lac/generic_linear_algebra.h>
 
@@ -461,3 +463,5 @@ int main(int argc, char *argv[])
 
   return 0;
 }
+
+#endif

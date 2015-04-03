@@ -1,3 +1,4 @@
+#include <deal.II/base/config.h>
 #include "parsed_grid_generator.h"
 #include <deal.II/grid/grid_generator.h>
 
@@ -117,7 +118,7 @@ void ParsedGridGenerator<dim, spacedim>::declare_parameters(ParameterHandler &pr
 
 }
 
-
+#ifdef DEAL_II_WITH_MPI
 template <int dim, int spacedim>
 parallel::distributed::Triangulation<dim, spacedim> *
 ParsedGridGenerator<dim, spacedim>::distributed(MPI_Comm comm)
@@ -129,10 +130,8 @@ ParsedGridGenerator<dim, spacedim>::distributed(MPI_Comm comm)
   create(*tria);
   return tria;
 }
-// triangulation (mpi_communicator,
-//                    typename Triangulation<dim>::MeshSmoothing
-//                    (Triangulation<dim>::smoothing_on_refinement |
-//                     Triangulation<dim>::smoothing_on_coarsening)),
+#endif
+
 
 template <int dim, int spacedim>
 Triangulation<dim, spacedim> *
