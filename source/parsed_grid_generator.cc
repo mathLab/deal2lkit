@@ -169,14 +169,11 @@ void ParsedGridGenerator<dim, spacedim>::create(Triangulation<dim,spacedim> &tri
         {
           GridGenerator::hyper_cube (tria,
                                      double_option_two, double_option_one);
-          tria.refine_global( un_int_option_one);
         }
       else
         {
           GridGenerator::hyper_cube (tria,
                                      double_option_one, double_option_two);
-          tria.refine_global( un_int_option_one);
-
         }
     }
   else if (grid_name == "hyperrectangle")
@@ -207,8 +204,6 @@ void ParsedGridGenerator<dim, spacedim>::create(Triangulation<dim,spacedim> &tri
   //     Assert(true, ExcInternalError("dim != spacedim not supported"))
   //
   // }
-
-
 }
 
 namespace
