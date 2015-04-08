@@ -241,7 +241,7 @@ void ParsedGridGenerator<dim, spacedim>::create(Triangulation<dim,spacedim> &tri
         gi.read_vtk(in);
       else if (ext == "msh")
         gi.read_msh(in);
-      else if (ext == "ucd")
+      else if (ext == "ucd" || ext == "inp")
         gi.read_ucd(in);
       else if (ext == "unv")
         gi.read_unv(in);

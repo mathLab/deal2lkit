@@ -52,6 +52,7 @@ public:
    */
   static void initialize(const std::string filename="");
 
+  static void clear();
   /**
    * Parse the parameter file. This function enters the subsection
    * returned by get_section_name() for each derived class, and parse
