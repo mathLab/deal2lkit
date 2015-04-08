@@ -38,6 +38,12 @@ ParameterAcceptor::initialize(const std::string filename)
   parse_all_parameters(prm);
 }
 
+void
+ParameterAcceptor::clear()
+{
+  class_list.clear();
+}
+
 void ParameterAcceptor::parse_all_parameters(ParameterHandler &prm)
 {
   for (unsigned int i=0; i< class_list.size(); ++i)
@@ -128,4 +134,3 @@ void ParameterAcceptor::parse_parameters(ParameterHandler &prm)
 
 
 void ParameterAcceptor::parse_parameters_call_back() {};
-
