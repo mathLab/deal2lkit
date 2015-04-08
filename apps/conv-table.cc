@@ -186,7 +186,7 @@ namespace ConvTables
   public:
     enum RefinementMode
     {
-      global_refinement, adaptive_refinement
+      global_refinement=0, adaptive_refinement=1
     };
 
     HelmholtzProblem (const RefinementMode      refinement_mode);
@@ -220,7 +220,7 @@ namespace ConvTables
 
     // ConvergenceTable                        convergence_table;
 
-    ErrorHandler<1> eh;
+    ErrorHandler<2> eh;
     ParsedGridGenerator<dim,dim> pgg;
     ParsedFiniteElement<dim,dim> fe_builder;
   };
@@ -455,7 +455,7 @@ namespace ConvTables
   template <int dim>
   void HelmholtzProblem<dim>::process_solution (const unsigned int cycle)
   {
-    eh.error_from_exact(*dof_handler, solution, Solution<dim>());
+    eh.error_from_exact(*dof_handler, solution, Solution<dim>(), refinement_mode);
   }
 
 
@@ -495,7 +495,7 @@ namespace ConvTables
         process_solution (cycle);
       }
 
-    eh.output_table(std::cout);
+    eh.output_table(std::cout, refinement_mode);
 
     std::string vtk_filename;
     switch (refinement_mode)
