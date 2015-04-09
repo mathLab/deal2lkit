@@ -35,7 +35,7 @@ PROJECT(${TARGET_LIB})
 
 IF(DEAL_II_BUILD_TYPE MATCHES "Release")
     ADD_LIBRARY(${TARGET_LIB} SHARED ${_library_source_files})
-    # INSTALL(TARGETS ${TARGET_LIB} LIBRARY DESTINATION lib)
+    INSTALL(TARGETS ${TARGET_LIB} LIBRARY DESTINATION lib)
     FOREACH(_main ${_applications_source_files})
 	GET_FILENAME_COMPONENT(_target ${_main} NAME_WE)
 	ADD_EXECUTABLE(${_target} ${_main})
