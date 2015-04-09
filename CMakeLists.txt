@@ -35,9 +35,11 @@ PROJECT(${TARGET_LIB})
 
 IF(DEAL_II_BUILD_TYPE MATCHES "Release")
     ADD_LIBRARY(${TARGET_LIB} SHARED ${_library_source_files})
+    # INSTALL(TARGETS ${TARGET_LIB} LIBRARY DESTINATION lib)
     FOREACH(_main ${_applications_source_files})
 	GET_FILENAME_COMPONENT(_target ${_main} NAME_WE)
 	ADD_EXECUTABLE(${_target} ${_main})
+	INSTALL(TARGETS ${_target} RUNTIME DESTINATION bin)
 	TARGET_LINK_LIBRARIES(${_target} ${TARGET_LIB})
 	DEAL_II_SETUP_TARGET(${_target} RELEASE)
     ENDFOREACH()
@@ -47,9 +49,11 @@ ENDIF()
 
 IF(DEAL_II_BUILD_TYPE MATCHES "Debug")
     ADD_LIBRARY(${TARGET_LIB}.g SHARED ${_library_source_files})   
+    INSTALL(TARGETS ${TARGET_LIB}.g LIBRARY DESTINATION lib)
     FOREACH(_main ${_applications_source_files})
 	GET_FILENAME_COMPONENT(_target ${_main} NAME_WE)
 	ADD_EXECUTABLE(${_target}.g ${_main})
+	INSTALL(TARGETS ${_target}.g RUNTIME DESTINATION bin)
 	TARGET_LINK_LIBRARIES(${_target}.g ${TARGET_LIB}.g)
 	DEAL_II_SETUP_TARGET(${_target}.g DEBUG)
     ENDFOREACH()
@@ -70,3 +74,7 @@ WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
 COMMENT "Generating API documentation with Doxygen" VERBATIM
 )
 endif(DOXYGEN_FOUND)
+
+install(DIRECTORY ${CMAKE_SOURCE_DIR}/include/ DESTINATION include
+        FILES_MATCHING PATTERN "*.h")
+
