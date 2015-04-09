@@ -12,7 +12,7 @@ using namespace dealii;
  * and the number of components.
  */
 template<int dim, int ncomponents=1>
-class ParsedFunction : public ParameterAcceptor, Functions::ParsedFunction<dim>
+class ParsedFunction : public ParameterAcceptor, public Functions::ParsedFunction<dim>
 {
 public:
   /**
@@ -24,6 +24,8 @@ public:
    * Calls the underlying function of ParsedFunction.
    */
   virtual void declare_parameters(ParameterHandler &prm);
+
+  virtual void parse_parameters(ParameterHandler &prm);
 
 };
 
@@ -45,4 +47,9 @@ void ParsedFunction<dim, ncomponents>:: declare_parameters(ParameterHandler &prm
 }
 
 
+template<int dim, int ncomponents>
+void ParsedFunction<dim, ncomponents>:: parse_parameters(ParameterHandler &prm)
+{
+  Functions::ParsedFunction<dim>::parse_parameters(prm);
+}
 #endif
