@@ -17,8 +17,9 @@ script:
     - mkdir build
     - cd build
     - export DEAL_II_DIR=/home/travis/dealii-inst
-    - cmake -GNinja ..
-    - ninja -j4 
+    - cmake -GNinja -DCMAKE_INSTALL_PREFIX=/home/travis/dealii-sak-inst ..
+    - ninja -j4 install
+    - tar cvfz /home/travis/dealii-sak-CI-build.tgz /home/travis/dealii-sak-inst
     - ctest -j4 -V
     - cd ..; ./scripts/check_indentation.sh
 deploy:
