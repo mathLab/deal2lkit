@@ -94,7 +94,9 @@ private:
 
   Point<spacedim> point_option_two;
 
-  unsigned int un_int_option_one;
+  std::vector<unsigned int> un_int_option_one;
+
+  std::vector<unsigned int> un_int_vec_option_one;
 
   /**
    * Grid file name.
