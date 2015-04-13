@@ -132,9 +132,9 @@ void ParsedGridGenerator<dim, spacedim>::declare_parameters(ParameterHandler &pr
 
 
   add_parameter(prm, &un_int_option_one,
-                "Vector of dim Unsigned int input for the grid","1",
+                "Unsigned int input for the grid","1",
                 Patterns::Integer(),
-                "Vector of unsigned int to be used in the generation of the grid. "
+                "Unsigned int to be used in the generation of the grid. "
                 "The use of it will depend on the specific grid.");
 
   add_parameter(prm, &un_int_vec_option_one,
