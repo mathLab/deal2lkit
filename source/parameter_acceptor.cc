@@ -1,6 +1,5 @@
 #include "parameter_acceptor.h"
 #include "utilities.h"
-
 #include <deal.II/base/point.h>
 
 // Static empty class list
@@ -125,6 +124,20 @@ void ParameterAcceptor::parse_parameters(ParameterHandler &prm)
           std::vector<std::string> &string_list = *(boost::any_cast<std::vector<std::string>*>(it->second));
           string_list = Utilities::split_string_list(prm.get(it->first));
         }
+        else if (it->second.type() == typeid(std::vector<unsigned int> *))
+          {
+            std::vector<unsigned int> &int_list = *(boost::any_cast<std::vector<unsigned int>*>(it->second));
+            std::vector<std::string> string_list = Utilities::split_string_list(prm.get(it->first));
+            int_list.resize(string_list.size());
+            for(unsigned int i=0; i<string_list.size(); ++i)
+              int_list[i] = std::stoul(string_list[i]);
+          }
+          else if (it->second.type() == typeid(std::vector<double> *))
+            {
+              std::vector<double> &double_list = *(boost::any_cast<std::vector<double>*>(it->second));
+              double_list = Utilities::string_to_double(Utilities::split_string_list(prm.get(it->first)));
+            }
+
       else
         {
           AssertThrow(false, ExcNotImplemented());
