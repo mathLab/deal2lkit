@@ -351,7 +351,7 @@ namespace ConvTables
         for (unsigned int face_number=0; face_number<GeometryInfo<dim>::faces_per_cell; ++face_number)
           if (cell->face(face_number)->at_boundary()
               &&
-              (cell->face(face_number)->boundary_indicator() == 1))
+              (cell->face(face_number)->boundary_id() == 1))
             {
               fe_face_values.reinit (cell, face_number);
 
@@ -481,7 +481,7 @@ namespace ConvTables
                 if ((std::fabs(cell->face(face_number)->center()(0) - (-1)) < 1e-12)
                     ||
                     (std::fabs(cell->face(face_number)->center()(1) - (-1)) < 1e-12))
-                  cell->face(face_number)->set_boundary_indicator (1);
+                  cell->face(face_number)->set_boundary_id (1);
           }
         else
           refine_grid ();
