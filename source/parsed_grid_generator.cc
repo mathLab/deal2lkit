@@ -67,9 +67,9 @@ void ParsedGridGenerator<dim, spacedim>::declare_parameters(ParameterHandler &pr
   std::vector<double> dummy_vec_double(spacedim);
   Point<spacedim> dummy_point;
   Point<spacedim> dummy_point_2;
-  for(unsigned int d=0; d<dim; ++d)
+  for (unsigned int d=0; d<dim; ++d)
     dummy_point_2[d]=1.0;
-  
+
   std::string def_point, def_point_2, def_int, def_double;
   def_point = create_default_value(dummy_point);
   def_point_2 = create_default_value(dummy_point_2);
@@ -80,13 +80,13 @@ void ParsedGridGenerator<dim, spacedim>::declare_parameters(ParameterHandler &pr
                 "Grid to generate", "rectangle",
                 Patterns::Selection("file|rectangle"), //|unit_hyperball|unit_hypershell|subhyperrectangle"),
                 "The grid to generate. You can choose among:\n"
-		"- file: read grid from a file using:\n"
-		"	- Input grid filename	    : input filename\n\n"
-		"- rectangle: create a subdivided hyperrectangle using:\n"
-		"	- Optional Point<spacedim> 1: left corner\n"
-		"	- Optional Point<spacedim> 2: right corner\n"
-		"	- Optional Vector of dim int: subdivisions on each direction\n"
-		"	- Optional bool 1	    : colorize grid\n");
+                "- file: read grid from a file using:\n"
+                "	- Input grid filename	    : input filename\n\n"
+                "- rectangle: create a subdivided hyperrectangle using:\n"
+                "	- Optional Point<spacedim> 1: left corner\n"
+                "	- Optional Point<spacedim> 2: right corner\n"
+                "	- Optional Vector of dim int: subdivisions on each direction\n"
+                "	- Optional bool 1	    : colorize grid\n");
 
   add_parameter(prm, &mesh_smoothing,
                 "Mesh smoothing alogrithm", "none",
@@ -193,11 +193,11 @@ template <int dim, int spacedim>
 void ParsedGridGenerator<dim, spacedim>::create(Triangulation<dim,spacedim> &tria)
 {
   Assert(grid_name != "", ExcNotInitialized());
-  if(grid_name == "rectangle")
+  if (grid_name == "rectangle")
     {
       GridGenerator::subdivided_hyper_rectangle (tria, un_int_vec_option_one,
-						 point_option_two, point_option_one,
-						 bool_option_one);
+                                                 point_option_two, point_option_one,
+                                                 bool_option_one);
     }
   // TO BE DONE WHEN POSSIBLE
   // else if(grid_name == "unit_hyperball")

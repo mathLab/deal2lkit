@@ -51,21 +51,21 @@ int main ()
   ParameterAcceptor::declare_all_parameters(prm);
 
   string3 = ""
-    "subsection Subdivided HyperCube\n"
-    "  set Grid to generate = rectangle\n"
-    "  set Optional Point<spacedim> 1 = -1.,-1., -1.\n"
-    "  set Optional Point<spacedim> 2 =  1., 1.,  1.\n"
-    "  set Optional vector of dim int = "+ int_string_3 + "\n" 
-    "end\n";
+            "subsection Subdivided HyperCube\n"
+            "  set Grid to generate = rectangle\n"
+            "  set Optional Point<spacedim> 1 = -1.,-1., -1.\n"
+            "  set Optional Point<spacedim> 2 =  1., 1.,  1.\n"
+            "  set Optional vector of dim int = "+ int_string_3 + "\n"
+            "end\n";
 
   string2 = ""
-    "subsection Subdivided HyperCube codim 1\n"
-    "  set Grid to generate = rectangle\n"
-    "  set Optional Point<spacedim> 1 = -1.,-1., 0.\n"
-    "  set Optional Point<spacedim> 2 =  1., 1., 0.\n"
-    "  set Optional vector of dim int = "+ int_string_2 + "\n" 
-    "end\n";
-  
+            "subsection Subdivided HyperCube codim 1\n"
+            "  set Grid to generate = rectangle\n"
+            "  set Optional Point<spacedim> 1 = -1.,-1., 0.\n"
+            "  set Optional Point<spacedim> 2 =  1., 1., 0.\n"
+            "  set Optional vector of dim int = "+ int_string_2 + "\n"
+            "end\n";
+
   prm.read_input_from_string(string3.c_str());
   prm.read_input_from_string(string2.c_str());
 

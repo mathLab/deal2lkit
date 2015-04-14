@@ -20,8 +20,8 @@ int main ()
 
   ParameterAcceptor::initialize();
   ParameterAcceptor::prm.read_input_from_string("subsection Function\n"
-						"  set Function expression = x^2+y^2\n"
-						"end\n");
+                                                "  set Function expression = x^2+y^2\n"
+                                                "end\n");
   ParameterAcceptor::parse_all_parameters(ParameterAcceptor::prm);
 
   Point<2> p(2,3);

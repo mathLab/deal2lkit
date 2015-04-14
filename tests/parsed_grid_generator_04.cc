@@ -50,16 +50,16 @@ int main ()
   prm.read_input_from_string(""
                              "subsection Rectangle\n"
                              "  set Grid to generate = rectangle \n"
-			     "  set Optional Point<spacedim> 1 = 0, 0 \n"
+                             "  set Optional Point<spacedim> 1 = 0, 0 \n"
                              "  set Optional Point<spacedim> 2 = -1., -2. \n"
                              "end\n");
 
   string3 = ""
-    "subsection Rectangle with points\n"
-    "  set Grid to generate = hyperrectangle \n"
-    "  set Optional Point<spacedim> 1 = "+ string1 +"\n"
-    "  set Optional Point<spacedim> 2 = "+ string2 +"\n"
-    "end\n";
+            "subsection Rectangle with points\n"
+            "  set Grid to generate = hyperrectangle \n"
+            "  set Optional Point<spacedim> 1 = "+ string1 +"\n"
+            "  set Optional Point<spacedim> 2 = "+ string2 +"\n"
+            "end\n";
   prm.read_input_from_string(string3.c_str());
 
   ParameterAcceptor::parse_all_parameters(prm);

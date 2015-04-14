@@ -46,7 +46,7 @@ int main ()
                              "subsection Cube\n"
                              "  set Grid to generate = rectangle \n"
                              "  set Optional Point<spacedim> 1 = -1., -1. \n"
-			     "  set Optional Point<spacedim> 2 =  1.,  1. \n"
+                             "  set Optional Point<spacedim> 2 =  1.,  1. \n"
                              "end\n");
 
   ParameterAcceptor::parse_all_parameters(prm);
