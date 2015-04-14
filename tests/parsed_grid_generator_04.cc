@@ -23,20 +23,8 @@ void test(ParsedGridGenerator<dim, spacedim> &pgg)
   auto tria = pgg.serial();
   GridOut go;
   go.write_msh(*tria, deallog.get_file_stream());
-  std::ofstream ofile(("/tmp/mesh_"+Utilities::int_to_string(dim)
-                       +Utilities::int_to_string(spacedim)+".msh").c_str());
 }
 
-// prm.read_input_from_string(""
-//                            "subsection Test<1>\n"
-//                            "  set A point = 1.0\n"
-//                            "end\n"
-//                            "subsection Test<2>\n"
-//                            "  set A point = 1.0, 2.0\n"
-//                            "end\n"
-//                            "subsection Test<3>\n"
-//                            "  set A point = 1.0, 2.0, 3.0\n"
-//                            "end\n");
 
 int main ()
 {
@@ -61,20 +49,19 @@ int main ()
 
   prm.read_input_from_string(""
                              "subsection Rectangle\n"
-                             "  set Grid to generate = hyperrectangle \n"
-                             "  set First additional Point<spacedim> input for the grid = -1., -2. \n"
-                             "  set Second additional Point<spacedim> input for the grid = 1., 2. \n"
+                             "  set Grid to generate = rectangle \n"
+			     "  set Optional Point<spacedim> 1 = 0, 0 \n"
+                             "  set Optional Point<spacedim> 2 = -1., -2. \n"
                              "end\n");
 
   string3 = ""
-            "subsection Rectangle with points\n"
-            "  set Grid to generate = hyperrectangle \n"
-            "  set First additional Point<spacedim> input for the grid = "+ string1 +" \n"
-            "  set Second additional Point<spacedim> input for the grid = "+ string2 +" \n"
-            "end\n";
+    "subsection Rectangle with points\n"
+    "  set Grid to generate = hyperrectangle \n"
+    "  set Optional Point<spacedim> 1 = "+ string1 +"\n"
+    "  set Optional Point<spacedim> 2 = "+ string2 +"\n"
+    "end\n";
   prm.read_input_from_string(string3.c_str());
 
-  prm.log_parameters(deallog);
   ParameterAcceptor::parse_all_parameters(prm);
 
   test(a);

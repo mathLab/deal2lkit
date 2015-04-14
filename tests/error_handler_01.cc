@@ -25,7 +25,6 @@ int main ()
   ErrorHandler<> eh; // Only one table
 
   ParameterAcceptor::initialize();
-  ParameterAcceptor::prm.log_parameters(deallog);
 
   auto tria = gg.serial();
 

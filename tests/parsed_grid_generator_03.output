@@ -1,22 +1,4 @@
 
-DEAL:parameters:Cube::First additional Point<spacedim> input for the grid: 0,0
-DEAL:parameters:Cube::First additional double input for the grid: -1.
-DEAL:parameters:Cube::Grid to generate: hypercube
-DEAL:parameters:Cube::Input grid file name: 
-DEAL:parameters:Cube::Mesh smoothing alogrithm: none
-DEAL:parameters:Cube::Output grid file name: 
-DEAL:parameters:Cube::Second additional Point<spacedim> input for the grid: 0,0
-DEAL:parameters:Cube::Second additional double input for the grid: 1.
-DEAL:parameters:Cube::Unsigned int input for the grid: 1
-DEAL:parameters:Rectangle::First additional Point<spacedim> input for the grid: -1., -2.
-DEAL:parameters:Rectangle::First additional double input for the grid: 1.
-DEAL:parameters:Rectangle::Grid to generate: hyperrectangle
-DEAL:parameters:Rectangle::Input grid file name: 
-DEAL:parameters:Rectangle::Mesh smoothing alogrithm: none
-DEAL:parameters:Rectangle::Output grid file name: 
-DEAL:parameters:Rectangle::Second additional Point<spacedim> input for the grid: 1., 2.
-DEAL:parameters:Rectangle::Second additional double input for the grid: 0.5
-DEAL:parameters:Rectangle::Unsigned int input for the grid: 1
 $NOD
 4
 1  -1.00000 -2.00000 0

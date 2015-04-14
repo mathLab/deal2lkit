@@ -28,18 +28,17 @@ void test(ParsedGridGenerator<dim, spacedim> &pgg)
 int main ()
 {
   initlog();
-  ParsedGridGenerator<2,2> a("Unit cube");
-  ParsedGridGenerator<2,2> b();
+  ParsedGridGenerator<2,2> a("Read");
 
   ParameterHandler prm;
   ParameterAcceptor::declare_all_parameters(prm);
   prm.read_input_from_string(""
-                             "subsection ParsedGridGenerator<2,2>\n"
-                             "  set Grid name = file \n"
-                             "  set Grid file name = 1.0\n"
+                             "subsection Read\n"
+                             "  set Grid to generate = file \n"
+                             "  set Input grid file name = " 
+			     SOURCE_DIR"/grids/mesh_22.msh\n"
                              "end\n");
 
-  prm.log_parameters(deallog);
   ParameterAcceptor::parse_all_parameters(prm);
 
   test(a);
