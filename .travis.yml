@@ -10,7 +10,9 @@ before_install:
     - sudo apt-get update -qq
     - sudo apt-get install cmake
     - sudo apt-get install ninja-build
-    - wget https://github.com/luca-heltai/dealii/releases/download/v8.3.pre.7/dealii-travis-CI-build.tgz
+    - export D2V=`git ls-remote --tags https://github.com/luca-heltai/dealii | tail -n 1 | awk -F"/" '{print $3}'`
+    - echo "Deal.II version $D2V"
+    - wget https://github.com/luca-heltai/dealii/releases/download/$D2V/dealii-travis-CI-build.tgz
     - tar xfz dealii-travis-CI-build.tgz -C /
     - ./scripts/setup_astyle.sh
 script:

@@ -36,10 +36,7 @@ int main ()
   ParsedGridGenerator<2,3> d;
   ParsedGridGenerator<3,3> e;
 
-  ParameterHandler prm;
-  ParameterAcceptor::declare_all_parameters(prm);
-  prm.log_parameters(deallog);
-  ParameterAcceptor::parse_all_parameters(prm);
+  ParameterAcceptor::initialize();
 
   test(a);
   test(b);

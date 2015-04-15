@@ -1,25 +1,4 @@
 
-DEAL:parameters:ErrorHandler<1>::Compute error: true
-DEAL:parameters:ErrorHandler<1>::Error file format: tex
-DEAL:parameters:ErrorHandler<1>::Output error tables: true
-DEAL:parameters:ErrorHandler<1>::Solution names: u
-DEAL:parameters:ErrorHandler<1>::Solution names for latex: u
-DEAL:parameters:ErrorHandler<1>::Table names: error
-DEAL:parameters:ErrorHandler<1>::Write error files: false
-DEAL:parameters:ErrorHandler<1>:Table 0::Add convergence rates: true
-DEAL:parameters:ErrorHandler<1>:Table 0::Extra terms: cells,dofs
-DEAL:parameters:ErrorHandler<1>:Table 0::Latex table caption: error
-DEAL:parameters:ErrorHandler<1>:Table 0::List of error norms to compute: Linfty, L2, H1
-DEAL:parameters:ErrorHandler<1>:Table 0::Rate key: 
-DEAL:parameters:ParsedGridGenerator<2, 2>::First additional Point<spacedim> input for the grid: 0,0
-DEAL:parameters:ParsedGridGenerator<2, 2>::First additional double input for the grid: 1.
-DEAL:parameters:ParsedGridGenerator<2, 2>::Grid to generate: unit_hypercube
-DEAL:parameters:ParsedGridGenerator<2, 2>::Input grid file name: 
-DEAL:parameters:ParsedGridGenerator<2, 2>::Mesh smoothing alogrithm: none
-DEAL:parameters:ParsedGridGenerator<2, 2>::Output grid file name: 
-DEAL:parameters:ParsedGridGenerator<2, 2>::Second additional Point<spacedim> input for the grid: 0,0
-DEAL:parameters:ParsedGridGenerator<2, 2>::Second additional double input for the grid: 0.5
-DEAL:parameters:ParsedGridGenerator<2, 2>::Unsigned int input for the grid: 1
 cells dofs    u_Linfty         u_L2           u_H1      
 4     9    1.183e-01 -    5.156e-02 -    2.615e-01 -    
 16    25   3.291e-02 1.85 1.333e-02 1.95 1.272e-01 1.04 

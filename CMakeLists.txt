@@ -1,6 +1,5 @@
 ##
-# CMake script for large projects, with one executable
-# and a library
+# Deal.II Swiss Army Knife
 ##
 
 # Set the name of the project and target library:
@@ -21,45 +20,52 @@ CMAKE_MINIMUM_REQUIRED(VERSION 2.8.8)
 
 FIND_PACKAGE(deal.II 8.3 REQUIRED
   HINTS ${deal.II_DIR} ${DEAL_II_DIR} ../ ../../ $ENV{DEAL_II_DIR}
-  )
-IF(NOT ${deal.II_FOUND})
-  MESSAGE(FATAL_ERROR "\n"
-    "*** Could not locate deal.II. ***\n\n"
-    "You may want to either pass a flag -DDEAL_II_DIR=/path/to/deal.II to cmake\n"
-    "or set an environment variable \"DEAL_II_DIR\" that contains this path."
-    )
-ENDIF()
+)
 
 DEAL_II_INITIALIZE_CACHED_VARIABLES()
 PROJECT(${TARGET_LIB})
 
-IF(DEAL_II_BUILD_TYPE MATCHES "Release")
-    ADD_LIBRARY(${TARGET_LIB} SHARED ${_library_source_files})
-    INSTALL(TARGETS ${TARGET_LIB} LIBRARY DESTINATION lib)
-    FOREACH(_main ${_applications_source_files})
-	GET_FILENAME_COMPONENT(_target ${_main} NAME_WE)
-	ADD_EXECUTABLE(${_target} ${_main})
-	INSTALL(TARGETS ${_target} RUNTIME DESTINATION bin)
-	TARGET_LINK_LIBRARIES(${_target} ${TARGET_LIB})
-	DEAL_II_SETUP_TARGET(${_target} RELEASE)
-    ENDFOREACH()
-    SET(TEST_LIBRARIES_RELEASE ${TARGET_LIB})
-    DEAL_II_SETUP_TARGET(${TARGET_LIB} RELEASE)
-ENDIF()
+# We generate one library for each type of deal.II library
+# we found. If you compiled deal.II with both Release and Debug
+# mode, this will generate both Release and Debug programs for you
+# The debug library and program are postfixed with ".g"
+SET(_d2_build_types "Release;Debug")
+SET(Release_postfix "")
+SET(Debug_postfix ".g")
 
-IF(DEAL_II_BUILD_TYPE MATCHES "Debug")
-    ADD_LIBRARY(${TARGET_LIB}.g SHARED ${_library_source_files})   
-    INSTALL(TARGETS ${TARGET_LIB}.g LIBRARY DESTINATION lib)
-    FOREACH(_main ${_applications_source_files})
-	GET_FILENAME_COMPONENT(_target ${_main} NAME_WE)
-	ADD_EXECUTABLE(${_target}.g ${_main})
-	INSTALL(TARGETS ${_target}.g RUNTIME DESTINATION bin)
-	TARGET_LINK_LIBRARIES(${_target}.g ${TARGET_LIB}.g)
-	DEAL_II_SETUP_TARGET(${_target}.g DEBUG)
-    ENDFOREACH()
-    SET(TEST_LIBRARIES_DEBUG ${TARGET_LIB}.g)
-    DEAL_II_SETUP_TARGET(${TARGET_LIB}.g DEBUG)
-ENDIF()
+
+FOREACH(_build_type ${_d2_build_types})
+    # Only build this type, if deal.II was compiled with it.
+    IF(DEAL_II_BUILD_TYPE MATCHES "${_build_type}")
+	MESSAGE("-- Found ${_build_type} version of deal.II.")
+
+	SET(_lib "${TARGET_LIB}${${_build_type}_postfix}")
+	MESSAGE("-- Configuring library ${_lib}")
+
+	STRING(TOUPPER "${_build_type}" _BUILD_TYPE)
+
+	# Add all files, except the main file, to the library
+	ADD_LIBRARY(${_lib} SHARED ${_library_source_files})
+        INSTALL(TARGETS ${_lib} LIBRARY DESTINATION lib)
+    
+	# Compile an executable only if required by the user
+
+    	FOREACH(_main ${_applications_source_files})
+		# Find out the the name of the executable
+    		GET_FILENAME_COMPONENT(_target_a ${_main} NAME_WE)
+		SET(_target "${_target_a}${${_build_type}_postfix}")
+		MESSAGE("-- Configuring executable ${_target}")
+
+    		ADD_EXECUTABLE(${_target} ${_main})
+    		INSTALL(TARGETS ${_target} RUNTIME DESTINATION bin)
+    		TARGET_LINK_LIBRARIES(${_target} ${_lib})
+		DEAL_II_SETUP_TARGET(${_target} ${_BUILD_TYPE})
+    	ENDFOREACH()
+
+	SET(TEST_LIBRARIES_${_BUILD_TYPE} ${_lib})
+	DEAL_II_SETUP_TARGET(${_lib} ${_BUILD_TYPE})
+    ENDIF()
+ENDFOREACH()
 
 ADD_SUBDIRECTORY(tests)
 ENABLE_TESTING()

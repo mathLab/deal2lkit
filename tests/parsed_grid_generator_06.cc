@@ -27,17 +27,6 @@ void test(ParsedGridGenerator<dim, spacedim> &pgg)
                        +Utilities::int_to_string(spacedim)+".msh").c_str());
 }
 
-// prm.read_input_from_string(""
-//                            "subsection Test<1>\n"
-//                            "  set A point = 1.0\n"
-//                            "end\n"
-//                            "subsection Test<2>\n"
-//                            "  set A point = 1.0, 2.0\n"
-//                            "end\n"
-//                            "subsection Test<3>\n"
-//                            "  set A point = 1.0, 2.0, 3.0\n"
-//                            "end\n");
-
 int main ()
 {
   initlog();
@@ -47,10 +36,10 @@ int main ()
   ParameterHandler prm;
 
   std::vector<unsigned int> int_vec_2(2);
-  std::vector<unsigned int> int_vec_3(4);
+  std::vector<unsigned int> int_vec_3(3);
   std::string int_string_2, int_string_3, string3, string2;
 
-  int_vec_2[0] = 1;
+  int_vec_2[0] = 2;
   int_vec_2[1] = 2;
   int_vec_3[0] = 1;
   int_vec_3[1] = 2;
@@ -62,24 +51,24 @@ int main ()
   ParameterAcceptor::declare_all_parameters(prm);
 
   string3 = ""
-                             "subsection Subdivided HyperCube\n"
-                             "  set Grid to generate = subhypercube \n"
-                             "  set First additional double input for the grid = -1. \n"
-                             "  set Second additional double input for the grid = 1. \n"
-                             "  set Vector of dim Unsigned int input for the grid = "+ int_string_3 +" \n"
-                             "end\n";
+            "subsection Subdivided HyperCube\n"
+            "  set Grid to generate = rectangle\n"
+            "  set Optional Point<spacedim> 1 = -1.,-1., -1.\n"
+            "  set Optional Point<spacedim> 2 =  1., 1.,  1.\n"
+            "  set Optional vector of dim int = "+ int_string_3 + "\n"
+            "end\n";
 
   string2 = ""
-            "  subsection Subdivided HyperCube codim 1\n"
-            "  set Grid to generate = subhypercube \n"
-            "  set First additional double input for the grid = -1. \n"
-            "  set Second additional double input for the grid = 1. \n"
-            "  set Vector of dim Unsigned int input for the grid = "+ int_string_2 +" \n"
+            "subsection Subdivided HyperCube codim 1\n"
+            "  set Grid to generate = rectangle\n"
+            "  set Optional Point<spacedim> 1 = -1.,-1., 0.\n"
+            "  set Optional Point<spacedim> 2 =  1., 1., 0.\n"
+            "  set Optional vector of dim int = "+ int_string_2 + "\n"
             "end\n";
+
   prm.read_input_from_string(string3.c_str());
   prm.read_input_from_string(string2.c_str());
 
-  prm.log_parameters(deallog);
   ParameterAcceptor::parse_all_parameters(prm);
 
   test(a);
