@@ -130,10 +130,10 @@ void ParameterAcceptor::parse_parameters(ParameterHandler &prm)
           std::vector<std::string> string_list = Utilities::split_string_list(prm.get(it->first));
           int_list.resize(string_list.size());
           for (unsigned int i=0; i<string_list.size(); ++i)
-          {
-            std::istringstream reader(string_list[i]);
-            reader >> int_list[i];// = std::stoul(string_list[i]);
-          }
+            {
+              std::istringstream reader(string_list[i]);
+              reader >> int_list[i];
+            }
         }
       else if (it->second.type() == typeid(std::vector<double> *))
         {

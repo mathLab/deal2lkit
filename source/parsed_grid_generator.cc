@@ -199,10 +199,10 @@ void ParsedGridGenerator<dim, spacedim>::create(Triangulation<dim,spacedim> &tri
                                                  point_option_two, point_option_one,
                                                  bool_option_one);
     }
-    else if(grid_name == "subhyperrectangle")
+  else if (grid_name == "subhyperrectangle")
     {
       GridGenerator::subdivided_hyper_rectangle (tria, un_int_vec_option_one,
-                                      point_option_two, point_option_one);
+                                                 point_option_two, point_option_one);
 
     }
   // TO BE DONE WHEN POSSIBLE
