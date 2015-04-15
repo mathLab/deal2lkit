@@ -2,6 +2,7 @@
 #include "utilities.h"
 #include <deal.II/base/point.h>
 #include <string>
+#include <iostream>
 
 // Static empty class list
 std::vector<SmartPointer<ParameterAcceptor> > ParameterAcceptor::class_list;
