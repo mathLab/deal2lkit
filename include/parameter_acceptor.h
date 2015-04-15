@@ -5,8 +5,6 @@
 #include <deal.II/base/smartpointer.h>
 #include <boost/any.hpp>
 #include <typeinfo>
-#include <string>
-#include <iostream>
 
 
 using namespace dealii;
