@@ -23,6 +23,7 @@ std::string extension(const std::string &filename)
 template <int dim, int spacedim>
 ParsedGridGenerator<dim, spacedim>::ParsedGridGenerator(std::string name) :
   ParameterAcceptor(name)
+  //un_int_vec_option_one(dim)
 {}
 
 template <int dim, int spacedim>
@@ -62,23 +63,30 @@ template <int dim, int spacedim>
 void ParsedGridGenerator<dim, spacedim>::declare_parameters(ParameterHandler &prm)
 {
 
-  std::vector<unsigned int> dummy_vec_int(spacedim);
+  std::vector<unsigned int> dummy_vec_int(dim, 1);
   std::vector<double> dummy_vec_double(spacedim);
   Point<spacedim> dummy_point;
-  std::string def_point, def_int, def_double;
+  Point<spacedim> dummy_point_2;
+  for (unsigned int d=0; d<dim; ++d)
+    dummy_point_2[d]=1.0;
+
+  std::string def_point, def_point_2, def_int, def_double;
   def_point = create_default_value(dummy_point);
+  def_point_2 = create_default_value(dummy_point_2);
   def_int = create_default_value(dummy_vec_int);
   def_double = create_default_value(dummy_vec_double);
 
   add_parameter(prm, &grid_name,
-                "Grid to generate", "unit_hypercube",
-                Patterns::Selection("file|unit_hypercube|hypercube|subhypercube|hyperrectangle"),//|unit_hyperball|unit_hypershell|subhyperrectangle"),
-                "The grid to generate. You can choose among\n"
-                " file: read grid from a file (use Input grid filename for the filename)\n"
-                " unit_hypercube: create a unit hypercube\n"
-                " unit_hypershell: create a unit hypersphere\n"
-                " hypercube: create a unit hypercube using the additional input\n"
-               );
+                "Grid to generate", "rectangle",
+                Patterns::Selection("file|rectangle"), //|unit_hyperball|unit_hypershell|subhyperrectangle"),
+                "The grid to generate. You can choose among:\n"
+                "- file: read grid from a file using:\n"
+                "	- Input grid filename	    : input filename\n\n"
+                "- rectangle: create a subdivided hyperrectangle using:\n"
+                "	- Optional Point<spacedim> 1: left corner\n"
+                "	- Optional Point<spacedim> 2: right corner\n"
+                "	- Optional Vector of dim int: subdivisions on each direction\n"
+                "	- Optional bool 1	    : colorize grid\n");
 
   add_parameter(prm, &mesh_smoothing,
                 "Mesh smoothing alogrithm", "none",
@@ -103,35 +111,49 @@ void ParsedGridGenerator<dim, spacedim>::declare_parameters(ParameterHandler &pr
                 "grid format to use.");
 
   add_parameter(prm, &double_option_one,
-                "First additional double input for the grid", "1.",
+                "Optional double 1", "1.",
                 Patterns::Double(),
                 "First additional double to be used in the generation of the grid. "
                 "The use of it will depend on the specific grid.");
 
   add_parameter(prm, &double_option_two,
-                "Second additional double input for the grid", "0.5",
+                "Optional double 2", "0.5",
                 Patterns::Double(),
                 "Second additional double to be used in the generation of the grid. "
                 "The use of it will depend on the specific grid.");
 
 
   add_parameter(prm, &point_option_one,
-                "First additional Point<spacedim> input for the grid", def_point,
+                "Optional Point<spacedim> 1", def_point,
                 Patterns::List(Patterns::Double(), spacedim, spacedim),
                 "First additional Point<spacedim> to be used in the generation of the grid. "
                 "The use of it will depend on the specific grid.");
 
   add_parameter(prm, &point_option_two,
-                "Second additional Point<spacedim> input for the grid", def_point,
+                "Optional Point<spacedim> 2", def_point_2,
                 Patterns::List(Patterns::Double(), spacedim, spacedim),
                 "Second additional Point<spacedim> to be used in the generation of the grid. "
                 "The use of it will depend on the specific grid.");
 
+
   add_parameter(prm, &un_int_option_one,
-                "Unsigned int input for the grid", "1",
+                "Optional int 1","1",
                 Patterns::Integer(),
                 "Unsigned int to be used in the generation of the grid. "
                 "The use of it will depend on the specific grid.");
+
+  add_parameter(prm, &un_int_vec_option_one,
+                "Optional vector of dim int", def_int,
+                Patterns::List(Patterns::Integer(1), dim, dim),
+                "Vector of positive unsigned int to be used in the generation of the grid. "
+                "The use of it will depend on the specific grid.");
+
+  add_parameter(prm, &bool_option_one,
+                "Optional bool 1","false",
+                Patterns::Bool(),
+                "Bool be used in the generation of the grid. "
+                "The use of it will depend on the specific grid.");
+
 
   add_parameter(prm, &output_grid_file_name,
                 "Output grid file name", "",
@@ -171,39 +193,11 @@ template <int dim, int spacedim>
 void ParsedGridGenerator<dim, spacedim>::create(Triangulation<dim,spacedim> &tria)
 {
   Assert(grid_name != "", ExcNotInitialized());
-  if (grid_name == "unit_hypercube")
+  if (grid_name == "rectangle")
     {
-      GridGenerator::hyper_cube(tria);
-    }
-  else if (grid_name == "hypercube")
-    {
-      Point<spacedim> center;
-      if (double_option_one > double_option_two)
-        GridGenerator::hyper_cube (tria,
-                                   double_option_two, double_option_one);
-      else
-        GridGenerator::hyper_cube (tria,
-                                   double_option_one, double_option_two);
-
-
-    }
-  else if (grid_name == "subhypercube")
-    {
-      if (double_option_one > double_option_two)
-        {
-          GridGenerator::hyper_cube (tria,
-                                     double_option_two, double_option_one);
-        }
-      else
-        {
-          GridGenerator::hyper_cube (tria,
-                                     double_option_one, double_option_two);
-        }
-    }
-  else if (grid_name == "hyperrectangle")
-    {
-      GridGenerator::hyper_rectangle (tria,
-                                      point_option_two, point_option_one);
+      GridGenerator::subdivided_hyper_rectangle (tria, un_int_vec_option_one,
+                                                 point_option_two, point_option_one,
+                                                 bool_option_one);
     }
   // TO BE DONE WHEN POSSIBLE
   // else if(grid_name == "unit_hyperball")
@@ -270,7 +264,7 @@ void ParsedGridGenerator<dim, spacedim>::write(const Triangulation<dim,spacedim>
         go.write_vtk(tria, out);
       else if (ext == "msh")
         go.write_msh(tria, out);
-      else if (ext == "ucd")
+      else if (ext == "ucd" || ext == "inp")
         go.write_ucd(tria, out);
       else if (ext == "vtu")
         go.write_vtu(tria, out);

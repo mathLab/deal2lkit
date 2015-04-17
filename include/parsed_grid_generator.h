@@ -96,6 +96,10 @@ private:
 
   unsigned int un_int_option_one;
 
+  bool bool_option_one;
+
+  std::vector<unsigned int> un_int_vec_option_one;
+
   /**
    * Grid file name.
    */
