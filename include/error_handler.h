@@ -56,8 +56,9 @@ template <int ntables=1>
 class ErrorHandler : public ParameterAcceptor
 {
 public:
-  /** The constructor takes the mpi initialization stuff. */
-  ErrorHandler ();
+  /** The constructor takes an optional name, specifying the parameter
+      entry. */
+  ErrorHandler (const std::string name="");
 
   /** Initialize the given values for the paramter file. */
   virtual void declare_parameters(ParameterHandler &prm);
