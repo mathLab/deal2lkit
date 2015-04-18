@@ -18,7 +18,8 @@
 #include <string>
 
 template <int ntables>
-ErrorHandler<ntables>::ErrorHandler ()
+ErrorHandler<ntables>::ErrorHandler (const std::string name) :
+  ParameterAcceptor(name)
 {
   initialized = false;
 }
