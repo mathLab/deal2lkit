@@ -3,6 +3,7 @@
 
 #include <deal.II/base/parameter_handler.h>
 #include <deal.II/base/smartpointer.h>
+#include <deal.II/base/logstream.h>
 #include <boost/any.hpp>
 #include <typeinfo>
 
@@ -26,6 +27,28 @@ using namespace dealii;
  * able to declare parameters only once, and then automatically
  * populate variables with the values from the parameter file, without
  * having to do so manually.
+ *
+ * A typical usage of this chain of classes is the following:
+ *
+ * @begin code
+ * // This is your own class, derived from ParameterAcceptor
+ * class MyClass : public ParameterAcceptor {
+ * virtual declare_parameters(ParameterHandler &prm) {
+ *  add_parameters(prm, &member_var, "A param", "Default value");
+ * }
+ *
+ * ...
+ *
+ * int main() {
+ *  // Make sure you build your class BEFORE calling
+ *  // ParameterAcceptor::initialize()
+ *  MyClass class;
+ *
+ *  // With this call, all derived classes will have their
+ *  // parameters initialized
+ *  ParameterAcceptor::initialize("file.prm");
+ *
+ * @end
  */
 class ParameterAcceptor : public Subscriptor
 {
@@ -42,7 +65,7 @@ public:
    * The destructor sets to zero the pointer relative to this index,
    * so that it is safe to destroy the mother class.
    */
-  ~ParameterAcceptor();
+  virtual ~ParameterAcceptor();
 
 
   /**
@@ -88,6 +111,11 @@ public:
    * and parses all parameters that were added using add_parameter().
    */
   static void parse_all_parameters(ParameterHandler &prm);
+
+  /**
+   * Print information about all stored classes.
+   */
+  static void log_info();
 
 
   /**
