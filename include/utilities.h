@@ -45,7 +45,7 @@ namespace
     int status = -4; // some arbitrary value to eliminate the compiler warning
     handle result( abi::__cxa_demangle(name, NULL, NULL, &status) );
     return (status==0) ? result.p : name ;
-  };
+  }
 }
 
 /**
@@ -55,6 +55,6 @@ template <class T>
 std::string type(const T &t)
 {
   return demangle(typeid(t).name());
-};
+}
 
 #endif

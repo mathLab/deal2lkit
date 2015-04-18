@@ -149,4 +149,4 @@ void ParameterAcceptor::parse_parameters(ParameterHandler &prm)
 }
 
 
-void ParameterAcceptor::parse_parameters_call_back() {};
+void ParameterAcceptor::parse_parameters_call_back() {}
