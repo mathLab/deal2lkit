@@ -43,24 +43,42 @@ ParameterAcceptor::clear()
   class_list.clear();
 }
 
+void
+ParameterAcceptor::log_info()
+{
+  deallog.push("ParameterAcceptor");
+  for (unsigned int i=0; i<class_list.size(); ++i)
+    {
+      deallog << "Class " << i << ":";
+      if (class_list[i])
+        deallog << class_list[i]->get_section_name() << std::endl;
+      else
+        deallog << " NULL" << std::endl;
+    }
+  deallog.pop();
+}
+
+
 void ParameterAcceptor::parse_all_parameters(ParameterHandler &prm)
 {
   for (unsigned int i=0; i< class_list.size(); ++i)
-    {
-      prm.enter_subsection(class_list[i]->get_section_name());
-      class_list[i]->parse_parameters(prm);
-      prm.leave_subsection();
-    }
+    if (class_list[i] != NULL)
+      {
+        prm.enter_subsection(class_list[i]->get_section_name());
+        class_list[i]->parse_parameters(prm);
+        prm.leave_subsection();
+      }
 }
 
 void ParameterAcceptor::declare_all_parameters(ParameterHandler &prm)
 {
   for (unsigned int i=0; i< class_list.size(); ++i)
-    {
-      prm.enter_subsection(class_list[i]->get_section_name());
-      class_list[i]->declare_parameters(prm);
-      prm.leave_subsection();
-    }
+    if (class_list[i] != NULL)
+      {
+        prm.enter_subsection(class_list[i]->get_section_name());
+        class_list[i]->declare_parameters(prm);
+        prm.leave_subsection();
+      }
 }
 
 void ParameterAcceptor::parse_parameters(ParameterHandler &prm)

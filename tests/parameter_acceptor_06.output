@@ -1,0 +1,6 @@
+
+DEAL:parameters:Test<1>::A parameter: 1
+DEAL::My type: Test<1>
+DEAL::1
+DEAL:ParameterAcceptor::Class 0:Test<1>
+DEAL:ParameterAcceptor::Class 1: NULL
