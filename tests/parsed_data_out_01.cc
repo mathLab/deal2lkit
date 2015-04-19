@@ -14,7 +14,9 @@
 
 int main (int argc, char **argv)
 {
-  Utilities::MPI::MPI_InitFinalize mpi_initialization(argc, argv, 1);
+#ifdef DEAL_II_WITH_MPI
+  Utilities::MPI::MPI_InitFinalize mpi_initialization(argc, argv,1);
+#endif
   initlog();
   ParsedDataOut<2,2> pp("Test", "gnuplot");
 
