@@ -71,9 +71,12 @@ public:
   /**
    * Call declare_all_parameters(), read filename (if it is present as
    * input parameter) and parse_all_parameters() on the static member
-   * prm.
+   * prm. If outfilename is present, then write the content that was
+   * read in to the outfilename. This is useful to get all used
+   * parameters, and not only those that were set in the input file.
    */
-  static void initialize(const std::string filename="");
+  static void initialize(const std::string filename="",
+                         const std::string outfilename="");
 
   static void clear();
   /**
