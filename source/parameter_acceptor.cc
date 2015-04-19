@@ -1,6 +1,7 @@
 #include "parameter_acceptor.h"
 #include "utilities.h"
 #include <deal.II/base/point.h>
+#include <fstream>
 
 // Static empty class list
 std::vector<SmartPointer<ParameterAcceptor> > ParameterAcceptor::class_list;
@@ -28,13 +29,20 @@ std::string ParameterAcceptor::get_section_name() const
 
 
 void
-ParameterAcceptor::initialize(const std::string filename)
+ParameterAcceptor::initialize(const std::string filename,
+                              const std::string out_filename)
 {
   prm.clear();
   declare_all_parameters(prm);
   if (filename != "")
     prm.read_input(filename);
   parse_all_parameters(prm);
+  if (out_filename != "")
+    {
+      std::ofstream outfile(out_filename.c_str());
+      Assert(outfile, ExcIO());
+      prm.print_parameters(outfile, ParameterHandler::ShortText);
+    }
 }
 
 void

@@ -1,0 +1,26 @@
+
+DEAL:parameters:Test::Output partitioning: false
+DEAL:parameters:Test::Problem base name: solution
+DEAL:parameters:Test::Solution names: u
+DEAL:parameters:Test:Solution output format::Output format: gnuplot
+DEAL:parameters:Test:Solution output format::Subdivisions: 1
+DEAL:parameters:Test:Solution output format:DX output parameters::Coordinates format: ascii
+DEAL:parameters:Test:Solution output format:DX output parameters::Data format: ascii
+DEAL:parameters:Test:Solution output format:DX output parameters::Integer format: ascii
+DEAL:parameters:Test:Solution output format:DX output parameters::Write neighbors: true
+DEAL:parameters:Test:Solution output format:Eps output parameters::Azimut angle: 60
+DEAL:parameters:Test:Solution output format:Eps output parameters::Color function: default
+DEAL:parameters:Test:Solution output format:Eps output parameters::Color shading of interior of cells: true
+DEAL:parameters:Test:Solution output format:Eps output parameters::Draw mesh lines: true
+DEAL:parameters:Test:Solution output format:Eps output parameters::Fill interior of cells: true
+DEAL:parameters:Test:Solution output format:Eps output parameters::Index of vector for color: 0
+DEAL:parameters:Test:Solution output format:Eps output parameters::Index of vector for height: 0
+DEAL:parameters:Test:Solution output format:Eps output parameters::Line widths in eps units: 0.5
+DEAL:parameters:Test:Solution output format:Eps output parameters::Scale to width or height: width
+DEAL:parameters:Test:Solution output format:Eps output parameters::Scaling for z-axis: 1
+DEAL:parameters:Test:Solution output format:Eps output parameters::Size (width or height) in eps units: 300
+DEAL:parameters:Test:Solution output format:Eps output parameters::Turn angle: 30
+DEAL:parameters:Test:Solution output format:Povray output parameters::Include external file: true
+DEAL:parameters:Test:Solution output format:Povray output parameters::Use bicubic patches: false
+DEAL:parameters:Test:Solution output format:Povray output parameters::Use smooth triangles: false
+DEAL:parameters:Test:Solution output format:UCD output parameters::Write preamble: true
