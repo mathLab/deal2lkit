@@ -35,7 +35,7 @@ ParsedDataOut<dim,spacedim>::ParsedDataOut (const std::string &name,
 template <int dim, int spacedim>
 void ParsedDataOut<dim,spacedim>::declare_parameters (ParameterHandler &prm)
 {
-  add_parameter(prm, &base_name, "Problem base name", "out/test", Patterns::Anything());
+  add_parameter(prm, &base_name, "Problem base name", "solution", Patterns::Anything());
 
   add_parameter(prm, &output_partitioning, "Output partitioning", "false", Patterns::Bool());
   add_parameter(prm, &solution_names, "Solution names", "u", Patterns::Anything(),
@@ -127,11 +127,8 @@ void ParsedDataOut<dim,spacedim>::write_data_and_clear(const Mapping<dim,spacedi
                              DataOut<dim, DoFHandler<dim,spacedim> >::curved_inner_cells);
       data_out.write(output_file);
       deallog << "Wrote output file." << std::endl;
-      data_out.clear();
-      output_file.close();
-      deallog << "Reset output." << std::endl;
 
-      if (this_mpi_process == 0 && n_mpi_processes > 0 && data_out.default_suffix() == "vtu")
+      if (this_mpi_process == 0 && n_mpi_processes > 0 && data_out.default_suffix() == ".vtu")
         {
           std::vector<std::string> filenames;
           for (unsigned int i=0; i<n_mpi_processes; ++i)
@@ -144,7 +141,9 @@ void ParsedDataOut<dim,spacedim>::write_data_and_clear(const Mapping<dim,spacedi
           data_out.write_pvtu_record (master_output, filenames);
         }
 
-
+      data_out.clear();
+      output_file.close();
+      deallog << "Reset output." << std::endl;
     }
   deallog.pop();
 }

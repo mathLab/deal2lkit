@@ -73,6 +73,8 @@ namespace LA
 
 #include "parsed_grid_generator.h"
 #include "parsed_finite_element.h"
+#include "parsed_function.h"
+#include "parsed_data_out.h"
 #include "utilities.h"
 
 namespace ParallelLaplace
@@ -81,11 +83,12 @@ namespace ParallelLaplace
 
 
   template <int dim>
-  class LaplaceProblem
+  class LaplaceProblem : public ParameterAcceptor
   {
   public:
     LaplaceProblem ();
-    ~LaplaceProblem ();
+
+    virtual void declare_parameters(ParameterHandler &prm);
 
     void run ();
 
@@ -94,15 +97,15 @@ namespace ParallelLaplace
     void assemble_system ();
     void solve ();
     void refine_grid ();
-    void output_results (const unsigned int cycle) const;
+    void output_results (const unsigned int cycle);
     void make_grid_fe();
 
     MPI_Comm                                  mpi_communicator;
 
-    SmartPointer<parallel::distributed::Triangulation<dim> > triangulation;
+    std::unique_ptr<parallel::distributed::Triangulation<dim> > triangulation;
 
-    SmartPointer<DoFHandler<dim> >                           dof_handler;
-    SmartPointer<FiniteElement<dim,dim> >                               fe;
+    std::unique_ptr<FiniteElement<dim,dim> >  fe;
+    std::unique_ptr<DoFHandler<dim> >         dof_handler;
 
     IndexSet                                  locally_owned_dofs;
     IndexSet                                  locally_relevant_dofs;
@@ -115,6 +118,18 @@ namespace ParallelLaplace
 
     ConditionalOStream                        pcout;
     TimerOutput                               computing_timer;
+
+
+    std::vector<unsigned int> dirichlet_boundary_ids;
+    unsigned int n_cycles;
+    unsigned int initial_refinement;
+
+    // Collection of parsed_* objects
+    ParsedGridGenerator<dim,dim> tria_builder;
+    ParsedFiniteElement<dim,dim> fe_builder;
+    ParsedFunction<dim> forcing_function;
+    ParsedFunction<dim> dirichlet_function;
+    ParsedDataOut<dim,dim> data_out;
   };
 
 
@@ -123,6 +138,7 @@ namespace ParallelLaplace
   template <int dim>
   LaplaceProblem<dim>::LaplaceProblem ()
     :
+    ParameterAcceptor("Global parameters"),
     mpi_communicator (MPI_COMM_WORLD),
     pcout (std::cout,
            (Utilities::MPI::this_mpi_process(mpi_communicator)
@@ -130,20 +146,28 @@ namespace ParallelLaplace
     computing_timer (mpi_communicator,
                      pcout,
                      TimerOutput::summary,
-                     TimerOutput::wall_times)
+                     TimerOutput::wall_times),
+    tria_builder("Triangulation"),
+    fe_builder("Finite element"),
+    forcing_function("Rhs function"),
+    dirichlet_function("Dirichlet function"),
+    data_out("Data out", "vtu")
   {}
 
 
-
   template <int dim>
-  LaplaceProblem<dim>::~LaplaceProblem ()
+  void LaplaceProblem<dim>::declare_parameters(ParameterHandler &prm)
   {
-    dof_handler->clear ();
-    smart_delete(dof_handler);
-    smart_delete(fe);
-    smart_delete(triangulation);
-  }
+    add_parameter(prm, &dirichlet_boundary_ids, "Dirichlet boundary ids",
+                  "0", Patterns::List(Patterns::Integer(0)));
 
+    add_parameter(prm, &n_cycles, "Number of cycles", "5",
+                  Patterns::Integer(0));
+
+    add_parameter(prm, &initial_refinement, "Initial global refinement", "3",
+                  Patterns::Integer(0));
+
+  }
 
 
   template <int dim>
@@ -164,10 +188,13 @@ namespace ParallelLaplace
     constraints.clear ();
     constraints.reinit (locally_relevant_dofs);
     DoFTools::make_hanging_node_constraints (*dof_handler, constraints);
-    VectorTools::interpolate_boundary_values (*dof_handler,
-                                              0,
-                                              ZeroFunction<dim>(),
-                                              constraints);
+    for (auto id : dirichlet_boundary_ids)
+      {
+        VectorTools::interpolate_boundary_values (*dof_handler,
+                                                  id,
+                                                  dirichlet_function,
+                                                  constraints);
+      }
     constraints.close ();
 
     DynamicSparsityPattern csp (locally_relevant_dofs);
@@ -221,13 +248,8 @@ namespace ParallelLaplace
 
           for (unsigned int q_point=0; q_point<n_q_points; ++q_point)
             {
-              const double
-              rhs_value
-                = (fe_values.quadrature_point(q_point)[1]
-                   >
-                   0.5+0.25*std::sin(4.0 * numbers::PI *
-                                     fe_values.quadrature_point(q_point)[0])
-                   ? 1 : -1);
+              const double rhs_value =
+                forcing_function.value(fe_values.quadrature_point(q_point));
 
               for (unsigned int i=0; i<dofs_per_cell; ++i)
                 {
@@ -314,76 +336,37 @@ namespace ParallelLaplace
 
 
   template <int dim>
-  void LaplaceProblem<dim>::output_results (const unsigned int cycle) const
+  void LaplaceProblem<dim>::output_results (const unsigned int cycle)
   {
-    DataOut<dim> data_out;
-    data_out.attach_dof_handler (*dof_handler);
+    std::stringstream suffix;
+    suffix << "." << cycle;
+    data_out.prepare_data_output(*dof_handler, suffix.str());
     data_out.add_data_vector (locally_relevant_solution, "u");
-
-    Vector<float> subdomain (triangulation->n_active_cells());
-    for (unsigned int i=0; i<subdomain.size(); ++i)
-      subdomain(i) = triangulation->locally_owned_subdomain();
-    data_out.add_data_vector (subdomain, "subdomain");
-
-    data_out.build_patches ();
-
-    const std::string filename = ("solution-" +
-                                  Utilities::int_to_string (cycle, 2) +
-                                  "." +
-                                  Utilities::int_to_string
-                                  (triangulation->locally_owned_subdomain(), 4));
-    std::ofstream output ((filename + ".vtu").c_str());
-    data_out.write_vtu (output);
-
-    if (Utilities::MPI::this_mpi_process(mpi_communicator) == 0)
-      {
-        std::vector<std::string> filenames;
-        for (unsigned int i=0;
-             i<Utilities::MPI::n_mpi_processes(mpi_communicator);
-             ++i)
-          filenames.push_back ("solution-" +
-                               Utilities::int_to_string (cycle, 2) +
-                               "." +
-                               Utilities::int_to_string (i, 4) +
-                               ".vtu");
-
-        std::ofstream master_output ((filename + ".pvtu").c_str());
-        data_out.write_pvtu_record (master_output, filenames);
-      }
+    data_out.write_data_and_clear();
   }
 
   template<int dim>
   void LaplaceProblem<dim>::make_grid_fe ()
   {
-    // triangulation =*triangulation (mpi_communicator,
-    //                typename Triangulation<dim>::MeshSmoothing
-    //                (Triangulation<dim>::smoothing_on_refinement |
-    //                 Triangulation<dim>::smoothing_on_coarsening)),
+    triangulation = std::unique_ptr<parallel::distributed::Triangulation<dim> >
+                    (tria_builder.distributed(mpi_communicator));
+    dof_handler = std::unique_ptr<DoFHandler<dim> >
+                  (new DoFHandler<dim>(*triangulation));
 
-    ParsedGridGenerator<dim,dim> pgg("Cube");
-
-    ParsedFiniteElement<dim,dim> fe_builder("FE_Q");
-
-    ParameterAcceptor::initialize("params.prm");
-
-    triangulation = pgg.distributed(mpi_communicator);
-
-    dof_handler = new DoFHandler<dim>(*triangulation);
-    //GridGenerator::hyper_cube (triangulation, -1, 1);
+    triangulation->refine_global(initial_refinement);
 
     std::cout << "Number of active cells: "
               << triangulation->n_active_cells()
               << std::endl;
 
-    fe=fe_builder();
-
+    fe=std::unique_ptr<FiniteElement<dim> >
+       (fe_builder());
   }
 
 
   template <int dim>
   void LaplaceProblem<dim>::run ()
   {
-    const unsigned int n_cycles = 8;
     make_grid_fe();
     for (unsigned int cycle=0; cycle<n_cycles; ++cycle)
       {
@@ -433,6 +416,7 @@ int main(int argc, char *argv[])
 
       {
         LaplaceProblem<2> laplace_problem_2d;
+        ParameterAcceptor::initialize("parameters.prm", "used_parameters.prm");
         laplace_problem_2d.run ();
       }
     }
