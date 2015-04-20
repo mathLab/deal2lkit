@@ -57,4 +57,37 @@ std::string type(const T &t)
   return demangle(typeid(t).name());
 }
 
+/** Construct a unique pointer to a non const class T. */
+template <class T>
+std::unique_ptr<T>
+UP(T *t)
+{
+  return std::unique_ptr<T>(t);
+}
+
+/** Construct a unique pointer to a const class T. */
+template <class T>
+std::unique_ptr<const T>
+UP(const T *t)
+{
+  return std::unique_ptr<const T>(t);
+}
+
+/** Construct a shared pointer to a non const class T. */
+template <class T>
+std::shared_ptr<T>
+SP(T *t)
+{
+  return std::shared_ptr<T>(t);
+}
+
+/** Construct a shared pointer to a const class T. */
+template <class T>
+std::shared_ptr<const T>
+SP(const T *t)
+{
+  return std::shared_ptr<const T>(t);
+}
+
+
 #endif
