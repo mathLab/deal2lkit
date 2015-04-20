@@ -102,10 +102,10 @@ namespace ParallelLaplace
 
     MPI_Comm                                  mpi_communicator;
 
-    std::shared_ptr<parallel::distributed::Triangulation<dim> > triangulation;
+    shared_ptr<parallel::distributed::Triangulation<dim> > triangulation;
 
-    std::shared_ptr<FiniteElement<dim,dim> >  fe;
-    std::shared_ptr<DoFHandler<dim> >         dof_handler;
+    shared_ptr<FiniteElement<dim,dim> >  fe;
+    shared_ptr<DoFHandler<dim> >         dof_handler;
 
     IndexSet                                  locally_owned_dofs;
     IndexSet                                  locally_relevant_dofs;
