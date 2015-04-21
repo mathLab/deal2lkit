@@ -16,16 +16,29 @@ class ParsedFunction : public ParameterAcceptor, public Functions::ParsedFunctio
 {
 public:
   /**
-   * Constructor: takes an optional name for the section.
+   * Constructor: takes an optional name for the section. If the
+   * optional expression string is given, than it is used to set the
+   * expression as soon as the parameters are declared.
    */
-  ParsedFunction(std::string name="");
+  ParsedFunction(const std::string &name="",
+                 const std::string &default_exp="");
 
   /**
    * Calls the underlying function of ParsedFunction.
    */
   virtual void declare_parameters(ParameterHandler &prm);
 
+  /**
+   * Calls the underlying function of ParsedFunction.
+   */
   virtual void parse_parameters(ParameterHandler &prm);
+
+
+private:
+  /**
+   * Default expression of this function. "
+   */
+  const std::string default_exp;
 
 };
 
@@ -34,9 +47,11 @@ public:
 // ============================================================
 
 template<int dim, int ncomponents>
-ParsedFunction<dim, ncomponents>::ParsedFunction(std::string name) :
+ParsedFunction<dim, ncomponents>::ParsedFunction(const std::string &name,
+                                                 const std::string &default_exp) :
   ParameterAcceptor(name),
-  Functions::ParsedFunction<dim>(ncomponents)
+  Functions::ParsedFunction<dim>(ncomponents),
+  default_exp(default_exp)
 {}
 
 
@@ -44,6 +59,8 @@ template<int dim, int ncomponents>
 void ParsedFunction<dim, ncomponents>:: declare_parameters(ParameterHandler &prm)
 {
   Functions::ParsedFunction<dim>::declare_parameters(prm, ncomponents);
+  if (default_exp != "")
+    prm.set("Function expression", default_exp);
 }
 
 
