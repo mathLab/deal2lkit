@@ -191,8 +191,6 @@ namespace ConvTables
 
     HelmholtzProblem (const RefinementMode      refinement_mode);
 
-    ~HelmholtzProblem ();
-
     void run ();
 
   private:
@@ -203,9 +201,9 @@ namespace ConvTables
     void refine_grid ();
     void process_solution (const unsigned int cycle);
 
-    SmartPointer<Triangulation<dim> >    triangulation;
-    SmartPointer<FiniteElement<dim,dim> >             fe;
-    SmartPointer<DoFHandler<dim> >       dof_handler;
+    shared_ptr<Triangulation<dim> >     triangulation;
+    shared_ptr<FiniteElement<dim,dim> > fe;
+    shared_ptr<DoFHandler<dim> >        dof_handler;
 
 
     ConstraintMatrix                        hanging_node_constraints;
@@ -237,15 +235,6 @@ namespace ConvTables
   {}
 
 
-
-  template <int dim>
-  HelmholtzProblem<dim>::~HelmholtzProblem ()
-  {
-    smart_delete(dof_handler);
-    smart_delete(fe);
-    smart_delete(triangulation);
-  }
-
   template <int dim>
   void HelmholtzProblem<dim>::make_grid_fe ()
   {
@@ -253,15 +242,15 @@ namespace ConvTables
 
     ParameterAcceptor::initialize("params_conv.prm");
 
-    triangulation = pgg.serial();
-    dof_handler = new DoFHandler<dim>(*triangulation);
+    triangulation = SP(pgg.serial());
+    dof_handler = SP(new DoFHandler<dim>(*triangulation));
     //GridGenerator::hyper_cube (triangulation, -1, 1);
 
     std::cout << "Number of active cells: "
               << triangulation->n_active_cells()
               << std::endl;
 
-    fe=fe_builder();
+    fe=SP(fe_builder());
 
   }
 

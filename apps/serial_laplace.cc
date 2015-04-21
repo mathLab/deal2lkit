@@ -63,8 +63,6 @@ class SerialLaplace
 {
 public:
   SerialLaplace ();
-  ~SerialLaplace ();
-
   void run ();
 
 
@@ -75,9 +73,9 @@ private:
   void solve ();
   void output_results () const;
 
-  SmartPointer<Triangulation<2> >    triangulation;
-  SmartPointer<FiniteElement<2,2> >             fe;
-  SmartPointer<DoFHandler<2> >       dof_handler;
+  shared_ptr<Triangulation<2> >    triangulation;
+  shared_ptr<FiniteElement<2,2> >             fe;
+  shared_ptr<DoFHandler<2> >       dof_handler;
 
   SparsityPattern      sparsity_pattern;
   SparseMatrix<double> system_matrix;
@@ -90,13 +88,6 @@ private:
 SerialLaplace::SerialLaplace ()
 {}
 
-SerialLaplace::~SerialLaplace ()
-{
-  smart_delete(dof_handler);
-  smart_delete(fe);
-  smart_delete(triangulation);
-}
-
 
 void SerialLaplace::make_grid_fe ()
 {
@@ -107,15 +98,15 @@ void SerialLaplace::make_grid_fe ()
 
   ParameterAcceptor::initialize("params.prm");
 
-  triangulation = pgg.serial();
-  dof_handler = new DoFHandler<2>(*triangulation);
+  triangulation = SP(pgg.serial());
+  dof_handler = SP(new DoFHandler<2>(*triangulation));
   //GridGenerator::hyper_cube (triangulation, -1, 1);
 
   std::cout << "Number of active cells: "
             << triangulation->n_active_cells()
             << std::endl;
 
-  fe=fe_builder22();
+  fe=SP(fe_builder22());
 
 }
 
