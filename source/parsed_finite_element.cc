@@ -2,15 +2,17 @@
 #include <deal.II/fe/fe_tools.h>
 
 template <int dim, int spacedim>
-ParsedFiniteElement<dim, spacedim>::ParsedFiniteElement(std::string name) :
-  ParameterAcceptor(name)
+ParsedFiniteElement<dim, spacedim>::ParsedFiniteElement(const std::string &name,
+                                                        const std::string &default_name) :
+  ParameterAcceptor(name),
+  fe_name(default_name)
 {}
 
 template <int dim, int spacedim>
 void ParsedFiniteElement<dim, spacedim>::declare_parameters(ParameterHandler &prm)
 {
   add_parameter(prm, &fe_name,
-                "Finite element space", "FE_Q(1)",
+                "Finite element space", fe_name,
                 Patterns::Anything(),
                 "The finite element space to use. For vector "
                 "finite elements use the notation "
@@ -21,7 +23,6 @@ template <int dim, int spacedim>
 FiniteElement<dim,spacedim> *
 ParsedFiniteElement<dim, spacedim>::operator()()
 {
-  Assert(fe_name != "", ExcNotInitialized());
   return FETools::get_fe_by_name<dim,spacedim>(fe_name);
 }
 

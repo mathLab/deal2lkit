@@ -52,7 +52,8 @@ public:
    * parameters of this class will be filled with values from the
    * argument ParameterHandler.
    */
-  ParsedFiniteElement (std::string name="");
+  ParsedFiniteElement (const std::string &name="",
+                       const std::string &default_fe="FE_Q(1)");
 
   /**
    * Declare possible parameters of this class.
