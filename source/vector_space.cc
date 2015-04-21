@@ -613,9 +613,9 @@ void VectorSpace<dim, spacedim>::count_dofs(std::vector<unsigned int> target_com
 }
 
 
-template class VectorSpace<1,1>;
+// template class VectorSpace<1,1>;
 // template class VectorSpace<1,2>;
 // template class VectorSpace<1,3>;
-template class VectorSpace<2,2>;
+// template class VectorSpace<2,2>;
 // template class VectorSpace<2,3>;
-template class VectorSpace<3,3>;
+// template class VectorSpace<3,3>;

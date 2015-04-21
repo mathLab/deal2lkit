@@ -102,10 +102,10 @@ namespace ParallelLaplace
 
     MPI_Comm                                  mpi_communicator;
 
-    std::unique_ptr<parallel::distributed::Triangulation<dim> > triangulation;
+    shared_ptr<parallel::distributed::Triangulation<dim> > triangulation;
 
-    std::unique_ptr<FiniteElement<dim,dim> >  fe;
-    std::unique_ptr<DoFHandler<dim> >         dof_handler;
+    shared_ptr<FiniteElement<dim,dim> >  fe;
+    shared_ptr<DoFHandler<dim> >         dof_handler;
 
     IndexSet                                  locally_owned_dofs;
     IndexSet                                  locally_relevant_dofs;
@@ -348,10 +348,8 @@ namespace ParallelLaplace
   template<int dim>
   void LaplaceProblem<dim>::make_grid_fe ()
   {
-    triangulation = std::unique_ptr<parallel::distributed::Triangulation<dim> >
-                    (tria_builder.distributed(mpi_communicator));
-    dof_handler = std::unique_ptr<DoFHandler<dim> >
-                  (new DoFHandler<dim>(*triangulation));
+    triangulation = SP(tria_builder.distributed(mpi_communicator));
+    dof_handler = SP(new DoFHandler<dim>(*triangulation));
 
     triangulation->refine_global(initial_refinement);
 
@@ -359,8 +357,7 @@ namespace ParallelLaplace
               << triangulation->n_active_cells()
               << std::endl;
 
-    fe=std::unique_ptr<FiniteElement<dim> >
-       (fe_builder());
+    fe=SP(fe_builder());
   }
 
 
