@@ -41,8 +41,9 @@ std::string type(const T &t)
 
 /**
  *  Construct a shared pointer to a non const class T. This is a
- *  convenient class to simplify the construction of shared pointers
- *  (which should replace dealii::SmartPointers):
+ *  convenience function to simplify the construction of shared
+ *  pointers (which should replace dealii::SmartPointers):
+ *
  *  @begin code
  *
  *  std_cxx11::shared_ptr<MyClass> my_ptr;
@@ -62,8 +63,9 @@ SP(T *t)
 
 /**
  *  Construct a shared pointer to a const class T. This is a
- *  convenient class to simplify the construction of shared pointers
- *  (which should replace dealii::SmartPointers):
+ *  convenience function to simplify the construction of shared
+ *  pointers (which should replace dealii::SmartPointers):
+ *
  *  @begin code
  *
  *  std_cxx11::shared_ptr<const MyClass> my_ptr;
