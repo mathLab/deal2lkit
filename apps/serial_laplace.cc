@@ -33,11 +33,13 @@
 #include <deal.II/dofs/dof_tools.h>
 
 #include <deal.II/fe/fe_values.h>
-#include <deal.II/base/quadrature_lib.h>
 
+#include <deal.II/base/quadrature_lib.h>
 #include <deal.II/base/function.h>
+
 #include <deal.II/numerics/vector_tools.h>
 #include <deal.II/numerics/matrix_tools.h>
+#include <deal.II/numerics/data_out.h>
 
 #include <deal.II/lac/vector.h>
 #include <deal.II/lac/full_matrix.h>
@@ -46,23 +48,31 @@
 #include <deal.II/lac/solver_cg.h>
 #include <deal.II/lac/precondition.h>
 
-#include <deal.II/numerics/data_out.h>
+
+#include <deal.II/base/mpi.h>
+
 #include <fstream>
 #include <iostream>
 
 
 #include "parsed_grid_generator.h"
 #include "parsed_finite_element.h"
+#include "parsed_function.h"
+#include "parsed_data_out.h"
 #include "utilities.h"
 
 using namespace dealii;
 
 
 
-class SerialLaplace
+template<int dim>
+class SerialLaplace : public ParameterAcceptor
 {
 public:
   SerialLaplace ();
+
+  virtual void declare_parameters(ParameterHandler &prm);
+
   void run ();
 
 
@@ -71,155 +81,149 @@ private:
   void setup_system ();
   void assemble_system ();
   void solve ();
-  void output_results () const;
+  void output_results ();
 
-  shared_ptr<Triangulation<2> >    triangulation;
-  shared_ptr<FiniteElement<2,2> >             fe;
-  shared_ptr<DoFHandler<2> >       dof_handler;
+  shared_ptr<Triangulation<dim> >    triangulation;
+  shared_ptr<FiniteElement<dim,dim> >             fe;
+  shared_ptr<DoFHandler<dim> >       dof_handler;
 
+  ConstraintMatrix     constraints;
   SparsityPattern      sparsity_pattern;
   SparseMatrix<double> system_matrix;
 
   Vector<double>       solution;
   Vector<double>       system_rhs;
+
+  ParsedGridGenerator<dim,dim> tria_builder;
+  ParsedFiniteElement<dim,dim> fe_builder;
+
+  ParsedFunction<dim> forcing_function;
+  ParsedFunction<dim> permeability;
+  ParsedFunction<dim> dirichlet_function;
+
+  ParsedDataOut<dim,dim> data_out;
+
+  std::vector<unsigned int> dirichlet_boundary_ids;
+  unsigned int n_cycles;
+  unsigned int initial_refinement;
 };
 
 
-SerialLaplace::SerialLaplace ()
+template <int dim>
+SerialLaplace<dim>::SerialLaplace ()
+  :
+  ParameterAcceptor("Global parameters"),
+  tria_builder("Triangulation"),
+  fe_builder("Finite element"),
+  forcing_function("Rhs function"),
+  permeability("Permeability"),
+  dirichlet_function("Dirichlet function"),
+  data_out("Data out", "vtu")
 {}
 
 
-void SerialLaplace::make_grid_fe ()
+template <int dim>
+void SerialLaplace<dim>::declare_parameters(ParameterHandler &prm)
+{
+  add_parameter(prm, &dirichlet_boundary_ids, "Dirichlet boundary ids",
+                "0", Patterns::List(Patterns::Integer(0)));
+
+  add_parameter(prm, &n_cycles, "Number of cycles", "5",
+                Patterns::Integer(0));
+
+  add_parameter(prm, &initial_refinement, "Initial global refinement", "4",
+                Patterns::Integer(0));
+
+}
+
+template <int dim>
+void SerialLaplace<dim>::make_grid_fe ()
 {
 
-  ParsedGridGenerator<2,2> pgg("Cube");
+  ParameterAcceptor::initialize("parameters_ser.prm", "used_parameters_ser.prm");
 
-  ParsedFiniteElement<2,2> fe_builder22("FE_Q");
-
-  ParameterAcceptor::initialize("params.prm");
-
-  triangulation = SP(pgg.serial());
-  dof_handler = SP(new DoFHandler<2>(*triangulation));
-  //GridGenerator::hyper_cube (triangulation, -1, 1);
+  triangulation = SP(tria_builder.serial());
+  dof_handler = SP(new DoFHandler<dim>(*triangulation));
 
   std::cout << "Number of active cells: "
             << triangulation->n_active_cells()
             << std::endl;
 
-  fe=SP(fe_builder22());
+  fe=SP(fe_builder());
 
 }
 
 
 
-
-void SerialLaplace::setup_system ()
+template <int dim>
+void SerialLaplace<dim>::setup_system ()
 {
   dof_handler->distribute_dofs (*fe);
   std::cout << "Number of degrees of freedom: "
             << dof_handler->n_dofs()
             << std::endl;
 
-  DynamicSparsityPattern c_sparsity(dof_handler->n_dofs());
-  DoFTools::make_sparsity_pattern (*dof_handler, c_sparsity);
-  sparsity_pattern.copy_from(c_sparsity);
+  constraints.clear ();
+
+  DoFTools::make_hanging_node_constraints (*dof_handler, constraints);
+
+  for (auto id : dirichlet_boundary_ids)
+    {
+      VectorTools::interpolate_boundary_values (*dof_handler,
+                                                0,
+                                                dirichlet_function,
+                                                constraints);
+    }
+  constraints.close ();
+
+  DynamicSparsityPattern d_sparsity(dof_handler->n_dofs());
+
+  DoFTools::make_sparsity_pattern (*dof_handler, d_sparsity,
+                                   constraints);
+
+  sparsity_pattern.copy_from(d_sparsity);
 
   system_matrix.reinit (sparsity_pattern);
 
   solution.reinit (dof_handler->n_dofs());
+
   system_rhs.reinit (dof_handler->n_dofs());
 }
 
 
-
-void SerialLaplace::assemble_system ()
+template <int dim>
+void SerialLaplace<dim>::assemble_system ()
 {
-  QGauss<2>  quadrature_formula(2);
-  FEValues<2> fe_values (*fe, quadrature_formula,
-                         update_values | update_gradients | update_JxW_values);
+  QGauss<dim>  quadrature_formula(4);
 
-  const unsigned int   dofs_per_cell = fe->dofs_per_cell;
-  const unsigned int   n_q_points    = quadrature_formula.size();
+  MatrixCreator::create_laplace_matrix (StaticMappingQ1<dim, dim>::mapping,
+                                        *dof_handler, quadrature_formula, system_matrix,
+                                        forcing_function, system_rhs, &permeability, constraints);
 
-  FullMatrix<double>   cell_matrix (dofs_per_cell, dofs_per_cell);
-  Vector<double>       cell_rhs (dofs_per_cell);
-
-  std::vector<types::global_dof_index> local_dof_indices (dofs_per_cell);
-
-  DoFHandler<2>::active_cell_iterator
-  cell = dof_handler->begin_active(),
-  endc = dof_handler->end();
-  for (; cell!=endc; ++cell)
-    {
-      fe_values.reinit (cell);
-
-      cell_matrix = 0;
-      cell_rhs = 0;
-
-      for (unsigned int q_index=0; q_index<n_q_points; ++q_index)
-        {
-          for (unsigned int i=0; i<dofs_per_cell; ++i)
-            for (unsigned int j=0; j<dofs_per_cell; ++j)
-              cell_matrix(i,j) += (fe_values.shape_grad (i, q_index) *
-                                   fe_values.shape_grad (j, q_index) *
-                                   fe_values.JxW (q_index));
-
-          for (unsigned int i=0; i<dofs_per_cell; ++i)
-            cell_rhs(i) += (fe_values.shape_value (i, q_index) *
-                            1 *
-                            fe_values.JxW (q_index));
-        }
-      cell->get_dof_indices (local_dof_indices);
-
-      for (unsigned int i=0; i<dofs_per_cell; ++i)
-        for (unsigned int j=0; j<dofs_per_cell; ++j)
-          system_matrix.add (local_dof_indices[i],
-                             local_dof_indices[j],
-                             cell_matrix(i,j));
-
-      for (unsigned int i=0; i<dofs_per_cell; ++i)
-        system_rhs(local_dof_indices[i]) += cell_rhs(i);
-    }
-
-
-  std::map<types::global_dof_index,double> boundary_values;
-  VectorTools::interpolate_boundary_values (*dof_handler,
-                                            0,
-                                            ZeroFunction<2>(),
-                                            boundary_values);
-  MatrixTools::apply_boundary_values (boundary_values,
-                                      system_matrix,
-                                      solution,
-                                      system_rhs);
 }
 
 
-
-void SerialLaplace::solve ()
+template <int dim>
+void SerialLaplace<dim>::solve ()
 {
   SolverControl           solver_control (1000, 1e-12);
   SolverCG<>              solver (solver_control);
-
   solver.solve (system_matrix, solution, system_rhs,
                 PreconditionIdentity());
 }
 
 
-
-void SerialLaplace::output_results () const
+template <int dim>
+void SerialLaplace<dim>::output_results ()
 {
-  DataOut<2> data_out;
-  data_out.attach_dof_handler (*dof_handler);
-  data_out.add_data_vector (solution, "solution");
-  data_out.build_patches ();
-
-  std::ofstream output ("solution.gpl");
-  data_out.write_gnuplot (output);
+  data_out.prepare_data_output(*dof_handler, "");
+  data_out.add_data_vector (solution, "u");
+  data_out.write_data_and_clear();
 }
 
 
-
-void SerialLaplace::run ()
+template <int dim>
+void SerialLaplace<dim>::run ()
 {
   make_grid_fe ();
   setup_system ();
@@ -230,10 +234,13 @@ void SerialLaplace::run ()
 
 
 
-int main ()
+int main (int argc, char *argv[])
 {
-  SerialLaplace laplace_problem;
-  laplace_problem.run ();
+
+  Utilities::MPI::MPI_InitFinalize mpi_initialization(argc, argv);
+
+  SerialLaplace<2> laplace_problem_2;
+  laplace_problem_2.run ();
 
   return 0;
 }
