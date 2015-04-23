@@ -116,7 +116,7 @@ SerialLaplace<dim>::SerialLaplace ()
   tria_builder("Triangulation"),
   fe_builder("Finite element"),
   forcing_function("Rhs function"),
-  permeability("Permeability"),
+  permeability("Permeability","1."),
   dirichlet_function("Dirichlet function"),
   data_out("Data out", "vtu")
 {}
@@ -127,9 +127,6 @@ void SerialLaplace<dim>::declare_parameters(ParameterHandler &prm)
 {
   add_parameter(prm, &dirichlet_boundary_ids, "Dirichlet boundary ids",
                 "0", Patterns::List(Patterns::Integer(0)));
-
-  add_parameter(prm, &n_cycles, "Number of cycles", "5",
-                Patterns::Integer(0));
 
   add_parameter(prm, &initial_refinement, "Initial global refinement", "4",
                 Patterns::Integer(0));
@@ -143,6 +140,9 @@ void SerialLaplace<dim>::make_grid_fe ()
   ParameterAcceptor::initialize("parameters_ser.prm", "used_parameters_ser.prm");
 
   triangulation = SP(tria_builder.serial());
+
+  triangulation->refine_global(initial_refinement);
+
   dof_handler = SP(new DoFHandler<dim>(*triangulation));
 
   std::cout << "Number of active cells: "
@@ -170,7 +170,7 @@ void SerialLaplace<dim>::setup_system ()
   for (auto id : dirichlet_boundary_ids)
     {
       VectorTools::interpolate_boundary_values (*dof_handler,
-                                                0,
+                                                id,
                                                 dirichlet_function,
                                                 constraints);
     }
@@ -216,7 +216,7 @@ void SerialLaplace<dim>::solve ()
 template <int dim>
 void SerialLaplace<dim>::output_results ()
 {
-  data_out.prepare_data_output(*dof_handler, "");
+  data_out.prepare_data_output(*dof_handler);
   data_out.add_data_vector (solution, "u");
   data_out.write_data_and_clear();
 }
