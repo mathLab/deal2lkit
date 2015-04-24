@@ -444,7 +444,7 @@ namespace ConvTables
   template <int dim>
   void HelmholtzProblem<dim>::process_solution (const unsigned int cycle)
   {
-    eh.error_from_exact(*dof_handler, solution, Solution<dim>(), refinement_mode);
+    eh.error_from_exact(*dof_handler, solution, Solution<dim>());
   }
 
 
@@ -484,7 +484,7 @@ namespace ConvTables
         process_solution (cycle);
       }
 
-    eh.output_table(std::cout, refinement_mode);
+    eh.output_table(std::cout);
 
     std::string vtk_filename;
     switch (refinement_mode)
