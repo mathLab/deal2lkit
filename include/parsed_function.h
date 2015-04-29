@@ -65,7 +65,7 @@ void ParsedFunction<dim, ncomponents>:: declare_parameters(ParameterHandler &prm
   if (default_exp != "")
     prm.set("Function expression", default_exp);
   if (default_const != "")
-    prm.set("Function constants", default_exp);
+    prm.set("Function constants", default_const);
 }
 
 
