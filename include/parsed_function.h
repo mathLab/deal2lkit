@@ -21,7 +21,8 @@ public:
    * expression as soon as the parameters are declared.
    */
   ParsedFunction(const std::string &name="",
-                 const std::string &default_exp="");
+                 const std::string &default_exp="",
+                 const std::string &default_const="");
 
   /**
    * Calls the underlying function of ParsedFunction.
@@ -39,7 +40,7 @@ private:
    * Default expression of this function. "
    */
   const std::string default_exp;
-
+  const std::string default_const;
 };
 
 // ============================================================
@@ -48,10 +49,12 @@ private:
 
 template<int dim, int ncomponents>
 ParsedFunction<dim, ncomponents>::ParsedFunction(const std::string &name,
-                                                 const std::string &default_exp) :
+                                                 const std::string &default_exp,
+                                                 const std::string &default_const) :
   ParameterAcceptor(name),
   Functions::ParsedFunction<dim>(ncomponents),
-  default_exp(default_exp)
+  default_exp(default_exp),
+  default_const(default_const)
 {}
 
 
@@ -61,6 +64,8 @@ void ParsedFunction<dim, ncomponents>:: declare_parameters(ParameterHandler &prm
   Functions::ParsedFunction<dim>::declare_parameters(prm, ncomponents);
   if (default_exp != "")
     prm.set("Function expression", default_exp);
+  if (default_const != "")
+    prm.set("Function constants", default_exp);
 }
 
 
