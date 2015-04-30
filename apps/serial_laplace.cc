@@ -248,29 +248,29 @@ template <int dim>
 void SerialLaplace<dim>::refine_grid ()
 {
   if (refinement_mode == "global_refinement")
-  {
-    triangulation->refine_global (1);
-  }
+    {
+      triangulation->refine_global (1);
+    }
   else if (refinement_mode == "adaptive_refinement")
-  {
-    Vector<float> estimated_error_per_cell (triangulation->n_active_cells());
+    {
+      Vector<float> estimated_error_per_cell (triangulation->n_active_cells());
 
-    KellyErrorEstimator<dim>::estimate (*dof_handler,
-                                        QGauss<dim-1>(3),
-                                        typename FunctionMap<dim>::type(),
-                                        solution,
-                                        estimated_error_per_cell);
+      KellyErrorEstimator<dim>::estimate (*dof_handler,
+                                          QGauss<dim-1>(3),
+                                          typename FunctionMap<dim>::type(),
+                                          solution,
+                                          estimated_error_per_cell);
 
-    GridRefinement::refine_and_coarsen_fixed_number (*triangulation,
-                                                     estimated_error_per_cell,
-                                                     0.3, 0.03);
+      GridRefinement::refine_and_coarsen_fixed_number (*triangulation,
+                                                       estimated_error_per_cell,
+                                                       0.3, 0.03);
 
-    triangulation->execute_coarsening_and_refinement ();
-  }
+      triangulation->execute_coarsening_and_refinement ();
+    }
   else
-  {
-    Assert (false, ExcNotImplemented());
-  }
+    {
+      Assert (false, ExcNotImplemented());
+    }
 }
 
 template <int dim>
@@ -278,17 +278,17 @@ void SerialLaplace<dim>::run ()
 {
   make_grid_fe ();
   for (unsigned int cycle=0; cycle<n_cycles; ++cycle)
-  {
-    std::cout<<"cycle : "<<cycle+1<<std::endl;
-    setup_system ();
-    assemble_system ();
-    solve ();
-    process_solution (cycle);
-    if(cycle < n_cycles-1)
-      refine_grid ();
-    else
-      output_results ();
-  }
+    {
+      std::cout<<"cycle : "<<cycle+1<<std::endl;
+      setup_system ();
+      assemble_system ();
+      solve ();
+      process_solution (cycle);
+      if (cycle < n_cycles-1)
+        refine_grid ();
+      else
+        output_results ();
+    }
   eh.output_table(std::cout);
 
 }
