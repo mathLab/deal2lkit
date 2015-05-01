@@ -31,6 +31,7 @@
 #include <deal.II/fe/fe_q.h>
 
 #include <deal.II/dofs/dof_tools.h>
+#include <deal.II/grid/grid_refinement.h>
 
 #include <deal.II/fe/fe_values.h>
 
@@ -39,6 +40,7 @@
 
 #include <deal.II/numerics/vector_tools.h>
 #include <deal.II/numerics/matrix_tools.h>
+#include <deal.II/numerics/error_estimator.h>
 #include <deal.II/numerics/data_out.h>
 
 #include <deal.II/lac/vector.h>
@@ -59,6 +61,7 @@
 #include "parsed_finite_element.h"
 #include "parsed_function.h"
 #include "parsed_data_out.h"
+#include "error_handler.h"
 #include "utilities.h"
 
 using namespace dealii;
@@ -69,6 +72,7 @@ template<int dim>
 class SerialLaplace : public ParameterAcceptor
 {
 public:
+
   SerialLaplace ();
 
   virtual void declare_parameters(ParameterHandler &prm);
@@ -82,6 +86,8 @@ private:
   void assemble_system ();
   void solve ();
   void output_results ();
+  void process_solution (const unsigned int cycle);
+  void refine_grid ();
 
   shared_ptr<Triangulation<dim> >    triangulation;
   shared_ptr<FiniteElement<dim,dim> >             fe;
@@ -100,12 +106,15 @@ private:
   ParsedFunction<dim> forcing_function;
   ParsedFunction<dim> permeability;
   ParsedFunction<dim> dirichlet_function;
+  ParsedFunction<dim> exact_solution;
 
   ParsedDataOut<dim,dim> data_out;
 
   std::vector<unsigned int> dirichlet_boundary_ids;
   unsigned int n_cycles;
   unsigned int initial_refinement;
+  std::string   refinement_mode;
+  ErrorHandler<2> eh;
 };
 
 
@@ -115,9 +124,10 @@ SerialLaplace<dim>::SerialLaplace ()
   ParameterAcceptor("Global parameters"),
   tria_builder("Triangulation"),
   fe_builder("Finite element"),
-  forcing_function("Rhs function"),
+  forcing_function("Rhs function","2 * pi * pi * sin(pi*x) * sin(pi*y)"),
   permeability("Permeability","1."),
   dirichlet_function("Dirichlet function"),
+  exact_solution("Exact solution","sin(pi*x) * sin(pi*y)"),
   data_out("Data out", "vtu")
 {}
 
@@ -130,6 +140,12 @@ void SerialLaplace<dim>::declare_parameters(ParameterHandler &prm)
 
   add_parameter(prm, &initial_refinement, "Initial global refinement", "4",
                 Patterns::Integer(0));
+
+  add_parameter(prm, &n_cycles, "Total number of cycles", "5",
+                Patterns::Integer(0));
+
+  add_parameter(prm, &refinement_mode, "Refinement strategy", "adaptive_refinement",
+                Patterns::Selection("adaptive_refinement|global_refinement"));
 
 }
 
@@ -210,6 +226,7 @@ void SerialLaplace<dim>::solve ()
   SolverCG<>              solver (solver_control);
   solver.solve (system_matrix, solution, system_rhs,
                 PreconditionIdentity());
+  constraints.distribute (solution);
 }
 
 
@@ -221,15 +238,59 @@ void SerialLaplace<dim>::output_results ()
   data_out.write_data_and_clear();
 }
 
+template <int dim>
+void SerialLaplace<dim>::process_solution (const unsigned int cycle)
+{
+  eh.error_from_exact(*dof_handler, solution, exact_solution);
+}
+
+template <int dim>
+void SerialLaplace<dim>::refine_grid ()
+{
+  if (refinement_mode == "global_refinement")
+    {
+      triangulation->refine_global (1);
+    }
+  else if (refinement_mode == "adaptive_refinement")
+    {
+      Vector<float> estimated_error_per_cell (triangulation->n_active_cells());
+
+      KellyErrorEstimator<dim>::estimate (*dof_handler,
+                                          QGauss<dim-1>(3),
+                                          typename FunctionMap<dim>::type(),
+                                          solution,
+                                          estimated_error_per_cell);
+
+      GridRefinement::refine_and_coarsen_fixed_number (*triangulation,
+                                                       estimated_error_per_cell,
+                                                       0.3, 0.03);
+
+      triangulation->execute_coarsening_and_refinement ();
+    }
+  else
+    {
+      Assert (false, ExcNotImplemented());
+    }
+}
 
 template <int dim>
 void SerialLaplace<dim>::run ()
 {
   make_grid_fe ();
-  setup_system ();
-  assemble_system ();
-  solve ();
-  output_results ();
+  for (unsigned int cycle=0; cycle<n_cycles; ++cycle)
+    {
+      std::cout<<"cycle : "<<cycle+1<<std::endl;
+      setup_system ();
+      assemble_system ();
+      solve ();
+      process_solution (cycle);
+      if (cycle < n_cycles-1)
+        refine_grid ();
+      else
+        output_results ();
+    }
+  eh.output_table(std::cout);
+
 }
 
 
