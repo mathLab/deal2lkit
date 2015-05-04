@@ -23,7 +23,7 @@ int main ()
 {
   initlog();
 
-  
+
   ParsedGridGenerator<2> gg;
   ErrorHandler<> eh; // Only one table
 
@@ -44,9 +44,9 @@ int main ()
     }
   ConditionalOStream pout1(deallog.get_file_stream(), true);
   ConditionalOStream pout2(deallog.get_file_stream(), false);
-  
+
   deallog.get_file_stream() << " CONDITION: True" << std::endl;
-  eh.output_table(pout1);  
-  deallog.get_file_stream() << " CONDITION: False" << std::endl;  
+  eh.output_table(pout1);
+  deallog.get_file_stream() << " CONDITION: False" << std::endl;
   eh.output_table(pout2);
 }

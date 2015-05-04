@@ -90,7 +90,7 @@ public:
   /** By default output first table. */
   void output_table(std::ostream &out=std::cout, const unsigned int table_no=0);
 
-  /** By default output first table. The output is according to 
+  /** By default output first table. The output is according to
       to the condition of ConditionalOStream &pout */
   void output_table(ConditionalOStream &pout, const unsigned int table_no=0);
 
