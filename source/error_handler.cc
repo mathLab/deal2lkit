@@ -3,6 +3,7 @@
 #include <deal.II/base/logstream.h>
 #include <deal.II/base/quadrature_lib.h>
 #include <deal.II/base/utilities.h>
+#include <deal.II/base/conditional_ostream.h>
 
 #include <deal.II/grid/grid_tools.h>
 
@@ -208,6 +209,12 @@ void ErrorHandler<ntables>::output_table (std::ostream &out, const unsigned int 
           table_file.close();
         }
     }
+}
+
+template <int ntables>
+void ErrorHandler<ntables>::output_table (ConditionalOStream &pout, const unsigned int table_no)
+{
+  if ( pout.is_active() ) output_table (pout.get_stream(), table_no);
 }
 
 template class ErrorHandler<1>;
