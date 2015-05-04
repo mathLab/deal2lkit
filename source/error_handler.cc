@@ -210,6 +210,13 @@ void ErrorHandler<ntables>::output_table (std::ostream &out, const unsigned int 
     }
 }
 
+template <int ntables>
+void ErrorHandler<ntables>::conditional_output_table (ConditionalOStream &pout, const unsigned int table_no)
+{
+  if ( pout.is_active() ) 
+    output_table (pout.get_stream(), const unsigned int table_no) : 
+}
+
 template class ErrorHandler<1>;
 template class ErrorHandler<2>;
 template class ErrorHandler<3>;
