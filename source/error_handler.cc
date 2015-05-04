@@ -3,6 +3,7 @@
 #include <deal.II/base/logstream.h>
 #include <deal.II/base/quadrature_lib.h>
 #include <deal.II/base/utilities.h>
+#include <deal.II/base/conditional_ostream.h>
 
 #include <deal.II/grid/grid_tools.h>
 
@@ -214,7 +215,7 @@ template <int ntables>
 void ErrorHandler<ntables>::conditional_output_table (ConditionalOStream &pout, const unsigned int table_no)
 {
   if ( pout.is_active() ) 
-    output_table (pout.get_stream(), const unsigned int table_no) : 
+    output_table (pout.get_stream(), table_no);
 }
 
 template class ErrorHandler<1>;

@@ -31,6 +31,7 @@
 #include <deal.II/fe/fe.h>
 
 #include <deal.II/base/parameter_handler.h>
+#include <deal.II/base/conditional_ostream.h>
 
 #include "parameter_acceptor.h"
 #include <map>
@@ -91,7 +92,7 @@ public:
 
   /** By default output first table. The output is according to 
       to the condition of ConditionalOStream &pout */
-  void conditional_output_table( ConditionalOStream &pout , const unsigned int table_no=0);
+  void conditional_output_table(ConditionalOStream &pout, const unsigned int table_no=0);
 
 private:
   /** Error results.*/
