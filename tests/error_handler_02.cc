@@ -46,7 +46,7 @@ int main ()
   ConditionalOStream pout2(deallog.get_file_stream(), false);
   
   deallog.get_file_stream() << " CONDITION: True" << std::endl;
-  eh.conditional_output_table(pout1);  
+  eh.output_table(pout1);  
   deallog.get_file_stream() << " CONDITION: False" << std::endl;  
-  eh.conditional_output_table(pout2);
+  eh.output_table(pout2);
 }

@@ -92,7 +92,7 @@ public:
 
   /** By default output first table. The output is according to 
       to the condition of ConditionalOStream &pout */
-  void conditional_output_table(ConditionalOStream &pout, const unsigned int table_no=0);
+  void output_table(ConditionalOStream &pout, const unsigned int table_no=0);
 
 private:
   /** Error results.*/
