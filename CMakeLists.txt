@@ -23,6 +23,7 @@ FIND_PACKAGE(deal.II 8.3 REQUIRED
 )
 
 DEAL_II_INITIALIZE_CACHED_VARIABLES()
+DEAL_II_QUERY_GIT_INFORMATION()
 PROJECT(${TARGET_LIB})
 
 # We generate one library for each type of deal.II library
@@ -38,8 +39,9 @@ FOREACH(_build_type ${_d2_build_types})
     # Only build this type, if deal.II was compiled with it.
     IF(DEAL_II_BUILD_TYPE MATCHES "${_build_type}")
 	MESSAGE("-- Found ${_build_type} version of deal.II.")
+	SET(_postfix "${${_build_type}_postfix}")
 
-	SET(_lib "${TARGET_LIB}${${_build_type}_postfix}")
+	SET(_lib "${TARGET_LIB}${_postfix}")
 	MESSAGE("-- Configuring library ${_lib}")
 
 	STRING(TOUPPER "${_build_type}" _BUILD_TYPE)
@@ -47,6 +49,16 @@ FOREACH(_build_type ${_d2_build_types})
 	# Add all files, except the main file, to the library
 	ADD_LIBRARY(${_lib} SHARED ${_library_source_files})
         INSTALL(TARGETS ${_lib} LIBRARY DESTINATION lib)
+
+	SET_PROPERTY(TARGET ${_lib} APPEND PROPERTY COMPILE_DEFINITIONS
+	  DEAL_II_SAK_GIT_BRANCH="${GIT_BRANCH}${_postfix}"
+	  DEAL_II_SAK_GIT_REVISION="${GIT_REVISION}${_postfix}"
+	  DEAL_II_SAK_GIT_SHORTREV="${GIT_SHORTREV}${_postfix}"
+	  DEAL_II_VERSION="${DEAL_II_VERSION}${_postfix}"
+	  DEAL_II_GIT_BRANCH="${DEAL_II_GIT_BRANCH}${_postfix}"
+	  DEAL_II_GIT_REVISION="${DEAL_II_GIT_REVISION}${_postfix}"
+	  DEAL_II_GIT_SHORTREV="${DEAL_II_GIT_SHORTREV}${_postfix}"
+	)
     
 	# Compile an executable only if required by the user
 

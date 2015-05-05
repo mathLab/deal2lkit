@@ -41,6 +41,12 @@ ParameterAcceptor::initialize(const std::string filename,
     {
       std::ofstream outfile(out_filename.c_str());
       Assert(outfile, ExcIO());
+      outfile << "# Parameter file generated with " << std::endl
+              << "# DEAL_II_SAK_GIT_BRANCH=" << DEAL_II_SAK_GIT_BRANCH << std::endl
+              << "# DEAL_II_SAK_GIT_SHORTREV=" << DEAL_II_SAK_GIT_SHORTREV << std::endl
+              << "# DEAL_II_VERSION=" << DEAL_II_VERSION << std::endl
+              << "# DEAL_II_GIT_BRANCH=" << DEAL_II_GIT_BRANCH  << std::endl
+              << "# DEAL_II_GIT_SHORTREV=" << DEAL_II_GIT_SHORTREV << std::endl;
       prm.print_parameters(outfile, ParameterHandler::ShortText);
     }
 }
