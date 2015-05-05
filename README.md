@@ -48,8 +48,8 @@ and tested using
 
 You can modify the resulting `CMakeCache.txt` to set a different 
 installation path, or you can call cmake with the additional
-option `-DCMAKE_INSTALL_PREFIX=/path/to/install/dir`. 
-Corresponding environment variable should be included `DEAL_II_SAK=/path/to/install/dir`. 
+option `-DCMAKE_INSTALL_PREFIX=/path/to/install/dir`.
+Corresponding environment variable should be included `DEAL_II_SAK=/path/to/install/dir`.  
 	
 3. Extensive documentation:
 ===========================
@@ -79,5 +79,3 @@ See the LICENCE file in this directory.
 
 6. Continuous Integration status
 ================================
-
-[![Build Status](https://travis-ci.org/luca-heltai/dealii-sak.svg?branch=v0.1.1)](https://travis-ci.org/luca-heltai/dealii-sak)
