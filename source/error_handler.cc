@@ -57,7 +57,7 @@ void ErrorHandler<ntables>::declare_parameters (ParameterHandler &prm)
       char tmp[10];
       sprintf(tmp, "Table %d", i);
       prm.enter_subsection(tmp);
-      std::cout << list_of_error_norms << solution_names;
+
       prm.declare_entry("List of error norms to compute", list_of_error_norms,
                         Patterns::Anything(), "Each component is separated by a semicolon, "
                         "and each norm by a comma. Implemented norms are Linfty, L2, "
