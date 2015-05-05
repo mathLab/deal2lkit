@@ -69,10 +69,20 @@ public:
 
   /** Calculate the error of the numeric solution in variuous norms. Store
       the result in the given table. */
-  template<int dim, int spacedim, typename VEC>
-  void error_from_exact(const DoFHandler<dim,spacedim> &vspace,
+  template<typename DH, typename VEC>
+  void error_from_exact(const DH &vspace,
                         const VEC &solution,
-                        const Function<spacedim> &exact,
+                        const Function<DH::space_dimension> &exact,
+                        unsigned int table_no = 0,
+                        double dt=0.);
+
+
+  /** Same as above, with different mapping. */
+  template<typename DH, typename VEC>
+  void error_from_exact(const Mapping<DH::dimension,DH::space_dimension> &mapping,
+                        const DH &vspace,
+                        const VEC &solution,
+                        const Function<DH::space_dimension> &exact,
                         unsigned int table_no = 0,
                         double dt=0.);
 
@@ -219,18 +229,34 @@ void ErrorHandler<ntables>::difference(const DH &dh,
   VECTOR solution(solution1);
   solution -= solution2;
   error_from_exact(dh, solution,
-                   ConstantFunction<DH::dimension>(0, headers.size()), table_no, dt);
+                   ConstantFunction<DH::space_dimension>(0, headers.size()), table_no, dt);
 }
 
 
+
 template <int ntables>
-template<int dim, int spacedim, typename VECTOR>
-void ErrorHandler<ntables>::error_from_exact(const DoFHandler<dim,spacedim> &dh,
+template<typename DH, typename VECTOR>
+void ErrorHandler<ntables>::error_from_exact(const DH &dh,
                                              const VECTOR &solution,
-                                             const Function<spacedim> &exact,
+                                             const Function<DH::space_dimension> &exact,
                                              unsigned int table_no,
                                              double dt)
 {
+  error_from_exact(StaticMappingQ1<DH::dimension, DH::space_dimension>::mapping,
+                   dh, solution, exact, table_no, dt);
+}
+
+template <int ntables>
+template<typename DH, typename VECTOR>
+void ErrorHandler<ntables>::error_from_exact(const Mapping<DH::dimension, DH::space_dimension> &mapping,
+                                             const DH &dh,
+                                             const VECTOR &solution,
+                                             const Function<DH::space_dimension> &exact,
+                                             unsigned int table_no,
+                                             double dt)
+{
+  const int dim=DH::dimension;
+  const int spacedim=DH::space_dimension;
   if (compute_error)
     {
       AssertThrow(initialized, ExcNotInitialized());
@@ -274,7 +300,7 @@ void ErrorHandler<ntables>::error_from_exact(const DoFHandler<dim,spacedim> &dh,
           NormFlags norm = types[table_no][component];
 
           // Select one Component
-          ComponentSelectFunction<dim> select_component ( component, 1. , exact.n_components);
+          ComponentSelectFunction<spacedim> select_component ( component, 1. , exact.n_components);
 
           Vector<float> difference_per_cell (dh.get_tria().n_active_cells());
 
@@ -295,8 +321,9 @@ void ErrorHandler<ntables>::error_from_exact(const DoFHandler<dim,spacedim> &dh,
 
           if (compute_L2)
             {
-              VectorTools::integrate_difference (//mapping,
-                dh, //dof_handler,
+              VectorTools::integrate_difference (
+                mapping,
+                dh,
                 solution,
                 exact,
                 difference_per_cell,
@@ -310,7 +337,8 @@ void ErrorHandler<ntables>::error_from_exact(const DoFHandler<dim,spacedim> &dh,
 
           if (compute_H1)
             {
-              VectorTools::integrate_difference (//mapping,
+              VectorTools::integrate_difference (
+                mapping,
                 dh, //dof_handler,
                 solution,
                 exact,
@@ -324,7 +352,8 @@ void ErrorHandler<ntables>::error_from_exact(const DoFHandler<dim,spacedim> &dh,
 
           if (compute_W1infty)
             {
-              VectorTools::integrate_difference (//mapping,
+              VectorTools::integrate_difference (
+                mapping,
                 dh, //dof_handler,
                 solution,
                 exact,
@@ -338,7 +367,8 @@ void ErrorHandler<ntables>::error_from_exact(const DoFHandler<dim,spacedim> &dh,
 
           if (compute_Linfty)
             {
-              VectorTools::integrate_difference (//mapping,
+              VectorTools::integrate_difference (
+                mapping,
                 dh, //dof_handler,
                 solution,
                 exact,
