@@ -34,10 +34,10 @@ template <int ntables>
 void ErrorHandler<ntables>::declare_parameters (ParameterHandler &prm)
 {
   std::string dummy_names;
-  for(unsigned int i=0; i<ntables-1; ++i)
-  {
-    dummy_names = dummy_names + "error ,";
-  }
+  for (unsigned int i=0; i<ntables-1; ++i)
+    {
+      dummy_names = dummy_names + "error ,";
+    }
   dummy_names = dummy_names + "error";
   prm.declare_entry ("Write error files", "false", Patterns::Bool());
   prm.declare_entry ("Output error tables", "true", Patterns::Bool());
