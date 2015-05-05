@@ -1,0 +1,13 @@
+
+DEAL:parameters: ::Compute error: true
+DEAL:parameters: ::Error file format: tex
+DEAL:parameters: ::Output error tables: true
+DEAL:parameters: ::Solution names: u, u, p
+DEAL:parameters: ::Solution names for latex: u, u, p
+DEAL:parameters: ::Table names: error
+DEAL:parameters: ::Write error files: false
+DEAL:parameters: :Table 0::Add convergence rates: true
+DEAL:parameters: :Table 0::Extra terms: cells,dofs
+DEAL:parameters: :Table 0::Latex table caption: error
+DEAL:parameters: :Table 0::List of error norms to compute: L2, Linfty, H1; AddUp; L2
+DEAL:parameters: :Table 0::Rate key: 
