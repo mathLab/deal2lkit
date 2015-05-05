@@ -59,7 +59,7 @@ class ErrorHandler : public ParameterAcceptor
 public:
   /** The constructor takes an optional name, specifying the parameter
       entry. */
-  ErrorHandler (const std::string name="", 
+  ErrorHandler (const std::string name="",
                 const std::string solution_names = "u",
                 const std::string list_of_error_norms = "Linfty, L2, H1");
 
@@ -109,10 +109,10 @@ public:
 private:
   /** Value of solution names. */
   const std::string solution_names;
-  
+
   /** List of error norms to compute. **/
   const std::string list_of_error_norms;
-  
+
   /** Error results.*/
   std::vector<ConvergenceTable>  tables;
 

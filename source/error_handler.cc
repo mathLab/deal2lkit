@@ -19,13 +19,13 @@
 #include <string>
 
 template <int ntables>
-ErrorHandler<ntables>::ErrorHandler (   const std::string name, 
+ErrorHandler<ntables>::ErrorHandler (   const std::string name,
                                         const std::string solution_names,
                                         const std::string list_of_error_norms
-                                        ) :
+                                    ) :
   ParameterAcceptor(name),
   solution_names(solution_names),
-  list_of_error_norms(list_of_error_norms)  
+  list_of_error_norms(list_of_error_norms)
 {
   initialized = false;
 }
