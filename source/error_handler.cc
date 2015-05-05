@@ -19,8 +19,13 @@
 #include <string>
 
 template <int ntables>
-ErrorHandler<ntables>::ErrorHandler (const std::string name) :
-  ParameterAcceptor(name)
+ErrorHandler<ntables>::ErrorHandler (   const std::string name,
+                                        const std::string solution_names,
+                                        const std::string list_of_error_norms
+                                    ) :
+  ParameterAcceptor(name),
+  solution_names(solution_names),
+  list_of_error_norms(list_of_error_norms)
 {
   initialized = false;
 }
@@ -34,14 +39,14 @@ void ErrorHandler<ntables>::declare_parameters (ParameterHandler &prm)
   prm.declare_entry ("Compute error", "true", Patterns::Bool());
   prm.declare_entry ("Table names", "error", Patterns::List(Patterns::Anything(), 1, ntables),
                      "Comma separated list of table names. ");
-  prm.declare_entry ("Solution names", "u", Patterns::Anything(),
+  prm.declare_entry ("Solution names", solution_names, Patterns::Anything(),
                      "Comma separated list of names for the components. This "
                      "will be used both for error tables in text format and to "
                      "output the solution to a file. Note that in the case "
                      "of a vector function the error name which is used to "
                      "compute the norm (supposing the type of the other "
                      "components is 'Add') is the first one.");
-  prm.declare_entry ("Solution names for latex", "u", Patterns::Anything(),
+  prm.declare_entry ("Solution names for latex", solution_names, Patterns::Anything(),
                      "Comma separated version of the same thing as above for "
                      "the latex version of the table.");
 
@@ -52,8 +57,8 @@ void ErrorHandler<ntables>::declare_parameters (ParameterHandler &prm)
       char tmp[10];
       sprintf(tmp, "Table %d", i);
       prm.enter_subsection(tmp);
-
-      prm.declare_entry("List of error norms to compute", "Linfty, L2, H1",
+      std::cout << list_of_error_norms << solution_names;
+      prm.declare_entry("List of error norms to compute", list_of_error_norms,
                         Patterns::Anything(), "Each component is separated by a semicolon, "
                         "and each norm by a comma. Implemented norms are Linfty, L2, "
                         "H1 and AddUp, which means that the norm is added to the previous "
