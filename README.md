@@ -79,3 +79,4 @@ See the LICENCE file in this directory.
 
 6. Continuous Integration status
 ================================
+[![Build Status](https://travis-ci.org/luca-heltai/dealii-sak.svg?branch=v0.1.1)](https://travis-ci.org/luca-heltai/dealii-sak)
