@@ -34,11 +34,16 @@ template <int ntables>
 void ErrorHandler<ntables>::declare_parameters (ParameterHandler &prm)
 {
   std::string dummy_names;
-  for (unsigned int i=0; i<ntables-1; ++i)
+  if (ntables > 1)
     {
-      dummy_names = dummy_names + "error"+Utilities::int_to_string(i)+", ";
+      for (unsigned int i=0; i<ntables-1; ++i)
+        {
+          dummy_names = dummy_names + "error"+Utilities::int_to_string(i)+", ";
+        }
+      dummy_names = dummy_names + "error"+Utilities::int_to_string(ntables);
     }
-  dummy_names = dummy_names + "error"+Utilities::int_to_string(ntables);
+  else
+    dummy_names = dummy_names + "error";
   prm.declare_entry ("Write error files", "false", Patterns::Bool());
   prm.declare_entry ("Output error tables", "true", Patterns::Bool());
   prm.declare_entry ("Error file format", "tex", Patterns::Selection("tex|txt|gpl|org"));
