@@ -36,14 +36,14 @@ void ErrorHandler<ntables>::declare_parameters (ParameterHandler &prm)
   std::string dummy_names;
   for (unsigned int i=0; i<ntables-1; ++i)
     {
-      dummy_names = dummy_names + "error ,";
+      dummy_names = dummy_names + "error"+Utilities::int_to_string(i)+", ";
     }
-  dummy_names = dummy_names + "error";
+  dummy_names = dummy_names + "error"+Utilities::int_to_string(ntables);
   prm.declare_entry ("Write error files", "false", Patterns::Bool());
   prm.declare_entry ("Output error tables", "true", Patterns::Bool());
   prm.declare_entry ("Error file format", "tex", Patterns::Selection("tex|txt|gpl|org"));
   prm.declare_entry ("Compute error", "true", Patterns::Bool());
-  prm.declare_entry ("Table names", dummy_names, Patterns::List(Patterns::Anything(), 1, ntables),
+  prm.declare_entry ("Table names", dummy_names, Patterns::List(Patterns::Anything(), ntables, ntables),
                      "Comma separated list of table names. ");
   prm.declare_entry ("Solution names", solution_names, Patterns::Anything(),
                      "Comma separated list of names for the components. This "
