@@ -1,6 +1,7 @@
 #include "parameter_acceptor.h"
 #include "utilities.h"
 #include <deal.II/base/point.h>
+#include <deal.II/base/revision.h>
 #include <fstream>
 
 // Static empty class list

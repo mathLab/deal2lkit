@@ -54,10 +54,6 @@ FOREACH(_build_type ${_d2_build_types})
 	  DEAL_II_SAK_GIT_BRANCH="${GIT_BRANCH}${_postfix}"
 	  DEAL_II_SAK_GIT_REVISION="${GIT_REVISION}${_postfix}"
 	  DEAL_II_SAK_GIT_SHORTREV="${GIT_SHORTREV}${_postfix}"
-	  DEAL_II_VERSION="${DEAL_II_VERSION}${_postfix}"
-	  DEAL_II_GIT_BRANCH="${DEAL_II_GIT_BRANCH}${_postfix}"
-	  DEAL_II_GIT_REVISION="${DEAL_II_GIT_REVISION}${_postfix}"
-	  DEAL_II_GIT_SHORTREV="${DEAL_II_GIT_SHORTREV}${_postfix}"
 	)
     
 	# Compile an executable only if required by the user
