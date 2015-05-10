@@ -1,6 +1,7 @@
 #include "parameter_acceptor.h"
 #include "utilities.h"
 #include <deal.II/base/point.h>
+#include <deal.II/base/revision.h>
 #include <fstream>
 
 // Static empty class list
@@ -44,7 +45,6 @@ ParameterAcceptor::initialize(const std::string filename,
       outfile << "# Parameter file generated with " << std::endl
               << "# DEAL_II_SAK_GIT_BRANCH=" << DEAL_II_SAK_GIT_BRANCH << std::endl
               << "# DEAL_II_SAK_GIT_SHORTREV=" << DEAL_II_SAK_GIT_SHORTREV << std::endl
-              << "# DEAL_II_VERSION=" << DEAL_II_VERSION << std::endl
               << "# DEAL_II_GIT_BRANCH=" << DEAL_II_GIT_BRANCH  << std::endl
               << "# DEAL_II_GIT_SHORTREV=" << DEAL_II_GIT_SHORTREV << std::endl;
       prm.print_parameters(outfile, ParameterHandler::ShortText);
