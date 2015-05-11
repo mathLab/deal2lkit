@@ -5,6 +5,7 @@
 #include <deal.II/base/smartpointer.h>
 #include <typeinfo>
 #include <cxxabi.h>
+#include <Sacado.hpp>
 
 #include <deal.II/base/std_cxx11/shared_ptr.h>
 
@@ -93,5 +94,59 @@ void smart_delete (SmartPointer<TYPE> &sp)
       delete p;
     }
 }
+
+
+/**
+ *
+ *  Extract local dofs values and initialize the number
+ *  of independent variables up to the second order derivative.
+ *
+ *  @begin code
+ *
+ *  ...
+ *
+ *  std::vector<types::global_dof_index>    local_dof_indices (dofs_per_cell);
+ *  std::vector<Number> independent_local_dof_values (dofs_per_cell);
+ *
+ *  fe_values.reinit (cell);
+ *  cell->get_dof_indices (local_dof_indices);
+ *
+ *  extract_local_dofs (solution, local_dof_indices, independent_local_dof_values);
+ *
+ *  ...
+ *
+ *  @end
+ */
+
+typedef Sacado::Fad::DFad<double> Sdouble;
+typedef Sacado::Fad::DFad<Sdouble> SSdouble;
+
+template <typename Number, typename VEC>
+void
+extract_local_dofs (const VEC &global_vector,
+                    const std::vector<types::global_dof_index> &local_dof_indices,
+                    std::vector<Number> &independent_local_dofs)
+{
+  const unsigned int dofs_per_cell = local_dof_indices.size();
+  for (unsigned int i=0; i < dofs_per_cell; ++i)
+    {
+      if (typeid(Number) == typeid(double))
+        {
+          independent_local_dofs[i] = global_vector (local_dof_indices[i]);
+        }
+      else
+        {
+          Sdouble ildv = global_vector (local_dof_indices[i]);
+          ildv.diff (i, dofs_per_cell);
+          ((Sdouble &)independent_local_dofs[i]) = ildv;
+          if (typeid(Number) == typeid(SSdouble))
+            {
+              ((SSdouble &)independent_local_dofs[i]).diff(i,dofs_per_cell);
+            }
+        }
+    }
+}
+
+
 
 #endif
