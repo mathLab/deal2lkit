@@ -5,7 +5,6 @@
 #include <deal.II/base/smartpointer.h>
 #include <typeinfo>
 #include <cxxabi.h>
-#include <Sacado.hpp>
 
 #include <deal.II/base/std_cxx11/shared_ptr.h>
 
@@ -95,6 +94,7 @@ void smart_delete (SmartPointer<TYPE> &sp)
     }
 }
 
+#ifdef DEAL_II_WITH_TRILINOS
 
 /**
  *
@@ -118,6 +118,7 @@ void smart_delete (SmartPointer<TYPE> &sp)
  *  @end
  */
 
+#include <Sacado.hpp>
 typedef Sacado::Fad::DFad<double> Sdouble;
 typedef Sacado::Fad::DFad<Sdouble> SSdouble;
 
@@ -147,6 +148,7 @@ extract_local_dofs (const VEC &global_vector,
     }
 }
 
+#endif // DEAL_II_WITH_TRILINOS
 
 
 #endif
