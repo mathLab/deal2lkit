@@ -80,6 +80,7 @@ void ParameterAcceptor::parse_all_parameters(ParameterHandler &prm)
       {
         prm.enter_subsection(class_list[i]->get_section_name());
         class_list[i]->parse_parameters(prm);
+        class_list[i]->parse_parameters_call_back();
         prm.leave_subsection();
       }
 }
