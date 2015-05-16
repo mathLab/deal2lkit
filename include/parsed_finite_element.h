@@ -124,7 +124,7 @@ public:
   std::string get_block_names() const;
 
   /**
-   * Return the number of blocks of the Finite Element.
+   * Return the number of components of the Finite Element.
    */
   unsigned int n_components() const;
 
@@ -164,14 +164,14 @@ private:
 
   /**
    * The subdivision, in terms of component indices. This is
-   * automatically computed from the the block names.
+   * automatically computed from the the component names.
    */
   std::vector<unsigned int> component_blocks;
 
 
   /**
-   * The subdivision, in terms of component indices. This is
-   * automatically computed from the the block names.
+   * The subdivision, in terms of block names. This is automatically
+   * computed from the the component names.
    */
   std::vector<std::string> block_names;
 };
