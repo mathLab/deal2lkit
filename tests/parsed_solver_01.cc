@@ -9,19 +9,31 @@
 //
 //-----------------------------------------------------------
 
-
 #include "tests.h"
-#include "utilities.h"
-#include "parameter_acceptor.h"
-#include "parsed_finite_element.h"
+#include "parsed_solver.h"
 
+#include <deal.II/lac/vector.h>
 
 int main ()
 {
   initlog();
-  ParsedFiniteElement<2> fe_builder("FE", "FESystem[FE_Q(2)^d-FE_DGP(1)]", "u,u,p", 1);
 
-  ParameterAcceptor::initialize("test_in.prm", "test_out.prm");
-  // Should fail because fe_name has 3 components
-  return 0;
+  ParsedSolver<Vector<double> > solver("Solver", "cg", 100, 1e-6);
+  ParameterAcceptor::initialize();
+
+  ParameterAcceptor::prm.log_parameters(deallog);
+
+  Vector<double> b(4);
+  for (unsigned int i=0; i<4; ++i)
+    {
+      b(i) = i+1.;
+    }
+  Vector<double> x(4);
+
+  solver.vmult(x,b);
+
+  x -= b;
+
+  deallog << "Norm: " << x.l2_norm() << std::endl;
+
 }
