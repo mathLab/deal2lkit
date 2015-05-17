@@ -1,6 +1,10 @@
 #ifndef __dealii_sak_parsed_solver_h
 #define __dealii_sak_parsed_solver_h
 
+#include <deal.II/base/config.h>
+
+#ifdef DEAL_II_WITH_CXX11
+
 #include <deal.II/lac/solver.h>
 #include <deal.II/lac/solver_cg.h>
 #include <deal.II/lac/solver_gmres.h>
@@ -218,4 +222,5 @@ void ParsedSolver<VECTOR>::parse_parameters_call_back()
     }
 }
 
+#endif // CXX11
 #endif
