@@ -75,7 +75,7 @@ void ParsedFiniteElement<dim,spacedim>::parse_parameters_call_back()
   FiniteElement<dim,spacedim> *fe = (*this)();
   unsigned int nc = fe->n_components();
   delete fe;
-  AssertThrow(component_names.size() == fe->n_components(),
+  AssertThrow(component_names.size() == nc,
               ExcInternalError("Generated FE has the wrong number of components."));
 }
 
