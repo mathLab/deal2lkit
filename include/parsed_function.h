@@ -34,6 +34,16 @@ public:
    */
   virtual void parse_parameters(ParameterHandler &prm);
 
+  /**
+   * Prints Function expression and constants.
+   */
+  void print_info (std::ostream &out) const
+  {
+    out << "Parsed Function:\n"
+        << " - expression = " << default_exp <<"\n"
+        << " - constants = " << default_const <<"\n"
+        << std::endl;
+  }
 
 private:
   /**
