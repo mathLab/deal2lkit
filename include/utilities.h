@@ -5,6 +5,8 @@
 #include <deal.II/base/smartpointer.h>
 #include <typeinfo>
 #include <cxxabi.h>
+#include <deal.II/base/exceptions.h>
+#include <deal.II/fe/fe.h>
 
 #include <deal.II/base/std_cxx11/shared_ptr.h>
 
@@ -97,57 +99,169 @@ void smart_delete (SmartPointer<TYPE> &sp)
 #ifdef DEAL_II_WITH_TRILINOS
 
 /**
+ *  Define namespace "SacadoUtilities"
+ *  some utilities aimed at solving non-linear problems
+ *  are implemented.
  *
- *  Extract local dofs values and initialize the number
- *  of independent variables up to the second order derivative.
- *
- *  @begin code
- *
- *  ...
- *
- *  std::vector<types::global_dof_index>    local_dof_indices (dofs_per_cell);
- *  std::vector<Number> independent_local_dof_values (dofs_per_cell);
- *
- *  fe_values.reinit (cell);
- *  cell->get_dof_indices (local_dof_indices);
- *
- *  extract_local_dofs (solution, local_dof_indices, independent_local_dof_values);
- *
- *  ...
- *
- *  @end
  */
 
 #include <Sacado.hpp>
 typedef Sacado::Fad::DFad<double> Sdouble;
 typedef Sacado::Fad::DFad<Sdouble> SSdouble;
 
-template <typename Number, typename VEC>
-void
-extract_local_dofs (const VEC &global_vector,
-                    const std::vector<types::global_dof_index> &local_dof_indices,
-                    std::vector<Number> &independent_local_dofs)
+namespace SacadoUtilities
 {
-  const unsigned int dofs_per_cell = local_dof_indices.size();
-  for (unsigned int i=0; i < dofs_per_cell; ++i)
-    {
-      if (typeid(Number) == typeid(double))
-        {
-          independent_local_dofs[i] = global_vector (local_dof_indices[i]);
-        }
-      else
-        {
-          Sdouble ildv = global_vector (local_dof_indices[i]);
-          ildv.diff (i, dofs_per_cell);
-          ((Sdouble &)independent_local_dofs[i]) = ildv;
-          if (typeid(Number) == typeid(SSdouble))
-            {
-              ((SSdouble &)independent_local_dofs[i]).diff(i,dofs_per_cell);
-            }
-        }
-    }
-}
+  /**
+   *  Extract local dofs values and initialize the number
+   *  of independent variables up to the second order derivative.
+   *
+   */
+  template <typename Number, typename VEC>
+  void
+  extract_local_dofs (const VEC &global_vector,
+                      const std::vector<types::global_dof_index> &local_dof_indices,
+                      std::vector<Number> &independent_local_dofs)
+  {
+    const unsigned int dofs_per_cell = local_dof_indices.size();
+    for (unsigned int i=0; i < dofs_per_cell; ++i)
+      {
+        if (typeid(Number) == typeid(double))
+          {
+            independent_local_dofs[i] = global_vector (local_dof_indices[i]);
+          }
+        else if (typeid(Number) == typeid(Sdouble))
+          {
+            Sdouble ildv = global_vector (local_dof_indices[i]);
+            ildv.diff (i, dofs_per_cell);
+            ((Sdouble &)independent_local_dofs[i]) = ildv;
+          }
+        else if (typeid(Number) == typeid(SSdouble))
+          {
+            Sdouble ildv = global_vector (local_dof_indices[i]);
+            ildv.diff (i, dofs_per_cell);
+            ((SSdouble &)independent_local_dofs[i]) = ildv;
+            ((SSdouble &)independent_local_dofs[i]).diff(i,dofs_per_cell);
+          }
+        else
+          {
+            Assert (false, ExcNotImplemented());
+          }
+      }
+  }
 
+  /**
+   *  Extract independent local dofs values of a cell and store them in
+   *  std::vector <Tensor <1, spacedim, Number> > us
+   *  whose size is number of quadrature points in the cell.
+   *
+   */
+  template <int dim, int spacedim, typename Number>
+  void
+  get_u_values (const FEValues<dim, spacedim> &fe_values,
+                const std::vector<Number> &independent_local_dof_values,
+                std::vector <Tensor <1, spacedim, Number> > &us)
+  {
+    const unsigned int           dofs_per_cell = fe_values.dofs_per_cell;
+    const unsigned int           n_q_points    = fe_values.n_quadrature_points;
+
+    AssertDimension(us.size(), n_q_points);
+
+    for (unsigned int q=0; q<n_q_points; ++q)
+      {
+        for (unsigned int i=0; i<dofs_per_cell; ++i)
+          {
+            const unsigned int c = fe_values.get_fe().system_to_component_index(i).first;
+            us[q][c] += independent_local_dof_values[i]*fe_values.shape_value_component(i,q,c);
+          }
+      }
+  }
+
+  /**
+   *  Extract independent local dofs values of a cell,
+   *  compute the gradient grad_us in each quadrature point,
+   *  which is stored in
+   *  std::vector <Tensor <2, spacedim, Number> > grad_us
+   *  whose size is number of quadrature points in the cell.
+   *
+   */
+  template <int dim, int spacedim, typename Number>
+  void
+  get_grad_u_values (const FEValues<dim, spacedim> &fe_values,
+                     const std::vector<Number> &independent_local_dof_values,
+                     std::vector <Tensor <2, spacedim, Number> > &grad_us)
+  {
+    const unsigned int           dofs_per_cell = fe_values.dofs_per_cell;
+    const unsigned int           n_q_points    = fe_values.n_quadrature_points;
+
+    AssertDimension(grad_us.size(), n_q_points);
+
+    for (unsigned int q=0; q<n_q_points; ++q)
+      {
+        for (unsigned int i=0; i<dofs_per_cell; ++i)
+          {
+            const unsigned int c = fe_values.get_fe().system_to_component_index(i).first;
+            for (unsigned int d=0; d<dim; ++d)
+              {
+                grad_us[q][c][d] += independent_local_dof_values[i]*fe_values.shape_grad_component(i,q,c)[d]; // grad(u)
+              }
+          }
+      }
+  }
+
+  /**
+   *  Extract independent local dofs values of a cell,
+   *  compute the deformation gradient F in each quadrature point,
+   *  which is stored in
+   *  std::vector <Tensor <2, spacedim, Number> > Fs
+   *  whose size is number of quadrature points in the cell.
+   *
+   */
+  template <int dim, int spacedim, typename Number>
+  void
+  get_F_values (const FEValues<dim, spacedim> &fe_values,
+                const std::vector<Number> &independent_local_dof_values,
+                std::vector <Tensor <2, spacedim, Number> > &Fs)
+  {
+    const unsigned int           n_q_points    = fe_values.n_quadrature_points;
+
+    AssertDimension(Fs.size(), n_q_points);
+
+    SacadoUtilities::get_grad_u_values (fe_values, independent_local_dof_values, Fs);
+
+    for (unsigned int q=0; q<n_q_points; ++q)
+      {
+        for (unsigned int d=0; d<dim; ++d)
+          Fs[q][d][d] += 1.0; // I + grad(u)
+      }
+  }
+
+  /**
+   *  Extract independent local dofs values of a face of a cell and store them in
+   *  std::vector <Tensor <1, spacedim, Number> > us_face
+   *  whose size is number of quadrature points in the cell face.
+   *
+   */
+  template <int dim, int spacedim, typename Number>
+  void
+  get_u_face_values (const FEFaceValues<dim, spacedim> &fe_face_values,
+                     const std::vector<Number> &independent_local_dof_values,
+                     std::vector <Tensor <1, spacedim, Number> > &us_face)
+  {
+    const unsigned int           dofs_per_face = fe_face_values.dofs_per_cell;
+    const unsigned int           n_face_q_points    = fe_face_values.n_quadrature_points;
+
+    AssertDimension(us_face.size(), n_face_q_points);
+
+    for (unsigned int qf=0; qf<n_face_q_points; ++qf)
+      {
+        for (unsigned int i=0; i<dofs_per_face; ++i)
+          {
+            const unsigned int c = fe_face_values.get_fe().system_to_component_index(i).first;
+            us_face[qf][c] += independent_local_dof_values[i]*fe_face_values.shape_value_component(i,qf,c);
+          }
+      }
+  }
+}
 #endif // DEAL_II_WITH_TRILINOS
 
 
