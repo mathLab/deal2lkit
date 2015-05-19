@@ -18,9 +18,12 @@ template <int dim, int spacedim=dim>
 class ParsedDataOut : public ParameterAcceptor
 {
 public:
-  /** Optional name for parameter section. */
+  /** Optional name for parameter section.
+      run_dir is the directory created for every run.
+      ex "solution_" produces solution_001, solution_002, etc.. . */
   ParsedDataOut (const std::string &name="",
                  const std::string &default_format="vtu",
+                 const std::string &run_dir="",
                  const MPI_Comm &comm=MPI_COMM_WORLD);
 
   /** Initialize the given values for the paramter file. */
@@ -34,7 +37,8 @@ public:
       combination of the @p base_name, the optional @p suffix,
       eventually a processor number and the output suffix.  */
   void prepare_data_output(const DoFHandler<dim, spacedim> &dh,
-                           const std::string &suffix="");
+                           const std::string &suffix="",
+                           const std::string &prm_used_file="");
 
   /** Add the given vector to the output file. Prior to calling this
       method, you have to call the prepare_data_output method. The
@@ -63,6 +67,9 @@ private:
 
   /** My mpi process. */
   const unsigned int this_mpi_process;
+
+  /** Folder where solutions are stored. */
+  std::string path_solution_dir;
 
   /** Default format at construction time. */
   const std::string default_format;

@@ -34,6 +34,11 @@ SET(_d2_build_types "Release;Debug")
 SET(Release_postfix "")
 SET(Debug_postfix ".g")
 
+FIND_PACKAGE(BOOST)
+IF(BOOST_FOUND)
+  ADD_DEFINITIONS(-DDEAL_II_SAK_WITH_BOOST)
+  SET(CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS} -I${Boost_INCLUDE_DIR} -L${Boost_LIBRARY_DIR} -lboost_filesystem -lboost_system" )
+ENDIF(BOOST_FOUND)
 
 FOREACH(_build_type ${_d2_build_types})
     # Only build this type, if deal.II was compiled with it.
@@ -55,7 +60,7 @@ FOREACH(_build_type ${_d2_build_types})
 	  DEAL_II_SAK_GIT_REVISION="${GIT_REVISION}${_postfix}"
 	  DEAL_II_SAK_GIT_SHORTREV="${GIT_SHORTREV}${_postfix}"
 	)
-    
+
 	# Compile an executable only if required by the user
 
     	FOREACH(_main ${_applications_source_files})
@@ -91,4 +96,3 @@ endif(DOXYGEN_FOUND)
 
 install(DIRECTORY ${CMAKE_SOURCE_DIR}/include/ DESTINATION include
         FILES_MATCHING PATTERN "*.h")
-

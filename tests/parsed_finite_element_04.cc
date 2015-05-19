@@ -19,9 +19,9 @@
 int main ()
 {
   initlog();
-  ParsedFiniteElement<2> fe_builder("FE", "FESystem[FE_Q(2)^d-FE_DGP(1)]", "u", 1);
+  ParsedFiniteElement<2> fe_builder("FE", "FESystem[FE_Q(2)^d-FE_DGP(1)]", "u,u,p", 1);
 
-  ParameterAcceptor::initialize();
+  ParameterAcceptor::initialize("test_in.prm", "test_out.prm");
   // Should fail because fe_name has 3 components
   return 0;
 }
