@@ -40,6 +40,10 @@ IF(BOOST_FOUND)
   SET(CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS} -I${Boost_INCLUDE_DIR} -L${Boost_LIBRARY_DIR} -lboost_filesystem -lboost_system" )
 ENDIF(BOOST_FOUND)
 
+# Options about examples
+OPTION(DEAL_II_SAK_COMPILE_EXAMPLES "Compile examples" ON)
+OPTION(DEAL_II_SAK_INSTALL_EXAMPLES "Install examples" ON)
+
 FOREACH(_build_type ${_d2_build_types})
     # Only build this type, if deal.II was compiled with it.
     IF(DEAL_II_BUILD_TYPE MATCHES "${_build_type}")
@@ -62,18 +66,21 @@ FOREACH(_build_type ${_d2_build_types})
 	)
 
 	# Compile an executable only if required by the user
-
-    	FOREACH(_main ${_applications_source_files})
+	IF(DEAL_II_SAK_COMPILE_EXAMPLES)
+    	   FOREACH(_main ${_applications_source_files})
 		# Find out the the name of the executable
     		GET_FILENAME_COMPONENT(_target_a ${_main} NAME_WE)
 		SET(_target "${_target_a}${${_build_type}_postfix}")
 		MESSAGE("-- Configuring executable ${_target}")
 
     		ADD_EXECUTABLE(${_target} ${_main})
-    		INSTALL(TARGETS ${_target} RUNTIME DESTINATION bin)
+		IF(DEAL_II_SAK_INSTALL_EXAMPLES)
+		  INSTALL(TARGETS ${_target} RUNTIME DESTINATION bin)
+		ENDIF()
     		TARGET_LINK_LIBRARIES(${_target} ${_lib})
 		DEAL_II_SETUP_TARGET(${_target} ${_BUILD_TYPE})
-    	ENDFOREACH()
+    	    ENDFOREACH()
+	ENDIF()
 
 	SET(TEST_LIBRARIES_${_BUILD_TYPE} ${_lib})
 	DEAL_II_SETUP_TARGET(${_lib} ${_BUILD_TYPE})
