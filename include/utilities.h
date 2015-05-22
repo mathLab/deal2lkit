@@ -10,6 +10,8 @@
 
 #include <deal.II/base/std_cxx11/shared_ptr.h>
 
+#include <sstream>
+
 using namespace dealii;
 using std_cxx11::shared_ptr;
 
@@ -28,9 +30,28 @@ void smart_delete (SmartPointer<TYPE> &sp) DEAL_II_DEPRECATED;
 /** Demangle c++ names. */
 std::string demangle(const char *name);
 
+
 // ======================================================================
 // Explicit template functions. Only present in the include file.
 // ======================================================================
+
+/**
+ * Return a string containing the content of the vector, with elements
+ * separated by the @ sep parameter.
+ */
+template<class Type>
+std::string print(const std::vector<Type> &list, const std::string sep=",")
+{
+  std::stringstream ret;
+  if (list.size() > 0)
+    ret << list[0];
+
+  for (unsigned int i=1; i<list.size(); ++i)
+    ret << sep << list[i];
+
+  return ret.str();
+}
+
 
 /**
  * Return a human readable name of the type passed as argument.
