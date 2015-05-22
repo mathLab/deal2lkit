@@ -23,10 +23,12 @@ void log(const Table<2, DoFTools::Coupling> &c)
     }
 }
 
-void test(ParsedFiniteElement<2,2> &fe, const std::string &coupling)
+void test(ParsedFiniteElement<2,2> &fe, const std::string &coupling,
+          const std::string &prec_coupling="")
 {
   ParameterAcceptor::prm.enter_subsection("Finite Element");
   ParameterAcceptor::prm.set("Block coupling", coupling);
+  ParameterAcceptor::prm.set("Preconditioner block coupling", prec_coupling);
   ParameterAcceptor::prm.leave_subsection();
   ParameterAcceptor::parse_all_parameters();
   ParameterAcceptor::prm.log_parameters(deallog);
@@ -35,6 +37,11 @@ void test(ParsedFiniteElement<2,2> &fe, const std::string &coupling)
   deallog << std::endl << std::endl
           << "Input string: " << coupling << std::endl;
   log(c);
+
+  Table<2, DoFTools::Coupling> c2 = fe.get_preconditioner_coupling();
+  deallog << std::endl << std::endl
+          << "Input string: " << prec_coupling << std::endl;
+  log(c2);
 }
 
 
@@ -51,5 +58,7 @@ int main ()
   test(fe, "");
   test(fe, "1,1; 1,0");
   test(fe, "1,1,1; 1,1,1; 1,1,0");
+
+  test(fe, "0,1; 1,0", "1,0; 0,1");
 
 }

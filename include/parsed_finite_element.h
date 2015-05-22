@@ -55,18 +55,20 @@ public:
    * argument ParameterHandler.
    *
    * The optional parameters specify the FiniteElement name, the
-   * component names, and the allowed number of components. This class
-   * will throw an exception if the number of components is set to
-   * something different than zero and the corresponding FiniteElement
-   * does not match this number of components. If n_components is left
-   * to 0 (the default value), then any FiniteElement can be
-   * generated, with arbitrary numbers of components.
+   * component names, the allowed number of components and the system
+   * and preconditioner couplings. This class will throw an exception
+   * if the number of components is set to something different than
+   * zero and the corresponding FiniteElement does not match this
+   * number of components. If n_components is left to 0 (the default
+   * value), then any FiniteElement can be generated, with arbitrary
+   * numbers of components.
    */
   ParsedFiniteElement (const std::string &name="",
                        const std::string &default_fe="FE_Q(1)",
                        const std::string &default_component_names="u",
                        const unsigned int n_components=0,
-                       const std::string &default_coupling="");
+                       const std::string &default_coupling="",
+                       const std::string &default_preconditioner_coupling="");
 
   /**
    * Declare possible parameters of this class.
@@ -157,12 +159,23 @@ public:
   unsigned int n_blocks() const;
 
   /**
-   * Return the coupling of the Finite Element.
+   * Return the coupling of the Finite Element for the system matrix.
    */
   const Table<2,DoFTools::Coupling> &get_coupling() const;
 
 
+  /**
+   * Return the coupling of the Finite Element for the preconditioner.
+   */
+  const Table<2,DoFTools::Coupling> &get_preconditioner_coupling() const;
+
+
 private:
+  /**
+   * Convert integer table into a coupling table.
+   */
+  Table<2, DoFTools::Coupling> to_coupling(const std::vector<std::vector<unsigned int> > &table) const;
+
   /**
    * Number of components of this FiniteElement. If you want to allow
    * for arbitrary components, leave this to its default value 0.
@@ -180,9 +193,14 @@ private:
   std::string default_component_names;
 
   /**
-   * Default coupling.
+   * Default system coupling.
    */
   std::string default_coupling;
+
+  /**
+   * Default preconditioner coupling.
+   */
+  std::string default_preconditioner_coupling;
 
   /**
    * Block names. This is comma separeted list of component names
@@ -210,18 +228,33 @@ private:
   std::vector<std::string> block_names;
 
   /**
-   * Coupling information. This is a readable version of the coupling
-   * information. This is transformed after reading the parameter to a
-   * table of DoFTools::coupling(), which is needed by the
-   * sparsity_pattern builders.
+   * System coupling information. This is a readable version of the
+   * coupling information. This is transformed after reading the
+   * parameter to a table of DoFTools::coupling(), which is needed by
+   * the sparsity_pattern builders.
    */
   std::vector<std::vector<unsigned int> > coupling_int;
 
+
   /**
-   * Coupling information in a format compatible for sparsity
-   * construction.
+   * Preconditioner coupling information. This is a readable version
+   * of the coupling information. This is transformed after reading
+   * the parameter to a table of DoFTools::coupling(), which is needed
+   * by the sparsity_pattern builders.
+   */
+  std::vector<std::vector<unsigned int> > preconditioner_coupling_int;
+
+  /**
+   * Coupling information for the system matrix in a format compatible
+   * for sparsity construction.
    */
   Table<2,DoFTools::Coupling> coupling;
+
+  /**
+   * Coupling information for the preconditioner in a format
+   * compatible for sparsity construction.
+   */
+  Table<2,DoFTools::Coupling> preconditioner_coupling;
 };
 
 #endif
