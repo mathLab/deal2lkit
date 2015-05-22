@@ -1,17 +1,6 @@
 #include "parsed_finite_element.h"
+#include "utilities.h"
 #include <deal.II/fe/fe_tools.h>
-
-namespace
-{
-  std::string join(const std::vector<std::string> &list)
-  {
-    std::string ret = (list.size() ? list[0]: "");
-    for (unsigned int i=1; i<list.size(); ++i)
-      ret += ", " + list[i];
-    return ret;
-  }
-}
-
 
 template <int dim, int spacedim>
 ParsedFiniteElement<dim, spacedim>::ParsedFiniteElement(const std::string &name,
@@ -48,6 +37,16 @@ void ParsedFiniteElement<dim, spacedim>::declare_parameters(ParameterHandler &pr
                 "number of repetitions (up to 3). This is used in conjunction "
                 "with a ParsedFiniteElement class, to generate arbitrary "
                 "finite dimensional spaces.");
+
+  add_parameter(prm, &coupling_int,
+                "Block coupling", "",
+                Patterns::List(Patterns::List(Patterns::Integer(0,3),0,
+                                              (_n_components ? _n_components: numbers::invalid_unsigned_int), ","),
+                               0, (_n_components ? _n_components: numbers::invalid_unsigned_int), ";"),
+                "Coupling between the blocks of the finite elements:\n"
+                " 0: No coupling\n"
+                " 1: Full coupling\n"
+                " 2: Coupling only on faces\n");
 }
 
 template <int dim, int spacedim>
@@ -97,14 +96,14 @@ unsigned int ParsedFiniteElement<dim,spacedim>::n_blocks() const
 template<int dim, int spacedim>
 std::string ParsedFiniteElement<dim,spacedim>::get_component_names() const
 {
-  return join(component_names);
+  return print(component_names);
 }
 
 
 template<int dim, int spacedim>
 std::string ParsedFiniteElement<dim,spacedim>::get_block_names() const
 {
-  return join(block_names);
+  return print(block_names);
 }
 
 

@@ -2,6 +2,7 @@
 #define __dealii_parsed_finite_element_h
 
 #include <deal.II/base/parameter_handler.h>
+#include <deal.II/dofs/dof_tools.h>
 #include <deal.II/fe/fe.h>
 
 #include "parameter_acceptor.h"
@@ -133,6 +134,12 @@ public:
    */
   unsigned int n_blocks() const;
 
+  /**
+   * Return the coupling of the Finite Element.
+   */
+  Table<2,DoFTools::Coupling> get_coupling() const;
+
+
 private:
   /**
    * Number of components of this FiniteElement. If you want to allow
@@ -174,6 +181,20 @@ private:
    * computed from the the component names.
    */
   std::vector<std::string> block_names;
+
+  /**
+   * Coupling information. This is a readable version of the coupling
+   * information. This is transformed after reading the parameter to a
+   * table of DoFTools::coupling(), which is needed by the
+   * sparsity_pattern builders.
+   */
+  std::vector<std::vector<unsigned int> > coupling_int;
+
+  /**
+   * Coupling information in a format compatible for sparsity
+   * construction.
+   */
+  Table<2,DoFTools::Coupling> coupling;
 };
 
 #endif
