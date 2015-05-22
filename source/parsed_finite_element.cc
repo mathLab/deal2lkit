@@ -72,10 +72,42 @@ void ParsedFiniteElement<dim,spacedim>::parse_parameters_call_back()
     }
   block_names.resize(j+1);
   FiniteElement<dim,spacedim> *fe = (*this)();
-  unsigned int nc = fe->n_components();
+  const unsigned int nc = fe->n_components();
+  const unsigned int nb = n_blocks();
   delete fe;
   AssertThrow(component_names.size() == nc,
               ExcInternalError("Generated FE has the wrong number of components."));
+
+  // Now construct the Coupling object.
+  coupling.reinit(nc, nc, true);
+  std::vector<DoFTools::Coupling> m(3);
+  m[0] = DoFTools::none;
+  m[1] = DoFTools::always;
+  m[2] = DoFTools::nonzero;
+
+  if (coupling_int.size() == nc)
+    for (unsigned int i=0; i<nc; ++i)
+      {
+        AssertThrow(coupling_int[i].size() == nc, ExcDimensionMismatch(coupling_int[i].size(), nc));
+        for (unsigned int j=0; j<nc; ++j)
+          coupling[i][j] = m[coupling_int[i][j]];
+      }
+  else if (coupling_int.size() == nb)
+    for (unsigned int i=0; i<nc; ++i)
+      {
+        AssertThrow(coupling_int[component_blocks[i]].size() == nb,
+                    ExcDimensionMismatch(coupling_int[component_blocks[i]].size(), nb));
+        for (unsigned int j=0; j<nc; ++j)
+          coupling[i][j] = m[coupling_int[component_blocks[i]][component_blocks[j]]];
+      }
+  else if (coupling_int.size() == 0)
+    for (unsigned int i=0; i<nc; ++i)
+      {
+        for (unsigned int j=0; j<nc; ++j)
+          coupling[i][j] = m[1];
+      }
+  else
+    AssertThrow(false, ExcMessage("You tried to construct a coupling with the wrong number of elements."));
 }
 
 
@@ -113,6 +145,12 @@ std::vector<unsigned int> ParsedFiniteElement<dim,spacedim>::get_component_block
   return component_blocks;
 }
 
+
+template<int dim, int spacedim>
+const Table<2, DoFTools::Coupling> &ParsedFiniteElement<dim,spacedim>::get_coupling() const
+{
+  return coupling;
+}
 
 template class ParsedFiniteElement<1,1>;
 template class ParsedFiniteElement<1,2>;

@@ -70,12 +70,12 @@ public:
   /**
    * Declare possible parameters of this class.
    *
-   * The only parameter which is declared here is "Finite element
+   * The first parameter which is declared here is "Finite element
    * space". The parameter must be in the form which is returned by
    * the FiniteElement::get_name function, where dimension template
    * parameters <2> etc. can be omitted. Alternatively, the explicit
-   * number can be replaced by dim or d. If a number is given, it
-   * must match the template parameter of this function.
+   * number can be replaced by dim or d. If a number is given, it must
+   * match the template parameter of this function.
    *
    * The names of FESystem elements follow the pattern
    * FESystem[FE_Base1^p1-FE_Base2^p2] The powers p1 etc. may either be
@@ -87,6 +87,27 @@ public:
    * The operator() returns a pointer to a newly create finite element. It
    * is in the caller's responsibility to destroy the object pointed to
    * at an appropriate later time.
+   *
+   * The second parameter is "Block names". This is comma separeted
+   * list of component names which identifies the Finite Elemenet. If
+   * a name is repeated, then that component is assumed to be part of
+   * a vector field or Tensor field, and is treated as a single
+   * block. User classes can use this information to construct block
+   * matrices and vectors, or to group solution names according to
+   * components. For example, a Stokes problem may have "u,u,p" for
+   * dim = 2 or "u, u, u, p" for dim = 3.
+   *
+   * The third parameter defined by this function is "Block coupling",
+   * which is semicolumn separated list of comma separated indices
+   * from 0 to 2 (included), representing a table of coupling between
+   * the components (or the blocks). The default for this parameter is
+   * the empty string, which is interpreted as "all components couple
+   * with all other components". You can specify a block wise coupling
+   * (with two blocks, this would be a 2x2 matrix) or a component wise
+   * coupling (if a block is made of more than one component, but not
+   * all components of the same block couple with the other
+   * components). The numbers are interpreted as: 0=DoFTools::none,
+   * 1=DoFTools::always, 2=DoFTools::nonzero.
    */
   virtual void declare_parameters(ParameterHandler &prm);
 
@@ -137,7 +158,7 @@ public:
   /**
    * Return the coupling of the Finite Element.
    */
-  Table<2,DoFTools::Coupling> get_coupling() const;
+  const Table<2,DoFTools::Coupling> &get_coupling() const;
 
 
 private:
