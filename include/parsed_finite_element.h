@@ -65,7 +65,8 @@ public:
   ParsedFiniteElement (const std::string &name="",
                        const std::string &default_fe="FE_Q(1)",
                        const std::string &default_component_names="u",
-                       const unsigned int n_components=0);
+                       const unsigned int n_components=0,
+                       const std::string &default_coupling="");
 
   /**
    * Declare possible parameters of this class.
@@ -118,7 +119,7 @@ public:
    * different from the number of components given at construction
    * time.
    */
-  FiniteElement<dim, spacedim> *operator() ();
+  FiniteElement<dim, spacedim> *operator() () const;
 
   /**
    * Fill information about blocks after parsing the parameters.
@@ -177,6 +178,11 @@ private:
    * Default component names.
    */
   std::string default_component_names;
+
+  /**
+   * Default coupling.
+   */
+  std::string default_coupling;
 
   /**
    * Block names. This is comma separeted list of component names
