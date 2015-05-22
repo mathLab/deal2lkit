@@ -173,7 +173,24 @@ void ParameterAcceptor::parse_parameters(ParameterHandler &prm)
           std::vector<double> &double_list = *(boost::any_cast<std::vector<double>*>(it->second));
           double_list = Utilities::string_to_double(Utilities::split_string_list(prm.get(it->first)));
         }
+      else if (it->second.type() == typeid(std::vector<std::vector<unsigned int> > *))
+        {
+          std::vector<std::vector<unsigned int> > &int_table =
+            *(boost::any_cast<std::vector<std::vector<unsigned int> >*>(it->second));
 
+          std::vector<std::string> string_list_of_lists = Utilities::split_string_list(prm.get(it->first), ';');
+          int_table.resize(string_list_of_lists.size());
+          for (unsigned int i=0; i<int_table.size(); ++i)
+            {
+              std::vector<std::string> string_list = Utilities::split_string_list(string_list_of_lists[i], ',');
+              int_table[i].resize(string_list.size());
+              for (unsigned int j=0; j<int_table[i].size(); ++j)
+                {
+                  std::istringstream reader(string_list[j]);
+                  reader >> int_table[i][j];
+                }
+            }
+        }
       else
         {
           AssertThrow(false, ExcNotImplemented());
