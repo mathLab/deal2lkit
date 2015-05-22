@@ -113,7 +113,8 @@ public:
    * subsection returned by get_section_name() for each derived class,
    * and parses all parameters that were added using add_parameter().
    */
-  static void parse_all_parameters(ParameterHandler &prm);
+  static void parse_all_parameters(ParameterHandler &prm=ParameterAcceptor::prm);
+
 
   /**
    * Print information about all stored classes.
@@ -127,8 +128,7 @@ public:
    * get_section_name() for each derived class, and declares all
    * parameters that were added using add_parameter().
    */
-  static void declare_all_parameters(ParameterHandler &prm);
-
+  static void declare_all_parameters(ParameterHandler &prm=ParameterAcceptor::prm);
 
   /**
    * Return the section name of this class. If a name was provided

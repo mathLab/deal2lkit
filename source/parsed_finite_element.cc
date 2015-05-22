@@ -1,17 +1,6 @@
 #include "parsed_finite_element.h"
+#include "utilities.h"
 #include <deal.II/fe/fe_tools.h>
-
-namespace
-{
-  std::string join(const std::vector<std::string> &list)
-  {
-    std::string ret = (list.size() ? list[0]: "");
-    for (unsigned int i=1; i<list.size(); ++i)
-      ret += ", " + list[i];
-    return ret;
-  }
-}
-
 
 template <int dim, int spacedim>
 ParsedFiniteElement<dim, spacedim>::ParsedFiniteElement(const std::string &name,
@@ -48,6 +37,16 @@ void ParsedFiniteElement<dim, spacedim>::declare_parameters(ParameterHandler &pr
                 "number of repetitions (up to 3). This is used in conjunction "
                 "with a ParsedFiniteElement class, to generate arbitrary "
                 "finite dimensional spaces.");
+
+  add_parameter(prm, &coupling_int,
+                "Block coupling", "",
+                Patterns::List(Patterns::List(Patterns::Integer(0,3),0,
+                                              (_n_components ? _n_components: numbers::invalid_unsigned_int), ","),
+                               0, (_n_components ? _n_components: numbers::invalid_unsigned_int), ";"),
+                "Coupling between the blocks of the finite elements:\n"
+                " 0: No coupling\n"
+                " 1: Full coupling\n"
+                " 2: Coupling only on faces\n");
 }
 
 template <int dim, int spacedim>
@@ -73,10 +72,42 @@ void ParsedFiniteElement<dim,spacedim>::parse_parameters_call_back()
     }
   block_names.resize(j+1);
   FiniteElement<dim,spacedim> *fe = (*this)();
-  unsigned int nc = fe->n_components();
+  const unsigned int nc = fe->n_components();
+  const unsigned int nb = n_blocks();
   delete fe;
   AssertThrow(component_names.size() == nc,
               ExcInternalError("Generated FE has the wrong number of components."));
+
+  // Now construct the Coupling object.
+  coupling.reinit(nc, nc, true);
+  std::vector<DoFTools::Coupling> m(3);
+  m[0] = DoFTools::none;
+  m[1] = DoFTools::always;
+  m[2] = DoFTools::nonzero;
+
+  if (coupling_int.size() == nc)
+    for (unsigned int i=0; i<nc; ++i)
+      {
+        AssertThrow(coupling_int[i].size() == nc, ExcDimensionMismatch(coupling_int[i].size(), nc));
+        for (unsigned int j=0; j<nc; ++j)
+          coupling[i][j] = m[coupling_int[i][j]];
+      }
+  else if (coupling_int.size() == nb)
+    for (unsigned int i=0; i<nc; ++i)
+      {
+        AssertThrow(coupling_int[component_blocks[i]].size() == nb,
+                    ExcDimensionMismatch(coupling_int[component_blocks[i]].size(), nb));
+        for (unsigned int j=0; j<nc; ++j)
+          coupling[i][j] = m[coupling_int[component_blocks[i]][component_blocks[j]]];
+      }
+  else if (coupling_int.size() == 0)
+    for (unsigned int i=0; i<nc; ++i)
+      {
+        for (unsigned int j=0; j<nc; ++j)
+          coupling[i][j] = m[1];
+      }
+  else
+    AssertThrow(false, ExcMessage("You tried to construct a coupling with the wrong number of elements."));
 }
 
 
@@ -97,14 +128,14 @@ unsigned int ParsedFiniteElement<dim,spacedim>::n_blocks() const
 template<int dim, int spacedim>
 std::string ParsedFiniteElement<dim,spacedim>::get_component_names() const
 {
-  return join(component_names);
+  return print(component_names);
 }
 
 
 template<int dim, int spacedim>
 std::string ParsedFiniteElement<dim,spacedim>::get_block_names() const
 {
-  return join(block_names);
+  return print(block_names);
 }
 
 
@@ -114,6 +145,12 @@ std::vector<unsigned int> ParsedFiniteElement<dim,spacedim>::get_component_block
   return component_blocks;
 }
 
+
+template<int dim, int spacedim>
+const Table<2, DoFTools::Coupling> &ParsedFiniteElement<dim,spacedim>::get_coupling() const
+{
+  return coupling;
+}
 
 template class ParsedFiniteElement<1,1>;
 template class ParsedFiniteElement<1,2>;
