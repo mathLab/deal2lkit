@@ -6,11 +6,13 @@ template <int dim, int spacedim>
 ParsedFiniteElement<dim, spacedim>::ParsedFiniteElement(const std::string &name,
                                                         const std::string &default_name,
                                                         const std::string &default_component_names,
-                                                        const unsigned int n_components) :
+                                                        const unsigned int n_components,
+                                                        const std::string &default_coupling) :
   ParameterAcceptor(name),
   _n_components(n_components),
   fe_name(default_name),
-  default_component_names(default_component_names)
+  default_component_names(default_component_names),
+  default_coupling(default_coupling)
 {}
 
 template <int dim, int spacedim>
@@ -39,7 +41,7 @@ void ParsedFiniteElement<dim, spacedim>::declare_parameters(ParameterHandler &pr
                 "finite dimensional spaces.");
 
   add_parameter(prm, &coupling_int,
-                "Block coupling", "",
+                "Block coupling", default_coupling,
                 Patterns::List(Patterns::List(Patterns::Integer(0,3),0,
                                               (_n_components ? _n_components: numbers::invalid_unsigned_int), ","),
                                0, (_n_components ? _n_components: numbers::invalid_unsigned_int), ";"),
@@ -51,7 +53,7 @@ void ParsedFiniteElement<dim, spacedim>::declare_parameters(ParameterHandler &pr
 
 template <int dim, int spacedim>
 FiniteElement<dim,spacedim> *
-ParsedFiniteElement<dim, spacedim>::operator()()
+ParsedFiniteElement<dim, spacedim>::operator()() const
 {
   return FETools::get_fe_by_name<dim,spacedim>(fe_name);
 }
