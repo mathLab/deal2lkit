@@ -42,24 +42,24 @@ std::string get_next_available_index_directory_name(const std::string &base, int
       cmd = "test -d " + base + Utilities::int_to_string (index, n_digits);
     }
 #endif
-return base + Utilities::int_to_string (index, n_digits);
+  return base + Utilities::int_to_string (index, n_digits);
 }
 
 
 bool create_directory(const std::string &name)
 {
   std::string cmd = "";
-  #ifdef DEAL_II_SAK_WITH_BOOST
-          return boost::filesystem::create_directories(name);
-  #else
-          cmd = "mkdir -p " + name;
-          if( int( std::system( cmd.c_str() ) == 0 ) )
-          {
-            return true;
-          }
-          else
-          {
-            return false;
-          }
-  #endif
+#ifdef DEAL_II_SAK_WITH_BOOST
+  return boost::filesystem::create_directories(name);
+#else
+  cmd = "mkdir -p " + name;
+  if ( int( std::system( cmd.c_str() ) == 0 ) )
+    {
+      return true;
+    }
+  else
+    {
+      return false;
+    }
+#endif
 }
