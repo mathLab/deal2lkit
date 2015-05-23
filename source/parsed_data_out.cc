@@ -1,5 +1,7 @@
 #include "../include/parsed_data_out.h"
 
+#include "../include/utilities.h"
+
 #include <deal.II/base/logstream.h>
 #include <deal.II/base/quadrature_lib.h>
 #include <deal.II/base/utilities.h>
@@ -17,12 +19,6 @@
 #include <vector>
 #include <string>
 
-#ifdef DEAL_II_SAK_WITH_BOOST
-#include "boost/filesystem.hpp"
-using namespace boost::filesystem;
-#else
-#include <stdlib.h>
-#endif
 
 #include <deal.II/base/utilities.h>
 
@@ -40,37 +36,18 @@ ParsedDataOut<dim,spacedim>::ParsedDataOut (const std::string &name,
   initialized = false;
 
   path_solution_dir = "./" + run_dir;
-
   std::string cmd = "";
 
   if ( run_dir != "" )
     {
-      unsigned int index = 0;
-#ifdef DEAL_II_SAK_WITH_BOOST
-      while ( exists( path_solution_dir + Utilities::int_to_string (index, 3) ) ) index++;
-#else
-      cmd = "test -d " + path_solution_dir + Utilities::int_to_string (index, 3);
-      while ( int(std::system( cmd.c_str() )) == 0 )
-        {
-          index++;
-          cmd = "test -d " + path_solution_dir + Utilities::int_to_string (index, 3);
-        }
-#endif
+      path_solution_dir = get_next_available_index_directory_name(path_solution_dir);
       // The use of the barrier is
       //  to avoid the case of a processor below the master node.
 #ifdef DEAL_II_WITH_MPI
       MPI_Barrier(comm);
 #endif
-      path_solution_dir += Utilities::int_to_string (index, 3);
       if ( Utilities::MPI::this_mpi_process(MPI_COMM_WORLD) == 0)
-        {
-#ifdef DEAL_II_SAK_WITH_BOOST
-          create_directories(path_solution_dir);
-#else
-          cmd = "mkdir -p " + path_solution_dir;
-          std::system( cmd.c_str() );
-#endif
-        }
+          create_directory(path_solution_dir);
 #ifdef DEAL_II_WITH_MPI
       MPI_Barrier(comm);
 #endif
