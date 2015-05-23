@@ -36,6 +36,21 @@ std::string demangle(const char *name);
 // ======================================================================
 
 /**
+ * A simple function that accepts a vector as an input and returns a
+ * second vector containing only the unique value among consecutive entries
+ * of the original vector.
+ */
+
+template<class T>
+std::vector<T> unique(const std::vector<T> &myvector)
+{
+  std::vector<T> ret;
+  std::unique_copy(myvector.begin(), myvector.end(), std::back_inserter(ret));
+  return ret;
+}
+
+
+/**
  * Return a string containing the content of the vector, with elements
  * separated by the @ sep parameter.
  */
