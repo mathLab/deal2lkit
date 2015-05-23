@@ -30,6 +30,9 @@ void smart_delete (SmartPointer<TYPE> &sp) DEAL_II_DEPRECATED;
 /** Demangle c++ names. */
 std::string demangle(const char *name);
 
+std::string get_next_available_index_directory_name(const std::string &base, int n_digits=3);
+
+bool create_directory(const std::string &name);
 
 // ======================================================================
 // Explicit template functions. Only present in the include file.
