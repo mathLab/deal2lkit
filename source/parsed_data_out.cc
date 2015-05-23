@@ -80,9 +80,8 @@ void ParsedDataOut<dim,spacedim>::prepare_data_output(const DoFHandler<dim,space
                                                       const std::string &suffix)
 {
   path_solution_dir = "./" + run_dir;
-
   std::string cmd = "";
-
+  // std::cout << "aa------------>" << Utilities::MPI::this_mpi_process(comm) << "<-----"<<std::flush;
   if ( run_dir != "" )
     {
       unsigned int index = 0;
@@ -96,26 +95,40 @@ void ParsedDataOut<dim,spacedim>::prepare_data_output(const DoFHandler<dim,space
           cmd = "test -d " + path_solution_dir + Utilities::int_to_string (index, 3);
         }
 #endif
+// std::cout << "------------>" << Utilities::MPI::this_mpi_process(comm) << "<-----"<<std::flush;
+
       // The use of the barrier is
-      //  to avoid the case of a processor below the master node.
+      //  to avoid the case of a processor faster than the master node.
 #ifdef DEAL_II_WITH_MPI
-      MPI_Barrier(comm);
-#endif
+      if (n_mpi_processes > 1)
+        MPI_Barrier(comm);
       path_solution_dir += Utilities::int_to_string (index, 3);
-      if ( Utilities::MPI::this_mpi_process(comm) == 0)
+      if ( n_mpi_processes <= 1 || Utilities::MPI::this_mpi_process(comm) == 0)
         {
+#else
+      path_solution_dir += Utilities::int_to_string (index, 3);
+#endif
+
+
 #ifdef DEAL_II_SAK_WITH_BOOST
           create_directories(path_solution_dir);
 #else
           cmd = "mkdir -p " + path_solution_dir;
           std::system( cmd.c_str() );
 #endif
-        }
+
 #ifdef DEAL_II_WITH_MPI
-      MPI_Barrier(comm);
+        }
 #endif
       path_solution_dir += "/";
+#ifdef DEAL_II_WITH_MPI
+      if (n_mpi_processes > 1)
+        MPI_Barrier(comm);
+#endif
+
+
     }
+
 
   AssertThrow(initialized, ExcNotInitialized());
   deallog.push("PrepareOutput");
@@ -198,7 +211,9 @@ void ParsedDataOut<dim,spacedim>::write_data_and_clear( const std::string &used_
       deallog << "Reset output." << std::endl;
     }
 
-    #ifdef DEAL_II_SAK_WITH_BOOST
+  if (this_mpi_process == 0)
+    {
+#ifdef DEAL_II_SAK_WITH_BOOST
       if (exists(used_files) && used_files!="")
         {
           vector<string> strs;
@@ -207,12 +222,13 @@ void ParsedDataOut<dim,spacedim>::write_data_and_clear( const std::string &used_
             copy_file(strs[i],path_solution_dir+used_files,
                       copy_option::overwrite_if_exists);
         }
-    #else
+#else
       std::string cmd1 = "for f in " + used_files + "; do test -e $f ; done";
       std::string cmd2 = "for f in " + used_files + "; do cp $f " + path_solution_dir + "; done";
       if (int(std::system( cmd1.c_str() )) == 0 && used_files!="")
         std::system( cmd2.c_str() );
-    #endif
+#endif
+    }
   deallog.pop();
 }
 
