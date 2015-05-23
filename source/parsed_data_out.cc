@@ -74,10 +74,8 @@ void ParsedDataOut<dim,spacedim>::parse_parameters (ParameterHandler &prm)
   initialized = true;
 }
 
-
 template <int dim, int spacedim>
-void ParsedDataOut<dim,spacedim>::prepare_data_output(const DoFHandler<dim,spacedim> &dh,
-                                                      const std::string &suffix)
+void ParsedDataOut<dim,spacedim>::parse_parameters_call_back ()
 {
   path_solution_dir = "./" + run_dir;
   std::string cmd = "";
@@ -85,51 +83,53 @@ void ParsedDataOut<dim,spacedim>::prepare_data_output(const DoFHandler<dim,space
   if ( run_dir != "" )
     {
       unsigned int index = 0;
-#ifdef DEAL_II_SAK_WITH_BOOST
+  #ifdef DEAL_II_SAK_WITH_BOOST
       while ( exists( path_solution_dir + Utilities::int_to_string (index, 3) ) ) index++;
-#else
+  #else
       cmd = "test -d " + path_solution_dir + Utilities::int_to_string (index, 3);
       while ( int(std::system( cmd.c_str() )) == 0 )
         {
           index++;
           cmd = "test -d " + path_solution_dir + Utilities::int_to_string (index, 3);
         }
-#endif
-// std::cout << "------------>" << Utilities::MPI::this_mpi_process(comm) << "<-----"<<std::flush;
+  #endif
+  // std::cout << "------------>" << Utilities::MPI::this_mpi_process(comm) << "<-----"<<std::flush;
 
       // The use of the barrier is
       //  to avoid the case of a processor faster than the master node.
-#ifdef DEAL_II_WITH_MPI
+  #ifdef DEAL_II_WITH_MPI
       if (n_mpi_processes > 1)
         MPI_Barrier(comm);
       path_solution_dir += Utilities::int_to_string (index, 3);
       if ( n_mpi_processes <= 1 || Utilities::MPI::this_mpi_process(comm) == 0)
         {
-#else
+  #else
       path_solution_dir += Utilities::int_to_string (index, 3);
-#endif
+  #endif
 
 
-#ifdef DEAL_II_SAK_WITH_BOOST
+  #ifdef DEAL_II_SAK_WITH_BOOST
           create_directories(path_solution_dir);
-#else
+  #else
           cmd = "mkdir -p " + path_solution_dir;
           std::system( cmd.c_str() );
-#endif
+  #endif
 
-#ifdef DEAL_II_WITH_MPI
+  #ifdef DEAL_II_WITH_MPI
         }
-#endif
+  #endif
       path_solution_dir += "/";
-#ifdef DEAL_II_WITH_MPI
+  #ifdef DEAL_II_WITH_MPI
       if (n_mpi_processes > 1)
         MPI_Barrier(comm);
-#endif
-
-
+  #endif
     }
+}
 
-
+template <int dim, int spacedim>
+void ParsedDataOut<dim,spacedim>::prepare_data_output(const DoFHandler<dim,spacedim> &dh,
+                                                      const std::string &suffix)
+{
   AssertThrow(initialized, ExcNotInitialized());
   deallog.push("PrepareOutput");
 

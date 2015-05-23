@@ -33,6 +33,8 @@ public:
   /** Parse the given parameters. */
   virtual void parse_parameters(ParameterHandler &prm);
 
+  virtual void parse_parameters_call_back ();
+
   /** Prepare to output data on the given file. This will initialize
       the data_out object and a file with a filename that is the
       combination of the @p base_name, the optional @p suffix,
