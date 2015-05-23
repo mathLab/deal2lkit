@@ -38,8 +38,7 @@ public:
       combination of the @p base_name, the optional @p suffix,
       eventually a processor number and the output suffix.  */
   void prepare_data_output(const DoFHandler<dim, spacedim> &dh,
-                           const std::string &suffix="",
-                           const std::string &used_files="");
+                           const std::string &suffix="");
 
   /** Add the given vector to the output file. Prior to calling this
       method, you have to call the prepare_data_output method. The
@@ -54,7 +53,8 @@ public:
       is done in this class. At the end of this function call,
       data_out and output_file are in a pristine situation, and the
       process can be started again.*/
-  void write_data_and_clear(const Mapping<dim,spacedim> &mapping=StaticMappingQ1<dim,spacedim>::mapping);
+  void write_data_and_clear(const std::string &used_files="",
+                            const Mapping<dim,spacedim> &mapping=StaticMappingQ1<dim,spacedim>::mapping);
 
 private:
   /** Initialization flag.*/

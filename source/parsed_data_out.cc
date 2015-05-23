@@ -41,44 +41,6 @@ ParsedDataOut<dim,spacedim>::ParsedDataOut (const std::string &name,
   run_dir(run_dir)
 {
   initialized = false;
-
-  path_solution_dir = "./" + run_dir;
-
-  std::string cmd = "";
-
-  if ( run_dir != "" )
-    {
-      unsigned int index = 0;
-#ifdef DEAL_II_SAK_WITH_BOOST
-      while ( exists( path_solution_dir + Utilities::int_to_string (index, 3) ) ) index++;
-#else
-      cmd = "test -d " + path_solution_dir + Utilities::int_to_string (index, 3);
-      while ( int(std::system( cmd.c_str() )) == 0 )
-        {
-          index++;
-          cmd = "test -d " + path_solution_dir + Utilities::int_to_string (index, 3);
-        }
-#endif
-      // The use of the barrier is
-      //  to avoid the case of a processor below the master node.
-#ifdef DEAL_II_WITH_MPI
-      MPI_Barrier(comm);
-#endif
-      path_solution_dir += Utilities::int_to_string (index, 3);
-      if ( Utilities::MPI::this_mpi_process(MPI_COMM_WORLD) == 0)
-        {
-#ifdef DEAL_II_SAK_WITH_BOOST
-          create_directories(path_solution_dir);
-#else
-          cmd = "mkdir -p " + path_solution_dir;
-          std::system( cmd.c_str() );
-#endif
-        }
-#ifdef DEAL_II_WITH_MPI
-      MPI_Barrier(comm);
-#endif
-      path_solution_dir += "/";
-    }
 }
 
 template <int dim, int spacedim>
@@ -115,9 +77,45 @@ void ParsedDataOut<dim,spacedim>::parse_parameters (ParameterHandler &prm)
 
 template <int dim, int spacedim>
 void ParsedDataOut<dim,spacedim>::prepare_data_output(const DoFHandler<dim,spacedim> &dh,
-                                                      const std::string &suffix,
-                                                      const std::string &used_files)
+                                                      const std::string &suffix)
 {
+  path_solution_dir = "./" + run_dir;
+
+  std::string cmd = "";
+
+  if ( run_dir != "" )
+    {
+      unsigned int index = 0;
+#ifdef DEAL_II_SAK_WITH_BOOST
+      while ( exists( path_solution_dir + Utilities::int_to_string (index, 3) ) ) index++;
+#else
+      cmd = "test -d " + path_solution_dir + Utilities::int_to_string (index, 3);
+      while ( int(std::system( cmd.c_str() )) == 0 )
+        {
+          index++;
+          cmd = "test -d " + path_solution_dir + Utilities::int_to_string (index, 3);
+        }
+#endif
+      // The use of the barrier is
+      //  to avoid the case of a processor below the master node.
+#ifdef DEAL_II_WITH_MPI
+      MPI_Barrier(comm);
+#endif
+      path_solution_dir += Utilities::int_to_string (index, 3);
+      if ( Utilities::MPI::this_mpi_process(comm) == 0)
+        {
+#ifdef DEAL_II_SAK_WITH_BOOST
+          create_directories(path_solution_dir);
+#else
+          cmd = "mkdir -p " + path_solution_dir;
+          std::system( cmd.c_str() );
+#endif
+        }
+#ifdef DEAL_II_WITH_MPI
+      MPI_Barrier(comm);
+#endif
+      path_solution_dir += "/";
+    }
 
   AssertThrow(initialized, ExcNotInitialized());
   deallog.push("PrepareOutput");
@@ -163,28 +161,14 @@ void ParsedDataOut<dim,spacedim>::prepare_data_output(const DoFHandler<dim,space
         }
     }
 
-#ifdef DEAL_II_SAK_WITH_BOOST
-  if (exists(used_files) && used_files!="")
-    {
-      vector<string> strs;
-      boost::split(strs,used_files,boost::is_any_of(" "));
-      for (size_t i = 0; i < strs.size(); i++)
-        copy_file(strs[i],path_solution_dir+used_files,
-                  copy_option::overwrite_if_exists);
-    }
-#else
-  std::string cmd1 = "for f in " + used_files + "; do test -e $f ; done";
-  std::string cmd2 = "for f in " + used_files + "; do cp $f " + path_solution_dir + "; done";
-  if (int(std::system( cmd1.c_str() )) == 0 && used_files!="")
-    std::system( cmd2.c_str() );
-#endif
   deallog.pop();
 }
 
 
 
 template <int dim, int spacedim>
-void ParsedDataOut<dim,spacedim>::write_data_and_clear(const Mapping<dim,spacedim> &mapping)
+void ParsedDataOut<dim,spacedim>::write_data_and_clear( const std::string &used_files,
+                                                        const Mapping<dim,spacedim> &mapping)
 {
   AssertThrow(initialized, ExcNotInitialized());
   AssertThrow(output_file, ExcIO());
@@ -213,6 +197,22 @@ void ParsedDataOut<dim,spacedim>::write_data_and_clear(const Mapping<dim,spacedi
       output_file.close();
       deallog << "Reset output." << std::endl;
     }
+
+    #ifdef DEAL_II_SAK_WITH_BOOST
+      if (exists(used_files) && used_files!="")
+        {
+          vector<string> strs;
+          boost::split(strs,used_files,boost::is_any_of(" "));
+          for (size_t i = 0; i < strs.size(); i++)
+            copy_file(strs[i],path_solution_dir+used_files,
+                      copy_option::overwrite_if_exists);
+        }
+    #else
+      std::string cmd1 = "for f in " + used_files + "; do test -e $f ; done";
+      std::string cmd2 = "for f in " + used_files + "; do cp $f " + path_solution_dir + "; done";
+      if (int(std::system( cmd1.c_str() )) == 0 && used_files!="")
+        std::system( cmd2.c_str() );
+    #endif
   deallog.pop();
 }
 
