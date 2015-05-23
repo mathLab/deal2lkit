@@ -30,12 +30,15 @@ template <int dim, int spacedim>
 ParsedDataOut<dim,spacedim>::ParsedDataOut (const std::string &name,
                                             const std::string &default_format,
                                             const std::string &run_dir,
+                                            const std::string &base_name,
                                             const MPI_Comm &comm) :
   ParameterAcceptor(name),
   comm(comm),
   n_mpi_processes(Utilities::MPI::n_mpi_processes(comm)),
   this_mpi_process(Utilities::MPI::this_mpi_process(comm)),
-  default_format(default_format)
+  default_format(default_format),
+  base_name(base_name),
+  run_dir(run_dir)
 {
   initialized = false;
 
@@ -76,13 +79,13 @@ ParsedDataOut<dim,spacedim>::ParsedDataOut (const std::string &name,
 #endif
       path_solution_dir += "/";
     }
-
 }
 
 template <int dim, int spacedim>
 void ParsedDataOut<dim,spacedim>::declare_parameters (ParameterHandler &prm)
 {
-  add_parameter(prm, &base_name, "Problem base name", "solution", Patterns::Anything());
+  add_parameter(prm, &base_name, "Problem base name", base_name, Patterns::Anything());
+  add_parameter(prm, &run_dir, "Incremental run prefix", run_dir, Patterns::Anything());
 
   add_parameter(prm, &output_partitioning, "Output partitioning", "false", Patterns::Bool());
   add_parameter(prm, &solution_names, "Solution names", "u", Patterns::Anything(),
@@ -113,8 +116,9 @@ void ParsedDataOut<dim,spacedim>::parse_parameters (ParameterHandler &prm)
 template <int dim, int spacedim>
 void ParsedDataOut<dim,spacedim>::prepare_data_output(const DoFHandler<dim,spacedim> &dh,
                                                       const std::string &suffix,
-                                                      const std::string &prm_used_file)
+                                                      const std::string &used_files)
 {
+
   AssertThrow(initialized, ExcNotInitialized());
   deallog.push("PrepareOutput");
 
@@ -160,15 +164,18 @@ void ParsedDataOut<dim,spacedim>::prepare_data_output(const DoFHandler<dim,space
     }
 
 #ifdef DEAL_II_SAK_WITH_BOOST
-  if (exists(prm_used_file) && prm_used_file!="")
+  if (exists(used_files) && used_files!="")
     {
-      copy_file(prm_used_file,path_solution_dir+prm_used_file,
-                copy_option::overwrite_if_exists);
+      vector<string> strs;
+      boost::split(strs,used_files,boost::is_any_of(" "));
+      for (size_t i = 0; i < strs.size(); i++)
+        copy_file(strs[i],path_solution_dir+used_files,
+                  copy_option::overwrite_if_exists);
     }
 #else
-  std::string cmd1 = "test -e " + prm_used_file;
-  std::string cmd2 = "cp " + prm_used_file + " " + path_solution_dir;
-  if (int(std::system( cmd1.c_str() )) ==0 && prm_used_file!="")
+  std::string cmd1 = "for f in " + used_files + "; do test -e $f ; done";
+  std::string cmd2 = "for f in " + used_files + "; do cp $f " + path_solution_dir + "; done";
+  if (int(std::system( cmd1.c_str() )) == 0 && used_files!="")
     std::system( cmd2.c_str() );
 #endif
   deallog.pop();
