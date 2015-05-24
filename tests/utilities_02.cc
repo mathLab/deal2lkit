@@ -20,11 +20,13 @@
 
 int main (int argc, char *argv[])
 {
-#ifdef DEAL_II_WITH_MPI
+  #ifdef DEAL_II_WITH_MPI
   Utilities::MPI::MPI_InitFinalize mpi_initialization(argc, argv, numbers::invalid_unsigned_int);
-#endif
-  mpi_initlog();
-
+mpi_initlog();
+#else
+  initlog();
+ #endif
+  
   std::system("rm -rf dsfas*");
   deallog << "--> " << create_directory("dsfas000") << std::endl;
   deallog << "--> " << create_directory("dsfas001") << std::endl;
