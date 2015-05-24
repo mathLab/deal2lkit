@@ -33,6 +33,8 @@ std::string demangle(const char *name);
 int get_next_available_index_directory_name(const std::string &base, int n_digits=3);
 std::string get_next_available_directory_name(const std::string &base, int n_digits=3);
 
+bool exist_file(const std::string &file);
+
 bool create_directory(const std::string &name);
 
 bool copy_files(const std::string &files, const std::string &destination);

@@ -51,14 +51,32 @@ std::string get_next_available_directory_name(const std::string &base, int n_dig
   return base + Utilities::int_to_string (index, n_digits);
 }
 
+bool exist_file(const std::string &file)
+{
+#ifdef DEAL_II_SAK_WITH_BOOST
+  return boost::filesystem::exists( file );
+#else
+  std::string cmd = "";
+  cmd = "test -f " + file;
+  if ( int(std::system( cmd.c_str() )) == 0 )
+    {
+      return true;
+    }
+  else
+    {
+      return false;
+    }
+#endif
+}
+
 
 bool create_directory(const std::string &name)
 {
-  std::string cmd = "";
 #ifdef DEAL_II_SAK_WITH_BOOST
-  return boost::filesystem::create_directories(name);
+  return boost::filesystem::create_directories(name + "/");
 #else
-  cmd = "mkdir -p " + name;
+  std::string cmd = "";
+  cmd = "mkdir -p " + name + "/";
   if ( int( std::system( cmd.c_str() ) == 0 ) )
     {
       return true;

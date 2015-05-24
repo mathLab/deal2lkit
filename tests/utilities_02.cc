@@ -9,9 +9,7 @@
 //
 //-----------------------------------------------------------
 
-// Test if the "print" utilities function works as expected. This is
-// somewhat the inverse of the dealii::Utilities::split_string_list(),
-// but it works with arbitrary objects that support operator<<();
+// Test if the "create directory" utilities function works as expected.
 
 #include "tests.h"
 #include "utilities.h"
