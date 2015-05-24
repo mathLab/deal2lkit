@@ -20,7 +20,9 @@
 
 int main (int argc, char *argv[])
 {
+#ifdef DEAL_II_WITH_MPI
   Utilities::MPI::MPI_InitFinalize mpi_initialization(argc, argv, numbers::invalid_unsigned_int);
+#endif
   mpi_initlog();
 
   std::system("rm -rf dsfas*");

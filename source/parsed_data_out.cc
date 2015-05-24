@@ -36,7 +36,6 @@ ParsedDataOut<dim,spacedim>::ParsedDataOut (const std::string &name,
   initialized = false;
 
   path_solution_dir = "./" + run_dir;
-  std::string cmd = "";
 
   if ( run_dir != "" )
     {
@@ -47,7 +46,7 @@ ParsedDataOut<dim,spacedim>::ParsedDataOut (const std::string &name,
       MPI_Barrier(comm);
 #endif
       if ( Utilities::MPI::this_mpi_process(MPI_COMM_WORLD) == 0)
-          create_directory(path_solution_dir);
+        create_directory(path_solution_dir);
 #ifdef DEAL_II_WITH_MPI
       MPI_Barrier(comm);
 #endif
