@@ -43,7 +43,7 @@ template <int dim, int spacedim>
 void ParsedDataOut<dim,spacedim>::declare_parameters (ParameterHandler &prm)
 {
   add_parameter(prm, &base_name, "Problem base name", base_name, Patterns::Anything());
-  add_parameter(prm, &incremental_run_prefix, "Problem run dir name", incremental_run_prefix, Patterns::Anything());
+  add_parameter(prm, &incremental_run_prefix, "Incremental run prefix", incremental_run_prefix, Patterns::Anything());
 
   add_parameter(prm, &output_partitioning, "Output partitioning", "false", Patterns::Bool());
   add_parameter(prm, &solution_names, "Solution names", "u", Patterns::Anything(),
