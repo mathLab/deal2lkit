@@ -25,7 +25,7 @@
 template <int dim, int spacedim>
 ParsedDataOut<dim,spacedim>::ParsedDataOut (const std::string &name,
                                             const std::string &default_format,
-                                            const std::string &run_dir_input,
+                                            const std::string &incremental_run_prefix,
                                             const std::string &base_name_input,
                                             const MPI_Comm &comm) :
   ParameterAcceptor(name),
@@ -34,7 +34,7 @@ ParsedDataOut<dim,spacedim>::ParsedDataOut (const std::string &name,
   this_mpi_process(Utilities::MPI::this_mpi_process(comm)),
   default_format(default_format),
   base_name(base_name_input),
-  run_dir(run_dir_input)
+  incremental_run_prefix(incremental_run_prefix)
 {
   initialized = false;
 }
@@ -43,7 +43,7 @@ template <int dim, int spacedim>
 void ParsedDataOut<dim,spacedim>::declare_parameters (ParameterHandler &prm)
 {
   add_parameter(prm, &base_name, "Problem base name", base_name, Patterns::Anything());
-  add_parameter(prm, &run_dir, "Problem run dir name", run_dir, Patterns::Anything());
+  add_parameter(prm, &incremental_run_prefix, "Problem run dir name", incremental_run_prefix, Patterns::Anything());
 
   add_parameter(prm, &output_partitioning, "Output partitioning", "false", Patterns::Bool());
   add_parameter(prm, &solution_names, "Solution names", "u", Patterns::Anything(),
@@ -73,9 +73,9 @@ void ParsedDataOut<dim,spacedim>::parse_parameters (ParameterHandler &prm)
 template <int dim, int spacedim>
 void ParsedDataOut<dim,spacedim>::parse_parameters_call_back()
 {
-  if ( run_dir != "" )
+  if ( incremental_run_prefix != "" )
     {
-      path_solution_dir = get_next_available_directory_name(run_dir);
+      path_solution_dir = get_next_available_directory_name(incremental_run_prefix);
       // The use of the barrier is
       //  to avoid the case of a processor below the master node.
 #ifdef DEAL_II_WITH_MPI

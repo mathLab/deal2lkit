@@ -38,7 +38,5 @@ int main (int argc, char *argv[])
   ParameterAcceptor::prm.log_parameters(deallog);
 
   std::system("touch solution/run000/test.txt");
-  deallog << "exists ? = " << exists_file("solution/run000/test.txt") << std::endl;
-
-// std::system("rm -rf solution/run*");
+  deallog << "exists ? = " << file_exists("solution/run000/test.txt") << std::endl;
 }

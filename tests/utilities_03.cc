@@ -32,13 +32,13 @@ int main (int argc, char *argv[])
       std::system("touch test1.txt");
       std::system("touch test2.txt");
       std::system("rm -rf new_folder*");
-      deallog << "exist  --> " << exists_file("test1.txt") << std::endl;
-      deallog << "exist  --> " << exists_file("test2.txt") << std::endl;
+      deallog << "exist  --> " << file_exists("test1.txt") << std::endl;
+      deallog << "exist  --> " << file_exists("test2.txt") << std::endl;
       std::string folder = get_next_available_directory_name("new_folder",3);
       deallog << "create --> " << folder << " - "<< create_directory(folder) << std::endl;
       deallog << "copy   --> " << copy_files("test1.txt test2.txt", folder) << std::endl;
-      deallog << "exist  --> " << exists_file(folder+"/"+"test1.txt") << std::endl;
-      deallog << "exist  --> " << exists_file(folder+"/"+"test2.txt") << std::endl;
+      deallog << "exist  --> " << file_exists(folder+"/"+"test1.txt") << std::endl;
+      deallog << "exist  --> " << file_exists(folder+"/"+"test2.txt") << std::endl;
       std::system("rm -rf new_folder*");
 #ifdef DEAL_II_WITH_MPI
     }

@@ -26,8 +26,6 @@ std::string demangle(const char *name)
   return (status==0) ? result.p : name ;
 }
 
-// Nothing to do here, yet...
-
 int get_next_available_index_directory_name(const std::string &base, int n_digits)
 {
   unsigned int index = 0;
@@ -51,7 +49,7 @@ std::string get_next_available_directory_name(const std::string &base, int n_dig
   return base + Utilities::int_to_string (index, n_digits);
 }
 
-bool exists_file(const std::string &file)
+bool file_exists(const std::string &file)
 {
 #ifdef DEAL_II_SAK_WITH_BOOST
   return boost::filesystem::exists( file );

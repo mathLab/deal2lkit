@@ -19,11 +19,13 @@ class ParsedDataOut : public ParameterAcceptor
 {
 public:
   /** Optional name for parameter section.
-      run_dir is the directory created for every run.
-      ex "solution_" produces solution_001, solution_002, etc.. . */
+      @p incremental_run_prefix creates a progressive directories/subdirectories
+      for every run. For istance if @p incremental_run_prefix = "sol/run"
+      the function will create sol/run001 the first time the code is runned,
+      sol/run002 the second time, and so on.*/
   ParsedDataOut (const std::string &name="",
                  const std::string &default_format="vtu",
-                 const std::string &run_dir_input="",
+                 const std::string &incremental_run_prefix="",
                  const std::string &base_name_input="solution",
                  const MPI_Comm &comm=MPI_COMM_WORLD);
 
@@ -54,7 +56,10 @@ public:
       vectors have been added, the data can be written to a file. This
       is done in this class. At the end of this function call,
       data_out and output_file are in a pristine situation, and the
-      process can be started again.*/
+      process can be started again.
+      @p used_files is an optional variable that takes a list of useful files
+      (ex. "parameter.prm time.dat") and copies these files
+      in the @p incremental_run_prefix of the costructor function.*/
   void write_data_and_clear(const std::string &used_files="",
                             const Mapping<dim,spacedim> &mapping=StaticMappingQ1<dim,spacedim>::mapping);
 
@@ -81,7 +86,10 @@ private:
       filenames. */
   std::string base_name;
 
-  std::string run_dir;
+  /** name of progressive directories. One for every run.
+      For example sol/run will produces sol/run001
+      for the first run, sol/run002 for the second, and so on. */
+  std::string incremental_run_prefix;
 
   /** Solution names. */
   std::string solution_names;
