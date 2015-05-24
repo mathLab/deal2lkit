@@ -71,30 +71,30 @@ bool create_directory(const std::string &name)
 }
 
 bool copy_files(const std::string &files, const std::string &destination)
-    {
-      bool result = true;
+{
+  bool result = true;
 #ifdef DEAL_II_SAK_WITH_BOOST
-      if (exists(files) && files!="")
-        {
-          vector<string> strs;
-          boost::split(strs,files,boost::is_any_of(" "));
-          for (size_t i = 0; i < strs.size(); i++)
-          result &= copy_file(strs[i],destination+"/"+files,
-                      copy_option::overwrite_if_exists);
-        }
+  if (exists(files) && files!="")
+    {
+      vector<string> strs;
+      boost::split(strs,files,boost::is_any_of(" "));
+      for (size_t i = 0; i < strs.size(); i++)
+        result &= copy_file(strs[i],destination+"/"+files,
+                            copy_option::overwrite_if_exists);
+    }
 #else
-      std::string cmd1 = "for f in " + files + "; do test -e $f ; done";
-      std::string cmd2 = "for f in " + files + "; do cp $f " + destination + "; done";
-      if (int(std::system( cmd1.c_str() )) == 0 && files!="")
-      {
+  std::string cmd1 = "for f in " + files + "; do test -e $f ; done";
+  std::string cmd2 = "for f in " + files + "; do cp $f " + destination + "; done";
+  if (int(std::system( cmd1.c_str() )) == 0 && files!="")
+    {
       if (int(std::system( cmd2.c_str() )))
         {
           result &= true;
         }
-        else
+      else
         {
           result &= false;
         }
-      }
-#endif
     }
+#endif
+}
