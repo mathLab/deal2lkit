@@ -72,11 +72,13 @@ bool exist_file(const std::string &file)
 
 bool create_directory(const std::string &name)
 {
+  std::string name_cleaned = name;
+  name_cleaned.erase(std::remove(name_cleaned.begin(),name_cleaned.end(),' '),name_cleaned.end());
 #ifdef DEAL_II_SAK_WITH_BOOST
-  return boost::filesystem::create_directories(name + "/");
+  return boost::filesystem::create_directories(name_cleaned + "/");
 #else
   std::string cmd = "";
-  cmd = "mkdir -p " + name + "/";
+  cmd = "mkdir -p " + name_cleaned + "/";
   if ( int( std::system( cmd.c_str() ) == 0 ) )
     {
       return true;
@@ -115,4 +117,5 @@ bool copy_files(const std::string &files, const std::string &destination)
         }
     }
 #endif
+return result;
 }

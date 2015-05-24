@@ -24,6 +24,7 @@ public:
   ParsedDataOut (const std::string &name="",
                  const std::string &default_format="vtu",
                  const std::string &run_dir="",
+                 const std::string &base_name="solution",
                  const MPI_Comm &comm=MPI_COMM_WORLD);
 
   /** Initialize the given values for the paramter file. */
@@ -37,8 +38,7 @@ public:
       combination of the @p base_name, the optional @p suffix,
       eventually a processor number and the output suffix.  */
   void prepare_data_output(const DoFHandler<dim, spacedim> &dh,
-                           const std::string &suffix="",
-                           const std::string &prm_used_file="");
+                           const std::string &suffix="");
 
   /** Add the given vector to the output file. Prior to calling this
       method, you have to call the prepare_data_output method. The
@@ -53,7 +53,8 @@ public:
       is done in this class. At the end of this function call,
       data_out and output_file are in a pristine situation, and the
       process can be started again.*/
-  void write_data_and_clear(const Mapping<dim,spacedim> &mapping=StaticMappingQ1<dim,spacedim>::mapping);
+  void write_data_and_clear(const std::string &used_files="",
+  const Mapping<dim,spacedim> &mapping=StaticMappingQ1<dim,spacedim>::mapping);
 
 private:
   /** Initialization flag.*/
@@ -77,6 +78,8 @@ private:
   /** Base name for output files. This base is used to generate all
       filenames. */
   std::string base_name;
+
+  std::string run_dir;
 
   /** Solution names. */
   std::string solution_names;
