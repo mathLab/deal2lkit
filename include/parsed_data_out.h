@@ -23,8 +23,8 @@ public:
       ex "solution_" produces solution_001, solution_002, etc.. . */
   ParsedDataOut (const std::string &name="",
                  const std::string &default_format="vtu",
-                 const std::string &run_dir="",
-                 const std::string &base_name="solution",
+                 const std::string &run_dir_input="",
+                 const std::string &base_name_input="solution",
                  const MPI_Comm &comm=MPI_COMM_WORLD);
 
   /** Initialize the given values for the paramter file. */
@@ -32,6 +32,8 @@ public:
 
   /** Parse the given parameters. */
   virtual void parse_parameters(ParameterHandler &prm);
+
+  virtual void parse_parameters_call_back();
 
   /** Prepare to output data on the given file. This will initialize
       the data_out object and a file with a filename that is the
@@ -54,7 +56,7 @@ public:
       data_out and output_file are in a pristine situation, and the
       process can be started again.*/
   void write_data_and_clear(const std::string &used_files="",
-  const Mapping<dim,spacedim> &mapping=StaticMappingQ1<dim,spacedim>::mapping);
+                            const Mapping<dim,spacedim> &mapping=StaticMappingQ1<dim,spacedim>::mapping);
 
 private:
   /** Initialization flag.*/

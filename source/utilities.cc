@@ -51,7 +51,7 @@ std::string get_next_available_directory_name(const std::string &base, int n_dig
   return base + Utilities::int_to_string (index, n_digits);
 }
 
-bool exist_file(const std::string &file)
+bool exists_file(const std::string &file)
 {
 #ifdef DEAL_II_SAK_WITH_BOOST
   return boost::filesystem::exists( file );
@@ -117,5 +117,5 @@ bool copy_files(const std::string &files, const std::string &destination)
         }
     }
 #endif
-return result;
+  return result;
 }
