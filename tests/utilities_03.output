@@ -1,0 +1,7 @@
+
+DEAL::exist  --> 1
+DEAL::exist  --> 1
+DEAL::create --> new_folder000 - 1
+DEAL::copy   --> 0
+DEAL::exist  --> 1
+DEAL::exist  --> 1

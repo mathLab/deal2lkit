@@ -1,6 +1,7 @@
 
 DEAL:parameters:Test::Output partitioning: false
 DEAL:parameters:Test::Problem base name: solution
+DEAL:parameters:Test::Problem run dir name: 
 DEAL:parameters:Test::Solution names: u
 DEAL:parameters:Test:Solution output format::Output format: gnuplot
 DEAL:parameters:Test:Solution output format::Subdivisions: 1

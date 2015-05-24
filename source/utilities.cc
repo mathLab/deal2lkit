@@ -26,8 +26,6 @@ std::string demangle(const char *name)
   return (status==0) ? result.p : name ;
 }
 
-// Nothing to do here, yet...
-
 int get_next_available_index_directory_name(const std::string &base, int n_digits)
 {
   unsigned int index = 0;
@@ -51,7 +49,7 @@ std::string get_next_available_directory_name(const std::string &base, int n_dig
   return base + Utilities::int_to_string (index, n_digits);
 }
 
-bool exist_file(const std::string &file)
+bool file_exists(const std::string &file)
 {
 #ifdef DEAL_II_SAK_WITH_BOOST
   return boost::filesystem::exists( file );
@@ -72,11 +70,13 @@ bool exist_file(const std::string &file)
 
 bool create_directory(const std::string &name)
 {
+  std::string name_cleaned = name;
+  name_cleaned.erase(std::remove(name_cleaned.begin(),name_cleaned.end(),' '),name_cleaned.end());
 #ifdef DEAL_II_SAK_WITH_BOOST
-  return boost::filesystem::create_directories(name + "/");
+  return boost::filesystem::create_directories(name_cleaned + "/");
 #else
   std::string cmd = "";
-  cmd = "mkdir -p " + name + "/";
+  cmd = "mkdir -p " + name_cleaned + "/";
   if ( int( std::system( cmd.c_str() ) == 0 ) )
     {
       return true;
@@ -115,4 +115,5 @@ bool copy_files(const std::string &files, const std::string &destination)
         }
     }
 #endif
+  return result;
 }

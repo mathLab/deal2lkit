@@ -25,40 +25,25 @@
 template <int dim, int spacedim>
 ParsedDataOut<dim,spacedim>::ParsedDataOut (const std::string &name,
                                             const std::string &default_format,
-                                            const std::string &run_dir,
+                                            const std::string &incremental_run_prefix,
+                                            const std::string &base_name_input,
                                             const MPI_Comm &comm) :
   ParameterAcceptor(name),
   comm(comm),
   n_mpi_processes(Utilities::MPI::n_mpi_processes(comm)),
   this_mpi_process(Utilities::MPI::this_mpi_process(comm)),
-  default_format(default_format)
+  default_format(default_format),
+  base_name(base_name_input),
+  incremental_run_prefix(incremental_run_prefix)
 {
   initialized = false;
-
-  path_solution_dir = "./" + run_dir;
-
-  if ( run_dir != "" )
-    {
-      path_solution_dir = get_next_available_index_directory_name(path_solution_dir);
-      // The use of the barrier is
-      //  to avoid the case of a processor below the master node.
-#ifdef DEAL_II_WITH_MPI
-      MPI_Barrier(comm);
-#endif
-      if ( Utilities::MPI::this_mpi_process(MPI_COMM_WORLD) == 0)
-        create_directory(path_solution_dir);
-#ifdef DEAL_II_WITH_MPI
-      MPI_Barrier(comm);
-#endif
-      path_solution_dir += "/";
-    }
-
 }
 
 template <int dim, int spacedim>
 void ParsedDataOut<dim,spacedim>::declare_parameters (ParameterHandler &prm)
 {
-  add_parameter(prm, &base_name, "Problem base name", "solution", Patterns::Anything());
+  add_parameter(prm, &base_name, "Problem base name", base_name, Patterns::Anything());
+  add_parameter(prm, &incremental_run_prefix, "Problem run dir name", incremental_run_prefix, Patterns::Anything());
 
   add_parameter(prm, &output_partitioning, "Output partitioning", "false", Patterns::Bool());
   add_parameter(prm, &solution_names, "Solution names", "u", Patterns::Anything(),
@@ -85,11 +70,33 @@ void ParsedDataOut<dim,spacedim>::parse_parameters (ParameterHandler &prm)
   initialized = true;
 }
 
+template <int dim, int spacedim>
+void ParsedDataOut<dim,spacedim>::parse_parameters_call_back()
+{
+  if ( incremental_run_prefix != "" )
+    {
+      path_solution_dir = get_next_available_directory_name(incremental_run_prefix);
+      // The use of the barrier is
+      //  to avoid the case of a processor below the master node.
+#ifdef DEAL_II_WITH_MPI
+      MPI_Barrier(comm);
+#endif
+      if ( Utilities::MPI::this_mpi_process(MPI_COMM_WORLD) == 0)
+        create_directory(path_solution_dir);
+#ifdef DEAL_II_WITH_MPI
+      MPI_Barrier(comm);
+#endif
+      path_solution_dir += "/";
+    }
+  else
+    {
+      path_solution_dir = "./";
+    }
+}
 
 template <int dim, int spacedim>
 void ParsedDataOut<dim,spacedim>::prepare_data_output(const DoFHandler<dim,spacedim> &dh,
-                                                      const std::string &suffix,
-                                                      const std::string &prm_used_file)
+                                                      const std::string &suffix)
 {
   AssertThrow(initialized, ExcNotInitialized());
   deallog.push("PrepareOutput");
@@ -135,16 +142,17 @@ void ParsedDataOut<dim,spacedim>::prepare_data_output(const DoFHandler<dim,space
         }
     }
 
-  copy_files(prm_used_file, path_solution_dir);
-
   deallog.pop();
 }
 
 
 
 template <int dim, int spacedim>
-void ParsedDataOut<dim,spacedim>::write_data_and_clear(const Mapping<dim,spacedim> &mapping)
+void ParsedDataOut<dim,spacedim>::write_data_and_clear( const std::string &used_files,
+                                                        const Mapping<dim,spacedim> &mapping)
 {
+  copy_files(used_files, path_solution_dir);
+
   AssertThrow(initialized, ExcNotInitialized());
   AssertThrow(output_file, ExcIO());
   deallog.push("WritingData");

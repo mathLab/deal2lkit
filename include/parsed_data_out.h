@@ -19,11 +19,14 @@ class ParsedDataOut : public ParameterAcceptor
 {
 public:
   /** Optional name for parameter section.
-      run_dir is the directory created for every run.
-      ex "solution_" produces solution_001, solution_002, etc.. . */
+      @p incremental_run_prefix creates a progressive directories/subdirectories
+      for every run. For istance if @p incremental_run_prefix = "sol/run"
+      the function will create sol/run001 the first time the code is runned,
+      sol/run002 the second time, and so on.*/
   ParsedDataOut (const std::string &name="",
                  const std::string &default_format="vtu",
-                 const std::string &run_dir="",
+                 const std::string &incremental_run_prefix="",
+                 const std::string &base_name_input="solution",
                  const MPI_Comm &comm=MPI_COMM_WORLD);
 
   /** Initialize the given values for the paramter file. */
@@ -32,13 +35,14 @@ public:
   /** Parse the given parameters. */
   virtual void parse_parameters(ParameterHandler &prm);
 
+  virtual void parse_parameters_call_back();
+
   /** Prepare to output data on the given file. This will initialize
       the data_out object and a file with a filename that is the
       combination of the @p base_name, the optional @p suffix,
       eventually a processor number and the output suffix.  */
   void prepare_data_output(const DoFHandler<dim, spacedim> &dh,
-                           const std::string &suffix="",
-                           const std::string &prm_used_file="");
+                           const std::string &suffix="");
 
   /** Add the given vector to the output file. Prior to calling this
       method, you have to call the prepare_data_output method. The
@@ -52,8 +56,12 @@ public:
       vectors have been added, the data can be written to a file. This
       is done in this class. At the end of this function call,
       data_out and output_file are in a pristine situation, and the
-      process can be started again.*/
-  void write_data_and_clear(const Mapping<dim,spacedim> &mapping=StaticMappingQ1<dim,spacedim>::mapping);
+      process can be started again.
+      @p used_files is an optional variable that takes a list of useful files
+      (ex. "parameter.prm time.dat") and copies these files
+      in the @p incremental_run_prefix of the costructor function.*/
+  void write_data_and_clear(const std::string &used_files="",
+                            const Mapping<dim,spacedim> &mapping=StaticMappingQ1<dim,spacedim>::mapping);
 
 private:
   /** Initialization flag.*/
@@ -77,6 +85,11 @@ private:
   /** Base name for output files. This base is used to generate all
       filenames. */
   std::string base_name;
+
+  /** name of progressive directories. One for every run.
+      For example sol/run will produces sol/run001
+      for the first run, sol/run002 for the second, and so on. */
+  std::string incremental_run_prefix;
 
   /** Solution names. */
   std::string solution_names;

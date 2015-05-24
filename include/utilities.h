@@ -30,13 +30,32 @@ void smart_delete (SmartPointer<TYPE> &sp) DEAL_II_DEPRECATED;
 /** Demangle c++ names. */
 std::string demangle(const char *name);
 
+/**
+ * A function that return the index of the first non existing folder matching
+ * a pattern make by @p base and @p n_digits number. (base000, base001, base002, ...)
+ */
 int get_next_available_index_directory_name(const std::string &base, int n_digits=3);
+
+/**
+ * A function that return the name of the first non existing folder matching
+ * a pattern make by @p base and @p n_digits number. (base000, base001, base002, ...)
+ */
 std::string get_next_available_directory_name(const std::string &base, int n_digits=3);
 
-bool exist_file(const std::string &file);
+/**
+ * A function to check the existence of @p file
+ */
+bool file_exists(const std::string &file);
 
+/**
+ * A function to create directory. It creates all directories needed.
+ */
 bool create_directory(const std::string &name);
 
+/**
+ * A function to copy a list of @p file ( "file1 file2 file3" ) in the
+ * destination folder (@p destination)
+ */
 bool copy_files(const std::string &files, const std::string &destination);
 
 // ======================================================================
@@ -48,7 +67,6 @@ bool copy_files(const std::string &files, const std::string &destination);
  * second vector containing only the unique value among consecutive entries
  * of the original vector.
  */
-
 template<class T>
 std::vector<T> unique(const std::vector<T> &myvector)
 {
