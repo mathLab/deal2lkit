@@ -135,18 +135,8 @@ void ParsedDataOut<dim,spacedim>::prepare_data_output(const DoFHandler<dim,space
         }
     }
 
-#ifdef DEAL_II_SAK_WITH_BOOST
-  if (exists(prm_used_file) && prm_used_file!="")
-    {
-      copy_file(prm_used_file,path_solution_dir+prm_used_file,
-                copy_option::overwrite_if_exists);
-    }
-#else
-  std::string cmd1 = "test -e " + prm_used_file;
-  std::string cmd2 = "cp " + prm_used_file + " " + path_solution_dir;
-  if (int(std::system( cmd1.c_str() )) ==0 && prm_used_file!="")
-    std::system( cmd2.c_str() );
-#endif
+  copy_files(prm_used_file, path_solution_dir);
+
   deallog.pop();
 }
 

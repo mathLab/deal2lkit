@@ -9,9 +9,7 @@
 //
 //-----------------------------------------------------------
 
-// Test if the "print" utilities function works as expected. This is
-// somewhat the inverse of the dealii::Utilities::split_string_list(),
-// but it works with arbitrary objects that support operator<<();
+// Test if the "create directory" utilities function works as expected.
 
 #include "tests.h"
 #include "utilities.h"
@@ -27,12 +25,19 @@ int main (int argc, char *argv[])
   initlog();
 #endif
 
-  std::system("rm -rf dsfas*");
-  deallog << "--> " << create_directory("dsfas000") << std::endl;
-  deallog << "--> " << create_directory("dsfas001") << std::endl;
-  deallog << "--> " << create_directory("dsfas002") << std::endl;
-  deallog << "--> " << get_next_available_index_directory_name("dsfas",3) << std::endl;
-  deallog << "--> " << create_directory(get_next_available_index_directory_name("dsfas",3)) << std::endl;
-  deallog << "--> " << create_directory("dsfas004") << std::endl;
-  deallog << "--> " << get_next_available_index_directory_name("dsfas",3) << std::endl;
+#ifdef DEAL_II_WITH_MPI
+  if ( Utilities::MPI::this_mpi_process(MPI_COMM_WORLD) == 0)
+    {
+#endif
+      std::system("rm -rf dsfas*");
+      deallog << "--> " << create_directory("dsfas000") << std::endl;
+      deallog << "--> " << create_directory("dsfas001") << std::endl;
+      deallog << "--> " << create_directory("dsfas002") << std::endl;
+      deallog << "--> " << get_next_available_directory_name("dsfas",3) << std::endl;
+      deallog << "--> " << create_directory(get_next_available_directory_name("dsfas",3)) << std::endl;
+      deallog << "--> " << create_directory("dsfas004") << std::endl;
+      deallog << "--> " << get_next_available_directory_name("dsfas",3) << std::endl;
+#ifdef DEAL_II_WITH_MPI
+    }
+#endif
 }
