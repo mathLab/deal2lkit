@@ -12,6 +12,7 @@
 #include <deal.II/base/parameter_handler.h>
 
 #include "parameter_acceptor.h"
+#include "utilities.h"
 
 
 template <int dim, int spacedim=dim>
@@ -125,9 +126,35 @@ void ParsedDataOut<dim,spacedim>::add_data_vector(const VECTOR &data_vector,
   if (data_out.default_suffix() != "")
     {
       if (dd.size() ==1 )
-        data_out.add_data_vector (data_vector, desc);
+        {
+          data_out.add_data_vector (data_vector, desc);
+        }
       else
-        data_out.add_data_vector (data_vector, dd);
+        {
+          std::vector<std::string>::iterator sit = dd.begin();
+          std::vector<int> occurrances;
+
+          for (; sit!=dd.end(); ++sit)
+            occurrances.push_back(std::count (dd.begin(), dd.end(), *sit));
+
+          std::vector<int>::iterator iit = occurrances.begin();
+          sit = dd.begin();
+
+          std::vector<DataComponentInterpretation::DataComponentInterpretation>
+          data_component_interpretation;
+
+          for (; iit !=occurrances.end(); ++iit, ++sit)
+            {
+              if (*iit > 1)
+                data_component_interpretation.push_back(DataComponentInterpretation::component_is_part_of_vector);
+              else
+                data_component_interpretation.push_back(DataComponentInterpretation::component_is_scalar);
+            }
+
+
+          data_out.add_data_vector (data_vector, dd, DataOut<dim>::type_dof_data,
+                                    data_component_interpretation);
+        }
       deallog << "Added data: " << desc << std::endl;
     }
   deallog.pop();

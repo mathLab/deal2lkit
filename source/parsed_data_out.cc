@@ -1,7 +1,5 @@
 #include "../include/parsed_data_out.h"
 
-#include "../include/utilities.h"
-
 #include <deal.II/base/logstream.h>
 #include <deal.II/base/quadrature_lib.h>
 #include <deal.II/base/utilities.h>
