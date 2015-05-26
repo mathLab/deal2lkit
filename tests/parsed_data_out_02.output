@@ -1,7 +1,7 @@
 
+DEAL:parameters:test::Incremental run prefix: solution/run
 DEAL:parameters:test::Output partitioning: false
 DEAL:parameters:test::Problem base name: solution
-DEAL:parameters:test::Problem run dir name: solution/run
 DEAL:parameters:test::Solution names: u
 DEAL:parameters:test:Solution output format::Output format: vtu
 DEAL:parameters:test:Solution output format::Subdivisions: 1
