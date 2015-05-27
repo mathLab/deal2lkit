@@ -20,6 +20,7 @@
 #include <deal.II/grid/tria.h>
 #include <deal.II/dofs/dof_handler.h>
 #include <deal.II/grid/grid_generator.h>
+#include <deal.II/dofs/dof_renumbering.h>
 
 #include <deal.II/lac/block_vector.h>
 
@@ -55,15 +56,14 @@ Test<dim>::Test ()
   ParameterAcceptor("Global parameters"),
   tria_builder("Triangulation"),
   fe_builder("FE_Q",
-             "FESystem[FE_Q(2)^dim-FE_Q(1)]",
-             "u,u,p"),
+             "FESystem[FE_Q(2)^dim-FE_Q(1)]","u,u,p"),
   data_out("Data out","vtk","","output")
 {}
 
 template <int dim>
 void Test<dim>::declare_parameters(ParameterHandler &prm)
 {
-  add_parameter(prm, &initial_refinement, "Initial global refinement", "3",
+  add_parameter(prm, &initial_refinement, "Initial global refinement", "1",
                 Patterns::Integer(0));
 }
 
@@ -95,6 +95,12 @@ void Test<dim>::setup_dofs ()
   solution.block(0).reinit (n_u);
   solution.block(1).reinit (n_p);
   solution.collect_sizes ();
+
+  std::vector<unsigned int> block_component (dim+1,0);
+  block_component[dim] = 1;
+  DoFRenumbering::component_wise (*dof_handler, block_component);
+
+  solution.block(0) = 1.;
 }
 
 template <int dim>
@@ -116,7 +122,9 @@ void Test<dim>::run()
 
 int main (int argc, char *argv[])
 {
+#ifdef DEAL_II_WITH_MPI
   Utilities::MPI::MPI_InitFinalize mpi_initialization(argc, argv);
+#endif
   initlog();
   const int dim = 2;
 
