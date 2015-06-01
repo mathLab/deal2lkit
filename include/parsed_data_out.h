@@ -151,9 +151,9 @@ void ParsedDataOut<dim,spacedim>::add_data_vector(const VECTOR &data_vector,
                 data_component_interpretation.push_back(DataComponentInterpretation::component_is_scalar);
             }
 
-
-          data_out.add_data_vector (data_vector, dd, DataOut<dim>::type_dof_data,
+          data_out.add_data_vector (data_vector, dd, DataOut<dim, DoFHandler<dim, spacedim> >::type_dof_data,
                                     data_component_interpretation);
+
         }
       deallog << "Added data: " << desc << std::endl;
     }
