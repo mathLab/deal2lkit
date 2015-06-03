@@ -212,16 +212,19 @@ namespace SacadoUtilities
   }
 
   /**
-   *  Extract independent local dofs values of a cell and store them in
+   *  Extract independent local dofs values of a vector_variable
+   *  in a cell and store them in
    *  std::vector <Tensor <1, spacedim, Number> > us
    *  whose size is number of quadrature points in the cell.
    *
    */
   template <int dim, int spacedim, typename Number>
   void
-  get_u_values (const FEValues<dim, spacedim> &fe_values,
-                const std::vector<Number> &independent_local_dof_values,
-                std::vector <Tensor <1, spacedim, Number> > &us)
+  get_values (const FEValues<dim, spacedim> &fe_values,
+              const std::vector<Number> &independent_local_dof_values,
+              std::vector <Tensor <1, spacedim, Number> > &us,
+              const FEValuesExtractors::Vector &vector_variable)
+
   {
     const unsigned int           dofs_per_cell = fe_values.dofs_per_cell;
     const unsigned int           n_q_points    = fe_values.n_quadrature_points;
@@ -232,25 +235,142 @@ namespace SacadoUtilities
       {
         for (unsigned int i=0; i<dofs_per_cell; ++i)
           {
-            const unsigned int c = fe_values.get_fe().system_to_component_index(i).first;
-            us[q][c] += independent_local_dof_values[i]*fe_values.shape_value_component(i,q,c);
+            us[q] += independent_local_dof_values[i]*fe_values[vector_variable].value(i,q);
           }
       }
   }
 
   /**
-   *  Extract independent local dofs values of a cell,
-   *  compute the gradient grad_us in each quadrature point,
-   *  which is stored in
+   *  Extract independent local dofs values of a scalar_variable
+   *  in a cell and store them in
+   *  std::vector <Number>  us
+   *  whose size is number of quadrature points in the cell.
+   *
+   */
+  template <int dim, int spacedim, typename Number>
+  void
+  get_values (const FEValues<dim, spacedim> &fe_values,
+              const std::vector<Number> &independent_local_dof_values,
+              std::vector <Number> &us,
+              const FEValuesExtractors::Scalar &scalar_variable)
+
+  {
+    const unsigned int           dofs_per_cell = fe_values.dofs_per_cell;
+    const unsigned int           n_q_points    = fe_values.n_quadrature_points;
+
+    AssertDimension(us.size(), n_q_points);
+
+    for (unsigned int q=0; q<n_q_points; ++q)
+      {
+        for (unsigned int i=0; i<dofs_per_cell; ++i)
+          {
+            us[q] += independent_local_dof_values[i]*fe_values[scalar_variable].value(i,q);
+          }
+      }
+  }
+
+  /**
+   *  Extract independent local dofs values of a vector_variable
+   *  on face of a cell and store them in
+   *  std::vector <Tensor <1, spacedim, Number> > us
+   *  whose size is number of quadrature points in the cell.
+   *
+   */
+  template <int dim, int spacedim, typename Number>
+  void
+  get_face_values (const FEFaceValues<dim, spacedim> &fe_values,
+                   const std::vector<Number> &independent_local_dof_values,
+                   std::vector <Tensor <1, spacedim, Number> > &us,
+                   const FEValuesExtractors::Vector &vector_variable)
+
+  {
+    const unsigned int           dofs_per_cell = fe_values.dofs_per_cell;
+    const unsigned int           n_q_points    = fe_values.n_quadrature_points;
+
+    AssertDimension(us.size(), n_q_points);
+
+    for (unsigned int q=0; q<n_q_points; ++q)
+      {
+        for (unsigned int i=0; i<dofs_per_cell; ++i)
+          {
+            us[q] += independent_local_dof_values[i]*fe_values[vector_variable].value(i,q);
+          }
+      }
+  }
+
+  /**
+   *  Extract independent local dofs values of a scalar_variable
+   *  on face of a cell and store them in
+   *  std::vector <Number>  us
+   *  whose size is number of quadrature points in the cell.
+   *
+   */
+  template <int dim, int spacedim, typename Number>
+  void
+  get_face_values (const FEFaceValues<dim, spacedim> &fe_values,
+                   const std::vector<Number> &independent_local_dof_values,
+                   std::vector <Number> &us,
+                   const FEValuesExtractors::Scalar &scalar_variable)
+
+  {
+    const unsigned int           dofs_per_cell = fe_values.dofs_per_cell;
+    const unsigned int           n_q_points    = fe_values.n_quadrature_points;
+
+    AssertDimension(us.size(), n_q_points);
+
+    for (unsigned int q=0; q<n_q_points; ++q)
+      {
+        for (unsigned int i=0; i<dofs_per_cell; ++i)
+          {
+            us[q] += independent_local_dof_values[i]*fe_values[scalar_variable].value(i,q);
+          }
+      }
+  }
+
+
+  /**
+   *  Extract divergence values of a vector_variable
+   *  on face of a cell and store them in
+   *  std::vector <Number>  us
+   *  whose size is number of quadrature points in the cell.
+   *
+   */
+  template <int dim, int spacedim, typename Number>
+  void
+  get_div_values (const FEValues<dim, spacedim> &fe_values,
+                  const std::vector<Number> &independent_local_dof_values,
+                  std::vector <Number>  &us,
+                  const FEValuesExtractors::Vector &vector_variable)
+
+  {
+    const unsigned int           dofs_per_cell = fe_values.dofs_per_cell;
+    const unsigned int           n_q_points    = fe_values.n_quadrature_points;
+
+    AssertDimension(us.size(), n_q_points);
+
+    for (unsigned int q=0; q<n_q_points; ++q)
+      {
+        for (unsigned int i=0; i<dofs_per_cell; ++i)
+          {
+            us[q] += independent_local_dof_values[i]*fe_values[vector_variable].divergence(i,q);
+          }
+      }
+  }
+
+
+  /**
+   *  Extract gradient values of a vector_variable
+   *  on face of a cell and store them in
    *  std::vector <Tensor <2, spacedim, Number> > grad_us
    *  whose size is number of quadrature points in the cell.
    *
    */
   template <int dim, int spacedim, typename Number>
   void
-  get_grad_u_values (const FEValues<dim, spacedim> &fe_values,
-                     const std::vector<Number> &independent_local_dof_values,
-                     std::vector <Tensor <2, spacedim, Number> > &grad_us)
+  get_grad_values (const FEValues<dim, spacedim> &fe_values,
+                   const std::vector<Number> &independent_local_dof_values,
+                   std::vector <Tensor <2, spacedim, Number> > &grad_us,
+                   const FEValuesExtractors::Vector &vector_variable)
   {
     const unsigned int           dofs_per_cell = fe_values.dofs_per_cell;
     const unsigned int           n_q_points    = fe_values.n_quadrature_points;
@@ -261,19 +381,14 @@ namespace SacadoUtilities
       {
         for (unsigned int i=0; i<dofs_per_cell; ++i)
           {
-            const unsigned int c = fe_values.get_fe().system_to_component_index(i).first;
-            for (unsigned int d=0; d<dim; ++d)
-              {
-                grad_us[q][c][d] += independent_local_dof_values[i]*fe_values.shape_grad_component(i,q,c)[d]; // grad(u)
-              }
+            grad_us[q] += independent_local_dof_values[i]*fe_values[vector_variable].gradient(i,q);
           }
       }
   }
 
   /**
-   *  Extract independent local dofs values of a cell,
-   *  compute the deformation gradient F in each quadrature point,
-   *  which is stored in
+   *  Compute the deformation gradient F in each quadrature point
+   *  of a cell and it is stored in
    *  std::vector <Tensor <2, spacedim, Number> > Fs
    *  whose size is number of quadrature points in the cell.
    *
@@ -282,13 +397,14 @@ namespace SacadoUtilities
   void
   get_F_values (const FEValues<dim, spacedim> &fe_values,
                 const std::vector<Number> &independent_local_dof_values,
-                std::vector <Tensor <2, spacedim, Number> > &Fs)
+                std::vector <Tensor <2, spacedim, Number> > &Fs,
+                const FEValuesExtractors::Vector &vector_variable)
   {
     const unsigned int           n_q_points    = fe_values.n_quadrature_points;
 
     AssertDimension(Fs.size(), n_q_points);
 
-    SacadoUtilities::get_grad_u_values (fe_values, independent_local_dof_values, Fs);
+    SacadoUtilities::get_grad_values (fe_values, independent_local_dof_values, Fs, vector_variable);
 
     for (unsigned int q=0; q<n_q_points; ++q)
       {
@@ -298,32 +414,33 @@ namespace SacadoUtilities
   }
 
   /**
-   *  Extract independent local dofs values of a face of a cell and store them in
-   *  std::vector <Tensor <1, spacedim, Number> > us_face
-   *  whose size is number of quadrature points in the cell face.
+   *  Extract symmetric gradient values of a vector_variable
+   *  on face of a cell and store them in
+   *  std::vector <Tensor <2, spacedim, Number> > grad_us
+   *  whose size is number of quadrature points in the cell.
    *
    */
   template <int dim, int spacedim, typename Number>
   void
-  get_u_face_values (const FEFaceValues<dim, spacedim> &fe_face_values,
-                     const std::vector<Number> &independent_local_dof_values,
-                     std::vector <Tensor <1, spacedim, Number> > &us_face)
+  get_sym_grad_values (const FEValues<dim, spacedim> &fe_values,
+                       const std::vector<Number> &independent_local_dof_values,
+                       std::vector <Tensor <2, spacedim, Number> > &grad_us,
+                       const FEValuesExtractors::Vector &vector_variable)
   {
-    const unsigned int           dofs_per_face = fe_face_values.dofs_per_cell;
-    const unsigned int           n_face_q_points    = fe_face_values.n_quadrature_points;
+    const unsigned int           dofs_per_cell = fe_values.dofs_per_cell;
+    const unsigned int           n_q_points    = fe_values.n_quadrature_points;
 
-    AssertDimension(us_face.size(), n_face_q_points);
+    AssertDimension(grad_us.size(), n_q_points);
 
-    for (unsigned int qf=0; qf<n_face_q_points; ++qf)
+    for (unsigned int q=0; q<n_q_points; ++q)
       {
-        for (unsigned int i=0; i<dofs_per_face; ++i)
+        for (unsigned int i=0; i<dofs_per_cell; ++i)
           {
-            const unsigned int c = fe_face_values.get_fe().system_to_component_index(i).first;
-            us_face[qf][c] += independent_local_dof_values[i]*fe_face_values.shape_value_component(i,qf,c);
+            grad_us[q] += independent_local_dof_values[i]*fe_values[vector_variable].symmetric_gradient(i,q);
           }
       }
   }
-}
+}// end namespace
 #endif // DEAL_II_WITH_TRILINOS
 
 
