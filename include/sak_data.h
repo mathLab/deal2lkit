@@ -48,9 +48,6 @@ class SAKData : public Subscriptor
 {
 public:
 
-  /// Default constructor for empty object
-  SAKData();
-
   /**
    * @brief Add a copy of an object
    *
@@ -106,9 +103,6 @@ public:
 private:
   std::unordered_map<std::string, boost::any> mydata;
 }; // end class
-
-SAKData::SAKData()
-{}
 
 template <typename type>
 void SAKData::add_copy (const type &entry, const std::string &name)
