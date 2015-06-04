@@ -1,0 +1,8 @@
+
+DEAL::verify that add_ref actually stored the reference
+DEAL::double_copy: 0.000000.000000.000000.000000.00000
+DEAL::int_ref: 7 0 0 0 0 
+DEAL::
+DEAL::read the stored data
+DEAL::double: 0.00000 1.00000 4.00000 9.00000 16.0000 
+DEAL::int: 7 1 4 9 16 
