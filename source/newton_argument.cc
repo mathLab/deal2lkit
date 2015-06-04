@@ -1,6 +1,5 @@
 #include "../include/newton_argument.h"
 
-#ifdef DEAL_II_WITH_TRILINOS
 
 int NewtonArgument::setup_jacobian_prec(Vector<double> const &)
 {
@@ -34,4 +33,3 @@ int NewtonArgument::jacobian(dealii::Vector<double> &,
 
 
 
-#endif // DEAL_II_WITH_TRILINOS

@@ -6,8 +6,6 @@
 
 using namespace dealii;
 
-#ifdef DEAL_II_WITH_TRILINOS
-
 /** Base class that needs to be inherited by any function that wants
  * to use the newton solver class. */
 
@@ -54,6 +52,5 @@ public :
 
 };
 
-#endif // DEAL_II_WITH_TRILINOS
 
 #endif
