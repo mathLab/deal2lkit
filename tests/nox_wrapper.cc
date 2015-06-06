@@ -47,8 +47,8 @@ public:
   {
     dst(0) = src_yy(0)*src_yy(0) + src_yy(1)*src_yy(1) - 1.0;
     dst(1) = src_yy(1) - src_yy(0)*src_yy(0);
-    cout<<"In: "<<src_yy<<endl;
-    cout<<"Out: "<<dst<<endl;
+    std::cout<<"In: "<<src_yy<<std::endl;
+    std::cout<<"Out: "<<dst<<std::endl;
     return 0;
   }
   /** Jacobian vector product for newton solver. */
@@ -102,8 +102,9 @@ public:
 
 };
 
-int main ()
+int main (int argc, char **argv)
 {
+  Utilities::MPI::MPI_InitFinalize init(argc, argv, numbers::invalid_unsigned_int);
   initlog();
   deallog << 0 << std::endl;
 
