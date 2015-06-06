@@ -76,11 +76,6 @@ public:
     VectorView<double> dst(Y.Map().NumGlobalElements(), &Y[0][0]);
 
     solver.jacobian(dst,y,x);
-    //cout<<"X: "<<X[0][0]<<" "<<X[0][1]<<" (t)"<<endl;
-    //cout<<"x: "<<x(0)<<" "<<x(1)<<" (d)"<<endl;
-    //cout<<"Y: "<<Y[0][0]<<" "<<Y[0][1]<<" (t)"<<endl;
-    //cout<<"dst: "<<dst(0)<<" "<<dst(1)<<" (d)"<<endl;
-    //cout<<"y: "<<y(0)<<" "<<y(1)<<" (d)"<<endl;
     return 0;
 
   }
@@ -203,14 +198,6 @@ public:
 
   int ApplyInverse(const Epetra_MultiVector &X, Epetra_MultiVector &Y) const
   {
-    //cout<<"X: "<<X[0][0]<<" "<<X[0][1]<<" (t)"<<endl;
-    //cout<<"Y: "<<Y[0][0]<<" "<<Y[0][1]<<" (t)"<<endl;
-
-    //Y[0][0] = 5.0;
-
-    //cout<<"*X: "<<X[0][0]<<" "<<X[0][1]<<" (t)"<<endl;
-    //cout<<"*Y: "<<Y[0][0]<<" "<<Y[0][1]<<" (t)"<<endl;
-
     Assert(X.Map().NumGlobalElements() == int(solver.n_dofs()),
            ExcDimensionMismatch(X.Map().NumGlobalElements(), solver.n_dofs()));
     Assert(Y.Map().NumGlobalElements() == int(solver.n_dofs()),
@@ -220,11 +207,6 @@ public:
 
     solver.jacobian_prec(dst,y,x);
 
-    //cout<<"X: "<<X[0][0]<<" "<<X[0][1]<<" (t)"<<endl;
-    //cout<<"x: "<<x(0)<<" "<<x(1)<<" (d)"<<endl;
-    //cout<<"Y: "<<Y[0][0]<<" "<<Y[0][1]<<" (t)"<<endl;
-    //cout<<"dst: "<<dst(0)<<" "<<dst(1)<<" (d)"<<endl;
-    //cout<<"y: "<<y(0)<<" "<<y(1)<<" (d)"<<endl;
     return 0;
   }
 
@@ -290,8 +272,6 @@ private:
   const Vector<double> &y;
   const Epetra_Comm &comm;
   const Epetra_Map &map;
-
-
 };
 
 
@@ -359,9 +339,6 @@ public:
     const VectorView<double> yy(x.Map().NumGlobalElements(), &x[0]);
     y = yy;
     Jac = jacobian_operator;
-    //Epetra_Vector y(x);
-    //cout<<"Test "<<endl,
-    //Jac.Apply(x,y);
 
     return true;
   }
@@ -446,8 +423,6 @@ private:
   double rel_tol;
   double linear_rel_tol;
   SolverControl solver_control;
-
-
 };
 
 #endif DEAL_II_WITH_TRILINOS

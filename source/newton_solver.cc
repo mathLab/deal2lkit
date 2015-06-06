@@ -16,7 +16,6 @@ using namespace std;
 NewtonSolver::NewtonSolver(NewtonArgument &bubble) :
   solver(bubble),
   y(solver.n_dofs()),
-//    comm(MPI_COMM_WORLD),
   map((int)solver.n_dofs(), 0, comm)
 
 {
@@ -113,23 +112,6 @@ unsigned int NewtonSolver::solve(Vector<double> &solution,
 
   RCP<Epetra_Operator> preconditioner(preconditioner_operator);
   RCP<Epetra_Operator> jacobian(jacobian_operator);
-  /*
-  cout<<"========================================================="<<endl;
-  cout<<"Deal test"<<endl;
-  SolverGMRES<Vector<double> > gmres(solver_control,
-       SolverGMRES<Vector<double> >::AdditionalData(100));
-
-  Vector<double> res(solver.n_dofs());
-  solver.residual(res,solution);
-  res *= -1.0;
-
-  gmres.solve (*(interface->jacobian_operator), solution, res, PreconditionIdentity());// *(interface->preconditioner_operator));
-  cout<<"Passed"<<endl;
-  cout<<"========================================================="<<endl;
-  */
-
-
-
 
 
   // Create the top-level parameter list to control NOX.
