@@ -386,7 +386,7 @@ public:
    * required to have a Solver.solve(Vector<double> &dst, const
    * Vector<double> &src) method that will be called by the time
    * integrator to find out about the solution to a given src. */
-  NewtonSolver(NewtonArgument &solver);
+  NewtonSolver(NewtonArgument &solver, const MPI_Comm &comm=MPI_COMM_WORLD);
 
 
   /** House cleaning. */
@@ -425,6 +425,6 @@ private:
   SolverControl solver_control;
 };
 
-#endif DEAL_II_WITH_TRILINOS
+#endif // DEAL_II_WITH_TRILINOS
 
 #endif

@@ -13,9 +13,10 @@ using namespace std;
 #ifdef DEAL_II_WITH_TRILINOS
 
 
-NewtonSolver::NewtonSolver(NewtonArgument &bubble) :
+NewtonSolver::NewtonSolver(NewtonArgument &bubble, const  MPI_Comm &communicator) :
   solver(bubble),
   y(solver.n_dofs()),
+  comm(communicator),
   map((int)solver.n_dofs(), 0, comm)
 
 {
