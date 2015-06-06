@@ -417,7 +417,7 @@ private:
   Epetra_Map map;
   PreconditionerOperator *preconditioner_operator;
   JacobianOperator *jacobian_operator;
-  string linear_solver_name;
+  std::string linear_solver_name;
   bool provide_jac;
   bool provide_jac_prec;
   double rel_tol;
