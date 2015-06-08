@@ -377,13 +377,17 @@ namespace SacadoUtilities
 
     AssertDimension(grad_us.size(), n_q_points);
 
+    std::vector<Tensor<2,spacedim,double> > buffer(n_q_points);
+
     for (unsigned int q=0; q<n_q_points; ++q)
-      {
-        for (unsigned int i=0; i<dofs_per_cell; ++i)
-          {
-            grad_us[q] += independent_local_dof_values[i]*fe_values[vector_variable].gradient(i,q);
-          }
-      }
+      for (unsigned int i=0; i<dofs_per_cell; ++i)
+        buffer[q] += fe_values[vector_variable].gradient(i,q);
+
+    for (unsigned int q=0; q<n_q_points; ++q)
+      for (unsigned d=0; d<spacedim; ++d)
+        for (unsigned dd=0; dd<spacedim; ++dd)
+          for (unsigned int i=0; i<dofs_per_cell; ++i)
+            grad_us[q][d][dd] += independent_local_dof_values[i]*buffer[q][d][dd];
   }
 
   /**
@@ -432,13 +436,17 @@ namespace SacadoUtilities
 
     AssertDimension(grad_us.size(), n_q_points);
 
+    std::vector<Tensor<2,spacedim,double> > buffer(n_q_points);
+
     for (unsigned int q=0; q<n_q_points; ++q)
-      {
-        for (unsigned int i=0; i<dofs_per_cell; ++i)
-          {
-            grad_us[q] += independent_local_dof_values[i]*fe_values[vector_variable].symmetric_gradient(i,q);
-          }
-      }
+      for (unsigned int i=0; i<dofs_per_cell; ++i)
+        buffer[q] += fe_values[vector_variable].symmetric_gradient(i,q);
+
+    for (unsigned int q=0; q<n_q_points; ++q)
+      for (unsigned d=0; d<spacedim; ++d)
+        for (unsigned dd=0; dd<spacedim; ++dd)
+          for (unsigned int i=0; i<dofs_per_cell; ++i)
+            grad_us[q][d][dd] += independent_local_dof_values[i]*buffer[q][d][dd];
   }
 }// end namespace
 #endif // DEAL_II_WITH_TRILINOS
