@@ -232,12 +232,12 @@ namespace SacadoUtilities
     AssertDimension(us.size(), n_q_points);
 
     for (unsigned int q=0; q<n_q_points; ++q)
-      {
-        for (unsigned int i=0; i<dofs_per_cell; ++i)
+      for (unsigned int i=0; i<dofs_per_cell; ++i)
+        if (fe_values[vector_variable].value(i,q).norm() > 0.0)
           {
-            us[q] += independent_local_dof_values[i]*fe_values[vector_variable].value(i,q);
+            const unsigned int c = fe_values.get_fe().system_to_component_index(i).first;
+            us[q][c] += independent_local_dof_values[i]*fe_values.shape_value_component(i,q,c);
           }
-      }
   }
 
   /**
@@ -261,12 +261,8 @@ namespace SacadoUtilities
     AssertDimension(us.size(), n_q_points);
 
     for (unsigned int q=0; q<n_q_points; ++q)
-      {
-        for (unsigned int i=0; i<dofs_per_cell; ++i)
-          {
-            us[q] += independent_local_dof_values[i]*fe_values[scalar_variable].value(i,q);
-          }
-      }
+      for (unsigned int i=0; i<dofs_per_cell; ++i)
+        us[q] += independent_local_dof_values[i]*fe_values[scalar_variable].value(i,q);
   }
 
   /**
@@ -290,12 +286,12 @@ namespace SacadoUtilities
     AssertDimension(us.size(), n_q_points);
 
     for (unsigned int q=0; q<n_q_points; ++q)
-      {
-        for (unsigned int i=0; i<dofs_per_cell; ++i)
+      for (unsigned int i=0; i<dofs_per_cell; ++i)
+        if (fe_values[vector_variable].value(i,q).norm() > 0.0)
           {
-            us[q] += independent_local_dof_values[i]*fe_values[vector_variable].value(i,q);
+            const unsigned int c = fe_values.get_fe().system_to_component_index(i).first;
+            us[q][c] += independent_local_dof_values[i]*fe_values.shape_value_component(i,q,c);
           }
-      }
   }
 
   /**
@@ -319,12 +315,8 @@ namespace SacadoUtilities
     AssertDimension(us.size(), n_q_points);
 
     for (unsigned int q=0; q<n_q_points; ++q)
-      {
-        for (unsigned int i=0; i<dofs_per_cell; ++i)
-          {
-            us[q] += independent_local_dof_values[i]*fe_values[scalar_variable].value(i,q);
-          }
-      }
+      for (unsigned int i=0; i<dofs_per_cell; ++i)
+        us[q] += independent_local_dof_values[i]*fe_values[scalar_variable].value(i,q);
   }
 
 
@@ -349,12 +341,8 @@ namespace SacadoUtilities
     AssertDimension(us.size(), n_q_points);
 
     for (unsigned int q=0; q<n_q_points; ++q)
-      {
-        for (unsigned int i=0; i<dofs_per_cell; ++i)
-          {
-            us[q] += independent_local_dof_values[i]*fe_values[vector_variable].divergence(i,q);
-          }
-      }
+      for (unsigned int i=0; i<dofs_per_cell; ++i)
+        us[q] += independent_local_dof_values[i]*fe_values[vector_variable].divergence(i,q);
   }
 
 
@@ -377,18 +365,49 @@ namespace SacadoUtilities
 
     AssertDimension(grad_us.size(), n_q_points);
 
-    std::vector<Tensor<2,spacedim,double> > buffer(n_q_points);
 
     for (unsigned int q=0; q<n_q_points; ++q)
       for (unsigned int i=0; i<dofs_per_cell; ++i)
-        buffer[q] += fe_values[vector_variable].gradient(i,q);
+        if (fe_values[vector_variable].value(i,q).norm() > 0.0)
+          {
+            const unsigned int c = fe_values.get_fe().system_to_component_index(i).first;
+            for (unsigned int d=0; d<dim; ++d)
+              grad_us[q][c][d] += independent_local_dof_values[i]*fe_values.shape_grad_component(i,q,c)[d];
+          }
+
+  }
+
+  /**
+   *  Extract gradient values of a scalar_variable
+   *  on face of a cell and store them in
+   *  std::vector <Tensor <1, spacedim, Number> > grad_us
+   *  whose size is number of quadrature points in the cell.
+   *
+   */
+  template <int dim, int spacedim, typename Number>
+  void
+  get_grad_values (const FEValues<dim, spacedim> &fe_values,
+                   const std::vector<Number> &independent_local_dof_values,
+                   std::vector <Tensor <1, spacedim, Number> > &grad_us,
+                   const FEValuesExtractors::Scalar &scalar_variable)
+  {
+    const unsigned int           dofs_per_cell = fe_values.dofs_per_cell;
+    const unsigned int           n_q_points    = fe_values.n_quadrature_points;
+
+    AssertDimension(grad_us.size(), n_q_points);
+
 
     for (unsigned int q=0; q<n_q_points; ++q)
-      for (unsigned d=0; d<spacedim; ++d)
-        for (unsigned dd=0; dd<spacedim; ++dd)
-          for (unsigned int i=0; i<dofs_per_cell; ++i)
-            grad_us[q][d][dd] += independent_local_dof_values[i]*buffer[q][d][dd];
+      for (unsigned int i=0; i<dofs_per_cell; ++i)
+        if (fe_values[scalar_variable].value(i,q) > 0.0)
+          {
+            const unsigned int c = fe_values.get_fe().system_to_component_index(i).first;
+            for (unsigned int d=0; d<spacedim; ++d)
+              grad_us[q][d] += independent_local_dof_values[i]*fe_values.shape_grad_component(i,q,c)[d];
+          }
+
   }
+
 
   /**
    *  Compute the deformation gradient F in each quadrature point
@@ -411,10 +430,8 @@ namespace SacadoUtilities
     SacadoUtilities::get_grad_values (fe_values, independent_local_dof_values, Fs, vector_variable);
 
     for (unsigned int q=0; q<n_q_points; ++q)
-      {
-        for (unsigned int d=0; d<dim; ++d)
-          Fs[q][d][d] += 1.0; // I + grad(u)
-      }
+      for (unsigned int d=0; d<dim; ++d)
+        Fs[q][d][d] += 1.0; // I + grad(u)
   }
 
   /**
@@ -436,17 +453,13 @@ namespace SacadoUtilities
 
     AssertDimension(grad_us.size(), n_q_points);
 
-    std::vector<Tensor<2,spacedim,double> > buffer(n_q_points);
-
+    SacadoUtilities::get_grad_values (fe_values, independent_local_dof_values, grad_us, vector_variable);
     for (unsigned int q=0; q<n_q_points; ++q)
-      for (unsigned int i=0; i<dofs_per_cell; ++i)
-        buffer[q] += fe_values[vector_variable].symmetric_gradient(i,q);
+      {
+        grad_us[q] += transpose(grad_us[q]);
+        grad_us[q] *= 0.5;
+      }
 
-    for (unsigned int q=0; q<n_q_points; ++q)
-      for (unsigned d=0; d<spacedim; ++d)
-        for (unsigned dd=0; dd<spacedim; ++dd)
-          for (unsigned int i=0; i<dofs_per_cell; ++i)
-            grad_us[q][d][dd] += independent_local_dof_values[i]*buffer[q][d][dd];
   }
 }// end namespace
 #endif // DEAL_II_WITH_TRILINOS
