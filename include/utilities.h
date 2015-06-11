@@ -448,7 +448,6 @@ namespace SacadoUtilities
                        std::vector <Tensor <2, spacedim, Number> > &grad_us,
                        const FEValuesExtractors::Vector &vector_variable)
   {
-    const unsigned int           dofs_per_cell = fe_values.dofs_per_cell;
     const unsigned int           n_q_points    = fe_values.n_quadrature_points;
 
     AssertDimension(grad_us.size(), n_q_points);
