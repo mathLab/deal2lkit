@@ -97,10 +97,19 @@ public:
 
 #ifdef DEAL_II_WITH_CXX11
   /** Call the given custom function to compute the custom error for
-      the given component and store the result in the given table. */
+    * the given component and store the result in the given table. If
+    * a name is specified, then this function can be called several
+    * times on the same table to add different columns with different
+    * names, provided you use an appropriate function every time.
+    *
+    * Should you wish to do so, then make sure the parameter
+    * add_table_extras is set to false for each call, except one, so
+    * that you only add dofs and cells informations once.
+    */
   template<typename DH>
   void custom_error(const std::function<double(const unsigned int component)> &custom_error_function,
                     const DH &dh,
+                    const std::string &error_name="custom",
                     const bool add_table_extras = false,
                     const unsigned int table_no = 0,
                     const double dt=0.);
@@ -498,6 +507,7 @@ template <int ntables>
 template<typename DH>
 void ErrorHandler<ntables>::custom_error(const std::function<double(const unsigned int component)> &custom_error_function,
                                          const DH &dh,
+                                         const std::string &error_name,
                                          const bool add_table_extras,
                                          const unsigned int table_no,
                                          const double dt)
@@ -574,10 +584,10 @@ void ErrorHandler<ntables>::custom_error(const std::function<double(const unsign
             {
               if (norm & Custom)
                 {
-                  std::string name = headers[j] + "_custom";
+                  std::string name = headers[j] + "_" +error_name;
                   std::string latex_name = "$\\| " +
                                            latex_headers[j] + " - " +
-                                           latex_headers[j] +"_h \\|_c $";
+                                           latex_headers[j] +"_h \\|_{\text{"+error_name+"} $";
                   double this_error =  c_error[j];
 
                   tables[table_no].add_value(name, this_error);
