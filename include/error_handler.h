@@ -41,6 +41,11 @@
 #include <vector>
 #include <string>
 
+
+#ifdef DEAL_II_WITH_CXX11
+#include <functional>
+#endif
+
 enum NormFlags
 {
   None = 0x00,
@@ -48,7 +53,8 @@ enum NormFlags
   L2 = 0x02,
   W1infty = 0x04,
   H1 = 0x08,
-  AddUp = 0x10
+  AddUp = 0x10,
+  Custom = 0x20
 };
 
 using namespace dealii;
@@ -87,6 +93,18 @@ public:
                         const Function<DH::space_dimension> &exact,
                         unsigned int table_no = 0,
                         double dt=0.);
+
+
+#ifdef DEAL_II_WITH_CXX11
+  /** Call the given custom function to compute the custom error for
+      the given component and store the result in the given table. */
+  template<typename DH>
+  void custom_error(const std::function<double(const unsigned int component)> &custom_error_function,
+                    const DH &dh,
+                    const bool add_table_extras = false,
+                    const unsigned int table_no = 0,
+                    const double dt=0.);
+#endif
 
   /** Difference between two solutions in two different vector spaces. */
   template<typename DH, typename VEC>
@@ -472,6 +490,107 @@ void ErrorHandler<ntables>::error_from_exact(const Mapping<DH::dimension, DH::sp
         }
     }
 }
+
+
+
+#ifdef DEAL_II_WITH_CXX11
+template <int ntables>
+template<typename DH>
+void ErrorHandler<ntables>::custom_error(const std::function<double(const unsigned int component)> &custom_error_function,
+                                         const DH &dh,
+                                         const bool add_table_extras,
+                                         const unsigned int table_no,
+                                         const double dt)
+{
+  if (compute_error)
+    {
+      AssertThrow(initialized, ExcNotInitialized());
+      AssertThrow(table_no < types.size(), ExcIndexRange(table_no, 0, types.size()));
+
+      const unsigned int n_components = types.size();
+      std::vector<double> c_error( types[table_no].size() );
+      const unsigned int n_active_cells = dh.get_tria().n_active_cells();
+      const unsigned int n_dofs=dh.n_dofs();
+      if (add_table_extras)
+        {
+          if (extras[table_no]["cells"])
+            {
+              tables[table_no].add_value("cells", n_active_cells);
+              tables[table_no].set_tex_caption("cells", "\\# cells");
+              tables[table_no].set_tex_format("cells", "r");
+            }
+          if (extras[table_no]["dofs"])
+            {
+              tables[table_no].add_value("dofs", n_dofs);
+              tables[table_no].set_tex_caption("dofs", "\\# dofs");
+              tables[table_no].set_tex_format("dofs", "r");
+            }
+          if (extras[table_no]["dt"])
+            {
+              tables[table_no].add_value("dt", dt);
+              tables[table_no].set_tex_caption("dt", "\\Delta t");
+              tables[table_no].set_tex_format("dt", "r");
+            }
+        }
+
+      bool add_this = false;
+      bool compute_Custom = false;
+
+      unsigned int last_non_add = 0;
+
+      for (unsigned int component=0; component < n_components; ++component)
+        {
+          NormFlags norm = types[table_no][component];
+
+          // The add bit is set
+          add_this = (norm & AddUp);
+
+          if (!add_this)
+            compute_Custom  = ( norm & Custom );
+          // if add is set, we do not modify the previous selection
+
+          double Custom_error = 0;
+
+          if (compute_Custom)
+            Custom_error = custom_error_function(component);
+
+          if (add_this)
+            {
+              AssertThrow(component, ExcMessage("Cannot add on first component!"));
+
+              c_error[last_non_add] += Custom_error;
+            }
+          else
+            {
+              c_error[last_non_add] = Custom_error;
+            }
+        }
+
+      for (unsigned int j=0; j<n_components; ++j)
+        {
+          NormFlags norm = types[table_no][j];
+          // If this was added, don't do anything
+          if ( !(norm & AddUp) )
+            {
+              if (norm & Custom)
+                {
+                  std::string name = headers[j] + "_custom";
+                  std::string latex_name = "$\\| " +
+                                           latex_headers[j] + " - " +
+                                           latex_headers[j] +"_h \\|_c $";
+                  double this_error =  c_error[j];
+
+                  tables[table_no].add_value(name, this_error);
+                  tables[table_no].set_precision(name, 3);
+                  tables[table_no].set_scientific(name, true);
+                  tables[table_no].set_tex_caption(name, latex_name);
+                }
+            }
+        }
+    }
+}
+
+#endif
 
 
 
