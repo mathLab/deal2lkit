@@ -10,21 +10,19 @@
 #include <algorithm>
 #include <typeinfo>
 
-#include <unordered_map>
+#include <map>
 
 using namespace dealii;
 
 /**
  * Store any amount of any type of data accessible by an identifier string.
  *
- * It is a std::unordered_map<std::string, boost::any>
+ * It is a std::map<std::string, boost::any>
  *
- * Unordered maps are associative containers that store elements formed by
+ * Maps are associative containers that store elements formed by
  * the combination of a key value and a mapped value, and which allows for
  * fast retrieval of individual elements based on their keys.
  *
- * unorderd_map containers are faster than std::map containers to access individual
- * elements by their key (i.e., the string)
  *
  * A typical usage of this class is the following
  * @begin code
@@ -101,7 +99,7 @@ public:
 
 
 private:
-  std::unordered_map<std::string, boost::any> mydata;
+  std::map<std::string, boost::any> mydata;
 }; // end class
 
 template <typename type>
