@@ -1,4 +1,4 @@
-// test the SacadoUtilities functions
+// test the DOFUtilities functions
 // for Number=double
 
 #include "tests.h"
@@ -19,10 +19,7 @@
 
 #include <fstream>
 
-#include "utilities.h"
-#include "Sacado.hpp"
-
-typedef Sacado::Fad::DFad<double> Sdouble;
+#include "dof_utilities.h"
 
 
 template<int dim>
@@ -41,7 +38,7 @@ void test (const Triangulation<dim> &tr,
                            update_values | update_gradients);
 
   std::vector<types::global_dof_index>    local_dof_indices (fe_values.dofs_per_cell);
-  std::vector<Sdouble> independent_local_dof_values (fe_values.dofs_per_cell);
+  std::vector<double> independent_local_dof_values (fe_values.dofs_per_cell);
 
   fe_values.reinit (dof.begin_active());
   dof.begin_active()->get_dof_indices (local_dof_indices);
@@ -50,30 +47,30 @@ void test (const Triangulation<dim> &tr,
   for (unsigned int i=0; i<dof.n_dofs(); ++i)
     global_vector[i] += i*i;
 
-  SacadoUtilities::extract_local_dofs(global_vector, local_dof_indices, independent_local_dof_values);
+  DOFUtilities::extract_local_dofs(global_vector, local_dof_indices, independent_local_dof_values);
 
   for (unsigned int i=0; i<dof.n_dofs(); ++i)
     deallog << independent_local_dof_values[i] << std::endl;
 
 
 
-  std::vector <Sdouble> scalar_values(quadrature.size());
-  std::vector <Tensor <1, dim, Sdouble> > grad_s(quadrature.size());
+  std::vector <double> scalar_values(quadrature.size());
+  std::vector <Tensor <1, dim, double> > grad_s(quadrature.size());
 
-  std::vector <Sdouble> div_values(quadrature.size());
-  std::vector <Tensor <1, dim, Sdouble> > vector_values(quadrature.size());
-  std::vector <Tensor <2, dim, Sdouble> > grad_v(quadrature.size());
-  std::vector <Tensor <2, dim, Sdouble> > sym_grad_v(quadrature.size());
+  std::vector <double> div_values(quadrature.size());
+  std::vector <Tensor <1, dim, double> > vector_values(quadrature.size());
+  std::vector <Tensor <2, dim, double> > grad_v(quadrature.size());
+  std::vector <Tensor <2, dim, double> > sym_grad_v(quadrature.size());
   FEValuesExtractors::Scalar scalar (dim);
   FEValuesExtractors::Vector vector (0);
 
-  SacadoUtilities::get_values(fe_values, independent_local_dof_values, scalar_values, scalar);
-  SacadoUtilities::get_grad_values(fe_values, independent_local_dof_values, grad_s, scalar);
+  DOFUtilities::get_values(fe_values, independent_local_dof_values, scalar, scalar_values);
+  DOFUtilities::get_grad_values(fe_values, independent_local_dof_values, scalar, grad_s);
 
-  SacadoUtilities::get_values(fe_values, independent_local_dof_values, vector_values, vector);
-  SacadoUtilities::get_div_values(fe_values, independent_local_dof_values, div_values, vector);
-  SacadoUtilities::get_grad_values(fe_values, independent_local_dof_values, grad_v, vector);
-  SacadoUtilities::get_sym_grad_values(fe_values, independent_local_dof_values, sym_grad_v, vector);
+  DOFUtilities::get_values(fe_values, independent_local_dof_values, vector, vector_values);
+  DOFUtilities::get_div_values(fe_values, independent_local_dof_values, vector, div_values);
+  DOFUtilities::get_grad_values(fe_values, independent_local_dof_values, vector, grad_v);
+  DOFUtilities::get_sym_grad_values(fe_values, independent_local_dof_values, vector, sym_grad_v);
 
   deallog << "scalar_values" << std::endl;
   for (unsigned int q=0; q<quadrature.size(); ++q)
