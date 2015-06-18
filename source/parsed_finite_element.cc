@@ -15,7 +15,10 @@ ParsedFiniteElement<dim, spacedim>::ParsedFiniteElement(const std::string &name,
   default_component_names(default_component_names),
   default_coupling(default_coupling),
   default_preconditioner_coupling(default_preconditioner_coupling)
-{}
+{
+  component_names = Utilities::split_string_list(default_component_names);
+  parse_parameters_call_back();
+}
 
 template <int dim, int spacedim>
 void ParsedFiniteElement<dim, spacedim>::declare_parameters(ParameterHandler &prm)
