@@ -72,8 +72,8 @@ void ErrorHandler<ntables>::declare_parameters (ParameterHandler &prm)
       prm.declare_entry("List of error norms to compute", list_of_error_norms,
                         Patterns::Anything(), "Each component is separated by a semicolon, "
                         "and each norm by a comma. Implemented norms are Linfty, L2, "
-                        "H1 and AddUp, which means that the norm is added to the previous "
-                        "component. Useful for vector valued functions.");
+                        "H1, AddUp, which means that the norm is added to the previous "
+                        "component, and Custom.");
       prm.declare_entry("Add convergence rates", "true", Patterns::Bool(),
                         "Evaluate convergence rates and add a column to the table for each "
                         "computed norm. ");
@@ -168,6 +168,10 @@ void ErrorHandler<ntables>::parse_parameters (ParameterHandler &prm)
                   else if (all_types[k] == "AddUp")
                     {
                       types[i][j] |= AddUp;
+                    }
+                  else if (all_types[k] == "Custom")
+                    {
+                      types[i][j] |= Custom;
                     }
                   else
                     {
