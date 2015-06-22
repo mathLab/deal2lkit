@@ -147,6 +147,12 @@ void ErrorHandler<ntables>::parse_parameters (ParameterHandler &prm)
             {
               std::vector<std::string> all_types =
                 Utilities::split_string_list(all_comps[j]);
+              // If we named it the same, defaults to AddUp
+              if (j>0 && headers[j] == headers[j-1])
+                {
+                  types[i][j] |= AddUp;
+                  continue;
+                }
               for (unsigned int k=0; k<all_types.size(); ++k)
                 {
                   if (all_types[k] == "Linfty")
