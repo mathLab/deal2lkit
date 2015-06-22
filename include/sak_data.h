@@ -86,6 +86,14 @@ public:
   template <typename type>
   const type &get (const std::string &name) const;
 
+  /**
+   * @brief Query if we store the given object.
+   *
+   * Find out if we store an object with given name.
+   *
+   */
+  inline bool have (const std::string &name) const;
+
   /// An entry with this name does not exist in the SAKData object.
   DeclException1(ExcNameNotFound, std::string,
                  << "No entry with the name " << arg1 << " exists.");
@@ -164,6 +172,12 @@ const type &SAKData::get(const std::string &name) const
       const type *p=NULL;
       return *p;
     }
+}
+
+
+bool SAKData::have(const std::string &name) const
+{
+  return mydata.find(name) != mydata.end();
 }
 
 #endif
