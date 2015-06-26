@@ -1,0 +1,17 @@
+
+DEAL:parameters:Dirichlet BCs::Mapped Functions: Dirichlet BCs
+DEAL:parameters:Dirichlet BCs acting on id 0::Function constants: k=1
+DEAL:parameters:Dirichlet BCs acting on id 0::Function expression: x;y;0
+DEAL:parameters:Dirichlet BCs acting on id 0::Variable names: x,y,t
+DEAL:parameters:Dirichlet BCs acting on id 1::Function constants: k=1
+DEAL:parameters:Dirichlet BCs acting on id 1::Function expression: 0;0;0
+DEAL:parameters:Dirichlet BCs acting on id 1::Variable names: x,y,t
+DEAL:parameters:Dirichlet BCs acting on id 6::Function constants: k=1
+DEAL:parameters:Dirichlet BCs acting on id 6::Function expression: y*k;0;k
+DEAL:parameters:Dirichlet BCs acting on id 6::Variable names: x,y,t
+DEAL::Component mask id 0: [true,true,false]
+DEAL::Component mask id 1: [false,false,true]
+DEAL::Component mask id 6: [true,true,true]
+DEAL::Parsed Function on id 0: 2.00000
+DEAL::Parsed Function on id 1: 0.00000
+DEAL::Parsed Function on id 6: 3.00000
