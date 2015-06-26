@@ -1,0 +1,11 @@
+
+DEAL:parameters:Dirichlet BCs::IDs and component masks: 0=0;1 , 1=2 , 6=0;1;2
+DEAL:parameters:Dirichlet BCs::IDs and expressions: 0=x;y;0 , 1=0;0;0 , 6=y*k;beta*y;k
+DEAL:parameters:Dirichlet BCs::Known component names: u,u,p
+DEAL:parameters:Dirichlet BCs::Used constants: k=1,beta=2
+DEAL::Component mask id 0: [true,true,false]
+DEAL::Component mask id 1: [false,false,true]
+DEAL::Component mask id 6: [true,true,true]
+DEAL::Parsed Function on id 0: 2.00000
+DEAL::Parsed Function on id 1: 0.00000
+DEAL::Parsed Function on id 6: 3.00000
