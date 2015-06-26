@@ -1,5 +1,4 @@
-// test basic functionalities
-// loop over the mapped ids
+// parsing an expression with wrong number of components
 
 
 #include "tests.h"
@@ -13,9 +12,9 @@ int main ()
   initlog();
   ParsedMappedFunctions<2,3> pmf("Dirichlet BCs", "u,u,p",
                                  "0=u , 1=1 , 6=u;p",
-                                 "0=x;y;0 , 1=0;0;0 , 6=y*k;0;k","k=1");
+                                 "0=x;y;0 , 1=0;0;0;0 , 6=y*k;0;k","k=1");
 
-  ParameterAcceptor::initialize(SOURCE_DIR "/parameters/parsed_mapped_functions_02.prm", "used_parameters.prm");
+  ParameterAcceptor::initialize(SOURCE_DIR "/parameters/parsed_mapped_functions_06.prm", "used_parameters.prm");
   ParameterAcceptor::prm.log_parameters(deallog);
 
   Point<2> p(2,3);

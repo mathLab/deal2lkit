@@ -1,13 +1,4 @@
-//-----------------------------------------------------------
-//
-//    Copyright (C) 2014 by the deal.II authors
-//
-//    This file is subject to LGPL and may not be distributed
-//    without copyright and license information. Please refer
-//    to the file deal.II/doc/license.html for the  text  and
-//    further information on this license.
-//
-//-----------------------------------------------------------
+// test basic functionalities
 
 
 #include "tests.h"
@@ -19,17 +10,27 @@
 int main ()
 {
   initlog();
-  ParsedMappedFunctions<2,3> dirichlet("Dirichlet BCs", "u,u,p", "0:0;1,1:2,6:0;1;2","0:x;y;0, 1:0;0;0,6:y*k;0;k","k=1");
+  ParsedMappedFunctions<2,3> pmf("Dirichlet BCs", "u,u,p", "0=0;1 , 1=2 , 6=0;1;2","0=x;y;0 , 1=0;0;0 , 6=y*k;beta*y;k","k=1,beta=2");
 
-  ParameterAcceptor::initialize();
+  ParameterAcceptor::initialize(SOURCE_DIR "/parameters/parsed_mapped_functions_01.prm", "used_parameters.prm");
   ParameterAcceptor::prm.log_parameters(deallog);
 
   Point<2> p(2,3);
 
-  deallog << "Component mask id 0: " <<  dirichlet.get_mapped_mask(0) << std::endl;
-  deallog << "Component mask id 1: " <<  dirichlet.get_mapped_mask(1) << std::endl;
-  deallog << "Component mask id 6: " <<  dirichlet.get_mapped_mask(6) << std::endl;
-  deallog << "Parsed Function on id 0: " <<  (*dirichlet.get_mapped_function(0)).value(p) << std::endl;
-  deallog << "Parsed Function on id 1: " <<  dirichlet.get_mapped_function(1)->value(p) << std::endl;
-  deallog << "Parsed Function on id 6: " <<  dirichlet.get_mapped_function(6)->value(p) << std::endl;
+  std::vector<unsigned int> ids(3);
+  for (unsigned int i=0; i<ids.size(); ++i)
+    ids[i] = i;
+
+  unsigned int id = 3;
+
+  if (std::find(ids.begin(),ids.end(), id) != ids.end())
+    deallog << "c'e" <<std::endl;
+
+
+  deallog << "Component mask id 0: " <<  pmf.get_mapped_mask(0) << std::endl;
+  deallog << "Component mask id 1: " <<  pmf.get_mapped_mask(1) << std::endl;
+  deallog << "Component mask id 6: " <<  pmf.get_mapped_mask(6) << std::endl;
+  deallog << "Parsed Function on id 0: " <<  (*pmf.get_mapped_function(0)).value(p) << std::endl;
+  deallog << "Parsed Function on id 1: " <<  pmf.get_mapped_function(1)->value(p) << std::endl;
+  deallog << "Parsed Function on id 6: " <<  pmf.get_mapped_function(6)->value(p) << std::endl;
 }

@@ -2,6 +2,7 @@
 #define __dealii_sak_parsed_mapped_function_h
 
 #include <deal.II/base/exceptions.h>
+#include <deal.II/base/parsed_function.h>
 #include "parameter_acceptor.h"
 #include "parsed_function.h"
 #include <deal.II/fe/component_mask.h>
@@ -31,7 +32,7 @@ public:
                           const std::string &default_id_functions = "",  // 0: x; y; z, 1: sin(k)
                           const std::string &default_constants = "");
 
-  shared_ptr<ParsedFunction<spacedim,n_components> > get_mapped_function (const unsigned int &id) const;
+  shared_ptr<dealii::Functions::ParsedFunction<spacedim> > get_mapped_function (const unsigned int &id) const;
 
   ComponentMask get_mapped_mask (const unsigned int &id) const;
 
@@ -39,24 +40,48 @@ public:
 
 
   virtual void declare_parameters (ParameterHandler &prm);
+  virtual void parse_parameters_call_back ();
 
   /// An entry with this id does not exist in this object.
   DeclException1(ExcIdNotFound, unsigned int,
                  << "No entry with the id " << arg1 << " exists.");
+
+  /// No component mask are defined on this id.
+  DeclException1(ExcIdNotMatch, unsigned int,
+                 << "No component mask associated to the id " << arg1 << " are defined.");
+
+  /// Wrong number of component mask is defined on this id.
+  DeclException3(ExcWrongComponent, unsigned int, unsigned int, unsigned int,
+                 << "At id " << arg1
+                 << ", wrong component number has been used: "
+                 <<  arg2 << " is not in the range [0, "
+                 << arg3 <<").");
+  /// Wrong variable name is defined on this id.
+  DeclException3(ExcWrongVariable, unsigned int, std::string, std::vector<std::string>,
+                 << "At id " << arg1
+                 << ", wrong variabile name has been used: "
+                 <<  arg2 << " does not belong to the knwon variables: "
+                 << print(unique(arg3)) <<".");
+
 private:
 
-  void split_id_components(const std::string &parsed_id_components);
-  void split_id_functions(const std::string &parsed_id_functions,
+  void split_id_components(const std::vector<std::string> &parsed_id_components);
+  void split_id_functions(const std::vector<std::string> &parsed_id_functions,
                           const std::string &constants);
 
 
   std::string name;
-  std::vector<std::string> component_names;
-  std::vector<unsigned int> id_defined_components;
-  std::vector<unsigned int> id_defined_functions;
+  std::string str_id_components;
+  std::string str_id_functions;
+  std::string str_component_names;
+  std::string str_constants;
+  std::vector<std::string> _component_names;
+  std::vector<std::string> _id_components;
+  std::vector<std::string> _id_functions;
+  std::vector<unsigned int> ids;
   std::map<unsigned int, ComponentMask> id_components;
-  std::map<unsigned int, shared_ptr<ParsedFunction<spacedim,n_components> > > id_functions;
-  std::map<unsigned int, std::pair<ComponentMask, shared_ptr<ParsedFunction<spacedim,n_components> > > > mapped_functions;
+  std::map<unsigned int, shared_ptr<dealii::Functions::ParsedFunction<spacedim> > > id_functions;
+  std::map<unsigned int, std::pair<ComponentMask, shared_ptr<dealii::Functions::ParsedFunction<spacedim> > > > mapped_functions;
 
 };
 
@@ -67,38 +92,33 @@ ParsedMappedFunctions<spacedim,n_components>::ParsedMappedFunctions(const std::s
     const std::string &parsed_id_functions,
     const std::string &parsed_constants):
   ParameterAcceptor(parsed_name),
-  name (parsed_name)
+  name (parsed_name),
+  str_component_names (parsed_component_names),
+  str_id_components (parsed_id_components),
+  str_id_functions (parsed_id_functions),
+  str_constants (parsed_constants)
+{};
+
+template <int spacedim, int n_components>
+void ParsedMappedFunctions<spacedim,n_components>::parse_parameters_call_back()
 {
-  component_names = Utilities::split_string_list(parsed_component_names, ',');
-  split_id_components(parsed_id_components);
-  split_id_functions(parsed_id_functions,parsed_constants);
-
+  split_id_components(_id_components);
+  split_id_functions(_id_functions,str_constants);
   AssertDimension(id_components.size(), id_functions.size());
-
-  AssertDimension(id_defined_components.size(), id_defined_functions.size());
-
-  Assert((std::is_permutation(id_defined_components.begin(),
-                              id_defined_components.end(),
-                              id_defined_functions.begin())),
-         ExcMessage("Ids associated to components and to functions are not the same."));
 
   typedef std::map<unsigned int, ComponentMask>::iterator it_type;
   for (it_type it=id_components.begin(); it != id_components.end(); ++it)
     {
-      std::pair<ComponentMask, shared_ptr<ParsedFunction<spacedim,n_components> > > mapped(it->second, id_functions[it->first]);
+      std::pair<ComponentMask, shared_ptr<dealii::Functions::ParsedFunction<spacedim> > > mapped(it->second, id_functions[it->first]);
 
       mapped_functions[it->first] = mapped;
 
     }
-
-};
+}
 
 template <int spacedim, int n_components>
-void ParsedMappedFunctions<spacedim,n_components>::split_id_components(const std::string &parsed_id_components)
+void ParsedMappedFunctions<spacedim,n_components>::split_id_components(const std::vector<std::string> &idcomponents)
 {
-  std::vector<std::string> idcomponents;
-
-  idcomponents = Utilities::split_string_list(parsed_id_components, ',');
 
   for (unsigned int i=0; i<idcomponents.size(); ++i)
     {
@@ -106,49 +126,79 @@ void ParsedMappedFunctions<spacedim,n_components>::split_id_components(const std
       std::vector<std::string> components;
       std::vector<bool> mask(n_components,false);
 
-      id_comp = Utilities::split_string_list(idcomponents[i], ':');
+      id_comp = Utilities::split_string_list(idcomponents[i], '=');
 
       unsigned int id = Utilities::string_to_int(id_comp[0]);
-      id_defined_components.push_back(id);
+      ids.push_back(id);
 
       components = Utilities::split_string_list(id_comp[1], ';');
+      Assert(components.size() <= n_components,
+             ExcMessage("Wrong number of components specified for id " + id_comp[0]));
       for (unsigned int c=0; c<components.size(); ++c)
         {
-          unsigned int m = Utilities::string_to_int(components[c]);
-          mask[m] = true;
+          if ((std::find(_component_names.begin(), _component_names.end(), components[c]) != _component_names.end()))
+            {
+              for (unsigned int j=0; j<_component_names.size(); ++j)
+                mask[j] = (_component_names[j] == components[c] || mask[j]);
+            }
+          else
+            {
+              try
+                {
+                  unsigned int m = Utilities::string_to_int(components[c]);
+                  Assert(m < n_components, ExcWrongComponent(id,m,n_components));
+                  mask[m] = true;
+                }
+              catch (std::exception &exc)
+                {
+                  Assert(false, ExcWrongVariable(id,components[c],_component_names));
+                }
+            }
         }
       id_components[id] = ComponentMask(mask);
     }
 }
 
-
 template <int spacedim, int n_components>
-void ParsedMappedFunctions<spacedim,n_components>::split_id_functions(const std::string &parsed_id_functions,
+void ParsedMappedFunctions<spacedim,n_components>::split_id_functions(const std::vector<std::string> &idfunctions,
     const std::string &constants)
 {
-  std::vector<std::string> idfunctions;
-
-  idfunctions = Utilities::split_string_list(parsed_id_functions, ',');
+  std::vector<unsigned int> id_defined_functions;
 
   for (unsigned int i=0; i<idfunctions.size(); ++i)
     {
       std::vector<std::string> id_func;
 
-      id_func = Utilities::split_string_list(idfunctions[i], ':');
+      id_func = Utilities::split_string_list(idfunctions[i], '=');
 
       unsigned int id = Utilities::string_to_int(id_func[0]);
+
+      // check if the current id is also defined in id_components
+      Assert((std::find(ids.begin(), ids.end(), id) != ids.end()),
+             ExcIdNotMatch(id));
       id_defined_functions.push_back(id);
 
       std::string function_name = name + " acting on id " + Utilities::int_to_string(id);
-      shared_ptr<ParsedFunction<spacedim,n_components> > pf;
-      pf = SP(new ParsedFunction<spacedim,n_components>(function_name, id_func[1], constants));
+      shared_ptr<dealii::Functions::ParsedFunction<spacedim> > ptr;
 
-      id_functions[id] = pf;
+      ParameterHandler internal_prm;
+      dealii::Functions::ParsedFunction<spacedim>::declare_parameters(internal_prm, n_components);
+      internal_prm.set("Function expression", id_func[1]);
+      internal_prm.set("Function constants", constants);
+      ptr = SP(new dealii::Functions::ParsedFunction<spacedim>(n_components));
+      ptr->parse_parameters(internal_prm);
+
+      id_functions[id] = ptr;
     }
+
+  // check if the number of ids defined in id_components and id_functions are the same
+  Assert(ids.size() == id_defined_functions.size(),
+         ExcMessage("Ids associated to components and to functions are not the same."));
+
 }
 
 template <int spacedim, int n_components>
-shared_ptr<ParsedFunction<spacedim,n_components> > ParsedMappedFunctions<spacedim,n_components>::get_mapped_function(const unsigned int &id) const
+shared_ptr<dealii::Functions::ParsedFunction<spacedim> > ParsedMappedFunctions<spacedim,n_components>::get_mapped_function(const unsigned int &id) const
 {
   Assert( mapped_functions.find(id) != mapped_functions.end(),
           ExcIdNotFound(id));
@@ -166,15 +216,35 @@ ComponentMask ParsedMappedFunctions<spacedim,n_components>::get_mapped_mask(cons
 template <int spacedim, int n_components>
 std::vector<unsigned int> ParsedMappedFunctions<spacedim,n_components>::get_mapped_ids() const
 {
-  return id_defined_components;
+  return ids;
 }
 
 template <int spacedim, int n_components>
 void ParsedMappedFunctions<spacedim,n_components>::declare_parameters(ParameterHandler &prm)
 {
-  add_parameter(prm, &name,
-                "Mapped Functions", name, Patterns::Anything(),
-                "Name of the mapped functions");
+  add_parameter(prm, &_component_names, "Known component names", str_component_names,
+                Patterns::List(Patterns::Anything(),1,n_components),
+                "These variables can be used to set the corrisponding component mask,"
+                "instead of specifying each component number");
+
+  add_parameter(prm, &_id_components, "IDs and component masks", str_id_components,
+                Patterns::List(Patterns::Anything(),0,numbers::invalid_unsigned_int, ","),
+                "Pattern to be used"
+                "id followed by '=' component masks separated by ';'"
+                "each couple of id and mask is separated by ','"
+                "0=0;1;2 , 4=u;p , 2=3");
+
+  add_parameter(prm, &_id_functions, "IDs and expressions", str_id_functions,
+                Patterns::List(Patterns::Anything(),0,numbers::invalid_unsigned_int, ","),
+                "Pattern to be used"
+                "id followed by '=' component separated by ';'"
+                "each couple of id and expression _id_functions separated by ','"
+                "0=x;y;k;0 , 4=sin(x);cos(y);2*k;1 , 2=0;0;0;0");
+
+  add_parameter(prm, &str_constants , "Used constants", str_constants, Patterns::Anything(),
+                "Costants which are employed in the definitions of the function expressions."
+                "The pattern to be used is"
+                "constant_name=value , other_constant=other_value");
 
 }
 
