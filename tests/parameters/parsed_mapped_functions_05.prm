@@ -1,14 +1,14 @@
 # Listing of Parameters
 # ---------------------
-subsection Dirichlet BCs
+subsection Mapped Functions
   # Pattern to be usedid followed by '=' component masks separated by ';'each
-  # couple of id and mask is separated by ','0=0;1;2 , 4=u;p , 2=3
-  set IDs and component masks = 0=u , 4=1 , 6=u;p
+  # couple of id and mask is separated by '%'0=0;1;2 % 4=u;p % 2=3
+  set IDs and component masks = 0=u % 4=1 % 6=u;p
 
   # Pattern to be usedid followed by '=' component separated by ';'each couple
-  # of id and expression _id_functions separated by ','0=x;y;k;0 ,
-  # 4=sin(x);cos(y);2*k;1 , 2=0;0;0;0
-  set IDs and expressions     = 0=x;y;0 , 1=0;0;0 , 6=y*k;0;k
+  # of id and expression _id_functions separated by '%'0=x;y;k;0 %
+  # 4=sin(x);cos(y);2*k;1 % 2=0;0;0;0
+  set IDs and expressions     = 0=x;y;0 % 1=0;0;0 % 6=y*k;0;k
 
   # These variables can be used to set the corrisponding component
   # mask,instead of specifying each component number
