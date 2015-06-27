@@ -65,8 +65,8 @@ public:
 
 private:
 
-  void split_id_components(const std::vector<std::string> &parsed_id_components);
-  void split_id_functions(const std::vector<std::string> &parsed_id_functions,
+  void split_id_components(const std::string &parsed_idcomponents);
+  void split_id_functions(const std::string &parsed_idfunctions,
                           const std::string &constants);
 
 
@@ -76,8 +76,6 @@ private:
   std::string str_component_names;
   std::string str_constants;
   std::vector<std::string> _component_names;
-  std::vector<std::string> _id_components;
-  std::vector<std::string> _id_functions;
   std::vector<unsigned int> ids;
   std::map<unsigned int, ComponentMask> id_components;
   std::map<unsigned int, shared_ptr<dealii::Functions::ParsedFunction<spacedim> > > id_functions;
@@ -102,8 +100,8 @@ ParsedMappedFunctions<spacedim,n_components>::ParsedMappedFunctions(const std::s
 template <int spacedim, int n_components>
 void ParsedMappedFunctions<spacedim,n_components>::parse_parameters_call_back()
 {
-  split_id_components(_id_components);
-  split_id_functions(_id_functions,str_constants);
+  split_id_components(str_id_components);
+  split_id_functions(str_id_functions,str_constants);
   AssertDimension(id_components.size(), id_functions.size());
 
   typedef std::map<unsigned int, ComponentMask>::iterator it_type;
@@ -117,8 +115,11 @@ void ParsedMappedFunctions<spacedim,n_components>::parse_parameters_call_back()
 }
 
 template <int spacedim, int n_components>
-void ParsedMappedFunctions<spacedim,n_components>::split_id_components(const std::vector<std::string> &idcomponents)
+void ParsedMappedFunctions<spacedim,n_components>::split_id_components(const std::string &parsed_idcomponents)
 {
+  std::vector<std::string> idcomponents;
+
+  idcomponents = Utilities::split_string_list(parsed_idcomponents, '%');
 
   for (unsigned int i=0; i<idcomponents.size(); ++i)
     {
@@ -160,10 +161,12 @@ void ParsedMappedFunctions<spacedim,n_components>::split_id_components(const std
 }
 
 template <int spacedim, int n_components>
-void ParsedMappedFunctions<spacedim,n_components>::split_id_functions(const std::vector<std::string> &idfunctions,
+void ParsedMappedFunctions<spacedim,n_components>::split_id_functions(const std::string &parsed_idfunctions,
     const std::string &constants)
 {
   std::vector<unsigned int> id_defined_functions;
+  std::vector<std::string> idfunctions;
+  idfunctions = Utilities::split_string_list(parsed_idfunctions, '%');
 
   for (unsigned int i=0; i<idfunctions.size(); ++i)
     {
@@ -227,19 +230,19 @@ void ParsedMappedFunctions<spacedim,n_components>::declare_parameters(ParameterH
                 "These variables can be used to set the corrisponding component mask,"
                 "instead of specifying each component number");
 
-  add_parameter(prm, &_id_components, "IDs and component masks", str_id_components,
-                Patterns::List(Patterns::Anything(),0,numbers::invalid_unsigned_int, ","),
+  add_parameter(prm, &str_id_components, "IDs and component masks", str_id_components,
+                Patterns::Anything(),
                 "Pattern to be used"
                 "id followed by '=' component masks separated by ';'"
-                "each couple of id and mask is separated by ','"
-                "0=0;1;2 , 4=u;p , 2=3");
+                "each couple of id and mask is separated by '%'"
+                "0=0;1;2 % 4=u;p % 2=3");
 
-  add_parameter(prm, &_id_functions, "IDs and expressions", str_id_functions,
-                Patterns::List(Patterns::Anything(),0,numbers::invalid_unsigned_int, ","),
+  add_parameter(prm, &str_id_functions, "IDs and expressions", str_id_functions,
+                Patterns::Anything(),
                 "Pattern to be used"
                 "id followed by '=' component separated by ';'"
-                "each couple of id and expression _id_functions separated by ','"
-                "0=x;y;k;0 , 4=sin(x);cos(y);2*k;1 , 2=0;0;0;0");
+                "each couple of id and expression _id_functions separated by '%'"
+                "0=x;y;k;0 % 4=sin(x);cos(y);2*k;1 % 2=0;0;0;0");
 
   add_parameter(prm, &str_constants , "Used constants", str_constants, Patterns::Anything(),
                 "Costants which are employed in the definitions of the function expressions."
