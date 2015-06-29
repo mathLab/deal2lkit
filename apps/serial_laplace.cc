@@ -59,6 +59,7 @@
 
 #include "parsed_grid_generator.h"
 #include "parsed_finite_element.h"
+#include "parsed_dirichlet_bcs.h"
 #include "parsed_function.h"
 #include "parsed_data_out.h"
 #include "error_handler.h"
@@ -105,12 +106,11 @@ private:
 
   ParsedFunction<dim> forcing_function;
   ParsedFunction<dim> permeability;
-  ParsedFunction<dim> dirichlet_function;
   ParsedFunction<dim> exact_solution;
+  ParsedDirichletBCs<dim,dim,1> dirichlet_bcs;
 
   ParsedDataOut<dim,dim> data_out;
 
-  std::vector<unsigned int> dirichlet_boundary_ids;
   unsigned int n_cycles;
   unsigned int initial_refinement;
   std::string   refinement_mode;
@@ -126,7 +126,7 @@ SerialLaplace<dim>::SerialLaplace ()
   fe_builder("Finite element"),
   forcing_function("Rhs function","2 * pi * pi * sin(pi*x) * sin(pi*y)"),
   permeability("Permeability","1."),
-  dirichlet_function("Dirichlet function"),
+  dirichlet_bcs("Dirichlet BCs", "u", "0=u", "0=0"),
   exact_solution("Exact solution","sin(pi*x) * sin(pi*y)"),
   data_out("Data out", "vtu")
 {}
@@ -135,8 +135,6 @@ SerialLaplace<dim>::SerialLaplace ()
 template <int dim>
 void SerialLaplace<dim>::declare_parameters(ParameterHandler &prm)
 {
-  add_parameter(prm, &dirichlet_boundary_ids, "Dirichlet boundary ids",
-                "0", Patterns::List(Patterns::Integer(0)));
 
   add_parameter(prm, &initial_refinement, "Initial global refinement", "4",
                 Patterns::Integer(0));
@@ -153,7 +151,6 @@ template <int dim>
 void SerialLaplace<dim>::make_grid_fe ()
 {
 
-  ParameterAcceptor::initialize("parameters_ser.prm", "used_parameters_ser.prm");
 
   triangulation = SP(tria_builder.serial());
 
@@ -183,13 +180,8 @@ void SerialLaplace<dim>::setup_system ()
 
   DoFTools::make_hanging_node_constraints (*dof_handler, constraints);
 
-  for (auto id : dirichlet_boundary_ids)
-    {
-      VectorTools::interpolate_boundary_values (*dof_handler,
-                                                id,
-                                                dirichlet_function,
-                                                constraints);
-    }
+  dirichlet_bcs.interpolate_boundary_values(*dof_handler,constraints);
+
   constraints.close ();
 
   DynamicSparsityPattern d_sparsity(dof_handler->n_dofs());
@@ -301,6 +293,7 @@ int main (int argc, char *argv[])
   Utilities::MPI::MPI_InitFinalize mpi_initialization(argc, argv);
 
   SerialLaplace<2> laplace_problem_2;
+  ParameterAcceptor::initialize("parameters_ser.prm", "used_parameters_ser.prm");
   laplace_problem_2.run ();
 
   return 0;

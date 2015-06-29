@@ -74,6 +74,7 @@ namespace LA
 #include "parsed_grid_generator.h"
 #include "parsed_finite_element.h"
 #include "parsed_function.h"
+#include "parsed_dirichlet_bcs.h"
 #include "parsed_data_out.h"
 #include "utilities.h"
 
@@ -120,7 +121,6 @@ namespace ParallelLaplace
     TimerOutput                               computing_timer;
 
 
-    std::vector<unsigned int> dirichlet_boundary_ids;
     unsigned int n_cycles;
     unsigned int initial_refinement;
 
@@ -128,7 +128,7 @@ namespace ParallelLaplace
     ParsedGridGenerator<dim,dim> tria_builder;
     ParsedFiniteElement<dim,dim> fe_builder;
     ParsedFunction<dim> forcing_function;
-    ParsedFunction<dim> dirichlet_function;
+    ParsedDirichletBCs<dim,dim,1> dirichlet_bcs;
     ParsedDataOut<dim,dim> data_out;
   };
 
@@ -150,7 +150,7 @@ namespace ParallelLaplace
     tria_builder("Triangulation"),
     fe_builder("Finite element"),
     forcing_function("Rhs function"),
-    dirichlet_function("Dirichlet function"),
+    dirichlet_bcs("Dirichlet BCs", "", "0=0"),
     data_out("Data out", "vtu")
   {}
 
@@ -158,8 +158,6 @@ namespace ParallelLaplace
   template <int dim>
   void LaplaceProblem<dim>::declare_parameters(ParameterHandler &prm)
   {
-    add_parameter(prm, &dirichlet_boundary_ids, "Dirichlet boundary ids",
-                  "0", Patterns::List(Patterns::Integer(0)));
 
     add_parameter(prm, &n_cycles, "Number of cycles", "5",
                   Patterns::Integer(0));
@@ -188,13 +186,7 @@ namespace ParallelLaplace
     constraints.clear ();
     constraints.reinit (locally_relevant_dofs);
     DoFTools::make_hanging_node_constraints (*dof_handler, constraints);
-    for (auto id : dirichlet_boundary_ids)
-      {
-        VectorTools::interpolate_boundary_values (*dof_handler,
-                                                  id,
-                                                  dirichlet_function,
-                                                  constraints);
-      }
+    dirichlet_bcs.interpolate_boundary_values(*dof_handler, constraints);
     constraints.close ();
 
     DynamicSparsityPattern csp (locally_relevant_dofs);
