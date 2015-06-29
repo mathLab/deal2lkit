@@ -1,0 +1,9 @@
+
+DEAL:parameters:Mapped functions::IDs and component masks: 5=ALL % 3=ALL
+DEAL:parameters:Mapped functions::IDs and expressions: 5=0 % 3=0
+DEAL:parameters:Mapped functions::Known component names: u
+DEAL:parameters:Mapped functions::Used constants: 
+DEAL::Component mask id 5 [true]
+DEAL::Parsed Function on id: 5 0.00000
+DEAL::Component mask id 3 [true]
+DEAL::Parsed Function on id: 3 0.00000
