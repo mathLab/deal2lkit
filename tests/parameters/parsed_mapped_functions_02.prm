@@ -2,12 +2,17 @@
 # ---------------------
 subsection Mapped Functions
   # Pattern to be usedid followed by '=' component masks separated by ';'each
-  # couple of id and mask is separated by '%'0=0;1;2 % 4=u;p % 2=3
+  # couple of id and mask is separated by '%'0=0;1;2 % 4=u;p % 2=3 % 5=ALLYou
+  # can specify the components either by numbers or by the corrisponding
+  # variable name, which are parsed atconstruction time.The keyword 'ALL'
+  # means all the components.
   set IDs and component masks = 0=u % 1=1 % 6=u;p
 
   # Pattern to be usedid followed by '=' component separated by ';'each couple
   # of id and expression _id_functions separated by '%'0=x;y;k;0 %
-  # 4=sin(x);cos(y);2*k;1 % 2=0;0;0;0
+  # 4=sin(x);cos(y);2*k;1 % 2=0;0;0;0If it is left empty, a
+  # ZeroFunction<dim>(n_components)is applied on the parsed ids in the
+  # components.
   set IDs and expressions     = 0=x;y;0 % 1=0;0;0 % 6=y*k;0;k
 
   # These variables can be used to set the corrisponding component
