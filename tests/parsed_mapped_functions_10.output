@@ -1,6 +1,6 @@
 
 DEAL:parameters:Mapped functions::IDs and component masks: 5=ALL % 3=ALL
-DEAL:parameters:Mapped functions::IDs and expressions: 5=0 % 3=0
+DEAL:parameters:Mapped functions::IDs and expressions: 
 DEAL:parameters:Mapped functions::Known component names: u
 DEAL:parameters:Mapped functions::Used constants: 
 DEAL::Component mask id 5 [true]
