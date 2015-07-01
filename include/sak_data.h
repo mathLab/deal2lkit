@@ -25,7 +25,7 @@ using namespace dealii;
  *
  *
  * A typical usage of this class is the following
- * @begin code
+ * @code
  * SAKData data;
  * const unsigned int n_q = 5;
  * std::vector<double> v_double(n_q);
@@ -39,7 +39,7 @@ using namespace dealii;
  * v_int[0] = 7.0;
  * auto &vi = data.get<std::vector<int> >("int_ref");
  *
- * @end
+ * @endcode
  */
 
 class SAKData : public Subscriptor

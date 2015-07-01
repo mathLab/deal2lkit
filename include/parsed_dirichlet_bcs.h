@@ -9,28 +9,157 @@
 #include <deal.II/numerics/vector_tools.h>
 
 using namespace dealii;
+/**
+ * Parsed DirichletBCs.
+ * This class allows to set dirichlet boundary conditions,
+ * in the strong formulation, from a parameter file.
+ *
+ * This class is derived from ParsedMappedFunctions.
+ *
+ * The VectorTools::interpolate_boundary_values and
+ * VectorTools::project_boundary_values functions of
+ * the deal.II library have been wrapped.
+ *
+ *
+ * A typical usage of this class is the following
+ *
+ *
+ * @code
+ * // the following variables are set just for the sake of completeness
+ * unsigned int dim = 2;
+ * unsigned int spacedim = 2;
+ * unsigned int n_components = 3; // number of components of the problem
+ *
+ * // create parsed_dirichlet object
+ *
+ * ParsedDirichletBCs<dim,spacedim,n_components>
+ *    parsed_dirichlet("Dirichlet BCs", // name for the section of the Parameter Handler to use
+ *                     "u,u,p",         // names of known components that can be used instead of component numbers
+ *                     "0=u % 1=2 % 6=ALL", // boundary_id = component;other_component % other_id = comp; other_comp
+ *                     "0=x;y;0 % 1=0;0;0 % 6=y*k;0;k", // boundary_id = expression % other_id = other_expression
+ *                     "k=1"); // list of constants that can be used in the above epressions
+ * ...
+ * QGauss<dim-1> quadrature(2);
+ * MappingQ1<dim> mapping;
+ * std::map<types::global_dof_index,double> dirichlet_dofs;
+ * ConstraintMatrix constraints;
+ * ...
+ * parsed_dirichlet.interpolate_boundary_values(dof_handler,dirichlet_dofs);
+ * ...
+ * parsed_dirichlet.interpolate_boundary_values(dof_handler,constraints);
+ * ...
+ * parsed_dirichlet.interpolate_boundary_values(mapping,dof_handler,constraints);
+ * ...
+ * parsed_dirichlet.interpolate_boundary_values(dof_handler,quadrature,dirichlet_dofs);
+ * ...
+ * parsed_dirichlet.interpolate_boundary_values(dof_handler,quadrature,constraints);
+ * ...
+ * parsed_dirichlet.interpolate_boundary_values(mapping,dof_handler,quadrature,constraints);
+ *
+ * @endcode
+ */
 
 template <int dim, int spacedim, int n_components>
 class ParsedDirichletBCs : public ParsedMappedFunctions<spacedim,n_components>
 {
 public:
+  /**
+   * Constructor.
+   *
+   * It takes:
+   * - the name for the section of the Parameter Handler to use
+   *
+   * - the names of known components that can be used instead of component numbers
+   *
+   * - a list of ids and components where the boundary conditions must be applied, which is
+   *   a string with the following pattern boundary_id = component;other_component % other_id = comp; other_comp
+   *
+   * - a list of ids and exprssions defined over the ids
+   * (if this string is left empty, homogeneous boundary conditions are imposed on the above specified ids and components)
+   *
+   * - list of constants that can be used in the above epressions
+   *
+   */
   ParsedDirichletBCs (const std::string &name = "Dirichlet BCs",
                       const std::string &component_names = "",
                       const std::string &default_id_components = "0=ALL",
                       const std::string &default_id_functions = "",
                       const std::string &default_constants = "");
+
+  /**
+   * these method calls the method of the Parent class
+   */
   virtual void declare_parameters (ParameterHandler &prm);
+
+  /**
+   * these method calls the method of the Parent class
+   */
   virtual void parse_parameters_call_back ();
 
+  /**
+   * wrapping of the VectorTools::interpolate_boundary_values functions of the
+   * deal.II library
+   */
   void interpolate_boundary_values (const DoFHandler<dim,spacedim> &dof_handler,
                                     ConstraintMatrix &constraints) const;
 
+  /**
+   * wrapping of the VectorTools::interpolate_boundary_values functions of the
+   * deal.II library
+   */
   void interpolate_boundary_values (const Mapping<dim,spacedim> &mapping,
                                     const DoFHandler<dim,spacedim> &dof_handler,
                                     ConstraintMatrix &constraints) const;
 
+  /**
+   * wrapping of the VectorTools::interpolate_boundary_values functions of the
+   * deal.II library
+   */
   void interpolate_boundary_values (const DoFHandler<dim,spacedim> &dof_handler,
                                     std::map<types::global_dof_index,double> &d_dofs) const;
+
+  /**
+   * wrapping of the VectorTools::interpolate_boundary_values functions of the
+   * deal.II library
+   */
+  void interpolate_boundary_values (const Mapping<dim,spacedim> &mapping,
+                                    const DoFHandler<dim,spacedim> &dof_handler,
+                                    std::map<types::global_dof_index,double> &d_dofs) const;
+
+  /**
+   * wrapping of the VectorTools::project_boundary_values functions of the
+   * deal.II library
+   */
+  void project_boundary_values (const DoFHandler<dim,spacedim> &dof_handler,
+                                const Quadrature<dim-1> &quadrature,
+                                ConstraintMatrix &constraints) const;
+
+  /**
+   * wrapping of the VectorTools::project_boundary_values functions of the
+   * deal.II library
+   */
+  void project_boundary_values (const Mapping<dim,spacedim> &mapping,
+                                const DoFHandler<dim,spacedim> &dof_handler,
+                                const Quadrature<dim-1> &quadrature,
+                                ConstraintMatrix &constraints) const;
+
+  /**
+   * wrapping of the VectorTools::project_boundary_values functions of the
+   * deal.II library
+   */
+  void project_boundary_values (const DoFHandler<dim,spacedim> &dof_handler,
+                                const Quadrature<dim-1> &quadrature,
+                                std::map<types::global_dof_index,double> &projected_bv) const;
+
+  /**
+   * wrapping of the VectorTools::project_boundary_values functions of the
+   * deal.II library
+   */
+  void project_boundary_values (const Mapping<dim,spacedim> &mapping,
+                                const DoFHandler<dim,spacedim> &dof_handler,
+                                const Quadrature<dim-1> &quadrature,
+                                std::map<types::global_dof_index,double> &projected_bv) const;
+
 };
 
 template <int dim, int spacedim, int n_components>
@@ -101,6 +230,140 @@ void ParsedDirichletBCs<dim,spacedim,n_components>::interpolate_boundary_values(
                                               d_dofs,
                                               this->get_mapped_mask(ids[i]));
 }
+
+template<int dim, int spacedim, int n_components>
+void ParsedDirichletBCs<dim,spacedim,n_components>::interpolate_boundary_values(const Mapping<dim,spacedim> &mapping,
+    const DoFHandler<dim,spacedim> &dof_handler,
+    std::map<types::global_dof_index,double> &d_dofs) const
+{
+  std::vector<unsigned int> ids = this->get_mapped_ids();
+  for (unsigned int i=0; i<ids.size(); ++i)
+    VectorTools::interpolate_boundary_values (mapping,
+                                              dof_handler,
+                                              ids[i],
+                                              *(this->get_mapped_function(ids[i])),
+                                              d_dofs,
+                                              this->get_mapped_mask(ids[i]));
+}
+
+template <int dim, int spacedim, int n_components>
+void ParsedDirichletBCs<dim,spacedim,n_components>::project_boundary_values (const Mapping<dim,spacedim> &mapping,
+    const DoFHandler<dim,spacedim> &dof_handler,
+    const Quadrature<dim-1> &quadrature,
+    ConstraintMatrix &constraints) const
+{
+  std::vector<unsigned int> ids = this->get_mapped_ids();
+  for (unsigned int i=0; i<ids.size(); ++i)
+    {
+      typename FunctionMap<dim>::type boundary_map;
+
+      Function<dim> *f;
+      f = &(*(this->get_mapped_function(ids[i])));
+      boundary_map[ids[i]] = f;
+
+      // from bool to int
+      std::vector<unsigned int> component_mapping;
+      if (dim > 1) // component_mapping is not supported in deal.II for dim==1
+        for (unsigned int j=0; j<component_mapping.size(); ++j)
+          component_mapping.push_back(this->get_mapped_mask(ids[i])[j]);
+
+      VectorTools::project_boundary_values(mapping,
+                                           dof_handler,
+                                           boundary_map,
+                                           quadrature,
+                                           constraints,
+                                           component_mapping);
+    }
+}
+
+template <int dim, int spacedim, int n_components>
+void ParsedDirichletBCs<dim,spacedim,n_components>::project_boundary_values (const DoFHandler<dim,spacedim> &dof_handler,
+    const Quadrature<dim-1> &quadrature,
+    ConstraintMatrix &constraints) const
+{
+  std::vector<unsigned int> ids = this->get_mapped_ids();
+  for (unsigned int i=0; i<ids.size(); ++i)
+    {
+      typename FunctionMap<dim>::type boundary_map;
+
+      Function<dim> *f;
+      f = &(*(this->get_mapped_function(ids[i])));
+      boundary_map[ids[i]] = f;
+
+      // from bool to int
+      std::vector<unsigned int> component_mapping;
+      if (dim > 1) // component_mapping is not supported in deal.II for dim==1
+        for (unsigned int j=0; j<component_mapping.size(); ++j)
+          component_mapping.push_back(this->get_mapped_mask(ids[i])[j]);
+
+      VectorTools::project_boundary_values(dof_handler,
+                                           boundary_map,
+                                           quadrature,
+                                           constraints,
+                                           component_mapping);
+    }
+}
+
+template <int dim, int spacedim, int n_components>
+void ParsedDirichletBCs<dim,spacedim,n_components>::project_boundary_values (const Mapping<dim,spacedim> &mapping,
+    const DoFHandler<dim,spacedim> &dof_handler,
+    const Quadrature<dim-1> &quadrature,
+    std::map<types::global_dof_index,double> &projected_bv) const
+{
+  std::vector<unsigned int> ids = this->get_mapped_ids();
+  for (unsigned int i=0; i<ids.size(); ++i)
+    {
+      typename FunctionMap<dim>::type boundary_map;
+
+      Function<dim> *f;
+      f = &(*(this->get_mapped_function(ids[i])));
+      boundary_map[ids[i]] = f;
+
+      // from bool to int
+      std::vector<unsigned int> component_mapping;
+      if (dim > 1) // component_mapping is not supported in deal.II for dim==1
+        for (unsigned int j=0; j<n_components; ++j)
+          component_mapping.push_back(this->get_mapped_mask(ids[i])[j]);
+
+      VectorTools::project_boundary_values(mapping,
+                                           dof_handler,
+                                           boundary_map,
+                                           quadrature,
+                                           projected_bv,
+                                           component_mapping);
+
+    }
+}
+
+
+template <int dim, int spacedim, int n_components>
+void ParsedDirichletBCs<dim,spacedim,n_components>::project_boundary_values (const DoFHandler<dim,spacedim> &dof_handler,
+    const Quadrature<dim-1> &quadrature,
+    std::map<types::global_dof_index,double> &projected_bv) const
+{
+  std::vector<unsigned int> ids = this->get_mapped_ids();
+  for (unsigned int i=0; i<ids.size(); ++i)
+    {
+      typename FunctionMap<dim>::type boundary_map;
+
+      Function<dim> *f;
+      f = &(*(this->get_mapped_function(ids[i])));
+      boundary_map[ids[i]] = f;
+
+      // from bool to int
+      std::vector<unsigned int> component_mapping;
+      if (dim > 1) // component_mapping is not supported in deal.II for dim==1
+        for (unsigned int j=0; j<n_components; ++j)
+          component_mapping.push_back(this->get_mapped_mask(ids[i])[j]);
+
+      VectorTools::project_boundary_values(dof_handler,
+                                           boundary_map,
+                                           quadrature,
+                                           projected_bv,
+                                           component_mapping);
+    }
+}
+
 
 
 #endif
