@@ -11,6 +11,7 @@
 #include <typeinfo>
 
 #include <map>
+#include "utilities.h"
 
 using namespace dealii;
 
@@ -93,6 +94,15 @@ public:
    *
    */
   inline bool have (const std::string &name) const;
+
+  /**
+   * @brief Print the name and type of the stored objects
+   *
+   * Print the name associated to each object and its type
+   *
+   */
+  template <class STREAM>
+  void print_info (STREAM &os);
 
   /// An entry with this name does not exist in the SAKData object.
   DeclException1(ExcNameNotFound, std::string,
@@ -178,6 +188,19 @@ const type &SAKData::get(const std::string &name) const
 bool SAKData::have(const std::string &name) const
 {
   return mydata.find(name) != mydata.end();
+}
+
+template <class STREAM>
+inline
+void SAKData::print_info(STREAM &os)
+{
+  for (std::map<std::string, boost::any>::iterator  it=mydata.begin(); it != mydata.end(); ++it)
+    {
+      os << it->first
+         << '\t' << '\t'
+         << demangle(it->second.type().name())
+         << std::endl;
+    }
 }
 
 #endif
