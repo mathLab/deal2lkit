@@ -29,7 +29,7 @@ public:
   template <typename Number>
   Number energy(const SAKData &d) const
   {
-    auto &p = d.get<Tensor<1,spacedim,Number> >("u");
+    const Tensor<1,spacedim,Number> &p = d.get<Tensor<1,spacedim,Number> >("u");
     return p.norm();
   }
 };
