@@ -18,30 +18,100 @@ using namespace dealii;
  * acting on specified id (boundary_id, material_id,etc..) and on
  * specified components.
  *
- * Dirichlet Boundary conditions or Neumann boundary conditions
+ * Dirichlet Boundary conditions, Neumann boundary conditions
+ * and forcing terms can be easily handled with this class.
  *
- * can be set using this class.
+ *
+ * A typical usage of this class is the following
+ *
+ *
+ * @code
+ * // the following variables are set just for the sake of completeness
+ * unsigned int spacedim = 2;
+ * unsigned int n_components = 3; // number of components of the problem
+ *
+ * // create parsed_dirichlet object
+ *
+ * ParsedMappedFunctions<spacedim,n_components>
+ *    parsed_mapped_functions("Forcing terms", // name for the section of the Parameter Handler to use
+ *                     "u,u,p",         // names of known components that can be used instead of component numbers
+ *                     "0=u % 1=2 % 6=ALL", // boundary_id = component;other_component % other_id = comp; other_comp
+ *                     "0=x;y;0 % 1=0;0;0 % 6=y*k;0;k", // boundary_id = expression % other_id = other_expression
+ *                     "k=1"); // list of constants that can be used in the above epressions
+ * ...
+ *
+ * unsigned int id = cell->material_id();
+ *
+ * std::vector<double> fs(n_q_points);
+ *
+ * parsed_mapped_functions.get_mapped_function(id)->value_list(fe_values.get_quadrature_points(), fs);
+ *
+ * @endcode
  */
+
 template <int spacedim, int n_components>
 class ParsedMappedFunctions : public ParameterAcceptor
 {
 public:
-//  ParsedMappedFunctions  () {};
+  /**
+   * Constructor.
+   *
+   * It takes:
+   * - the name for the section of the Parameter Handler to use
+   *
+   * - the names of known components that can be used instead of component numbers
+   *
+   * - a list of ids and components where the boundary conditions must be applied, which is
+   *   a string with the following pattern boundary_id = component;other_component % other_id = comp; other_comp
+   *
+   * - a list of ids and exprssions defined over the ids
+   * (if this string is left empty, ZeroFunction is imposed on the above specified ids and components)
+   *
+   * - list of constants that can be used in the above epressions
+   *
+   */
   ParsedMappedFunctions  (const std::string &name = "Mapped Functions",
                           const std::string &component_names = "",
                           const std::string &default_id_components = "0=ALL",
                           const std::string &default_id_functions = "",
                           const std::string &default_constants = "");
 
+  /**
+   * return a shared_ptr to the ParsedFunction corresponding to the given id
+   */
   shared_ptr<dealii::Functions::ParsedFunction<spacedim> > get_mapped_function (const unsigned int &id) const;
 
+  /**
+   * return the ComponentMask corresponding to the given id
+   */
   ComponentMask get_mapped_mask (const unsigned int &id) const;
 
+  /**
+   * return the list of the mapped ids
+   */
   std::vector<unsigned int> get_mapped_ids() const;
 
 
+  /**
+   * declare_parameters is inherithed by ParameterAcceptor
+   */
   virtual void declare_parameters (ParameterHandler &prm);
+
+  /**
+   * parse_parameters_call_back is inherithed by ParameterAcceptor
+   */
   virtual void parse_parameters_call_back ();
+
+  /**
+   * return true if there is a function that acts on the passed id
+   */
+  inline bool acts_on_id (unsigned int &id) const;
+
+  /**
+   * set time equal to t for all the mapped functions
+   */
+  void set_time (const double &t);
+
 
   /// An entry with this id does not exist in this object.
   DeclException1(ExcIdNotFound, unsigned int,
@@ -295,5 +365,20 @@ void ParsedMappedFunctions<spacedim,n_components>::declare_parameters(ParameterH
                 "constant_name=value , other_constant=other_value");
 
 }
+
+template <int spacedim, int n_components>
+bool ParsedMappedFunctions<spacedim,n_components>::acts_on_id(unsigned int &id) const
+{
+  return id_components.find(id) != id_components.end();
+}
+
+template <int spacedim, int n_components>
+void ParsedMappedFunctions<spacedim,n_components>::set_time(const double &t)
+{
+  typedef typename std::map<unsigned int, shared_ptr<dealii::Functions::ParsedFunction<spacedim> > >::iterator it_type;
+  for (it_type it=id_functions.begin(); it != id_functions.end(); ++it)
+    it->second->set_time(t);
+}
+
 
 #endif
