@@ -27,8 +27,8 @@ int main ()
   std::vector<double> v_double(n_q);
   std::vector<int> v_int(n_q);
 
-  data.add_ref<std::vector<int> >(v_int, "int_ref");
-  data.add_copy<std::vector<double> >(v_double, "double_copy");
+  data.add_ref(v_int, "int_ref");
+  data.add_copy(v_double, "double_copy");
 
   SAKData newdata = data;
 
@@ -61,8 +61,8 @@ int main ()
   deallog << std::endl;
 
 //How to manage the stored data
-  auto &vi = data.get<std::vector<int> >("int_ref");
-  auto &vd = data.get<std::vector<double> >("double_copy");
+  std::vector<int> &vi = data.get<std::vector<int> >("int_ref");
+  std::vector<double> &vd = data.get<std::vector<double> >("double_copy");
   for (unsigned int i=0; i<n_q; ++i)
     {
       vi[i] += i*i;

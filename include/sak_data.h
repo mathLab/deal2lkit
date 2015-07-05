@@ -164,21 +164,24 @@ const type &SAKData::get(const std::string &name) const
   Assert( mydata.find(name) != mydata.end(),
           ExcNameNotFound(name));
 
+  typedef std::map<std::string, boost::any>::const_iterator it_type;
 
-  if (mydata.at(name).type() == typeid(type *) )
+  it_type it = mydata.find(name);
+
+  if (it->second.type() == typeid(type *) )
     {
-      const type *p = boost::any_cast<type *>(mydata.at(name));
+      const type *p = boost::any_cast<type *>(it->second);
       return *p;
     }
-  else if (mydata.at(name).type() == typeid(type))
+  else if (it->second.type() == typeid(type))
     {
-      const type *p = boost::any_cast<type>(&mydata.at(name));
+      const type *p = boost::any_cast<type>(&it->second);
       return *p;
     }
   else
     {
       Assert(false,
-             ExcTypeMismatch(typeid(type).name(),mydata.at(name).type().name()));
+             ExcTypeMismatch(typeid(type).name(),it->second.type().name()));
       const type *p=NULL;
       return *p;
     }
