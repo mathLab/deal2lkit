@@ -71,6 +71,40 @@ namespace DOFUtilities
   }
 
   /**
+   *  Extract independent local dofs values
+   *  in a cell and store them in
+   *  std::vector <std::vector<Number> > us
+   *  whose size is number of quadrature points in the cell.
+   *
+   */
+  template <int dim, int spacedim, typename Number>
+  void
+  get_values (const FEValuesBase<dim, spacedim> &fe_values,
+              const std::vector<Number> &independent_local_dof_values,
+              std::vector <std::vector<Number> > &us)
+
+  {
+    const unsigned int           dofs_per_cell = fe_values.dofs_per_cell;
+    const unsigned int           n_q_points    = fe_values.n_quadrature_points;
+    const unsigned int           n_components  = fe_values.get_fe().n_components();
+
+    AssertDimension(us.size(), n_q_points);
+    AssertDimension(us[0].size(), n_components);
+    AssertDimension(independent_local_dof_values.size(), dofs_per_cell);
+
+    for (unsigned int q=0; q<n_q_points; ++q)
+      {
+        us[q] = std::vector<Number> (n_components,0.0);
+        for (unsigned int i=0; i<dofs_per_cell; ++i)
+          for (unsigned int j=0; j<n_components; ++j)
+            {
+              FEValuesExtractors::Scalar s(j);
+              us[q][j] += independent_local_dof_values[i]*fe_values[s].value(i,q);
+            }
+      }
+  }
+
+  /**
    *  Extract independent local dofs values of a vector_variable
    *  in a cell and store them in
    *  std::vector <Tensor <1, spacedim, Number> > us
@@ -78,6 +112,7 @@ namespace DOFUtilities
    *
    */
   template <int dim, int spacedim, typename Number>
+
   void
   get_values (const FEValuesBase<dim, spacedim> &fe_values,
               const std::vector<Number> &independent_local_dof_values,
@@ -87,6 +122,7 @@ namespace DOFUtilities
   {
     const unsigned int           dofs_per_cell = fe_values.dofs_per_cell;
     const unsigned int           n_q_points    = fe_values.n_quadrature_points;
+    const unsigned int           n_components  = fe_values.get_fe().n_components();
 
     AssertDimension(us.size(), n_q_points);
     AssertDimension(independent_local_dof_values.size(), dofs_per_cell);
@@ -96,10 +132,8 @@ namespace DOFUtilities
         us[q] = 0;
         for (unsigned int i=0; i<dofs_per_cell; ++i)
           if (fe_values[vector_variable].value(i,q).norm() > 0.0)
-            {
-              const unsigned int c = fe_values.get_fe().system_to_component_index(i).first;
-              us[q][c] += independent_local_dof_values[i]*fe_values.shape_value_component(i,q,c);
-            }
+            for (unsigned int j=0; j<spacedim; ++j)
+              us[q][j] += independent_local_dof_values[i]*fe_values[vector_variable].value(i,q)[j];
       }
   }
 

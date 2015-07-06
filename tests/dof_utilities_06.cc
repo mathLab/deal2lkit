@@ -147,7 +147,7 @@ void test_hyper_cube()
   GridGenerator::hyper_cube(tr);
 
 
-  FESystem<dim> fe (FE_Q<dim>(2), dim,
+  FESystem<dim> fe (FE_RaviartThomas<dim>(1), 1,
                     FE_Q<dim>(1), 1);
   test(tr, fe);
 }

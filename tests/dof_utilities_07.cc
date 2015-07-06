@@ -20,6 +20,9 @@
 #include <fstream>
 
 #include "dof_utilities.h"
+#include "Sacado.hpp"
+
+typedef Sacado::Fad::DFad<double> Sdouble;
 
 
 template<int dim>
@@ -38,7 +41,7 @@ void test (const Triangulation<dim> &tr,
                            update_values | update_gradients);
 
   std::vector<types::global_dof_index>    local_dof_indices (fe_values.dofs_per_cell);
-  std::vector<double> independent_local_dof_values (fe_values.dofs_per_cell);
+  std::vector<Sdouble> independent_local_dof_values (fe_values.dofs_per_cell);
 
   fe_values.reinit (dof.begin_active());
   dof.begin_active()->get_dof_indices (local_dof_indices);
@@ -55,14 +58,14 @@ void test (const Triangulation<dim> &tr,
 
 
   const unsigned int n_components = dim+1;
-  std::vector< std::vector<double> > all_vars(quadrature.size(), std::vector<double>(n_components));
-  std::vector <double> scalar_values(quadrature.size());
-  std::vector <Tensor <1, dim, double> > grad_s(quadrature.size());
+  std::vector< std::vector<Sdouble> > all_vars(quadrature.size(), std::vector<Sdouble>(n_components));
+  std::vector <Sdouble> scalar_values(quadrature.size());
+  std::vector <Tensor <1, dim, Sdouble> > grad_s(quadrature.size());
 
-  std::vector <double> div_values(quadrature.size());
-  std::vector <Tensor <1, dim, double> > vector_values(quadrature.size());
-  std::vector <Tensor <2, dim, double> > grad_v(quadrature.size());
-  std::vector <Tensor <2, dim, double> > sym_grad_v(quadrature.size());
+  std::vector <Sdouble> div_values(quadrature.size());
+  std::vector <Tensor <1, dim, Sdouble> > vector_values(quadrature.size());
+  std::vector <Tensor <2, dim, Sdouble> > grad_v(quadrature.size());
+  std::vector <Tensor <2, dim, Sdouble> > sym_grad_v(quadrature.size());
   FEValuesExtractors::Scalar scalar (dim);
   FEValuesExtractors::Vector vector (0);
 
@@ -147,7 +150,7 @@ void test_hyper_cube()
   GridGenerator::hyper_cube(tr);
 
 
-  FESystem<dim> fe (FE_Q<dim>(2), dim,
+  FESystem<dim> fe (FE_RaviartThomas<dim>(1), 1,
                     FE_Q<dim>(1), 1);
   test(tr, fe);
 }
