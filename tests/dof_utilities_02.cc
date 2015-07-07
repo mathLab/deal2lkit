@@ -57,6 +57,8 @@ void test (const Triangulation<dim> &tr,
 
 
 
+  const unsigned int n_components = dim+1;
+  std::vector< std::vector<Sdouble> > all_vars(quadrature.size(), std::vector<Sdouble>(n_components));
   std::vector <Sdouble> scalar_values(quadrature.size());
   std::vector <Tensor <1, dim, Sdouble> > grad_s(quadrature.size());
 
@@ -67,6 +69,7 @@ void test (const Triangulation<dim> &tr,
   FEValuesExtractors::Scalar scalar (dim);
   FEValuesExtractors::Vector vector (0);
 
+  DOFUtilities::get_values(fe_values, independent_local_dof_values, all_vars);
   DOFUtilities::get_values(fe_values, independent_local_dof_values, scalar, scalar_values);
   DOFUtilities::get_grad_values(fe_values, independent_local_dof_values, scalar, grad_s);
 
@@ -74,6 +77,14 @@ void test (const Triangulation<dim> &tr,
   DOFUtilities::get_div_values(fe_values, independent_local_dof_values, vector, div_values);
   DOFUtilities::get_grad_values(fe_values, independent_local_dof_values, vector, grad_v);
   DOFUtilities::get_sym_grad_values(fe_values, independent_local_dof_values, vector, sym_grad_v);
+
+  deallog << "all_vars" << std::endl;
+  for (unsigned int q=0; q<quadrature.size(); ++q)
+    {
+      for (unsigned int i=0; i<n_components; ++i)
+        deallog << all_vars[q][i] << " ";
+      deallog << std::endl;
+    }
 
   deallog << "scalar_values" << std::endl;
   for (unsigned int q=0; q<quadrature.size(); ++q)
