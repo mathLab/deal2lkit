@@ -71,6 +71,7 @@ int main ()
 
       auto &us = cache.get_values("solution", "u", u, dummy);
       auto &ps = cache.get_values("solution", "p", p, dummy);
+
       auto &div_us = cache.get_div_values("solution", "u", u, dummy);
       auto &grad_us = cache.get_grad_values("solution", "u", u, dummy);
       auto &grad_ps = cache.get_grad_values("solution", "p", p, dummy);
@@ -86,6 +87,10 @@ int main ()
           for (unsigned int d=0; d<2; ++d)
             error[0] += (us[q][d]-f.value(p[q], d))*JxW[q];
           error[1] += (ps[q] - f.value(p[q], 0))*JxW[q];
+          // div(u) = y+x
+          error[2] += (div_us[q] - p[q][1] - p[q][0])*JxW[q];
+          error[3] += (grad_ps[q][0]-p[q][1])*JxW[q];
+          error[4] += (grad_ps[q][1]-p[q][0])*JxW[q];
         }
     }
 
