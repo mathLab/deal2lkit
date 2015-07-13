@@ -1,15 +1,23 @@
+sudo : false
 notifications:
   email: false
 language: cpp
 compiler:
 - clang
 before_install:
-    - sudo apt-get install build-essential
-    - sudo add-apt-repository -y ppa:kalakris/cmake
-    - sudo add-apt-repository -y ppa:saiarcot895/chromium-beta
-    - sudo apt-get update -qq
-    - sudo apt-get install cmake
-    - sudo apt-get install ninja-build
+    - mkdir programs
+    - wget http://www.cmake.org/files/v3.3/cmake-3.3.0-rc3-Linux-x86_64.tar.gz
+    - tar xzf cmake-3.3.0-rc3-Linux-x86_64.tar.gz -C programs
+    - rm cmake-3.3.0-rc3-Linux-x86_64.tar.gz
+    - mv programs/cmake-* programs/cmake
+    - export PATH=$PWD/programs/cmake/bin:$PATH
+    - cd programs
+    - git clone git://github.com/martine/ninja.git
+    - cd ninja
+    - git checkout release
+    - ./configure.py --bootstrap
+    - export PATH=$PWD:$PATH
+    - cd ../..
     - export D2V=`git ls-remote --tags https://github.com/luca-heltai/dealii | tail -n 1 | awk -F"/" '{print $3}'`
     - echo "Deal.II version $D2V"
     - wget https://github.com/luca-heltai/dealii/releases/download/$D2V/dealii-travis-CI-build.tgz
@@ -18,8 +26,8 @@ before_install:
 script:
     - mkdir build
     - cd build
-    - export DEAL_II_DIR=/home/travis/dealii-inst
-    - cmake -GNinja -DCMAKE_INSTALL_PREFIX=/home/travis/dealii-sak-inst ..
+    - export DEAL_II_DIR=~/dealii-inst
+    - cmake -GNinja -DCMAKE_INSTALL_PREFIX=~/dealii-sak-inst ..
     - ninja -j4 install
     - tar cvfz /home/travis/dealii-sak-CI-build.tgz /home/travis/dealii-sak-inst
     - ctest -j4 -V
