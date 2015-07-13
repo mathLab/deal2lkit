@@ -34,11 +34,15 @@ SET(_d2_build_types "Release;Debug")
 SET(Release_postfix "")
 SET(Debug_postfix ".g")
 
-FIND_PACKAGE(BOOST)
-IF(BOOST_FOUND)
+FIND_PACKAGE(Boost COMPONENTS system filesystem)
+IF(Boost_FOUND)
+  # add_definitions(${Boost_LIB_DIAGNOSTIC_DEFINITIONS})
+  SET(Boost_USE_STATIC_LIBS OFF)
+  SET(Boost_USE_MULTITHREADED ON)
+  SET(Boost_USE_STATIC_RUNTIME OFF)
   ADD_DEFINITIONS(-DDEAL_II_SAK_WITH_BOOST)
-  SET(CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS} -I${Boost_INCLUDE_DIR} -L${Boost_LIBRARY_DIR} -lboost_filesystem -lboost_system" )
-ENDIF(BOOST_FOUND)
+  INCLUDE_DIRECTORIES (${BOOST_INCLUDE_DIRS})
+ENDIF()
 
 # Options about examples
 OPTION(DEAL_II_SAK_COMPILE_EXAMPLES "Compile examples" ON)
@@ -57,6 +61,11 @@ FOREACH(_build_type ${_d2_build_types})
 
 	# Add all files, except the main file, to the library
 	ADD_LIBRARY(${_lib} SHARED ${_library_source_files})
+
+	# Add boost dependencies if necessary
+	IF(Boost_FOUND)
+	   TARGET_LINK_LIBRARIES(${_lib} ${Boost_LIBRARIES})
+	ENDIF()
         INSTALL(TARGETS ${_lib} LIBRARY DESTINATION lib)
 
 	SET_PROPERTY(TARGET ${_lib} APPEND PROPERTY COMPILE_DEFINITIONS
