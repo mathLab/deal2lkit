@@ -39,13 +39,15 @@ then
 	tar xfz dealii-travis-CI-build.tgz -C programs/dealii
 fi
 
+# astyle
 if [ ! -d programs/astyle ]
 then
 	echo "Downloading and installing astyle."
 	mkdir programs/astyle
 	wget http://downloads.sourceforge.net/project/astyle/astyle/astyle%202.04/astyle_2.04_linux.tar.gz  > /dev/null
-	tar xvfz astyle_2.04_linux.tar.gz -C programs/astyle
+	tar xvfz astyle_2.04_linux.tar.gz -C programs
 	cd programs/astyle/build/gcc
 	make -j4 > /dev/null
 	cd ../../../../
 fi
+

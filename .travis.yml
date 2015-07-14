@@ -11,6 +11,7 @@ compiler:
   - clang
 
 before_install:
+    - set -e
     - ./scripts/set_cache.sh
     - export PATH=$PWD/programs/cmake/bin:$PATH
     - export PATH=$PWD/programs/ninja:$PATH
