@@ -2,6 +2,8 @@
 #include <vector>
 
 #ifdef DEAL_II_SAK_WITH_BOOST
+#include <boost/algorithm/string/classification.hpp>
+#include <boost/algorithm/string/split.hpp>
 #include "boost/filesystem.hpp"
 #else
 #include <stdlib.h>
@@ -95,11 +97,14 @@ bool copy_files(const std::string &files, const std::string &destination)
 #ifdef DEAL_II_SAK_WITH_BOOST
   if (boost::filesystem::exists(files) && files!="")
     {
-      vector<std::string> strs;
+      std::vector<std::string> strs;
       boost::split(strs,files,boost::is_any_of(" "));
       for (size_t i = 0; i < strs.size(); i++)
-        result &= copy_file(strs[i],destination+"/"+files,
-                            boost::filesystem::copy_option::overwrite_if_exists);
+        {
+          boost::filesystem::copy_file(strs[i],destination+"/"+files,
+                                       boost::filesystem::copy_option::overwrite_if_exists);
+          result &= boost::filesystem::exists(destination+"/"+files);
+        }
     }
 #else
   std::string cmd1 = "for f in " + files + "; do test -e $f ; done";
