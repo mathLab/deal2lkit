@@ -438,7 +438,7 @@ public:
 
 
   /**
-   * Return the deformation gradient of the named cached solution vector.
+   * Return the symmetric gradient of the named cached solution vector.
    *
    * Before you call this function, you have to make sure you have previously
    * called the function set_solution_vector with the same @p prefix you give here
