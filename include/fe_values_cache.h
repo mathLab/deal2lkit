@@ -50,6 +50,51 @@ public:
   {
     fe_values.reinit(cell);
     cell->get_dof_indices(local_dof_indices);
+    cache.template add_ref<FEValuesBase<dim,spacedim> >(fe_values, "FEValuesBase");
+  };
+
+
+  /**
+   * Initialize the internal FEFaceValues to use the given @face on the given
+   * @p cell.
+   */
+  void reinit(const typename DoFHandler<dim,spacedim>::active_cell_iterator &cell,
+              const unsigned int face_no)
+  {
+    fe_face_values.reinit(cell, face_no);
+    cell->get_dof_indices(local_dof_indices);
+    cache.template add_ref<FEValuesBase<dim,spacedim> >(fe_face_values, "FEValuesBase");
+  };
+
+
+  /**
+   * Get the currently initialized FEValues.
+   *
+   * This function will return the internal FEValues if the reinit(cell) function
+   * was called last. If the reinit(cell, face_no) function was called, then this
+   * function returns the internal FEFaceValues.
+   */
+  const FEValuesBase<dim,spacedim> &get_current_fe_values()
+  {
+    Assert(cache.have("FEValuesBase"),
+           ExcMessage("You have to initialize the cache using one of the "
+                      "reinit function first!"));
+    FEValuesBase<dim,spacedim> &fev =
+      cache.template get<FEValuesBase<dim,spacedim> >("FEValuesBase");
+    return fev;
+  }
+
+  template<typename Number>
+  const std::vector<Number> &
+  get_independent_local_dofs(const std::string &prefix, Number dummy) const
+  {
+
+    std::string dofs_name = prefix+"_independent_local_dofs_"+type(dummy);
+
+    Assert(cache.have(dofs_name),
+           ExcMessage("You did not call set_solution_vector with the right types!"));
+
+    return  cache.template get<std::vector<Number> >(dofs_name);
   };
 
 
@@ -59,7 +104,7 @@ public:
   const std::vector<Point<spacedim> > &
   get_quadrature_points()
   {
-    return fe_values.get_quadrature_points();
+    return get_current_fe_values().get_quadrature_points();
   }
 
 
@@ -69,7 +114,7 @@ public:
   const std::vector<double > &
   get_JxW_values()
   {
-    return fe_values.get_JxW_values();
+    return get_current_fe_values().get_JxW_values();
   }
 
 
@@ -103,10 +148,12 @@ public:
   template<typename VEC, typename Number>
   void set_solution_vector(const std::string &prefix, const VEC &input_vector, const Number dummy)
   {
+    const unsigned int n_dofs = get_current_fe_values().get_fe().dofs_per_cell;
+
     std::string name = prefix+"_independent_local_dofs_"+type(dummy);
 
     if (!cache.have(name))
-      cache.add_copy(std::vector<Number>(fe_values.get_fe().dofs_per_cell), name);
+      cache.add_copy(std::vector<Number>(n_dofs), name);
 
     std::vector<Number> &independent_local_dofs
       = cache.template get<std::vector<Number> >(name);
@@ -127,20 +174,16 @@ public:
   const std::vector <std::vector<Number> > &
   get_values(const std::string &prefix, const Number dummy)
   {
+    const std::vector<Number> &independent_local_dofs =
+      get_independent_local_dofs(prefix, dummy);
 
-    std::string dofs_name = prefix+"_independent_local_dofs_"+type(dummy);
+    const FEValuesBase<dim,spacedim> &fev = get_current_fe_values();
 
-    std::string name = prefix+"_all_values_"+type(dummy);
+    const unsigned int           dofs_per_cell = fev.dofs_per_cell;
+    const unsigned int           n_q_points    = fev.n_quadrature_points;
+    const unsigned int           n_components  = fev.get_fe().n_components();
 
-    const unsigned int           dofs_per_cell = fe_values.dofs_per_cell;
-    const unsigned int           n_q_points    = fe_values.n_quadrature_points;
-    const unsigned int           n_components  = fe_values.get_fe().n_components();
-
-    Assert(cache.have(dofs_name),
-           ExcMessage("You did not call set_solution_vector with the right types!"));
-
-    std::vector<Number> &independent_local_dofs =
-      cache.template get<std::vector<Number> >(dofs_name);
+    std::string name = prefix+"_all_values_q"+Utilities::int_to_string(n_q_points)+"_"+type(dummy);
 
     if (!cache.have(name))
       {
@@ -165,31 +208,30 @@ public:
   const std::vector <Number> &
   get_values(const std::string &prefix,
              const std::string &additional_prefix,
-             const FEValuesExtractors::Scalar &scalar_variable,
+             const FEValuesExtractors::Scalar &variable,
              const Number dummy)
   {
+    const std::vector<Number> &independent_local_dofs =
+      get_independent_local_dofs(prefix, dummy);
 
-    std::string dofs_name = prefix+"_independent_local_dofs_"+type(dummy);
+    const FEValuesBase<dim,spacedim> &fev = get_current_fe_values();
 
-    std::string name = prefix+"_"+additional_prefix+"_scalar_values_"+type(dummy);
+    const unsigned int           dofs_per_cell = fev.dofs_per_cell;
+    const unsigned int           n_q_points    = fev.n_quadrature_points;
+    const unsigned int           n_components  = fev.get_fe().n_components();
 
-    const unsigned int           dofs_per_cell = fe_values.dofs_per_cell;
-    const unsigned int           n_q_points    = fe_values.n_quadrature_points;
-    const unsigned int           n_components  = fe_values.get_fe().n_components();
+    std::string name = prefix+"_"+additional_prefix+"_scalar_values_q"+
+                       Utilities::int_to_string(n_q_points)+"_"+type(dummy);
 
-    Assert(cache.have(dofs_name),
-           ExcMessage("You did not call set_solution_vector with the right types!"));
+    // Now build the return type
+    typedef typename std::vector<Number> RetType;
 
-    std::vector<Number> &independent_local_dofs =
-      cache.template get<std::vector<Number> >(dofs_name);
 
     if (!cache.have(name))
-      {
-        cache.add_copy(std::vector<Number>(n_q_points), name);
-      }
+      cache.add_copy(RetType(n_q_points), name);
 
-    std::vector<Number> &ret = cache.template get<std::vector<Number> >(name);
-    DOFUtilities::get_values(fe_values, independent_local_dofs, scalar_variable, ret);
+    RetType &ret = cache.template get<RetType>(name);
+    DOFUtilities::get_values(fe_values, independent_local_dofs, variable, ret);
     return ret;
   }
 
@@ -209,23 +251,21 @@ public:
              const FEValuesExtractors::Vector &vector_variable,
              const Number dummy)
   {
+    const std::vector<Number> &independent_local_dofs =
+      get_independent_local_dofs(prefix, dummy);
 
-    // Get the indenpendent dofs
-    std::string dofs_name = prefix+"_independent_local_dofs_"+type(dummy);
+    const FEValuesBase<dim,spacedim> &fev = get_current_fe_values();
 
-    Assert(cache.have(dofs_name),
-           ExcMessage("You did not call set_solution_vector with the right types!"));
+    const unsigned int           dofs_per_cell = fev.dofs_per_cell;
+    const unsigned int           n_q_points    = fev.n_quadrature_points;
+    const unsigned int           n_components  = fev.get_fe().n_components();
 
-    std::vector<Number> &independent_local_dofs =
-      cache.template get<std::vector<Number> >(dofs_name);
+    std::string name = prefix+"_"+additional_prefix+"_vector_values_q"+
+                       Utilities::int_to_string(n_q_points)+"_"+type(dummy);
 
 
     // Now build the return type
     typedef typename std::vector<Tensor<1, spacedim, Number> > RetType;
-
-    std::string name = prefix+"_"+additional_prefix+"_vector_values_"+type(dummy);
-
-    const unsigned int           n_q_points    = fe_values.n_quadrature_points;
 
     if (!cache.have(name))
       cache.add_copy(RetType(n_q_points), name);
@@ -251,23 +291,21 @@ public:
                  const FEValuesExtractors::Vector &vector_variable,
                  const Number dummy)
   {
+    const std::vector<Number> &independent_local_dofs =
+      get_independent_local_dofs(prefix, dummy);
 
-    // Get the indenpendent dofs
-    std::string dofs_name = prefix+"_independent_local_dofs_"+type(dummy);
+    const FEValuesBase<dim,spacedim> &fev = get_current_fe_values();
 
-    Assert(cache.have(dofs_name),
-           ExcMessage("You did not call set_solution_vector with the right types!"));
+    const unsigned int           dofs_per_cell = fev.dofs_per_cell;
+    const unsigned int           n_q_points    = fev.n_quadrature_points;
+    const unsigned int           n_components  = fev.get_fe().n_components();
 
-    std::vector<Number> &independent_local_dofs =
-      cache.template get<std::vector<Number> >(dofs_name);
+    std::string name = prefix+"_"+additional_prefix+"_div_values_q"+
+                       Utilities::int_to_string(n_q_points)+"_"+type(dummy);
 
 
     // Now build the return type
     typedef typename std::vector<Number> RetType;
-
-    std::string name = prefix+"_"+additional_prefix+"_div_values_"+type(dummy);
-
-    const unsigned int           n_q_points    = fe_values.n_quadrature_points;
 
     if (!cache.have(name))
       cache.add_copy(RetType(n_q_points), name);
@@ -293,23 +331,20 @@ public:
                   const FEValuesExtractors::Scalar &variable,
                   const Number dummy)
   {
+    const std::vector<Number> &independent_local_dofs =
+      get_independent_local_dofs(prefix, dummy);
 
-    // Get the indenpendent dofs
-    std::string dofs_name = prefix+"_independent_local_dofs_"+type(dummy);
+    const FEValuesBase<dim,spacedim> &fev = get_current_fe_values();
 
-    Assert(cache.have(dofs_name),
-           ExcMessage("You did not call set_solution_vector with the right types!"));
+    const unsigned int           dofs_per_cell = fev.dofs_per_cell;
+    const unsigned int           n_q_points    = fev.n_quadrature_points;
+    const unsigned int           n_components  = fev.get_fe().n_components();
 
-    std::vector<Number> &independent_local_dofs =
-      cache.template get<std::vector<Number> >(dofs_name);
-
+    std::string name = prefix+"_"+additional_prefix+"_grad_values_q"+
+                       Utilities::int_to_string(n_q_points)+"_"+type(dummy);
 
     // Now build the return type
     typedef typename std::vector <Tensor<1, spacedim, Number> > RetType;
-
-    std::string name = prefix+"_"+additional_prefix+"_grad_values_"+type(dummy);
-
-    const unsigned int           n_q_points    = fe_values.n_quadrature_points;
 
     if (!cache.have(name))
       cache.add_copy(RetType(n_q_points), name);
@@ -335,23 +370,20 @@ public:
                   const FEValuesExtractors::Vector &variable,
                   const Number dummy)
   {
+    const std::vector<Number> &independent_local_dofs =
+      get_independent_local_dofs(prefix, dummy);
 
-    // Get the indenpendent dofs
-    std::string dofs_name = prefix+"_independent_local_dofs_"+type(dummy);
+    const FEValuesBase<dim,spacedim> &fev = get_current_fe_values();
 
-    Assert(cache.have(dofs_name),
-           ExcMessage("You did not call set_solution_vector with the right types!"));
+    const unsigned int           dofs_per_cell = fev.dofs_per_cell;
+    const unsigned int           n_q_points    = fev.n_quadrature_points;
+    const unsigned int           n_components  = fev.get_fe().n_components();
 
-    std::vector<Number> &independent_local_dofs =
-      cache.template get<std::vector<Number> >(dofs_name);
-
+    std::string name = prefix+"_"+additional_prefix+"_grad2_values_q"+
+                       Utilities::int_to_string(n_q_points)+"_"+type(dummy);
 
     // Now build the return type
     typedef typename std::vector <Tensor<2, spacedim, Number> > RetType;
-
-    std::string name = prefix+"_"+additional_prefix+"_grad_values_"+type(dummy);
-
-    const unsigned int           n_q_points    = fe_values.n_quadrature_points;
 
     if (!cache.have(name))
       cache.add_copy(RetType(n_q_points), name);
@@ -376,23 +408,20 @@ public:
                const FEValuesExtractors::Vector &variable,
                const Number dummy)
   {
+    const std::vector<Number> &independent_local_dofs =
+      get_independent_local_dofs(prefix, dummy);
 
-    // Get the indenpendent dofs
-    std::string dofs_name = prefix+"_independent_local_dofs_"+type(dummy);
+    const FEValuesBase<dim,spacedim> &fev = get_current_fe_values();
 
-    Assert(cache.have(dofs_name),
-           ExcMessage("You did not call set_solution_vector with the right types!"));
+    const unsigned int           dofs_per_cell = fev.dofs_per_cell;
+    const unsigned int           n_q_points    = fev.n_quadrature_points;
+    const unsigned int           n_components  = fev.get_fe().n_components();
 
-    std::vector<Number> &independent_local_dofs =
-      cache.template get<std::vector<Number> >(dofs_name);
-
+    std::string name = prefix+"_"+additional_prefix+"_F_values_q"+
+                       Utilities::int_to_string(n_q_points)+"_"+type(dummy);
 
     // Now build the return type
     typedef typename std::vector <Tensor<2, spacedim, Number> > RetType;
-
-    std::string name = prefix+"_"+additional_prefix+"_F_values_"+type(dummy);
-
-    const unsigned int           n_q_points    = fe_values.n_quadrature_points;
 
     if (!cache.have(name))
       cache.add_copy(RetType(n_q_points), name);
@@ -418,23 +447,20 @@ public:
                       const FEValuesExtractors::Vector &variable,
                       const Number dummy)
   {
+    const std::vector<Number> &independent_local_dofs =
+      get_independent_local_dofs(prefix, dummy);
 
-    // Get the indenpendent dofs
-    std::string dofs_name = prefix+"_independent_local_dofs_"+type(dummy);
+    const FEValuesBase<dim,spacedim> &fev = get_current_fe_values();
 
-    Assert(cache.have(dofs_name),
-           ExcMessage("You did not call set_solution_vector with the right types!"));
+    const unsigned int           dofs_per_cell = fev.dofs_per_cell;
+    const unsigned int           n_q_points    = fev.n_quadrature_points;
+    const unsigned int           n_components  = fev.get_fe().n_components();
 
-    std::vector<Number> &independent_local_dofs =
-      cache.template get<std::vector<Number> >(dofs_name);
-
+    std::string name = prefix+"_"+additional_prefix+"_sym_grad_values_q"+
+                       Utilities::int_to_string(n_q_points)+"_"+type(dummy);
 
     // Now build the return type
     typedef typename std::vector <Tensor<2, spacedim, Number> > RetType;
-
-    std::string name = prefix+"_"+additional_prefix+"_sym_grad_values_"+type(dummy);
-
-    const unsigned int           n_q_points    = fe_values.n_quadrature_points;
 
     if (!cache.have(name))
       cache.add_copy(RetType(n_q_points), name);
