@@ -55,7 +55,7 @@ public:
 
 
   /**
-   * Initialize the internal FEFaceValues to use the given @face on the given
+   * Initialize the internal FEFaceValues to use the given @face_no on the given
    * @p cell.
    */
   void reinit(const typename DoFHandler<dim,spacedim>::active_cell_iterator &cell,
