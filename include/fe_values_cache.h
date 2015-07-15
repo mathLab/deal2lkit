@@ -84,9 +84,13 @@ public:
     return fev;
   }
 
+
+  /**
+   *
+   */
   template<typename Number>
   const std::vector<Number> &
-  get_independent_local_dofs(const std::string &prefix, Number dummy) const
+  get_current_independent_local_dofs(const std::string &prefix, Number dummy) const
   {
 
     std::string dofs_name = prefix+"_independent_local_dofs_"+type(dummy);
@@ -175,7 +179,7 @@ public:
   get_values(const std::string &prefix, const Number dummy)
   {
     const std::vector<Number> &independent_local_dofs =
-      get_independent_local_dofs(prefix, dummy);
+      get_current_independent_local_dofs(prefix, dummy);
 
     const FEValuesBase<dim,spacedim> &fev = get_current_fe_values();
 
@@ -212,7 +216,7 @@ public:
              const Number dummy)
   {
     const std::vector<Number> &independent_local_dofs =
-      get_independent_local_dofs(prefix, dummy);
+      get_current_independent_local_dofs(prefix, dummy);
 
     const FEValuesBase<dim,spacedim> &fev = get_current_fe_values();
 
@@ -252,7 +256,7 @@ public:
              const Number dummy)
   {
     const std::vector<Number> &independent_local_dofs =
-      get_independent_local_dofs(prefix, dummy);
+      get_current_independent_local_dofs(prefix, dummy);
 
     const FEValuesBase<dim,spacedim> &fev = get_current_fe_values();
 
@@ -292,7 +296,7 @@ public:
                  const Number dummy)
   {
     const std::vector<Number> &independent_local_dofs =
-      get_independent_local_dofs(prefix, dummy);
+      get_current_independent_local_dofs(prefix, dummy);
 
     const FEValuesBase<dim,spacedim> &fev = get_current_fe_values();
 
@@ -332,7 +336,7 @@ public:
                   const Number dummy)
   {
     const std::vector<Number> &independent_local_dofs =
-      get_independent_local_dofs(prefix, dummy);
+      get_current_independent_local_dofs(prefix, dummy);
 
     const FEValuesBase<dim,spacedim> &fev = get_current_fe_values();
 
@@ -371,7 +375,7 @@ public:
                   const Number dummy)
   {
     const std::vector<Number> &independent_local_dofs =
-      get_independent_local_dofs(prefix, dummy);
+      get_current_independent_local_dofs(prefix, dummy);
 
     const FEValuesBase<dim,spacedim> &fev = get_current_fe_values();
 
@@ -409,7 +413,7 @@ public:
                const Number dummy)
   {
     const std::vector<Number> &independent_local_dofs =
-      get_independent_local_dofs(prefix, dummy);
+      get_current_independent_local_dofs(prefix, dummy);
 
     const FEValuesBase<dim,spacedim> &fev = get_current_fe_values();
 
@@ -448,7 +452,7 @@ public:
                       const Number dummy)
   {
     const std::vector<Number> &independent_local_dofs =
-      get_independent_local_dofs(prefix, dummy);
+      get_current_independent_local_dofs(prefix, dummy);
 
     const FEValuesBase<dim,spacedim> &fev = get_current_fe_values();
 
