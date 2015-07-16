@@ -96,7 +96,7 @@ public:
     std::string dofs_name = prefix+"_independent_local_dofs_"+type(dummy);
 
     Assert(cache.have(dofs_name),
-           ExcMessage("You did not call set_solution_vector with the right types!"));
+           ExcMessage("You did not call cache_local_solution_vector with the right types!"));
 
     return  cache.template get<std::vector<Number> >(dofs_name);
   };
@@ -150,7 +150,7 @@ public:
    * inside the vector.
    */
   template<typename VEC, typename Number>
-  void set_solution_vector(const std::string &prefix, const VEC &input_vector, const Number dummy)
+  void cache_local_solution_vector(const std::string &prefix, const VEC &input_vector, const Number dummy)
   {
     const unsigned int n_dofs = get_current_fe_values().get_fe().dofs_per_cell;
 
@@ -171,7 +171,7 @@ public:
    * Return the values of the named cached solution vector.
    *
    * Before you call this function, you have to make sure you have previously
-   * called the function set_solution_vector with the same name you give here
+   * called the function cache_local_solution_vector with the same name you give here
    * and with the same dummy type you use here.
    */
   template<typename Number>
@@ -205,7 +205,7 @@ public:
    * Return the values of the named cached solution vector.
    *
    * Before you call this function, you have to make sure you have previously
-   * called the function set_solution_vector with the same @p prefix you give here
+   * called the function cache_local_solution_vector with the same @p prefix you give here
    * and with the same dummy type you use here.
    */
   template<typename Number>
@@ -245,7 +245,7 @@ public:
    * Return the values of the named cached solution vector.
    *
    * Before you call this function, you have to make sure you have previously
-   * called the function set_solution_vector with the same @p prefix you give here
+   * called the function cache_local_solution_vector with the same @p prefix you give here
    * and with the same dummy type you use here.
    */
   template<typename Number>
@@ -285,7 +285,7 @@ public:
    * Return the divergence of the named cached solution vector.
    *
    * Before you call this function, you have to make sure you have previously
-   * called the function set_solution_vector with the same @p prefix you give here
+   * called the function cache_local_solution_vector with the same @p prefix you give here
    * and with the same dummy type you use here.
    */
   template<typename Number>
@@ -325,7 +325,7 @@ public:
    * Return the gradient of the named cached solution vector.
    *
    * Before you call this function, you have to make sure you have previously
-   * called the function set_solution_vector with the same @p prefix you give here
+   * called the function cache_local_solution_vector with the same @p prefix you give here
    * and with the same dummy type you use here.
    */
   template<typename Number>
@@ -364,7 +364,7 @@ public:
    * Return the gradient of the named cached solution vector.
    *
    * Before you call this function, you have to make sure you have previously
-   * called the function set_solution_vector with the same @p prefix you give here
+   * called the function cache_local_solution_vector with the same @p prefix you give here
    * and with the same dummy type you use here.
    */
   template<typename Number>
@@ -402,7 +402,7 @@ public:
    * Return the deformation gradient of the named cached solution vector.
    *
    * Before you call this function, you have to make sure you have previously
-   * called the function set_solution_vector with the same @p prefix you give here
+   * called the function cache_local_solution_vector with the same @p prefix you give here
    * and with the same dummy type you use here.
    */
   template<typename Number>
@@ -441,7 +441,7 @@ public:
    * Return the symmetric gradient of the named cached solution vector.
    *
    * Before you call this function, you have to make sure you have previously
-   * called the function set_solution_vector with the same @p prefix you give here
+   * called the function cache_local_solution_vector with the same @p prefix you give here
    * and with the same dummy type you use here.
    */
   template<typename Number>

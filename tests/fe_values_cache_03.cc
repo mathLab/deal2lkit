@@ -67,7 +67,7 @@ int main ()
   for (auto cell : dh.active_cell_iterators())
     {
       cache.reinit(cell);
-      cache.set_solution_vector("solution", sol, dummy);
+      cache.cache_local_solution_vector("solution", sol, dummy);
 
       auto &us = cache.get_values("solution", "u", u, dummy);
       auto &ps = cache.get_values("solution", "p", p, dummy);
