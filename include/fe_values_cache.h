@@ -89,8 +89,8 @@ public:
    *
    */
   template<typename Number>
-  const std::vector<Number> &
-  get_current_independent_local_dofs(const std::string &prefix, Number dummy) const
+  std::vector<Number> &
+  get_current_independent_local_dofs(const std::string &prefix, Number dummy)
   {
 
     std::string dofs_name = prefix+"_independent_local_dofs_"+type(dummy);
@@ -195,7 +195,7 @@ public:
       }
 
     std::vector <std::vector<Number> > &ret = cache.template get<std::vector <std::vector<Number> > >(name);
-    DOFUtilities::get_values(fe_values, independent_local_dofs, ret);
+    DOFUtilities::get_values(fev, independent_local_dofs, ret);
     return ret;
   }
 
@@ -235,7 +235,7 @@ public:
       cache.add_copy(RetType(n_q_points), name);
 
     RetType &ret = cache.template get<RetType>(name);
-    DOFUtilities::get_values(fe_values, independent_local_dofs, variable, ret);
+    DOFUtilities::get_values(fev, independent_local_dofs, variable, ret);
     return ret;
   }
 
@@ -275,7 +275,7 @@ public:
       cache.add_copy(RetType(n_q_points), name);
 
     RetType &ret = cache.template get<RetType>(name);
-    DOFUtilities::get_values(fe_values, independent_local_dofs, vector_variable, ret);
+    DOFUtilities::get_values(fev, independent_local_dofs, vector_variable, ret);
     return ret;
   }
 
@@ -315,7 +315,7 @@ public:
       cache.add_copy(RetType(n_q_points), name);
 
     RetType &ret = cache.template get<RetType>(name);
-    DOFUtilities::get_div_values(fe_values, independent_local_dofs, vector_variable, ret);
+    DOFUtilities::get_div_values(fev, independent_local_dofs, vector_variable, ret);
     return ret;
   }
 
@@ -354,7 +354,7 @@ public:
       cache.add_copy(RetType(n_q_points), name);
 
     RetType &ret = cache.template get<RetType>(name);
-    DOFUtilities::get_grad_values(fe_values, independent_local_dofs, variable, ret);
+    DOFUtilities::get_grad_values(fev, independent_local_dofs, variable, ret);
     return ret;
   }
 
@@ -393,7 +393,7 @@ public:
       cache.add_copy(RetType(n_q_points), name);
 
     RetType &ret = cache.template get<RetType>(name);
-    DOFUtilities::get_grad_values(fe_values, independent_local_dofs, variable, ret);
+    DOFUtilities::get_grad_values(fev, independent_local_dofs, variable, ret);
     return ret;
   }
 
@@ -431,7 +431,7 @@ public:
       cache.add_copy(RetType(n_q_points), name);
 
     RetType &ret = cache.template get<RetType>(name);
-    DOFUtilities::get_F_values(fe_values, independent_local_dofs, variable, ret);
+    DOFUtilities::get_F_values(fev, independent_local_dofs, variable, ret);
     return ret;
   }
 
@@ -470,7 +470,7 @@ public:
       cache.add_copy(RetType(n_q_points), name);
 
     RetType &ret = cache.template get<RetType>(name);
-    DOFUtilities::get_sym_grad_values(fe_values, independent_local_dofs, variable, ret);
+    DOFUtilities::get_sym_grad_values(fev, independent_local_dofs, variable, ret);
     return ret;
   }
 
