@@ -72,12 +72,12 @@ int main ()
       auto &us = cache.get_values("solution", "u", u, dummy);
       auto &ps = cache.get_values("solution", "p", p, dummy);
 
-      auto &div_us = cache.get_div_values("solution", "u", u, dummy);
-      auto &grad_us = cache.get_grad_values("solution", "u", u, dummy);
-      auto &grad_ps = cache.get_grad_values("solution", "p", p, dummy);
+      auto &div_us = cache.get_divergences("solution", "u", u, dummy);
+      auto &grad_us = cache.get_gradients("solution", "u", u, dummy);
+      auto &grad_ps = cache.get_gradients("solution", "p", p, dummy);
 
-      auto &Fs = cache.get_F_values("solution", "u", u, dummy);
-      auto &sym_grad_us = cache.get_sym_grad_values("solution", "u", u, dummy);
+      auto &Fs = cache.get_deformation_gradients("solution", "u", u, dummy);
+      auto &sym_grad_us = cache.get_symmetric_gradients("solution", "u", u, dummy);
 
       auto &p = cache.get_quadrature_points();
       auto &JxW = cache.get_JxW_values();

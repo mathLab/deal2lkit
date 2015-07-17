@@ -71,12 +71,12 @@ void test (const Triangulation<dim> &tr,
 
   DOFUtilities::get_values(fe_values, independent_local_dof_values, all_vars);
   DOFUtilities::get_values(fe_values, independent_local_dof_values, scalar, scalar_values);
-  DOFUtilities::get_grad_values(fe_values, independent_local_dof_values, scalar, grad_s);
+  DOFUtilities::get_gradients(fe_values, independent_local_dof_values, scalar, grad_s);
 
   DOFUtilities::get_values(fe_values, independent_local_dof_values, vector, vector_values);
-  DOFUtilities::get_div_values(fe_values, independent_local_dof_values, vector, div_values);
-  DOFUtilities::get_grad_values(fe_values, independent_local_dof_values, vector, grad_v);
-  DOFUtilities::get_sym_grad_values(fe_values, independent_local_dof_values, vector, sym_grad_v);
+  DOFUtilities::get_divergences(fe_values, independent_local_dof_values, vector, div_values);
+  DOFUtilities::get_gradients(fe_values, independent_local_dof_values, vector, grad_v);
+  DOFUtilities::get_symmetric_gradients(fe_values, independent_local_dof_values, vector, sym_grad_v);
 
   deallog << "all_vars" << std::endl;
   for (unsigned int q=0; q<quadrature.size(); ++q)

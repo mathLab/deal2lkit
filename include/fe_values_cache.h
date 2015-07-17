@@ -290,10 +290,10 @@ public:
    */
   template<typename Number>
   const std::vector <Number> &
-  get_div_values(const std::string &prefix,
-                 const std::string &additional_prefix,
-                 const FEValuesExtractors::Vector &vector_variable,
-                 const Number dummy)
+  get_divergences(const std::string &prefix,
+                  const std::string &additional_prefix,
+                  const FEValuesExtractors::Vector &vector_variable,
+                  const Number dummy)
   {
     const std::vector<Number> &independent_local_dofs =
       get_current_independent_local_dofs(prefix, dummy);
@@ -315,7 +315,7 @@ public:
       cache.add_copy(RetType(n_q_points), name);
 
     RetType &ret = cache.template get<RetType>(name);
-    DOFUtilities::get_div_values(fev, independent_local_dofs, vector_variable, ret);
+    DOFUtilities::get_divergences(fev, independent_local_dofs, vector_variable, ret);
     return ret;
   }
 
@@ -330,10 +330,10 @@ public:
    */
   template<typename Number>
   const std::vector <Tensor<1, spacedim, Number> > &
-  get_grad_values(const std::string &prefix,
-                  const std::string &additional_prefix,
-                  const FEValuesExtractors::Scalar &variable,
-                  const Number dummy)
+  get_gradients(const std::string &prefix,
+                const std::string &additional_prefix,
+                const FEValuesExtractors::Scalar &variable,
+                const Number dummy)
   {
     const std::vector<Number> &independent_local_dofs =
       get_current_independent_local_dofs(prefix, dummy);
@@ -354,7 +354,7 @@ public:
       cache.add_copy(RetType(n_q_points), name);
 
     RetType &ret = cache.template get<RetType>(name);
-    DOFUtilities::get_grad_values(fev, independent_local_dofs, variable, ret);
+    DOFUtilities::get_gradients(fev, independent_local_dofs, variable, ret);
     return ret;
   }
 
@@ -369,10 +369,10 @@ public:
    */
   template<typename Number>
   const std::vector <Tensor<2, spacedim, Number> > &
-  get_grad_values(const std::string &prefix,
-                  const std::string &additional_prefix,
-                  const FEValuesExtractors::Vector &variable,
-                  const Number dummy)
+  get_gradients(const std::string &prefix,
+                const std::string &additional_prefix,
+                const FEValuesExtractors::Vector &variable,
+                const Number dummy)
   {
     const std::vector<Number> &independent_local_dofs =
       get_current_independent_local_dofs(prefix, dummy);
@@ -393,7 +393,7 @@ public:
       cache.add_copy(RetType(n_q_points), name);
 
     RetType &ret = cache.template get<RetType>(name);
-    DOFUtilities::get_grad_values(fev, independent_local_dofs, variable, ret);
+    DOFUtilities::get_gradients(fev, independent_local_dofs, variable, ret);
     return ret;
   }
 
@@ -407,10 +407,10 @@ public:
    */
   template<typename Number>
   const std::vector <Tensor<2, spacedim, Number> > &
-  get_F_values(const std::string &prefix,
-               const std::string &additional_prefix,
-               const FEValuesExtractors::Vector &variable,
-               const Number dummy)
+  get_deformation_gradients(const std::string &prefix,
+                            const std::string &additional_prefix,
+                            const FEValuesExtractors::Vector &variable,
+                            const Number dummy)
   {
     const std::vector<Number> &independent_local_dofs =
       get_current_independent_local_dofs(prefix, dummy);
@@ -431,7 +431,7 @@ public:
       cache.add_copy(RetType(n_q_points), name);
 
     RetType &ret = cache.template get<RetType>(name);
-    DOFUtilities::get_F_values(fev, independent_local_dofs, variable, ret);
+    DOFUtilities::get_deformation_gradients(fev, independent_local_dofs, variable, ret);
     return ret;
   }
 
@@ -446,10 +446,10 @@ public:
    */
   template<typename Number>
   const std::vector <Tensor<2, spacedim, Number> > &
-  get_sym_grad_values(const std::string &prefix,
-                      const std::string &additional_prefix,
-                      const FEValuesExtractors::Vector &variable,
-                      const Number dummy)
+  get_symmetric_gradients(const std::string &prefix,
+                          const std::string &additional_prefix,
+                          const FEValuesExtractors::Vector &variable,
+                          const Number dummy)
   {
     const std::vector<Number> &independent_local_dofs =
       get_current_independent_local_dofs(prefix, dummy);
@@ -470,7 +470,7 @@ public:
       cache.add_copy(RetType(n_q_points), name);
 
     RetType &ret = cache.template get<RetType>(name);
-    DOFUtilities::get_sym_grad_values(fev, independent_local_dofs, variable, ret);
+    DOFUtilities::get_symmetric_gradients(fev, independent_local_dofs, variable, ret);
     return ret;
   }
 
