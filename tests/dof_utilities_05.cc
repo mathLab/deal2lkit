@@ -67,8 +67,8 @@ void test (const Triangulation<dim> &tr,
   FEValuesExtractors::Scalar scalar (dim);
   FEValuesExtractors::Vector vector (0);
 
-  DOFUtilities::get_sym_grad_values(fe_values, independent_local_dof_values, vector, grad_v);
-  DOFUtilities::get_div_values(fe_values, independent_local_dof_values, vector, div_u);
+  DOFUtilities::get_symmetric_gradients(fe_values, independent_local_dof_values, vector, grad_v);
+  DOFUtilities::get_divergences(fe_values, independent_local_dof_values, vector, div_u);
   DOFUtilities::get_values(fe_values, independent_local_dof_values, scalar, p);
 
   SSdouble en;

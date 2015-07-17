@@ -176,10 +176,10 @@ namespace DOFUtilities
    */
   template <int dim, int spacedim, typename Number>
   void
-  get_div_values (const FEValuesBase<dim, spacedim> &fe_values,
-                  const std::vector<Number> &independent_local_dof_values,
-                  const FEValuesExtractors::Vector &vector_variable,
-                  std::vector <Number>  &us)
+  get_divergences (const FEValuesBase<dim, spacedim> &fe_values,
+                   const std::vector<Number> &independent_local_dof_values,
+                   const FEValuesExtractors::Vector &vector_variable,
+                   std::vector <Number>  &us)
 
   {
     const unsigned int           dofs_per_cell = fe_values.dofs_per_cell;
@@ -206,10 +206,10 @@ namespace DOFUtilities
    */
   template <int dim, int spacedim, typename Number>
   void
-  get_grad_values (const FEValuesBase<dim, spacedim> &fe_values,
-                   const std::vector<Number> &independent_local_dof_values,
-                   const FEValuesExtractors::Vector &vector_variable,
-                   std::vector <Tensor <2, spacedim, Number> > &grad_us)
+  get_gradients (const FEValuesBase<dim, spacedim> &fe_values,
+                 const std::vector<Number> &independent_local_dof_values,
+                 const FEValuesExtractors::Vector &vector_variable,
+                 std::vector <Tensor <2, spacedim, Number> > &grad_us)
   {
     const unsigned int           dofs_per_cell = fe_values.dofs_per_cell;
     const unsigned int           n_q_points    = fe_values.n_quadrature_points;
@@ -238,10 +238,10 @@ namespace DOFUtilities
    */
   template <int dim, int spacedim, typename Number>
   void
-  get_grad_values (const FEValuesBase<dim, spacedim> &fe_values,
-                   const std::vector<Number> &independent_local_dof_values,
-                   const FEValuesExtractors::Scalar &scalar_variable,
-                   std::vector <Tensor <1, spacedim, Number> > &grad_us)
+  get_gradients (const FEValuesBase<dim, spacedim> &fe_values,
+                 const std::vector<Number> &independent_local_dof_values,
+                 const FEValuesExtractors::Scalar &scalar_variable,
+                 std::vector <Tensor <1, spacedim, Number> > &grad_us)
   {
     const unsigned int           dofs_per_cell = fe_values.dofs_per_cell;
     const unsigned int           n_q_points    = fe_values.n_quadrature_points;
@@ -262,7 +262,7 @@ namespace DOFUtilities
 
 
   /**
-   *  Compute the deformation gradient F in each quadrature point
+   *  Compute the deformation gradient in each quadrature point
    *  of a cell and it is stored in
    *  std::vector <Tensor <2, spacedim, Number> > Fs
    *  whose size is number of quadrature points in the cell.
@@ -270,16 +270,16 @@ namespace DOFUtilities
    */
   template <int dim, int spacedim, typename Number>
   void
-  get_F_values (const FEValuesBase<dim, spacedim> &fe_values,
-                const std::vector<Number> &independent_local_dof_values,
-                const FEValuesExtractors::Vector &vector_variable,
-                std::vector <Tensor <2, spacedim, Number> > &Fs)
+  get_deformation_gradients (const FEValuesBase<dim, spacedim> &fe_values,
+                             const std::vector<Number> &independent_local_dof_values,
+                             const FEValuesExtractors::Vector &vector_variable,
+                             std::vector <Tensor <2, spacedim, Number> > &Fs)
   {
     const unsigned int           n_q_points    = fe_values.n_quadrature_points;
 
     AssertDimension(Fs.size(), n_q_points);
 
-    DOFUtilities::get_grad_values (fe_values, independent_local_dof_values, vector_variable, Fs);
+    DOFUtilities::get_gradients (fe_values, independent_local_dof_values, vector_variable, Fs);
 
     for (unsigned int q=0; q<n_q_points; ++q)
       for (unsigned int d=0; d<dim; ++d)
@@ -295,16 +295,16 @@ namespace DOFUtilities
    */
   template <int dim, int spacedim, typename Number>
   void
-  get_sym_grad_values (const FEValuesBase<dim, spacedim> &fe_values,
-                       const std::vector<Number> &independent_local_dof_values,
-                       const FEValuesExtractors::Vector &vector_variable,
-                       std::vector <Tensor <2, spacedim, Number> > &grad_us)
+  get_symmetric_gradients (const FEValuesBase<dim, spacedim> &fe_values,
+                           const std::vector<Number> &independent_local_dof_values,
+                           const FEValuesExtractors::Vector &vector_variable,
+                           std::vector <Tensor <2, spacedim, Number> > &grad_us)
   {
     const unsigned int           n_q_points    = fe_values.n_quadrature_points;
 
     AssertDimension(grad_us.size(), n_q_points);
 
-    DOFUtilities::get_grad_values (fe_values, independent_local_dof_values, vector_variable, grad_us);
+    DOFUtilities::get_gradients (fe_values, independent_local_dof_values, vector_variable, grad_us);
     for (unsigned int q=0; q<n_q_points; ++q)
       {
         grad_us[q] += transpose(grad_us[q]);
