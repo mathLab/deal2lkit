@@ -11,6 +11,7 @@ using namespace dealii;
 using namespace std;
 
 #ifdef DEAL_II_WITH_TRILINOS
+#ifdef DEAL_II_WITH_MPI
 
 
 NewtonSolver::NewtonSolver(NewtonArgument &bubble, const  MPI_Comm &communicator) :
@@ -287,5 +288,5 @@ unsigned int NewtonSolver::solve(Vector<double> &solution,
   return 0;
 }
 
-
+#endif // DEAL_II_WITH_MPI
 #endif // DEAL_II_WITH_TRILINOS
