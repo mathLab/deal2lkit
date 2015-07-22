@@ -126,8 +126,8 @@ SerialLaplace<dim>::SerialLaplace ()
   fe_builder("Finite element"),
   forcing_function("Rhs function","2 * pi * pi * sin(pi*x) * sin(pi*y)"),
   permeability("Permeability","1."),
-  dirichlet_bcs("Dirichlet BCs", "u", "0=u", "0=0"),
   exact_solution("Exact solution","sin(pi*x) * sin(pi*y)"),
+  dirichlet_bcs("Dirichlet BCs", "u", "0=u", "0=0"),
   data_out("Data out", "vtu")
 {}
 
