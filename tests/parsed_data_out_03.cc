@@ -70,7 +70,7 @@ void Test<dim>::declare_parameters(ParameterHandler &prm)
 template <int dim>
 void Test<dim>::make_grid_fe ()
 {
-  ParameterAcceptor::initialize("parameters_ser.prm", "used_parameters_ser.prm");
+  ParameterAcceptor::initialize();
   triangulation = SP(tria_builder.serial());
   triangulation->refine_global(initial_refinement);
   dof_handler = SP(new DoFHandler<dim>(*triangulation));
@@ -109,7 +109,7 @@ void Test<dim>::output_results()
   data_out.prepare_data_output( *dof_handler);
   data_out.add_data_vector(solution, fe_builder.get_component_names());
   data_out.write_data_and_clear();
-  copy_files("output.vtk","output");
+  copy_file("output.vtk","output");
 }
 
 template <int dim>

@@ -77,7 +77,7 @@ void Test<dim, spacedim>::declare_parameters(ParameterHandler &prm)
 template <int dim, int spacedim>
 void Test<dim, spacedim>::make_grid_fe ()
 {
-  ParameterAcceptor::initialize("parameters_new.prm", "used_parameters_new.prm");
+  ParameterAcceptor::initialize();
   // std::map< Triangulation<dim,spacedim>::cell_iterator,
   //      Triangulation<spacedim,spacedim>::face_iterator>
   //      surface_to_volume_mapping;
@@ -122,7 +122,6 @@ void Test<dim, spacedim>::output_results()
   data_out.prepare_data_output( *dof_handler);
   data_out.add_data_vector(solution, fe_builder.get_component_names());
   data_out.write_data_and_clear();
-  copy_files("output.vtk","output");
 }
 
 template <int dim, int spacedim>
@@ -145,5 +144,6 @@ int main (int argc, char *argv[])
   Test<dim, spacedim> test;
   test.run();
 
+  copy_file("./output.vtk","./output");
   return 0;
 }
