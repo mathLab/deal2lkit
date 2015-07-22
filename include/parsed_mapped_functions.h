@@ -162,9 +162,9 @@ ParsedMappedFunctions<spacedim,n_components>::ParsedMappedFunctions(const std::s
     const std::string &parsed_constants):
   ParameterAcceptor(parsed_name),
   name (parsed_name),
-  str_component_names (parsed_component_names),
   str_id_components (parsed_id_components),
   str_id_functions (parsed_id_functions),
+  str_component_names (parsed_component_names),
   str_constants (parsed_constants)
 {};
 
