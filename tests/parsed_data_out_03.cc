@@ -109,7 +109,7 @@ void Test<dim>::output_results()
   data_out.prepare_data_output( *dof_handler);
   data_out.add_data_vector(solution, fe_builder.get_component_names());
   data_out.write_data_and_clear();
-  copy_files("output.vtk","output");
+  append_to_file("output.vtk","output");
 }
 
 template <int dim>
@@ -123,13 +123,16 @@ void Test<dim>::run()
 int main (int argc, char *argv[])
 {
 #ifdef DEAL_II_WITH_MPI
-  Utilities::MPI::MPI_InitFinalize mpi_initialization(argc, argv);
-#endif
+  Utilities::MPI::MPI_InitFinalize mpi_initialization(argc, argv, numbers::invalid_unsigned_int);
+  mpi_initlog();
+#else
   initlog();
+#endif
+
   const int dim = 2;
 
   Test<dim> test;
   test.run();
 
-  return 0;
+  // return 0;
 }

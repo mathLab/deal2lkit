@@ -31,6 +31,12 @@ void smart_delete (SmartPointer<TYPE> &sp) DEAL_II_DEPRECATED;
 std::string demangle(const char *name);
 
 /**
+ * This function copyt the text contained in @p in_file to the file
+ * @p out_file .
+ */
+void append_to_file(const std::string &in_file, const std::string &out_file);
+
+/**
  * A function that return the index of the first non existing folder matching
  * a pattern make by @p base and @p n_digits number. (base000, base001, base002, ...)
  */
@@ -43,7 +49,12 @@ int get_next_available_index_directory_name(const std::string &base, int n_digit
 std::string get_next_available_directory_name(const std::string &base, int n_digits=3);
 
 /**
- * A function to check the existence of @p file
+ * A function to check the existence of @p dir directory.
+ */
+bool dir_exists(const std::string &dir);
+
+/**
+ * A function to check the existence of @p file file.
  */
 bool file_exists(const std::string &file);
 
@@ -57,6 +68,16 @@ bool create_directory(const std::string &name);
  * destination folder (@p destination)
  */
 bool copy_files(const std::string &files, const std::string &destination);
+
+/**
+ * A function to make a copy of @p file with the name @p destination
+ */
+bool copy_file(const std::string &files, const std::string &destination);
+
+/**
+ * A function to rename a @p file with a new name @p new_file
+ */
+bool rename_file(const std::string &file, const std::string &new_file);
 
 // ======================================================================
 // Explicit template functions. Only present in the include file.

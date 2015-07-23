@@ -1,5 +1,6 @@
 #include "../include/utilities.h"
 #include <vector>
+#include <fstream>
 
 #ifdef DEAL_II_SAK_WITH_BOOST
 #include <boost/algorithm/string/classification.hpp>
@@ -7,6 +8,7 @@
 #include "boost/filesystem.hpp"
 #else
 #include <stdlib.h>
+#include <sys/stat.h>
 #endif
 
 namespace
@@ -29,27 +31,14 @@ std::string demangle(const char *name)
   return (status==0) ? result.p : name ;
 }
 
-int get_next_available_index_directory_name(const std::string &base, int n_digits)
+void append_to_file(const std::string &in_file, const std::string &out_file)
 {
-  unsigned int index = 0;
-  std::string cmd = "";
-#ifdef DEAL_II_SAK_WITH_BOOST
-  while ( boost::filesystem::exists( base + Utilities::int_to_string (index, n_digits)) ) index++;
-#else
-  cmd = "test -d " + base + Utilities::int_to_string (index, n_digits);
-  while ( int(std::system( cmd.c_str() )) == 0 )
-    {
-      index++;
-      cmd = "test -d " + base + Utilities::int_to_string (index, n_digits);
-    }
-#endif
-  return index;
-}
+  std::ifstream ifile(in_file,  std::ios::in);
+  std::ofstream ofile(out_file, std::ios::out | std::ios::app);
+  if (ifile.is_open())
+    ofile << ifile.rdbuf();
 
-std::string get_next_available_directory_name(const std::string &base, int n_digits)
-{
-  unsigned int index = get_next_available_index_directory_name(base, n_digits);
-  return base + Utilities::int_to_string (index, n_digits);
+  return;
 }
 
 bool file_exists(const std::string &file)
@@ -57,69 +46,107 @@ bool file_exists(const std::string &file)
 #ifdef DEAL_II_SAK_WITH_BOOST
   return boost::filesystem::exists( file );
 #else
-  std::string cmd = "";
-  cmd = "test -f " + file;
-  if ( int(std::system( cmd.c_str() )) == 0 )
-    {
-      return true;
-    }
+  struct stat st;
+  lstat(file.c_str(), &st);
+  if (S_ISREG(st.st_mode))
+    return true;
   else
-    {
-      return false;
-    }
+    return false;
 #endif
 }
 
+bool dir_exists(const std::string &dir)
+{
+#ifdef DEAL_II_SAK_WITH_BOOST
+  return boost::filesystem::exists( dir );
+#else
+  struct stat st;
+  lstat(dir.c_str(), &st);
+  if (S_ISDIR(st.st_mode))
+    return true;
+  else
+    return false;
+#endif
+}
+
+int get_next_available_index_directory_name(const std::string &base, int n_digits)
+{
+  unsigned int index = 0;
+  while ( dir_exists( base + dealii::Utilities::int_to_string (index, n_digits) ) ) index++;
+  return index;
+}
+
+std::string get_next_available_directory_name(const std::string &base, int n_digits)
+{
+  unsigned int index = get_next_available_index_directory_name(base, n_digits);
+  return base + dealii::Utilities::int_to_string (index, n_digits);
+}
 
 bool create_directory(const std::string &name)
 {
   std::string name_cleaned = name;
   name_cleaned.erase(std::remove(name_cleaned.begin(),name_cleaned.end(),' '),name_cleaned.end());
 #ifdef DEAL_II_SAK_WITH_BOOST
-  return boost::filesystem::create_directories(name_cleaned + "/");
+  boost::filesystem::create_directories("./" + name_cleaned + "/");
 #else
   std::string cmd = "";
-  cmd = "mkdir -p " + name_cleaned + "/";
-  if ( int( std::system( cmd.c_str() ) == 0 ) )
+  cmd = "mkdir -p " + name_cleaned + "/ ;";
+  std::system(cmd.c_str());
+#endif
+  return dir_exists(name_cleaned + "/");
+}
+
+bool copy_files(const std::string &files, const std::string &destination)
+{
+  if (files!="")
     {
-      return true;
+      create_directory("./"+destination);
+      bool result = true;
+      std::vector<std::string> strs;
+      std::string new_file;
+      strs = dealii::Utilities::split_string_list(files, ' ');
+      for (size_t i = 0; i < strs.size(); i++)
+        {
+          if (file_exists(strs[i]))
+            {
+              new_file = destination+"/"+strs[i];
+#ifdef DEAL_II_SAK_WITH_BOOST
+              boost::filesystem::copy_file(strs[i], new_file,
+                                           boost::filesystem::copy_option::overwrite_if_exists);
+#else
+              std::string cmd = "cp " + strs[i] + " " +new_file + " ;";
+              std::system( cmd.c_str() );
+#endif
+            }
+          result &= file_exists(new_file);
+        }
+      return result;
     }
   else
     {
       return false;
     }
-#endif
 }
 
-bool copy_files(const std::string &files, const std::string &destination)
+bool copy_file(const std::string &file, const std::string &new_file)
 {
-  bool result = true;
 #ifdef DEAL_II_SAK_WITH_BOOST
-  if (boost::filesystem::exists(files) && files!="")
-    {
-      std::vector<std::string> strs;
-      boost::split(strs,files,boost::is_any_of(" "));
-      for (size_t i = 0; i < strs.size(); i++)
-        {
-          boost::filesystem::copy_file(strs[i],destination+"/"+files,
-                                       boost::filesystem::copy_option::overwrite_if_exists);
-          result &= boost::filesystem::exists(destination+"/"+files);
-        }
-    }
+  boost::filesystem::copy_file(file, new_file,
+                               boost::filesystem::copy_option::overwrite_if_exists);
 #else
-  std::string cmd1 = "for f in " + files + "; do test -e $f ; done";
-  std::string cmd2 = "for f in " + files + "; do cp $f " + destination + "; done";
-  if (int(std::system( cmd1.c_str() )) == 0 && files!="")
-    {
-      if (int(std::system( cmd2.c_str() )))
-        {
-          result &= true;
-        }
-      else
-        {
-          result &= false;
-        }
-    }
+  std::string cmd = "cp " + file + " " + new_file + " ;" ;
+  std::system( cmd.c_str() );
 #endif
-  return result;
+  return file_exists(new_file);
+}
+
+bool rename_file(const std::string &file, const std::string &new_file)
+{
+#ifdef DEAL_II_SAK_WITH_BOOST
+  boost::filesystem::rename(file, new_file);
+#else
+  std::string cmd = "mv " + file + " " + new_file +" ;";
+  std::system( cmd.c_str() );
+#endif
+  return file_exists(new_file);
 }
