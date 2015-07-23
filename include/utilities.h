@@ -31,6 +31,12 @@ void smart_delete (SmartPointer<TYPE> &sp) DEAL_II_DEPRECATED;
 std::string demangle(const char *name);
 
 /**
+ * This function copyt the text contained in @p in_file to the file
+ * @p out_file .
+ */
+void append_to_file(const std::string &in_file, const std::string &out_file);
+
+/**
  * A function that return the index of the first non existing folder matching
  * a pattern make by @p base and @p n_digits number. (base000, base001, base002, ...)
  */

@@ -50,11 +50,11 @@ private:
   ParsedFiniteElement<dim, spacedim> fe_builder;
 
   unsigned int initial_refinement;
-  shared_ptr<Triangulation<dim, spacedim> >      triangulation;
-  shared_ptr<FiniteElement<dim, spacedim> >  fe;
-  shared_ptr<DoFHandler<dim, spacedim> >         dof_handler;
-  BlockVector<double> solution;
-  ParsedDataOut<dim, spacedim>                 data_out;
+  shared_ptr<Triangulation<dim, spacedim> >     triangulation;
+  shared_ptr<FiniteElement<dim, spacedim> >     fe;
+  shared_ptr<DoFHandler<dim, spacedim> >        dof_handler;
+  BlockVector<double>                           solution;
+  ParsedDataOut<dim, spacedim>                  data_out;
 };
 
 template <int dim, int spacedim>
@@ -77,7 +77,7 @@ void Test<dim, spacedim>::declare_parameters(ParameterHandler &prm)
 template <int dim, int spacedim>
 void Test<dim, spacedim>::make_grid_fe ()
 {
-  ParameterAcceptor::initialize();
+  ParameterAcceptor::initialize("parameters_new.prm", "used_parameters_new.prm");
   // std::map< Triangulation<dim,spacedim>::cell_iterator,
   //      Triangulation<spacedim,spacedim>::face_iterator>
   //      surface_to_volume_mapping;
@@ -122,6 +122,7 @@ void Test<dim, spacedim>::output_results()
   data_out.prepare_data_output( *dof_handler);
   data_out.add_data_vector(solution, fe_builder.get_component_names());
   data_out.write_data_and_clear();
+  append_to_file("output.vtk","output");
 }
 
 template <int dim, int spacedim>
@@ -135,15 +136,17 @@ void Test<dim, spacedim>::run()
 int main (int argc, char *argv[])
 {
 #ifdef DEAL_II_WITH_MPI
-  Utilities::MPI::MPI_InitFinalize mpi_initialization(argc, argv);
-#endif
+  Utilities::MPI::MPI_InitFinalize mpi_initialization(argc, argv, numbers::invalid_unsigned_int);
+  mpi_initlog();
+#else
   initlog();
+#endif
+
   const int dim = 1;
   const int spacedim = 2;
 
   Test<dim, spacedim> test;
   test.run();
 
-  copy_file("./output.vtk","./output");
   return 0;
 }
