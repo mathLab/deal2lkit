@@ -73,7 +73,7 @@ void test (const Triangulation<dim> &tr,
 
   SSdouble en;
   for (unsigned int q=0; q<n_q_points; ++q)
-    en += (scalar_product(grad_v[q],grad_v[q])
+    en += (0.5*scalar_product(grad_v[q],grad_v[q])
            -
            p[q]*div_u[q])*fe_values.JxW(q);
 
@@ -97,7 +97,7 @@ void test (const Triangulation<dim> &tr,
 
       for (unsigned int i=0; i<dofs_per_cell; ++i)
         for (unsigned int j=0; j<dofs_per_cell; ++j)
-          local_matrix(i,j) += (2.*scalar_product(grad_v_dealii[i],grad_v_dealii[j])
+          local_matrix(i,j) += (scalar_product(grad_v_dealii[i],grad_v_dealii[j])
                                 -div_u_dealii[i]*p_dealii[j]
                                 -p_dealii[i]*div_u_dealii[j])
                                *fe_values.JxW(q);
