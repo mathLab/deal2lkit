@@ -312,6 +312,83 @@ namespace DOFUtilities
       }
 
   }
+
+  /**
+   * This function compute the scalar product
+   * between two tensors with rank 1 of different types
+   *  i.e., Number and double  returning a Number.
+   */
+  template<int dim, typename Number>
+  Number inner (const Tensor<1,dim,Number> &T1,
+                const Tensor<1,dim,double> &T2)
+  {
+    Number ret=0;
+    for (unsigned int i=0; i<dim; ++i)
+      ret += T1[i]*T2[i];
+    return ret;
+  }
+
+  /**
+   * This function compute the scalar product
+   * between two tensors with rank 1 of different types
+   *  i.e., Number and double  returning a Number.
+   */
+  template<int dim, typename Number>
+  Number inner (const Tensor<1,dim,double> &T1,
+                const Tensor<1,dim,Number> &T2)
+  {
+    return DOFUtilities::inner(T2,T1);
+  }
+
+  /**
+   * This function is needed to avoid conflict
+   */
+  template<int dim>
+  double inner (const Tensor<1,dim,double> &T1,
+                const Tensor<1,dim,double> &T2)
+  {
+    return T1*T2;
+  }
+
+  /**
+   * This function compute the scalar product
+   * between two tensors with rank 2 of different types
+   *  i.e., Number and double  returning a Number.
+   */
+  template<int dim, typename Number>
+  Number inner (const Tensor<2,dim,Number> &T1,
+                const Tensor<2,dim,double> &T2)
+  {
+    Number ret=0;
+    for (unsigned int i=0; i<dim; ++i)
+      for (unsigned int j=0; j<dim; ++j)
+        ret += T1[i][j]*T2[i][j];
+    return ret;
+  }
+
+
+  /**
+   * This function compute the scalar product
+   * between two tensors with rank 2 of different types
+   *  i.e., Number and double  returning a Number.
+   */
+  template<int dim, typename Number>
+  Number inner (const Tensor<2,dim,double> &T1,
+                const Tensor<2,dim,Number> &T2)
+  {
+    return DOFUtilities::inner(T2,T1);
+  }
+
+  /**
+   * This function is needed to avoid conflict
+   */
+  template<int dim>
+  double inner (const Tensor<2,dim,double> &T1,
+                const Tensor<2,dim,double> &T2)
+  {
+    return scalar_product(T1,T2);
+  }
+
 }// end namespace
 
 
