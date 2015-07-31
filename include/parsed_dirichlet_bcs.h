@@ -160,7 +160,37 @@ public:
                                 const Quadrature<dim-1> &quadrature,
                                 std::map<types::global_dof_index,double> &projected_bv) const;
 
+
+  /**
+   * wrapping of the VectorTools::compute_no_normal_flux_constraints functions of the
+   * deal.II library
+   */
+  void compute_no_normal_flux_constraints (const DoFHandler<dim,spacedim> &dof_handler,
+                                           ConstraintMatrix &constraints) const;
+  /**
+   * wrapping of the VectorTools::compute_no_normal_flux_constraints functions of the
+   * deal.II library
+   */
+  void compute_no_normal_flux_constraints (const DoFHandler<dim,spacedim> &dof_handler,
+                                           const Mapping< dim, spacedim > &mapping,
+                                           ConstraintMatrix &constraints) const;
+  /**
+   * wrapping of the VectorTools::compute_nonzero_normal_flux_constraints functions of the
+   * deal.II library
+   */
+  void compute_nonzero_normal_flux_constraints (const DoFHandler<dim,spacedim> &dof_handler,
+                                                ConstraintMatrix &constraints) const;
+
+  /**
+   * wrapping of the VectorTools::compute_nonzero_normal_flux_constraints functions of the
+   * deal.II library
+   */
+  void compute_nonzero_normal_flux_constraints (const DoFHandler<dim,spacedim> &dof_handler,
+                                                const Mapping< dim, spacedim > &mapping,
+                                                ConstraintMatrix &constraints) const;
+
 };
+
 
 template <int dim, int spacedim, int n_components>
 ParsedDirichletBCs<dim,spacedim,n_components>::
@@ -255,15 +285,15 @@ void ParsedDirichletBCs<dim,spacedim,n_components>::project_boundary_values (con
   std::vector<unsigned int> ids = this->get_mapped_ids();
   for (unsigned int i=0; i<ids.size(); ++i)
     {
-      typename FunctionMap<dim>::type boundary_map;
+      typename FunctionMap<spacedim>::type boundary_map;
 
-      Function<dim> *f;
+      Function<spacedim> *f;
       f = &(*(this->get_mapped_function(ids[i])));
       boundary_map[ids[i]] = f;
 
       // from bool to int
       std::vector<unsigned int> component_mapping;
-      if (dim > 1) // component_mapping is not supported in deal.II for dim==1
+      if (spacedim > 1) // component_mapping is not supported in deal.II for dim==1
         for (unsigned int j=0; j<component_mapping.size(); ++j)
           component_mapping.push_back(this->get_mapped_mask(ids[i])[j]);
 
@@ -284,15 +314,15 @@ void ParsedDirichletBCs<dim,spacedim,n_components>::project_boundary_values (con
   std::vector<unsigned int> ids = this->get_mapped_ids();
   for (unsigned int i=0; i<ids.size(); ++i)
     {
-      typename FunctionMap<dim>::type boundary_map;
+      typename FunctionMap<spacedim>::type boundary_map;
 
-      Function<dim> *f;
+      Function<spacedim> *f;
       f = &(*(this->get_mapped_function(ids[i])));
       boundary_map[ids[i]] = f;
 
       // from bool to int
       std::vector<unsigned int> component_mapping;
-      if (dim > 1) // component_mapping is not supported in deal.II for dim==1
+      if (spacedim > 1) // component_mapping is not supported in deal.II for dim==1
         for (unsigned int j=0; j<component_mapping.size(); ++j)
           component_mapping.push_back(this->get_mapped_mask(ids[i])[j]);
 
@@ -313,15 +343,15 @@ void ParsedDirichletBCs<dim,spacedim,n_components>::project_boundary_values (con
   std::vector<unsigned int> ids = this->get_mapped_ids();
   for (unsigned int i=0; i<ids.size(); ++i)
     {
-      typename FunctionMap<dim>::type boundary_map;
+      typename FunctionMap<spacedim>::type boundary_map;
 
-      Function<dim> *f;
+      Function<spacedim> *f;
       f = &(*(this->get_mapped_function(ids[i])));
       boundary_map[ids[i]] = f;
 
       // from bool to int
       std::vector<unsigned int> component_mapping;
-      if (dim > 1) // component_mapping is not supported in deal.II for dim==1
+      if (spacedim > 1) // component_mapping is not supported in deal.II for dim==1
         for (unsigned int j=0; j<n_components; ++j)
           component_mapping.push_back(this->get_mapped_mask(ids[i])[j]);
 
@@ -344,15 +374,15 @@ void ParsedDirichletBCs<dim,spacedim,n_components>::project_boundary_values (con
   std::vector<unsigned int> ids = this->get_mapped_ids();
   for (unsigned int i=0; i<ids.size(); ++i)
     {
-      typename FunctionMap<dim>::type boundary_map;
+      typename FunctionMap<spacedim>::type boundary_map;
 
-      Function<dim> *f;
+      Function<spacedim> *f;
       f = &(*(this->get_mapped_function(ids[i])));
       boundary_map[ids[i]] = f;
 
       // from bool to int
       std::vector<unsigned int> component_mapping;
-      if (dim > 1) // component_mapping is not supported in deal.II for dim==1
+      if (spacedim > 1) // component_mapping is not supported in deal.II for dim==1
         for (unsigned int j=0; j<n_components; ++j)
           component_mapping.push_back(this->get_mapped_mask(ids[i])[j]);
 
@@ -364,6 +394,114 @@ void ParsedDirichletBCs<dim,spacedim,n_components>::project_boundary_values (con
     }
 }
 
+template <int dim, int spacedim, int n_components>
+void ParsedDirichletBCs<dim,spacedim,n_components>::compute_no_normal_flux_constraints(const DoFHandler<dim,spacedim> &dof_handler,
+    ConstraintMatrix &constraints) const
+{
+  std::set<types::boundary_id> no_normal_flux_boundaries;
+
+  typedef std::map<std::string, std::pair<std::vector<unsigned int>, unsigned int > >::const_iterator it_type;
+
+  for (it_type it=this->mapped_normal_components.begin(); it != this->mapped_normal_components.end(); ++it)
+    {
+      std::vector<unsigned int> normal_ids = (it->second).first;
+
+      for (unsigned int i=0; i<normal_ids.size(); ++i)
+        no_normal_flux_boundaries.insert(normal_ids[i]);
+
+      VectorTools::compute_no_normal_flux_constraints(dof_handler,
+                                                      (it->second).second, // unsigned int first component vector
+                                                      no_normal_flux_boundaries,
+                                                      constraints);
+    }
+}
+
+template <int dim, int spacedim, int n_components>
+void ParsedDirichletBCs<dim,spacedim,n_components>::compute_no_normal_flux_constraints(const DoFHandler<dim,spacedim> &dof_handler,
+    const Mapping< dim, spacedim > &mapping,
+    ConstraintMatrix &constraints) const
+{
+  std::set<types::boundary_id> no_normal_flux_boundaries;
+
+  typedef std::map<std::string, std::pair<std::vector<unsigned int>, unsigned int > >::const_iterator it_type;
+
+  for (it_type it=this->mapped_normal_components.begin(); it != this->mapped_normal_components.end(); ++it)
+    {
+      std::vector<unsigned int> normal_ids = (it->second).first;
+
+      for (unsigned int i=0; i<normal_ids.size(); ++i)
+        no_normal_flux_boundaries.insert(normal_ids[i]);
+
+      VectorTools::compute_no_normal_flux_constraints(dof_handler,
+                                                      (it->second).second, // unsigned int first component vector
+                                                      no_normal_flux_boundaries,
+                                                      constraints,
+                                                      mapping);
+    }
+}
+
+
+template <int dim, int spacedim, int n_components>
+void ParsedDirichletBCs<dim,spacedim,n_components>::compute_nonzero_normal_flux_constraints(const DoFHandler<dim,spacedim> &dof_handler,
+    ConstraintMatrix &constraints) const
+{
+  std::set<types::boundary_id> no_normal_flux_boundaries;
+
+  typedef std::map<std::string, std::pair<std::vector<unsigned int>, unsigned int > >::const_iterator it_type;
+
+  for (it_type it=this->mapped_normal_components.begin(); it != this->mapped_normal_components.end(); ++it)
+    {
+      typename FunctionMap<spacedim>::type boundary_map;
+
+      std::vector<unsigned int> normal_ids = (it->second).first;
+
+      for (unsigned int i=0; i<normal_ids.size(); ++i)
+        {
+          Function<spacedim> *f;
+          f = &(*(this->get_mapped_function(normal_ids[i])));
+          boundary_map[normal_ids[i]] = f;
+          no_normal_flux_boundaries.insert(normal_ids[i]);
+        }
+
+      VectorTools::compute_nonzero_normal_flux_constraints(dof_handler,
+                                                           (it->second).second, // unsigned int first component vector
+                                                           no_normal_flux_boundaries,
+                                                           boundary_map,
+                                                           constraints);
+    }
+}
+
+template <int dim, int spacedim, int n_components>
+void ParsedDirichletBCs<dim,spacedim,n_components>::compute_nonzero_normal_flux_constraints(const DoFHandler<dim,spacedim> &dof_handler,
+    const Mapping< dim, spacedim > &mapping,
+    ConstraintMatrix &constraints) const
+{
+  std::set<types::boundary_id> no_normal_flux_boundaries;
+
+  typedef std::map<std::string, std::pair<std::vector<unsigned int>, unsigned int > >::const_iterator it_type;
+
+  for (it_type it=this->mapped_normal_components.begin(); it != this->mapped_normal_components.end(); ++it)
+    {
+      typename FunctionMap<spacedim>::type boundary_map;
+
+      std::vector<unsigned int> normal_ids = (it->second).first;
+
+      for (unsigned int i=0; i<normal_ids.size(); ++i)
+        {
+          Function<spacedim> *f;
+          f = &(*(this->get_mapped_function(normal_ids[i])));
+          boundary_map[normal_ids[i]] = f;
+          no_normal_flux_boundaries.insert(normal_ids[i]);
+        }
+
+      VectorTools::compute_nonzero_normal_flux_constraints(dof_handler,
+                                                           (it->second).second, // unsigned int first component vector
+                                                           no_normal_flux_boundaries,
+                                                           boundary_map,
+                                                           constraints,
+                                                           mapping);
+    }
+}
 
 
 #endif
