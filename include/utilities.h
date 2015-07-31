@@ -79,6 +79,27 @@ bool copy_file(const std::string &files, const std::string &destination);
  */
 bool rename_file(const std::string &file, const std::string &new_file);
 
+/**
+ * This class rewrite @p n_max lines of output
+ */
+class fixed_lines
+{
+public:
+  fixed_lines(int, std::ostream &stream_out = std::cout);
+  int get_current_line();
+  void goto_previous_line(int n_line = 1, bool erase=false);
+  void print_line(std::string &txt, bool erase=true);
+
+private:
+  // total number of lines:
+  const int n_max;
+  // the current line:
+  int curr_line;
+  // stream where the output will be written
+  const std::ostream &stream_out;
+
+};
+
 // ======================================================================
 // Explicit template functions. Only present in the include file.
 // ======================================================================

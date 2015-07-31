@@ -150,3 +150,48 @@ bool rename_file(const std::string &file, const std::string &new_file)
 #endif
   return file_exists(new_file);
 }
+
+fixed_lines::fixed_lines(int n, std::ostream &stream_out)
+  :
+  n_max(n),
+  curr_line(0),
+  stream_out(stream_out)
+{}
+
+int
+fixed_lines::get_current_line()
+{
+  return curr_line;
+}
+
+void
+fixed_lines::goto_previous_line(int n_line, bool erase)
+{
+  if (curr_line>0)
+    for (unsigned int i = 0; i<n_line; ++i )
+      {
+        // go to the previous line:
+        std::cout << "\e[A";
+        // erase the line line:
+        if (erase)
+          std::cout << "\e[K";
+
+        curr_line--;
+
+        if (curr_line == 0)
+          break;
+      }
+}
+
+void
+fixed_lines::print_line(std::string &txt, bool erase)
+{
+  if (curr_line == n_max)
+    goto_previous_line(n_max);
+
+  std::string erase_line = "\e[K";
+  if (erase)
+    std::cout << erase_line;
+  std::cout << txt << std::endl;
+  curr_line++;
+}
