@@ -3,14 +3,14 @@
 
 #include <deal.II/base/utilities.h>
 #include <deal.II/base/smartpointer.h>
-#include <typeinfo>
-#include <cxxabi.h>
 #include <deal.II/base/exceptions.h>
 #include <deal.II/fe/fe.h>
-
 #include <deal.II/base/std_cxx11/shared_ptr.h>
 
+#include <typeinfo>
+#include <cxxabi.h>
 #include <sstream>
+#include <sys/ioctl.h>
 
 using namespace dealii;
 using std_cxx11::shared_ptr;
@@ -29,6 +29,47 @@ void smart_delete (SmartPointer<TYPE> &sp) DEAL_II_DEPRECATED;
 
 /** Demangle c++ names. */
 std::string demangle(const char *name);
+
+/**
+ * This function collects some time utilities:
+ *  - sleep(unsigned int t) freezes the thread for t milliseconds;
+ *  - get_start_time() sets the start time for a measure
+ *  - get_end_time() sets the end time for a measure
+ *  - get_num_measures() return the number of measures done
+ *  - an overload of the operator [] is provided to access to all measures
+ *
+ *  All measures are stored in seconds.
+ *  get_start_time() should be used before get_end_time() and viceversa.
+ */
+class TimeUtilities
+{
+public:
+
+  TimeUtilities()
+    :
+    status(true),
+    times()
+  {}
+
+  void sleep(unsigned int t);
+  void get_start_time();
+  void get_end_time();
+  int get_num_measures();
+  double &operator[] (const int num)
+  {
+    AssertThrow( num < times.size(),
+                 ExcMessage("Invalind number num. It is higher than the number of times.") );
+
+    return times[num];
+  };
+
+private:
+  bool status; // This is used to check whether we are taking a start time or
+  // and end time.
+  std::chrono::high_resolution_clock::time_point t_start;
+  std::chrono::high_resolution_clock::time_point t_end;
+  std::vector<double> times;
+};
 
 /**
  * This function copyt the text contained in @p in_file to the file
@@ -82,23 +123,186 @@ bool rename_file(const std::string &file, const std::string &new_file);
 /**
  * This class rewrite @p n_max lines of output
  */
-class fixed_lines
+template<typename Stream>
+class FilteredStream
 {
 public:
-  fixed_lines(int, std::ostream &stream_out = std::cout);
-  int get_current_line();
-  void goto_previous_line(int n_line = 1, bool erase=false);
-  void print_line(std::string &txt, bool erase=true);
+  FilteredStream( Stream &stream_out = std::cout,
+                  unsigned int n_lines = 1,
+                  unsigned int width = 60)
+    :
+    n_lines(n_lines),
+    width(width),
+    current_line(0),
+    clear_next(true),
+    stream_out(stream_out)
+  {
+    struct winsize w;
+    ioctl(0, TIOCGWINSZ, &w);
+    rows_shell = w.ws_row;
+    cols_shell = w.ws_col;
+    stream_out.width(width);
+  };
+
+  /**
+   * Flush output at the end so that we don't make a mess with the
+   * console.
+   */
+  ~FilteredStream()
+  {
+    for (; current_line<n_lines; ++current_line)
+      stream_out << std::endl;
+  };
+
+  template<typename OBJ>
+  FilteredStream<Stream> &operator<<(OBJ &o)
+  {
+    clear();
+    stream_out << o;
+    return *this;
+  };
+
+  FilteredStream<Stream> &operator<< (std::ostream& (*p) (std::ostream &))
+  {
+    class QueryStreambuf : public std::streambuf
+    {
+      // Implement a minimalistic stream buffer that only stores the fact
+      // whether overflow or sync was called
+    public:
+      QueryStreambuf()
+        : flushed_(false), newline_written_(false)
+      {
+      }
+      bool flushed()
+      {
+        return flushed_;
+      }
+      bool newline_written()
+      {
+        return newline_written_;
+      }
+    private:
+      int_type overflow(int_type ch)
+      {
+        newline_written_ = true;
+        return ch;
+      }
+      int sync()
+      {
+        flushed_ = true;
+        return 0;
+      }
+
+      bool flushed_;
+      bool newline_written_;
+    } query_streambuf;
+
+    {
+      // and initialize an ostream with this streambuf:
+      std::ostream inject (&query_streambuf);
+      inject << p;
+    }
+
+    if (query_streambuf.newline_written())
+      current_line++;
+
+    if (current_line == n_lines)
+      {
+        current_line = 0;
+        for (unsigned int i=0; i<n_lines; ++i)
+          stream_out << "\e[A"  << "\r";
+        clear_next = true;
+      }
+
+    stream_out << p;
+
+    return *this;
+  };
+
+  template <typename S, typename T> friend FilteredStream<S>
+  &operator << (FilteredStream<S> &, const T &);
+
+  Stream &get_stream()
+  {
+    return stream_out;
+  };
+
+  /**
+   * Clear the next n lines, return back to the original point, and
+   * reset the clear flag if force is set to true, otherwise do this
+   * only if the internal counter is set to zero, i.e., we are at the
+   * beginning of the next n lines.
+   */
+  void clear(bool force=false)
+  {
+    if (force)
+      {
+        while (current_line < n_lines-1)
+          {
+            stream_out << "\e[B";
+            current_line++;
+          }
+
+        if (current_line>0)
+          {
+            for (unsigned int i=0; i<n_lines; ++i)
+              {
+                stream_out << "\r" << std::setfill(' ') << std::setw(width) << " " << "\r" << "\e[A";
+                current_line--;
+                if (current_line==0)
+                  break;
+              }
+            stream_out << "\r" << std::setfill(' ') << std::setw(width) << " " << "\r";
+          }
+        else
+          {
+            stream_out << "\r" << std::setfill(' ') << std::setw(width) << " " << "\r";
+          }
+        clear_next = false;
+      }
+    else if (clear_next)
+      {
+        stream_out << "\r" << std::setfill(' ') << std::setw(width) << " " << "\r";
+        stream_out << "\e[A" << std::endl;
+        clear_next = false;
+      }
+  };
+
+  unsigned int get_shell_rows()
+  {
+    return rows_shell;
+  }
+  unsigned int get_shell_cols()
+  {
+    return cols_shell;
+  }
+  int get_current_line()
+  {
+    return current_line;
+  }
 
 private:
+  unsigned int cols_shell;
+  unsigned int rows_shell;
   // total number of lines:
-  const int n_max;
+  const unsigned int n_lines;
   // the current line:
-  int curr_line;
+  const unsigned int width;
+  bool clear_next;
+  unsigned int current_line;
   // stream where the output will be written
-  const std::ostream &stream_out;
+  Stream &stream_out;
 
 };
+
+template <typename S, typename T>
+inline
+FilteredStream<S> &operator<< (FilteredStream<S> &output_stream, const T &t)
+{
+  output_stream.clear();
+  output_stream.get_stream() << t;
+  return output_stream;
+}
 
 // ======================================================================
 // Explicit template functions. Only present in the include file.

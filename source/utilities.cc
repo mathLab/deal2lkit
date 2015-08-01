@@ -1,6 +1,8 @@
 #include "../include/utilities.h"
 #include <vector>
 #include <fstream>
+#include <chrono>
+#include <thread>
 
 #ifdef DEAL_II_SAK_WITH_BOOST
 #include <boost/algorithm/string/classification.hpp>
@@ -29,6 +31,38 @@ std::string demangle(const char *name)
   int status = -4; // some arbitrary value to eliminate the compiler warning
   handle result( abi::__cxa_demangle(name, NULL, NULL, &status) );
   return (status==0) ? result.p : name ;
+}
+
+void TimeUtilities::sleep(unsigned int t)
+{
+  std::this_thread::sleep_for(std::chrono::milliseconds(t));
+}
+
+void TimeUtilities::get_start_time()
+{
+  AssertThrow(status == true,
+              ExcMessage("Use get_end_time() before reuse get_start_time().") );
+
+  t_start = std::chrono::high_resolution_clock::now();
+
+  status = false;
+}
+
+void TimeUtilities::get_end_time()
+{
+  AssertThrow(status == false,
+              ExcMessage("Use get_start_time() before get_end_time().") );
+
+  t_end = std::chrono::high_resolution_clock::now();
+  std::chrono::duration<double> time_span = std::chrono::duration_cast<std::chrono::duration<double>>(t_end - t_start);
+  times.push_back( time_span.count() );
+
+  status = true;
+}
+
+int TimeUtilities::get_num_measures()
+{
+  return times.size();
 }
 
 void append_to_file(const std::string &in_file, const std::string &out_file)
@@ -149,49 +183,4 @@ bool rename_file(const std::string &file, const std::string &new_file)
   std::system( cmd.c_str() );
 #endif
   return file_exists(new_file);
-}
-
-fixed_lines::fixed_lines(int n, std::ostream &stream_out)
-  :
-  n_max(n),
-  curr_line(0),
-  stream_out(stream_out)
-{}
-
-int
-fixed_lines::get_current_line()
-{
-  return curr_line;
-}
-
-void
-fixed_lines::goto_previous_line(int n_line, bool erase)
-{
-  if (curr_line>0)
-    for (unsigned int i = 0; i<n_line; ++i )
-      {
-        // go to the previous line:
-        std::cout << "\e[A";
-        // erase the line line:
-        if (erase)
-          std::cout << "\e[K";
-
-        curr_line--;
-
-        if (curr_line == 0)
-          break;
-      }
-}
-
-void
-fixed_lines::print_line(std::string &txt, bool erase)
-{
-  if (curr_line == n_max)
-    goto_previous_line(n_max);
-
-  std::string erase_line = "\e[K";
-  if (erase)
-    std::cout << erase_line;
-  std::cout << txt << std::endl;
-  curr_line++;
 }

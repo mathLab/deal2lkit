@@ -1,0 +1,19 @@
+
+DEAL:: START 
+DEAL:: STEP:  1
+DEAL:: SLEEP: 2 sec
+DEAL:: TIMER: 2 sec
+DEAL:: OK 
+DEAL:: STEP:  2
+DEAL:: SLEEP: 3 sec
+DEAL:: TIMER: 3 sec
+DEAL:: OK 
+DEAL:: STEP:  3
+DEAL:: SLEEP: 4 sec
+DEAL:: TIMER: 4 sec
+DEAL:: OK 
+DEAL:: STEP:  4
+DEAL:: SLEEP: 5 sec
+DEAL:: TIMER: 5 sec
+DEAL:: OK 
+DEAL:: END 
