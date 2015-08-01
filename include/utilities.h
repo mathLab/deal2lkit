@@ -10,7 +10,9 @@
 #include <typeinfo>
 #include <cxxabi.h>
 #include <sstream>
-#include <sys/ioctl.h>
+#include <sys/ioctl.h>    // to know the number of cols and rows of a shell
+#include <chrono>         // for TimeUtilities std::chrono
+#include <stdio.h>
 
 using namespace dealii;
 using std_cxx11::shared_ptr;
@@ -31,15 +33,10 @@ void smart_delete (SmartPointer<TYPE> &sp) DEAL_II_DEPRECATED;
 std::string demangle(const char *name);
 
 /**
- * This function collects some time utilities:
- *  - sleep(unsigned int t) freezes the thread for t milliseconds;
- *  - get_start_time() sets the start time for a measure
- *  - get_end_time() sets the end time for a measure
- *  - get_num_measures() return the number of measures done
- *  - an overload of the operator [] is provided to access to all measures
+ * This function collects some time utilities.
  *
  *  All measures are stored in seconds.
- *  get_start_time() should be used before get_end_time() and viceversa.
+ *  Usage: get_start_time() should be used before get_end_time() and viceversa.
  */
 class TimeUtilities
 {
@@ -51,10 +48,29 @@ public:
     times()
   {}
 
+  /**
+   * It freezes the thread for t milliseconds.
+   */
   void sleep(unsigned int t);
+
+  /**
+   * It sets the start time for a measure.
+   */
   void get_start_time();
+
+  /**
+   * It sets the end time for a measure.
+   */
   void get_end_time();
+
+  /**
+   * It returns the number of measures done
+   */
   int get_num_measures();
+
+  /**
+   * An overload of the operator [] is provided to access to all measures.
+   */
   double &operator[] (const int num)
   {
     AssertThrow( num < times.size(),
@@ -120,16 +136,26 @@ bool copy_file(const std::string &files, const std::string &destination);
  */
 bool rename_file(const std::string &file, const std::string &new_file);
 
+
+// Forward declaration for OverWriteStream:
+template<typename Stream = std::ostream> class OverWriteStream;
 /**
- * This class rewrite @p n_max lines of output
+ * This class uses @p n_lines lines of @p stream_out to show the output.
+ * Everytime it reaches the last line it comes back to the first line and
+ * rewrites the line.
+ *
+ * The constructor takes as argument a stream for the output @p stream_out
+ * (default = std::cout), the number of lines @p n_lines, and the width of the
+ * output.
+ *
  */
 template<typename Stream>
-class FilteredStream
+class OverWriteStream
 {
 public:
-  FilteredStream( Stream &stream_out = std::cout,
-                  unsigned int n_lines = 1,
-                  unsigned int width = 60)
+  OverWriteStream( Stream &stream_out = std::cout,
+                   unsigned int n_lines = 1,
+                   unsigned int width = 60)
     :
     n_lines(n_lines),
     width(width),
@@ -148,21 +174,21 @@ public:
    * Flush output at the end so that we don't make a mess with the
    * console.
    */
-  ~FilteredStream()
+  ~OverWriteStream()
   {
     for (; current_line<n_lines; ++current_line)
       stream_out << std::endl;
   };
 
   template<typename OBJ>
-  FilteredStream<Stream> &operator<<(OBJ &o)
+  OverWriteStream<Stream> &operator<<(OBJ &o)
   {
     clear();
     stream_out << o;
     return *this;
   };
 
-  FilteredStream<Stream> &operator<< (std::ostream& (*p) (std::ostream &))
+  OverWriteStream<Stream> &operator<< (std::ostream& (*p) (std::ostream &))
   {
     class QueryStreambuf : public std::streambuf
     {
@@ -219,12 +245,26 @@ public:
     return *this;
   };
 
-  template <typename S, typename T> friend FilteredStream<S>
-  &operator << (FilteredStream<S> &, const T &);
+  template <typename S, typename T> friend OverWriteStream<S>
+  &operator << (OverWriteStream<S> &, const T &);
 
   Stream &get_stream()
   {
     return stream_out;
+  };
+
+  /**
+   * Move the cursor at the end of the output. It is needed to avoid to rewrite
+   * useful lines.
+   * Finally, this method delete the class.
+   */
+  void end()
+  {
+    while (current_line <= n_lines-1)
+      {
+        stream_out << std::endl;
+        current_line++;
+      };
   };
 
   /**
@@ -241,7 +281,7 @@ public:
           {
             stream_out << "\e[B";
             current_line++;
-          }
+          };
 
         if (current_line>0)
           {
@@ -268,14 +308,25 @@ public:
       }
   };
 
+  /**
+   * It returns the number of rows of the current shell.
+   */
   unsigned int get_shell_rows()
   {
     return rows_shell;
   }
+
+  /**
+   * It returns the number of coloumns of the current shell.
+   */
   unsigned int get_shell_cols()
   {
     return cols_shell;
   }
+
+  /**
+   * It returns current line of the stream.
+   */
   int get_current_line()
   {
     return current_line;
@@ -286,9 +337,9 @@ private:
   unsigned int rows_shell;
   // total number of lines:
   const unsigned int n_lines;
-  // the current line:
   const unsigned int width;
   bool clear_next;
+  // the current line:
   unsigned int current_line;
   // stream where the output will be written
   Stream &stream_out;
@@ -297,7 +348,7 @@ private:
 
 template <typename S, typename T>
 inline
-FilteredStream<S> &operator<< (FilteredStream<S> &output_stream, const T &t)
+OverWriteStream<S> &operator<< (OverWriteStream<S> &output_stream, const T &t)
 {
   output_stream.clear();
   output_stream.get_stream() << t;

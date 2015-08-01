@@ -25,7 +25,7 @@ int main ()
   int           a = 100;
   double        b = 3.14;
 
-  FilteredStream<dealii::LogStream> out(deallog, N);
+  OverWriteStream<dealii::LogStream> out(deallog, N);
 
   out << a;
   tu.sleep(500);

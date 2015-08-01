@@ -18,6 +18,7 @@
 
 int main ()
 {
+  std::fstream fs ("test_fstream.txt", std::fstream::out);
 
   TimeUtilities tu;
 
@@ -25,7 +26,7 @@ int main ()
   int           a = 100;
   double        b = 3.14;
 
-  OverWriteStream<std::ostream> out(std::cout, N);
+  OverWriteStream<std::ostream> out(fs, N);
 
   out << a;
   tu.sleep(500);
@@ -44,5 +45,8 @@ int main ()
       tu.sleep(100);
     }
 
+  out.end();
+  fs.close();
+  rename_file("test_fstream.txt", "output");
   return 0;
 }
