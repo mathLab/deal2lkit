@@ -14,19 +14,35 @@
 #include <stdlib.h>
 #include <iostream>
 
+#include <iomanip>
+
 int main ()
 {
-  initlog();
 
-  fixed_lines stream_out_test(3, std::cout);
+  TimeUtilities tu;
 
-  std::string testo1 = "testo1";
-  std::string testo2 = "testo2";
+  unsigned int  N = 3;
+  int           a = 100;
+  double        b = 3.14;
 
-  stream_out_test.print_line(testo1);
-  stream_out_test.print_line(testo1);
-  stream_out_test.print_line(testo1);
-  stream_out_test.print_line(testo2);
+  FilteredStream<dealii::LogStream> out(deallog, N);
 
-  // std::cout << "\n\n\n\n";
+  out << a;
+  tu.sleep(500);
+  out << std::endl;              // manipulator inserted alone
+  tu.sleep(500);
+  out << b << ", this is a longer line" << std::endl;
+  tu.sleep(500);
+  out << a *b << std::endl;  // manipulator in concatenated insertion
+  tu.sleep(500);
+
+  out.clear(true);
+
+  for (unsigned int i=0; i<100; ++i)
+    {
+      out << "Line " << std::setw(6) << i  << std::endl;
+      tu.sleep(100);
+    }
+
+  return 0;
 }
