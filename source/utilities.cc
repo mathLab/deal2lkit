@@ -1,6 +1,8 @@
 #include "../include/utilities.h"
 #include <vector>
 #include <fstream>
+#include <chrono>
+#include <thread>
 
 #ifdef DEAL_II_SAK_WITH_BOOST
 #include <boost/algorithm/string/classification.hpp>
@@ -29,6 +31,38 @@ std::string demangle(const char *name)
   int status = -4; // some arbitrary value to eliminate the compiler warning
   handle result( abi::__cxa_demangle(name, NULL, NULL, &status) );
   return (status==0) ? result.p : name ;
+}
+
+void TimeUtilities::sleep(unsigned int t)
+{
+  std::this_thread::sleep_for(std::chrono::milliseconds(t));
+}
+
+void TimeUtilities::get_start_time()
+{
+  AssertThrow(status == true,
+              ExcMessage("Use get_end_time() before reuse get_start_time().") );
+
+  t_start = std::chrono::high_resolution_clock::now();
+
+  status = false;
+}
+
+void TimeUtilities::get_end_time()
+{
+  AssertThrow(status == false,
+              ExcMessage("Use get_start_time() before get_end_time().") );
+
+  t_end = std::chrono::high_resolution_clock::now();
+  std::chrono::duration<double> time_span = std::chrono::duration_cast<std::chrono::duration<double>>(t_end - t_start);
+  times.push_back( time_span.count() );
+
+  status = true;
+}
+
+int TimeUtilities::get_num_measures()
+{
+  return times.size();
 }
 
 void append_to_file(const std::string &in_file, const std::string &out_file)
