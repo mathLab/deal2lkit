@@ -71,7 +71,7 @@ public:
   /**
    * An overload of the operator [] is provided to access to all measures.
    */
-  double &operator[] (const int num)
+  double &operator[] (const unsigned int num)
   {
     AssertThrow( num < times.size(),
                  ExcMessage("Invalind number num. It is higher than the number of times.") );
