@@ -26,6 +26,8 @@ DEAL_II_INITIALIZE_CACHED_VARIABLES()
 DEAL_II_QUERY_GIT_INFORMATION()
 PROJECT(${TARGET_LIB})
 
+SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-pedantic")
+
 # We generate one library for each type of deal.II library
 # we found. If you compiled deal.II with both Release and Debug
 # mode, this will generate both Release and Debug programs for you
