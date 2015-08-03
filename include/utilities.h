@@ -153,8 +153,8 @@ template<typename Stream>
 class OverWriteStream
 {
 public:
-  OverWriteStream( Stream &stream_out = std::cout,
-                   unsigned int n_lines = 1,
+  OverWriteStream( unsigned int n_lines = 1,
+                   Stream &stream_out = std::cout,
                    unsigned int width = 60)
     :
     n_lines(n_lines),

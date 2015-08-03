@@ -25,7 +25,7 @@ int main ()
   int           a = 100;
   double        b = 3.14;
 
-  OverWriteStream<std::ostream> out(std::cout, N);
+  OverWriteStream<> out(N);
 
   out << a;
   tu.sleep(500);
