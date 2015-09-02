@@ -12,7 +12,7 @@ int main ()
 {
   initlog();
   ParsedMappedFunctions<2,3> pmf("Mapped Functions", "u,u,p",
-                                 "0=uN % 1=1 % 6=u;p",
+                                 "0=u.N % 1=1 % 6=u;p",
                                  "0=0;0;0 % 1=0;0;0 % 6=y*k;0;k","k=1");
 
   ParameterAcceptor::initialize(SOURCE_DIR "/parameters/parsed_mapped_functions_14.prm", "used_parameters.prm");

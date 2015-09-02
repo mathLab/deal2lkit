@@ -82,6 +82,14 @@ public:
   shared_ptr<dealii::Functions::ParsedFunction<spacedim> > get_mapped_function (const unsigned int &id) const;
 
   /**
+   * return a shared_ptr to the ParsedFunction corresponding to the given id
+   * the function has spacedim components
+   *
+   */
+  shared_ptr<dealii::Functions::ParsedFunction<spacedim> > get_mapped_normal_function (const unsigned int &id,
+      const unsigned int &fcv) const;
+
+  /**
    * return the ComponentMask corresponding to the given id
    */
   ComponentMask get_mapped_mask (const unsigned int &id) const;
@@ -146,6 +154,7 @@ protected:
                           const std::string &constants);
   void add_normal_components();
 
+  void set_normal_functions();
 
   std::string name;
   std::string str_id_components;
@@ -159,10 +168,11 @@ protected:
   std::vector<unsigned int> normal_ids;
   std::map<unsigned int, ComponentMask> id_components;
   std::map<unsigned int, shared_ptr<dealii::Functions::ParsedFunction<spacedim> > > id_functions;
-  std::map<unsigned int, shared_ptr<dealii::Functions::ParsedFunction<spacedim> > > normal_id_functions;
   std::map<unsigned int, std::pair<ComponentMask, shared_ptr<dealii::Functions::ParsedFunction<spacedim> > > > mapped_functions;
-  std::map<std::string, std::pair<std::vector<unsigned int>, unsigned int > > mapped_normal_components; // name, (std::vector<boundary ids>, firs component vector)
+  std::map<std::string, std::pair<std::vector<unsigned int>, unsigned int > > mapped_normal_components; // name, (std::vector<boundary ids>, first component vector)
   std::vector<std::pair<unsigned int, std::string> > normal_components; // first component vector, variable_name+"N"
+  std::map<unsigned int, std::string> id_str_functions;
+  std::map<std::pair<unsigned int, unsigned int>, shared_ptr<dealii::Functions::ParsedFunction<spacedim> > > _normal_functions;
 
 };
 

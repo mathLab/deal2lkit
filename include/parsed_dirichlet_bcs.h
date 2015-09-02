@@ -454,17 +454,18 @@ void ParsedDirichletBCs<dim,spacedim,n_components>::compute_nonzero_normal_flux_
       typename FunctionMap<spacedim>::type boundary_map;
 
       std::vector<unsigned int> normal_ids = (it->second).first;
+      unsigned int fcv = (it->second).second; // unsigned int first component vector
 
       for (unsigned int i=0; i<normal_ids.size(); ++i)
         {
           Function<spacedim> *f;
-          f = &(*(this->get_mapped_function(normal_ids[i])));
+          f = &(*(this->get_mapped_normal_function(normal_ids[i], fcv)));
           boundary_map[normal_ids[i]] = f;
           no_normal_flux_boundaries.insert(normal_ids[i]);
         }
 
       VectorTools::compute_nonzero_normal_flux_constraints(dof_handler,
-                                                           (it->second).second, // unsigned int first component vector
+                                                           fcv,
                                                            no_normal_flux_boundaries,
                                                            boundary_map,
                                                            constraints);
@@ -485,17 +486,19 @@ void ParsedDirichletBCs<dim,spacedim,n_components>::compute_nonzero_normal_flux_
       typename FunctionMap<spacedim>::type boundary_map;
 
       std::vector<unsigned int> normal_ids = (it->second).first;
+      unsigned int fcv = (it->second).second; // unsigned int first component vector
 
       for (unsigned int i=0; i<normal_ids.size(); ++i)
         {
           Function<spacedim> *f;
-          f = &(*(this->get_mapped_function(normal_ids[i])));
+
+          f = &(*(this->get_mapped_normal_function(normal_ids[i], fcv)));
           boundary_map[normal_ids[i]] = f;
           no_normal_flux_boundaries.insert(normal_ids[i]);
         }
 
       VectorTools::compute_nonzero_normal_flux_constraints(dof_handler,
-                                                           (it->second).second, // unsigned int first component vector
+                                                           fcv,
                                                            no_normal_flux_boundaries,
                                                            boundary_map,
                                                            constraints,

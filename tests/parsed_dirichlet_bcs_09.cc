@@ -55,12 +55,13 @@ void test (const Triangulation<dim> &tr,
 //
 //   VectorTools::compute_no_normal_flux_constraints (dof, 1, boundary_ids, cm);
   ParsedDirichletBCs<dim,dim,dim+1> parsed_dirichlet("ParsedDirichletBCs",
-                                                     (dim==2?"p,u,u":"p,u,u,u"),
-                                                     (dim==2?"0=u.N % 1=u.N % 2=u.N % 3=u.N" :"0=u.N % 1=u.N % 2=u.N % 3=u.N % 4=u.N % 5=u.N"));
+                                                     (dim==2?"u,u,p":"u,u,u,p"),
+                                                     (dim==2?"0=u.N % 1=u.N % 2=u.N % 3=u.N" :"0=u.N % 1=u.N % 2=u.N % 3=u.N % 4=u.N % 5=u.N"),
+                                                     (dim==2?"0=0;0;0 % 1=1;1;0 % 2=2;2;0 % 3=3;3;0" :"0=0;0;0;0 % 1=1;1;1;0 % 2=2;2;2;0 % 3=3;3;3;0 % 4=4;4;4;0 % 5=5;5;5;0"));
 
 
   ParameterAcceptor::initialize();
-  parsed_dirichlet.compute_no_normal_flux_constraints(dof,cm);
+  parsed_dirichlet.compute_nonzero_normal_flux_constraints(dof,cm);
 
   cm.print (deallog.get_file_stream ());
 }
@@ -80,8 +81,8 @@ void test_hyper_cube()
 
   for (unsigned int degree=1; degree<4; ++degree)
     {
-      FESystem<dim> fe (FE_Q<dim>(degree), 1,
-                        FE_Q<dim>(degree), dim);
+      FESystem<dim> fe (FE_Q<dim>(2), dim,
+                        FE_Q<dim>(1), 1);
       test(tr, fe);
     }
 }
@@ -92,7 +93,6 @@ int main()
   initlog();
   deallog << std::setprecision (2);
   deallog << std::fixed;
-  deallog.depth_console (0);
   deallog.threshold_double(1.e-12);
   //ParameterAcceptor::prm.log_parameters(deallog);
 

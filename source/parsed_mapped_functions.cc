@@ -23,9 +23,9 @@ void ParsedMappedFunctions<spacedim,n_components>::add_normal_components()
       int n = std::count(_component_names.begin(),_component_names.end(), var[i]);
       if (n>1)
         {
-          _normal_components.push_back(var[i]+"N");
+          _normal_components.push_back(var[i]+".N");
           int pos = std::find(_component_names.begin(),_component_names.end(), var[i]) - _component_names.begin();
-          std::pair<unsigned int, std::string> nc (pos, var[i]+"N");
+          std::pair<unsigned int, std::string> nc (pos, var[i]+".N");
           normal_components.push_back(nc);
         }
     }
@@ -52,6 +52,8 @@ void ParsedMappedFunctions<spacedim,n_components>::parse_parameters_call_back()
       mapped_functions[it->first] = mapped;
 
     }
+
+  set_normal_functions();
 
 }
 
@@ -140,6 +142,13 @@ void ParsedMappedFunctions<spacedim,n_components>::split_id_functions(const std:
           ptr->parse_parameters(internal_prm);
 
           id_functions[ids[i]] = ptr;
+          std::string str;
+          for (unsigned int i=0; i<n_components-1; ++i)
+            str += "0;";
+          str+="0";
+
+          id_str_functions[ids[i]] = str;
+
         }
     }
   else
@@ -156,6 +165,7 @@ void ParsedMappedFunctions<spacedim,n_components>::split_id_functions(const std:
           id_func = Utilities::split_string_list(idfunctions[i], '=');
 
           unsigned int id = Utilities::string_to_int(id_func[0]);
+          id_str_functions[id] = id_func[1];
 
           // check if the current id is also defined in id_components
           Assert((std::find(ids.begin(), ids.end(), id) != ids.end()),
@@ -172,6 +182,8 @@ void ParsedMappedFunctions<spacedim,n_components>::split_id_functions(const std:
           ptr->parse_parameters(internal_prm);
 
           id_functions[id] = ptr;
+
+
         }
     }
 
@@ -179,6 +191,17 @@ void ParsedMappedFunctions<spacedim,n_components>::split_id_functions(const std:
   Assert(ids.size() == id_defined_functions.size(),
          ExcMessage("Ids associated to components and to functions are not the same."));
 
+}
+
+template <int spacedim, int n_components>
+shared_ptr<dealii::Functions::ParsedFunction<spacedim> >
+ParsedMappedFunctions<spacedim,n_components>::get_mapped_normal_function(const unsigned int &id, const unsigned int &fcv) const
+{
+  std::pair<unsigned int, unsigned int> id_fcv (id,fcv);
+  Assert( _normal_functions.find(id_fcv) != _normal_functions.end(),
+          ExcIdNotFound(id));
+
+  return _normal_functions.at(id_fcv);
 }
 
 template <int spacedim, int n_components>
@@ -272,6 +295,41 @@ void ParsedMappedFunctions<spacedim,n_components>::set_time(const double &t)
     it->second->set_time(t);
 }
 
+template <int spacedim, int n_components>
+void ParsedMappedFunctions<spacedim,n_components>::set_normal_functions()
+{
+  typedef std::map<std::string, std::pair<std::vector<unsigned int>, unsigned int > >::iterator it_type;
+
+  for (it_type it=mapped_normal_components.begin(); it != mapped_normal_components.end(); ++it)
+    {
+
+      std::vector<unsigned int> normal_ids = (it->second).first;
+      unsigned int fcv = (it->second).second; // unsigned int first component vector
+
+      for (unsigned int i=0; i<normal_ids.size(); ++i)
+        {
+          std::vector<std::string> normal_func;
+          normal_func = Utilities::split_string_list(id_str_functions[normal_ids[i]], ';');
+          shared_ptr<dealii::Functions::ParsedFunction<spacedim> > normal_ptr;
+
+          ParameterHandler normal_prm;
+          dealii::Functions::ParsedFunction<spacedim>::declare_parameters(normal_prm, spacedim);
+          std::string str_normal_func;
+          Assert(spacedim>1, ExcNotImplemented());
+          for (unsigned int i=0; i<spacedim-1; ++i)
+            str_normal_func += normal_func[fcv+i] + ";";
+          str_normal_func += normal_func[fcv+spacedim-1];
+
+          normal_prm.set("Function expression", str_normal_func);
+          normal_prm.set("Function constants", str_constants);
+          normal_ptr = SP(new dealii::Functions::ParsedFunction<spacedim>(spacedim));
+          normal_ptr->parse_parameters(normal_prm);
+          std::pair<unsigned int, unsigned int> id_fcv (normal_ids[i],fcv);
+          _normal_functions[id_fcv]=normal_ptr;
+        }
+    }
+}
+
 template class ParsedMappedFunctions<1,1>;
 
 template class ParsedMappedFunctions<2,1>;
@@ -279,6 +337,9 @@ template class ParsedMappedFunctions<2,2>;
 template class ParsedMappedFunctions<2,3>;
 template class ParsedMappedFunctions<2,4>;
 template class ParsedMappedFunctions<2,5>;
+template class ParsedMappedFunctions<2,6>;
+template class ParsedMappedFunctions<2,7>;
+template class ParsedMappedFunctions<2,8>;
 
 template class ParsedMappedFunctions<3,1>;
 template class ParsedMappedFunctions<3,2>;
@@ -286,3 +347,5 @@ template class ParsedMappedFunctions<3,3>;
 template class ParsedMappedFunctions<3,4>;
 template class ParsedMappedFunctions<3,5>;
 template class ParsedMappedFunctions<3,6>;
+template class ParsedMappedFunctions<3,7>;
+template class ParsedMappedFunctions<3,8>;
