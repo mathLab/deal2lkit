@@ -9,15 +9,16 @@
 //
 //-----------------------------------------------------------
 
-#include "tests.h"
-#include "utilities.h"
 #include <stdlib.h>
 #include <iostream>
-
 #include <iomanip>
+
+#include "tests.h"
+#include "utilities.h"
 
 int main ()
 {
+  initlog();
 
   TimeUtilities tu;
 
@@ -33,7 +34,7 @@ int main ()
   tu.sleep(500);
   out << b << ", this is a longer line" << std::endl;
   tu.sleep(500);
-  out << a *b << std::endl;  // manipulator in concatenated insertion
+  out << a *b << std::endl;   // manipulator in concatenated insertion
   tu.sleep(500);
 
   out.clear(true);
