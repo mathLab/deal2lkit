@@ -57,7 +57,7 @@ public:
   void add_copy (const type &entry, const std::string &name);
 
   /**
-   * @brief Add a reference to an object
+   * @brief Add a reference to an already existing object.
    *
    * Add a reference to an external object. The object is not owned by the class
    *
