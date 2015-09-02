@@ -118,7 +118,7 @@ public:
   /**
    * return true if there is a function that acts on the passed id
    */
-  inline bool acts_on_id (unsigned int &id) const;
+  bool acts_on_id (unsigned int &id) const;
 
   /**
    * set time equal to t for all the mapped functions
