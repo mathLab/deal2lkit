@@ -23,9 +23,9 @@ void ParsedMappedFunctions<spacedim,n_components>::add_normal_components()
       int n = std::count(_component_names.begin(),_component_names.end(), var[i]);
       if (n>1)
         {
-          _normal_components.push_back(var[i]+"N");
+          _normal_components.push_back(var[i]+".N");
           int pos = std::find(_component_names.begin(),_component_names.end(), var[i]) - _component_names.begin();
-          std::pair<unsigned int, std::string> nc (pos, var[i]+"N");
+          std::pair<unsigned int, std::string> nc (pos, var[i]+".N");
           normal_components.push_back(nc);
         }
     }

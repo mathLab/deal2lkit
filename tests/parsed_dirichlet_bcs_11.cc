@@ -51,7 +51,7 @@ void test (const Triangulation<dim> &tr,
   ConstraintMatrix cm;
   ParsedDirichletBCs<dim,dim,dim+1> parsed_dirichlet("ParsedDirichletBCs",
                                                      (dim==2?"u,u,p":"u,u,u,p"),
-                                                     (dim==2?"0=uN;p":"5=uN;p"),
+                                                     (dim==2?"0=u.N;p":"5=u.N;p"),
                                                      (dim==2?"0=0;0;10" :"5=5;5;5;15"));
 
 

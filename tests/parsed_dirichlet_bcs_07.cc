@@ -64,7 +64,7 @@ void test (const Triangulation<dim> &tr,
 
   ParsedDirichletBCs<dim,dim,dim> parsed_dirichlet("ParsedDirichletBCs",
                                                    (dim==2?"u,u":"u,u,u"),
-                                                   (dim==2?"0=uN % 1=uN % 2=uN % 3=uN" :"0=uN % 1=uN % 2=uN % 3=uN % 4=uN % 5=uN"),
+                                                   (dim==2?"0=u.N % 1=u.N % 2=u.N % 3=u.N" :"0=u.N % 1=u.N % 2=u.N % 3=u.N % 4=u.N % 5=u.N"),
                                                    (dim==2?"0=1;1 % 1=1;1 % 2=1;1 % 3=1;1" :"0=1;1;1 % 1=1;1;1 % 2=1;1;1 % 3=1;1;1 % 4=1;1;1 % 5=1;1;1"));
 
   ParameterAcceptor::initialize();
