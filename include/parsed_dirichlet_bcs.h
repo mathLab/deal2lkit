@@ -35,8 +35,8 @@ using namespace dealii;
  * ParsedDirichletBCs<dim,spacedim,n_components>
  *    parsed_dirichlet("Dirichlet BCs", // name for the section of the Parameter Handler to use
  *                     "u,u,p",         // names of known components that can be used instead of component numbers
- *                     "0=u % 1=2 % 6=ALL", // boundary_id = component;other_component % other_id = comp; other_comp
- *                     "0=x;y;0 % 1=0;0;0 % 6=y*k;0;k", // boundary_id = expression % other_id = other_expression
+ *                     "0=u % 1=2 % 3=u.N % 6=ALL", // boundary_id = component;other_component % other_id = comp; other_comp
+ *                     "0=x;y;0 % 1=0;0;0 % 3=x;2;0 % 6=y*k;0;k", // boundary_id = expression % other_id = other_expression
  *                     "k=1"); // list of constants that can be used in the above epressions
  * ...
  * QGauss<dim-1> quadrature(2);
@@ -44,6 +44,8 @@ using namespace dealii;
  * std::map<types::global_dof_index,double> dirichlet_dofs;
  * ConstraintMatrix constraints;
  * ...
+ * // the following functions apply the boundary conditions for the
+ * // boundary ids 0,1,6
  * parsed_dirichlet.interpolate_boundary_values(dof_handler,dirichlet_dofs);
  * ...
  * parsed_dirichlet.interpolate_boundary_values(dof_handler,constraints);
@@ -55,6 +57,13 @@ using namespace dealii;
  * parsed_dirichlet.interpolate_boundary_values(dof_handler,quadrature,constraints);
  * ...
  * parsed_dirichlet.interpolate_boundary_values(mapping,dof_handler,quadrature,constraints);
+ * ...
+ *
+ * // in order to apply the boundary conditions also to the
+ * // boundary id 3, where the normal component is set,
+ * // the following function must be called
+ *
+ * parsed_dirichlet.compute_nonzero_normal_flux(dof_handler,constraints);
  *
  * @endcode
  */
@@ -97,14 +106,18 @@ public:
   virtual void parse_parameters_call_back ();
 
   /**
-   * wrapping of the VectorTools::interpolate_boundary_values functions of the
+   * This function must be called in order to apply the boundary conditions
+   * to the ConstraintMatrix.
+   * It relies on the VectorTools::interpolate_boundary_values functions of the
    * deal.II library
    */
   void interpolate_boundary_values (const DoFHandler<dim,spacedim> &dof_handler,
                                     ConstraintMatrix &constraints) const;
 
   /**
-   * wrapping of the VectorTools::interpolate_boundary_values functions of the
+   * This function must be called in order to apply the boundary conditions
+   * to the ConstraintMatrix.
+   * It relies on the VectorTools::interpolate_boundary_values functions of the
    * deal.II library
    */
   void interpolate_boundary_values (const Mapping<dim,spacedim> &mapping,
@@ -112,14 +125,18 @@ public:
                                     ConstraintMatrix &constraints) const;
 
   /**
-   * wrapping of the VectorTools::interpolate_boundary_values functions of the
+   * This function must be called in order to apply the boundary conditions
+   * to the ConstraintMatrix.
+   * It relies on the VectorTools::interpolate_boundary_values functions of the
    * deal.II library
    */
   void interpolate_boundary_values (const DoFHandler<dim,spacedim> &dof_handler,
                                     std::map<types::global_dof_index,double> &d_dofs) const;
 
   /**
-   * wrapping of the VectorTools::interpolate_boundary_values functions of the
+   * This function must be called in order to apply the boundary conditions
+   * to the ConstraintMatrix.
+   * It relies on the VectorTools::interpolate_boundary_values functions of the
    * deal.II library
    */
   void interpolate_boundary_values (const Mapping<dim,spacedim> &mapping,
@@ -127,7 +144,9 @@ public:
                                     std::map<types::global_dof_index,double> &d_dofs) const;
 
   /**
-   * wrapping of the VectorTools::project_boundary_values functions of the
+   * This function must be called in order to apply the boundary conditions
+   * to the ConstraintMatrix.
+   * It relies on the VectorTools::project_boundary_values functions of the
    * deal.II library
    */
   void project_boundary_values (const DoFHandler<dim,spacedim> &dof_handler,
@@ -135,7 +154,9 @@ public:
                                 ConstraintMatrix &constraints) const;
 
   /**
-   * wrapping of the VectorTools::project_boundary_values functions of the
+   * This function must be called in order to apply the boundary conditions
+   * to the ConstraintMatrix.
+   * It relies on the VectorTools::project_boundary_values functions of the
    * deal.II library
    */
   void project_boundary_values (const Mapping<dim,spacedim> &mapping,
@@ -144,7 +165,9 @@ public:
                                 ConstraintMatrix &constraints) const;
 
   /**
-   * wrapping of the VectorTools::project_boundary_values functions of the
+   * This function must be called in order to apply the boundary conditions
+   * to the ConstraintMatrix.
+   * It relies on the VectorTools::project_boundary_values functions of the
    * deal.II library
    */
   void project_boundary_values (const DoFHandler<dim,spacedim> &dof_handler,
@@ -152,7 +175,9 @@ public:
                                 std::map<types::global_dof_index,double> &projected_bv) const;
 
   /**
-   * wrapping of the VectorTools::project_boundary_values functions of the
+   * This function must be called in order to apply the boundary conditions
+   * to the ConstraintMatrix.
+   * It relies on the VectorTools::project_boundary_values functions of the
    * deal.II library
    */
   void project_boundary_values (const Mapping<dim,spacedim> &mapping,
@@ -162,28 +187,58 @@ public:
 
 
   /**
-   * wrapping of the VectorTools::compute_no_normal_flux_constraints functions of the
+   * This function must be called in order to apply the homogeneous Dirichlet
+   * boundary conditions to the normal components of the variables specified.
+   *
+   * The normal component can be specified adding ".N" to the variable name
+   * e.g. the normal component for the vector variable "u" will be "u.N".
+   *
+   * It relies on the VectorTools::compute_no_normal_flux_constraints functions of the
    * deal.II library
    */
   void compute_no_normal_flux_constraints (const DoFHandler<dim,spacedim> &dof_handler,
                                            ConstraintMatrix &constraints) const;
   /**
-   * wrapping of the VectorTools::compute_no_normal_flux_constraints functions of the
+   * This function must be called in order to apply the homogeneous Dirichlet
+   * boundary conditions to the normal components of the variables specified.
+   *
+   * The normal component can be specified adding ".N" to the variable name
+   * e.g. the normal component for the vector variable "u" will be "u.N".
+   *
+   * It relies on the VectorTools::compute_no_normal_flux_constraints functions of the
    * deal.II library
    */
   void compute_no_normal_flux_constraints (const DoFHandler<dim,spacedim> &dof_handler,
                                            const Mapping< dim, spacedim > &mapping,
                                            ConstraintMatrix &constraints) const;
   /**
-   * wrapping of the VectorTools::compute_nonzero_normal_flux_constraints functions of the
-   * deal.II library
+   * This function must be called in order to apply the Dirichlet
+   * boundary conditions to the normal components of the variables specified.
+   *
+   * The normal component can be specified adding ".N" to the variable name
+   * e.g. the normal component for the vector variable "u" will be "u.N".
+   *
+   * It relies on the VectorTools::compute_nonzero_normal_flux_constraints functions of the
+   * deal.II library.
+   *
+   * Note that calling this functions with an expression equal to zero is equivalent to call
+   * the compute_no_normal_flux_constraints function.
    */
   void compute_nonzero_normal_flux_constraints (const DoFHandler<dim,spacedim> &dof_handler,
                                                 ConstraintMatrix &constraints) const;
 
   /**
-   * wrapping of the VectorTools::compute_nonzero_normal_flux_constraints functions of the
-   * deal.II library
+   * This function must be called in order to apply the Dirichlet
+   * boundary conditions to the normal components of the variables specified.
+   *
+   * The normal component can be specified adding ".N" to the variable name
+   * e.g. the normal component for the vector variable "u" will be "u.N".
+   *
+   * It relies on the VectorTools::compute_nonzero_normal_flux_constraints functions of the
+   * deal.II library.
+   *
+   * Note that calling this functions with an expression equal to zero is equivalent to call
+   * the compute_no_normal_flux_constraints function.
    */
   void compute_nonzero_normal_flux_constraints (const DoFHandler<dim,spacedim> &dof_handler,
                                                 const Mapping< dim, spacedim > &mapping,
