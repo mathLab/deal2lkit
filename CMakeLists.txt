@@ -55,6 +55,22 @@ IF(DEAL_II_SAK_USE_BOOST)
   ENDIF()
 ENDIF()
 
+OPTION(DEAL_II_SAK_WITH_SUNDIALS "Use SUNDIALS libraries." OFF)
+IF(DEAL_II_SAK_WITH_SUNDIALS)
+  SET(SUNDIALS_DIR "$ENV{SUNDIALS_DIR}" CACHE PATH "Path to sundials")
+  SET(SUNDIALS_LIBS "sundials_ida;sundials_nvecserial;sundials_nvecparallel")
+  ADD_DEFINITIONS(-DDEAL_II_SAK_WITH_SUNDIALS)
+  INCLUDE_DIRECTORIES(${SUNDIALS_DIR}/include)
+
+  # the following option is useful to take advantage of the
+  # macro of deal.II pick_up_test and allow us to
+  # name "test.with_sundials=on.output" the output file of a test
+  # in order run it only if sundials is installed.
+  set (DEAL_II_WITH_SUNDIALS ON)
+ELSE()
+  set (DEAL_II_WITH_SUNDIALS OFF)
+ENDIF()
+
 # Loop over all build types.
 SET(_d2_build_types "Release;Debug")
 SET(Release_postfix "")
@@ -73,37 +89,50 @@ FOREACH(_build_type ${_d2_build_types})
 	# Add all files, except the main file, to the library
 	ADD_LIBRARY(${_lib} SHARED ${_library_source_files})
 
-	# Add boost dependencies if necessary
-	IF(Boost_FOUND)
-	   TARGET_LINK_LIBRARIES(${_lib} ${Boost_LIBRARIES})
-	ENDIF()
+  IF(DEAL_II_SAK_WITH_SUNDIALS)
+    FOREACH(_slib ${SUNDIALS_LIBS})
+      FIND_LIBRARY(SUNDIALS_${_slib} ${_slib} HINTS ${SUNDIALS_DIR} PATH_SUFFIXES lib)
+      IF(NOT "${SUNDIALS_${_slib}}" STREQUAL "${_slib}-NOTFOUND")
+        TARGET_LINK_LIBRARIES(${_lib} ${SUNDIALS_${_slib}})
+        MESSAGE("-- Library ${_slib} found: ${SUNDIALS_${_slib}}")
+      ELSE()
+        MESSAGE(WARNING "-- Library ${_slib} not found: ${SUNDIALS_${_slib}}")
+      ENDIF()
+    ENDFOREACH()
+  ENDIF()
+
+
+  # Add boost dependencies if necessary
+  IF(Boost_FOUND)
+     TARGET_LINK_LIBRARIES(${_lib} ${Boost_LIBRARIES})
+  ENDIF()
         INSTALL(TARGETS ${_lib} LIBRARY DESTINATION lib)
 
-	SET_PROPERTY(TARGET ${_lib} APPEND PROPERTY COMPILE_DEFINITIONS
-	  DEAL_II_SAK_GIT_BRANCH="${GIT_BRANCH}${_postfix}"
-	  DEAL_II_SAK_GIT_REVISION="${GIT_REVISION}${_postfix}"
-	  DEAL_II_SAK_GIT_SHORTREV="${GIT_SHORTREV}${_postfix}"
-	)
+  SET_PROPERTY(TARGET ${_lib} APPEND PROPERTY COMPILE_DEFINITIONS
+    DEAL_II_SAK_GIT_BRANCH="${GIT_BRANCH}${_postfix}"
+    DEAL_II_SAK_GIT_REVISION="${GIT_REVISION}${_postfix}"
+    DEAL_II_SAK_GIT_SHORTREV="${GIT_SHORTREV}${_postfix}"
+  )
 
-	# Compile an executable only if required by the user
-	IF(DEAL_II_SAK_COMPILE_EXAMPLES)
-    	   FOREACH(_main ${_applications_source_files})
-		# Find out the the name of the executable
-    		GET_FILENAME_COMPONENT(_target_a ${_main} NAME_WE)
-		SET(_target "${_target_a}${${_build_type}_postfix}")
-		MESSAGE("-- Configuring executable ${_target}")
+  # Compile an executable only if required by the user
+  IF(DEAL_II_SAK_COMPILE_EXAMPLES)
+         FOREACH(_main ${_applications_source_files})
+    # Find out the the name of the executable
+        GET_FILENAME_COMPONENT(_target_a ${_main} NAME_WE)
+    SET(_target "${_target_a}${${_build_type}_postfix}")
+    MESSAGE("-- Configuring executable ${_target}")
 
-    		ADD_EXECUTABLE(${_target} ${_main})
-		IF(DEAL_II_SAK_INSTALL_EXAMPLES)
-		  INSTALL(TARGETS ${_target} RUNTIME DESTINATION bin)
-		ENDIF()
-    		TARGET_LINK_LIBRARIES(${_target} ${_lib})
-		DEAL_II_SETUP_TARGET(${_target} ${_BUILD_TYPE})
-    	    ENDFOREACH()
-	ENDIF()
+        ADD_EXECUTABLE(${_target} ${_main})
+    IF(DEAL_II_SAK_INSTALL_EXAMPLES)
+      INSTALL(TARGETS ${_target} RUNTIME DESTINATION bin)
+    ENDIF()
+        TARGET_LINK_LIBRARIES(${_target} ${_lib})
+    DEAL_II_SETUP_TARGET(${_target} ${_BUILD_TYPE})
+          ENDFOREACH()
+  ENDIF()
 
-	SET(TEST_LIBRARIES_${_BUILD_TYPE} ${_lib})
-	DEAL_II_SETUP_TARGET(${_lib} ${_BUILD_TYPE})
+  SET(TEST_LIBRARIES_${_BUILD_TYPE} ${_lib})
+  DEAL_II_SETUP_TARGET(${_lib} ${_BUILD_TYPE})
     ENDIF()
 ENDFOREACH()
 
