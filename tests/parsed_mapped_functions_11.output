@@ -1,7 +1,0 @@
-
-DEAL:parameters:Mapped Functions::IDs and component masks: 0=u % 1=1 % 6=u;p
-DEAL:parameters:Mapped Functions::IDs and expressions: 0=x;y;0 % 1=0;0;0 % 6=y*k;0;k
-DEAL:parameters:Mapped Functions::Known component names: u,u,p
-DEAL:parameters:Mapped Functions::Used constants: k=1
-DEAL::Mapped function acts on id 0 (expected true) --> 1
-DEAL::Mapped function acts on id 7 (expected false) --> 0

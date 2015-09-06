@@ -1,5 +1,0 @@
-
-DEAL:parameters:Dirichlet::IDs and component masks: 0=ALL
-DEAL:parameters:Dirichlet::IDs and expressions: 0=0
-DEAL:parameters:Dirichlet::Known component names: u
-DEAL:parameters:Dirichlet::Used constants: 
