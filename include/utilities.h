@@ -186,7 +186,7 @@ public:
     clear();
     stream_out << o;
     return *this;
-  };
+  }
 
   OverWriteStream<Stream> &operator<< (std::ostream& (*p) (std::ostream &))
   {
