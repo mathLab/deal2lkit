@@ -1,0 +1,20 @@
+var searchData=
+[
+  ['_40408',['@408',['http://www.dealii.org/developer/doxygen/deal.II/namespacePatterns_1_1@408.html',1,'Patterns']]],
+  ['_40440',['@440',['http://www.dealii.org/developer/doxygen/deal.II/namespaceparallel_1_1distributed_1_1@440.html',1,'parallel::distributed']]],
+  ['_40440',['@440',['http://www.dealii.org/developer/doxygen/deal.II/namespaceparallel_1_1distributed_1_1CommunicateLocallyMovedVertices_1_1@440.html',1,'parallel::distributed::CommunicateLocallyMovedVertices']]],
+  ['communicatelocallymovedvertices',['CommunicateLocallyMovedVertices',['http://www.dealii.org/developer/doxygen/deal.II/namespaceparallel_1_1distributed_1_1CommunicateLocallyMovedVertices.html',1,'parallel::distributed']]],
+  ['distributed',['distributed',['http://www.dealii.org/developer/doxygen/deal.II/namespaceparallel_1_1distributed.html',1,'parallel']]],
+  ['gridrefinement',['GridRefinement',['http://www.dealii.org/developer/doxygen/deal.II/namespaceparallel_1_1distributed_1_1GridRefinement.html',1,'parallel::distributed']]],
+  ['internal',['internal',['http://www.dealii.org/developer/doxygen/deal.II/namespacePolynomials_1_1internal.html',1,'Polynomials']]],
+  ['internal',['internal',['http://www.dealii.org/developer/doxygen/deal.II/namespacePETScWrappers_1_1internal.html',1,'PETScWrappers']]],
+  ['internal',['internal',['http://www.dealii.org/developer/doxygen/deal.II/namespaceparallel_1_1internal.html',1,'parallel']]],
+  ['lagrangeequidistant',['LagrangeEquidistant',['http://www.dealii.org/developer/doxygen/deal.II/namespacePolynomials_1_1internal_1_1LagrangeEquidistant.html',1,'Polynomials::internal']]],
+  ['matrixiterators',['MatrixIterators',['http://www.dealii.org/developer/doxygen/deal.II/namespacePETScWrappers_1_1MatrixIterators.html',1,'PETScWrappers']]],
+  ['mpi',['MPI',['http://www.dealii.org/developer/doxygen/deal.II/namespacePETScWrappers_1_1MPI.html',1,'PETScWrappers']]],
+  ['parallel',['parallel',['http://www.dealii.org/developer/doxygen/deal.II/namespaceparallel.html',1,'']]],
+  ['patterns',['Patterns',['http://www.dealii.org/developer/doxygen/deal.II/namespacePatterns.html',1,'']]],
+  ['petscwrappers',['PETScWrappers',['http://www.dealii.org/developer/doxygen/deal.II/namespacePETScWrappers.html',1,'']]],
+  ['polynomials',['Polynomials',['http://www.dealii.org/developer/doxygen/deal.II/namespacePolynomials.html',1,'']]],
+  ['shared',['shared',['http://www.dealii.org/developer/doxygen/deal.II/namespaceparallel_1_1shared.html',1,'parallel']]]
+];
