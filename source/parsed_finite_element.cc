@@ -91,7 +91,6 @@ void ParsedFiniteElement<dim,spacedim>::parse_parameters_call_back()
   block_names.resize(j+1);
   FiniteElement<dim,spacedim> *fe = (*this)();
   const unsigned int nc = fe->n_components();
-  const unsigned int nb = n_blocks();
   delete fe;
   AssertThrow(component_names.size() == nc,
               ExcInternalError("Generated FE has the wrong number of components."));
