@@ -22,6 +22,10 @@ This file is subject to LGPL version 2.1 or later and may not be
 distributed without copyright and license information. Please refer to
 section 5 and 6 of this file for further information on this license.
 
+A detailed documentation constructed using Doxygen is accessible here:
+
+http://luca-heltai.github.io/dealii-sak
+
 1. Deal.II Requirements:
 ========================
 
