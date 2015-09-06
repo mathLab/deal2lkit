@@ -236,7 +236,7 @@ public:
       {
         current_line = 0;
         for (unsigned int i=0; i<n_lines; ++i)
-          stream_out << "\e[A"  << "\r";
+          stream_out << "\033[A"  << "\r";
         clear_next = true;
       }
 
@@ -279,7 +279,7 @@ public:
       {
         while (current_line < n_lines-1)
           {
-            stream_out << "\e[B";
+            stream_out << "\033[B";
             current_line++;
           };
 
@@ -287,7 +287,7 @@ public:
           {
             for (unsigned int i=0; i<n_lines; ++i)
               {
-                stream_out << "\r" << std::setfill(' ') << std::setw(width) << " " << "\r" << "\e[A";
+                stream_out << "\r" << std::setfill(' ') << std::setw(width) << " " << "\r" << "\033[A";
                 current_line--;
                 if (current_line==0)
                   break;
@@ -303,7 +303,7 @@ public:
     else if (clear_next)
       {
         stream_out << "\r" << std::setfill(' ') << std::setw(width) << " " << "\r";
-        stream_out << "\e[A" << std::endl;
+        stream_out << "\033[A" << std::endl;
         clear_next = false;
       }
   };
