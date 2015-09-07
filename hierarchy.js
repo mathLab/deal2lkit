@@ -13,7 +13,6 @@ var hierarchy =
       ] ]
     ] ],
     [ "ConvTables::HelmholtzProblem< dim >", "class_conv_tables_1_1_helmholtz_problem.html", null ],
-    [ "NewtonArgument", "class_newton_argument.html", null ],
     [ "OverWriteStream< Stream >", "class_over_write_stream.html", null ],
     [ "ConvTables::SolutionBase< dim >", "class_conv_tables_1_1_solution_base.html", [
       [ "ConvTables::RightHandSide< dim >", "class_conv_tables_1_1_right_hand_side.html", null ],

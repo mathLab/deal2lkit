@@ -4,7 +4,6 @@ var annotated =
     [ "ErrorHandler< ntables >", "class_error_handler.html", "class_error_handler" ],
     [ "FEValuesCache< dim, spacedim >", "class_f_e_values_cache.html", "class_f_e_values_cache" ],
     [ "ConvTables::HelmholtzProblem< dim >", "class_conv_tables_1_1_helmholtz_problem.html", "class_conv_tables_1_1_helmholtz_problem" ],
-    [ "NewtonArgument", "class_newton_argument.html", "class_newton_argument" ],
     [ "OverWriteStream< Stream >", "class_over_write_stream.html", "class_over_write_stream" ],
     [ "ParameterAcceptor", "class_parameter_acceptor.html", "class_parameter_acceptor" ],
     [ "ParsedDataOut< dim, spacedim >", "class_parsed_data_out.html", "class_parsed_data_out" ],

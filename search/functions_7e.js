@@ -60,7 +60,6 @@ var searchData=
   ['_7emgvertexdofs',['~MGVertexDoFs',['http://www.dealii.org/developer/doxygen/deal.II/classDoFHandler_1_1MGVertexDoFs.html#a2bf235dc4ef689c3a861237590e28977',1,'DoFHandler::MGVertexDoFs']]],
   ['_7empi_5finitfinalize',['~MPI_InitFinalize',['http://www.dealii.org/developer/doxygen/deal.II/classUtilities_1_1MPI_1_1MPI__InitFinalize.html#a812d3e3369e2c86ba94beb13368d92d7',1,'Utilities::MPI::MPI_InitFinalize']]],
   ['_7emultipleparameterloop',['~MultipleParameterLoop',['http://www.dealii.org/developer/doxygen/deal.II/classMultipleParameterLoop.html#a481eae579e20a35426f2482d3472fbd4',1,'MultipleParameterLoop']]],
-  ['_7enewtonargument',['~NewtonArgument',['../class_newton_argument.html#ad794e59f9c6121b7f0cc8b8978a21462',1,'NewtonArgument']]],
   ['_7eoperatorbase',['~OperatorBase',['http://www.dealii.org/developer/doxygen/deal.II/classAlgorithms_1_1OperatorBase.html#a3d4ca7ebbc6af07d9de8515c58dd19cf',1,'Algorithms::OperatorBase']]],
   ['_7eoutputoperator',['~OutputOperator',['http://www.dealii.org/developer/doxygen/deal.II/classAlgorithms_1_1OutputOperator.html#a0f0d5f505d0f04b3a7da06890fcb31cf',1,'Algorithms::OutputOperator']]],
   ['_7eoverwritestream',['~OverWriteStream',['../class_over_write_stream.html#ab489706e36698dc8e662884d3742fb23',1,'OverWriteStream']]],
