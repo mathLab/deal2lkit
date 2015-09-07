@@ -1,0 +1,36 @@
+# Listing of Parameters
+# ---------------------
+subsection IDA Solver Parameters
+  set Absolute error tolerance                      = 1e-4
+  set Final time                                    = 2
+  # Indicate whether or not to suppress algebraic variables in the local error
+  # test.
+  set Ignore algebraic terms for error computations = false
+  set Initial condition Newton max iterations       = 5
+  set Initial condition Newton parameter            = 0.33
+
+  # This is one of the following thress options for the initial condition
+  # calculation.
+  # none: do not try to make initial conditions consistent.
+  # use_y_diff: compute the algebraic components of y and differential
+  # components of y_dot, given the differential components of y.
+  # This option requires that the user specifies differential and
+  # algebraic components in the function get_differential_components.
+  # use_y_dot: compute all components of y, given y_dot.
+  set Initial condition type                        = none
+  set Initial step size                             = 1e-4
+  set Initial time                                  = 0
+  set Maximum number of nonlinear iterations        = 10
+  set Maximum order of BDF                          = 5
+  set Min step size                                 = 5e-5
+  set Relative error tolerance                      = 1e-3
+  set Seconds between each output                   = 1e-1
+  set Use local tolerances                          = false
+end
+
+
+subsection Solver<dealii::TrilinosWrappers::MPI::BlockVector>
+  set Number of comps = 2
+end
+
+
