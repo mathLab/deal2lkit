@@ -154,9 +154,9 @@ public:
   unsigned int n_components() const;
 
   /**
-   * Return the number of blocks of the Finite Element, i.e., 
-	 * the number of variables. For example, simple Heat equation 
-	 * has 1 block, Navier-Stokes 2 blocks (u and p).
+   * Return the number of blocks of the Finite Element, i.e.,
+   * the number of variables. For example, simple Heat equation
+   * has 1 block, Navier-Stokes 2 blocks (u and p).
    */
   unsigned int n_blocks() const;
 
