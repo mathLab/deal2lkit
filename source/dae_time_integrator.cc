@@ -8,6 +8,7 @@
 #ifdef DEAL_II_WITH_TRILINOS
 #include <deal.II/lac/trilinos_block_vector.h>
 #include <deal.II/lac/trilinos_parallel_block_vector.h>
+#include <deal.II/lac/trilinos_vector.h>
 #endif
 
 #include <iostream>
@@ -18,6 +19,25 @@
 using namespace dealii;
 using namespace std;
 
+void copy(TrilinosWrappers::MPI::Vector &dst, const N_Vector &src)
+{
+  IndexSet is = dst.locally_owned_elements();
+  AssertDimension(is.n_elements(), NV_LOCLENGTH_P(src));
+  for (unsigned int i=0; i<is.n_elements(); ++i)
+    {
+      dst[is.nth_index_in_set(i)] = NV_Ith_P(src, i);
+    }
+}
+
+void copy(N_Vector &dst, const TrilinosWrappers::MPI::Vector &src)
+{
+  IndexSet is = src.locally_owned_elements();
+  AssertDimension(is.n_elements(), NV_LOCLENGTH_P(dst));
+  for (unsigned int i=0; i<is.n_elements(); ++i)
+    {
+      NV_Ith_P(dst, i) = src[is.nth_index_in_set(i)];
+    }
+}
 
 void copy(TrilinosWrappers::MPI::BlockVector &dst, const N_Vector &src)
 {
@@ -419,6 +439,7 @@ void DAETimeIntegrator<VEC>::reset_ode(double current_time,
 
 
 #ifdef DEAL_II_WITH_TRILINOS
+template class DAETimeIntegrator<TrilinosWrappers::MPI::Vector>;
 template class DAETimeIntegrator<TrilinosWrappers::MPI::BlockVector>;
 #endif
 
