@@ -39,7 +39,7 @@ script:
 - ninja -j4 install
 - tar cvfz /home/travis/dealii-sak-CI-build.tgz /home/travis/dealii-sak-inst
 - ctest -j4 -V
-- ../scripts/build_documentation.sh
+  #- ../scripts/build_documentation.sh
 - cd ..; ./scripts/check_indentation.sh
 deploy:
   provider: releases
@@ -54,8 +54,8 @@ deploy:
     repo: luca-heltai/dealii-sak
     tags: true
     all_branches: true
-before_install:
-- openssl aes-256-cbc -K $encrypted_54d4a083decb_key -iv $encrypted_54d4a083decb_iv
-  -in scripts/travisci_rsa.enc -out scripts/travisci_rsa -d
-- chmod 0600 scripts/travisci_rsa
-- cp scripts/travisci_rsa ~/.ssh/id_rsa 
+#before_install:
+#- openssl aes-256-cbc -K $encrypted_54d4a083decb_key -iv $encrypted_54d4a083decb_iv
+#  -in scripts/travisci_rsa.enc -out scripts/travisci_rsa -d
+#- chmod 0600 scripts/travisci_rsa
+#- cp scripts/travisci_rsa ~/.ssh/id_rsa 
