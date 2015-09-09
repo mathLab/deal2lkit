@@ -101,11 +101,11 @@ $(document).ready(function(){initNavTree('utilities_8h.html','');});
 <div class="title">utilities.h File Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><code>#include &lt;<a class="elRef" doxygen="/Users/heltai/c++/dealii-sak/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/include_2deal_8II_2base_2utilities_8h.html">deal.II/base/utilities.h</a>&gt;</code><br />
-<code>#include &lt;<a class="elRef" doxygen="/Users/heltai/c++/dealii-sak/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/smartpointer_8h.html">deal.II/base/smartpointer.h</a>&gt;</code><br />
-<code>#include &lt;<a class="elRef" doxygen="/Users/heltai/c++/dealii-sak/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/include_2deal_8II_2base_2exceptions_8h.html">deal.II/base/exceptions.h</a>&gt;</code><br />
-<code>#include &lt;<a class="elRef" doxygen="/Users/heltai/c++/dealii-sak/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/include_2deal_8II_2fe_2fe_8h.html">deal.II/fe/fe.h</a>&gt;</code><br />
-<code>#include &lt;<a class="elRef" doxygen="/Users/heltai/c++/dealii-sak/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/std__cxx11_2shared__ptr_8h.html">deal.II/base/std_cxx11/shared_ptr.h</a>&gt;</code><br />
+<div class="textblock"><code>#include &lt;deal.II/base/utilities.h&gt;</code><br />
+<code>#include &lt;deal.II/base/smartpointer.h&gt;</code><br />
+<code>#include &lt;deal.II/base/exceptions.h&gt;</code><br />
+<code>#include &lt;deal.II/fe/fe.h&gt;</code><br />
+<code>#include &lt;deal.II/base/std_cxx11/shared_ptr.h&gt;</code><br />
 <code>#include &lt;typeinfo&gt;</code><br />
 <code>#include &lt;cxxabi.h&gt;</code><br />
 <code>#include &lt;sstream&gt;</code><br />
@@ -127,7 +127,7 @@ Classes</h2></td></tr>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
 <tr class="memitem:acf8f2e28c3bb606700d866a697360185"><td class="memTemplParams" colspan="2">template&lt;typename TYPE &gt; </td></tr>
-<tr class="memitem:acf8f2e28c3bb606700d866a697360185"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="utilities_8h.html#acf8f2e28c3bb606700d866a697360185">smart_delete</a> (<a class="elRef" doxygen="/Users/heltai/c++/dealii-sak/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classSmartPointer.html">SmartPointer</a>&lt; TYPE &gt; &amp;sp) <a class="elRef" doxygen="/Users/heltai/c++/dealii-sak/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/group__Sparsity.html#ga5c1d56f490eb28635d59df9da24c7122">DEAL_II_DEPRECATED</a></td></tr>
+<tr class="memitem:acf8f2e28c3bb606700d866a697360185"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="utilities_8h.html#acf8f2e28c3bb606700d866a697360185">smart_delete</a> (SmartPointer&lt; TYPE &gt; &amp;sp) DEAL_II_DEPRECATED</td></tr>
 <tr class="separator:acf8f2e28c3bb606700d866a697360185"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a979982102c0dbd9e9c970d56c96481e3"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="utilities_8h.html#a979982102c0dbd9e9c970d56c96481e3">demangle</a> (const char *name)</td></tr>
 <tr class="separator:a979982102c0dbd9e9c970d56c96481e3"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -194,6 +194,8 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 <p>This function copyt the text contained in <code>in_file</code> to the file <code>out_file</code> . </p>
 
+<p>Definition at line <a class="el" href="utilities_8cc_source.html#l00068">68</a> of file <a class="el" href="utilities_8cc_source.html">utilities.cc</a>.</p>
+
 </div>
 </div>
 <a class="anchor" id="ab0a7d30434e83a9cf5b52608ccc25c04"></a>
@@ -220,6 +222,8 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <p>A function to make a copy of <code>file</code> with the name <code>destination</code> </p>
+
+<p>Definition at line <a class="el" href="utilities_8cc_source.html#l00165">165</a> of file <a class="el" href="utilities_8cc_source.html">utilities.cc</a>.</p>
 
 </div>
 </div>
@@ -248,6 +252,8 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 <p>A function to copy a list of <code>file</code> ( "file1 file2 file3" ) in the destination folder (<code>destination</code>) </p>
 
+<p>Definition at line <a class="el" href="utilities_8cc_source.html#l00133">133</a> of file <a class="el" href="utilities_8cc_source.html">utilities.cc</a>.</p>
+
 </div>
 </div>
 <a class="anchor" id="a10da2716560c74a4cd0c25e1ac6d7c42"></a>
@@ -264,6 +270,8 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <p>A function to create directory. It creates all directories needed. </p>
+
+<p>Definition at line <a class="el" href="utilities_8cc_source.html#l00119">119</a> of file <a class="el" href="utilities_8cc_source.html">utilities.cc</a>.</p>
 
 </div>
 </div>
@@ -282,6 +290,8 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 <p>Demangle c++ names. </p>
 
+<p>Definition at line <a class="el" href="utilities_8cc_source.html#l00029">29</a> of file <a class="el" href="utilities_8cc_source.html">utilities.cc</a>.</p>
+
 </div>
 </div>
 <a class="anchor" id="a18f0bb97e3480908a5d2ebeba2effb17"></a>
@@ -299,6 +309,8 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 <p>A function to check the existence of <code>dir</code> directory. </p>
 
+<p>Definition at line <a class="el" href="utilities_8cc_source.html#l00092">92</a> of file <a class="el" href="utilities_8cc_source.html">utilities.cc</a>.</p>
+
 </div>
 </div>
 <a class="anchor" id="a8d3e59f8d256d7703e84064d7ca70879"></a>
@@ -315,6 +327,8 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <p>A function to check the existence of <code>file</code> file. </p>
+
+<p>Definition at line <a class="el" href="utilities_8cc_source.html#l00078">78</a> of file <a class="el" href="utilities_8cc_source.html">utilities.cc</a>.</p>
 
 </div>
 </div>
@@ -343,6 +357,8 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 <p>A function that return the name of the first non existing folder matching a pattern make by <code>base</code> and <code>n_digits</code> number. (base000, base001, base002, ...) </p>
 
+<p>Definition at line <a class="el" href="utilities_8cc_source.html#l00113">113</a> of file <a class="el" href="utilities_8cc_source.html">utilities.cc</a>.</p>
+
 </div>
 </div>
 <a class="anchor" id="a26fce3fba8500752252f1677082116fb"></a>
@@ -369,6 +385,8 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <p>A function that return the index of the first non existing folder matching a pattern make by <code>base</code> and <code>n_digits</code> number. (base000, base001, base002, ...) </p>
+
+<p>Definition at line <a class="el" href="utilities_8cc_source.html#l00106">106</a> of file <a class="el" href="utilities_8cc_source.html">utilities.cc</a>.</p>
 
 </div>
 </div>
@@ -406,6 +424,8 @@ template&lt;typename S , typename T &gt; </div>
 </table>
 </div><div class="memdoc">
 
+<p>Definition at line <a class="el" href="utilities_8h_source.html#l00351">351</a> of file <a class="el" href="utilities_8h_source.html">utilities.h</a>.</p>
+
 </div>
 </div>
 <a class="anchor" id="a60da3c41d25db4e9fe95955ea8b5402b"></a>
@@ -435,6 +455,8 @@ template&lt;class Type &gt; </div>
 </div><div class="memdoc">
 <p>Return a string containing the content of the vector, with elements separated by the @ sep parameter. </p>
 
+<p>Definition at line <a class="el" href="utilities_8h_source.html#l00381">381</a> of file <a class="el" href="utilities_8h_source.html">utilities.h</a>.</p>
+
 </div>
 </div>
 <a class="anchor" id="af26a2180c53520a7a51aafed511953f1"></a>
@@ -462,6 +484,8 @@ template&lt;class Type &gt; </div>
 </div><div class="memdoc">
 <p>A function to rename a <code>file</code> with a new name <code>new_file</code> </p>
 
+<p>Definition at line <a class="el" href="utilities_8cc_source.html#l00177">177</a> of file <a class="el" href="utilities_8cc_source.html">utilities.cc</a>.</p>
+
 </div>
 </div>
 <a class="anchor" id="acf8f2e28c3bb606700d866a697360185"></a>
@@ -473,14 +497,16 @@ template&lt;typename TYPE &gt; </div>
         <tr>
           <td class="memname">void smart_delete </td>
           <td>(</td>
-          <td class="paramtype"><a class="elRef" doxygen="/Users/heltai/c++/dealii-sak/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classSmartPointer.html">SmartPointer</a>&lt; TYPE &gt; &amp;&#160;</td>
+          <td class="paramtype">SmartPointer&lt; TYPE &gt; &amp;&#160;</td>
           <td class="paramname"><em>sp</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>SmartPointers are usually not used to point to objects created with new. However, sometimes this is useful. The distruction of a <a class="elRef" doxygen="/Users/heltai/c++/dealii-sak/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classSmartPointer.html">SmartPointer</a> requires to split the step in two parts. This little utility does precisely this.</p>
+<p>SmartPointers are usually not used to point to objects created with new. However, sometimes this is useful. The distruction of a SmartPointer requires to split the step in two parts. This little utility does precisely this.</p>
 <dl class="deprecated"><dt><b><a class="el" href="deprecated.html#_deprecated000001">Deprecated:</a></b></dt><dd>SmartPointers have been supersed by std_cxx11::shared_ptr, which takes care of destruction as well. </dd></dl>
+
+<p>Definition at line <a class="el" href="utilities_8h_source.html#l00448">448</a> of file <a class="el" href="utilities_8h_source.html">utilities.h</a>.</p>
 
 </div>
 </div>
@@ -513,6 +539,8 @@ template&lt;class T &gt; </div>
 <p>...</p>
 <p>my_ptr = SP(new MyClass);</p>
 
+<p>Definition at line <a class="el" href="utilities_8h_source.html#l00420">420</a> of file <a class="el" href="utilities_8h_source.html">utilities.h</a>.</p>
+
 </div>
 </div>
 <a class="anchor" id="a128184b85f3ebf61285504704e178db4"></a>
@@ -543,6 +571,8 @@ template&lt;class T &gt; </div>
 <p>std_cxx11::shared_ptr&lt;const MyClass&gt; my_ptr;</p>
 <p>... const MyClass * p = new MyClass; my_ptr = SP(p);</p>
 
+<p>Definition at line <a class="el" href="utilities_8h_source.html#l00442">442</a> of file <a class="el" href="utilities_8h_source.html">utilities.h</a>.</p>
+
 </div>
 </div>
 <a class="anchor" id="a404b9edc38fc645a8913ccaf22d117ab"></a>
@@ -561,6 +591,8 @@ template&lt;class T &gt; </div>
       </table>
 </div><div class="memdoc">
 <p>Return a human readable name of the type passed as argument. </p>
+
+<p>Definition at line <a class="el" href="utilities_8h_source.html#l00398">398</a> of file <a class="el" href="utilities_8h_source.html">utilities.h</a>.</p>
 
 </div>
 </div>
@@ -581,6 +613,8 @@ template&lt;class T &gt; </div>
 </div><div class="memdoc">
 <p>A simple function that accepts a vector as an input and returns a second vector containing only the unique value among consecutive entries of the original vector. </p>
 
+<p>Definition at line <a class="el" href="utilities_8h_source.html#l00368">368</a> of file <a class="el" href="utilities_8h_source.html">utilities.h</a>.</p>
+
 </div>
 </div>
 </div><!-- contents -->
@@ -589,7 +623,7 @@ template&lt;class T &gt; </div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="utilities_8h.html">utilities.h</a></li>
-    <li class="footer">Generated on Wed Sep 9 2015 10:22:32 for Deal.II Swiss Army Knife library by
+    <li class="footer">Generated on Wed Sep 9 2015 17:25:33 for Deal.II Swiss Army Knife library by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.10 </li>
   </ul>

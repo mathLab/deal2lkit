@@ -1,13 +1,16 @@
 var searchData=
 [
-  ['3_2e0_2e0_2dvs_2d3_2e0_2e1_2eh',['3.0.0-vs-3.0.1.h',['http://www.dealii.org/developer/doxygen/deal.II/3_80_80-vs-3_80_81_8h.html',1,'']]],
-  ['3_2e0_2e0_2dvs_2d3_2e1_2e0_2eh',['3.0.0-vs-3.1.0.h',['http://www.dealii.org/developer/doxygen/deal.II/3_80_80-vs-3_81_80_8h.html',1,'']]],
-  ['3_2e1_2e0_2dvs_2d3_2e1_2e1_2eh',['3.1.0-vs-3.1.1.h',['http://www.dealii.org/developer/doxygen/deal.II/3_81_80-vs-3_81_81_8h.html',1,'']]],
-  ['3_2e1_2e0_2dvs_2d3_2e2_2e0_2eh',['3.1.0-vs-3.2.0.h',['http://www.dealii.org/developer/doxygen/deal.II/3_81_80-vs-3_82_80_8h.html',1,'']]],
-  ['3_2e1_2e1_2dvs_2d3_2e1_2e2_2eh',['3.1.1-vs-3.1.2.h',['http://www.dealii.org/developer/doxygen/deal.II/3_81_81-vs-3_81_82_8h.html',1,'']]],
-  ['3_2e2_2e0_2dvs_2d3_2e2_2e1_2eh',['3.2.0-vs-3.2.1.h',['http://www.dealii.org/developer/doxygen/deal.II/3_82_80-vs-3_82_81_8h.html',1,'']]],
-  ['3_2e2_2e0_2dvs_2d3_2e3_2e0_2eh',['3.2.0-vs-3.3.0.h',['http://www.dealii.org/developer/doxygen/deal.II/3_82_80-vs-3_83_80_8h.html',1,'']]],
-  ['3_2e3_2e0_2dvs_2d3_2e3_2e1_2eh',['3.3.0-vs-3.3.1.h',['http://www.dealii.org/developer/doxygen/deal.II/3_83_80-vs-3_83_81_8h.html',1,'']]],
-  ['3_2e3_2e0_2dvs_2d3_2e4_2e0_2eh',['3.3.0-vs-3.4.0.h',['http://www.dealii.org/developer/doxygen/deal.II/3_83_80-vs-3_84_80_8h.html',1,'']]],
-  ['3_2e4_2e0_2dvs_2d4_2e0_2e0_2eh',['3.4.0-vs-4.0.0.h',['http://www.dealii.org/developer/doxygen/deal.II/3_84_80-vs-4_80_80_8h.html',1,'']]]
+  ['cache_5flocal_5fsolution_5fvector',['cache_local_solution_vector',['../class_f_e_values_cache.html#a846668d16e35ae5f03ae0127377d318d',1,'FEValuesCache']]],
+  ['clear',['clear',['../class_parameter_acceptor.html#a2e4f8347ae5f913939ebf81a23277880',1,'ParameterAcceptor::clear()'],['../class_over_write_stream.html#a769ca9ce480dd438deca5984d6a4b3cc',1,'OverWriteStream::clear()']]],
+  ['compute_5fno_5fnormal_5fflux_5fconstraints',['compute_no_normal_flux_constraints',['../class_parsed_dirichlet_b_cs.html#a3d75daf98e7e91165c3ae30e4b91317f',1,'ParsedDirichletBCs::compute_no_normal_flux_constraints(const DoFHandler&lt; dim, spacedim &gt; &amp;dof_handler, ConstraintMatrix &amp;constraints) const '],['../class_parsed_dirichlet_b_cs.html#a45d8e24805f8292bb48434f7abd783ea',1,'ParsedDirichletBCs::compute_no_normal_flux_constraints(const DoFHandler&lt; dim, spacedim &gt; &amp;dof_handler, const Mapping&lt; dim, spacedim &gt; &amp;mapping, ConstraintMatrix &amp;constraints) const ']]],
+  ['compute_5fnonzero_5fnormal_5fflux_5fconstraints',['compute_nonzero_normal_flux_constraints',['../class_parsed_dirichlet_b_cs.html#a8e4dfa1694fbc7cc4503d4fd13d0c469',1,'ParsedDirichletBCs::compute_nonzero_normal_flux_constraints(const DoFHandler&lt; dim, spacedim &gt; &amp;dof_handler, ConstraintMatrix &amp;constraints) const '],['../class_parsed_dirichlet_b_cs.html#a989c6d88aa1c30ed44699853a464139f',1,'ParsedDirichletBCs::compute_nonzero_normal_flux_constraints(const DoFHandler&lt; dim, spacedim &gt; &amp;dof_handler, const Mapping&lt; dim, spacedim &gt; &amp;mapping, ConstraintMatrix &amp;constraints) const ']]],
+  ['conv_2dtable_2ecc',['conv-table.cc',['../conv-table_8cc.html',1,'']]],
+  ['convtables',['ConvTables',['../namespace_conv_tables.html',1,'']]],
+  ['copy_5ffile',['copy_file',['../utilities_8cc.html#a5a4c779136578ad3e27a66304d7b6207',1,'copy_file(const std::string &amp;file, const std::string &amp;new_file):&#160;utilities.cc'],['../utilities_8h.html#ab0a7d30434e83a9cf5b52608ccc25c04',1,'copy_file(const std::string &amp;files, const std::string &amp;destination):&#160;utilities.cc']]],
+  ['copy_5ffiles',['copy_files',['../utilities_8cc.html#ad498e0db011f68bed8742b4287c3f74f',1,'copy_files(const std::string &amp;files, const std::string &amp;destination):&#160;utilities.cc'],['../utilities_8h.html#ad498e0db011f68bed8742b4287c3f74f',1,'copy_files(const std::string &amp;files, const std::string &amp;destination):&#160;utilities.cc']]],
+  ['create',['create',['../class_parsed_grid_generator.html#a259f1ed4c34a384666d8b003260e3b44',1,'ParsedGridGenerator']]],
+  ['create_5fdefault_5fvalue',['create_default_value',['../class_parsed_grid_generator.html#a1441667d405852777d6056a877528e75',1,'ParsedGridGenerator::create_default_value(const std::vector&lt; unsigned int &gt; &amp;input)'],['../class_parsed_grid_generator.html#ae2a5ca3f09ef9e6b27e51090c8fb1ea8',1,'ParsedGridGenerator::create_default_value(const std::vector&lt; double &gt; &amp;input)'],['../class_parsed_grid_generator.html#a6dd08c3aeab2b4f3ad859d1c0d47c139',1,'ParsedGridGenerator::create_default_value(const Point&lt; spacedim &gt; &amp;input)']]],
+  ['create_5fdirectory',['create_directory',['../utilities_8cc.html#a10da2716560c74a4cd0c25e1ac6d7c42',1,'create_directory(const std::string &amp;name):&#160;utilities.cc'],['../utilities_8h.html#a10da2716560c74a4cd0c25e1ac6d7c42',1,'create_directory(const std::string &amp;name):&#160;utilities.cc']]],
+  ['create_5fmesh',['create_mesh',['../class_domain.html#ac90448ed4d8260fa27677716a15a28d3',1,'Domain']]],
+  ['custom',['Custom',['../error__handler_8h.html#afdb1b3484ed14e30fcdbfdbdd004922ba26b367bcdd210f7345b551b921c5551f',1,'error_handler.h']]]
 ];

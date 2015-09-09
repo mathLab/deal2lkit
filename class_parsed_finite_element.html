@@ -110,7 +110,6 @@ Inheritance diagram for ParsedFiniteElement&lt; dim, spacedim &gt;:</div>
   <img src="class_parsed_finite_element.png" usemap="#ParsedFiniteElement&lt; dim, spacedim &gt;_map" alt=""/>
   <map id="ParsedFiniteElement&lt; dim, spacedim &gt;_map" name="ParsedFiniteElement&lt; dim, spacedim &gt;_map">
 <area href="class_parameter_acceptor.html" alt="ParameterAcceptor" shape="rect" coords="0,56,232,80"/>
-<area doxygen="/Users/heltai/c++/dealii-sak/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classSubscriptor.html" alt="Subscriptor" shape="rect" coords="0,0,232,24"/>
 </map>
  </div></div>
 <table class="memberdecls">
@@ -118,9 +117,9 @@ Inheritance diagram for ParsedFiniteElement&lt; dim, spacedim &gt;:</div>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a0b32290d760794d368a4a815ec603ae6"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_parsed_finite_element.html#a0b32290d760794d368a4a815ec603ae6">ParsedFiniteElement</a> (const std::string &amp;name=&quot;&quot;, const std::string &amp;default_fe=&quot;FE_Q(1)&quot;, const std::string &amp;default_component_names=&quot;u&quot;, const unsigned int <a class="el" href="class_parsed_finite_element.html#a432814fb23a7db937442afdd70e400d1">n_components</a>=0, const std::string &amp;default_coupling=&quot;&quot;, const std::string &amp;default_preconditioner_coupling=&quot;&quot;)</td></tr>
 <tr class="separator:a0b32290d760794d368a4a815ec603ae6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a740906fdf9fbda0f0fc421c73b9d522b"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_parsed_finite_element.html#a740906fdf9fbda0f0fc421c73b9d522b">declare_parameters</a> (<a class="elRef" doxygen="/Users/heltai/c++/dealii-sak/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classParameterHandler.html">ParameterHandler</a> &amp;<a class="el" href="class_parameter_acceptor.html#a96081d4cc985b722c9841fcf0c0e54ec">prm</a>)</td></tr>
+<tr class="memitem:a740906fdf9fbda0f0fc421c73b9d522b"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_parsed_finite_element.html#a740906fdf9fbda0f0fc421c73b9d522b">declare_parameters</a> (ParameterHandler &amp;<a class="el" href="class_parameter_acceptor.html#a96081d4cc985b722c9841fcf0c0e54ec">prm</a>)</td></tr>
 <tr class="separator:a740906fdf9fbda0f0fc421c73b9d522b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3056215d90ae2284d22e2abce20d22d7"><td class="memItemLeft" align="right" valign="top"><a class="elRef" doxygen="/Users/heltai/c++/dealii-sak/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classFiniteElement.html">FiniteElement</a>&lt; dim, spacedim &gt; *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_parsed_finite_element.html#a3056215d90ae2284d22e2abce20d22d7">operator()</a> () const </td></tr>
+<tr class="memitem:a3056215d90ae2284d22e2abce20d22d7"><td class="memItemLeft" align="right" valign="top">FiniteElement&lt; dim, spacedim &gt; *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_parsed_finite_element.html#a3056215d90ae2284d22e2abce20d22d7">operator()</a> () const </td></tr>
 <tr class="separator:a3056215d90ae2284d22e2abce20d22d7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afd4536430fdc389f60d7d7ebb09fafb3"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_parsed_finite_element.html#afd4536430fdc389f60d7d7ebb09fafb3">parse_parameters_call_back</a> ()</td></tr>
 <tr class="separator:afd4536430fdc389f60d7d7ebb09fafb3"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -134,45 +133,22 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a432814fb23a7db937442afdd70e400d1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a867a0f4000a5700bae7bf4dd829e51c5"><td class="memItemLeft" align="right" valign="top">unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_parsed_finite_element.html#a867a0f4000a5700bae7bf4dd829e51c5">n_blocks</a> () const </td></tr>
 <tr class="separator:a867a0f4000a5700bae7bf4dd829e51c5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a155cb36378f89e70653ee2e41b852eb5"><td class="memItemLeft" align="right" valign="top">const <a class="elRef" doxygen="/Users/heltai/c++/dealii-sak/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classTable.html">Table</a>&lt; 2, <a class="elRef" doxygen="/Users/heltai/c++/dealii-sak/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/group__dofs.html#gad31df71a29dd76de9b4ab241b2527160">DoFTools::Coupling</a> &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_parsed_finite_element.html#a155cb36378f89e70653ee2e41b852eb5">get_coupling</a> () const </td></tr>
+<tr class="memitem:a155cb36378f89e70653ee2e41b852eb5"><td class="memItemLeft" align="right" valign="top">const Table&lt; 2, DoFTools::Coupling &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_parsed_finite_element.html#a155cb36378f89e70653ee2e41b852eb5">get_coupling</a> () const </td></tr>
 <tr class="separator:a155cb36378f89e70653ee2e41b852eb5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6c04ced211dc2b57468c1e95e583d630"><td class="memItemLeft" align="right" valign="top">const <a class="elRef" doxygen="/Users/heltai/c++/dealii-sak/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classTable.html">Table</a>&lt; 2, <a class="elRef" doxygen="/Users/heltai/c++/dealii-sak/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/group__dofs.html#gad31df71a29dd76de9b4ab241b2527160">DoFTools::Coupling</a> &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_parsed_finite_element.html#a6c04ced211dc2b57468c1e95e583d630">get_preconditioner_coupling</a> () const </td></tr>
+<tr class="memitem:a6c04ced211dc2b57468c1e95e583d630"><td class="memItemLeft" align="right" valign="top">const Table&lt; 2, DoFTools::Coupling &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_parsed_finite_element.html#a6c04ced211dc2b57468c1e95e583d630">get_preconditioner_coupling</a> () const </td></tr>
 <tr class="separator:a6c04ced211dc2b57468c1e95e583d630"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_class_parameter_acceptor"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_class_parameter_acceptor')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="class_parameter_acceptor.html">ParameterAcceptor</a></td></tr>
 <tr class="memitem:a1a5052568d2c3e748e068b6c3d822893 inherit pub_methods_class_parameter_acceptor"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_parameter_acceptor.html#a1a5052568d2c3e748e068b6c3d822893">ParameterAcceptor</a> (const std::string <a class="el" href="class_parameter_acceptor.html#a52134c59ec98830230c23e080c841705">section_name</a>=&quot;&quot;)</td></tr>
 <tr class="separator:a1a5052568d2c3e748e068b6c3d822893 inherit pub_methods_class_parameter_acceptor"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afadbc55490b174eb52d5b98fda2f6032 inherit pub_methods_class_parameter_acceptor"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_parameter_acceptor.html#afadbc55490b174eb52d5b98fda2f6032">~ParameterAcceptor</a> ()</td></tr>
 <tr class="separator:afadbc55490b174eb52d5b98fda2f6032 inherit pub_methods_class_parameter_acceptor"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab3ee6cabf1ff10be362ac65495183c52 inherit pub_methods_class_parameter_acceptor"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_parameter_acceptor.html#ab3ee6cabf1ff10be362ac65495183c52">parse_parameters</a> (<a class="elRef" doxygen="/Users/heltai/c++/dealii-sak/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classParameterHandler.html">ParameterHandler</a> &amp;<a class="el" href="class_parameter_acceptor.html#a96081d4cc985b722c9841fcf0c0e54ec">prm</a>)</td></tr>
+<tr class="memitem:ab3ee6cabf1ff10be362ac65495183c52 inherit pub_methods_class_parameter_acceptor"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_parameter_acceptor.html#ab3ee6cabf1ff10be362ac65495183c52">parse_parameters</a> (ParameterHandler &amp;<a class="el" href="class_parameter_acceptor.html#a96081d4cc985b722c9841fcf0c0e54ec">prm</a>)</td></tr>
 <tr class="separator:ab3ee6cabf1ff10be362ac65495183c52 inherit pub_methods_class_parameter_acceptor"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abe76713f66b7319ba25a7d272126461a inherit pub_methods_class_parameter_acceptor"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_parameter_acceptor.html#abe76713f66b7319ba25a7d272126461a">get_section_name</a> () const </td></tr>
 <tr class="separator:abe76713f66b7319ba25a7d272126461a inherit pub_methods_class_parameter_acceptor"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad823f9aff71602773356405bc4566e55 inherit pub_methods_class_parameter_acceptor"><td class="memTemplParams" colspan="2">template&lt;class T &gt; </td></tr>
-<tr class="memitem:ad823f9aff71602773356405bc4566e55 inherit pub_methods_class_parameter_acceptor"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="class_parameter_acceptor.html#ad823f9aff71602773356405bc4566e55">add_parameter</a> (<a class="elRef" doxygen="/Users/heltai/c++/dealii-sak/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classParameterHandler.html">ParameterHandler</a> &amp;<a class="el" href="class_parameter_acceptor.html#a96081d4cc985b722c9841fcf0c0e54ec">prm</a>, T *parameter, const std::string &amp;entry, const std::string &amp;default_value, const <a class="elRef" doxygen="/Users/heltai/c++/dealii-sak/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classPatterns_1_1PatternBase.html">Patterns::PatternBase</a> &amp;pattern=<a class="elRef" doxygen="/Users/heltai/c++/dealii-sak/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classPatterns_1_1Anything.html">Patterns::Anything</a>(), const std::string &amp;documentation=std::string())</td></tr>
+<tr class="memitem:ad823f9aff71602773356405bc4566e55 inherit pub_methods_class_parameter_acceptor"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="class_parameter_acceptor.html#ad823f9aff71602773356405bc4566e55">add_parameter</a> (ParameterHandler &amp;<a class="el" href="class_parameter_acceptor.html#a96081d4cc985b722c9841fcf0c0e54ec">prm</a>, T *parameter, const std::string &amp;entry, const std::string &amp;default_value, const Patterns::PatternBase &amp;pattern=Patterns::Anything(), const std::string &amp;documentation=std::string())</td></tr>
 <tr class="separator:ad823f9aff71602773356405bc4566e55 inherit pub_methods_class_parameter_acceptor"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="inherit_header pub_methods_classSubscriptor"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classSubscriptor')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="http://www.dealii.org/developer/doxygen/deal.II/classSubscriptor.html">Subscriptor</a></td></tr>
-<tr class="memitem:ae5541017c0966b0af345db75895106f2 inherit pub_methods_classSubscriptor"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="elRef" doxygen="/Users/heltai/c++/dealii-sak/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classSubscriptor.html#ae5541017c0966b0af345db75895106f2">Subscriptor</a> ()</td></tr>
-<tr class="separator:ae5541017c0966b0af345db75895106f2 inherit pub_methods_classSubscriptor"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a367fce3122075f05f168d14f114b4c65 inherit pub_methods_classSubscriptor"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="elRef" doxygen="/Users/heltai/c++/dealii-sak/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classSubscriptor.html#a367fce3122075f05f168d14f114b4c65">Subscriptor</a> (const <a class="elRef" doxygen="/Users/heltai/c++/dealii-sak/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classSubscriptor.html">Subscriptor</a> &amp;)</td></tr>
-<tr class="separator:a367fce3122075f05f168d14f114b4c65 inherit pub_methods_classSubscriptor"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af70e597a147c532012a3115cf12ef53c inherit pub_methods_classSubscriptor"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="elRef" doxygen="/Users/heltai/c++/dealii-sak/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classSubscriptor.html#af70e597a147c532012a3115cf12ef53c">~Subscriptor</a> ()</td></tr>
-<tr class="separator:af70e597a147c532012a3115cf12ef53c inherit pub_methods_classSubscriptor"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5099175b75089cdc5cf4e7e64829f739 inherit pub_methods_classSubscriptor"><td class="memItemLeft" align="right" valign="top"><a class="elRef" doxygen="/Users/heltai/c++/dealii-sak/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classSubscriptor.html">Subscriptor</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="elRef" doxygen="/Users/heltai/c++/dealii-sak/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classSubscriptor.html#a5099175b75089cdc5cf4e7e64829f739">operator=</a> (const <a class="elRef" doxygen="/Users/heltai/c++/dealii-sak/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classSubscriptor.html">Subscriptor</a> &amp;)</td></tr>
-<tr class="separator:a5099175b75089cdc5cf4e7e64829f739 inherit pub_methods_classSubscriptor"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3422499827ecd52f1d12d65eb6cc3125 inherit pub_methods_classSubscriptor"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="elRef" doxygen="/Users/heltai/c++/dealii-sak/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classSubscriptor.html#a3422499827ecd52f1d12d65eb6cc3125">subscribe</a> (const char *identifier=0) const </td></tr>
-<tr class="separator:a3422499827ecd52f1d12d65eb6cc3125 inherit pub_methods_classSubscriptor"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2b4839b1cffc18781144ede1744b35ea inherit pub_methods_classSubscriptor"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="elRef" doxygen="/Users/heltai/c++/dealii-sak/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classSubscriptor.html#a2b4839b1cffc18781144ede1744b35ea">unsubscribe</a> (const char *identifier=0) const </td></tr>
-<tr class="separator:a2b4839b1cffc18781144ede1744b35ea inherit pub_methods_classSubscriptor"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7b45274c8e1936bff024df01d618e86f inherit pub_methods_classSubscriptor"><td class="memItemLeft" align="right" valign="top">unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="elRef" doxygen="/Users/heltai/c++/dealii-sak/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classSubscriptor.html#a7b45274c8e1936bff024df01d618e86f">n_subscriptions</a> () const </td></tr>
-<tr class="separator:a7b45274c8e1936bff024df01d618e86f inherit pub_methods_classSubscriptor"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:adbbc5f845063b1f23223b7ac96e89e13 inherit pub_methods_classSubscriptor"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="elRef" doxygen="/Users/heltai/c++/dealii-sak/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classSubscriptor.html#adbbc5f845063b1f23223b7ac96e89e13">list_subscribers</a> () const </td></tr>
-<tr class="separator:adbbc5f845063b1f23223b7ac96e89e13 inherit pub_methods_classSubscriptor"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gaa77207b86899b9eb2d9e06741426af06 inherit pub_methods_classSubscriptor"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="elRef" doxygen="/Users/heltai/c++/dealii-sak/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/group__Exceptions.html#gaa77207b86899b9eb2d9e06741426af06">DeclException3</a> (ExcInUse, int, char *, std::string &amp;,&lt;&lt; &quot;Object of class &quot;&lt;&lt; arg2&lt;&lt; &quot; is still used by &quot;&lt;&lt; arg1&lt;&lt; &quot; other objects.&quot;&lt;&lt; &quot;\n\n&quot;&lt;&lt; &quot;(Additional information: &quot;&lt;&lt; arg3&lt;&lt; &quot;)\n\n&quot;&lt;&lt; &quot;See the entry in the Frequently Asked Questions of &quot;&lt;&lt; &quot;deal.II (linked to from http://www.dealii.org/) for &quot;&lt;&lt; &quot;a lot more information on what this error means and &quot;&lt;&lt; &quot;how to fix programs in which it happens.&quot;)</td></tr>
-<tr class="separator:gaa77207b86899b9eb2d9e06741426af06 inherit pub_methods_classSubscriptor"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga9993dfc378830e66a92065887980e83b inherit pub_methods_classSubscriptor"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="elRef" doxygen="/Users/heltai/c++/dealii-sak/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/group__Exceptions.html#ga9993dfc378830e66a92065887980e83b">DeclException2</a> (ExcNoSubscriber, char *, char *,&lt;&lt; &quot;No subscriber with identifier &lt;&quot;&lt;&lt; arg2&lt;&lt; &quot;&gt; subscribes to this object of class &quot;&lt;&lt; arg1&lt;&lt; &quot;. Consequently, it cannot be unsubscribed.&quot;)</td></tr>
-<tr class="separator:ga9993dfc378830e66a92065887980e83b inherit pub_methods_classSubscriptor"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a68efd17a8330ab676d9cd711029b0f38 inherit pub_methods_classSubscriptor"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="elRef" doxygen="/Users/heltai/c++/dealii-sak/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classSubscriptor.html#a68efd17a8330ab676d9cd711029b0f38">serialize</a> (Archive &amp;ar, const unsigned int version)</td></tr>
-<tr class="separator:a68efd17a8330ab676d9cd711029b0f38 inherit pub_methods_classSubscriptor"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="inherited"></a>
 Additional Inherited Members</h2></td></tr>
@@ -181,14 +157,14 @@ Additional Inherited Members</h2></td></tr>
 <tr class="separator:af04c215672e63f03a942ae4c55b57c27 inherit pub_static_methods_class_parameter_acceptor"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2e4f8347ae5f913939ebf81a23277880 inherit pub_static_methods_class_parameter_acceptor"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_parameter_acceptor.html#a2e4f8347ae5f913939ebf81a23277880">clear</a> ()</td></tr>
 <tr class="separator:a2e4f8347ae5f913939ebf81a23277880 inherit pub_static_methods_class_parameter_acceptor"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac4b7044a9e1d53c401a50565d8996022 inherit pub_static_methods_class_parameter_acceptor"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_parameter_acceptor.html#ac4b7044a9e1d53c401a50565d8996022">parse_all_parameters</a> (<a class="elRef" doxygen="/Users/heltai/c++/dealii-sak/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classParameterHandler.html">ParameterHandler</a> &amp;<a class="el" href="class_parameter_acceptor.html#a96081d4cc985b722c9841fcf0c0e54ec">prm</a>=<a class="el" href="class_parameter_acceptor.html#a96081d4cc985b722c9841fcf0c0e54ec">ParameterAcceptor::prm</a>)</td></tr>
+<tr class="memitem:ac4b7044a9e1d53c401a50565d8996022 inherit pub_static_methods_class_parameter_acceptor"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_parameter_acceptor.html#ac4b7044a9e1d53c401a50565d8996022">parse_all_parameters</a> (ParameterHandler &amp;<a class="el" href="class_parameter_acceptor.html#a96081d4cc985b722c9841fcf0c0e54ec">prm</a>=<a class="el" href="class_parameter_acceptor.html#a96081d4cc985b722c9841fcf0c0e54ec">ParameterAcceptor::prm</a>)</td></tr>
 <tr class="separator:ac4b7044a9e1d53c401a50565d8996022 inherit pub_static_methods_class_parameter_acceptor"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0aebd314633cdb2e48b159f2b9349c73 inherit pub_static_methods_class_parameter_acceptor"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_parameter_acceptor.html#a0aebd314633cdb2e48b159f2b9349c73">log_info</a> ()</td></tr>
 <tr class="separator:a0aebd314633cdb2e48b159f2b9349c73 inherit pub_static_methods_class_parameter_acceptor"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3775ed960cf63c9ae88613925d226b11 inherit pub_static_methods_class_parameter_acceptor"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_parameter_acceptor.html#a3775ed960cf63c9ae88613925d226b11">declare_all_parameters</a> (<a class="elRef" doxygen="/Users/heltai/c++/dealii-sak/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classParameterHandler.html">ParameterHandler</a> &amp;<a class="el" href="class_parameter_acceptor.html#a96081d4cc985b722c9841fcf0c0e54ec">prm</a>=<a class="el" href="class_parameter_acceptor.html#a96081d4cc985b722c9841fcf0c0e54ec">ParameterAcceptor::prm</a>)</td></tr>
+<tr class="memitem:a3775ed960cf63c9ae88613925d226b11 inherit pub_static_methods_class_parameter_acceptor"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_parameter_acceptor.html#a3775ed960cf63c9ae88613925d226b11">declare_all_parameters</a> (ParameterHandler &amp;<a class="el" href="class_parameter_acceptor.html#a96081d4cc985b722c9841fcf0c0e54ec">prm</a>=<a class="el" href="class_parameter_acceptor.html#a96081d4cc985b722c9841fcf0c0e54ec">ParameterAcceptor::prm</a>)</td></tr>
 <tr class="separator:a3775ed960cf63c9ae88613925d226b11 inherit pub_static_methods_class_parameter_acceptor"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_static_attribs_class_parameter_acceptor"><td colspan="2" onclick="javascript:toggleInherit('pub_static_attribs_class_parameter_acceptor')"><img src="closed.png" alt="-"/>&#160;Static Public Attributes inherited from <a class="el" href="class_parameter_acceptor.html">ParameterAcceptor</a></td></tr>
-<tr class="memitem:a96081d4cc985b722c9841fcf0c0e54ec inherit pub_static_attribs_class_parameter_acceptor"><td class="memItemLeft" align="right" valign="top">static <a class="elRef" doxygen="/Users/heltai/c++/dealii-sak/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classParameterHandler.html">ParameterHandler</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_parameter_acceptor.html#a96081d4cc985b722c9841fcf0c0e54ec">prm</a></td></tr>
+<tr class="memitem:a96081d4cc985b722c9841fcf0c0e54ec inherit pub_static_attribs_class_parameter_acceptor"><td class="memItemLeft" align="right" valign="top">static ParameterHandler&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_parameter_acceptor.html#a96081d4cc985b722c9841fcf0c0e54ec">prm</a></td></tr>
 <tr class="separator:a96081d4cc985b722c9841fcf0c0e54ec inherit pub_static_attribs_class_parameter_acceptor"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pro_attribs_class_parameter_acceptor"><td colspan="2" onclick="javascript:toggleInherit('pro_attribs_class_parameter_acceptor')"><img src="closed.png" alt="-"/>&#160;Protected Attributes inherited from <a class="el" href="class_parameter_acceptor.html">ParameterAcceptor</a></td></tr>
 <tr class="memitem:a52134c59ec98830230c23e080c841705 inherit pro_attribs_class_parameter_acceptor"><td class="memItemLeft" align="right" valign="top">const std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_parameter_acceptor.html#a52134c59ec98830230c23e080c841705">section_name</a></td></tr>
@@ -198,13 +174,15 @@ Additional Inherited Members</h2></td></tr>
 <div class="textblock"><h3>template&lt;int dim, int spacedim = dim&gt;<br />
 class ParsedFiniteElement&lt; dim, spacedim &gt;</h3>
 
-<p>Parsed <a class="elRef" doxygen="/Users/heltai/c++/dealii-sak/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classFiniteElement.html">FiniteElement</a>. Read from a parameter file the name of a finite element, generate one for you, and return a pointer to it.</p>
-<p>The name must be in the form which is returned by the <a class="elRef" doxygen="/Users/heltai/c++/dealii-sak/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classFiniteElement.html#a09655d1d2555af8dcd48caebd4039d29">FiniteElement::get_name</a> function, where dimension template parameters &lt;2&gt; etc. can be omitted. Alternatively, the explicit number can be replaced by dim or d. If a number is given, it must match the template parameter of this function.</p>
-<p>The names of <a class="elRef" doxygen="/Users/heltai/c++/dealii-sak/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classFESystem.html">FESystem</a> elements follow the pattern <a class="elRef" doxygen="/Users/heltai/c++/dealii-sak/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classFESystem.html">FESystem</a>[FE_Base1^p1-FE_Base2^p2] The powers p1 etc. may either be numbers or can be replaced by dim or d.</p>
+<p>Parsed FiniteElement. Read from a parameter file the name of a finite element, generate one for you, and return a pointer to it.</p>
+<p>The name must be in the form which is returned by the FiniteElement::get_name function, where dimension template parameters &lt;2&gt; etc. can be omitted. Alternatively, the explicit number can be replaced by dim or d. If a number is given, it must match the template parameter of this function.</p>
+<p>The names of FESystem elements follow the pattern FESystem[FE_Base1^p1-FE_Base2^p2] The powers p1 etc. may either be numbers or can be replaced by dim or d.</p>
 <p>If no finite element can be reconstructed from this string, an exception of type FETools::ExcInvalidFEName is thrown.</p>
 <p>The operator() returns a pointer to a newly create finite element. It is in the caller's responsibility to destroy the object pointed to at an appropriate later time.</p>
 <p>Since the value of the template argument can't be deduced from the (string) argument given to this function, you have to explicitly specify it when you call this function.</p>
-<p>This function knows about all the standard elements defined in the library. However, it doesn't by default know about elements that you may have defined in your program. To make your own elements known to this function, use the <a class="elRef" doxygen="/Users/heltai/c++/dealii-sak/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/namespaceFETools.html#a5a006641198ca5641c5c8ae20b741b4b">add_fe_name()</a> function. </p>
+<p>This function knows about all the standard elements defined in the library. However, it doesn't by default know about elements that you may have defined in your program. To make your own elements known to this function, use the add_fe_name() function. </p>
+
+<p>Definition at line <a class="el" href="parsed__finite__element_8h_source.html#l00044">44</a> of file <a class="el" href="parsed__finite__element_8h_source.html">parsed_finite_element.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a class="anchor" id="a0b32290d760794d368a4a815ec603ae6"></a>
 <div class="memitem">
@@ -256,8 +234,10 @@ template&lt;int dim, int spacedim&gt; </div>
       </table>
 </div><div class="memdoc">
 <p>Constructor. Takes a name for the section of the Parameter Handler to use.</p>
-<p>This class is derived from <a class="el" href="class_parameter_acceptor.html">ParameterAcceptor</a>. Once you constructed an object of this class, if you call ParameterAcceptor::parse_all_parameters(prm), also the parameters of this class will be filled with values from the argument <a class="elRef" doxygen="/Users/heltai/c++/dealii-sak/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classParameterHandler.html">ParameterHandler</a>.</p>
-<p>The optional parameters specify the <a class="elRef" doxygen="/Users/heltai/c++/dealii-sak/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classFiniteElement.html">FiniteElement</a> name, the component names, the allowed number of components and the system and preconditioner couplings. This class will throw an exception if the number of components is set to something different than zero and the corresponding <a class="elRef" doxygen="/Users/heltai/c++/dealii-sak/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classFiniteElement.html">FiniteElement</a> does not match this number of components. If n_components is left to 0 (the default value), then any <a class="elRef" doxygen="/Users/heltai/c++/dealii-sak/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classFiniteElement.html">FiniteElement</a> can be generated, with arbitrary numbers of components. </p>
+<p>This class is derived from <a class="el" href="class_parameter_acceptor.html">ParameterAcceptor</a>. Once you constructed an object of this class, if you call ParameterAcceptor::parse_all_parameters(prm), also the parameters of this class will be filled with values from the argument ParameterHandler.</p>
+<p>The optional parameters specify the FiniteElement name, the component names, the allowed number of components and the system and preconditioner couplings. This class will throw an exception if the number of components is set to something different than zero and the corresponding FiniteElement does not match this number of components. If n_components is left to 0 (the default value), then any FiniteElement can be generated, with arbitrary numbers of components. </p>
+
+<p>Definition at line <a class="el" href="parsed__finite__element_8cc_source.html#l00006">6</a> of file <a class="el" href="parsed__finite__element_8cc_source.html">parsed_finite_element.cc</a>.</p>
 
 </div>
 </div>
@@ -274,7 +254,7 @@ template&lt;int dim, int spacedim&gt; </div>
         <tr>
           <td class="memname">void <a class="el" href="class_parsed_finite_element.html">ParsedFiniteElement</a>&lt; dim, spacedim &gt;::declare_parameters </td>
           <td>(</td>
-          <td class="paramtype"><a class="elRef" doxygen="/Users/heltai/c++/dealii-sak/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classParameterHandler.html">ParameterHandler</a> &amp;&#160;</td>
+          <td class="paramtype">ParameterHandler &amp;&#160;</td>
           <td class="paramname"><em>prm</em></td><td>)</td>
           <td></td>
         </tr>
@@ -287,15 +267,17 @@ template&lt;int dim, int spacedim&gt; </div>
 </div><div class="memdoc">
 <p>Declare possible parameters of this class.</p>
 <p>The first parameter which is declared here is "Finite element
-space". The parameter must be in the form which is returned by the <a class="elRef" doxygen="/Users/heltai/c++/dealii-sak/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classFiniteElement.html#a09655d1d2555af8dcd48caebd4039d29">FiniteElement::get_name</a> function, where dimension template parameters &lt;2&gt; etc. can be omitted. Alternatively, the explicit number can be replaced by dim or d. If a number is given, it must match the template parameter of this function.</p>
-<p>The names of <a class="elRef" doxygen="/Users/heltai/c++/dealii-sak/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classFESystem.html">FESystem</a> elements follow the pattern <a class="elRef" doxygen="/Users/heltai/c++/dealii-sak/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classFESystem.html">FESystem</a>[FE_Base1^p1-FE_Base2^p2] The powers p1 etc. may either be numbers or can be replaced by dim or d.</p>
+space". The parameter must be in the form which is returned by the FiniteElement::get_name function, where dimension template parameters &lt;2&gt; etc. can be omitted. Alternatively, the explicit number can be replaced by dim or d. If a number is given, it must match the template parameter of this function.</p>
+<p>The names of FESystem elements follow the pattern FESystem[FE_Base1^p1-FE_Base2^p2] The powers p1 etc. may either be numbers or can be replaced by dim or d.</p>
 <p>If no finite element can be reconstructed from this string, an exception of type FETools::ExcInvalidFEName is thrown.</p>
 <p>The operator() returns a pointer to a newly create finite element. It is in the caller's responsibility to destroy the object pointed to at an appropriate later time.</p>
-<p>The second parameter is "Block names". This is comma separeted list of component names which identifies the Finite Elemenet. If a name is repeated, then that component is assumed to be part of a vector field or <a class="elRef" doxygen="/Users/heltai/c++/dealii-sak/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classTensor.html">Tensor</a> field, and is treated as a single block. User classes can use this information to construct block matrices and vectors, or to group solution names according to components. For example, a Stokes problem may have "u,u,p" for dim = 2 or "u, u, u, p" for dim = 3.</p>
+<p>The second parameter is "Block names". This is comma separeted list of component names which identifies the Finite Elemenet. If a name is repeated, then that component is assumed to be part of a vector field or Tensor field, and is treated as a single block. User classes can use this information to construct block matrices and vectors, or to group solution names according to components. For example, a Stokes problem may have "u,u,p" for dim = 2 or "u, u, u, p" for dim = 3.</p>
 <p>The third parameter defined by this function is "Block coupling", which is semicolumn separated list of comma separated indices from 0 to 2 (included), representing a table of coupling between the components (or the blocks). The default for this parameter is the empty string, which is interpreted as "all components couple
 with all other components". You can specify a block wise coupling (with two blocks, this would be a 2x2 matrix) or a component wise coupling (if a block is made of more than one component, but not all components of the same block couple with the other components). The numbers are interpreted as: 0=DoFTools::none, 1=DoFTools::always, 2=DoFTools::nonzero. </p>
 
 <p>Implements <a class="el" href="class_parameter_acceptor.html#ace1609b41eeb6a5461a388061d23b1bd">ParameterAcceptor</a>.</p>
+
+<p>Definition at line <a class="el" href="parsed__finite__element_8cc_source.html#l00024">24</a> of file <a class="el" href="parsed__finite__element_8cc_source.html">parsed_finite_element.cc</a>.</p>
 
 </div>
 </div>
@@ -315,6 +297,8 @@ template&lt;int dim, int spacedim&gt; </div>
 </div><div class="memdoc">
 <p>Return the block names for this Finite Element. This is the same as std::unique(<a class="el" href="class_parsed_finite_element.html#a84b1febe20b26cdf7ccf1457e3fb0004">get_component_names()</a>.begin(), <a class="el" href="class_parsed_finite_element.html#a84b1febe20b26cdf7ccf1457e3fb0004">get_component_names()</a>.end()) </p>
 
+<p>Definition at line <a class="el" href="parsed__finite__element_8cc_source.html#l00167">167</a> of file <a class="el" href="parsed__finite__element_8cc_source.html">parsed_finite_element.cc</a>.</p>
+
 </div>
 </div>
 <a class="anchor" id="a61bfbf3e99aaa8858c0cf8b0baa77dec"></a>
@@ -332,6 +316,8 @@ template&lt;int dim, int spacedim&gt; </div>
       </table>
 </div><div class="memdoc">
 <p>Return the blocking of the components for this finite element. This is what's needed by the block renumbering algorithm. </p>
+
+<p>Definition at line <a class="el" href="parsed__finite__element_8cc_source.html#l00174">174</a> of file <a class="el" href="parsed__finite__element_8cc_source.html">parsed_finite_element.cc</a>.</p>
 
 </div>
 </div>
@@ -351,6 +337,8 @@ template&lt;int dim, int spacedim&gt; </div>
 </div><div class="memdoc">
 <p>Return the component names for this Finite Element. </p>
 
+<p>Definition at line <a class="el" href="parsed__finite__element_8cc_source.html#l00160">160</a> of file <a class="el" href="parsed__finite__element_8cc_source.html">parsed_finite_element.cc</a>.</p>
+
 </div>
 </div>
 <a class="anchor" id="a155cb36378f89e70653ee2e41b852eb5"></a>
@@ -360,7 +348,7 @@ template&lt;int dim, int spacedim&gt; </div>
 template&lt;int dim, int spacedim&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">const <a class="elRef" doxygen="/Users/heltai/c++/dealii-sak/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classTable.html">Table</a>&lt; 2, <a class="elRef" doxygen="/Users/heltai/c++/dealii-sak/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/group__dofs.html#gad31df71a29dd76de9b4ab241b2527160">DoFTools::Coupling</a> &gt; &amp; <a class="el" href="class_parsed_finite_element.html">ParsedFiniteElement</a>&lt; dim, spacedim &gt;::get_coupling </td>
+          <td class="memname">const Table&lt; 2, DoFTools::Coupling &gt; &amp; <a class="el" href="class_parsed_finite_element.html">ParsedFiniteElement</a>&lt; dim, spacedim &gt;::get_coupling </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -368,6 +356,8 @@ template&lt;int dim, int spacedim&gt; </div>
       </table>
 </div><div class="memdoc">
 <p>Return the coupling of the Finite Element for the system matrix. </p>
+
+<p>Definition at line <a class="el" href="parsed__finite__element_8cc_source.html#l00181">181</a> of file <a class="el" href="parsed__finite__element_8cc_source.html">parsed_finite_element.cc</a>.</p>
 
 </div>
 </div>
@@ -378,7 +368,7 @@ template&lt;int dim, int spacedim&gt; </div>
 template&lt;int dim, int spacedim&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">const <a class="elRef" doxygen="/Users/heltai/c++/dealii-sak/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classTable.html">Table</a>&lt; 2, <a class="elRef" doxygen="/Users/heltai/c++/dealii-sak/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/group__dofs.html#gad31df71a29dd76de9b4ab241b2527160">DoFTools::Coupling</a> &gt; &amp; <a class="el" href="class_parsed_finite_element.html">ParsedFiniteElement</a>&lt; dim, spacedim &gt;::get_preconditioner_coupling </td>
+          <td class="memname">const Table&lt; 2, DoFTools::Coupling &gt; &amp; <a class="el" href="class_parsed_finite_element.html">ParsedFiniteElement</a>&lt; dim, spacedim &gt;::get_preconditioner_coupling </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -386,6 +376,8 @@ template&lt;int dim, int spacedim&gt; </div>
       </table>
 </div><div class="memdoc">
 <p>Return the coupling of the Finite Element for the preconditioner. </p>
+
+<p>Definition at line <a class="el" href="parsed__finite__element_8cc_source.html#l00187">187</a> of file <a class="el" href="parsed__finite__element_8cc_source.html">parsed_finite_element.cc</a>.</p>
 
 </div>
 </div>
@@ -405,6 +397,8 @@ template&lt;int dim, int spacedim&gt; </div>
 </div><div class="memdoc">
 <p>Return the number of blocks of the Finite Element. </p>
 
+<p>Definition at line <a class="el" href="parsed__finite__element_8cc_source.html#l00153">153</a> of file <a class="el" href="parsed__finite__element_8cc_source.html">parsed_finite_element.cc</a>.</p>
+
 </div>
 </div>
 <a class="anchor" id="a432814fb23a7db937442afdd70e400d1"></a>
@@ -423,6 +417,8 @@ template&lt;int dim, int spacedim&gt; </div>
 </div><div class="memdoc">
 <p>Return the number of components of the Finite Element. </p>
 
+<p>Definition at line <a class="el" href="parsed__finite__element_8cc_source.html#l00146">146</a> of file <a class="el" href="parsed__finite__element_8cc_source.html">parsed_finite_element.cc</a>.</p>
+
 </div>
 </div>
 <a class="anchor" id="a3056215d90ae2284d22e2abce20d22d7"></a>
@@ -432,7 +428,7 @@ template&lt;int dim, int spacedim&gt; </div>
 template&lt;int dim, int spacedim&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname"><a class="elRef" doxygen="/Users/heltai/c++/dealii-sak/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classFiniteElement.html">FiniteElement</a>&lt; dim, spacedim &gt; * <a class="el" href="class_parsed_finite_element.html">ParsedFiniteElement</a>&lt; dim, spacedim &gt;::operator() </td>
+          <td class="memname">FiniteElement&lt; dim, spacedim &gt; * <a class="el" href="class_parsed_finite_element.html">ParsedFiniteElement</a>&lt; dim, spacedim &gt;::operator() </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -440,6 +436,8 @@ template&lt;int dim, int spacedim&gt; </div>
       </table>
 </div><div class="memdoc">
 <p>Return a shared pointer to a newly created Finite Element. It will throw an exception if called before any parsing has occured, or if the number of components of the generated finite element is different from the number of components given at construction time. </p>
+
+<p>Definition at line <a class="el" href="parsed__finite__element_8cc_source.html#l00072">72</a> of file <a class="el" href="parsed__finite__element_8cc_source.html">parsed_finite_element.cc</a>.</p>
 
 </div>
 </div>
@@ -469,11 +467,13 @@ template&lt;int dim, int spacedim&gt; </div>
 
 <p>Reimplemented from <a class="el" href="class_parameter_acceptor.html#a5d6b8666b6b9b9898b0f584b1a602ea5">ParameterAcceptor</a>.</p>
 
+<p>Definition at line <a class="el" href="parsed__finite__element_8cc_source.html#l00079">79</a> of file <a class="el" href="parsed__finite__element_8cc_source.html">parsed_finite_element.cc</a>.</p>
+
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following files:<ul>
 <li>include/<a class="el" href="parsed__finite__element_8h_source.html">parsed_finite_element.h</a></li>
-<li>source/<a class="el" href="parsed__finite__element_8cc.html">parsed_finite_element.cc</a></li>
+<li>source/<a class="el" href="parsed__finite__element_8cc_source.html">parsed_finite_element.cc</a></li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->
@@ -481,7 +481,7 @@ template&lt;int dim, int spacedim&gt; </div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="class_parsed_finite_element.html">ParsedFiniteElement</a></li>
-    <li class="footer">Generated on Wed Sep 9 2015 10:22:33 for Deal.II Swiss Army Knife library by
+    <li class="footer">Generated on Wed Sep 9 2015 17:25:33 for Deal.II Swiss Army Knife library by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.10 </li>
   </ul>

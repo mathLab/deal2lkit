@@ -1,4 +1,6 @@
 var searchData=
 [
-  ['2_2e0_2e0_2dvs_2d3_2e0_2e0_2eh',['2.0.0-vs-3.0.0.h',['http://www.dealii.org/developer/doxygen/deal.II/2_80_80-vs-3_80_80_8h.html',1,'']]]
+  ['dof_5futilities_2eh',['dof_utilities.h',['../dof__utilities_8h.html',1,'']]],
+  ['domain_2ecc',['domain.cc',['../domain_8cc.html',1,'']]],
+  ['domain_2eh',['domain.h',['../domain_8h.html',1,'']]]
 ];
