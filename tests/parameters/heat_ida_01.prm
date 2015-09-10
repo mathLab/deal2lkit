@@ -1,0 +1,122 @@
+# Parameter file generated with 
+# DEAL_II_SAK_GIT_BRANCH=ida.g
+# DEAL_II_SAK_GIT_SHORTREV=26cf917.g
+# DEAL_II_GIT_BRANCH=master
+# DEAL_II_GIT_SHORTREV=64c679b
+subsection Dirichlet BCs
+  set IDs and component masks = 0=0
+  set IDs and expressions     = 0=t
+  set Known component names   = u
+  set Used constants          = 
+end
+subsection Domain
+  set Grid to generate           = rectangle
+  set Input grid file name       = 
+  set Mesh smoothing alogrithm   = none
+  set Optional Point<spacedim> 1 = 0,0
+  set Optional Point<spacedim> 2 = 1,1
+  set Optional bool 1            = true
+  set Optional double 1          = 1.
+  set Optional double 2          = 0.5
+  set Optional int 1             = 1
+  set Optional vector of dim int = 1,1
+  set Output grid file name      = 
+end
+subsection Exact solution
+  set Function constants  = 
+  set Function expression = 0
+  set Variable names      = x,y,t
+end
+subsection Finite Element
+  set Block coupling                 = 
+  set Blocking of the finite element = u
+  set Finite element space           = FE_Q(1)
+  set Preconditioner block coupling  = 
+end
+subsection Forcing term
+  set Function constants  = 
+  set Function expression = t
+  set Variable names      = x,y,t
+end
+subsection Heat<2>
+  set Adaptive refinement            = true
+  set Initial global refinement      = 3
+  set Maximum number of time steps   = 10000
+  set Number of cycles               = 1
+  set Timer output file              = timer.txt
+  set Use direct solver if available = true
+end
+subsection IDA Solver Parameters
+  set Absolute error tolerance                      = 1e-4
+  set Final time                                    = 1
+  set Ignore algebraic terms for error computations = false
+  set Initial condition Newton max iterations       = 5
+  set Initial condition Newton parameter            = 0.33
+  set Initial condition type                        = use_y_dot
+  set Initial step size                             = 1e-4
+  set Initial time                                  = 0
+  set Maximum number of nonlinear iterations        = 10
+  set Maximum order of BDF                          = 5
+  set Min step size                                 = 5e-5
+  set Relative error tolerance                      = 1e-3
+  set Seconds between each output                   = 1e-1
+  set Use local tolerances                          = false
+end
+subsection Initial solution
+  set Function constants  = 
+  set Function expression = 0
+  set Variable names      = x,y,t
+end
+subsection Initial solution_dot
+  set Function constants  = 
+  set Function expression = 0
+  set Variable names      = x,y,t
+end
+subsection Output Parameters
+  set Incremental run prefix = 
+  set Output partitioning    = false
+  set Problem base name      = solution
+  set Solution names         = u
+  subsection Solution output format
+    set Output format = vtu
+    set Subdivisions  = 1
+    subsection DX output parameters
+      set Coordinates format = ascii
+      set Data format        = ascii
+      set Integer format     = ascii
+      set Write neighbors    = true
+    end
+    subsection Eps output parameters
+      set Azimut angle                        = 60
+      set Color function                      = default
+      set Color shading of interior of cells  = true
+      set Draw mesh lines                     = true
+      set Fill interior of cells              = true
+      set Index of vector for color           = 0
+      set Index of vector for height          = 0
+      set Line widths in eps units            = 0.5
+      set Scale to width or height            = width
+      set Scaling for z-axis                  = 1
+      set Size (width or height) in eps units = 300
+      set Turn angle                          = 30
+    end
+    subsection Gmv output parameters
+    end
+    subsection Gnuplot output parameters
+    end
+    subsection Povray output parameters
+      set Include external file = true
+      set Use bicubic patches   = false
+      set Use smooth triangles  = false
+    end
+    subsection Tecplot output parameters
+    end
+    subsection UCD output parameters
+      set Write preamble = true
+    end
+    subsection Vtk output parameters
+    end
+    subsection deal.II intermediate output parameters
+    end
+  end
+end
