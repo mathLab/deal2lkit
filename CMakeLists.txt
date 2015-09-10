@@ -22,22 +22,28 @@ FIND_PACKAGE(deal.II 8.3 REQUIRED
   HINTS ${deal.II_DIR} ${DEAL_II_DIR} ../ ../../ $ENV{DEAL_II_DIR}
 )
 
+# Set standard flags
+SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-pedantic")
+SET(CMAKE_BUILD_TYPE "${DEAL_II_BUILD_TYPE}" CACHE STRING "Build type. Either Debug, Release, or DebugRelease.")
+
 DEAL_II_INITIALIZE_CACHED_VARIABLES()
 DEAL_II_QUERY_GIT_INFORMATION()
 PROJECT(${TARGET_LIB})
 
-SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-pedantic")
 
 # We generate one library for each type of deal.II library
 # we found. If you compiled deal.II with both Release and Debug
 # mode, this will generate both Release and Debug programs for you
 # The debug library and program are postfixed with ".g"
-SET(_d2_build_types "Release;Debug")
-SET(Release_postfix "")
-SET(Debug_postfix ".g")
 
+# Options about examples
+OPTION(DEAL_II_SAK_ENABLE_TESTING "Enable testing." OFF)
+OPTION(DEAL_II_SAK_COMPILE_EXAMPLES "Compile examples" OFF)
+OPTION(DEAL_II_SAK_INSTALL_EXAMPLES "Install examples" ON)
 OPTION(DEAL_II_SAK_USE_BOOST "Use boost libraries." ON)
-  IF(DEAL_II_SAK_USE_BOOST)
+
+
+IF(DEAL_II_SAK_USE_BOOST)
   FIND_PACKAGE(Boost COMPONENTS system filesystem)
   IF(Boost_FOUND)
     # add_definitions(${Boost_LIB_DIAGNOSTIC_DEFINITIONS})
@@ -49,13 +55,13 @@ OPTION(DEAL_II_SAK_USE_BOOST "Use boost libraries." ON)
   ENDIF()
 ENDIF()
 
-# Options about examples
-OPTION(DEAL_II_SAK_COMPILE_EXAMPLES "Compile examples" ON)
-OPTION(DEAL_II_SAK_INSTALL_EXAMPLES "Install examples" ON)
-
+# Loop over all build types.
+SET(_d2_build_types "Release;Debug")
+SET(Release_postfix "")
+SET(Debug_postfix ".g")
 FOREACH(_build_type ${_d2_build_types})
     # Only build this type, if deal.II was compiled with it.
-    IF(DEAL_II_BUILD_TYPE MATCHES "${_build_type}")
+    IF(DEAL_II_BUILD_TYPE MATCHES "${_build_type}" AND CMAKE_BUILD_TYPE MATCHES "${_build_type}")
 	MESSAGE("-- Found ${_build_type} version of deal.II.")
 	SET(_postfix "${${_build_type}_postfix}")
 
@@ -101,8 +107,10 @@ FOREACH(_build_type ${_d2_build_types})
     ENDIF()
 ENDFOREACH()
 
-ADD_SUBDIRECTORY(tests)
-ENABLE_TESTING()
+IF(${DEAL_II_SAK_ENABLE_TESTING})
+    ADD_SUBDIRECTORY(tests)
+    ENABLE_TESTING()
+ENDIF()
 
 # Doxygen
 find_package(Doxygen)
