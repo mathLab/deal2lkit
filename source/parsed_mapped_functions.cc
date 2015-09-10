@@ -43,10 +43,7 @@ void ParsedMappedFunctions<spacedim,n_components>::parse_parameters_call_back()
   split_id_components(str_id_components);
   split_id_functions(str_id_functions,str_constants);
   AssertThrow(id_components.size() == id_functions.size(),
-              ExcMessage("The number of ids specified in the field "
-                         "'IDs and component masks' (" id_components.size() ") "
-												 "must match the number of ids "
-                         "set in the field 'IDs and expressions' (" id_functions.size() ")."));
+              ExcIdsMismatch(id_components.size(), id_functions.size()));
 
   typedef std::map<unsigned int, ComponentMask>::iterator it_type;
   for (it_type it=id_components.begin(); it != id_components.end(); ++it)

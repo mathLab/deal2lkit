@@ -126,6 +126,14 @@ public:
   void set_time (const double &t);
 
 
+  /// Mismatch between the number of ids set in 'IDs and component masks'
+  /// and 'IDs and expressions'
+  DeclException2(ExcIdsMismatch, unsigned int, unsigned int,
+                 << "The number of ids specified in the field "
+                 <<  "'IDs and component masks' (" << arg1 << ") "
+                 << "must match the number of ids "
+                 << "set in the field 'IDs and expressions' (" << arg2 <<").");
+
   /// An entry with this id does not exist in this object.
   DeclException1(ExcIdNotFound, unsigned int,
                  << "No entry with the id " << arg1 << " exists.");
