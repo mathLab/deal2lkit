@@ -303,7 +303,7 @@ unsigned int DAETimeIntegrator<VEC>::start_ode(VEC &solution,
       cout << setw(4) << "Step " << step_number
            << setw(4) << ", t = " << t
            << setw(4) << ", h = " << h
-					 << std::endl;
+           << std::endl;
 
       copy(solution, yy);
       copy(solution_dot, yp);
