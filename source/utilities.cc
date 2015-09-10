@@ -106,7 +106,7 @@ bool dir_exists(const std::string &dir)
 int get_next_available_index_directory_name(const std::string &base, int n_digits)
 {
   unsigned int index = 0;
-  while ( dir_exists( base + dealii::Utilities::int_to_string (index, n_digits) ) ) index++;
+  while ( dir_exists( base + dealii::Utilities::int_to_string (index, n_digits) ) ) ++index;
   return index;
 }
 
