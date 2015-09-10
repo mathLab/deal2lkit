@@ -1,4 +1,4 @@
-# deal2ltkit: A ToolKit library for deal.II (www.dealii.org) #
+# deal2lkit: A ToolKit library for deal.II (www.dealii.org) #
 
 Copyright (C) 2014 -- 2015 by Luca Heltai (1) 
 
