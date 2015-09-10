@@ -14,7 +14,10 @@
 #include "tests.h"
 #include "utilities.h"
 #include <deal.II/base/utilities.h>
+
+#ifdef DEAL_II_WITH_MPI
 #include <deal.II/base/mpi.h>
+#endif
 
 int main (int argc, char *argv[])
 {
