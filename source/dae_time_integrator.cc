@@ -292,7 +292,7 @@ unsigned int DAETimeIntegrator<VEC>::start_ode(VEC &solution,
     {
 
       next_time += outputs_period;
-      cout << "\r"
+      cout << " "//"\r"
            << setw(5) << t << " ----> "
            << setw(5) << next_time
            << " ### ";
@@ -302,7 +302,8 @@ unsigned int DAETimeIntegrator<VEC>::start_ode(VEC &solution,
       AssertThrow(status == 0, ExcMessage("Error in IDA Solver"));
       cout << setw(4) << "Step " << step_number
            << setw(4) << ", t = " << t
-           << setw(4) << ", h = " << h;
+           << setw(4) << ", h = " << h
+					 << std::endl;
 
       copy(solution, yy);
       copy(solution_dot, yp);
