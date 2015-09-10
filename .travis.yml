@@ -35,7 +35,7 @@ script:
 - mkdir build
 - cd build
 - echo $PATH
-- cmake -GNinja -DCMAKE_INSTALL_PREFIX=/home/travis/dealii-sak-inst -DDEAL_II_SAK_ENABLE_TESTING=ON -DCMAKE_BUILD_TYPE=Debug ..
+- cmake -GNinja -DCMAKE_INSTALL_PREFIX=/home/travis/dealii-sak-inst -DDEAL_II_SAK_ENABLE_TESTING=ON ..
 - ninja -j4 install
 - tar cvfz /home/travis/dealii-sak-CI-build.tgz /home/travis/dealii-sak-inst
 - ctest -j4 -V
