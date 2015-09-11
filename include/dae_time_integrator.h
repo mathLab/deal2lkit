@@ -1,5 +1,5 @@
-#ifndef dae_time_integrator_h
-#define dae_time_integrator_h
+#ifndef __dae_time_integrator_h
+#define __dae_time_integrator_h
 
 #include <deal.II/base/logstream.h>
 #include <deal.II/base/exceptions.h>
