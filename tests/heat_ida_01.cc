@@ -470,7 +470,7 @@ int Heat<dim>::residual (const double t,
   distributed_solution = tmp;
   distributed_solution_dot = solution_dot;
 
-	dst = 0;
+  dst = 0;
 
   const QGauss<dim>  quadrature_formula(fe->degree+1);
 
@@ -503,21 +503,21 @@ int Heat<dim>::residual (const double t,
 
         quad_points = fe_values.get_quadrature_points();
 
-				double sol_dot;
-				Tensor<1,dim> grad_sol;
+        double sol_dot;
+        Tensor<1,dim> grad_sol;
 
 
         for (unsigned int q_point=0; q_point<n_q_points; ++q_point)
           {
-						grad_sol = 0.0;
-						sol_dot = 0.0;
+            grad_sol = 0.0;
+            sol_dot = 0.0;
             for (unsigned int i=0; i<dofs_per_cell; ++i)
-						{
-							for (unsigned int d=0; d<dim; ++d)
-								grad_sol[d] += distributed_solution[local_dof_indices[i]]*fe_values[u].gradient(i,q_point)[d];
+              {
+                for (unsigned int d=0; d<dim; ++d)
+                  grad_sol[d] += distributed_solution[local_dof_indices[i]]*fe_values[u].gradient(i,q_point)[d];
 
-							sol_dot += distributed_solution_dot[local_dof_indices[i]]*fe_values.shape_value(i,q_point);
-						}
+                sol_dot += distributed_solution_dot[local_dof_indices[i]]*fe_values.shape_value(i,q_point);
+              }
 
             for (unsigned int i=0; i<dofs_per_cell; ++i)
               {
@@ -528,11 +528,11 @@ int Heat<dim>::residual (const double t,
 
                                  +
 
-																 grad_sol *
+                                 grad_sol *
                                  fe_values.shape_grad(i,q_point)
 
-															//	 - 1.0 *
-                              //   fe_values.shape_value(i,q_point)
+                                 //   - 1.0 *
+                                 //   fe_values.shape_value(i,q_point)
 
                                )*fe_values.JxW(q_point);
               }
@@ -647,7 +647,7 @@ int Heat<dim>::solve_jacobian_system (const double t,
   SolverControl solver_control (dof_handler->n_dofs(), 1e-8);
 
   SolverCG<VEC> solver(solver_control,
-                           SolverCG<VEC>::AdditionalData(dof_handler->n_dofs(),true));
+                       SolverCG<VEC>::AdditionalData(dof_handler->n_dofs(),true));
   solver.solve (jacobian_matrix, dst, src,
                 TrilinosWrappers::PreconditionIdentity());
 

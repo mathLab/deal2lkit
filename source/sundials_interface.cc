@@ -1,4 +1,4 @@
-#ifdef DEAL_II_SAK_WITH_SUNDIALS
+//#ifdef DEAL_II_SAK_WITH_SUNDIALS
 
 #include "sundials_interface.h"
 #include <deal.II/lac/vector.h>
@@ -68,4 +68,4 @@ template class SundialsInterface<TrilinosWrappers::MPI::Vector>;
 template class SundialsInterface<TrilinosWrappers::MPI::BlockVector>;
 #endif
 
-#endif
+//#endif

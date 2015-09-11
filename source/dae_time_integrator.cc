@@ -1,4 +1,4 @@
-#ifdef DEAL_II_SAK_WITH_SUNDIALS
+//#ifdef DEAL_II_SAK_WITH_SUNDIALS
 
 #include "dae_time_integrator.h"
 #include "sundials_interface.h"
@@ -293,17 +293,17 @@ unsigned int DAETimeIntegrator<VEC>::start_ode(VEC &solution,
 
       next_time += outputs_period;
       std::cout << " "//"\r"
-           << std::setw(5) << t << " ----> "
-           << std::setw(5) << next_time
-           << " ### ";
+                << std::setw(5) << t << " ----> "
+                << std::setw(5) << next_time
+                << " ### ";
       status = IDASolve(ida_mem, next_time, &t, yy, yp, IDA_NORMAL);
 
       status = IDAGetLastStep(ida_mem, &h);
       AssertThrow(status == 0, ExcMessage("Error in IDA Solver"));
       std::cout << std::setw(4) << "Step " << step_number
-           << std::setw(4) << ", t = " << t
-           << std::setw(4) << ", h = " << h
-           << std::endl;
+                << std::setw(4) << ", t = " << t
+                << std::setw(4) << ", h = " << h
+                << std::endl;
 
       copy(solution, yy);
       copy(solution_dot, yp);
@@ -445,4 +445,4 @@ template class DAETimeIntegrator<TrilinosWrappers::MPI::BlockVector>;
 #endif
 
 template class DAETimeIntegrator<BlockVector<double> >;
-#endif
+//#endif

@@ -2,15 +2,16 @@
 #define __heat_ida_h
 
 #include <deal.II/base/timer.h>
-#include <deal.II/lac/constraint_matrix.h>
-
-#include <deal.II/lac/trilinos_vector.h>
 #include <deal.II/base/index_set.h>
 
+#include <deal.II/dofs/dof_handler.h>
+
+#include <deal.II/lac/constraint_matrix.h>
+#include <deal.II/lac/block_sparsity_pattern.h>
+#include <deal.II/lac/sparsity_tools.h>
+#include <deal.II/lac/trilinos_vector.h>
 #include <deal.II/lac/trilinos_sparse_matrix.h>
 #include <deal.II/lac/trilinos_precondition.h>
-
-#include <deal.II/dofs/dof_handler.h>
 
 #include <deal.II/numerics/error_estimator.h>
 
@@ -30,8 +31,9 @@
 #include <stdlib.h>
 
 
+using namespace dealii;
 
-typedef typename TrilinosWrappers::MPI::Vector VEC;
+typedef TrilinosWrappers::MPI::Vector VEC;
 template<int dim>
 class Heat : public SundialsInterface<VEC>, public ParameterAcceptor
 {
