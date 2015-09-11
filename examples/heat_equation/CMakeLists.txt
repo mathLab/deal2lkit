@@ -15,7 +15,7 @@
 # Set the name of the project and target
 # If your application follows the structure above, you don't need to 
 # specify anything else. 
-SET(TARGET heat_equation)
+SET(TARGET heat)
 SET(_main source/main.cc)
 
 # Set the _main variable to empty if you don't want an executable
@@ -28,6 +28,7 @@ SET(_main source/main.cc)
 # Declare all source files the target consists of:
 file(GLOB _files source/*cc)
 
+set(SUNDIALS_LIBS "sundials_ida;sundials_nvecserial;sundials_nvecparallel")
 
 # Don't compile the main file into the library
 IF(NOT "${_main}" STREQUAL "") 
@@ -44,12 +45,11 @@ FIND_PACKAGE(deal.II 8.3 REQUIRED
   HINTS ${deal.II_DIR} ${DEAL_II_DIR} ../ ../../ $ENV{DEAL_II_DIR}
 )
 
-SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-pedantic")
 DEAL_II_INITIALIZE_CACHED_VARIABLES()
 PROJECT(${TARGET})
 
-
 SET(DEAL_II_SAK "$ENV{DEAL_II_SAK}" CACHE PATH "Path to dealii-sak")
+SET(SUNDIALS_DIR "$ENV{SUNDIALS_DIR}" CACHE PATH "Path to sundials")
 
 # We one library and one target for each type of deal.II library
 # we found. If you compiled deal.II with both Release and Debug
@@ -85,6 +85,16 @@ FOREACH(_build_type ${_d2_build_types})
 	    MESSAGE(WARNING "-- Library dealii-sak not found: ${SAK${_p}}")
 	ENDIF()
 
+	FOREACH(_slib ${SUNDIALS_LIBS})
+	    FIND_LIBRARY(SUNDIALS_${_slib} ${_slib} HINTS ${SUNDIALS_DIR} PATH_SUFFIXES lib)
+	    IF(NOT "${SUNDIALS_${_slib}}" STREQUAL "${_slib}-NOTFOUND")
+		TARGET_LINK_LIBRARIES(${_lib} ${SUNDIALS_${_slib}})
+		MESSAGE("-- Library ${_slib} found: ${SUNDIALS_${_slib}}")
+	    ELSE()
+		MESSAGE(WARNING "-- Library ${_slib} not found: ${SUNDIALS_${_slib}}")
+	    ENDIF()
+	ENDFOREACH()
+
 	# Compile an executable only if required by the user
 	IF(NOT "${_main}" STREQUAL "") 
 	    SET(_exe "${TARGET}${${_build_type}_postfix}")
@@ -99,6 +109,7 @@ FOREACH(_build_type ${_d2_build_types})
 ENDFOREACH()
 
 INCLUDE_DIRECTORIES(${DEAL_II_SAK}/include)
+INCLUDE_DIRECTORIES(${SUNDIALS_DIR}/include)
 
 if(EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/tests)
     ADD_SUBDIRECTORY(tests)

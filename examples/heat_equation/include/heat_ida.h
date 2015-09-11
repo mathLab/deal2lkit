@@ -1,40 +1,18 @@
-#include <deal.II/lac/sparsity_tools.h>
+#ifndef __heat_ida_h
+#define __heat_ida_h
+
 #include <deal.II/base/timer.h>
-#include <stdio.h>
-#include <stdlib.h>
 #include <deal.II/lac/constraint_matrix.h>
-#include <deal.II/lac/solver_cg.h>
 
-#include <sundials/sundials_types.h>
-#include <nvector/nvector_parallel.h>
-#include <sundials/sundials_math.h>
-
-#include <mpi.h>
-
-
-#include <nvector/nvector_parallel.h>
-
-#include <deal.II/lac/parallel_vector.h>
 #include <deal.II/lac/trilinos_vector.h>
 #include <deal.II/base/index_set.h>
 
 #include <deal.II/lac/trilinos_sparse_matrix.h>
 #include <deal.II/lac/trilinos_precondition.h>
-#include <deal.II/lac/trilinos_solver.h>
 
 #include <deal.II/dofs/dof_handler.h>
-#include <deal.II/dofs/dof_renumbering.h>
-#include <deal.II/dofs/dof_accessor.h>
-#include <deal.II/dofs/dof_tools.h>
 
-#include <deal.II/numerics/vector_tools.h>
-#include <deal.II/numerics/matrix_tools.h>
-#include <deal.II/numerics/solution_transfer.h>
 #include <deal.II/numerics/error_estimator.h>
-
-#include <deal.II/distributed/solution_transfer.h>
-
-#include <mpi.h>
 
 #include "sundials_interface.h"
 #include "dae_time_integrator.h"
@@ -47,6 +25,11 @@
 #include "parsed_dirichlet_bcs.h"
 
 #include <fstream>
+#include <mpi.h>
+#include <stdio.h>
+#include <stdlib.h>
+
+
 
 typedef typename TrilinosWrappers::MPI::Vector VEC;
 template<int dim>
@@ -198,3 +181,4 @@ private:
   bool use_direct_solver;
 };
 
+#endif

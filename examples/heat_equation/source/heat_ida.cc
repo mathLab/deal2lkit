@@ -1,5 +1,24 @@
 #include "heat_ida.h"
 
+#include <deal.II/lac/sparsity_tools.h>
+
+#include <deal.II/dofs/dof_renumbering.h>
+#include <deal.II/dofs/dof_accessor.h>
+#include <deal.II/dofs/dof_tools.h>
+
+#include <deal.II/lac/solver_cg.h>
+#include <deal.II/lac/trilinos_solver.h>
+
+#include <nvector/nvector_parallel.h>
+#include <deal.II/lac/parallel_vector.h>
+#include <deal.II/numerics/vector_tools.h>
+#include <deal.II/numerics/matrix_tools.h>
+#include <deal.II/numerics/solution_transfer.h>
+#include <deal.II/distributed/solution_transfer.h>
+
+#include <sundials/sundials_types.h>
+#include <nvector/nvector_parallel.h>
+#include <sundials/sundials_math.h>
 
 template <int dim>
 Heat<dim>::Heat (const MPI_Comm &communicator)
