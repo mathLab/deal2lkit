@@ -12,12 +12,12 @@
 #endif
 
 #include <iostream>
+#include <iomanip>
 
 #include <nvector/nvector_parallel.h>
 #include <nvector/nvector_serial.h>
 
 using namespace dealii;
-using namespace std;
 
 void copy(TrilinosWrappers::MPI::Vector &dst, const N_Vector &src)
 {
@@ -292,17 +292,17 @@ unsigned int DAETimeIntegrator<VEC>::start_ode(VEC &solution,
     {
 
       next_time += outputs_period;
-      cout << " "//"\r"
-           << setw(5) << t << " ----> "
-           << setw(5) << next_time
+      std::cout << " "//"\r"
+           << std::setw(5) << t << " ----> "
+           << std::setw(5) << next_time
            << " ### ";
       status = IDASolve(ida_mem, next_time, &t, yy, yp, IDA_NORMAL);
 
       status = IDAGetLastStep(ida_mem, &h);
       AssertThrow(status == 0, ExcMessage("Error in IDA Solver"));
-      cout << setw(4) << "Step " << step_number
-           << setw(4) << ", t = " << t
-           << setw(4) << ", h = " << h
+      std::cout << std::setw(4) << "Step " << step_number
+           << std::setw(4) << ", t = " << t
+           << std::setw(4) << ", h = " << h
            << std::endl;
 
       copy(solution, yy);
@@ -328,7 +328,7 @@ unsigned int DAETimeIntegrator<VEC>::start_ode(VEC &solution,
       step_number++;
     }
 
-  cout << endl;
+  std::cout << std::endl;
   // Free the vectors which are no longer used.
   N_VDestroy_Parallel(yy);
   N_VDestroy_Parallel(yp);
