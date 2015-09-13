@@ -37,8 +37,8 @@ int main (int argc, char *argv[])
       deallog << "--> " << create_directory("dsfas001") << std::endl;
       deallog << "--> " << create_directory("dsfas002") << std::endl;
       deallog << "--> " << get_next_available_directory_name("dsfas",3) << std::endl;
-      deallog << "--> " << create_directory(get_next_available_directory_name("dsfas",3)) << std::endl;
-      deallog << "--> " << create_directory("dsfas004") << std::endl;
+      // deallog << "--> " << create_directory(get_next_available_directory_name("dsfas",3)) << std::endl;
+      deallog << "--> " << create_directory("dsfas003") << std::endl;
       deallog << "--> " << get_next_available_directory_name("dsfas",3) << std::endl;
 #ifdef DEAL_II_WITH_MPI
     }
