@@ -97,13 +97,13 @@ void append_to_file(const std::string &in_file, const std::string &out_file);
  * A function that return the index of the first non existing folder matching
  * a pattern make by @p base and @p n_digits number. (base000, base001, base002, ...)
  */
-int get_next_available_index_directory_name(const std::string &base, int n_digits=3);
+unsigned int get_next_available_index_directory_name(const std::string &base, int n_digits=3, unsigned int start=0, unsigned int index_max = 1000);
 
 /**
  * A function that return the name of the first non existing folder matching
  * a pattern make by @p base and @p n_digits number. (base000, base001, base002, ...)
  */
-std::string get_next_available_directory_name(const std::string &base, int n_digits=3);
+std::string get_next_available_directory_name(const std::string &base, int n_digits=3, unsigned int start=0, unsigned int index_max = 1000);
 
 /**
  * A function to check the existence of @p dir directory.

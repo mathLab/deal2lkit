@@ -38,7 +38,8 @@ script:
 - cmake -GNinja -DCMAKE_INSTALL_PREFIX=/home/travis/dealii-sak-inst -DDEAL_II_SAK_ENABLE_TESTING=ON -DCMAKE_BUILD_TYPE=DebugRelease ..
 - ninja -j4 install
 - tar cvfz /home/travis/dealii-sak-CI-build.tgz /home/travis/dealii-sak-inst
-- ctest -j4 -V
+# - ctest -j4 -V
+- ctest -j4 -V -R 'utilities_02_'
   #- ../scripts/build_documentation.sh
 - cd ..; ./scripts/check_indentation.sh
 deploy:
@@ -58,4 +59,4 @@ deploy:
 #- openssl aes-256-cbc -K $encrypted_54d4a083decb_key -iv $encrypted_54d4a083decb_iv
 #  -in scripts/travisci_rsa.enc -out scripts/travisci_rsa -d
 #- chmod 0600 scripts/travisci_rsa
-#- cp scripts/travisci_rsa ~/.ssh/id_rsa 
+#- cp scripts/travisci_rsa ~/.ssh/id_rsa
