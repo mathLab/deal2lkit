@@ -1,4 +1,4 @@
-#include "../include/error_handler.h"
+#include <deal2lkit/error_handler.h>
 
 #include <deal.II/base/logstream.h>
 #include <deal.II/base/quadrature_lib.h>

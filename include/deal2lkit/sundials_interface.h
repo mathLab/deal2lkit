@@ -1,7 +1,7 @@
 #ifndef __sak__sundials_interface_h
 #define __sak__sundials_interface_h
 
-#include "utilities.h"
+#include <deal2lkit/utilities.h>
 #include <deal.II/lac/vector.h>
 #include <deal.II/lac/vector_view.h>
 

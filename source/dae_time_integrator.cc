@@ -1,7 +1,7 @@
 //#ifdef DEAL_II_SAK_WITH_SUNDIALS
 
-#include "dae_time_integrator.h"
-#include "sundials_interface.h"
+#include <deal2lkit/dae_time_integrator.h>
+#include <deal2lkit/sundials_interface.h>
 
 #include <deal.II/base/utilities.h>
 #include <deal.II/lac/block_vector.h>

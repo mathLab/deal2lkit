@@ -1,0 +1,136 @@
+## ---------------------------------------------------------------------
+##
+## Copyright (C) 2014 - 2015 by the deal.II authors
+##
+## This file is part of the deal.II library.
+##
+## The deal.II library is free software; you can use it, redistribute
+## it, and/or modify it under the terms of the GNU Lesser General
+## Public License as published by the Free Software Foundation; either
+## version 2.1 of the License, or (at your option) any later version.
+## The full text of the license can be found in the file LICENSE at
+## the top level of the deal.II distribution.
+##
+## ---------------------------------------------------------------------
+
+
+########################################################################
+##                                                                    ##
+##               The deal.II project configuration file               ##
+##                                                                    ##
+########################################################################
+
+
+#
+# General information
+#
+
+D2K_PACKAGE_NAME = @D2K_PACKAGE_NAME@
+D2K_PACKAGE_VERSION = @D2K_PACKAGE_VERSION@
+D2K_PACKAGE_VENDOR = @D2K_PACKAGE_VENDOR@
+D2K_PACKAGE_DESCRIPTION = @D2K_PACKAGE_DESCRIPTION@
+
+D2K_VERSION_MAJOR = @D2K_VERSION_MAJOR@
+D2K_VERSION_MINOR = @D2K_VERSION_MINOR@
+D2K_VERSION_SUBMINOR = @D2K_VERSION_SUBMINOR@
+D2K_VERSION = @D2K_VERSION@
+
+D2K_GIT_BRANCH = @D2K_GIT_BRANCH@
+D2K_GIT_REVISION = @D2K_GIT_REVISION@
+D2K_GIT_SHORTREV =  @D2K_GIT_SHORTREV@
+
+D2K_PROJECT_CONFIG_NAME = @D2K_PROJECT_CONFIG_NAME@
+
+D2K_BUILD_TYPE = @CMAKE_BUILD_TYPE@
+D2K_BUILD_TYPES = @MAKEFILE_BUILD_TYPES@
+
+#
+# Information about the project location
+#
+
+D2K_SHARE_RELDIR = @D2K_SHARE_RELDIR@
+D2K_DOCREADME_RELDIR = @D2K_DOCREADME_RELDIR@
+D2K_DOCHTML_RELDIR = @D2K_DOCHTML_RELDIR@
+D2K_EXAMPLES_RELDIR = @D2K_EXAMPLES_RELDIR@
+D2K_EXECUTABLE_RELDIR = @D2K_EXECUTABLE_RELDIR@
+D2K_INCLUDE_RELDIR = @D2K_INCLUDE_RELDIR@
+D2K_LIBRARY_RELDIR = @D2K_LIBRARY_RELDIR@
+D2K_PROJECT_CONFIG_RELDIR = @D2K_PROJECT_CONFIG_RELDIR@
+
+#
+# Determine D2K_PATH from MAKEFILE_LIST:
+#
+D2K_MAKEFILE_PATH := $(abspath $(lastword $(MAKEFILE_LIST)))
+D2K_PATH := $(subst /${D2K_SHARE_RELDIR}/Make.global_options,,${D2K_MAKEFILE_PATH})
+
+#
+# Information about configuration:
+#
+
+D2K_PROJECT_CONFIG_INCLUDED = true
+D2K_BUILD_DIR = @MAKEFILE_BUILD_DIR@
+
+
+#
+# Compiler and linker configuration
+#
+
+D2K_CXX_COMPILER = @CMAKE_CXX_COMPILER@
+
+# used for all targets:
+D2K_CXX_FLAGS = @D2K_CXX_FLAGS@
+
+# _additionally_ used for debug targets:
+D2K_CXX_FLAGS_DEBUG = @D2K_CXX_FLAGS_DEBUG@
+
+# _additionally_ used for release targets:
+D2K_CXX_FLAGS_RELEASE = @D2K_CXX_FLAGS_RELEASE@
+
+# used for all targets:
+D2K_LINKER_FLAGS = @D2K_LINKER_FLAGS@
+
+# _additionally_ used for debug targets:
+D2K_LINKER_FLAGS_DEBUG = @D2K_LINKER_FLAGS_DEBUG@
+
+# _additionally_ used for release targets:
+D2K_LINKER_FLAGS_RELEASE = @D2K_LINKER_FLAGS_RELEASE@
+
+# used for all targets:
+D2K_USER_DEFINITIONS = @MAKEFILE_USER_DEFINITIONS@
+
+# _additionally_ used for debug targets:
+D2K_USER_DEFINITIONS_DEBUG = @MAKEFILE_USER_DEFINITIONS_DEBUG@
+
+# _additionally_ used for release targets:
+D2K_USER_DEFINITIONS_RELEASE = @MAKEFILE_USER_DEFINITIONS_RELEASE@
+
+
+#
+# MPI runtime:
+#
+
+D2K_MPIEXEC = @MPIEXEC@
+D2K_MPIEXEC_NUMPROC_FLAG = @MPIEXEC_NUMPROC_FLAG@
+D2K_MPIEXEC_PREFLAGS = @MPIEXEC_PREFLAGS@
+D2K_MPIEXEC_POSTFLAGS = @MPIEXEC_POSTFLAGS@
+
+
+#
+# Build a static executable:
+#
+
+D2K_STATIC_EXECUTABLE = @MAKEFILE_STATIC_EXECUTABLE@
+
+
+#
+# Information about include directories and libraries
+#
+
+# Full list of include directories:
+D2K_INCLUDE_DIRS = ${D2K_PATH}@MAKEFILE_INCLUDE_DIRS@
+
+# Full list of libraries for the debug target:
+D2K_LIBRARIES_DEBUG = ${D2K_PATH}@MAKEFILE_LIBRARIES_DEBUG@
+
+# Full list of libraries for the release target:
+D2K_LIBRARIES_RELEASE = ${D2K_PATH}@MAKEFILE_LIBRARIES_RELEASE@

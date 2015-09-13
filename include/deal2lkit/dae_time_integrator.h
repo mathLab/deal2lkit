@@ -17,8 +17,8 @@
 #include <sundials/sundials_types.h>
 
 
-#include "sundials_interface.h"
-#include "parameter_acceptor.h"
+#include <deal2lkit/sundials_interface.h>
+#include <deal2lkit/parameter_acceptor.h>
 
 template<typename VEC=Vector<double> >
 class DAETimeIntegrator : public ParameterAcceptor

@@ -33,7 +33,7 @@
 #include <deal.II/base/parameter_handler.h>
 #include <deal.II/base/conditional_ostream.h>
 
-#include "parameter_acceptor.h"
+#include <deal2lkit/parameter_acceptor.h>
 #include <map>
 #include <cstdio>
 #include <iostream>

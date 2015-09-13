@@ -1,6 +1,6 @@
 //#ifdef DEAL_II_SAK_WITH_SUNDIALS
 
-#include "sundials_interface.h"
+#include <deal2lkit/sundials_interface.h>
 #include <deal.II/lac/vector.h>
 #include <deal.II/lac/block_vector.h>
 #include <deal.II/lac/generic_linear_algebra.h>
@@ -16,7 +16,7 @@
 #endif
 
 
-#include "utilities.h"
+#include <deal2lkit/utilities.h>
 
 template<typename VEC>
 bool SundialsInterface<VEC>::solver_should_restart(const double,

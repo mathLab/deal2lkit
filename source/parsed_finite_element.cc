@@ -1,5 +1,5 @@
-#include "parsed_finite_element.h"
-#include "utilities.h"
+#include <deal2lkit/parsed_finite_element.h>
+#include <deal2lkit/utilities.h>
 #include <deal.II/fe/fe_tools.h>
 
 template <int dim, int spacedim>

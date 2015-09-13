@@ -7,7 +7,7 @@
 #include <deal.II/distributed/tria.h>
 #include <deal.II/grid/manifold_lib.h>
 #include <deal.II/grid/grid_generator.h>
-#include "parameter_acceptor.h"
+#include <deal2lkit/parameter_acceptor.h>
 
 using namespace dealii;
 

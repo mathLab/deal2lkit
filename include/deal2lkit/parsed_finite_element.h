@@ -5,8 +5,8 @@
 #include <deal.II/dofs/dof_tools.h>
 #include <deal.II/fe/fe.h>
 
-#include "parameter_acceptor.h"
-#include "utilities.h"
+#include <deal2lkit/parameter_acceptor.h>
+#include <deal2lkit/utilities.h>
 
 using namespace dealii;
 

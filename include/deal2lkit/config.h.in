@@ -1,0 +1,74 @@
+// ---------------------------------------------------------------------
+//
+// Copyright (C) 2012 - 2015 by the deal.II authors
+//
+// This file is part of the deal.II library.
+//
+// The deal.II library is free software; you can use it, redistribute
+// it, and/or modify it under the terms of the GNU Lesser General
+// Public License as published by the Free Software Foundation; either
+// version 2.1 of the License, or (at your option) any later version.
+// The full text of the license can be found in the file LICENSE at
+// the top level of the deal.II distribution.
+//
+// ---------------------------------------------------------------------
+
+#ifndef dealii__config_h
+#define dealii__config_h
+
+
+/***********************************************************************
+ * Information about deal.II:
+ */
+
+#define D2K_PACKAGE_NAME "@D2K_PACKAGE_NAME@"
+
+#define D2K_PACKAGE_VERSION "@D2K_PACKAGE_VERSION@"
+
+#define D2K_VERSION_MAJOR @D2K_VERSION_MAJOR@
+#define D2K_VERSION_MINOR @D2K_VERSION_MINOR@
+#define D2K_VERSION_SUBMINOR @D2K_VERSION_SUBMINOR@
+
+
+/***********************************************************************
+ * Configured deal.II features:
+ */
+
+#cmakedefine D2K_WITH_SUNDIALS
+
+
+
+
+
+/***********************************************************************
+ * Various macros for version number query and comparison:
+ *
+ * These macros are defined to make testing for specific versions within
+ * the deal.II main code as simple as possible.
+ */
+
+/*
+ * deal.II:
+ */
+
+#define D2K_VERSION_GTE(major,minor,subminor) \
+ ((D2K_VERSION_MAJOR * 10000 + \
+    D2K_VERSION_MINOR * 100 + \
+     D2K_VERSION_SUBMINOR) \
+    >=  \
+    (major)*10000 + (minor)*100 + (subminor))
+
+
+
+/***********************************************************************
+ * Two macro names that we put at the top and bottom of all deal.II files
+ * and that will be expanded to "namespace dealii {" and "}".
+ */
+
+#define D2K_NAMESPACE_OPEN namespace d2k {
+#define D2K_NAMESPACE_CLOSE }
+
+
+
+#endif
+
