@@ -1,6 +1,7 @@
 #ifndef __dealii_sak_sak_data_h
 #define __dealii_sak_sak_data_h
 
+#include <deal2lkit/config.h>
 #include <deal.II/base/config.h>
 #include <deal.II/base/exceptions.h>
 #include <deal.II/base/subscriptor.h>

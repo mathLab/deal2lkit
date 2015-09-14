@@ -1,6 +1,7 @@
 #ifndef _sak_fe_values_cache_h_
 #define _sak_fe_values_cache_h_
 
+#include <deal2lkit/config.h>
 #include <deal.II/fe/fe_values.h>
 #include <deal2lkit/sak_data.h>
 #include <deal2lkit/dof_utilities.h>

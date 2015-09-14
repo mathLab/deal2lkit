@@ -1,6 +1,7 @@
 #ifndef __dealii_parsed_finite_element_h
 #define __dealii_parsed_finite_element_h
 
+#include <deal2lkit/config.h>
 #include <deal.II/base/parameter_handler.h>
 #include <deal.II/dofs/dof_tools.h>
 #include <deal.II/fe/fe.h>

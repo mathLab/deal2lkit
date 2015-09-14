@@ -1,6 +1,7 @@
 #ifndef __dae_time_integrator_h
 #define __dae_time_integrator_h
 
+#include <deal2lkit/config.h>
 #include <deal.II/base/logstream.h>
 #include <deal.II/base/exceptions.h>
 #include <deal.II/base/parameter_handler.h>

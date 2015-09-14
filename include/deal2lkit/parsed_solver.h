@@ -1,6 +1,7 @@
 #ifndef __dealii_sak_parsed_solver_h
 #define __dealii_sak_parsed_solver_h
 
+#include <deal2lkit/config.h>
 #include <deal.II/base/config.h>
 
 #ifdef DEAL_II_WITH_CXX11

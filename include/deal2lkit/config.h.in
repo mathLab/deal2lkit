@@ -13,8 +13,8 @@
 //
 // ---------------------------------------------------------------------
 
-#ifndef dealii__config_h
-#define dealii__config_h
+#ifndef _d2k_config_h
+#define _d2k_config_h
 
 
 /***********************************************************************
@@ -29,6 +29,20 @@
 #define D2K_VERSION_MINOR @D2K_VERSION_MINOR@
 #define D2K_VERSION_SUBMINOR @D2K_VERSION_SUBMINOR@
 
+/**
+ * Name of the local git branch of the source directory.
+ */
+#define D2K_GIT_BRANCH "@D2K_GIT_BRANCH@"
+
+/**
+ * Full sha1 revision of the current git HEAD.
+ */
+#define D2K_GIT_REVISION "@D2K_GIT_REVISION@"
+
+/**
+ * Short sha1 revision of the current git HEAD.
+ */
+#define D2K_GIT_SHORTREV "@D2K_GIT_SHORTREV@"
 
 /***********************************************************************
  * Configured deal.II features:

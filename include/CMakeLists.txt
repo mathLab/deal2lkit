@@ -20,10 +20,6 @@ CONFIGURE_FILE(
   ${CMAKE_CURRENT_SOURCE_DIR}/deal2lkit/config.h.in
   ${CMAKE_CURRENT_BINARY_DIR}/deal2lkit/config.h
   )
-CONFIGURE_FILE(
-  ${CMAKE_CURRENT_SOURCE_DIR}/deal2lkit/version.h.in
-  ${CMAKE_CURRENT_BINARY_DIR}/deal2lkit/version.h
-  )
 
 #
 # Add a rule for how to install the header files:

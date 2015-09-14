@@ -1,6 +1,7 @@
 #ifndef LH_ERROR_HANDLER_H
 #define LH_ERROR_HANDLER_H
 
+#include <deal2lkit/config.h>
 #include <fstream>
 
 #include <deal.II/dofs/dof_handler.h>

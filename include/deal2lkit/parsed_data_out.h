@@ -1,6 +1,7 @@
 #ifndef __dealii_sak_parsed_data_out_h
 #define __dealii_sak_parsed_data_out_h
 
+#include <deal2lkit/config.h>
 #include <fstream>
 
 #include <deal.II/base/config.h>

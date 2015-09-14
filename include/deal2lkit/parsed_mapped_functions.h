@@ -1,6 +1,7 @@
 #ifndef __dealii_sak_parsed_mapped_function_h
 #define __dealii_sak_parsed_mapped_function_h
 
+#include <deal2lkit/config.h>
 #include <deal.II/base/exceptions.h>
 #include <deal.II/base/parsed_function.h>
 #include <deal2lkit/parameter_acceptor.h>

@@ -42,9 +42,9 @@ ParameterAcceptor::initialize(const std::string filename,
     {
       std::ofstream outfile(out_filename.c_str());
       Assert(outfile, ExcIO());
-      outfile << "# Parameter file generated with " << std::endl //FIXME
-              // << "# D2K_GIT_BRANCH=       " << D2K_GIT_BRANCH << std::endl
-              // << "# D2K_GIT_SHORTREV=     " << D2K_GIT_SHORTREV << std::endl
+      outfile << "# Parameter file generated with " << std::endl 
+              << "# D2K_GIT_BRANCH=       " << D2K_GIT_BRANCH << std::endl
+              << "# D2K_GIT_SHORTREV=     " << D2K_GIT_SHORTREV << std::endl
               << "# DEAL_II_GIT_BRANCH=   " << DEAL_II_GIT_BRANCH  << std::endl
               << "# DEAL_II_GIT_SHORTREV= " << DEAL_II_GIT_SHORTREV << std::endl;
       prm.print_parameters(outfile, ParameterHandler::ShortText);

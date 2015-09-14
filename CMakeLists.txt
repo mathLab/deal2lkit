@@ -140,7 +140,8 @@ ADD_SUBDIRECTORY(cmake/config) # has to be included after source
 
 # Do not automatically include the testsuite subproject on Windows.
 IF(D2K_HAVE_TESTS_DIRECTORY AND NOT DEAL_II_MSVC)
-  ADD_SUBDIRECTORY(tests)
+		ADD_SUBDIRECTORY(tests)
+		ENABLE_TESTING()
 ENDIF()
 
 #
@@ -149,7 +150,3 @@ ENDIF()
 FILE(READ ${CMAKE_BINARY_DIR}/summary.log D2K_LOG_SUMMARY)
 MESSAGE("${D2K_LOG_SUMMARY}")
 
-
-FOREACH(_dir ${D2K_INCLUDE_DIRS})
-	INCLUDE_DIRECTORIES(_dir)
-ENDFOREACH()

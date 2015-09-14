@@ -1,6 +1,7 @@
 #ifndef __dealii_sak_parsed_dirichlet_bcs_h
 #define __dealii_sak_parsed_dirichlet_bcs_h
 
+#include <deal2lkit/config.h>
 #include <deal2lkit/parameter_acceptor.h>
 #include <deal.II/base/exceptions.h>
 #include <deal2lkit/parsed_mapped_functions.h>
