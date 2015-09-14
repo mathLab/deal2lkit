@@ -138,10 +138,10 @@ ADD_SUBDIRECTORY(source)
 ADD_SUBDIRECTORY(cmake/config) # has to be included after source
 #ADD_SUBDIRECTORY(examples)
 
-# # Do not automatically include the testsuite subproject on Windows.
-# IF(D2K_HAVE_TESTS_DIRECTORY AND NOT DEAL_II_MSVC)
-#   ADD_SUBDIRECTORY(tests)
-# ENDIF()
+# Do not automatically include the testsuite subproject on Windows.
+IF(D2K_HAVE_TESTS_DIRECTORY AND NOT DEAL_II_MSVC)
+  ADD_SUBDIRECTORY(tests)
+ENDIF()
 
 #
 # And finally, print the configuration:
