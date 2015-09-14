@@ -38,12 +38,6 @@ IF(DEFINED DEAL_II_HAVE_TESTS_DIRECTORY)
     CMAKE_POLICY(SET CMP0037 OLD)
   ENDIF()
 
-  #
-  # If this CMakeLists.txt file is called from within the deal.II build
-  # system, set up quick tests as well:
-  #
-  ADD_SUBDIRECTORY(quick_tests)
-
   MESSAGE(STATUS "Setting up testsuite")
 
   #
@@ -52,7 +46,7 @@ IF(DEFINED DEAL_II_HAVE_TESTS_DIRECTORY)
   #
   FILE(WRITE ${CMAKE_BINARY_DIR}/CTestTestfile.cmake "SUBDIRS(tests)")
 
-  SET(_options "-DDEAL_II_DIR=${CMAKE_BINARY_DIR}")
+	SET(_options "-DD2K_DIR=${CMAKE_BINARY_DIR}")
 
 ELSE()
 
@@ -67,8 +61,17 @@ ELSE()
 
   FIND_PACKAGE(deal.II 8.3 REQUIRED HINTS ${DEAL_II_DIR} $ENV{DEAL_II_DIR})
   PROJECT(testsuite NONE)
-  SET(_options "-DDEAL_II_DIR=${DEAL_II_PATH}")
+	SET(_options "-DD2K_DIR=${CMAKE_BINARY_DIR}")
 ENDIF()
+
+MESSAGE("----------------------${CMAKE_BINARY_DIR}/include")
+MESSAGE("----------------------${CMAKE_SOURCE_DIR}/include")
+MESSAGE("----------------------${D2K_INCLUDE_DIRS}")
+INCLUDE_DIRECTORIES(
+  ${CMAKE_BINARY_DIR}/include
+  ${CMAKE_SOURCE_DIR}/include
+  ${D2K_INCLUDE_DIRS}
+  )
 
 FILE(WRITE ${CMAKE_CURRENT_BINARY_DIR}/CTestTestfile.cmake "")
 
@@ -91,8 +94,7 @@ FILE(GLOB _dirs RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}
   ${CMAKE_CURRENT_SOURCE_DIR}/*
   )
 FOREACH(_dir ${_dirs})
-  IF( EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/${_dir}/CMakeLists.txt AND
-      NOT ${_dir} MATCHES quick_tests)
+  IF( EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/${_dir}/CMakeLists.txt )
     LIST(APPEND _categories ${_dir})
   ENDIF()
 ENDFOREACH()
@@ -140,6 +142,6 @@ FOREACH(_category ${_categories})
 ENDFOREACH()
 
 
-IF(DEFINED DEAL_II_HAVE_TESTS_DIRECTORY)
+IF(DEFINED D2K_HAVE_TESTS_DIRECTORY)
   MESSAGE(STATUS "Setting up testsuite - Done")
 ENDIF()

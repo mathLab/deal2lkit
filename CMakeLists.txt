@@ -128,12 +128,32 @@ MESSAGE(STATUS "")
 MESSAGE(STATUS "Configuring done. Proceed to target definitions now.")
 
 ADD_SUBDIRECTORY(include)
+INCLUDE_DIRECTORIES(
+  ${CMAKE_BINARY_DIR}/include
+  ${CMAKE_SOURCE_DIR}/include
+  ${D2K_INCLUDE_DIRS}
+  )
 
 IF(D2K_HAVE_DOC_DIRECTORY)
   ADD_SUBDIRECTORY(doc) # has to be included after include
 ENDIF()
 
-ADD_SUBDIRECTORY(source) 
+#ADD_SUBDIRECTORY(source) 
+
+file(GLOB _library_source_files source/*cc)
+
+FOREACH(_BUILD_TYPE ${D2K_BUILD_TYPES})
+	SET(_lib ${D2K_BASE_NAME}${D2K_${_BUILD_TYPE}_SUFFIX})
+	ADD_LIBRARY(${_lib}
+		SHARED
+		${_library_source_files}
+		)
+
+		INSTALL(TARGETS ${_lib} LIBRARY DESTINATION lib)
+		SET(TEST_LIBRARIES_${_BUILD_TYPE} ${_lib})
+	DEAL_II_SETUP_TARGET(${_lib})
+ENDFOREACH()
+
 
 ADD_SUBDIRECTORY(cmake/config) # has to be included after source
 #ADD_SUBDIRECTORY(examples)
