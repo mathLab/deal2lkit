@@ -16,16 +16,17 @@
 MESSAGE(STATUS "Setting up library")
 
 #
-# Compile the deal.II library
+# Compile the deal2lkit library
 #
 
 INCLUDE_DIRECTORIES(
-  ${CMAKE_BINARY_DIR}/include/
-  ${CMAKE_SOURCE_DIR}/include/
+  ${CMAKE_BINARY_DIR}/include
+  ${CMAKE_SOURCE_DIR}/include
   ${D2K_INCLUDE_DIRS}
   )
 
 INCLUDE_DIRECTORIES(BEFORE ${CMAKE_CURRENT_BINARY_DIR})
+
 
 SET(_src
 	utilities.cc
@@ -39,11 +40,30 @@ SET(_src
 	sundials_interface.cc
 	)
 
+#file(GLOB _library_source_files ${CMAKE_SOURCE_DIR}/source/*cc)
+#SET(RELEASE_postfix "")
+#SET(DEBUG_postfix ".g")
+#FOREACH(_BUILD_TYPE ${D2K_BUILD_TYPES})
+#	SET(_postfix "${${_build_type}_postfix}")
+#
+#	SET(_lib "${D2K_PACKAGE_NAME}${_postfix}")
+#	MESSAGE("-- Configuring library ${_lib}")
+#
+#	STRING(TOLOWER "${_BUILD_TYPE}" _build_type)
+#
+#	# Add all files, except the main file, to the library
+#	ADD_LIBRARY(${_lib} SHARED ${_library_source_files})
+#	#ADD_LIBRARY(${_lib} SHARED ${_src})
+#	INSTALL(TARGETS ${_lib} LIBRARY DESTINATION lib)
+#	SET(TEST_LIBRARIES_${_BUILD_TYPE} ${_lib})
+#
+#	DEAL_II_SETUP_TARGET(${_lib} ${_BUILD_TYPE})
+#ENDFOREACH()
 FILE(GLOB _header
   ${CMAKE_SOURCE_DIR}/include/deal2lkit/*.h
   )
 
-D2K_ADD_LIBRARY(obj_base OBJECT ${_src} ${_header}
+D2K_ADD_LIBRARY(obj_d2k OBJECT ${_src} ${_header}
   ${CMAKE_BINARY_DIR}/include/deal2lkit/config.h
   )
 
@@ -53,6 +73,7 @@ FOREACH(build ${D2K_BUILD_TYPES})
   #
   # Combine all ${build} OBJECT targets to a ${build} library:
   #
+
 
   GET_PROPERTY(_objects GLOBAL PROPERTY D2K_OBJECTS_${build})
   ADD_LIBRARY(${D2K_BASE_NAME}${D2K_${build}_SUFFIX}
