@@ -12,7 +12,7 @@
 // Test if the "copy files" utilities function works as expected
 
 #include "tests.h"
-#include "utilities.h"
+#include <deal2lkit/utilities.h>
 #include <deal.II/base/utilities.h>
 #include <deal.II/base/mpi.h>
 

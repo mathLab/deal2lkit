@@ -11,8 +11,8 @@
 
 
 #include "tests.h"
-#include "utilities.h"
-#include "parsed_grid_generator.h"
+#include <deal2lkit/utilities.h>
+#include <deal2lkit/parsed_grid_generator.h>
 
 #include <deal.II/grid/grid_out.h>
 #include <deal.II/base/utilities.h>

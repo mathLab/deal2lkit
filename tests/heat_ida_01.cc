@@ -1,6 +1,6 @@
 #include "tests.h"
 #include <deal.II/lac/sparsity_tools.h>
-#include "dof_utilities.h"
+#include <deal2lkit/dof_utilities.h>
 #include <deal.II/base/timer.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -42,15 +42,15 @@
 
 #include <mpi.h>
 
-#include "sundials_interface.h"
-#include "dae_time_integrator.h"
-#include "parameter_acceptor.h"
-#include "parsed_grid_generator.h"
-#include "parsed_finite_element.h"
-#include "error_handler.h"
-#include "parsed_function.h"
-#include "parsed_data_out.h"
-#include "parsed_dirichlet_bcs.h"
+#include <deal2lkit/sundials_interface.h>
+#include <deal2lkit/dae_time_integrator.h>
+#include <deal2lkit/parameter_acceptor.h>
+#include <deal2lkit/parsed_grid_generator.h>
+#include <deal2lkit/parsed_finite_element.h>
+#include <deal2lkit/error_handler.h>
+#include <deal2lkit/parsed_function.h>
+#include <deal2lkit/parsed_data_out.h>
+#include <deal2lkit/parsed_dirichlet_bcs.h>
 
 #include <fstream>
 

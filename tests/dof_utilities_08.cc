@@ -18,7 +18,7 @@
 
 #include <fstream>
 
-#include "dof_utilities.h"
+#include <deal2lkit/dof_utilities.h>
 #include "Sacado.hpp"
 
 typedef Sacado::Fad::DFad<double> Sdouble;

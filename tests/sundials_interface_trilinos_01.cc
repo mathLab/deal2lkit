@@ -18,9 +18,9 @@
 
 #include <mpi.h>
 
-#include "sundials_interface.h"
-#include "dae_time_integrator.h"
-#include "parameter_acceptor.h"
+#include <deal2lkit/sundials_interface.h>
+#include <deal2lkit/dae_time_integrator.h>
+#include <deal2lkit/parameter_acceptor.h>
 
 #include <fstream>
 

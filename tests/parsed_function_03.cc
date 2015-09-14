@@ -10,7 +10,7 @@
 //-----------------------------------------------------------
 
 #include "tests.h"
-#include "parsed_function.h"
+#include <deal2lkit/parsed_function.h>
 
 int main ()
 {

@@ -10,7 +10,7 @@
 //-----------------------------------------------------------
 
 #include "tests.h"
-#include "parsed_solver.h"
+#include <deal2lkit/parsed_solver.h>
 
 #include <deal.II/lac/vector.h>
 

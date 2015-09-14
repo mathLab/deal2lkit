@@ -14,7 +14,7 @@
 // but it works with arbitrary objects that support operator<<();
 
 #include "tests.h"
-#include "utilities.h"
+#include <deal2lkit/utilities.h>
 
 int main ()
 {
