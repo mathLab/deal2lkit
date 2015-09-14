@@ -8,7 +8,7 @@
 #ifdef DEAL_II_WITH_MPI
 #include "mpi.h"
 
-//#ifdef DEAL_II_SAK_WITH_SUNDIALS
+#ifdef D2K_WITH_SUNDIALS
 #include <ida/ida_impl.h>
 
 using namespace dealii;
@@ -121,7 +121,7 @@ private:
 
 };
 
-//#endif
+#endif
 #endif
 
 

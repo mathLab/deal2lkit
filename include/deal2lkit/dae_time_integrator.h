@@ -5,7 +5,7 @@
 #include <deal.II/base/exceptions.h>
 #include <deal.II/base/parameter_handler.h>
 
-//ifdef DEAL_II_SAK_WITH_SUNDIALS
+#ifdef D2K_WITH_SUNDIALS
 // For time integration.
 #include <ida/ida.h>
 #include <ida/ida_spils.h>
@@ -117,5 +117,5 @@ private:
 
 };
 
-//#endif
+#endif
 #endif

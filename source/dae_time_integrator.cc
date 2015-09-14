@@ -1,4 +1,4 @@
-//#ifdef DEAL_II_SAK_WITH_SUNDIALS
+#ifdef D2K_WITH_SUNDIALS
 
 #include <deal2lkit/dae_time_integrator.h>
 #include <deal2lkit/sundials_interface.h>
@@ -445,4 +445,4 @@ template class DAETimeIntegrator<TrilinosWrappers::MPI::BlockVector>;
 #endif
 
 template class DAETimeIntegrator<BlockVector<double> >;
-//#endif
+#endif
