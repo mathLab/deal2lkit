@@ -13,8 +13,8 @@
 //
 // ---------------------------------------------------------------------
 
-#ifndef _d2k_revision_h
-#define _d2k_revision_h
+#ifndef _d2k_version_h
+#define _d2k_version_h
 
 /**
  * Name of the local git branch of the source directory.

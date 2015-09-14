@@ -21,8 +21,8 @@ CONFIGURE_FILE(
   ${CMAKE_CURRENT_BINARY_DIR}/deal2lkit/config.h
   )
 CONFIGURE_FILE(
-  ${CMAKE_CURRENT_SOURCE_DIR}/deal2lkit/revision.h.in
-  ${CMAKE_CURRENT_BINARY_DIR}/deal2lkit/revision.h
+  ${CMAKE_CURRENT_SOURCE_DIR}/deal2lkit/version.h.in
+  ${CMAKE_CURRENT_BINARY_DIR}/deal2lkit/version.h
   )
 
 #
