@@ -43,7 +43,7 @@ FILE(GLOB _header
   ${CMAKE_SOURCE_DIR}/include/deal2lkit/*.h
   )
 
-D2K_ADD_LIBRARY(obj_base OBJECT ${_src} ${_header} ${_inst}
+D2K_ADD_LIBRARY(obj_base OBJECT ${_src} ${_header}
   ${CMAKE_BINARY_DIR}/include/deal2lkit/config.h
   )
 
