@@ -42,7 +42,8 @@ void ParsedMappedFunctions<spacedim,n_components>::parse_parameters_call_back()
     }
   split_id_components(str_id_components);
   split_id_functions(str_id_functions,str_constants);
-  AssertDimension(id_components.size(), id_functions.size());
+  AssertThrow(id_components.size() == id_functions.size(),
+              ExcIdsMismatch(id_components.size(), id_functions.size()));
 
   typedef std::map<unsigned int, ComponentMask>::iterator it_type;
   for (it_type it=id_components.begin(); it != id_components.end(); ++it)
@@ -76,8 +77,8 @@ void ParsedMappedFunctions<spacedim,n_components>::split_id_components(const std
       ids.push_back(id);
 
       components = Utilities::split_string_list(id_comp[1], ';');
-      Assert(components.size() <= n_components,
-             ExcMessage("Wrong number of components specified for id " + id_comp[0]));
+      AssertThrow(components.size() <= n_components,
+                  ExcMessage("Wrong number of components specified for id " + id_comp[0]));
       for (unsigned int c=0; c<components.size(); ++c)
         {
           if (components[c] == "ALL")
@@ -87,8 +88,8 @@ void ParsedMappedFunctions<spacedim,n_components>::split_id_components(const std
               break;
             }
 
-          Assert(_component_names.size() == n_components,
-                 ExcMessage("Parsed components name must match the number of components of the problem"));
+          AssertThrow(_component_names.size() == n_components,
+                      ExcMessage("Parsed components name must match the number of components of the problem"));
 
           if ((std::find(_component_names.begin(), _component_names.end(), components[c]) != _component_names.end()))
             for (unsigned int j=0; j<_component_names.size(); ++j)
@@ -109,11 +110,11 @@ void ParsedMappedFunctions<spacedim,n_components>::split_id_components(const std
               try
                 {
                   unsigned int m = Utilities::string_to_int(components[c]);
-                  Assert(m < n_components, ExcWrongComponent(id,m,n_components));
+                  AssertThrow(m < n_components, ExcWrongComponent(id,m,n_components));
                   mask[m] = true;
                 }
               catch (std::exception &exc)
-                Assert(false, ExcWrongVariable(id,components[c],_all_components));
+                AssertThrow(false, ExcWrongVariable(id,components[c],_all_components));
             }
 
         }
@@ -168,8 +169,8 @@ void ParsedMappedFunctions<spacedim,n_components>::split_id_functions(const std:
           id_str_functions[id] = id_func[1];
 
           // check if the current id is also defined in id_components
-          Assert((std::find(ids.begin(), ids.end(), id) != ids.end()),
-                 ExcIdNotMatch(id));
+          AssertThrow((std::find(ids.begin(), ids.end(), id) != ids.end()),
+                      ExcIdNotMatch(id));
           id_defined_functions.push_back(id);
 
           shared_ptr<dealii::Functions::ParsedFunction<spacedim> > ptr;
@@ -188,8 +189,8 @@ void ParsedMappedFunctions<spacedim,n_components>::split_id_functions(const std:
     }
 
   // check if the number of ids defined in id_components and id_functions are the same
-  Assert(ids.size() == id_defined_functions.size(),
-         ExcMessage("Ids associated to components and to functions are not the same."));
+  AssertThrow(ids.size() == id_defined_functions.size(),
+              ExcMessage("Ids associated to components and to functions are not the same."));
 
 }
 

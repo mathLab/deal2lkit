@@ -103,16 +103,22 @@ bool dir_exists(const std::string &dir)
 #endif
 }
 
-int get_next_available_index_directory_name(const std::string &base, int n_digits)
+unsigned int get_next_available_index_directory_name(const std::string &base, int n_digits, unsigned int start, unsigned int index_max)
 {
-  unsigned int index = 0;
-  while ( dir_exists( base + dealii::Utilities::int_to_string (index, n_digits) ) ) index++;
-  return index;
+  if (start<index_max)
+    {
+      if ( dir_exists( base + dealii::Utilities::int_to_string (start, n_digits) ) )
+        return get_next_available_index_directory_name(base, n_digits, ++start, index_max);
+      else
+        return start;
+    }
+  else
+    return index_max;
 }
 
-std::string get_next_available_directory_name(const std::string &base, int n_digits)
+std::string get_next_available_directory_name(const std::string &base, int n_digits, unsigned int start, unsigned int index_max)
 {
-  unsigned int index = get_next_available_index_directory_name(base, n_digits);
+  unsigned int index = get_next_available_index_directory_name(base, n_digits, start, index_max);
   return base + dealii::Utilities::int_to_string (index, n_digits);
 }
 
