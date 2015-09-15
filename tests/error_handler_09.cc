@@ -13,9 +13,9 @@
 // AddUp implicitly set.
 
 #include "tests.h"
-#include "utilities.h"
-#include "error_handler.h"
-#include "parsed_grid_generator.h"
+#include <deal2lkit/utilities.h>
+#include <deal2lkit/error_handler.h>
+#include <deal2lkit/parsed_grid_generator.h>
 #include <deal.II/base/function_lib.h>
 #include <deal.II/fe/fe_q.h>
 #include <deal.II/fe/fe_system.h>

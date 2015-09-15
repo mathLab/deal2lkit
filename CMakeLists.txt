@@ -1,127 +1,172 @@
+## ---------------------------------------------------------------------
 ##
-# Deal.II Swiss Army Knife
+## Copyright (C) 2014 - 2015 by the deal2lkit authors
 ##
+## This file is part of the deal2lkit library.
+##
+## The deal2lkit library is free software; you can use it, redistribute
+## it, and/or modify it under the terms of the GNU Lesser General
+## Public License as published by the Free Software Foundation; either
+## version 2.1 of the License, or (at your option) any later version.
+## The full text of the license can be found in the file LICENSE at
+## the top level of the deal2lkit distribution.
+##
+## ---------------------------------------------------------------------
 
-# Set the name of the project and target library:
-SET(TARGET_LIB dealii-sak)
 
-# The source directory contains all implementations of the various classes.
-# No main functions are allowed in these files.
-file(GLOB _library_source_files source/*cc)
+##                                                                    ##
+#            The cmake build system for the deal2lkit project          #
+##                                                                    ##
 
-# All files in apps are assumed to contain a main function.
-file(GLOB _applications_source_files apps/*cc)
+########################################################################
+#                                                                      #
+#                            Configuration:                            #
+#                                                                      #
+########################################################################
 
-INCLUDE_DIRECTORIES(include)
-
-# Usually, you will not need to modify anything beyond this point...
+#
+# General configuration for cmake:
+#
+MESSAGE(STATUS "This is CMake ${CMAKE_VERSION}")
+MESSAGE(STATUS "")
 
 CMAKE_MINIMUM_REQUIRED(VERSION 2.8.8)
+
+#
+# We support all policy changes up to version 3.1.0. Thus, explicitly set
+# all policies CMP0001 - CMP0054 to new for version 3.1 (and later) to
+# avoid some unnecessary warnings.
+#
+IF( "${CMAKE_VERSION}" VERSION_EQUAL "3.1" OR
+    "${CMAKE_VERSION}" VERSION_GREATER "3.1" )
+  CMAKE_POLICY(VERSION 3.1.0)
+ENDIF()
+
+IF(POLICY CMP0037)
+  # allow to override "test" target for quick tests
+  CMAKE_POLICY(SET CMP0037 OLD)
+ENDIF()
 
 FIND_PACKAGE(deal.II 8.3 REQUIRED
   HINTS ${deal.II_DIR} ${DEAL_II_DIR} ../ ../../ $ENV{DEAL_II_DIR}
 )
 
-# Set standard flags
-SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-pedantic")
-SET(CMAKE_BUILD_TYPE "${DEAL_II_BUILD_TYPE}" CACHE STRING "Build type. Either Debug, Release, or DebugRelease.")
-
 DEAL_II_INITIALIZE_CACHED_VARIABLES()
 DEAL_II_QUERY_GIT_INFORMATION()
-PROJECT(${TARGET_LIB})
 
 
-# We generate one library for each type of deal.II library
-# we found. If you compiled deal.II with both Release and Debug
-# mode, this will generate both Release and Debug programs for you
-# The debug library and program are postfixed with ".g"
-
-# Options about examples
-OPTION(DEAL_II_SAK_ENABLE_TESTING "Enable testing." OFF)
-OPTION(DEAL_II_SAK_COMPILE_EXAMPLES "Compile examples" OFF)
-OPTION(DEAL_II_SAK_INSTALL_EXAMPLES "Install examples" ON)
-OPTION(DEAL_II_SAK_USE_BOOST "Use boost libraries." ON)
+#
+# The INCLUDE() and FIND_PACKAGE() search first in these directories
+#
+LIST(APPEND CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake/modules/)
 
 
-IF(DEAL_II_SAK_USE_BOOST)
-  FIND_PACKAGE(Boost COMPONENTS system filesystem)
-  IF(Boost_FOUND)
-    # add_definitions(${Boost_LIB_DIAGNOSTIC_DEFINITIONS})
-    SET(Boost_USE_STATIC_LIBS OFF)
-    SET(Boost_USE_MULTITHREADED ON)
-    SET(Boost_USE_STATIC_RUNTIME OFF)
-    ADD_DEFINITIONS(-DDEAL_II_SAK_WITH_BOOST)
-    INCLUDE_DIRECTORIES (${BOOST_INCLUDE_DIRS})
-  ENDIF()
-ENDIF()
-
-# Loop over all build types.
-SET(_d2_build_types "Release;Debug")
-SET(Release_postfix "")
-SET(Debug_postfix ".g")
-FOREACH(_build_type ${_d2_build_types})
-    # Only build this type, if deal.II was compiled with it.
-    IF(DEAL_II_BUILD_TYPE MATCHES "${_build_type}" AND CMAKE_BUILD_TYPE MATCHES "${_build_type}")
-	MESSAGE("-- Found ${_build_type} version of deal.II.")
-	SET(_postfix "${${_build_type}_postfix}")
-
-	SET(_lib "${TARGET_LIB}${_postfix}")
-	MESSAGE("-- Configuring library ${_lib}")
-
-	STRING(TOUPPER "${_build_type}" _BUILD_TYPE)
-
-	# Add all files, except the main file, to the library
-	ADD_LIBRARY(${_lib} SHARED ${_library_source_files})
-
-	# Add boost dependencies if necessary
-	IF(Boost_FOUND)
-	   TARGET_LINK_LIBRARIES(${_lib} ${Boost_LIBRARIES})
-	ENDIF()
-        INSTALL(TARGETS ${_lib} LIBRARY DESTINATION lib)
-
-	SET_PROPERTY(TARGET ${_lib} APPEND PROPERTY COMPILE_DEFINITIONS
-	  DEAL_II_SAK_GIT_BRANCH="${GIT_BRANCH}${_postfix}"
-	  DEAL_II_SAK_GIT_REVISION="${GIT_REVISION}${_postfix}"
-	  DEAL_II_SAK_GIT_SHORTREV="${GIT_SHORTREV}${_postfix}"
-	)
-
-	# Compile an executable only if required by the user
-	IF(DEAL_II_SAK_COMPILE_EXAMPLES)
-    	   FOREACH(_main ${_applications_source_files})
-		# Find out the the name of the executable
-    		GET_FILENAME_COMPONENT(_target_a ${_main} NAME_WE)
-		SET(_target "${_target_a}${${_build_type}_postfix}")
-		MESSAGE("-- Configuring executable ${_target}")
-
-    		ADD_EXECUTABLE(${_target} ${_main})
-		IF(DEAL_II_SAK_INSTALL_EXAMPLES)
-		  INSTALL(TARGETS ${_target} RUNTIME DESTINATION bin)
-		ENDIF()
-    		TARGET_LINK_LIBRARIES(${_target} ${_lib})
-		DEAL_II_SETUP_TARGET(${_target} ${_BUILD_TYPE})
-    	    ENDFOREACH()
-	ENDIF()
-
-	SET(TEST_LIBRARIES_${_BUILD_TYPE} ${_lib})
-	DEAL_II_SETUP_TARGET(${_lib} ${_BUILD_TYPE})
-    ENDIF()
+#
+# Load all macros:
+#
+FILE(GLOB _macro_files "cmake/macros/*.cmake")
+MESSAGE(STATUS "Include ${CMAKE_SOURCE_DIR}/cmake/load_cmake_macros.cmake")
+INCLUDE(${CMAKE_SOURCE_DIR}/cmake/load_cmake_macros.cmake)
+FOREACH(_file ${_macro_files})
+  MESSAGE(STATUS "Include ${_file}")
+	INCLUDE(${_file})
 ENDFOREACH()
 
-IF(${DEAL_II_SAK_ENABLE_TESTING})
-    ADD_SUBDIRECTORY(tests)
-    ENABLE_TESTING()
+D2K_QUERY_GIT_INFORMATION()
+
+#
+# Check for the existence of various optional folders:
+#
+IF(EXISTS ${CMAKE_SOURCE_DIR}/doc/CMakeLists.txt)
+  SET(D2K_HAVE_DOC_DIRECTORY TRUE)
 ENDIF()
 
-# Doxygen
-find_package(Doxygen)
-if(DOXYGEN_FOUND)
-configure_file(${CMAKE_CURRENT_SOURCE_DIR}/Doxyfile.in ${CMAKE_CURRENT_BINARY_DIR}/Doxyfile @ONLY)
-add_custom_target(doc
-${DOXYGEN_EXECUTABLE} ${CMAKE_CURRENT_BINARY_DIR}/Doxyfile
-WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
-COMMENT "Generating API documentation with Doxygen" VERBATIM
-)
-endif(DOXYGEN_FOUND)
+IF(EXISTS ${CMAKE_SOURCE_DIR}/tests/CMakeLists.txt)
+  SET(D2K_HAVE_TESTS_DIRECTORY TRUE)
+ENDIF()
 
-install(DIRECTORY ${CMAKE_SOURCE_DIR}/include/ DESTINATION include
-        FILES_MATCHING PATTERN "*.h")
+#
+# We have to initialize some cached variables before PROJECT is called, so
+# do it at this point:
+#
+INCLUDE(${CMAKE_SOURCE_DIR}/cmake/setup_cached_variables.cmake)
+
+#
+# Now, set the project and set up the rest:
+#
+PROJECT(deal2lkit CXX C)
+
+INCLUDE(${CMAKE_SOURCE_DIR}/cmake/setup_deal2lkit.cmake)
+
+#VERBOSE_INCLUDE(${CMAKE_SOURCE_DIR}/cmake/setup_compiler_flags.cmake)
+ 
+ 
+#
+# Feature configuration:
+#
+FILE(GLOB _configure_files "cmake/configure/configure_*.cmake")
+LIST(SORT _configure_files) # make sure to include in alphabetical order
+FOREACH(_file ${_configure_files})
+  INCLUDE(${_file})
+ENDFOREACH()
+
+
+#
+# Finalize the configuration:
+#
+INCLUDE(${CMAKE_SOURCE_DIR}/cmake/setup_custom_targets.cmake)
+INCLUDE(${CMAKE_SOURCE_DIR}/cmake/setup_finalize.cmake)
+INCLUDE(${CMAKE_SOURCE_DIR}/cmake/setup_write_config.cmake)
+
+########################################################################
+#                                                                      #
+#                     Compilation and installation:                    #
+#                                                                      #
+########################################################################
+
+MESSAGE(STATUS "")
+MESSAGE(STATUS "Configuring done. Proceed to target definitions now.")
+
+ADD_SUBDIRECTORY(include)
+INCLUDE_DIRECTORIES(
+  ${CMAKE_BINARY_DIR}/include
+  ${CMAKE_SOURCE_DIR}/include
+  ${D2K_INCLUDE_DIRS}
+  )
+
+IF(D2K_HAVE_DOC_DIRECTORY)
+  ADD_SUBDIRECTORY(doc) # has to be included after include
+ENDIF()
+
+#ADD_SUBDIRECTORY(source) 
+
+file(GLOB _library_source_files source/*cc)
+
+FOREACH(_BUILD_TYPE ${D2K_BUILD_TYPES})
+	SET(_lib ${D2K_BASE_NAME}${D2K_${_BUILD_TYPE}_SUFFIX})
+	ADD_LIBRARY(${_lib}
+		SHARED
+		${_library_source_files}
+		)
+
+		INSTALL(TARGETS ${_lib} LIBRARY DESTINATION lib)
+		SET(TEST_LIBRARIES_${_BUILD_TYPE} ${_lib})
+	DEAL_II_SETUP_TARGET(${_lib} ${_BUILD_TYPE})
+ENDFOREACH()
+
+
+ADD_SUBDIRECTORY(cmake/config) # has to be included after source
+#ADD_SUBDIRECTORY(examples)
+
+# Do not automatically include the testsuite subproject on Windows.
+IF(D2K_HAVE_TESTS_DIRECTORY AND NOT DEAL_II_MSVC)
+		ADD_SUBDIRECTORY(tests)
+		ENABLE_TESTING()
+ENDIF()
+
+#
+# And finally, print the configuration:
+#
+FILE(READ ${CMAKE_BINARY_DIR}/summary.log D2K_LOG_SUMMARY)
+MESSAGE("${D2K_LOG_SUMMARY}")
+

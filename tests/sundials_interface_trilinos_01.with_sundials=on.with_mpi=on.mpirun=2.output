@@ -1,0 +1,40 @@
+
+DEAL::[IS] N_dofs: 4, locally: 2
+DEAL::Dofs: 4, vec size: 4
+DEAL::Step 0, t: 0.00000
+DEAL::solved
+DEAL::solved
+DEAL::solved
+DEAL::solved
+DEAL::solved
+DEAL::solved
+DEAL::solved
+DEAL::solved
+DEAL::solved
+DEAL::solved
+DEAL::solved
+DEAL::Step 0, t: 0.100000
+DEAL::solved
+DEAL::Step 1, t: 0.200000
+DEAL::solved
+DEAL::Step 2, t: 0.300000
+DEAL::Step 3, t: 0.400000
+DEAL::solved
+DEAL::Step 4, t: 0.500000
+DEAL::Step 5, t: 0.600000
+DEAL::Step 6, t: 0.700000
+DEAL::Step 7, t: 0.800000
+DEAL::solved
+DEAL::Step 8, t: 0.900000
+DEAL::Step 9, t: 1.00000
+DEAL::Step 10, t: 1.10000
+DEAL::Step 11, t: 1.20000
+DEAL::Step 12, t: 1.30000
+DEAL::Step 13, t: 1.40000
+DEAL::Step 14, t: 1.50000
+DEAL::Step 15, t: 1.60000
+DEAL::solved
+DEAL::Step 16, t: 1.70000
+DEAL::Step 17, t: 1.80000
+DEAL::Step 18, t: 1.90000
+DEAL::Step 19, t: 2.00000

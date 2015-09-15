@@ -34,9 +34,9 @@
 #include <deal.II/numerics/vector_tools.h>
 
 #include <fstream>
-#include "utilities.h"
-#include "parameter_acceptor.h"
-#include "parsed_dirichlet_bcs.h"
+#include <deal2lkit/utilities.h>
+#include <deal2lkit/parameter_acceptor.h>
+#include <deal2lkit/parsed_dirichlet_bcs.h>
 
 
 template<int dim>

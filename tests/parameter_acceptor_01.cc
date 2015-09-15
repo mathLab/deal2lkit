@@ -13,7 +13,7 @@
 // format.
 
 #include "tests.h"
-#include "parameter_acceptor.h"
+#include <deal2lkit/parameter_acceptor.h>
 
 template<int dim>
 class Test : public ParameterAcceptor

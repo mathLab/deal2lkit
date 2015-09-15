@@ -1,4 +1,4 @@
-#include "parsed_mapped_functions.h"
+#include <deal2lkit/parsed_mapped_functions.h>
 
 template <int spacedim, int n_components>
 ParsedMappedFunctions<spacedim,n_components>::ParsedMappedFunctions(const std::string &parsed_name,

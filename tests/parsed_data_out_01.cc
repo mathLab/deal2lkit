@@ -10,7 +10,7 @@
 //-----------------------------------------------------------
 
 #include "tests.h"
-#include "parsed_data_out.h"
+#include <deal2lkit/parsed_data_out.h>
 
 int main (int argc, char **argv)
 {

@@ -1,4 +1,4 @@
-#include "../include/utilities.h"
+#include <deal2lkit/utilities.h>
 #include <vector>
 #include <fstream>
 #include <chrono>
