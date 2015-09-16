@@ -2,6 +2,7 @@ sudo: false
 cache:
   directories:
   - programs
+#cache: apt
 notifications:
   email: false
 addons:
@@ -35,9 +36,9 @@ script:
 - mkdir build
 - cd build
 - echo $PATH
-- cmake -GNinja -DCMAKE_INSTALL_PREFIX=/home/travis/dealii-sak-inst -DDEAL_II_SAK_ENABLE_TESTING=ON -DCMAKE_BUILD_TYPE=DebugRelease ..
+- cmake -GNinja -DCMAKE_INSTALL_PREFIX=/home/travis/deal2lkit-inst -DD2K_ENABLE_TESTING=ON -DCMAKE_BUILD_TYPE=DebugRelease ..
 - ninja -j4 install
-- tar cvfz /home/travis/dealii-sak-CI-build.tgz /home/travis/dealii-sak-inst
+- tar cvfz /home/travis/deal2lkit-CI-build.tgz /home/travis/deal2lkit-inst
 - ctest -j4 -V
   #- ../scripts/build_documentation.sh
 - cd ..; ./scripts/check_indentation.sh
@@ -46,12 +47,12 @@ deploy:
   api_key:
     secure: JBIOZ2GRmxWduUKtM6E623y4lju4P7nKsa+DYh2qwrlSqQDrDoRPwGt9LW8T8l9CiMhvKbXTdzEsmQMdtHGzRW2GV9VU/lsugMTEGJMtjd/ly0dwTyscBhnBudLnk/z1lZB/wKgxi2r+fmsthRctvtzkIK8uRBqA0ivkAD9wFRU=
   file:
-  - /home/travis/dealii-sak-CI-build.tgz
+  - /home/travis/deal2lkit-CI-build.tgz
   - $PRG/trilinos-serial-CI-build.tgz
   - $PRG/dealii-trilinos-serial-CI-build.tgz
   skip_cleanup: true
   on:
-    repo: luca-heltai/dealii-sak
+    repo: mathlab/deal2lkit
     tags: true
     all_branches: true
 #before_install:

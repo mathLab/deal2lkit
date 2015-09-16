@@ -1,6 +1,7 @@
 #ifndef LH_ERROR_HANDLER_H
 #define LH_ERROR_HANDLER_H
 
+#include <deal2lkit/config.h>
 #include <fstream>
 
 #include <deal.II/dofs/dof_handler.h>
@@ -33,7 +34,7 @@
 #include <deal.II/base/parameter_handler.h>
 #include <deal.II/base/conditional_ostream.h>
 
-#include "parameter_acceptor.h"
+#include <deal2lkit/parameter_acceptor.h>
 #include <map>
 #include <cstdio>
 #include <iostream>

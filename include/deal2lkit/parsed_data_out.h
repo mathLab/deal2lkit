@@ -1,6 +1,7 @@
 #ifndef __dealii_sak_parsed_data_out_h
 #define __dealii_sak_parsed_data_out_h
 
+#include <deal2lkit/config.h>
 #include <fstream>
 
 #include <deal.II/base/config.h>
@@ -11,8 +12,8 @@
 #include <deal.II/base/logstream.h>
 #include <deal.II/base/parameter_handler.h>
 
-#include "parameter_acceptor.h"
-#include "utilities.h"
+#include <deal2lkit/parameter_acceptor.h>
+#include <deal2lkit/utilities.h>
 
 
 template <int dim, int spacedim=dim>

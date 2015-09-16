@@ -1,6 +1,7 @@
 #ifndef UTILITIES_HLT
 #define UTILITIES_HLT
 
+#include <deal2lkit/config.h>
 #include <deal.II/base/utilities.h>
 #include <deal.II/base/smartpointer.h>
 #include <deal.II/base/exceptions.h>

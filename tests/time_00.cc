@@ -12,7 +12,7 @@
 // This test is for the TimeUtilities class of utilities.h
 
 #include "tests.h"
-#include "utilities.h"
+#include <deal2lkit/utilities.h>
 #include <chrono>
 #include <thread>
 

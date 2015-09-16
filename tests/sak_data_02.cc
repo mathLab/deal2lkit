@@ -10,7 +10,7 @@
 //-----------------------------------------------------------
 
 #include "tests.h"
-#include "sak_data.h"
+#include <deal2lkit/sak_data.h>
 #include <deal.II/base/tensor.h>
 
 

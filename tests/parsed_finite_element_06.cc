@@ -10,7 +10,7 @@
 //-----------------------------------------------------------
 
 #include "tests.h"
-#include "parsed_finite_element.h"
+#include <deal2lkit/parsed_finite_element.h>
 
 void log(const Table<2, DoFTools::Coupling> &c)
 {

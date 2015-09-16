@@ -1,6 +1,7 @@
 #ifndef __dealii_sak_dof_utilities_h
 #define __dealii_sak_dof_utilities_h
 
+#include <deal2lkit/config.h>
 #include <deal.II/base/utilities.h>
 #include <deal.II/base/smartpointer.h>
 #include <typeinfo>

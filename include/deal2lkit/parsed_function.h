@@ -1,8 +1,9 @@
 #ifndef __dealii_sak_parsed_function_h
 #define __dealii_sak_parsed_function_h
 
+#include <deal2lkit/config.h>
 #include <deal.II/base/parsed_function.h>
-#include "parameter_acceptor.h"
+#include <deal2lkit/parameter_acceptor.h>
 
 using namespace dealii;
 
