@@ -1,4 +1,4 @@
-#include "../include/parsed_data_out.h"
+#include <deal2lkit/parsed_data_out.h>
 
 #include <deal.II/base/logstream.h>
 #include <deal.II/base/quadrature_lib.h>

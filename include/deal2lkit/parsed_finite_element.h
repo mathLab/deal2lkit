@@ -1,12 +1,13 @@
 #ifndef __dealii_parsed_finite_element_h
 #define __dealii_parsed_finite_element_h
 
+#include <deal2lkit/config.h>
 #include <deal.II/base/parameter_handler.h>
 #include <deal.II/dofs/dof_tools.h>
 #include <deal.II/fe/fe.h>
 
-#include "parameter_acceptor.h"
-#include "utilities.h"
+#include <deal2lkit/parameter_acceptor.h>
+#include <deal2lkit/utilities.h>
 
 using namespace dealii;
 
@@ -154,7 +155,9 @@ public:
   unsigned int n_components() const;
 
   /**
-   * Return the number of blocks of the Finite Element.
+   * Return the number of blocks of the Finite Element, i.e.,
+   * the number of variables. For example, simple Heat equation
+   * has 1 block, Navier-Stokes 2 blocks (u and p).
    */
   unsigned int n_blocks() const;
 

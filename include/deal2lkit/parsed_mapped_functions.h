@@ -1,14 +1,15 @@
 #ifndef __dealii_sak_parsed_mapped_function_h
 #define __dealii_sak_parsed_mapped_function_h
 
+#include <deal2lkit/config.h>
 #include <deal.II/base/exceptions.h>
 #include <deal.II/base/parsed_function.h>
-#include "parameter_acceptor.h"
-#include "parsed_function.h"
+#include <deal2lkit/parameter_acceptor.h>
+#include <deal2lkit/parsed_function.h>
 #include <deal.II/fe/component_mask.h>
 #include <algorithm>
 #include <map>
-#include "utilities.h"
+#include <deal2lkit/utilities.h>
 
 using namespace dealii;
 

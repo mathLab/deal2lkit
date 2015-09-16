@@ -1,13 +1,14 @@
 #ifndef __dealii_parsed_grid_generator_h
 #define __dealii_parsed_grid_generator_h
 
+#include <deal2lkit/config.h>
 #include <deal.II/base/config.h>
 #include <deal.II/base/parameter_handler.h>
 #include <deal.II/grid/tria.h>
 #include <deal.II/distributed/tria.h>
 #include <deal.II/grid/manifold_lib.h>
 #include <deal.II/grid/grid_generator.h>
-#include "parameter_acceptor.h"
+#include <deal2lkit/parameter_acceptor.h>
 
 using namespace dealii;
 

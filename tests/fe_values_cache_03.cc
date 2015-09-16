@@ -10,8 +10,8 @@
 //-----------------------------------------------------------
 
 #include "tests.h"
-#include "fe_values_cache.h"
-#include "parsed_grid_generator.h"
+#include <deal2lkit/fe_values_cache.h>
+#include <deal2lkit/parsed_grid_generator.h>
 #include <deal.II/base/function_lib.h>
 #include <deal.II/fe/fe_q.h>
 #include <deal.II/fe/fe_system.h>

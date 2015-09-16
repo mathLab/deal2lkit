@@ -11,8 +11,8 @@
 
 #include "tests.h"
 
-#include "error_handler.h"
-#include "parsed_grid_generator.h"
+#include <deal2lkit/error_handler.h>
+#include <deal2lkit/parsed_grid_generator.h>
 #include <deal.II/base/function_lib.h>
 #include <deal.II/dofs/dof_handler.h>
 

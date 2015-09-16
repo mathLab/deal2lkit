@@ -1,6 +1,7 @@
 #ifndef __dealii_parameter_acceptor_h
 #define __dealii_parameter_acceptor_h
 
+#include <deal2lkit/config.h>
 #include <deal.II/base/parameter_handler.h>
 #include <deal.II/base/smartpointer.h>
 #include <deal.II/base/logstream.h>

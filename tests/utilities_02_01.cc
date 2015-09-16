@@ -12,7 +12,7 @@
 // Test if the "create directory" utilities function works as expected.
 
 #include "tests.h"
-#include "utilities.h"
+#include <deal2lkit/utilities.h>
 #include <deal.II/base/utilities.h>
 
 #ifdef DEAL_II_WITH_MPI

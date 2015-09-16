@@ -1,6 +1,7 @@
 #ifndef __dealii_sak_parsed_solver_h
 #define __dealii_sak_parsed_solver_h
 
+#include <deal2lkit/config.h>
 #include <deal.II/base/config.h>
 
 #ifdef DEAL_II_WITH_CXX11
@@ -15,8 +16,8 @@
 #include <deal.II/lac/solver_control.h>
 #include <deal.II/lac/linear_operator.h>
 
-#include "parameter_acceptor.h"
-#include "utilities.h"
+#include <deal2lkit/parameter_acceptor.h>
+#include <deal2lkit/utilities.h>
 
 using namespace dealii;
 
