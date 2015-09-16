@@ -2,7 +2,6 @@ sudo: false
 cache:
   directories:
   - programs
-#cache: apt
 notifications:
   email: false
 addons:
