@@ -460,4 +460,15 @@ void smart_delete (SmartPointer<TYPE> &sp)
     }
 }
 
+
+template <typename VEC>
+void vector_shift(VEC &in_vec, double a_scalar)
+{
+  for (auto i : in_vec.locally_owned_elements())
+    {
+      in_vec[i] += a_scalar;
+    }
+
+}
+
 #endif
