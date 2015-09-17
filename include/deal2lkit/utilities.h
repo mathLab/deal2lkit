@@ -15,6 +15,7 @@
 #include <chrono>         // for TimeUtilities std::chrono
 #include <stdio.h>
 
+#include <deal.II/base/index_set.h>
 using namespace dealii;
 using std_cxx11::shared_ptr;
 
@@ -474,7 +475,7 @@ void vector_shift(VEC &in_vec, double a_scalar)
       in_vec[i] += a_scalar;
     }
 #else
-  for (IndexSet::Iterator it=in_vec.locally_owned_elements().begin(); it != in_vec.locally_owned_elements().end(); ++it)
+  for (IndexSet::ElementIterator it=in_vec.locally_owned_elements().begin(); it != in_vec.locally_owned_elements().end(); ++it)
     {
       in_vec[*it] += a_scalar;
     }
