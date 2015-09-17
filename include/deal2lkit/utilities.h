@@ -15,6 +15,7 @@
 #include <chrono>         // for TimeUtilities std::chrono
 #include <stdio.h>
 
+#include <deal.II/base/index_set.h>
 using namespace dealii;
 using std_cxx11::shared_ptr;
 
@@ -458,6 +459,28 @@ void smart_delete (SmartPointer<TYPE> &sp)
       sp = 0;
       delete p;
     }
+}
+
+/**
+ *  A simple class to shift a vector by a scalar.
+ *  This function is deprecated in deal but needed in many codes
+ */
+
+template <typename VEC>
+void vector_shift(VEC &in_vec, double a_scalar)
+{
+#ifdef DEAL_II_WITH_CXX11
+  for (auto i : in_vec.locally_owned_elements())
+    {
+      in_vec[i] += a_scalar;
+    }
+#else
+  for (IndexSet::ElementIterator it=in_vec.locally_owned_elements().begin(); it != in_vec.locally_owned_elements().end(); ++it)
+    {
+      in_vec[*it] += a_scalar;
+    }
+#endif
+
 }
 
 #endif
