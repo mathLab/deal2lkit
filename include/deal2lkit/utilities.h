@@ -474,10 +474,9 @@ void vector_shift(VEC &in_vec, double a_scalar)
       in_vec[i] += a_scalar;
     }
 #else
-  for (unsigned int i = 0; i<in_vec.size(); ++i)
+  for (IndexSet::Iterator it=in_vec.locally_owned_elements().begin(); it != in_vec.locally_owned_elements().end(); ++it)
     {
-      if (in_vec.locally_owned_elements().is_element(i))
-        in_vec[i] += a_scalar;
+      in_vec[*it] += a_scalar;
     }
 #endif
 
