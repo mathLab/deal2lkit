@@ -460,14 +460,26 @@ void smart_delete (SmartPointer<TYPE> &sp)
     }
 }
 
+/**
+ *  A simple class to shift a vector by a scalar.
+ *  This function is deprecated in deal but needed in many codes
+ */
 
 template <typename VEC>
 void vector_shift(VEC &in_vec, double a_scalar)
 {
+#ifdef DEAL_II_WITH_CXX11
   for (auto i : in_vec.locally_owned_elements())
     {
       in_vec[i] += a_scalar;
     }
+#else
+  for (for unsigned int i = 0; i<in_vec.size(); ++i)
+      {
+        if (in_vec.locally_owned_elements().is_element(i))
+          in_vec[i] += a_scalar;
+      }
+#endif
 
 }
 
