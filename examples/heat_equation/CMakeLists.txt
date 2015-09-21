@@ -27,8 +27,6 @@ SET(_main source/main.cc)
 # Declare all source files the target consists of:
 file(GLOB _files source/*cc)
 
-set(SUNDIALS_LIBS "sundials_ida;sundials_nvecserial;sundials_nvecparallel")
-
 # Don't compile the main file into the library
 IF(NOT "${_main}" STREQUAL "") 
     LIST(REMOVE_ITEM _files
@@ -48,11 +46,11 @@ DEAL_II_INITIALIZE_CACHED_VARIABLES()
 PROJECT(${TARGET})
 
 SET(D2K_DIR "$ENV{D2K_DIR}" CACHE PATH "Path to deal2lkit")
-SET(SUNDIALS_DIR "$ENV{SUNDIALS_DIR}" CACHE PATH "Path to sundials")
+OPTION(ENABLE_APP_TESTING "Enable tests in this application." ON)
 
-# We one library and one target for each type of deal.II library
+# We add one library and one target for each type of deal.II library
 # we found. If you compiled deal.II with both Release and Debug
-# mode, this will generate both Release and Debug programs for you
+# mode, this will generate both Release and Debug programs for you.
 # The debug library and program are postfixed with ".g"
 SET(_d2_build_types "Release;Debug")
 SET(Release_postfix "")
@@ -70,47 +68,37 @@ FOREACH(_build_type ${_d2_build_types})
 
 	STRING(TOUPPER "${_build_type}" _BUILD_TYPE)
 
-	# Add all files, except the main file, to the library
-	ADD_LIBRARY(${_lib} SHARED ${_files})
-	
 	# Look for deal2lkit. If not found, ignore it. 
 	SET(_d2k deal2lkit${${_build_type}_postfix})
 	MESSAGE("-- Looking for ${_d2k} in ${D2K_DIR}")
 	FIND_LIBRARY(D2K${_p} ${_d2k} HINTS ${D2K_DIR} PATH_SUFFIXES lib)
 	IF(NOT "${D2K${_p}}" STREQUAL "D2K${_p}-NOTFOUND")
-		TARGET_LINK_LIBRARIES(${_lib} ${D2K${_p}})
-		MESSAGE("-- Library ${_d2k} found: ${D2K${_p}}")
+	    # Only add the library if we found the deal2lkit library
+	    # Add all files, except the main file, to the library
+	    ADD_LIBRARY(${_lib} SHARED ${_files})
+	    TARGET_LINK_LIBRARIES(${_lib} ${D2K${_p}})
+	    MESSAGE("-- Library ${_d2k} found: ${D2K${_p}}")
+
+	    # Compile an executable only if required by the user
+	    # and only if the deal2lkit library was found
+	    IF(NOT "${_main}" STREQUAL "") 
+	        SET(_exe "${TARGET}${${_build_type}_postfix}")
+	        MESSAGE("-- Configuring executable ${_exe}")
+	        ADD_EXECUTABLE(${_exe} ${_main})
+	        TARGET_LINK_LIBRARIES(${_exe} ${_lib})
+	        DEAL_II_SETUP_TARGET(${_exe} ${_BUILD_TYPE})
+	    ENDIF()
+	    SET(TEST_LIBRARIES_${_BUILD_TYPE} ${_lib})
+	    DEAL_II_SETUP_TARGET(${_lib} ${_BUILD_TYPE})
 	ELSE()
 		MESSAGE(WARNING "-- Library deal2lkit not found: ${D2K${_p}}")
 	ENDIF()
-
-	FOREACH(_slib ${SUNDIALS_LIBS})
-	    FIND_LIBRARY(SUNDIALS_${_slib} ${_slib} HINTS ${SUNDIALS_DIR} PATH_SUFFIXES lib)
-	    IF(NOT "${SUNDIALS_${_slib}}" STREQUAL "${_slib}-NOTFOUND")
-		TARGET_LINK_LIBRARIES(${_lib} ${SUNDIALS_${_slib}})
-		MESSAGE("-- Library ${_slib} found: ${SUNDIALS_${_slib}}")
-	    ELSE()
-		MESSAGE(WARNING "-- Library ${_slib} not found: ${SUNDIALS_${_slib}}")
-	    ENDIF()
-	ENDFOREACH()
-
-	# Compile an executable only if required by the user
-	IF(NOT "${_main}" STREQUAL "") 
-	    SET(_exe "${TARGET}${${_build_type}_postfix}")
-	    MESSAGE("-- Configuring executable ${_exe}")
-	    ADD_EXECUTABLE(${_exe} ${_main})
-	    TARGET_LINK_LIBRARIES(${_exe} ${_lib})
-	    DEAL_II_SETUP_TARGET(${_exe} ${_BUILD_TYPE})
-	ENDIF()
-	SET(TEST_LIBRARIES_${_BUILD_TYPE} ${_lib})
-	DEAL_II_SETUP_TARGET(${_lib} ${_BUILD_TYPE})
     ENDIF()
 ENDFOREACH()
 
 INCLUDE_DIRECTORIES(${D2K_DIR}/include)
-INCLUDE_DIRECTORIES(${SUNDIALS_DIR}/include)
 
-if(EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/tests)
+if(EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/tests AND ${ENABLE_APP_TESTING})
     ADD_SUBDIRECTORY(tests)
     ENABLE_TESTING()
 endif()
