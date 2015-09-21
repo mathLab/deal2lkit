@@ -469,18 +469,11 @@ void smart_delete (SmartPointer<TYPE> &sp)
 template <typename VEC>
 void vector_shift(VEC &in_vec, double a_scalar)
 {
-#ifdef DEAL_II_WITH_CXX11
-  for (auto i : in_vec.locally_owned_elements())
-    {
-      in_vec[i] += a_scalar;
-    }
-#else
-  for (IndexSet::ElementIterator it=in_vec.locally_owned_elements().begin(); it != in_vec.locally_owned_elements().end(); ++it)
+  IndexSet loc = in_vec.locally_owned_elements();
+  for (IndexSet::ElementIterator it=loc.begin(); it != loc.end(); ++it)
     {
       in_vec[*it] += a_scalar;
     }
-#endif
-
 }
 
 #endif
