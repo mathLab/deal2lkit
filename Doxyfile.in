@@ -32,7 +32,7 @@ DOXYFILE_ENCODING      = UTF-8
 # title of most generated pages and in a few other places.
 # The default value is: My Project.
 
-PROJECT_NAME           = "Deal.II Swiss Army Knife library"
+PROJECT_NAME           = "deal2lkit: A ToolKit library for deal.II"
 
 # The PROJECT_NUMBER tag can be used to enter a project or revision number. This
 # could be handy for archiving the generated documentation or if some version
@@ -151,7 +151,7 @@ STRIP_FROM_PATH = @PROJECT_SOURCE_DIR@
 # specify the list of include paths that are normally passed to the compiler
 # using the -I flag.
 
-STRIP_FROM_INC_PATH    =  
+STRIP_FROM_INC_PATH    =
 
 # If the SHORT_NAMES tag is set to YES, doxygen will generate much shorter (but
 # less readable) file names. This can be useful is your file systems doesn't
@@ -735,7 +735,7 @@ WARN_LOGFILE           =
 
 INPUT                  = \
 		 @CMAKE_CURRENT_SOURCE_DIR@/source \
-	         @CMAKE_CURRENT_SOURCE_DIR@/include/deal2lkit 
+	         @CMAKE_CURRENT_SOURCE_DIR@/include/deal2lkit
 
 # This tag can be used to specify the character encoding of the source files
 # that doxygen parses. Internally doxygen uses the UTF-8 encoding. Doxygen uses
@@ -1878,7 +1878,7 @@ PERLMOD_MAKEVAR_PREFIX =
 # C-preprocessor directives found in the sources and include files.
 # The default value is: YES.
 
-ENABLE_PREPROCESSING   = YES
+ENABLE_PREPROCESSING   = NO
 
 # If the MACRO_EXPANSION tag is set to YES doxygen will expand all macro names
 # in the source code. If set to NO only conditional compilation will be

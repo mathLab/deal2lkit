@@ -15,22 +15,42 @@
 using namespace dealii;
 
 /**
- * Base class that needs to be inherited by any function that wants
- * to use the DAE time integrator class.
+ * IDA (Implicit Differential-Algebraic solver) is a package contaied in the
+ * suite SUNDIALS (SUite of Nonlinear and DIfferential/ALgebraic equation
+ * Solvers).  We use this package to provide an interface for problems in the
+ * form:
  *
- * Interface for problems of type F(t, y, y_dot) = 0
+ * @f[ F(t,y,\dot{y})=0, \\ y(t_0)  = y_0 ,   \\ \dot{y}(t_0) = \dot{y}_0.  @f]
  *
- * where differential components may be only a part of y.
+ * @remark The integration method used in IDA is the variable-order,
+ * variable-coefficient BFD (Backward Differentiation Formula), in
+ * fixed-leading-coefficient form.
+ *
+ * @f[ \sum_{i=0}^{q} \alpha_{n,i}y_{n-1} = h_n \dot{y}_n @f]
+ *
+ * where @f$ h_n = t_n - t_{n-1}@f$.
+ *
+ * @remark IDA decompose each vector @f$ y @f$ in a differential and an
+ * algebraic part.
+ *
+ * [see https://computation.llnl.gov/casc/sundials/documentation/ida_guide.pdf
+ * for more information about IDA]
  */
-template<typename VEC=Vector<double> >
-class SundialsInterface
+
+template<typename VEC=Vector<double> > class SundialsInterface
 {
 
 public :
 
+  /**
+   * @brief Constructor
+   */
   SundialsInterface(const MPI_Comm &communicator=MPI_COMM_WORLD) :
     communicator(communicator) {};
 
+  /**
+   * @brief return the comunicator
+   */
   const MPI_Comm &get_comm() const
   {
     return communicator;
@@ -38,34 +58,39 @@ public :
 
 
   /**
-   * Create a compatible vector with the domain of F.
+   * Create a compatible vector with the domain of @f$ F @f$.
    */
   virtual shared_ptr<VEC>
   create_new_vector() const = 0;
 
-  /** Returns the number of degrees of freedom. Pure virtual function. */
+  /**
+   * This is a pure virtual function used to get the number of degrees of
+   * freedom.
+   */
   virtual unsigned int n_dofs() const = 0;
 
-  /** This function is called at the end of each iteration step for
-   * the ode solver. Once again, the conversion between pointers and
-   * other forms of vectors need to be done inside the inheriting
-   * class. */
-  virtual void output_step(const double t,
-                           const VEC &solution,
-                           const VEC &solution_dot,
-                           const unsigned int step_number,
-                           const double h) = 0;
+  /**
+   * This function is called at the end of each time step of the ODE solver.
+   *
+   * @remark The conversion between pointers and other forms of vectors need to
+   * be done inside the inheriting class.
+   *
+   * */
+  virtual void output_step( const double t,
+                            const VEC &solution,
+                            const VEC &solution_dot,
+                            const unsigned int step_number,
+                            const double h) = 0;
 
   /**
-   * This function should analyze the solution, and decide wether the dae
-   * solver should be restarted.
+   * This implementation is smart enough to recognize whether the DAE solver
+   * should be reset or not.
    *
-   * If the function returns true, then both @p solution and @solution_dot may
-   * be modified inside this function (also in terms of number of dofs) and the
-   * dae solver will use the new ones.
+   * This function returns @c true when the @p solution or @p solution_dot need
+   * to be updated (e.g. the number of dofs increases) and @c false otherwise.
+   * In few words, this boolean tells to the DEA solver when it has to change
+   * its arguments.
    *
-   * Should this function return false, then both @p solution and @p solution_dot
-   * are assumed to be unchanged by this function.
    */
   virtual bool solver_should_restart(const double t,
                                      const unsigned int step_number,
@@ -73,18 +98,34 @@ public :
                                      VEC &solution,
                                      VEC &solution_dot);
 
-  /** Compute the residual dst = F(t, y, y_dot). */
+  /**
+   * Given @p t, @p y, and @p y_dot, this function evaluates the residual of
+   * @f[
+   *   F(t,y,\dot{y}) = 0
+   * @f]
+   * and stores the result in the variable @p dst.
+   */
   virtual int residual(const double t,
                        const VEC &y,
-                       const VEC &sy_dot,
+                       const VEC &y_dot,
                        VEC &dst) = 0;
 
-  /** Solve the linear system
+  /**
+   * This function is nothing but the Newton's method used to find the
+   * equilibrium point of the (linearized) energy.
    *
-   * JF dst = src
+   * @p residual is the residual of
+   * @p alpha represents the coefficients of the BFD Method
+   * @f[
+   *   F(t,y,\dot{y}) = 0
+   * @f]
    *
-   * where JF is the last computed Jacobian of F.
-   *
+   * Given @p t, @p y, and @p y_dot, this function uses the @p residual and
+   * @p alpha to solve the linear system:
+   * @f[
+   *    \mathcal{J}(F) dst = src
+   * @f]
+   * where @f$ \mathcal{J}(F) @f$ is the last computed Jacobian of @f$ F @f$.
    */
   virtual int solve_jacobian_system(const double t,
                                     const VEC &y,
@@ -95,9 +136,14 @@ public :
                                     VEC &dst) const = 0;
 
 
-  /** Setup Jacobian. Compute the Jacobian of the function
-   *
-   * JF = J F(t, y, alpha y + c) = D_y F + alpha D_y_dot F
+  /**
+   * SundialsInterface uses the Jacobian of @f$ F @f$ to find a minimum for the
+   * energy.
+   * This function is devoted to the setup of the Jacobian.
+   * Setup Jacobian. Compute the Jacobian of the function
+   * @f[
+   *    \mathcal{J}(F(t, y, \alpha y + c)) = D_y F + alpha D_{\dot{y}} F.
+   * @f]
    *
    */
   virtual int setup_jacobian(const double t,
@@ -107,16 +153,22 @@ public :
                              const double alpha) = 0;
 
   /**
-   * Return a vector with 1 on the differential components, and 0 on the
-   * algebraic ones.
+   * IDA package decomposes variables in differentials and algebraics.
+   *
+   * This function returns a vector that has 1 on the differential components
+   * and 0 on the algebraic ones.
    */
   virtual VEC &differential_components() const;
 
+  /**
+   * This function is used to set different tolerances accordingly
+   * to the solver.
+   */
   virtual VEC &get_local_tolerances() const;
 
 private:
   /**
-   * MPI communicator for parallel solver.
+   * MPI communicator needed for parallel solver.
    */
   const MPI_Comm &communicator;
 
