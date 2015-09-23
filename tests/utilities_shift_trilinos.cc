@@ -27,7 +27,7 @@ int main (int argc, char *argv[])
   else
     for (unsigned int i = 5; i<10; ++i)
       index1.add_index(i);
-
+  index1.compress();
   TrilinosWrappers::MPI::Vector v1(index1, MPI_COMM_WORLD);
   for (auto i : v1.locally_owned_elements())
     v1[i] = 1.;
