@@ -58,7 +58,9 @@ public:
      * grid once it is no longer needed.
      */
 #ifdef DEAL_II_WITH_MPI
+#ifdef DEAL_II_WITH_P4EST
   parallel::distributed::Triangulation<dim, spacedim> *distributed(MPI_Comm mpi_communicator);
+#endif
 #endif
 
   std::string create_default_value(const std::vector<unsigned int> &input);
