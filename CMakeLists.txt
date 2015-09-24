@@ -1,6 +1,8 @@
 ## ---------------------------------------------------------------------
 ##
-## Copyright (C) 2014 - 2015 by the deal2lkit authors
+## This CMakeLists.txt file and related cmake files are based onto those
+## of the deal.II library, which have been implemented by the deal.II authors.
+## More details can be found at www.dealii.org
 ##
 ## This file is part of the deal2lkit library.
 ##

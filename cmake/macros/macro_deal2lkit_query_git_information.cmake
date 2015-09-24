@@ -1,7 +1,5 @@
 ## ---------------------------------------------------------------------
 ##
-## Copyright (C) 2015 by the deal2lkit authors
-##
 ## This file is part of the deal2lkit library.
 ##
 ## The deal2lkit library is free software; you can use it, redistribute
