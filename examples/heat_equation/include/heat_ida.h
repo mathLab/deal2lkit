@@ -73,10 +73,10 @@ public:
    * calculation will be continued. If necessary, it can also reset
    * the time stepper. */
   virtual bool solver_should_restart(const double t,
-                                     const VEC &solution,
-                                     const VEC &solution_dot,
                                      const unsigned int step_number,
-                                     const double h);
+                                     const double h,
+                                     VEC &solution,
+                                     VEC &solution_dot);
 
   /** For dae problems, we need a
    residual function. */
@@ -113,6 +113,7 @@ public:
   virtual VEC &differential_components() const;
 
 private:
+  void refine_mesh ();
   void make_grid_fe();
   void setup_dofs (const bool &first_run=true);
 
@@ -121,7 +122,6 @@ private:
                                  const VEC &y_dot,
                                  const double alpha);
 
-  void refine_mesh ();
   void process_solution ();
 
   void set_constrained_dofs_to_zero(VEC &v) const;
@@ -184,6 +184,11 @@ private:
 
   bool adaptive_refinement;
   bool use_direct_solver;
+  bool use_space_adaptivity;
+  double kelly_threshold;
+  unsigned int max_dofs;
+  double top_fraction;
+  double bottom_fraction;
 };
 
 #endif
