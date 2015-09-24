@@ -170,7 +170,7 @@ parallel::distributed::Triangulation<dim, spacedim> *
 ParsedGridGenerator<dim, spacedim>::distributed(MPI_Comm comm)
 {
   Assert(grid_name != "", ExcNotInitialized());
-  auto tria = new parallel::distributed::Triangulation<dim,spacedim>
+  parallel::distributed::Triangulation<dim,spacedim> *tria = new parallel::distributed::Triangulation<dim,spacedim>
   (comm);//, get_smoothing());
 
   create(*tria);
@@ -184,7 +184,7 @@ Triangulation<dim, spacedim> *
 ParsedGridGenerator<dim, spacedim>::serial()
 {
   Assert(grid_name != "", ExcNotInitialized());
-  auto tria = new Triangulation<dim,spacedim>(get_smoothing());
+  Triangulation<dim,spacedim> *tria = new Triangulation<dim,spacedim>(get_smoothing());
   create(*tria);
   return tria;
 }
@@ -230,7 +230,7 @@ void ParsedGridGenerator<dim, spacedim>::create(Triangulation<dim,spacedim> &tri
       std::ifstream in(input_grid_file_name.c_str());
       AssertThrow(in, ExcIO());
 
-      auto ext = extension(input_grid_file_name);
+      std::string ext = extension(input_grid_file_name);
       if (ext == "vtk")
         gi.read_vtk(in);
       else if (ext == "msh")
@@ -259,7 +259,7 @@ void ParsedGridGenerator<dim, spacedim>::write(const Triangulation<dim,spacedim>
       go.set_flags(GridOutFlags::Msh(true, true));
       go.set_flags(GridOutFlags::Ucd(false,true, true));
 
-      auto ext = extension(output_grid_file_name);
+      std::string ext = extension(output_grid_file_name);
       if (ext == "vtk")
         go.write_vtk(tria, out);
       else if (ext == "msh")
@@ -293,7 +293,7 @@ ParsedGridGenerator<dim, spacedim>::get_smoothing()
 {
   int smoothing = 0;
   std::vector<std::string> ss = Utilities::split_string_list(mesh_smoothing);
-  for (auto s : ss)
+  for (std::string s : ss)
     {
       if (s == "none")
         smoothing = smoothing|(int)Triangulation<dim,spacedim>::none;
