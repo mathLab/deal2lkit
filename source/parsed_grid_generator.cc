@@ -165,6 +165,7 @@ void ParsedGridGenerator<dim, spacedim>::declare_parameters(ParameterHandler &pr
 }
 
 #ifdef DEAL_II_WITH_MPI
+#ifdef DEAL_II_WITH_P4EST
 template <int dim, int spacedim>
 parallel::distributed::Triangulation<dim, spacedim> *
 ParsedGridGenerator<dim, spacedim>::distributed(MPI_Comm comm)
@@ -176,6 +177,7 @@ ParsedGridGenerator<dim, spacedim>::distributed(MPI_Comm comm)
   create(*tria);
   return tria;
 }
+#endif
 #endif
 
 
