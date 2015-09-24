@@ -29,14 +29,14 @@ int main (int argc, char *argv[])
       index1.add_index(i);
   index1.compress();
   TrilinosWrappers::MPI::Vector v1(index1, MPI_COMM_WORLD);
-  for (auto i : v1.locally_owned_elements())
-    v1[i] = 1.;
+  for (IndexSet::size_type i=0; i < index1.n_elements(); ++i)
+    v1[index1.nth_index_in_set(i)] = 1.;
 
   vector_shift(v1,1.);
   Vector<double> foo(v1);
   if (Utilities::MPI::this_mpi_process(MPI_COMM_WORLD) == 0)
     {
-      for (auto i : foo.locally_owned_elements())
+      for (IndexSet::size_type i=0; i < index1.size(); ++i)
         deallog<<i<<" "<<foo[i]<<std::endl;
     }
 #endif

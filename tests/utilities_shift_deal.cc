@@ -25,8 +25,8 @@ int main (int argc, char *argv[])
       index1.add_index(i);
   index1.compress();
   parallel::distributed::Vector<double> v1(index1, MPI_COMM_WORLD);
-  for (auto i : v1.locally_owned_elements())
-    v1[i] = 1.;
+  for (IndexSet::size_type i=0; i < index1.n_elements(); ++i)
+    v1[index1.nth_index_in_set(i)] = 1.;
 
   vector_shift(v1,1.);
   v1.print(std::cout);
