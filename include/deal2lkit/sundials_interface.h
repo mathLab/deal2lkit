@@ -68,10 +68,10 @@ public :
    * are assumed to be unchanged by this function.
    */
   virtual bool solver_should_restart(const double t,
-                                     const VEC &solution,
-                                     const VEC &solution_dot,
                                      const unsigned int step_number,
-                                     const double h);
+                                     const double h,
+                                     VEC &solution,
+                                     VEC &solution_dot);
 
   /** Compute the residual dst = F(t, y, y_dot). */
   virtual int residual(const double t,
