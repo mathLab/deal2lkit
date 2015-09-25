@@ -104,9 +104,9 @@ INCLUDE(${CMAKE_SOURCE_DIR}/cmake/setup_deal2lkit.cmake)
 #
 FILE(GLOB _configure_files "cmake/configure/configure_*.cmake")
 LIST(SORT _configure_files) # make sure to include in alphabetical order
-#FOREACH(_file ${_configure_files})
-#  INCLUDE(${_file})
-#ENDFOREACH()
+FOREACH(_file ${_configure_files})
+  INCLUDE(${_file})
+ENDFOREACH()
 
 
 #
@@ -128,17 +128,6 @@ MESSAGE(STATUS "Configuring done. Proceed to target definitions now.")
 ADD_SUBDIRECTORY(include)
 
 
-# Doxygen
-find_package(Doxygen)
-if(DOXYGEN_FOUND)
-	CONFIGURE_FILE(${CMAKE_CURRENT_SOURCE_DIR}/Doxyfile.in ${CMAKE_CURRENT_BINARY_DIR}/Doxyfile @ONLY)
-	ADD_CUSTOM_TARGET(doc
-		${DOXYGEN_EXECUTABLE} ${CMAKE_CURRENT_BINARY_DIR}/Doxyfile
-		WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
-		COMMENT "Generating API documentation with Doxygen" VERBATIM
-		)
-endif(DOXYGEN_FOUND)
-
 #ADD_SUBDIRECTORY(source) 
 INCLUDE_DIRECTORIES(
   ${CMAKE_BINARY_DIR}/include
@@ -159,11 +148,6 @@ FOREACH(_BUILD_TYPE ${D2K_BUILD_TYPES})
 	DEAL_II_SETUP_TARGET(${_lib} ${_BUILD_TYPE})
 ENDFOREACH()
 
-
-FOREACH(_file ${_configure_files})
-  INCLUDE(${_file})
-ENDFOREACH()
-
 MESSAGE(STATUS "Setting up library - Done")
 
 
@@ -176,6 +160,18 @@ IF(D2K_HAVE_TESTS_DIRECTORY AND NOT DEAL_II_MSVC AND D2K_ENABLE_TESTING)
 		ADD_SUBDIRECTORY(tests)
 		ENABLE_TESTING()
 ENDIF()
+
+
+# Doxygen
+find_package(Doxygen)
+if(DOXYGEN_FOUND)
+	CONFIGURE_FILE(${CMAKE_CURRENT_SOURCE_DIR}/Doxyfile.in ${CMAKE_CURRENT_BINARY_DIR}/Doxyfile @ONLY)
+	ADD_CUSTOM_TARGET(doc
+		${DOXYGEN_EXECUTABLE} ${CMAKE_CURRENT_BINARY_DIR}/Doxyfile
+		WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
+		COMMENT "Generating API documentation with Doxygen" VERBATIM
+		)
+endif(DOXYGEN_FOUND)
 
 #
 # And finally, print the configuration:

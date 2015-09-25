@@ -20,43 +20,43 @@
 #                                                                      #
 ########################################################################
 # 
-# #
-# # Hide some cmake specific cached variables. This is annoying...
-# #
-# MARK_AS_ADVANCED(file_cmd)
-# 
-# #
-# # Append the saved initial (cached) variables ${flags}_SAVED at the end of
-# # ${flags}, see setup_cached_compiler_flags.cmake and the main
-# # CMakeLists.txt for details.
-# #
-# FOREACH(_flags ${D2K_USED_FLAGS})
-#   # Strip leading and trailing whitespace:
-#   STRING(STRIP "${${_flags}} ${${_flags}_SAVED}" ${_flags})
-# ENDFOREACH()
-# 
-# #
-# # Sanity check: The variables defined in D2K_REMOVED_FLAGS must not be
-# # used during the configuration stage:
-# #
-# FOREACH(_flag ${D2K_REMOVED_FLAGS})
-#   IF(NOT "${${_flag}}" STREQUAL "")
-#     MESSAGE(FATAL_ERROR
-#       "\nInternal configuration error: The variable ${_flag} was set to a "
-#       "non empty value during the configuration! (The corresponding "
-#       "D2K_* variable should have been used.)\n"
-#       "${_flag}=\"${${_flag}}\"\n"
-#       )
-#   ENDIF()
-# ENDFOREACH()
-# 
-# #
-# # Save base configuration into variables BASE_* for later use in
-# # setup_write_config.cmake:
-# #
-# FOREACH(_suffix ${D2K_STRING_SUFFIXES} ${D2K_LIST_SUFFIXES})
-#   SET(BASE_${_suffix} ${D2K_${_suffix}})
-# ENDFOREACH()
+#
+# Hide some cmake specific cached variables. This is annoying...
+#
+MARK_AS_ADVANCED(file_cmd)
+
+#
+# Append the saved initial (cached) variables ${flags}_SAVED at the end of
+# ${flags}, see setup_cached_compiler_flags.cmake and the main
+# CMakeLists.txt for details.
+#
+#  FOREACH(_flags ${D2K_USED_FLAGS})
+#    # Strip leading and trailing whitespace:
+#    STRING(STRIP "${${_flags}} ${${_flags}_SAVED}" ${_flags})
+#  ENDFOREACH()
+#  
+#  #
+#  # Sanity check: The variables defined in D2K_REMOVED_FLAGS must not be
+#  # used during the configuration stage:
+#  #
+#  FOREACH(_flag ${D2K_REMOVED_FLAGS})
+#    IF(NOT "${${_flag}}" STREQUAL "")
+#      MESSAGE(FATAL_ERROR
+#        "\nInternal configuration error: The variable ${_flag} was set to a "
+#        "non empty value during the configuration! (The corresponding "
+#        "D2K_* variable should have been used.)\n"
+#        "${_flag}=\"${${_flag}}\"\n"
+#        )
+#    ENDIF()
+#  ENDFOREACH()
+
+#
+# Save base configuration into variables BASE_* for later use in
+# setup_write_config.cmake:
+#
+FOREACH(_suffix ${D2K_STRING_SUFFIXES} ${D2K_LIST_SUFFIXES})
+  SET(BASE_${_suffix} ${D2K_${_suffix}})
+ENDFOREACH()
 
 #
 # Register features:
@@ -66,20 +66,20 @@ FOREACH(_feature ${D2K_FEATURES})
   REGISTER_FEATURE(${_feature})
 ENDFOREACH()
 
-##
-## Deduplicate entries one more time :-]
-##
-#FOREACH(_suffix ${D2K_LIST_SUFFIXES})
-#  IF(_suffix MATCHES "INCLUDE_DIRS$")
-#    REMOVE_DUPLICATES(D2K_${_suffix})
-#  ELSE()
-#    REMOVE_DUPLICATES(D2K_${_suffix} REVERSE)
-#  ENDIF()
-#ENDFOREACH()
 #
+# Deduplicate entries one more time :-]
 #
+FOREACH(_suffix ${D2K_LIST_SUFFIXES})
+  IF(_suffix MATCHES "INCLUDE_DIRS$")
+    REMOVE_DUPLICATES(D2K_${_suffix})
+  ELSE()
+    REMOVE_DUPLICATES(D2K_${_suffix} REVERSE)
+  ENDIF()
+ENDFOREACH()
+
+
 # Clean up deal2lkitTargets.cmake in the build directory:
-#
+
 FILE(REMOVE
   ${CMAKE_BINARY_DIR}/${D2K_PROJECT_CONFIG_RELDIR}/${D2K_PROJECT_CONFIG_NAME}Targets.cmake
   )
