@@ -1,6 +1,11 @@
 ## ---------------------------------------------------------------------
 ##
-## Copyright (C) 2014 - 2015 by the deal2lkit authors
+## This file is copyrighted by the deal2lkit authors and by the deal.II 
+## authors (see below for the original copyright in the deal.II library.)
+## 
+## The structure of the cmake files are the same of those of the 
+## deal.II library and they have been modified in order to make them
+## compatible with the deal2lkit library.
 ##
 ## This file is part of the deal2lkit library.
 ##
@@ -13,14 +18,27 @@
 ##
 ## ---------------------------------------------------------------------
 
+## ---------------------------------------------------------------------
+##
+## Copyright (C) 2013 - 2015 by the deal.II authors
+##
+## This file is part of the deal.II library.
+##
+## The deal.II library is free software; you can use it, redistribute
+## it, and/or modify it under the terms of the GNU Lesser General
+## Public License as published by the Free Software Foundation; either
+## version 2.1 of the License, or (at your option) any later version.
+## The full text of the license can be found in the file LICENSE at
+## the top level of the deal.II distribution.
+##
+## ---------------------------------------------------------------------
+
 #
 # Add convenience targets that build and install only a specific component:
 #
 #   library
-#   compat_files
 #   documentation
 #   examples
-#   parameter_gui
 #
 
 
@@ -54,7 +72,7 @@ ENDIF()
 # The library can always be compiled and/or installed unconditionally ;-)
 _add_custom_target(library)
 
-FOREACH(_component compat_files documentation examples parameter_gui)
+FOREACH(_component documentation examples)
   STRING(TOUPPER "${_component}" _component_uppercase)
   IF(D2K_COMPONENT_${_component_uppercase})
     _add_custom_target(${_component})
@@ -99,38 +117,3 @@ ELSE()
   SET(_make_command "make")
 ENDIF()
 
-FILE(WRITE ${CMAKE_BINARY_DIR}${CMAKE_FILES_DIRECTORY}/print_info.cmake
-"MESSAGE(
-\"###
-#
-#  The following targets are available (invoke by $ ${_make_command} <target>):
-#
-#    all            - compile the library and all enabled components
-#    clean          - remove all generated files
-#    install        - install into CMAKE_INSTALL_PREFIX
-#
-#    info           - print this help message
-#    help           - print a list of valid top level targets
-#
-#    edit_cache     - run ccmake for changing (cached) configuration variables
-#                     and reruns the configure and generate phases of CMake
-#    rebuild_cache  - rerun the configure and generate phases of CMake
-#
-#    compat_files   - ${_description_string} component 'compat_files'
-#    documentation  - ${_description_string} component 'documentation'
-#    examples       - ${_description_string} component 'examples'
-#    library        - ${_description_string} component 'library'
-#    parameter_gui  - ${_description_string} component 'parameter_gui'
-#    package        - build binary package
-#
-#    test           - run a minimal set of tests
-#
-#    setup_tests    - set up testsuite subprojects
-#    prune_tests    - remove all testsuite subprojects
-#
-###\")"
-  )
-
-ADD_CUSTOM_TARGET(info
-  COMMAND ${CMAKE_COMMAND} -P ${CMAKE_BINARY_DIR}${CMAKE_FILES_DIRECTORY}/print_info.cmake
-  )

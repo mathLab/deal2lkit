@@ -1,6 +1,6 @@
 ## ---------------------------------------------------------------------
 ##
-## Copyright (C) 2014 - 2014 by the deal2lkit authors
+## Copyright (C) 2015 by the deal2lkit authors
 ##
 ## This file is part of the deal2lkit library.
 ##
