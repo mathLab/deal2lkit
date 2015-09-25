@@ -144,16 +144,31 @@ FOREACH(_BUILD_TYPE ${D2K_BUILD_TYPES})
 		${_library_source_files}
 		)
 
-		INSTALL(TARGETS ${_lib} LIBRARY DESTINATION lib)
-		SET(TEST_LIBRARIES_${_BUILD_TYPE} ${_lib})
-	DEAL_II_SETUP_TARGET(${_lib} ${_BUILD_TYPE})
 
 	# link external libraries
 	TARGET_LINK_LIBRARIES(${_lib}
 	  ${D2K_LIBRARIES_${_BUILD_TYPE}}
 	  ${D2K_LIBRARIES}
 	  )
+
+
+		SET(TEST_LIBRARIES_${_BUILD_TYPE} ${_lib})
+	DEAL_II_SETUP_TARGET(${_lib} ${_BUILD_TYPE})
+
+
+	#	INSTALL(TARGETS ${_lib} LIBRARY DESTINATION lib)
+			INSTALL(TARGETS ${D2K_BASE_NAME}${D2K_${_BUILD_TYPE}_SUFFIX}
+	    COMPONENT library
+	    EXPORT ${D2K_PROJECT_CONFIG_NAME}Targets
+	    RUNTIME DESTINATION ${D2K_EXECUTABLE_RELDIR}
+	    LIBRARY DESTINATION ${D2K_LIBRARY_RELDIR}
+	    ARCHIVE DESTINATION ${D2K_LIBRARY_RELDIR}
+	    )
 ENDFOREACH()
+INSTALL(EXPORT ${D2K_PROJECT_CONFIG_NAME}Targets
+  DESTINATION ${D2K_PROJECT_CONFIG_RELDIR}
+  COMPONENT library
+  )
 
 MESSAGE(STATUS "Setting up library - Done")
 
@@ -162,7 +177,7 @@ MESSAGE(STATUS "Setting up library - Done")
 ADD_SUBDIRECTORY(cmake/config) # has to be included after source
 #ADD_SUBDIRECTORY(examples)
 
-# Do not automatically include the testsuite subproject on Windows.
+#Do not automatically include the testsuite subproject on Windows.
 IF(D2K_HAVE_TESTS_DIRECTORY AND NOT DEAL_II_MSVC AND D2K_ENABLE_TESTING)
 		ADD_SUBDIRECTORY(tests)
 		ENABLE_TESTING()
