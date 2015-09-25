@@ -41,11 +41,14 @@ CMAKE_MINIMUM_REQUIRED(VERSION 2.8.8)
 FIND_PACKAGE(deal.II 8.3 REQUIRED
   HINTS ${deal.II_DIR} ${DEAL_II_DIR} ../ ../../ $ENV{DEAL_II_DIR}
 )
-
 DEAL_II_INITIALIZE_CACHED_VARIABLES()
-PROJECT(${TARGET})
 
-SET(D2K_DIR "$ENV{D2K_DIR}" CACHE PATH "Path to deal2lkit")
+
+PROJECT(${TARGET})
+FIND_PACKAGE(deal2lkit 1.0 REQUIRED
+	HINTS ${D2K_DIR} $ENV{D2K_DIR}
+)
+D2K_INITIALIZE_CACHED_VARIABLES()
 OPTION(ENABLE_APP_TESTING "Enable tests in this application." ON)
 
 # We add one library and one target for each type of deal.II library
@@ -60,60 +63,34 @@ FOREACH(_build_type ${_d2_build_types})
     # Postfix to use everywhere
     SET(_p "${${_build_type}_postfix}")
     # Only build this type, if deal.II was compiled with it.
-    IF(DEAL_II_BUILD_TYPE MATCHES "${_build_type}")
+		IF(CMAKE_BUILD_TYPE MATCHES "${_build_type}" AND
+				DEAL_II_BUILD_TYPE MATCHES "${_build_type}"  AND
+				D2K_BUILD_TYPE MATCHES "${_build_type}")
+
 	MESSAGE("-- Found ${_build_type} version of deal.II.")
+	MESSAGE("-- Found ${_build_type} version of deal2lkit.")
 
 	SET(_lib "${TARGET}-lib${_p}")
 	MESSAGE("-- Configuring library ${_lib}")
 
 	STRING(TOUPPER "${_build_type}" _BUILD_TYPE)
 
-	# Look for deal2lkit. If not found, ignore it. 
-	SET(_d2k deal2lkit${${_build_type}_postfix})
-	MESSAGE("-- Looking for ${_d2k} in ${D2K_DIR}")
-	FIND_LIBRARY(D2K${_p} ${_d2k} HINTS ${D2K_DIR} PATH_SUFFIXES lib)
-	IF(NOT "${D2K${_p}}" STREQUAL "D2K${_p}-NOTFOUND")
-	    # Only add the library if we found the deal2lkit library
-	    # Add all files, except the main file, to the library
-	    ADD_LIBRARY(${_lib} SHARED ${_files})
-	    TARGET_LINK_LIBRARIES(${_lib} ${D2K${_p}})
-	    MESSAGE("-- Library ${_d2k} found: ${D2K${_p}}")
+	ADD_LIBRARY(${_lib} SHARED ${_files})
+	SET(_exe "${TARGET}${${_build_type}_postfix}")
+	MESSAGE("-- Configuring executable ${_exe}")
+	ADD_EXECUTABLE(${_exe} ${_main})
+	TARGET_LINK_LIBRARIES(${_exe} ${_lib})
+	D2K_SETUP_TARGET(${_exe} ${_BUILD_TYPE})
 
-	    # Compile an executable only if required by the user
-	    # and only if the deal2lkit library was found
-	    IF(NOT "${_main}" STREQUAL "") 
-	        SET(_exe "${TARGET}${${_build_type}_postfix}")
-	        MESSAGE("-- Configuring executable ${_exe}")
-	        ADD_EXECUTABLE(${_exe} ${_main})
-	        TARGET_LINK_LIBRARIES(${_exe} ${_lib})
-	        DEAL_II_SETUP_TARGET(${_exe} ${_BUILD_TYPE})
-	    ENDIF()
-	    SET(TEST_LIBRARIES_${_BUILD_TYPE} ${_lib})
-	    DEAL_II_SETUP_TARGET(${_lib} ${_BUILD_TYPE})
-	ELSE()
-		MESSAGE(WARNING "-- Library deal2lkit not found: ${D2K${_p}}")
+	SET(TEST_LIBRARIES_${_BUILD_TYPE} ${_lib})
+
+	D2K_SETUP_TARGET(${_lib} ${_BUILD_TYPE})
 	ENDIF()
-    ENDIF()
 ENDFOREACH()
 
-INCLUDE_DIRECTORIES(${D2K_DIR}/include)
 
 if(EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/tests AND ${ENABLE_APP_TESTING})
     ADD_SUBDIRECTORY(tests)
     ENABLE_TESTING()
-endif()
-
-
-# Doxygen
-if(EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/Doxyfile.in)
-    find_package(Doxygen)
-    if(DOXYGEN_FOUND)
-    configure_file(${CMAKE_CURRENT_SOURCE_DIR}/Doxyfile.in ${CMAKE_CURRENT_BINARY_DIR}/Doxyfile @ONLY)
-    add_custom_target(doc
-    ${DOXYGEN_EXECUTABLE} ${CMAKE_CURRENT_BINARY_DIR}/Doxyfile
-    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
-    COMMENT "Generating API documentation with Doxygen" VERBATIM
-    )
-    endif(DOXYGEN_FOUND)
 endif()
 
