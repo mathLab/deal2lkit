@@ -18,8 +18,8 @@
 #
 # This module exports
 #
-#   NETCDF_LIBRARIES
-#   NETCDF_INCLUDE_DIRS
+#   SUNDIALS_LIBRARIES
+#   SUNDIALS_INCLUDE_DIRS
 #
 
 SET(SUNDIALS_DIR "" CACHE PATH "An optional hint to a SUNDIALS_DIR installation")
