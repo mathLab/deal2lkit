@@ -10,6 +10,7 @@
 #include <deal.II/lac/trilinos_parallel_block_vector.h>
 #include <deal.II/lac/trilinos_vector.h>
 #endif
+#include <deal.II/base/utilities.h>
 
 #include <iostream>
 #include <iomanip>
@@ -295,24 +296,19 @@ unsigned int DAETimeIntegrator<VEC>::start_ode(VEC &solution,
       std::cout << " "//"\r"
                 << std::setw(5) << t << " ----> "
                 << std::setw(5) << next_time
-                << " ### ";
+                << std::endl;
+
       status = IDASolve(ida_mem, next_time, &t, yy, yp, IDA_NORMAL);
 
       status = IDAGetLastStep(ida_mem, &h);
       AssertThrow(status == 0, ExcMessage("Error in IDA Solver"));
-      std::cout << std::setw(4) << "Step " << step_number
-                << std::setw(4) << ", t = " << t
-                << std::setw(4) << ", h = " << h
-                << std::endl;
 
       copy(solution, yy);
       copy(solution_dot, yp);
 
       // Check the solution
-      bool reset = solver.solver_should_restart(t, solution, solution_dot, step_number, h);
+      bool reset = solver.solver_should_restart(t, step_number, h, solution, solution_dot);
 
-
-      solver.output_step(t, solution, solution_dot,  step_number, h);
 
       if ( reset == true )
         {
@@ -323,6 +319,9 @@ unsigned int DAETimeIntegrator<VEC>::start_ode(VEC &solution,
           reset_ode(t, solution, solution_dot,
                     h/frac, max_steps);
         }
+
+      solver.output_step(t, solution, solution_dot,  step_number, h);
+
 
 
       step_number++;

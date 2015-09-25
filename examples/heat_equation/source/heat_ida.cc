@@ -17,6 +17,11 @@
 #include <deal.II/numerics/matrix_tools.h>
 #include <deal.II/numerics/solution_transfer.h>
 #include <deal.II/distributed/solution_transfer.h>
+#include <deal.II/numerics/error_estimator.h>
+#include <deal.II/distributed/solution_transfer.h>
+//#include <deal.II/base/index_set.h>
+#include <deal.II/distributed/tria.h>
+#include <deal.II/distributed/grid_refinement.h>
 
 #include <sundials/sundials_types.h>
 #include <nvector/nvector_parallel.h>
@@ -95,6 +100,36 @@ void Heat<dim>::declare_parameters (ParameterHandler &prm)
                   "Use direct solver if available",
                   "true",
                   Patterns::Bool());
+
+  add_parameter(  prm,
+                  &use_space_adaptivity,
+                  "Refine mesh during transient",
+                  "true",
+                  Patterns::Bool());
+
+  add_parameter(  prm,
+                  &kelly_threshold,
+                  "Threshold for restart solver",
+                  "1e-2",
+                  Patterns::Double(0.0));
+
+  add_parameter(  prm,
+                  &max_dofs,
+                  "Maximum number of dofs",
+                  "1000",
+                  Patterns::Integer(1));
+
+  add_parameter(  prm,
+                  &top_fraction,
+                  "Top fraction",
+                  "0.3",
+                  Patterns::Double(0.0));
+
+  add_parameter(  prm,
+                  &bottom_fraction,
+                  "Bottom fraction",
+                  "0.1",
+                  Patterns::Double(0.0));
 }
 
 template <int dim>
@@ -287,7 +322,7 @@ int Heat<dim>::residual (const double t,
   distributed_solution = tmp;
   distributed_solution_dot = solution_dot;
 
-	dst = 0;
+  dst = 0;
 
   const QGauss<dim>  quadrature_formula(fe->degree+1);
 
@@ -320,21 +355,21 @@ int Heat<dim>::residual (const double t,
 
         quad_points = fe_values.get_quadrature_points();
 
-				double sol_dot;
-				Tensor<1,dim> grad_sol;
+        double sol_dot;
+        Tensor<1,dim> grad_sol;
 
 
         for (unsigned int q_point=0; q_point<n_q_points; ++q_point)
           {
-						grad_sol = 0.0;
-						sol_dot = 0.0;
+            grad_sol = 0.0;
+            sol_dot = 0.0;
             for (unsigned int i=0; i<dofs_per_cell; ++i)
-						{
-							for (unsigned int d=0; d<dim; ++d)
-								grad_sol[d] += distributed_solution[local_dof_indices[i]]*fe_values[u].gradient(i,q_point)[d];
+              {
+                for (unsigned int d=0; d<dim; ++d)
+                  grad_sol[d] += distributed_solution[local_dof_indices[i]]*fe_values[u].gradient(i,q_point)[d];
 
-							sol_dot += distributed_solution_dot[local_dof_indices[i]]*fe_values.shape_value(i,q_point);
-						}
+                sol_dot += distributed_solution_dot[local_dof_indices[i]]*fe_values.shape_value(i,q_point);
+              }
 
             for (unsigned int i=0; i<dofs_per_cell; ++i)
               {
@@ -345,11 +380,12 @@ int Heat<dim>::residual (const double t,
 
                                  +
 
-																 grad_sol *
+                                 grad_sol *
                                  fe_values.shape_grad(i,q_point)
 
-															//	 - 1.0 *
-                              //   fe_values.shape_value(i,q_point)
+                                 -
+                                 forcing_term.value(quad_points[q_point]) *
+                                 fe_values.shape_value(i,q_point)
 
                                )*fe_values.JxW(q_point);
               }
@@ -421,13 +457,91 @@ void Heat<dim>::output_step(const double t,
 
 template <int dim>
 bool Heat<dim>::solver_should_restart (const double t,
-                                       const VEC &solution,
-                                       const VEC &solution_dot,
                                        const unsigned int step_number,
-                                       const double h)
+                                       const double h,
+                                       VEC &solution,
+                                       VEC &solution_dot)
 {
-  return false;
+
+  if (use_space_adaptivity)
+    {
+      int check = 0;
+      double max_kelly=0;
+      double mpi_max_kelly=0;
+
+
+      computing_timer.enter_section ("   Compute error estimator");
+      VEC tmp_c(solution);
+      constraints.distribute(tmp_c);
+      distributed_solution = tmp_c;
+      Vector<float> estimated_error_per_cell (triangulation->n_active_cells());
+      KellyErrorEstimator<dim>::estimate (*dof_handler,
+                                          QGauss<dim-1>(fe->degree+1),
+                                          typename FunctionMap<dim>::type(),
+                                          distributed_solution,
+                                          estimated_error_per_cell,
+                                          ComponentMask(),
+                                          0,
+                                          0,
+                                          triangulation->locally_owned_subdomain());
+      max_kelly = estimated_error_per_cell.linfty_norm();
+      max_kelly = Utilities::MPI::sum(max_kelly, comm);
+      pcout << "  max kelly = "
+            << max_kelly
+            << std::endl;
+
+      if (max_kelly > kelly_threshold)
+
+        {
+          parallel::distributed::GridRefinement::
+          refine_and_coarsen_fixed_number (*triangulation,
+                                           estimated_error_per_cell,
+                                           top_fraction, bottom_fraction,max_dofs);
+
+          parallel::distributed::SolutionTransfer<dim,VEC> sol_tr(*dof_handler);
+          parallel::distributed::SolutionTransfer<dim,VEC> sol_dot_tr(*dof_handler);
+
+          VEC sol (distributed_solution);
+          VEC sol_dot (distributed_solution_dot);
+          sol = solution;
+          sol_dot = solution_dot;
+
+          triangulation->prepare_coarsening_and_refinement();
+          sol_tr.prepare_for_coarsening_and_refinement (sol);
+          sol_dot_tr.prepare_for_coarsening_and_refinement(sol_dot);
+
+          if (adaptive_refinement)
+            triangulation->execute_coarsening_and_refinement ();
+          else
+            triangulation->refine_global (1);
+
+          setup_dofs(false);
+
+          VEC tmp (solution);
+          VEC tmp_dot (solution_dot);
+
+          sol_tr.interpolate (tmp);
+          sol_dot_tr.interpolate (tmp_dot);
+
+          solution = tmp;
+          solution_dot = tmp_dot;
+          constraints.distribute(solution);
+          computing_timer.exit_section();
+          MPI::COMM_WORLD.Barrier();
+          return true;
+        }
+      else // if max_kelly > kelly_threshold
+        {
+          computing_timer.exit_section();
+          return false;
+        }
+
+    }
+  else // use space adaptivity
+
+    return false;
 }
+
 
 template <int dim>
 int Heat<dim>::setup_jacobian (const double t,
@@ -464,7 +578,7 @@ int Heat<dim>::solve_jacobian_system (const double t,
   SolverControl solver_control (dof_handler->n_dofs(), 1e-8);
 
   SolverCG<VEC> solver(solver_control,
-                           SolverCG<VEC>::AdditionalData(dof_handler->n_dofs(),true));
+                       SolverCG<VEC>::AdditionalData(dof_handler->n_dofs(),true));
   solver.solve (jacobian_matrix, dst, src,
                 TrilinosWrappers::PreconditionIdentity());
 
@@ -477,7 +591,9 @@ int Heat<dim>::solve_jacobian_system (const double t,
 template <int dim>
 VEC &Heat<dim>::differential_components() const
 {
-  static VEC diff_comps(solution);
+  static VEC diff_comps;
+  IndexSet is = dof_handler->locally_owned_dofs();
+  diff_comps.reinit(is, comm);
   diff_comps = 1;
   set_constrained_dofs_to_zero(diff_comps);
   return diff_comps;
@@ -505,8 +621,8 @@ void Heat<dim>::run ()
           make_grid_fe();
           setup_dofs(true);
         }
-//      else
-//        refine_mesh();
+      //  else
+      //    refine_mesh();
 
       constraints.distribute(solution);
 

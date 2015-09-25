@@ -7,7 +7,7 @@ int main (int argc, char *argv[])
 
   initlog();
 
-	deallog << "sample test" << std::endl;
+  deallog << "sample test" << std::endl;
 
   return 0;
 }

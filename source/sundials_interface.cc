@@ -20,10 +20,10 @@
 
 template<typename VEC>
 bool SundialsInterface<VEC>::solver_should_restart(const double,
-                                                   const VEC &,
-                                                   const VEC &,
                                                    const unsigned int,
-                                                   const double)
+                                                   const double,
+                                                   VEC &,
+                                                   VEC &)
 {
   return false;
 }
