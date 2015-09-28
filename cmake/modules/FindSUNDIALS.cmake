@@ -1,6 +1,6 @@
 ## ---------------------------------------------------------------------
 ##
-## Copyright (C) 2014 - 2014 by the deal2lkit authors
+## Copyright (C) 2015 by the deal2lkit authors
 ##
 ## This file is part of the deal2lkit library.
 ##
@@ -18,8 +18,8 @@
 #
 # This module exports
 #
-#   NETCDF_LIBRARIES
-#   NETCDF_INCLUDE_DIRS
+#   SUNDIALS_LIBRARIES
+#   SUNDIALS_INCLUDE_DIRS
 #
 
 SET(SUNDIALS_DIR "" CACHE PATH "An optional hint to a SUNDIALS_DIR installation")
@@ -42,25 +42,6 @@ D2K_FIND_LIBRARY(SUNDIALS_LIB_PAR NAMES sundials_nvecparallel
 
 SET(SUN_INC "${SUNDIALS_DIR}/include")
 
-INCLUDE_DIRECTORIES(${SUN_INC})
-
-SET(SUNDIALS_LIBS "sundials_ida;sundials_nvecserial;sundials_nvecparallel")
-FOREACH(_BUILD_TYPE ${D2K_BUILD_TYPES})
-	SET(_lib ${D2K_BASE_NAME}${D2K_${_BUILD_TYPE}_SUFFIX})
-	FOREACH(_slib ${SUNDIALS_LIBS})
-		FIND_LIBRARY(SUNDIALS_${_slib} ${_slib} 
-			HINTS ${SUNDIALS_DIR} 
-			PATH_SUFFIXES lib)
-		IF(NOT "${SUNDIALS_${_slib}}" STREQUAL "${_slib}-NOTFOUND")
-			TARGET_LINK_LIBRARIES(${_lib} ${SUNDIALS_${_slib}})
-			MESSAGE("-- Library ${_slib} found: ${SUNDIALS_${_slib}}")
-		ELSE()
-			MESSAGE(WARNING "-- Library ${_slib} not found: ${SUNDIALS_${_slib}}")
-		ENDIF()
-	ENDFOREACH()
-ENDFOREACH()
-
-
 
 D2K_PACKAGE_HANDLE(SUNDIALS
   LIBRARIES REQUIRED 
@@ -71,7 +52,7 @@ D2K_PACKAGE_HANDLE(SUNDIALS
 	REQUIRED SUN_INC
 	USER_INCLUDE_DIRS
 	REQUIRED SUN_INC
-	 CLEAR 
+	CLEAR 
 	SUNDIALS_LIB_IDA
 	SUNDIALS_LIB_SER
 	SUNDIALS_LIB_PAR

@@ -1,6 +1,11 @@
 ## ---------------------------------------------------------------------
 ##
-## Copyright (C) 2014 - 2015 by the deal2lkit authors
+## This file is copyrighted by the deal2lkit authors and by the deal.II 
+## authors (see below for the original copyright in the deal.II library.)
+## 
+## The structure of the cmake files are the same of those of the 
+## deal.II library and they have been modified in order to make them
+## compatible with the deal2lkit library.
 ##
 ## This file is part of the deal2lkit library.
 ##
@@ -12,6 +17,22 @@
 ## the top level of the deal2lkit distribution.
 ##
 ## ---------------------------------------------------------------------
+
+## ---------------------------------------------------------------------
+##
+## Copyright (C) 2012 - 2015 by the deal.II authors
+##
+## This file is part of the deal.II library.
+##
+## The deal.II library is free software; you can use it, redistribute
+## it, and/or modify it under the terms of the GNU Lesser General
+## Public License as published by the Free Software Foundation; either
+## version 2.1 of the License, or (at your option) any later version.
+## The full text of the license can be found in the file LICENSE at
+## the top level of the deal.II distribution.
+##
+## ---------------------------------------------------------------------
+
 
 #
 # This file sets up the project configuration consisting of
@@ -37,7 +58,7 @@ MESSAGE(STATUS "Setting up project configuration")
 SET(_macros
   ${CMAKE_SOURCE_DIR}/cmake/macros/macro_deal2lkit_initialize_cached_variables.cmake
   ${CMAKE_SOURCE_DIR}/cmake/macros/macro_deal2lkit_invoke_autopilot.cmake
-	#  ${CMAKE_SOURCE_DIR}/cmake/macros/macro_deal_ii_setup_target.cmake
+	${CMAKE_SOURCE_DIR}/cmake/macros/macro_deal2lkit_setup_target.cmake
   ${CMAKE_SOURCE_DIR}/cmake/macros/macro_deal2lkit_query_git_information.cmake
 	#  ${CMAKE_SOURCE_DIR}/cmake/macros/macro_deal_ii_add_test.cmake
 	#${CMAKE_SOURCE_DIR}/cmake/macros/macro_deal_ii_pickup_tests.cmake
@@ -153,11 +174,10 @@ CONFIGURE_FILE(
 
 SET(CONFIG_BUILD_DIR FALSE)
 SET(MAKEFILE_BUILD_DIR "false")
-#SET(CONFIG_INCLUDE_DIRS
-#  \${D2K_PATH}/\${D2K_INCLUDE_RELDIR}
-#  \${D2K_PATH}/\${D2K_INCLUDE_RELDIR}/deal2lkit/bundled
-#  ${D2K_USER_INCLUDE_DIRS}
-#  )
+SET(CONFIG_INCLUDE_DIRS
+  \${D2K_PATH}/\${D2K_INCLUDE_RELDIR}
+  ${D2K_USER_INCLUDE_DIRS}
+  )
 CONFIGURE_FILE(
   ${CMAKE_CURRENT_SOURCE_DIR}/Config.cmake.in
   ${CMAKE_CURRENT_BINARY_DIR}/${D2K_PROJECT_CONFIG_NAME}Config.cmake

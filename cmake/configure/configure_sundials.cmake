@@ -1,6 +1,6 @@
 ## ---------------------------------------------------------------------
 ##
-## Copyright (C) 2014 - 2015 by the deal2lkit authors
+## Copyright (C) 2015 by the deal2lkit authors
 ##
 ## This file is part of the deal2lkit library.
 ##
@@ -16,5 +16,23 @@
 #
 # Configuration for the sundials library:
 #
+
+MACRO(FEATURE_SUNDIALS_FIND_EXTERNAL var)
+
+	FIND_PACKAGE(SUNDIALS)
+
+		IF(SUNDIALS_FOUND)
+
+		SET(${var} TRUE)
+
+    #
+    # Set SUNDIALS_DIR to something meaningful if empty
+    #
+    IF("${SUNDIALS_DIR}" STREQUAL "")
+      SET(SUNDIALS_DIR "<system location>")
+    ENDIF()
+
+	ENDIF()
+ENDMACRO()
 
 CONFIGURE_FEATURE(SUNDIALS)

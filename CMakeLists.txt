@@ -1,6 +1,11 @@
 ## ---------------------------------------------------------------------
 ##
-## Copyright (C) 2014 - 2015 by the deal2lkit authors
+## This file is copyrighted by the deal2lkit authors and by the deal.II 
+## authors (see below for the original copyright in the deal.II library.)
+## 
+## The structure of the cmake files are the same of those of the 
+## deal.II library and they have been modified in order to make them
+## compatible with the deal2lkit library.
 ##
 ## This file is part of the deal2lkit library.
 ##
@@ -10,9 +15,22 @@
 ## version 2.1 of the License, or (at your option) any later version.
 ## The full text of the license can be found in the file LICENSE at
 ## the top level of the deal2lkit distribution.
-##
 ## ---------------------------------------------------------------------
 
+## ---------------------------------------------------------------------
+##
+## Copyright (C) 2012 - 2015 by the deal.II authors
+##
+## This file is part of the deal.II library.
+##
+## The deal.II library is free software; you can use it, redistribute
+## it, and/or modify it under the terms of the GNU Lesser General
+## Public License as published by the Free Software Foundation; either
+## version 2.1 of the License, or (at your option) any later version.
+## The full text of the license can be found in the file LICENSE at
+## the top level of the deal.II distribution.
+##
+## ---------------------------------------------------------------------
 
 ##                                                                    ##
 #            The cmake build system for the deal2lkit project          #
@@ -104,9 +122,9 @@ INCLUDE(${CMAKE_SOURCE_DIR}/cmake/setup_deal2lkit.cmake)
 #
 FILE(GLOB _configure_files "cmake/configure/configure_*.cmake")
 LIST(SORT _configure_files) # make sure to include in alphabetical order
-#FOREACH(_file ${_configure_files})
-#  INCLUDE(${_file})
-#ENDFOREACH()
+FOREACH(_file ${_configure_files})
+  INCLUDE(${_file})
+ENDFOREACH()
 
 
 #
@@ -128,18 +146,8 @@ MESSAGE(STATUS "Configuring done. Proceed to target definitions now.")
 ADD_SUBDIRECTORY(include)
 
 
-# Doxygen
-find_package(Doxygen)
-if(DOXYGEN_FOUND)
-	CONFIGURE_FILE(${CMAKE_CURRENT_SOURCE_DIR}/Doxyfile.in ${CMAKE_CURRENT_BINARY_DIR}/Doxyfile @ONLY)
-	ADD_CUSTOM_TARGET(doc
-		${DOXYGEN_EXECUTABLE} ${CMAKE_CURRENT_BINARY_DIR}/Doxyfile
-		WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
-		COMMENT "Generating API documentation with Doxygen" VERBATIM
-		)
-endif(DOXYGEN_FOUND)
-
 #ADD_SUBDIRECTORY(source) 
+
 INCLUDE_DIRECTORIES(
   ${CMAKE_BINARY_DIR}/include
   ${CMAKE_SOURCE_DIR}/include
@@ -154,15 +162,31 @@ FOREACH(_BUILD_TYPE ${D2K_BUILD_TYPES})
 		${_library_source_files}
 		)
 
-		INSTALL(TARGETS ${_lib} LIBRARY DESTINATION lib)
+
+	# link external libraries
+	TARGET_LINK_LIBRARIES(${_lib}
+	  ${D2K_LIBRARIES_${_BUILD_TYPE}}
+	  ${D2K_LIBRARIES}
+	  )
+
+
 		SET(TEST_LIBRARIES_${_BUILD_TYPE} ${_lib})
 	DEAL_II_SETUP_TARGET(${_lib} ${_BUILD_TYPE})
-ENDFOREACH()
 
 
-FOREACH(_file ${_configure_files})
-  INCLUDE(${_file})
+	#	INSTALL(TARGETS ${_lib} LIBRARY DESTINATION lib)
+			INSTALL(TARGETS ${D2K_BASE_NAME}${D2K_${_BUILD_TYPE}_SUFFIX}
+	    COMPONENT library
+	    EXPORT ${D2K_PROJECT_CONFIG_NAME}Targets
+	    RUNTIME DESTINATION ${D2K_EXECUTABLE_RELDIR}
+	    LIBRARY DESTINATION ${D2K_LIBRARY_RELDIR}
+	    ARCHIVE DESTINATION ${D2K_LIBRARY_RELDIR}
+	    )
 ENDFOREACH()
+INSTALL(EXPORT ${D2K_PROJECT_CONFIG_NAME}Targets
+  DESTINATION ${D2K_PROJECT_CONFIG_RELDIR}
+  COMPONENT library
+  )
 
 MESSAGE(STATUS "Setting up library - Done")
 
@@ -171,11 +195,23 @@ MESSAGE(STATUS "Setting up library - Done")
 ADD_SUBDIRECTORY(cmake/config) # has to be included after source
 #ADD_SUBDIRECTORY(examples)
 
-# Do not automatically include the testsuite subproject on Windows.
+#Do not automatically include the testsuite subproject on Windows.
 IF(D2K_HAVE_TESTS_DIRECTORY AND NOT DEAL_II_MSVC AND D2K_ENABLE_TESTING)
 		ADD_SUBDIRECTORY(tests)
 		ENABLE_TESTING()
 ENDIF()
+
+
+# Doxygen
+find_package(Doxygen)
+if(DOXYGEN_FOUND)
+	CONFIGURE_FILE(${CMAKE_CURRENT_SOURCE_DIR}/Doxyfile.in ${CMAKE_CURRENT_BINARY_DIR}/Doxyfile @ONLY)
+	ADD_CUSTOM_TARGET(doc
+		${DOXYGEN_EXECUTABLE} ${CMAKE_CURRENT_BINARY_DIR}/Doxyfile
+		WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
+		COMMENT "Generating API documentation with Doxygen" VERBATIM
+		)
+endif(DOXYGEN_FOUND)
 
 #
 # And finally, print the configuration:
