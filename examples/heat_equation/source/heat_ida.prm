@@ -1,59 +1,60 @@
-# Parameter file generated with 
-# D2K_GIT_BRANCH=       space_adaptivity
-# D2K_GIT_SHORTREV=     4de973e
+# Parameter file generated with
+# D2K_GIT_BRANCH=       master
+# D2K_GIT_SHORTREV=     65ae35b
 # DEAL_II_GIT_BRANCH=   master
-# DEAL_II_GIT_SHORTREV= 7ef2ce9
+# DEAL_II_GIT_SHORTREV= 8fe1bdb
 subsection Dirichlet BCs
-  set IDs and component masks = 0=u
-  set IDs and expressions     = 
+  set IDs and component masks = 2=u%3=u
+  set IDs and expressions     = 2=0%3=0
   set Known component names   = u
-  set Used constants          = 
+  set Used constants          =
 end
 subsection Domain
   set Grid to generate           = rectangle
-  set Input grid file name       = 
+  set Input grid file name       =
   set Mesh smoothing alogrithm   = none
   set Optional Point<spacedim> 1 = 0,0
   set Optional Point<spacedim> 2 = 1,1
-  set Optional bool 1            = false
+  set Optional bool 1            = true
   set Optional double 1          = 1.
   set Optional double 2          = 0.5
   set Optional int 1             = 1
   set Optional vector of dim int = 1,1
-  set Output grid file name      = 
+  set Output grid file name      =
 end
 subsection Exact solution
-  set Function constants  = 
+  set Function constants  =
   set Function expression = 0
   set Variable names      = x,y,t
 end
 subsection Finite Element
-  set Block coupling                 = 
+  set Block coupling                 =
   set Blocking of the finite element = u
-  set Finite element space           = FE_Q(1)
-  set Preconditioner block coupling  = 
+  set Finite element space           = FE_Q(2)
+  set Preconditioner block coupling  =
 end
 subsection Forcing term
-  set Function constants  = A=10.
-  set Function expression = A*sin(2*pi*t)
+  set Function constants  = A=100.
+  set Function expression = A*(sin(1*pi*(x-t))) #A*(y-0.5*(1+sin(4*pi*t))*(0.5*(1+sin(4*pi*t))-y))-(x-0.5*(1+cos(4*pi*t))*(0.5*(1+cos(4*pi*t))-x))
   set Variable names      = x,y,t
 end
 subsection Heat<2>
   set Adaptive refinement            = true
-  set Bottom fraction                = 0.1
+  set Bottom fraction                = 0.6
+  set Diffusivity                    = 1.
   set Initial global refinement      = 1
-  set Maximum number of dofs         = 40
+  set Maximum number of cells        = 100
   set Maximum number of time steps   = 10000
   set Number of cycles               = 1
   set Refine mesh during transient   = true
-  set Threshold for restart solver   = 1e-1
+  set Threshold for restart solver   = 1e-7
   set Timer output file              = timer.txt
   set Top fraction                   = 0.3
   set Use direct solver if available = true
 end
 subsection IDA Solver Parameters
   set Absolute error tolerance                      = 1e-4
-  set Final time                                    = 1
+  set Final time                                    = 4
   set Ignore algebraic terms for error computations = false
   set Initial condition Newton max iterations       = 5
   set Initial condition Newton parameter            = 0.33
@@ -68,23 +69,23 @@ subsection IDA Solver Parameters
   set Use local tolerances                          = false
 end
 subsection Initial solution
-  set Function constants  = 
+  set Function constants  =
   set Function expression = 0
   set Variable names      = x,y,t
 end
 subsection Initial solution_dot
-  set Function constants  = 
+  set Function constants  =
   set Function expression = 0
   set Variable names      = x,y,t
 end
 subsection Output Parameters
-  set Incremental run prefix = 
+  set Incremental run prefix =
   set Output partitioning    = false
   set Problem base name      = solution
   set Solution names         = u
   subsection Solution output format
     set Output format = vtu
-    set Subdivisions  = 1
+    set Subdivisions  = 2
     subsection DX output parameters
       set Coordinates format = ascii
       set Data format        = ascii

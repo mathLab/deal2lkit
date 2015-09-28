@@ -115,9 +115,15 @@ void Heat<dim>::declare_parameters (ParameterHandler &prm)
 
   add_parameter(  prm,
                   &max_dofs,
-                  "Maximum number of dofs",
+                  "Maximum number of cells",
                   "1000",
                   Patterns::Integer(1));
+
+  add_parameter(  prm,
+                  &diffusivity,
+                  "Diffusivity",
+                  "1.",
+                  Patterns::Double(0.0));
 
   add_parameter(  prm,
                   &top_fraction,
@@ -270,6 +276,7 @@ void Heat<dim>::assemble_jacobian_matrix(const double t,
 
                                         +
 
+                                        diffusivity *
                                         fe_values.shape_grad(i,q_point) *
                                         fe_values.shape_grad(j,q_point)
 
@@ -380,6 +387,7 @@ int Heat<dim>::residual (const double t,
 
                                  +
 
+                                 diffusivity *
                                  grad_sol *
                                  fe_values.shape_grad(i,q_point)
 
