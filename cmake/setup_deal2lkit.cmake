@@ -84,7 +84,7 @@ SET_IF_EMPTY(D2K_PACKAGE_VENDOR
   "The deal2lkit Authors <https://github.com/mathLab/deal2lkit/>"
   )
 SET_IF_EMPTY(D2K_PACKAGE_DESCRIPTION
-	"A Toolkit library for deal.II <http://www.dealii.org/>"
+  "A Toolkit library for deal.II <http://www.dealii.org/>"
   )
 
 FILE(STRINGS "${CMAKE_SOURCE_DIR}/VERSION" _version LIMIT_COUNT 1)

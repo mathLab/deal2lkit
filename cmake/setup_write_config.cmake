@@ -44,13 +44,13 @@
 D2K_QUERY_GIT_INFORMATION()
 
 FILE(WRITE ${CMAKE_BINARY_DIR}/revision.log
-"###
-#
-#  Git information:
-#        Branch:   ${D2K_GIT_BRANCH}
-#        Revision: ${D2K_GIT_REVISION}
-#
-###"
+  "###
+  #
+  #  Git information:
+  #        Branch:   ${D2K_GIT_BRANCH}
+  #        Revision: ${D2K_GIT_REVISION}
+  #
+  ###"
   )
 
 
@@ -87,7 +87,7 @@ _both(
 #        CMAKE_INSTALL_PREFIX:   ${CMAKE_INSTALL_PREFIX}
 #        CMAKE_SOURCE_DIR:       ${CMAKE_SOURCE_DIR}
 "
-  )
+)
 IF("${D2K_GIT_SHORTREV}" STREQUAL "")
   _both("#                                (version ${D2K_PACKAGE_VERSION})\n")
 ELSE()
@@ -98,7 +98,7 @@ _both(
 #        CMAKE_CXX_COMPILER:     ${CMAKE_CXX_COMPILER_ID} ${CMAKE_CXX_COMPILER_VERSION} on platform ${CMAKE_SYSTEM_NAME} ${CMAKE_SYSTEM_PROCESSOR}
 #                                ${CMAKE_CXX_COMPILER}
 "
-  )
+)
 
 IF(CMAKE_C_COMPILER_WORKS)
   _detailed("#        CMAKE_C_COMPILER:       ${CMAKE_C_COMPILER}\n")
@@ -114,7 +114,7 @@ _detailed(
 "#  Base configuration (prior to feature configuration):
 #        D2K_CXX_FLAGS:            ${BASE_CXX_FLAGS}
 "
-  )
+)
 IF(CMAKE_BUILD_TYPE MATCHES "Release")
   _detailed("#        D2K_CXX_FLAGS_RELEASE:    ${BASE_CXX_FLAGS_RELEASE}\n")
 ENDIF()
@@ -168,9 +168,9 @@ FOREACH(_var ${_variables})
   ELSEIF(_var MATCHES "D2K_COMPONENT")
     LIST(APPEND _components "${_var}")
   ENDIF()
-	IF(_var MATCHES "D2K_ENABLE_TESTING")
+  IF(_var MATCHES "D2K_ENABLE_TESTING")
     LIST(APPEND _components "${_var}")
-	ENDIF()
+  ENDIF()
 
 ENDFOREACH()
 
@@ -190,7 +190,7 @@ FOREACH(_var ${_features})
         _both("#        ${_var} set up with bundled packages\n")
       ENDIF()
     ELSE()
-     _both("#        ${_var} = ${${_var}}\n")
+      _both("#        ${_var} = ${${_var}}\n")
     ENDIF()
 
     #
@@ -211,9 +211,9 @@ FOREACH(_var ${_features})
     # Print the feature configuration:
     #
     FOREACH(_var2
-      C_COMPILER CXX_COMPILER Fortran_COMPILER
-      ${D2K_STRING_SUFFIXES} ${D2K_LIST_SUFFIXES}
-      )
+        C_COMPILER CXX_COMPILER Fortran_COMPILER
+        ${D2K_STRING_SUFFIXES} ${D2K_LIST_SUFFIXES}
+        )
       IF(DEFINED ${_feature}_${_var2})
         _detailed("#            ${_feature}_${_var2} = ${${_feature}_${_var2}}\n")
       ENDIF()
@@ -225,8 +225,8 @@ FOREACH(_var ${_features})
 ENDFOREACH()
 
 _both(
-  "#\n#  Component configuration:\n#\n"
-  )
+"#\n#  Component configuration:\n#\n"
+)
 FOREACH(_var ${_components})
   IF(_var MATCHES "D2K_COMPONENT")
     IF(${${_var}})
@@ -237,19 +237,19 @@ FOREACH(_var ${_components})
       _both("#      ( ${_var} = ${${_var}} )\n")
     ENDIF()
   ENDIF()
-	IF(_var MATCHES "D2K_ENABLE_TESTING")
-      _both("#        ${_var} = ${${_var}}  \n")
-	ENDIF()
+  IF(_var MATCHES "D2K_ENABLE_TESTING")
+    _both("#        ${_var} = ${${_var}}  \n")
+  ENDIF()
 ENDFOREACH()
 
 _summary(
 "#\n#  Detailed information (compiler flags, feature configuration) can be found in detailed.log
 #\n#  Run  $ "
-  )
+)
 IF(CMAKE_GENERATOR MATCHES "Ninja")
   _summary("ninja ")
 ELSE()
-_summary("make ")
+  _summary("make ")
 ENDIF()
 _summary("info  to print a help message with a list of top level targets\n")
 
