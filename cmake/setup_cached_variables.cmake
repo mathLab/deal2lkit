@@ -81,7 +81,7 @@ OPTION(D2K_COMPONENT_EXAMPLES
 
 OPTION(D2K_ENABLE_TESTING 
   "Enable configuration and installation of the tests." 
-	OFF
+  OFF
   )
 
 
@@ -151,14 +151,14 @@ MARK_AS_ADVANCED(D2K_DOXYGEN_USE_MATHJAX)
 
 IF("${CMAKE_BINARY_DIR}" STREQUAL "${CMAKE_INSTALL_PREFIX}")
   MESSAGE(FATAL_ERROR "
-Error CMAKE_INSTALL_PREFIX is equal to CMAKE_BINARY_DIR.
-It is not possible to install into the build directory. Please set
-CMAKE_INSTALL_PREFIX to a designated install directory different than
-CMAKE_BINARY_DIR.
-(Please note that you can use deal2lkit directly out of a build directory
-without the need to install it, if this is what you tried to do.)
+  Error CMAKE_INSTALL_PREFIX is equal to CMAKE_BINARY_DIR.
+  It is not possible to install into the build directory. Please set
+  CMAKE_INSTALL_PREFIX to a designated install directory different than
+  CMAKE_BINARY_DIR.
+  (Please note that you can use deal2lkit directly out of a build directory
+  without the need to install it, if this is what you tried to do.)
 "
-    )
+)
 ENDIF()
 
 #

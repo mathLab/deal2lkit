@@ -107,8 +107,8 @@ MACRO(SET_CACHED_OPTION _str _value)
     CACHE BOOL
     "Build deal2lkit with support for ${_str_lower}."
     FORCE)
-	# this is needed for the testsuite
-	SET(DEAL_II_WITH_${_str} ${_value})
+  # this is needed for the testsuite
+  SET(DEAL_II_WITH_${_str} ${_value})
 ENDMACRO()
 
 
@@ -122,31 +122,31 @@ MACRO(FEATURE_ERROR_MESSAGE _feature)
     SET(_hint_snippet "
     $ ${_feature}_DIR=\"...\" cmake <...>
     $ cmake -D${_feature}_DIR=\"...\" <...>
-or set the relevant variables by hand in ccmake."
-      )
-  ELSE()
-    SET(_hint_snippet
-      " or set the relevant variables by hand in ccmake."
-      )
-  ENDIF()
-
-  IF(FEATURE_${_feature}_HAVE_BUNDLED)
-    SET(_bundled_snippet
-      "\nAlternatively you may choose to compile the bundled library of "
-      "${_feature_lowercase} by setting D2K_ALLOW_BUNDLED=on or "
-      "D2K_FORCE_BUNDLED_${_feature}=on.\n"
-      )
-  ELSE()
-    SET(_bundled_snippet "\n")
-  ENDIF()
-
-  MESSAGE(FATAL_ERROR "\n"
-    "Could not find the ${_feature_lowercase} library!\n"
-    ${${_feature}_ADDITIONAL_ERROR_STRING}
-    "Please ensure that a suitable ${_feature_lowercase} library is installed on your computer.\n"
-    "If the library is not at a default location, either provide some hints "
-    "for autodetection,${_hint_snippet}${_bundled_snippet}"
+    or set the relevant variables by hand in ccmake."
     )
+ELSE()
+  SET(_hint_snippet
+    " or set the relevant variables by hand in ccmake."
+    )
+ENDIF()
+
+IF(FEATURE_${_feature}_HAVE_BUNDLED)
+  SET(_bundled_snippet
+    "\nAlternatively you may choose to compile the bundled library of "
+    "${_feature_lowercase} by setting D2K_ALLOW_BUNDLED=on or "
+    "D2K_FORCE_BUNDLED_${_feature}=on.\n"
+    )
+ELSE()
+  SET(_bundled_snippet "\n")
+ENDIF()
+
+MESSAGE(FATAL_ERROR "\n"
+  "Could not find the ${_feature_lowercase} library!\n"
+  ${${_feature}_ADDITIONAL_ERROR_STRING}
+  "Please ensure that a suitable ${_feature_lowercase} library is installed on your computer.\n"
+  "If the library is not at a default location, either provide some hints "
+  "for autodetection,${_hint_snippet}${_bundled_snippet}"
+  )
 ENDMACRO()
 
 
@@ -207,87 +207,87 @@ MACRO(CONFIGURE_FEATURE _feature)
   # D2K_WITH_${_feature} is set to true or not set at all.
   #
   IF((NOT DEFINED D2K_WITH_${_feature}) OR
-     D2K_WITH_${_feature})
+    D2K_WITH_${_feature})
 
-    #
-    # Are all dependencies fullfilled?
-    #
-    SET(_dependencies_ok TRUE)
-    FOREACH(_dependency ${FEATURE_${_feature}_DEPENDS})
-      IF(NOT D2K_WITH_${_dependency})
+  #
+  # Are all dependencies fullfilled?
+  #
+  SET(_dependencies_ok TRUE)
+  FOREACH(_dependency ${FEATURE_${_feature}_DEPENDS})
+    IF(NOT D2K_WITH_${_dependency})
+      IF(D2K_WITH_${_feature})
+        MESSAGE(FATAL_ERROR "\n"
+          "D2K_WITH_${_feature} has unmet configuration requirements: "
+          "D2K_WITH_${_dependency} has to be set to \"ON\".\n\n"
+          )
+      ELSE()
+        MESSAGE(STATUS
+          "D2K_WITH_${_feature} has unmet configuration requirements: "
+          "D2K_WITH_${_dependency} has to be set to \"ON\"."
+          )
+        PURGE_FEATURE(${_feature})
+        SET_CACHED_OPTION(${_feature} OFF)
+      ENDIF()
+      SET(_dependencies_ok FALSE)
+    ENDIF()
+  ENDFOREACH()
+
+  IF(_dependencies_ok)
+    IF(COMMAND FEATURE_${_feature}_FIND_EXTERNAL)
+      RUN_COMMAND("FEATURE_${_feature}_FIND_EXTERNAL(FEATURE_${_feature}_EXTERNAL_FOUND)")
+    ELSE()
+      FEATURE_FIND_EXTERNAL(${_feature} FEATURE_${_feature}_EXTERNAL_FOUND)
+    ENDIF()
+
+    IF(FEATURE_${_feature}_EXTERNAL_FOUND)
+      IF(COMMAND FEATURE_${_feature}_CONFIGURE_EXTERNAL)
+        RUN_COMMAND("FEATURE_${_feature}_CONFIGURE_EXTERNAL()")
+      ENDIF()
+
+      MESSAGE(STATUS "D2K_WITH_${_feature} successfully set up with external dependencies.")
+      LIST(APPEND D2K_FEATURES ${_feature})
+      SET(FEATURE_${_feature}_EXTERNAL_CONFIGURED TRUE)
+      SET_CACHED_OPTION(${_feature} ON)
+
+    ELSE(FEATURE_${_feature}_EXTERNAL_FOUND)
+
+      PURGE_FEATURE(${_feature})
+
+      MESSAGE(STATUS "D2K_WITH_${_feature} has unmet external dependencies.")
+
+      IF(FEATURE_${_feature}_HAVE_BUNDLED AND D2K_ALLOW_BUNDLED)
+        RUN_COMMAND("FEATURE_${_feature}_CONFIGURE_BUNDLED()")
+
+        MESSAGE(STATUS "D2K_WITH_${_feature} successfully set up with bundled packages.")
+        LIST(APPEND D2K_FEATURES ${_feature})
+        SET(FEATURE_${_feature}_BUNDLED_CONFIGURED TRUE)
+        SET_CACHED_OPTION(${_feature} ON)
+
+      ELSE()
         IF(D2K_WITH_${_feature})
-          MESSAGE(FATAL_ERROR "\n"
-            "D2K_WITH_${_feature} has unmet configuration requirements: "
-            "D2K_WITH_${_dependency} has to be set to \"ON\".\n\n"
-            )
+          IF(COMMAND FEATURE_${_feature}_ERROR_MESSAGE)
+            RUN_COMMAND("FEATURE_${_feature}_ERROR_MESSAGE()")
+          ELSE()
+            FEATURE_ERROR_MESSAGE(${_feature})
+          ENDIF()
         ELSE()
-          MESSAGE(STATUS
-            "D2K_WITH_${_feature} has unmet configuration requirements: "
-            "D2K_WITH_${_dependency} has to be set to \"ON\"."
-            )
-          PURGE_FEATURE(${_feature})
           SET_CACHED_OPTION(${_feature} OFF)
         ENDIF()
-        SET(_dependencies_ok FALSE)
       ENDIF()
-    ENDFOREACH()
 
-    IF(_dependencies_ok)
-        IF(COMMAND FEATURE_${_feature}_FIND_EXTERNAL)
-          RUN_COMMAND("FEATURE_${_feature}_FIND_EXTERNAL(FEATURE_${_feature}_EXTERNAL_FOUND)")
-        ELSE()
-          FEATURE_FIND_EXTERNAL(${_feature} FEATURE_${_feature}_EXTERNAL_FOUND)
-        ENDIF()
+    ENDIF(FEATURE_${_feature}_EXTERNAL_FOUND)
 
-        IF(FEATURE_${_feature}_EXTERNAL_FOUND)
-          IF(COMMAND FEATURE_${_feature}_CONFIGURE_EXTERNAL)
-            RUN_COMMAND("FEATURE_${_feature}_CONFIGURE_EXTERNAL()")
-          ENDIF()
-
-          MESSAGE(STATUS "D2K_WITH_${_feature} successfully set up with external dependencies.")
-          LIST(APPEND D2K_FEATURES ${_feature})
-          SET(FEATURE_${_feature}_EXTERNAL_CONFIGURED TRUE)
-          SET_CACHED_OPTION(${_feature} ON)
-
-        ELSE(FEATURE_${_feature}_EXTERNAL_FOUND)
-
-          PURGE_FEATURE(${_feature})
-
-          MESSAGE(STATUS "D2K_WITH_${_feature} has unmet external dependencies.")
-
-          IF(FEATURE_${_feature}_HAVE_BUNDLED AND D2K_ALLOW_BUNDLED)
-            RUN_COMMAND("FEATURE_${_feature}_CONFIGURE_BUNDLED()")
-
-            MESSAGE(STATUS "D2K_WITH_${_feature} successfully set up with bundled packages.")
-            LIST(APPEND D2K_FEATURES ${_feature})
-            SET(FEATURE_${_feature}_BUNDLED_CONFIGURED TRUE)
-            SET_CACHED_OPTION(${_feature} ON)
-
-          ELSE()
-            IF(D2K_WITH_${_feature})
-              IF(COMMAND FEATURE_${_feature}_ERROR_MESSAGE)
-                RUN_COMMAND("FEATURE_${_feature}_ERROR_MESSAGE()")
-              ELSE()
-                FEATURE_ERROR_MESSAGE(${_feature})
-              ENDIF()
-            ELSE()
-              SET_CACHED_OPTION(${_feature} OFF)
-            ENDIF()
-          ENDIF()
-
-        ENDIF(FEATURE_${_feature}_EXTERNAL_FOUND)
-
-    ENDIF()
-  ELSE()
-    #
-    # D2K_WITH_${_feature} is defined and set to OFF, promote it to
-    # cache nevertheless:
-    #
-    MESSAGE(STATUS "D2K_WITH_${_feature} is set to off.")
-    PURGE_FEATURE(${_feature})
-    SET_CACHED_OPTION(${_feature} OFF)
   ENDIF()
+ELSE()
+  #
+  # D2K_WITH_${_feature} is defined and set to OFF, promote it to
+  # cache nevertheless:
+  #
+  MESSAGE(STATUS "D2K_WITH_${_feature} is set to off.")
+  PURGE_FEATURE(${_feature})
+  SET_CACHED_OPTION(${_feature} OFF)
+ENDIF()
 
-  SET(FEATURE_${_feature}_PROCESSED TRUE)
+SET(FEATURE_${_feature}_PROCESSED TRUE)
 
 ENDMACRO()

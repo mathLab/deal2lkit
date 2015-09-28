@@ -68,9 +68,9 @@ MACRO(D2K_ADD_LIBRARY _library)
       "$<TARGET_OBJECTS:${_library}.${_build_lowercase}>"
       )
 
-		#STRING(TOUPPER "${_build_type}" _BUILD_TYPE)
-		#DEAL_II_SETUP_TARGET(${_library}.${_build_lowercase} ${_BUILD_TYPE})
-		DEAL_II_SETUP_TARGET(${_library}.${_build_lowercase} ${_build})
+    #STRING(TOUPPER "${_build_type}" _BUILD_TYPE)
+    #DEAL_II_SETUP_TARGET(${_library}.${_build_lowercase} ${_BUILD_TYPE})
+    DEAL_II_SETUP_TARGET(${_library}.${_build_lowercase} ${_build})
   ENDFOREACH()
 
 ENDMACRO()

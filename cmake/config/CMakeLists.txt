@@ -58,10 +58,10 @@ MESSAGE(STATUS "Setting up project configuration")
 SET(_macros
   ${CMAKE_SOURCE_DIR}/cmake/macros/macro_deal2lkit_initialize_cached_variables.cmake
   ${CMAKE_SOURCE_DIR}/cmake/macros/macro_deal2lkit_invoke_autopilot.cmake
-	${CMAKE_SOURCE_DIR}/cmake/macros/macro_deal2lkit_setup_target.cmake
+  ${CMAKE_SOURCE_DIR}/cmake/macros/macro_deal2lkit_setup_target.cmake
   ${CMAKE_SOURCE_DIR}/cmake/macros/macro_deal2lkit_query_git_information.cmake
-	#  ${CMAKE_SOURCE_DIR}/cmake/macros/macro_deal_ii_add_test.cmake
-	#${CMAKE_SOURCE_DIR}/cmake/macros/macro_deal_ii_pickup_tests.cmake
+  #  ${CMAKE_SOURCE_DIR}/cmake/macros/macro_deal_ii_add_test.cmake
+  #${CMAKE_SOURCE_DIR}/cmake/macros/macro_deal_ii_pickup_tests.cmake
   )
 FILE(COPY ${_macros}
   DESTINATION ${CMAKE_BINARY_DIR}/${D2K_SHARE_RELDIR}/macros

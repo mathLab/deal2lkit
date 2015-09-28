@@ -84,16 +84,16 @@ MACRO(D2K_INITIALIZE_CACHED_VARIABLES)
     ENDIF()
 
     MESSAGE(
-"###
-#
-#  WARNING:
-#
-#  CMAKE_BUILD_TYPE \"${CMAKE_BUILD_TYPE}\" unsupported by current installation!
-#  deal2lkit was built with CMAKE_BUILD_TYPE \"${D2K_BUILD_TYPE}\".
-#
-#  CMAKE_BUILD_TYPE is forced to \"${_new_build_type}\".
-#
-###"
+      "###
+      #
+      #  WARNING:
+      #
+      #  CMAKE_BUILD_TYPE \"${CMAKE_BUILD_TYPE}\" unsupported by current installation!
+      #  deal2lkit was built with CMAKE_BUILD_TYPE \"${D2K_BUILD_TYPE}\".
+      #
+      #  CMAKE_BUILD_TYPE is forced to \"${_new_build_type}\".
+      #
+      ###"
       )
     SET(CMAKE_BUILD_TYPE "${_new_build_type}" CACHE STRING
       "Choose the type of build, options are: Debug, Release"

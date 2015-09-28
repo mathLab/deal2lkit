@@ -101,12 +101,12 @@ MACRO(D2K_QUERY_GIT_INFORMATION)
     #
 
     EXECUTE_PROCESS(
-       COMMAND ${GIT_EXECUTABLE} log -n 1 --pretty=format:"%H %h"
-       WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
-       OUTPUT_VARIABLE _info
-       RESULT_VARIABLE _result
-       OUTPUT_STRIP_TRAILING_WHITESPACE
-       )
+      COMMAND ${GIT_EXECUTABLE} log -n 1 --pretty=format:"%H %h"
+      WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+      OUTPUT_VARIABLE _info
+      RESULT_VARIABLE _result
+      OUTPUT_STRIP_TRAILING_WHITESPACE
+      )
     IF(${_result} EQUAL 0)
       STRING(REGEX REPLACE "^\"([^ ]+) ([^ ]+)\"$"
         "\\1" ${_prefix}GIT_REVISION "${_info}")
@@ -119,12 +119,12 @@ MACRO(D2K_QUERY_GIT_INFORMATION)
     #
 
     EXECUTE_PROCESS(
-       COMMAND ${GIT_EXECUTABLE} symbolic-ref HEAD
-       WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
-       OUTPUT_VARIABLE _branch
-       RESULT_VARIABLE _result
-       OUTPUT_STRIP_TRAILING_WHITESPACE
-       )
+      COMMAND ${GIT_EXECUTABLE} symbolic-ref HEAD
+      WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+      OUTPUT_VARIABLE _branch
+      RESULT_VARIABLE _result
+      OUTPUT_STRIP_TRAILING_WHITESPACE
+      )
     IF(${_result} EQUAL 0)
       STRING(REGEX REPLACE "refs/heads/" "" ${_prefix}GIT_BRANCH "${_branch}")
     ENDIF()

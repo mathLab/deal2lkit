@@ -24,10 +24,10 @@
 
 MACRO(FILTER_SYSTEM_LIBRARIES _feature)
   FOREACH(_variable
-    ${_feature}_LIBRARIES
-    ${_feature}_LIBRARIES_DEBUG
-    ${_feature}_LIBRARIES_RELEASE
-    )
+      ${_feature}_LIBRARIES
+      ${_feature}_LIBRARIES_DEBUG
+      ${_feature}_LIBRARIES_RELEASE
+      )
     IF(DEFINED ${_variable})
       SET(_tmp_${_variable} ${${_variable}})
       SET(${_variable} "")

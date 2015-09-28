@@ -29,8 +29,8 @@ file(GLOB _files source/*cc)
 
 # Don't compile the main file into the library
 IF(NOT "${_main}" STREQUAL "") 
-    LIST(REMOVE_ITEM _files
-      ${CMAKE_CURRENT_SOURCE_DIR}/${_main}
+  LIST(REMOVE_ITEM _files
+    ${CMAKE_CURRENT_SOURCE_DIR}/${_main}
     )
 ENDIF()
 
@@ -40,14 +40,14 @@ CMAKE_MINIMUM_REQUIRED(VERSION 2.8.8)
 
 FIND_PACKAGE(deal.II 8.3 REQUIRED
   HINTS ${deal.II_DIR} ${DEAL_II_DIR} ../ ../../ $ENV{DEAL_II_DIR}
-)
+  )
 DEAL_II_INITIALIZE_CACHED_VARIABLES()
 
 
 PROJECT(${TARGET})
 FIND_PACKAGE(deal2lkit 1.0 REQUIRED
-	HINTS ${D2K_DIR} $ENV{D2K_DIR}
-)
+  HINTS ${D2K_DIR} $ENV{D2K_DIR}
+  )
 D2K_INITIALIZE_CACHED_VARIABLES()
 OPTION(ENABLE_APP_TESTING "Enable tests in this application." ON)
 
@@ -60,37 +60,37 @@ SET(Release_postfix "")
 SET(Debug_postfix ".g")
 
 FOREACH(_build_type ${_d2_build_types})
-    # Postfix to use everywhere
-    SET(_p "${${_build_type}_postfix}")
-    # Only build this type, if deal.II was compiled with it.
-		IF(CMAKE_BUILD_TYPE MATCHES "${_build_type}" AND
-				DEAL_II_BUILD_TYPE MATCHES "${_build_type}"  AND
-				D2K_BUILD_TYPE MATCHES "${_build_type}")
+  # Postfix to use everywhere
+  SET(_p "${${_build_type}_postfix}")
+  # Only build this type, if deal.II was compiled with it.
+  IF(CMAKE_BUILD_TYPE MATCHES "${_build_type}" AND
+      DEAL_II_BUILD_TYPE MATCHES "${_build_type}"  AND
+      D2K_BUILD_TYPE MATCHES "${_build_type}")
 
-	MESSAGE("-- Found ${_build_type} version of deal.II.")
-	MESSAGE("-- Found ${_build_type} version of deal2lkit.")
+    MESSAGE("-- Found ${_build_type} version of deal.II.")
+    MESSAGE("-- Found ${_build_type} version of deal2lkit.")
 
-	SET(_lib "${TARGET}-lib${_p}")
-	MESSAGE("-- Configuring library ${_lib}")
+    SET(_lib "${TARGET}-lib${_p}")
+    MESSAGE("-- Configuring library ${_lib}")
 
-	STRING(TOUPPER "${_build_type}" _BUILD_TYPE)
+    STRING(TOUPPER "${_build_type}" _BUILD_TYPE)
 
-	ADD_LIBRARY(${_lib} SHARED ${_files})
-	SET(_exe "${TARGET}${${_build_type}_postfix}")
-	MESSAGE("-- Configuring executable ${_exe}")
-	ADD_EXECUTABLE(${_exe} ${_main})
-	TARGET_LINK_LIBRARIES(${_exe} ${_lib})
-	D2K_SETUP_TARGET(${_exe} ${_BUILD_TYPE})
+    ADD_LIBRARY(${_lib} SHARED ${_files})
+    SET(_exe "${TARGET}${${_build_type}_postfix}")
+    MESSAGE("-- Configuring executable ${_exe}")
+    ADD_EXECUTABLE(${_exe} ${_main})
+    TARGET_LINK_LIBRARIES(${_exe} ${_lib})
+    D2K_SETUP_TARGET(${_exe} ${_BUILD_TYPE})
 
-	SET(TEST_LIBRARIES_${_BUILD_TYPE} ${_lib})
+    SET(TEST_LIBRARIES_${_BUILD_TYPE} ${_lib})
 
-	D2K_SETUP_TARGET(${_lib} ${_BUILD_TYPE})
-	ENDIF()
+    D2K_SETUP_TARGET(${_lib} ${_BUILD_TYPE})
+  ENDIF()
 ENDFOREACH()
 
 
 if(EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/tests AND ${ENABLE_APP_TESTING})
-    ADD_SUBDIRECTORY(tests)
-    ENABLE_TESTING()
+  ADD_SUBDIRECTORY(tests)
+  ENABLE_TESTING()
 endif()
 

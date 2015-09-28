@@ -59,7 +59,7 @@ ELSE()
   MACRO(_add_custom_target _name)
     ADD_CUSTOM_TARGET(${_name}
       COMMAND ${CMAKE_COMMAND}
-        -DCOMPONENT="${_name}" -P cmake_install.cmake
+      -DCOMPONENT="${_name}" -P cmake_install.cmake
       COMMENT "Build and install component \"library\"."
       WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
       )
@@ -80,15 +80,15 @@ FOREACH(_component documentation examples)
     STRING(TOUPPER ${_component} _componentuppercase)
     ADD_CUSTOM_TARGET(${_component}
       COMMAND
-           ${CMAKE_COMMAND} -E echo ''
-        && ${CMAKE_COMMAND} -E echo ''
-        && ${CMAKE_COMMAND} -E echo '***************************************************************************'
-        && ${CMAKE_COMMAND} -E echo "**  Error: Could not ${_description_string} disabled component \"${_component}\"."
-        && ${CMAKE_COMMAND} -E echo "**  Please reconfigure with -DD2K_COMPONENT_${_componentuppercase}=ON"
-        && ${CMAKE_COMMAND} -E echo '***************************************************************************'
-        && ${CMAKE_COMMAND} -E echo ''
-        && ${CMAKE_COMMAND} -E echo ''
-        && false
+      ${CMAKE_COMMAND} -E echo ''
+      && ${CMAKE_COMMAND} -E echo ''
+      && ${CMAKE_COMMAND} -E echo '***************************************************************************'
+      && ${CMAKE_COMMAND} -E echo "**  Error: Could not ${_description_string} disabled component \"${_component}\"."
+      && ${CMAKE_COMMAND} -E echo "**  Please reconfigure with -DD2K_COMPONENT_${_componentuppercase}=ON"
+      && ${CMAKE_COMMAND} -E echo '***************************************************************************'
+      && ${CMAKE_COMMAND} -E echo ''
+      && ${CMAKE_COMMAND} -E echo ''
+      && false
       )
   ENDIF()
 ENDFOREACH()
@@ -96,15 +96,15 @@ ENDFOREACH()
 IF(NOT D2K_COMPONENT_PACKAGE)
   ADD_CUSTOM_TARGET(package
     COMMAND
-         ${CMAKE_COMMAND} -E echo ''
-      && ${CMAKE_COMMAND} -E echo ''
-      && ${CMAKE_COMMAND} -E echo '***************************************************************************'
-      && ${CMAKE_COMMAND} -E echo "**  Error: Could not generate binary package. The component is disabled."
-      && ${CMAKE_COMMAND} -E echo "**  Please reconfigure with -DD2K_COMPONENT_PACKAGE=ON"
-      && ${CMAKE_COMMAND} -E echo '***************************************************************************'
-      && ${CMAKE_COMMAND} -E echo ''
-      && ${CMAKE_COMMAND} -E echo ''
-      && false
+    ${CMAKE_COMMAND} -E echo ''
+    && ${CMAKE_COMMAND} -E echo ''
+    && ${CMAKE_COMMAND} -E echo '***************************************************************************'
+    && ${CMAKE_COMMAND} -E echo "**  Error: Could not generate binary package. The component is disabled."
+    && ${CMAKE_COMMAND} -E echo "**  Please reconfigure with -DD2K_COMPONENT_PACKAGE=ON"
+    && ${CMAKE_COMMAND} -E echo '***************************************************************************'
+    && ${CMAKE_COMMAND} -E echo ''
+    && ${CMAKE_COMMAND} -E echo ''
+    && false
     )
 ENDIF()
 

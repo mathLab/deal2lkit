@@ -82,14 +82,14 @@ MACRO(D2K_PACKAGE_HANDLE _feature _var)
 
   FOREACH(_arg ${ARGN})
     IF(_arg MATCHES "^LIBRARIES(|_DEBUG|_RELEASE)$"
-       OR _arg MATCHES "^(|BUNDLED_|USER_)INCLUDE_DIRS$"
-       OR _arg MATCHES "^(|USER_)DEFINITIONS(|_DEBUG|_RELEASE)$"
-       OR _arg MATCHES "^CXX_FLAGS(|_DEBUG|_RELEASE)"
-       OR _arg MATCHES "^LINKER_FLAGS(|_DEBUG|_RELEASE)")
+        OR _arg MATCHES "^(|BUNDLED_|USER_)INCLUDE_DIRS$"
+        OR _arg MATCHES "^(|USER_)DEFINITIONS(|_DEBUG|_RELEASE)$"
+        OR _arg MATCHES "^CXX_FLAGS(|_DEBUG|_RELEASE)"
+        OR _arg MATCHES "^LINKER_FLAGS(|_DEBUG|_RELEASE)")
 
       IF(_fine)
         IF(_variable MATCHES "^CXX_FLAGS(|_DEBUG|_RELEASE)"
-           OR _variable MATCHES "^LINKER_FLAGS(|_DEBUG|_RELEASE)")
+            OR _variable MATCHES "^LINKER_FLAGS(|_DEBUG|_RELEASE)")
           TO_STRING(${_feature}_${_variable} ${${_feature}_${_variable}})
         ENDIF()
         MESSAGE(STATUS "  ${_feature}_${_variable}: ${${_feature}_${_variable}}")
@@ -108,7 +108,7 @@ MACRO(D2K_PACKAGE_HANDLE _feature _var)
     ELSEIF("${_arg}" STREQUAL "OPTIONAL")
       SET(_required FALSE)
     ELSEIF(_arg MATCHES "^(optimized|debug|general)$"
-            AND "${_variable}" STREQUAL "LIBRARIES")
+        AND "${_variable}" STREQUAL "LIBRARIES")
       #
       # Keywords are special...
       #
@@ -147,7 +147,7 @@ MACRO(D2K_PACKAGE_HANDLE _feature _var)
 
   IF(_fine)
     IF(_variable MATCHES "^CXX_FLAGS(|_DEBUG|_RELEASE)"
-       OR _variable MATCHES "^LINKER_FLAGS(|_DEBUG|_RELEASE)")
+        OR _variable MATCHES "^LINKER_FLAGS(|_DEBUG|_RELEASE)")
       TO_STRING(${_feature}_${_variable} ${${_feature}_${_variable}})
     ENDIF()
     MESSAGE(STATUS "  ${_feature}_${_variable}: ${${_feature}_${_variable}}")
