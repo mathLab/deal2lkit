@@ -187,6 +187,7 @@ private:
   bool use_space_adaptivity;
   double kelly_threshold;
   unsigned int max_dofs;
+  double diffusivity;
   double top_fraction;
   double bottom_fraction;
 };
