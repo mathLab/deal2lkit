@@ -44,8 +44,8 @@ Heat<dim>::Heat (const MPI_Comm &communicator)
                    TimerOutput::summary,
                    TimerOutput::wall_times),
 
-  //eh("Error Tables", "u",
-  //   "L2;H1"),
+  eh("Error Tables", "u",
+     "L2,H1"),
 
   pgg("Domain"),
   fe_builder("Finite Element"),
@@ -114,10 +114,11 @@ void Heat<dim>::declare_parameters (ParameterHandler &prm)
                   Patterns::Double(0.0));
 
   add_parameter(  prm,
-                  &max_dofs,
-                  "Maximum number of dofs",
+                  &max_cells,
+                  "Maximum number of cells",
                   "1000",
-                  Patterns::Integer(1));
+                  Patterns::Integer(),
+                  "If negative, there is no upper bound");
 
   add_parameter(  prm,
                   &top_fraction,
@@ -129,6 +130,12 @@ void Heat<dim>::declare_parameters (ParameterHandler &prm)
                   &bottom_fraction,
                   "Bottom fraction",
                   "0.1",
+                  Patterns::Double(0.0));
+
+  add_parameter(  prm,
+                  &diffusivity,
+                  "Diffusivity",
+                  "1.0",
                   Patterns::Double(0.0));
 }
 
@@ -269,7 +276,7 @@ void Heat<dim>::assemble_jacobian_matrix(const double t,
                                         fe_values.shape_value(j,q_point)
 
                                         +
-
+                                        diffusivity *
                                         fe_values.shape_grad(i,q_point) *
                                         fe_values.shape_grad(j,q_point)
 
@@ -379,7 +386,7 @@ int Heat<dim>::residual (const double t,
                                  fe_values.shape_value(i,q_point)
 
                                  +
-
+                                 diffusivity *
                                  grad_sol *
                                  fe_values.shape_grad(i,q_point)
 
@@ -451,6 +458,7 @@ void Heat<dim>::output_step(const double t,
   data_out.add_data_vector (distributed_solution_dot, print(sol_dot_names,","));
 
   data_out.write_data_and_clear("",*mapping);
+  eh.error_from_exact(*mapping, *dof_handler, distributed_solution, exact_solution);
 
   computing_timer.exit_section ();
 }
@@ -469,11 +477,11 @@ bool Heat<dim>::solver_should_restart (const double t,
       double max_kelly=0;
       double mpi_max_kelly=0;
 
-
       computing_timer.enter_section ("   Compute error estimator");
       VEC tmp_c(solution);
       constraints.distribute(tmp_c);
       distributed_solution = tmp_c;
+
       Vector<float> estimated_error_per_cell (triangulation->n_active_cells());
       KellyErrorEstimator<dim>::estimate (*dof_handler,
                                           QGauss<dim-1>(fe->degree+1),
@@ -484,19 +492,29 @@ bool Heat<dim>::solver_should_restart (const double t,
                                           0,
                                           0,
                                           triangulation->locally_owned_subdomain());
+
+
       max_kelly = estimated_error_per_cell.linfty_norm();
       max_kelly = Utilities::MPI::sum(max_kelly, comm);
-      pcout << "  max kelly = "
-            << max_kelly
-            << std::endl;
 
       if (max_kelly > kelly_threshold)
 
         {
-          parallel::distributed::GridRefinement::
-          refine_and_coarsen_fixed_number (*triangulation,
-                                           estimated_error_per_cell,
-                                           top_fraction, bottom_fraction,max_dofs);
+          pcout << "  ################ restart ######### \n"
+                << "max_kelly > threshold\n"
+                << max_kelly  << " >  " << kelly_threshold
+                << std::endl
+                << "######################################\n";
+          if (max_cells < 0)
+            parallel::distributed::GridRefinement::
+            refine_and_coarsen_fixed_fraction (*triangulation,
+                                               estimated_error_per_cell,
+                                               top_fraction, bottom_fraction);
+          else
+            parallel::distributed::GridRefinement::
+            refine_and_coarsen_fixed_number (*triangulation,
+                                             estimated_error_per_cell,
+                                             top_fraction, bottom_fraction,max_cells);
 
           parallel::distributed::SolutionTransfer<dim,VEC> sol_tr(*dof_handler);
           parallel::distributed::SolutionTransfer<dim,VEC> sol_dot_tr(*dof_handler);
@@ -627,10 +645,10 @@ void Heat<dim>::run ()
       constraints.distribute(solution);
 
       dae.start_ode(solution, solution_dot, max_time_iterations);
-      //eh.error_from_exact(*mapping, *dof_handler, distributed_solution, exact_solution);
+      eh.error_from_exact(*mapping, *dof_handler, distributed_solution, exact_solution);
     }
 
-  //eh.output_table(pcout);
+  eh.output_table(pcout);
 
   // std::ofstream f("errors.txt");
   computing_timer.print_summary();
