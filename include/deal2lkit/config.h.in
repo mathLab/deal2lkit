@@ -49,8 +49,7 @@
  */
 
 #cmakedefine D2K_WITH_SUNDIALS
-
-
+#cmakedefine D2K_WITH_ASSIMP
 
 
 
