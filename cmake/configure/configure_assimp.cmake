@@ -14,7 +14,7 @@
 ## ---------------------------------------------------------------------
 
 #
-# Configuration for the sundials library:
+# Configuration for the assimp library:
 #
 
 CONFIGURE_FEATURE(ASSIMP)
