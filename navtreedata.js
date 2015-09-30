@@ -1,6 +1,6 @@
 var NAVTREE =
 [
-  [ "Deal.II Swiss Army Knife library", "index.html", [
+  [ "deal2lkit: Deal.II ToolKit library", "index.html", [
     [ "Deprecated List", "deprecated.html", null ],
     [ "Namespaces", null, [
       [ "Namespace List", "namespaces.html", "namespaces" ],
