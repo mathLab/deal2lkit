@@ -195,14 +195,6 @@ MACRO(CONFIGURE_FEATURE _feature)
   ENDFOREACH()
 
   #
-  # Obey the user overrides:
-  #
-  IF( (NOT DEFINED D2K_WITH_${_feature}) )
-    PURGE_FEATURE(${_feature})
-    SET_CACHED_OPTION(${_feature} OFF)
-  ENDIF()
-
-  #
   # Only try to configure ${_feature} if we have to, i.e.
   # D2K_WITH_${_feature} is set to true or not set at all.
   #
