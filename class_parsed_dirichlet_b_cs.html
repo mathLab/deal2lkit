@@ -111,6 +111,7 @@ Inheritance diagram for ParsedDirichletBCs&lt; dim, spacedim, n_components &gt;:
   <map id="ParsedDirichletBCs&lt; dim, spacedim, n_components &gt;_map" name="ParsedDirichletBCs&lt; dim, spacedim, n_components &gt;_map">
 <area href="class_parsed_mapped_functions.html" alt="ParsedMappedFunctions&lt; spacedim, n_components &gt;" shape="rect" coords="0,112,320,136"/>
 <area href="class_parameter_acceptor.html" alt="ParameterAcceptor" shape="rect" coords="0,56,320,80"/>
+<area doxygen="/Users/heltai/c++/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classSubscriptor.html" alt="Subscriptor" shape="rect" coords="0,0,320,24"/>
 </map>
  </div></div>
 <table class="memberdecls">
@@ -118,33 +119,33 @@ Inheritance diagram for ParsedDirichletBCs&lt; dim, spacedim, n_components &gt;:
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a83c86bbcd6fc9807564ac6bb1921e723"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_parsed_dirichlet_b_cs.html#a83c86bbcd6fc9807564ac6bb1921e723">ParsedDirichletBCs</a> (const std::string &amp;<a class="el" href="class_parsed_mapped_functions.html#ac24e04e4879d3358fbb32469ad2b73b2">name</a>=&quot;Dirichlet BCs&quot;, const std::string &amp;component_names=&quot;&quot;, const std::string &amp;default_id_components=&quot;0=ALL&quot;, const std::string &amp;default_id_functions=&quot;&quot;, const std::string &amp;default_constants=&quot;&quot;)</td></tr>
 <tr class="separator:a83c86bbcd6fc9807564ac6bb1921e723"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a59a00c9bd1ff5a50f5fc39ee80fa4bc1"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_parsed_dirichlet_b_cs.html#a59a00c9bd1ff5a50f5fc39ee80fa4bc1">declare_parameters</a> (ParameterHandler &amp;<a class="el" href="class_parameter_acceptor.html#a96081d4cc985b722c9841fcf0c0e54ec">prm</a>)</td></tr>
+<tr class="memitem:a59a00c9bd1ff5a50f5fc39ee80fa4bc1"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_parsed_dirichlet_b_cs.html#a59a00c9bd1ff5a50f5fc39ee80fa4bc1">declare_parameters</a> (<a class="elRef" doxygen="/Users/heltai/c++/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classParameterHandler.html">ParameterHandler</a> &amp;<a class="el" href="class_parameter_acceptor.html#a96081d4cc985b722c9841fcf0c0e54ec">prm</a>)</td></tr>
 <tr class="separator:a59a00c9bd1ff5a50f5fc39ee80fa4bc1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7247dc996f555e8c2b320d70a6cab62d"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_parsed_dirichlet_b_cs.html#a7247dc996f555e8c2b320d70a6cab62d">parse_parameters_call_back</a> ()</td></tr>
 <tr class="separator:a7247dc996f555e8c2b320d70a6cab62d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8cfa1ef2bbb09a58a091fffb929f32d6"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_parsed_dirichlet_b_cs.html#a8cfa1ef2bbb09a58a091fffb929f32d6">interpolate_boundary_values</a> (const DoFHandler&lt; dim, spacedim &gt; &amp;dof_handler, ConstraintMatrix &amp;constraints) const </td></tr>
+<tr class="memitem:a8cfa1ef2bbb09a58a091fffb929f32d6"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_parsed_dirichlet_b_cs.html#a8cfa1ef2bbb09a58a091fffb929f32d6">interpolate_boundary_values</a> (const <a class="elRef" doxygen="/Users/heltai/c++/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classDoFHandler.html">DoFHandler</a>&lt; dim, spacedim &gt; &amp;dof_handler, <a class="elRef" doxygen="/Users/heltai/c++/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classConstraintMatrix.html">ConstraintMatrix</a> &amp;constraints) const </td></tr>
 <tr class="separator:a8cfa1ef2bbb09a58a091fffb929f32d6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa55adae3d8c1d9dca53a3541c31a5a6e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_parsed_dirichlet_b_cs.html#aa55adae3d8c1d9dca53a3541c31a5a6e">interpolate_boundary_values</a> (const Mapping&lt; dim, spacedim &gt; &amp;mapping, const DoFHandler&lt; dim, spacedim &gt; &amp;dof_handler, ConstraintMatrix &amp;constraints) const </td></tr>
+<tr class="memitem:aa55adae3d8c1d9dca53a3541c31a5a6e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_parsed_dirichlet_b_cs.html#aa55adae3d8c1d9dca53a3541c31a5a6e">interpolate_boundary_values</a> (const <a class="elRef" doxygen="/Users/heltai/c++/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classMapping.html">Mapping</a>&lt; dim, spacedim &gt; &amp;mapping, const <a class="elRef" doxygen="/Users/heltai/c++/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classDoFHandler.html">DoFHandler</a>&lt; dim, spacedim &gt; &amp;dof_handler, <a class="elRef" doxygen="/Users/heltai/c++/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classConstraintMatrix.html">ConstraintMatrix</a> &amp;constraints) const </td></tr>
 <tr class="separator:aa55adae3d8c1d9dca53a3541c31a5a6e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa427fe58cad173525caa46bb838c2efb"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_parsed_dirichlet_b_cs.html#aa427fe58cad173525caa46bb838c2efb">interpolate_boundary_values</a> (const DoFHandler&lt; dim, spacedim &gt; &amp;dof_handler, std::map&lt; types::global_dof_index, double &gt; &amp;d_dofs) const </td></tr>
+<tr class="memitem:aa427fe58cad173525caa46bb838c2efb"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_parsed_dirichlet_b_cs.html#aa427fe58cad173525caa46bb838c2efb">interpolate_boundary_values</a> (const <a class="elRef" doxygen="/Users/heltai/c++/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classDoFHandler.html">DoFHandler</a>&lt; dim, spacedim &gt; &amp;dof_handler, std::map&lt; <a class="elRef" doxygen="/Users/heltai/c++/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/namespacetypes.html#a3bf9e493f1aab00b04933b81856144c4">types::global_dof_index</a>, double &gt; &amp;d_dofs) const </td></tr>
 <tr class="separator:aa427fe58cad173525caa46bb838c2efb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4f5ebcd9d42c4c16c83667d54a3ead21"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_parsed_dirichlet_b_cs.html#a4f5ebcd9d42c4c16c83667d54a3ead21">interpolate_boundary_values</a> (const Mapping&lt; dim, spacedim &gt; &amp;mapping, const DoFHandler&lt; dim, spacedim &gt; &amp;dof_handler, std::map&lt; types::global_dof_index, double &gt; &amp;d_dofs) const </td></tr>
+<tr class="memitem:a4f5ebcd9d42c4c16c83667d54a3ead21"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_parsed_dirichlet_b_cs.html#a4f5ebcd9d42c4c16c83667d54a3ead21">interpolate_boundary_values</a> (const <a class="elRef" doxygen="/Users/heltai/c++/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classMapping.html">Mapping</a>&lt; dim, spacedim &gt; &amp;mapping, const <a class="elRef" doxygen="/Users/heltai/c++/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classDoFHandler.html">DoFHandler</a>&lt; dim, spacedim &gt; &amp;dof_handler, std::map&lt; <a class="elRef" doxygen="/Users/heltai/c++/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/namespacetypes.html#a3bf9e493f1aab00b04933b81856144c4">types::global_dof_index</a>, double &gt; &amp;d_dofs) const </td></tr>
 <tr class="separator:a4f5ebcd9d42c4c16c83667d54a3ead21"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a403421884a0d8ac56862f5a3796ee921"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_parsed_dirichlet_b_cs.html#a403421884a0d8ac56862f5a3796ee921">project_boundary_values</a> (const DoFHandler&lt; dim, spacedim &gt; &amp;dof_handler, const Quadrature&lt; dim-1 &gt; &amp;quadrature, ConstraintMatrix &amp;constraints) const </td></tr>
+<tr class="memitem:a403421884a0d8ac56862f5a3796ee921"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_parsed_dirichlet_b_cs.html#a403421884a0d8ac56862f5a3796ee921">project_boundary_values</a> (const <a class="elRef" doxygen="/Users/heltai/c++/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classDoFHandler.html">DoFHandler</a>&lt; dim, spacedim &gt; &amp;dof_handler, const <a class="elRef" doxygen="/Users/heltai/c++/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classQuadrature.html">Quadrature</a>&lt; dim-1 &gt; &amp;quadrature, <a class="elRef" doxygen="/Users/heltai/c++/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classConstraintMatrix.html">ConstraintMatrix</a> &amp;constraints) const </td></tr>
 <tr class="separator:a403421884a0d8ac56862f5a3796ee921"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af6c5ef43aaf809c7d9dfebccee2c0023"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_parsed_dirichlet_b_cs.html#af6c5ef43aaf809c7d9dfebccee2c0023">project_boundary_values</a> (const Mapping&lt; dim, spacedim &gt; &amp;mapping, const DoFHandler&lt; dim, spacedim &gt; &amp;dof_handler, const Quadrature&lt; dim-1 &gt; &amp;quadrature, ConstraintMatrix &amp;constraints) const </td></tr>
+<tr class="memitem:af6c5ef43aaf809c7d9dfebccee2c0023"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_parsed_dirichlet_b_cs.html#af6c5ef43aaf809c7d9dfebccee2c0023">project_boundary_values</a> (const <a class="elRef" doxygen="/Users/heltai/c++/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classMapping.html">Mapping</a>&lt; dim, spacedim &gt; &amp;mapping, const <a class="elRef" doxygen="/Users/heltai/c++/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classDoFHandler.html">DoFHandler</a>&lt; dim, spacedim &gt; &amp;dof_handler, const <a class="elRef" doxygen="/Users/heltai/c++/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classQuadrature.html">Quadrature</a>&lt; dim-1 &gt; &amp;quadrature, <a class="elRef" doxygen="/Users/heltai/c++/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classConstraintMatrix.html">ConstraintMatrix</a> &amp;constraints) const </td></tr>
 <tr class="separator:af6c5ef43aaf809c7d9dfebccee2c0023"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a781270dc5219ca28cce4282941abd662"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_parsed_dirichlet_b_cs.html#a781270dc5219ca28cce4282941abd662">project_boundary_values</a> (const DoFHandler&lt; dim, spacedim &gt; &amp;dof_handler, const Quadrature&lt; dim-1 &gt; &amp;quadrature, std::map&lt; types::global_dof_index, double &gt; &amp;projected_bv) const </td></tr>
+<tr class="memitem:a781270dc5219ca28cce4282941abd662"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_parsed_dirichlet_b_cs.html#a781270dc5219ca28cce4282941abd662">project_boundary_values</a> (const <a class="elRef" doxygen="/Users/heltai/c++/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classDoFHandler.html">DoFHandler</a>&lt; dim, spacedim &gt; &amp;dof_handler, const <a class="elRef" doxygen="/Users/heltai/c++/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classQuadrature.html">Quadrature</a>&lt; dim-1 &gt; &amp;quadrature, std::map&lt; <a class="elRef" doxygen="/Users/heltai/c++/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/namespacetypes.html#a3bf9e493f1aab00b04933b81856144c4">types::global_dof_index</a>, double &gt; &amp;projected_bv) const </td></tr>
 <tr class="separator:a781270dc5219ca28cce4282941abd662"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a02bc68b5f369adca7a26ad9212140e7c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_parsed_dirichlet_b_cs.html#a02bc68b5f369adca7a26ad9212140e7c">project_boundary_values</a> (const Mapping&lt; dim, spacedim &gt; &amp;mapping, const DoFHandler&lt; dim, spacedim &gt; &amp;dof_handler, const Quadrature&lt; dim-1 &gt; &amp;quadrature, std::map&lt; types::global_dof_index, double &gt; &amp;projected_bv) const </td></tr>
+<tr class="memitem:a02bc68b5f369adca7a26ad9212140e7c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_parsed_dirichlet_b_cs.html#a02bc68b5f369adca7a26ad9212140e7c">project_boundary_values</a> (const <a class="elRef" doxygen="/Users/heltai/c++/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classMapping.html">Mapping</a>&lt; dim, spacedim &gt; &amp;mapping, const <a class="elRef" doxygen="/Users/heltai/c++/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classDoFHandler.html">DoFHandler</a>&lt; dim, spacedim &gt; &amp;dof_handler, const <a class="elRef" doxygen="/Users/heltai/c++/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classQuadrature.html">Quadrature</a>&lt; dim-1 &gt; &amp;quadrature, std::map&lt; <a class="elRef" doxygen="/Users/heltai/c++/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/namespacetypes.html#a3bf9e493f1aab00b04933b81856144c4">types::global_dof_index</a>, double &gt; &amp;projected_bv) const </td></tr>
 <tr class="separator:a02bc68b5f369adca7a26ad9212140e7c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3d75daf98e7e91165c3ae30e4b91317f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_parsed_dirichlet_b_cs.html#a3d75daf98e7e91165c3ae30e4b91317f">compute_no_normal_flux_constraints</a> (const DoFHandler&lt; dim, spacedim &gt; &amp;dof_handler, ConstraintMatrix &amp;constraints) const </td></tr>
+<tr class="memitem:a3d75daf98e7e91165c3ae30e4b91317f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_parsed_dirichlet_b_cs.html#a3d75daf98e7e91165c3ae30e4b91317f">compute_no_normal_flux_constraints</a> (const <a class="elRef" doxygen="/Users/heltai/c++/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classDoFHandler.html">DoFHandler</a>&lt; dim, spacedim &gt; &amp;dof_handler, <a class="elRef" doxygen="/Users/heltai/c++/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classConstraintMatrix.html">ConstraintMatrix</a> &amp;constraints) const </td></tr>
 <tr class="separator:a3d75daf98e7e91165c3ae30e4b91317f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a45d8e24805f8292bb48434f7abd783ea"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_parsed_dirichlet_b_cs.html#a45d8e24805f8292bb48434f7abd783ea">compute_no_normal_flux_constraints</a> (const DoFHandler&lt; dim, spacedim &gt; &amp;dof_handler, const Mapping&lt; dim, spacedim &gt; &amp;mapping, ConstraintMatrix &amp;constraints) const </td></tr>
+<tr class="memitem:a45d8e24805f8292bb48434f7abd783ea"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_parsed_dirichlet_b_cs.html#a45d8e24805f8292bb48434f7abd783ea">compute_no_normal_flux_constraints</a> (const <a class="elRef" doxygen="/Users/heltai/c++/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classDoFHandler.html">DoFHandler</a>&lt; dim, spacedim &gt; &amp;dof_handler, const <a class="elRef" doxygen="/Users/heltai/c++/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classMapping.html">Mapping</a>&lt; dim, spacedim &gt; &amp;mapping, <a class="elRef" doxygen="/Users/heltai/c++/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classConstraintMatrix.html">ConstraintMatrix</a> &amp;constraints) const </td></tr>
 <tr class="separator:a45d8e24805f8292bb48434f7abd783ea"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8e4dfa1694fbc7cc4503d4fd13d0c469"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_parsed_dirichlet_b_cs.html#a8e4dfa1694fbc7cc4503d4fd13d0c469">compute_nonzero_normal_flux_constraints</a> (const DoFHandler&lt; dim, spacedim &gt; &amp;dof_handler, ConstraintMatrix &amp;constraints) const </td></tr>
+<tr class="memitem:a8e4dfa1694fbc7cc4503d4fd13d0c469"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_parsed_dirichlet_b_cs.html#a8e4dfa1694fbc7cc4503d4fd13d0c469">compute_nonzero_normal_flux_constraints</a> (const <a class="elRef" doxygen="/Users/heltai/c++/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classDoFHandler.html">DoFHandler</a>&lt; dim, spacedim &gt; &amp;dof_handler, <a class="elRef" doxygen="/Users/heltai/c++/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classConstraintMatrix.html">ConstraintMatrix</a> &amp;constraints) const </td></tr>
 <tr class="separator:a8e4dfa1694fbc7cc4503d4fd13d0c469"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a989c6d88aa1c30ed44699853a464139f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_parsed_dirichlet_b_cs.html#a989c6d88aa1c30ed44699853a464139f">compute_nonzero_normal_flux_constraints</a> (const DoFHandler&lt; dim, spacedim &gt; &amp;dof_handler, const Mapping&lt; dim, spacedim &gt; &amp;mapping, ConstraintMatrix &amp;constraints) const </td></tr>
+<tr class="memitem:a989c6d88aa1c30ed44699853a464139f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_parsed_dirichlet_b_cs.html#a989c6d88aa1c30ed44699853a464139f">compute_nonzero_normal_flux_constraints</a> (const <a class="elRef" doxygen="/Users/heltai/c++/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classDoFHandler.html">DoFHandler</a>&lt; dim, spacedim &gt; &amp;dof_handler, const <a class="elRef" doxygen="/Users/heltai/c++/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classMapping.html">Mapping</a>&lt; dim, spacedim &gt; &amp;mapping, <a class="elRef" doxygen="/Users/heltai/c++/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classConstraintMatrix.html">ConstraintMatrix</a> &amp;constraints) const </td></tr>
 <tr class="separator:a989c6d88aa1c30ed44699853a464139f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_class_parsed_mapped_functions"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_class_parsed_mapped_functions')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="class_parsed_mapped_functions.html">ParsedMappedFunctions&lt; spacedim, n_components &gt;</a></td></tr>
 <tr class="memitem:a0862f2207f5c86282397d4cfe930dff2 inherit pub_methods_class_parsed_mapped_functions"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_parsed_mapped_functions.html#a0862f2207f5c86282397d4cfe930dff2">ParsedMappedFunctions</a> (const std::string &amp;<a class="el" href="class_parsed_mapped_functions.html#ac24e04e4879d3358fbb32469ad2b73b2">name</a>=&quot;Mapped Functions&quot;, const std::string &amp;component_names=&quot;&quot;, const std::string &amp;default_id_components=&quot;0=ALL&quot;, const std::string &amp;default_id_functions=&quot;&quot;, const std::string &amp;default_constants=&quot;&quot;)</td></tr>
@@ -153,7 +154,7 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a7929a3d6fc68cd382370dd23c0fd911c inherit pub_methods_class_parsed_mapped_functions"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6664fbf9b2f88d2c6957e2bcd90ac0da inherit pub_methods_class_parsed_mapped_functions"><td class="memItemLeft" align="right" valign="top">shared_ptr&lt; dealii::Functions::ParsedFunction&lt; spacedim &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_parsed_mapped_functions.html#a6664fbf9b2f88d2c6957e2bcd90ac0da">get_mapped_normal_function</a> (const unsigned int &amp;id, const unsigned int &amp;fcv) const </td></tr>
 <tr class="separator:a6664fbf9b2f88d2c6957e2bcd90ac0da inherit pub_methods_class_parsed_mapped_functions"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a03aa0685d0b17ae94c914163e2fd2eb4 inherit pub_methods_class_parsed_mapped_functions"><td class="memItemLeft" align="right" valign="top">ComponentMask&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_parsed_mapped_functions.html#a03aa0685d0b17ae94c914163e2fd2eb4">get_mapped_mask</a> (const unsigned int &amp;id) const </td></tr>
+<tr class="memitem:a03aa0685d0b17ae94c914163e2fd2eb4 inherit pub_methods_class_parsed_mapped_functions"><td class="memItemLeft" align="right" valign="top"><a class="elRef" doxygen="/Users/heltai/c++/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classComponentMask.html">ComponentMask</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_parsed_mapped_functions.html#a03aa0685d0b17ae94c914163e2fd2eb4">get_mapped_mask</a> (const unsigned int &amp;id) const </td></tr>
 <tr class="separator:a03aa0685d0b17ae94c914163e2fd2eb4 inherit pub_methods_class_parsed_mapped_functions"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad567e43a3ce15c7af853c2ab7bbfbcef inherit pub_methods_class_parsed_mapped_functions"><td class="memItemLeft" align="right" valign="top">std::vector&lt; unsigned int &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_parsed_mapped_functions.html#ad567e43a3ce15c7af853c2ab7bbfbcef">get_mapped_ids</a> () const </td></tr>
 <tr class="separator:ad567e43a3ce15c7af853c2ab7bbfbcef inherit pub_methods_class_parsed_mapped_functions"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -163,6 +164,8 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:aee5c192cc06f99de2090a1ebe3ad3c68 inherit pub_methods_class_parsed_mapped_functions"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4eb50b668a99c13f8422c519dcf303d4 inherit pub_methods_class_parsed_mapped_functions"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_parsed_mapped_functions.html#a4eb50b668a99c13f8422c519dcf303d4">set_time</a> (const double &amp;t)</td></tr>
 <tr class="separator:a4eb50b668a99c13f8422c519dcf303d4 inherit pub_methods_class_parsed_mapped_functions"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad33320def7d20fbe98b5c22afad9a3a9 inherit pub_methods_class_parsed_mapped_functions"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_parsed_mapped_functions.html#ad33320def7d20fbe98b5c22afad9a3a9">DeclException2</a> (ExcIdsMismatch, unsigned int, unsigned int,&lt;&lt; &quot;The number of <a class="el" href="class_parsed_mapped_functions.html#a5a772127895c774b514014edca251a80">ids</a> specified in the field &quot;&lt;&lt; &quot;'IDs and component masks' (&quot;&lt;&lt; arg1&lt;&lt; &quot;) &quot;&lt;&lt; &quot;must match the number of <a class="el" href="class_parsed_mapped_functions.html#a5a772127895c774b514014edca251a80">ids</a> &quot;&lt;&lt; &quot;set in the field 'IDs and expressions' (&quot;&lt;&lt; arg2&lt;&lt;&quot;).&quot;)</td></tr>
+<tr class="separator:ad33320def7d20fbe98b5c22afad9a3a9 inherit pub_methods_class_parsed_mapped_functions"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae4ee631f382adfcfbaa14f4787c2c138 inherit pub_methods_class_parsed_mapped_functions"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_parsed_mapped_functions.html#ae4ee631f382adfcfbaa14f4787c2c138">DeclException1</a> (ExcIdNotFound, unsigned int,&lt;&lt; &quot;No entry with the id &quot;&lt;&lt; arg1&lt;&lt; &quot; exists.&quot;)</td></tr>
 <tr class="memdesc:ae4ee631f382adfcfbaa14f4787c2c138 inherit pub_methods_class_parsed_mapped_functions"><td class="mdescLeft">&#160;</td><td class="mdescRight">An entry with this id does not exist in this object.  <a href="#ae4ee631f382adfcfbaa14f4787c2c138">More...</a><br /></td></tr>
 <tr class="separator:ae4ee631f382adfcfbaa14f4787c2c138 inherit pub_methods_class_parsed_mapped_functions"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -180,13 +183,36 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a1a5052568d2c3e748e068b6c3d822893 inherit pub_methods_class_parameter_acceptor"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afadbc55490b174eb52d5b98fda2f6032 inherit pub_methods_class_parameter_acceptor"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_parameter_acceptor.html#afadbc55490b174eb52d5b98fda2f6032">~ParameterAcceptor</a> ()</td></tr>
 <tr class="separator:afadbc55490b174eb52d5b98fda2f6032 inherit pub_methods_class_parameter_acceptor"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab3ee6cabf1ff10be362ac65495183c52 inherit pub_methods_class_parameter_acceptor"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_parameter_acceptor.html#ab3ee6cabf1ff10be362ac65495183c52">parse_parameters</a> (ParameterHandler &amp;<a class="el" href="class_parameter_acceptor.html#a96081d4cc985b722c9841fcf0c0e54ec">prm</a>)</td></tr>
+<tr class="memitem:ab3ee6cabf1ff10be362ac65495183c52 inherit pub_methods_class_parameter_acceptor"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_parameter_acceptor.html#ab3ee6cabf1ff10be362ac65495183c52">parse_parameters</a> (<a class="elRef" doxygen="/Users/heltai/c++/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classParameterHandler.html">ParameterHandler</a> &amp;<a class="el" href="class_parameter_acceptor.html#a96081d4cc985b722c9841fcf0c0e54ec">prm</a>)</td></tr>
 <tr class="separator:ab3ee6cabf1ff10be362ac65495183c52 inherit pub_methods_class_parameter_acceptor"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abe76713f66b7319ba25a7d272126461a inherit pub_methods_class_parameter_acceptor"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_parameter_acceptor.html#abe76713f66b7319ba25a7d272126461a">get_section_name</a> () const </td></tr>
 <tr class="separator:abe76713f66b7319ba25a7d272126461a inherit pub_methods_class_parameter_acceptor"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad823f9aff71602773356405bc4566e55 inherit pub_methods_class_parameter_acceptor"><td class="memTemplParams" colspan="2">template&lt;class T &gt; </td></tr>
-<tr class="memitem:ad823f9aff71602773356405bc4566e55 inherit pub_methods_class_parameter_acceptor"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="class_parameter_acceptor.html#ad823f9aff71602773356405bc4566e55">add_parameter</a> (ParameterHandler &amp;<a class="el" href="class_parameter_acceptor.html#a96081d4cc985b722c9841fcf0c0e54ec">prm</a>, T *parameter, const std::string &amp;entry, const std::string &amp;default_value, const Patterns::PatternBase &amp;pattern=Patterns::Anything(), const std::string &amp;documentation=std::string())</td></tr>
+<tr class="memitem:ad823f9aff71602773356405bc4566e55 inherit pub_methods_class_parameter_acceptor"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="class_parameter_acceptor.html#ad823f9aff71602773356405bc4566e55">add_parameter</a> (<a class="elRef" doxygen="/Users/heltai/c++/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classParameterHandler.html">ParameterHandler</a> &amp;<a class="el" href="class_parameter_acceptor.html#a96081d4cc985b722c9841fcf0c0e54ec">prm</a>, T *parameter, const std::string &amp;entry, const std::string &amp;default_value, const <a class="elRef" doxygen="/Users/heltai/c++/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classPatterns_1_1PatternBase.html">Patterns::PatternBase</a> &amp;pattern=<a class="elRef" doxygen="/Users/heltai/c++/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classPatterns_1_1Anything.html">Patterns::Anything</a>(), const std::string &amp;documentation=std::string())</td></tr>
 <tr class="separator:ad823f9aff71602773356405bc4566e55 inherit pub_methods_class_parameter_acceptor"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pub_methods_classSubscriptor"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classSubscriptor')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="http://www.dealii.org/developer/doxygen/deal.II/classSubscriptor.html">Subscriptor</a></td></tr>
+<tr class="memitem:ae5541017c0966b0af345db75895106f2 inherit pub_methods_classSubscriptor"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="elRef" doxygen="/Users/heltai/c++/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classSubscriptor.html#ae5541017c0966b0af345db75895106f2">Subscriptor</a> ()</td></tr>
+<tr class="separator:ae5541017c0966b0af345db75895106f2 inherit pub_methods_classSubscriptor"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a367fce3122075f05f168d14f114b4c65 inherit pub_methods_classSubscriptor"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="elRef" doxygen="/Users/heltai/c++/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classSubscriptor.html#a367fce3122075f05f168d14f114b4c65">Subscriptor</a> (const <a class="elRef" doxygen="/Users/heltai/c++/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classSubscriptor.html">Subscriptor</a> &amp;)</td></tr>
+<tr class="separator:a367fce3122075f05f168d14f114b4c65 inherit pub_methods_classSubscriptor"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af70e597a147c532012a3115cf12ef53c inherit pub_methods_classSubscriptor"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="elRef" doxygen="/Users/heltai/c++/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classSubscriptor.html#af70e597a147c532012a3115cf12ef53c">~Subscriptor</a> ()</td></tr>
+<tr class="separator:af70e597a147c532012a3115cf12ef53c inherit pub_methods_classSubscriptor"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5099175b75089cdc5cf4e7e64829f739 inherit pub_methods_classSubscriptor"><td class="memItemLeft" align="right" valign="top"><a class="elRef" doxygen="/Users/heltai/c++/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classSubscriptor.html">Subscriptor</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="elRef" doxygen="/Users/heltai/c++/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classSubscriptor.html#a5099175b75089cdc5cf4e7e64829f739">operator=</a> (const <a class="elRef" doxygen="/Users/heltai/c++/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classSubscriptor.html">Subscriptor</a> &amp;)</td></tr>
+<tr class="separator:a5099175b75089cdc5cf4e7e64829f739 inherit pub_methods_classSubscriptor"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3422499827ecd52f1d12d65eb6cc3125 inherit pub_methods_classSubscriptor"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="elRef" doxygen="/Users/heltai/c++/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classSubscriptor.html#a3422499827ecd52f1d12d65eb6cc3125">subscribe</a> (const char *identifier=0) const </td></tr>
+<tr class="separator:a3422499827ecd52f1d12d65eb6cc3125 inherit pub_methods_classSubscriptor"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2b4839b1cffc18781144ede1744b35ea inherit pub_methods_classSubscriptor"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="elRef" doxygen="/Users/heltai/c++/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classSubscriptor.html#a2b4839b1cffc18781144ede1744b35ea">unsubscribe</a> (const char *identifier=0) const </td></tr>
+<tr class="separator:a2b4839b1cffc18781144ede1744b35ea inherit pub_methods_classSubscriptor"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7b45274c8e1936bff024df01d618e86f inherit pub_methods_classSubscriptor"><td class="memItemLeft" align="right" valign="top">unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="elRef" doxygen="/Users/heltai/c++/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classSubscriptor.html#a7b45274c8e1936bff024df01d618e86f">n_subscriptions</a> () const </td></tr>
+<tr class="separator:a7b45274c8e1936bff024df01d618e86f inherit pub_methods_classSubscriptor"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adbbc5f845063b1f23223b7ac96e89e13 inherit pub_methods_classSubscriptor"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="elRef" doxygen="/Users/heltai/c++/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classSubscriptor.html#adbbc5f845063b1f23223b7ac96e89e13">list_subscribers</a> () const </td></tr>
+<tr class="separator:adbbc5f845063b1f23223b7ac96e89e13 inherit pub_methods_classSubscriptor"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaa77207b86899b9eb2d9e06741426af06 inherit pub_methods_classSubscriptor"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="elRef" doxygen="/Users/heltai/c++/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/group__Exceptions.html#gaa77207b86899b9eb2d9e06741426af06">DeclException3</a> (ExcInUse, int, char *, std::string &amp;,&lt;&lt; &quot;Object of class &quot;&lt;&lt; arg2&lt;&lt; &quot; is still used by &quot;&lt;&lt; arg1&lt;&lt; &quot; other objects.&quot;&lt;&lt; &quot;\n\n&quot;&lt;&lt; &quot;(Additional information: &quot;&lt;&lt; arg3&lt;&lt; &quot;)\n\n&quot;&lt;&lt; &quot;See the entry in the Frequently Asked Questions of &quot;&lt;&lt; &quot;deal.II (linked to from http://www.dealii.org/) for &quot;&lt;&lt; &quot;a lot more information on what this error means and &quot;&lt;&lt; &quot;how to fix programs in which it happens.&quot;)</td></tr>
+<tr class="separator:gaa77207b86899b9eb2d9e06741426af06 inherit pub_methods_classSubscriptor"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga9993dfc378830e66a92065887980e83b inherit pub_methods_classSubscriptor"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="elRef" doxygen="/Users/heltai/c++/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/group__Exceptions.html#ga9993dfc378830e66a92065887980e83b">DeclException2</a> (ExcNoSubscriber, char *, char *,&lt;&lt; &quot;No subscriber with identifier &lt;&quot;&lt;&lt; arg2&lt;&lt; &quot;&gt; subscribes to this object of class &quot;&lt;&lt; arg1&lt;&lt; &quot;. Consequently, it cannot be unsubscribed.&quot;)</td></tr>
+<tr class="separator:ga9993dfc378830e66a92065887980e83b inherit pub_methods_classSubscriptor"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a68efd17a8330ab676d9cd711029b0f38 inherit pub_methods_classSubscriptor"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="elRef" doxygen="/Users/heltai/c++/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classSubscriptor.html#a68efd17a8330ab676d9cd711029b0f38">serialize</a> (Archive &amp;ar, const unsigned int version)</td></tr>
+<tr class="separator:a68efd17a8330ab676d9cd711029b0f38 inherit pub_methods_classSubscriptor"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="inherited"></a>
 Additional Inherited Members</h2></td></tr>
@@ -195,14 +221,14 @@ Additional Inherited Members</h2></td></tr>
 <tr class="separator:af04c215672e63f03a942ae4c55b57c27 inherit pub_static_methods_class_parameter_acceptor"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2e4f8347ae5f913939ebf81a23277880 inherit pub_static_methods_class_parameter_acceptor"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_parameter_acceptor.html#a2e4f8347ae5f913939ebf81a23277880">clear</a> ()</td></tr>
 <tr class="separator:a2e4f8347ae5f913939ebf81a23277880 inherit pub_static_methods_class_parameter_acceptor"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac4b7044a9e1d53c401a50565d8996022 inherit pub_static_methods_class_parameter_acceptor"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_parameter_acceptor.html#ac4b7044a9e1d53c401a50565d8996022">parse_all_parameters</a> (ParameterHandler &amp;<a class="el" href="class_parameter_acceptor.html#a96081d4cc985b722c9841fcf0c0e54ec">prm</a>=<a class="el" href="class_parameter_acceptor.html#a96081d4cc985b722c9841fcf0c0e54ec">ParameterAcceptor::prm</a>)</td></tr>
+<tr class="memitem:ac4b7044a9e1d53c401a50565d8996022 inherit pub_static_methods_class_parameter_acceptor"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_parameter_acceptor.html#ac4b7044a9e1d53c401a50565d8996022">parse_all_parameters</a> (<a class="elRef" doxygen="/Users/heltai/c++/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classParameterHandler.html">ParameterHandler</a> &amp;<a class="el" href="class_parameter_acceptor.html#a96081d4cc985b722c9841fcf0c0e54ec">prm</a>=<a class="el" href="class_parameter_acceptor.html#a96081d4cc985b722c9841fcf0c0e54ec">ParameterAcceptor::prm</a>)</td></tr>
 <tr class="separator:ac4b7044a9e1d53c401a50565d8996022 inherit pub_static_methods_class_parameter_acceptor"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0aebd314633cdb2e48b159f2b9349c73 inherit pub_static_methods_class_parameter_acceptor"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_parameter_acceptor.html#a0aebd314633cdb2e48b159f2b9349c73">log_info</a> ()</td></tr>
 <tr class="separator:a0aebd314633cdb2e48b159f2b9349c73 inherit pub_static_methods_class_parameter_acceptor"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3775ed960cf63c9ae88613925d226b11 inherit pub_static_methods_class_parameter_acceptor"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_parameter_acceptor.html#a3775ed960cf63c9ae88613925d226b11">declare_all_parameters</a> (ParameterHandler &amp;<a class="el" href="class_parameter_acceptor.html#a96081d4cc985b722c9841fcf0c0e54ec">prm</a>=<a class="el" href="class_parameter_acceptor.html#a96081d4cc985b722c9841fcf0c0e54ec">ParameterAcceptor::prm</a>)</td></tr>
+<tr class="memitem:a3775ed960cf63c9ae88613925d226b11 inherit pub_static_methods_class_parameter_acceptor"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_parameter_acceptor.html#a3775ed960cf63c9ae88613925d226b11">declare_all_parameters</a> (<a class="elRef" doxygen="/Users/heltai/c++/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classParameterHandler.html">ParameterHandler</a> &amp;<a class="el" href="class_parameter_acceptor.html#a96081d4cc985b722c9841fcf0c0e54ec">prm</a>=<a class="el" href="class_parameter_acceptor.html#a96081d4cc985b722c9841fcf0c0e54ec">ParameterAcceptor::prm</a>)</td></tr>
 <tr class="separator:a3775ed960cf63c9ae88613925d226b11 inherit pub_static_methods_class_parameter_acceptor"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_static_attribs_class_parameter_acceptor"><td colspan="2" onclick="javascript:toggleInherit('pub_static_attribs_class_parameter_acceptor')"><img src="closed.png" alt="-"/>&#160;Static Public Attributes inherited from <a class="el" href="class_parameter_acceptor.html">ParameterAcceptor</a></td></tr>
-<tr class="memitem:a96081d4cc985b722c9841fcf0c0e54ec inherit pub_static_attribs_class_parameter_acceptor"><td class="memItemLeft" align="right" valign="top">static ParameterHandler&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_parameter_acceptor.html#a96081d4cc985b722c9841fcf0c0e54ec">prm</a></td></tr>
+<tr class="memitem:a96081d4cc985b722c9841fcf0c0e54ec inherit pub_static_attribs_class_parameter_acceptor"><td class="memItemLeft" align="right" valign="top">static <a class="elRef" doxygen="/Users/heltai/c++/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classParameterHandler.html">ParameterHandler</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_parameter_acceptor.html#a96081d4cc985b722c9841fcf0c0e54ec">prm</a></td></tr>
 <tr class="separator:a96081d4cc985b722c9841fcf0c0e54ec inherit pub_static_attribs_class_parameter_acceptor"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pro_methods_class_parsed_mapped_functions"><td colspan="2" onclick="javascript:toggleInherit('pro_methods_class_parsed_mapped_functions')"><img src="closed.png" alt="-"/>&#160;Protected Member Functions inherited from <a class="el" href="class_parsed_mapped_functions.html">ParsedMappedFunctions&lt; spacedim, n_components &gt;</a></td></tr>
 <tr class="memitem:a4081672429df2e0c1121168c38034694 inherit pro_methods_class_parsed_mapped_functions"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_parsed_mapped_functions.html#a4081672429df2e0c1121168c38034694">split_id_components</a> (const std::string &amp;parsed_idcomponents)</td></tr>
@@ -234,11 +260,11 @@ Additional Inherited Members</h2></td></tr>
 <tr class="separator:a5a772127895c774b514014edca251a80 inherit pro_attribs_class_parsed_mapped_functions"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aae3a15ddaf50527a1d5b4cf23d2cc0f0 inherit pro_attribs_class_parsed_mapped_functions"><td class="memItemLeft" align="right" valign="top">std::vector&lt; unsigned int &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_parsed_mapped_functions.html#aae3a15ddaf50527a1d5b4cf23d2cc0f0">normal_ids</a></td></tr>
 <tr class="separator:aae3a15ddaf50527a1d5b4cf23d2cc0f0 inherit pro_attribs_class_parsed_mapped_functions"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5df0ce9ac4dd511839881d2b7269e5b7 inherit pro_attribs_class_parsed_mapped_functions"><td class="memItemLeft" align="right" valign="top">std::map&lt; unsigned int, ComponentMask &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_parsed_mapped_functions.html#a5df0ce9ac4dd511839881d2b7269e5b7">id_components</a></td></tr>
+<tr class="memitem:a5df0ce9ac4dd511839881d2b7269e5b7 inherit pro_attribs_class_parsed_mapped_functions"><td class="memItemLeft" align="right" valign="top">std::map&lt; unsigned int, <a class="elRef" doxygen="/Users/heltai/c++/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classComponentMask.html">ComponentMask</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_parsed_mapped_functions.html#a5df0ce9ac4dd511839881d2b7269e5b7">id_components</a></td></tr>
 <tr class="separator:a5df0ce9ac4dd511839881d2b7269e5b7 inherit pro_attribs_class_parsed_mapped_functions"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a99ed1dba6571768c442aab4609becd6a inherit pro_attribs_class_parsed_mapped_functions"><td class="memItemLeft" align="right" valign="top">std::map&lt; unsigned int, shared_ptr&lt; dealii::Functions::ParsedFunction&lt; spacedim &gt; &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_parsed_mapped_functions.html#a99ed1dba6571768c442aab4609becd6a">id_functions</a></td></tr>
 <tr class="separator:a99ed1dba6571768c442aab4609becd6a inherit pro_attribs_class_parsed_mapped_functions"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a986fc1495367fcbcc39ccb3eae4ff4fa inherit pro_attribs_class_parsed_mapped_functions"><td class="memItemLeft" align="right" valign="top">std::map&lt; unsigned int, std::pair&lt; ComponentMask, shared_ptr&lt; dealii::Functions::ParsedFunction&lt; spacedim &gt; &gt; &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_parsed_mapped_functions.html#a986fc1495367fcbcc39ccb3eae4ff4fa">mapped_functions</a></td></tr>
+<tr class="memitem:a986fc1495367fcbcc39ccb3eae4ff4fa inherit pro_attribs_class_parsed_mapped_functions"><td class="memItemLeft" align="right" valign="top">std::map&lt; unsigned int, std::pair&lt; <a class="elRef" doxygen="/Users/heltai/c++/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classComponentMask.html">ComponentMask</a>, shared_ptr&lt; dealii::Functions::ParsedFunction&lt; spacedim &gt; &gt; &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_parsed_mapped_functions.html#a986fc1495367fcbcc39ccb3eae4ff4fa">mapped_functions</a></td></tr>
 <tr class="separator:a986fc1495367fcbcc39ccb3eae4ff4fa inherit pro_attribs_class_parsed_mapped_functions"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a83fa03bfc2192514cdac2da268d072ae inherit pro_attribs_class_parsed_mapped_functions"><td class="memItemLeft" align="right" valign="top">std::map&lt; std::string, std::pair&lt; std::vector&lt; unsigned int &gt;, unsigned int &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_parsed_mapped_functions.html#a83fa03bfc2192514cdac2da268d072ae">mapped_normal_components</a></td></tr>
 <tr class="separator:a83fa03bfc2192514cdac2da268d072ae inherit pro_attribs_class_parsed_mapped_functions"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -258,7 +284,7 @@ class ParsedDirichletBCs&lt; dim, spacedim, n_components &gt;</h3>
 
 <p>Parsed DirichletBCs. This class allows to set dirichlet boundary conditions, in the strong formulation, from a parameter file.</p>
 <p>This class is derived from <a class="el" href="class_parsed_mapped_functions.html">ParsedMappedFunctions</a>.</p>
-<p>The VectorTools::interpolate_boundary_values and VectorTools::project_boundary_values functions of the deal.II library have been wrapped.</p>
+<p>The <a class="elRef" doxygen="/Users/heltai/c++/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/namespaceVectorTools.html#a26d2d252a5288a045905b5dc19329d01">VectorTools::interpolate_boundary_values</a> and <a class="elRef" doxygen="/Users/heltai/c++/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/namespaceVectorTools.html#a0c684536027758309d42a546d8e6ca48">VectorTools::project_boundary_values</a> functions of the deal.II library have been wrapped.</p>
 <p>A typical usage of this class is the following</p>
 <div class="fragment"><div class="line"><span class="comment">// the following variables are set just for the sake of completeness</span></div>
 <div class="line"><span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> dim = 2;</div>
@@ -275,9 +301,9 @@ class ParsedDirichletBCs&lt; dim, spacedim, n_components &gt;</h3>
 <div class="line">                    <span class="stringliteral">&quot;k=1&quot;</span>); <span class="comment">// list of constants that can be used in the above epressions</span></div>
 <div class="line">...</div>
 <div class="line">QGauss&lt;dim-1&gt; quadrature(2);</div>
-<div class="line">MappingQ1&lt;dim&gt; mapping;</div>
+<div class="line"><a class="codeRef" doxygen="/Users/heltai/c++/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classMappingQ1.html">MappingQ1&lt;dim&gt;</a> mapping;</div>
 <div class="line">std::map&lt;types::global_dof_index,double&gt; dirichlet_dofs;</div>
-<div class="line">ConstraintMatrix constraints;</div>
+<div class="line"><a class="codeRef" doxygen="/Users/heltai/c++/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/structConstraintMatrix_1_1ConstraintLine.html">ConstraintMatrix</a> constraints;</div>
 <div class="line">...</div>
 <div class="line"><span class="comment">// the following functions apply the boundary conditions for the</span></div>
 <div class="line"><span class="comment">// boundary ids 0,1,6</span></div>
@@ -300,7 +326,7 @@ class ParsedDirichletBCs&lt; dim, spacedim, n_components &gt;</h3>
 <div class="line"></div>
 <div class="line">parsed_dirichlet.compute_nonzero_normal_flux(dof_handler,constraints);</div>
 </div><!-- fragment --> 
-<p>Definition at line <a class="el" href="parsed__dirichlet__bcs_8h_source.html#l00072">72</a> of file <a class="el" href="parsed__dirichlet__bcs_8h_source.html">parsed_dirichlet_bcs.h</a>.</p>
+<p>Definition at line <a class="el" href="parsed__dirichlet__bcs_8h_source.html#l00073">73</a> of file <a class="el" href="parsed__dirichlet__bcs_8h_source.html">parsed_dirichlet_bcs.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a class="anchor" id="a83c86bbcd6fc9807564ac6bb1921e723"></a>
 <div class="memitem">
@@ -354,7 +380,7 @@ template&lt;int dim, int spacedim, int n_components&gt; </div>
 <li>list of constants that can be used in the above epressions </li>
 </ul>
 
-<p>Definition at line <a class="el" href="parsed__dirichlet__bcs_8h_source.html#l00252">252</a> of file <a class="el" href="parsed__dirichlet__bcs_8h_source.html">parsed_dirichlet_bcs.h</a>.</p>
+<p>Definition at line <a class="el" href="parsed__dirichlet__bcs_8h_source.html#l00253">253</a> of file <a class="el" href="parsed__dirichlet__bcs_8h_source.html">parsed_dirichlet_bcs.h</a>.</p>
 
 </div>
 </div>
@@ -368,13 +394,13 @@ template&lt;int dim, int spacedim, int n_components&gt; </div>
         <tr>
           <td class="memname">void <a class="el" href="class_parsed_dirichlet_b_cs.html">ParsedDirichletBCs</a>&lt; dim, spacedim, n_components &gt;::compute_no_normal_flux_constraints </td>
           <td>(</td>
-          <td class="paramtype">const DoFHandler&lt; dim, spacedim &gt; &amp;&#160;</td>
+          <td class="paramtype">const <a class="elRef" doxygen="/Users/heltai/c++/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classDoFHandler.html">DoFHandler</a>&lt; dim, spacedim &gt; &amp;&#160;</td>
           <td class="paramname"><em>dof_handler</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">ConstraintMatrix &amp;&#160;</td>
+          <td class="paramtype"><a class="elRef" doxygen="/Users/heltai/c++/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classConstraintMatrix.html">ConstraintMatrix</a> &amp;&#160;</td>
           <td class="paramname"><em>constraints</em>&#160;</td>
         </tr>
         <tr>
@@ -386,9 +412,9 @@ template&lt;int dim, int spacedim, int n_components&gt; </div>
 </div><div class="memdoc">
 <p>This function must be called in order to apply the homogeneous Dirichlet boundary conditions to the normal components of the variables specified.</p>
 <p>The normal component can be specified adding ".N" to the variable name e.g. the normal component for the vector variable "u" will be "u.N".</p>
-<p>It relies on the VectorTools::compute_no_normal_flux_constraints functions of the deal.II library </p>
+<p>It relies on the <a class="elRef" doxygen="/Users/heltai/c++/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/group__constraints.html#ga8d539102c2d8cbe7e988174b7ab4629d">VectorTools::compute_no_normal_flux_constraints</a> functions of the deal.II library </p>
 
-<p>Definition at line <a class="el" href="parsed__dirichlet__bcs_8h_source.html#l00453">453</a> of file <a class="el" href="parsed__dirichlet__bcs_8h_source.html">parsed_dirichlet_bcs.h</a>.</p>
+<p>Definition at line <a class="el" href="parsed__dirichlet__bcs_8h_source.html#l00454">454</a> of file <a class="el" href="parsed__dirichlet__bcs_8h_source.html">parsed_dirichlet_bcs.h</a>.</p>
 
 </div>
 </div>
@@ -401,19 +427,19 @@ template&lt;int dim, int spacedim, int n_components&gt; </div>
         <tr>
           <td class="memname">void <a class="el" href="class_parsed_dirichlet_b_cs.html">ParsedDirichletBCs</a>&lt; dim, spacedim, n_components &gt;::compute_no_normal_flux_constraints </td>
           <td>(</td>
-          <td class="paramtype">const DoFHandler&lt; dim, spacedim &gt; &amp;&#160;</td>
+          <td class="paramtype">const <a class="elRef" doxygen="/Users/heltai/c++/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classDoFHandler.html">DoFHandler</a>&lt; dim, spacedim &gt; &amp;&#160;</td>
           <td class="paramname"><em>dof_handler</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const Mapping&lt; dim, spacedim &gt; &amp;&#160;</td>
+          <td class="paramtype">const <a class="elRef" doxygen="/Users/heltai/c++/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classMapping.html">Mapping</a>&lt; dim, spacedim &gt; &amp;&#160;</td>
           <td class="paramname"><em>mapping</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">ConstraintMatrix &amp;&#160;</td>
+          <td class="paramtype"><a class="elRef" doxygen="/Users/heltai/c++/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classConstraintMatrix.html">ConstraintMatrix</a> &amp;&#160;</td>
           <td class="paramname"><em>constraints</em>&#160;</td>
         </tr>
         <tr>
@@ -425,9 +451,9 @@ template&lt;int dim, int spacedim, int n_components&gt; </div>
 </div><div class="memdoc">
 <p>This function must be called in order to apply the homogeneous Dirichlet boundary conditions to the normal components of the variables specified.</p>
 <p>The normal component can be specified adding ".N" to the variable name e.g. the normal component for the vector variable "u" will be "u.N".</p>
-<p>It relies on the VectorTools::compute_no_normal_flux_constraints functions of the deal.II library </p>
+<p>It relies on the <a class="elRef" doxygen="/Users/heltai/c++/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/group__constraints.html#ga8d539102c2d8cbe7e988174b7ab4629d">VectorTools::compute_no_normal_flux_constraints</a> functions of the deal.II library </p>
 
-<p>Definition at line <a class="el" href="parsed__dirichlet__bcs_8h_source.html#l00475">475</a> of file <a class="el" href="parsed__dirichlet__bcs_8h_source.html">parsed_dirichlet_bcs.h</a>.</p>
+<p>Definition at line <a class="el" href="parsed__dirichlet__bcs_8h_source.html#l00476">476</a> of file <a class="el" href="parsed__dirichlet__bcs_8h_source.html">parsed_dirichlet_bcs.h</a>.</p>
 
 </div>
 </div>
@@ -440,13 +466,13 @@ template&lt;int dim, int spacedim, int n_components&gt; </div>
         <tr>
           <td class="memname">void <a class="el" href="class_parsed_dirichlet_b_cs.html">ParsedDirichletBCs</a>&lt; dim, spacedim, n_components &gt;::compute_nonzero_normal_flux_constraints </td>
           <td>(</td>
-          <td class="paramtype">const DoFHandler&lt; dim, spacedim &gt; &amp;&#160;</td>
+          <td class="paramtype">const <a class="elRef" doxygen="/Users/heltai/c++/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classDoFHandler.html">DoFHandler</a>&lt; dim, spacedim &gt; &amp;&#160;</td>
           <td class="paramname"><em>dof_handler</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">ConstraintMatrix &amp;&#160;</td>
+          <td class="paramtype"><a class="elRef" doxygen="/Users/heltai/c++/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classConstraintMatrix.html">ConstraintMatrix</a> &amp;&#160;</td>
           <td class="paramname"><em>constraints</em>&#160;</td>
         </tr>
         <tr>
@@ -458,10 +484,10 @@ template&lt;int dim, int spacedim, int n_components&gt; </div>
 </div><div class="memdoc">
 <p>This function must be called in order to apply the Dirichlet boundary conditions to the normal components of the variables specified.</p>
 <p>The normal component can be specified adding ".N" to the variable name e.g. the normal component for the vector variable "u" will be "u.N".</p>
-<p>It relies on the VectorTools::compute_nonzero_normal_flux_constraints functions of the deal.II library.</p>
+<p>It relies on the <a class="elRef" doxygen="/Users/heltai/c++/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/group__constraints.html#ga421e04239e37e29f544d99c251e23dd7">VectorTools::compute_nonzero_normal_flux_constraints</a> functions of the deal.II library.</p>
 <p>Note that calling this functions with an expression equal to zero is equivalent to call the compute_no_normal_flux_constraints function. </p>
 
-<p>Definition at line <a class="el" href="parsed__dirichlet__bcs_8h_source.html#l00500">500</a> of file <a class="el" href="parsed__dirichlet__bcs_8h_source.html">parsed_dirichlet_bcs.h</a>.</p>
+<p>Definition at line <a class="el" href="parsed__dirichlet__bcs_8h_source.html#l00501">501</a> of file <a class="el" href="parsed__dirichlet__bcs_8h_source.html">parsed_dirichlet_bcs.h</a>.</p>
 
 </div>
 </div>
@@ -474,19 +500,19 @@ template&lt;int dim, int spacedim, int n_components&gt; </div>
         <tr>
           <td class="memname">void <a class="el" href="class_parsed_dirichlet_b_cs.html">ParsedDirichletBCs</a>&lt; dim, spacedim, n_components &gt;::compute_nonzero_normal_flux_constraints </td>
           <td>(</td>
-          <td class="paramtype">const DoFHandler&lt; dim, spacedim &gt; &amp;&#160;</td>
+          <td class="paramtype">const <a class="elRef" doxygen="/Users/heltai/c++/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classDoFHandler.html">DoFHandler</a>&lt; dim, spacedim &gt; &amp;&#160;</td>
           <td class="paramname"><em>dof_handler</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const Mapping&lt; dim, spacedim &gt; &amp;&#160;</td>
+          <td class="paramtype">const <a class="elRef" doxygen="/Users/heltai/c++/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classMapping.html">Mapping</a>&lt; dim, spacedim &gt; &amp;&#160;</td>
           <td class="paramname"><em>mapping</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">ConstraintMatrix &amp;&#160;</td>
+          <td class="paramtype"><a class="elRef" doxygen="/Users/heltai/c++/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classConstraintMatrix.html">ConstraintMatrix</a> &amp;&#160;</td>
           <td class="paramname"><em>constraints</em>&#160;</td>
         </tr>
         <tr>
@@ -498,10 +524,10 @@ template&lt;int dim, int spacedim, int n_components&gt; </div>
 </div><div class="memdoc">
 <p>This function must be called in order to apply the Dirichlet boundary conditions to the normal components of the variables specified.</p>
 <p>The normal component can be specified adding ".N" to the variable name e.g. the normal component for the vector variable "u" will be "u.N".</p>
-<p>It relies on the VectorTools::compute_nonzero_normal_flux_constraints functions of the deal.II library.</p>
+<p>It relies on the <a class="elRef" doxygen="/Users/heltai/c++/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/group__constraints.html#ga421e04239e37e29f544d99c251e23dd7">VectorTools::compute_nonzero_normal_flux_constraints</a> functions of the deal.II library.</p>
 <p>Note that calling this functions with an expression equal to zero is equivalent to call the compute_no_normal_flux_constraints function. </p>
 
-<p>Definition at line <a class="el" href="parsed__dirichlet__bcs_8h_source.html#l00531">531</a> of file <a class="el" href="parsed__dirichlet__bcs_8h_source.html">parsed_dirichlet_bcs.h</a>.</p>
+<p>Definition at line <a class="el" href="parsed__dirichlet__bcs_8h_source.html#l00532">532</a> of file <a class="el" href="parsed__dirichlet__bcs_8h_source.html">parsed_dirichlet_bcs.h</a>.</p>
 
 </div>
 </div>
@@ -517,7 +543,7 @@ template&lt;int dim, int spacedim, int n_components&gt; </div>
         <tr>
           <td class="memname">void <a class="el" href="class_parsed_dirichlet_b_cs.html">ParsedDirichletBCs</a>&lt; dim, spacedim, n_components &gt;::declare_parameters </td>
           <td>(</td>
-          <td class="paramtype">ParameterHandler &amp;&#160;</td>
+          <td class="paramtype"><a class="elRef" doxygen="/Users/heltai/c++/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classParameterHandler.html">ParameterHandler</a> &amp;&#160;</td>
           <td class="paramname"><em>prm</em></td><td>)</td>
           <td></td>
         </tr>
@@ -532,7 +558,7 @@ template&lt;int dim, int spacedim, int n_components&gt; </div>
 
 <p>Reimplemented from <a class="el" href="class_parsed_mapped_functions.html#a747b21de730cd8ca12266411b24a650e">ParsedMappedFunctions&lt; spacedim, n_components &gt;</a>.</p>
 
-<p>Definition at line <a class="el" href="parsed__dirichlet__bcs_8h_source.html#l00267">267</a> of file <a class="el" href="parsed__dirichlet__bcs_8h_source.html">parsed_dirichlet_bcs.h</a>.</p>
+<p>Definition at line <a class="el" href="parsed__dirichlet__bcs_8h_source.html#l00268">268</a> of file <a class="el" href="parsed__dirichlet__bcs_8h_source.html">parsed_dirichlet_bcs.h</a>.</p>
 
 </div>
 </div>
@@ -545,13 +571,13 @@ template&lt;int dim, int spacedim, int n_components&gt; </div>
         <tr>
           <td class="memname">void <a class="el" href="class_parsed_dirichlet_b_cs.html">ParsedDirichletBCs</a>&lt; dim, spacedim, n_components &gt;::interpolate_boundary_values </td>
           <td>(</td>
-          <td class="paramtype">const DoFHandler&lt; dim, spacedim &gt; &amp;&#160;</td>
+          <td class="paramtype">const <a class="elRef" doxygen="/Users/heltai/c++/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classDoFHandler.html">DoFHandler</a>&lt; dim, spacedim &gt; &amp;&#160;</td>
           <td class="paramname"><em>dof_handler</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">ConstraintMatrix &amp;&#160;</td>
+          <td class="paramtype"><a class="elRef" doxygen="/Users/heltai/c++/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classConstraintMatrix.html">ConstraintMatrix</a> &amp;&#160;</td>
           <td class="paramname"><em>constraints</em>&#160;</td>
         </tr>
         <tr>
@@ -561,9 +587,9 @@ template&lt;int dim, int spacedim, int n_components&gt; </div>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>This function must be called in order to apply the boundary conditions to the ConstraintMatrix. It relies on the VectorTools::interpolate_boundary_values functions of the deal.II library </p>
+<p>This function must be called in order to apply the boundary conditions to the <a class="elRef" doxygen="/Users/heltai/c++/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classConstraintMatrix.html">ConstraintMatrix</a>. It relies on the <a class="elRef" doxygen="/Users/heltai/c++/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/namespaceVectorTools.html#a26d2d252a5288a045905b5dc19329d01">VectorTools::interpolate_boundary_values</a> functions of the deal.II library </p>
 
-<p>Definition at line <a class="el" href="parsed__dirichlet__bcs_8h_source.html#l00279">279</a> of file <a class="el" href="parsed__dirichlet__bcs_8h_source.html">parsed_dirichlet_bcs.h</a>.</p>
+<p>Definition at line <a class="el" href="parsed__dirichlet__bcs_8h_source.html#l00280">280</a> of file <a class="el" href="parsed__dirichlet__bcs_8h_source.html">parsed_dirichlet_bcs.h</a>.</p>
 
 </div>
 </div>
@@ -576,19 +602,19 @@ template&lt;int dim, int spacedim, int n_components&gt; </div>
         <tr>
           <td class="memname">void <a class="el" href="class_parsed_dirichlet_b_cs.html">ParsedDirichletBCs</a>&lt; dim, spacedim, n_components &gt;::interpolate_boundary_values </td>
           <td>(</td>
-          <td class="paramtype">const Mapping&lt; dim, spacedim &gt; &amp;&#160;</td>
+          <td class="paramtype">const <a class="elRef" doxygen="/Users/heltai/c++/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classMapping.html">Mapping</a>&lt; dim, spacedim &gt; &amp;&#160;</td>
           <td class="paramname"><em>mapping</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const DoFHandler&lt; dim, spacedim &gt; &amp;&#160;</td>
+          <td class="paramtype">const <a class="elRef" doxygen="/Users/heltai/c++/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classDoFHandler.html">DoFHandler</a>&lt; dim, spacedim &gt; &amp;&#160;</td>
           <td class="paramname"><em>dof_handler</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">ConstraintMatrix &amp;&#160;</td>
+          <td class="paramtype"><a class="elRef" doxygen="/Users/heltai/c++/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classConstraintMatrix.html">ConstraintMatrix</a> &amp;&#160;</td>
           <td class="paramname"><em>constraints</em>&#160;</td>
         </tr>
         <tr>
@@ -598,9 +624,9 @@ template&lt;int dim, int spacedim, int n_components&gt; </div>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>This function must be called in order to apply the boundary conditions to the ConstraintMatrix. It relies on the VectorTools::interpolate_boundary_values functions of the deal.II library </p>
+<p>This function must be called in order to apply the boundary conditions to the <a class="elRef" doxygen="/Users/heltai/c++/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classConstraintMatrix.html">ConstraintMatrix</a>. It relies on the <a class="elRef" doxygen="/Users/heltai/c++/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/namespaceVectorTools.html#a26d2d252a5288a045905b5dc19329d01">VectorTools::interpolate_boundary_values</a> functions of the deal.II library </p>
 
-<p>Definition at line <a class="el" href="parsed__dirichlet__bcs_8h_source.html#l00292">292</a> of file <a class="el" href="parsed__dirichlet__bcs_8h_source.html">parsed_dirichlet_bcs.h</a>.</p>
+<p>Definition at line <a class="el" href="parsed__dirichlet__bcs_8h_source.html#l00293">293</a> of file <a class="el" href="parsed__dirichlet__bcs_8h_source.html">parsed_dirichlet_bcs.h</a>.</p>
 
 </div>
 </div>
@@ -613,13 +639,13 @@ template&lt;int dim, int spacedim, int n_components&gt; </div>
         <tr>
           <td class="memname">void <a class="el" href="class_parsed_dirichlet_b_cs.html">ParsedDirichletBCs</a>&lt; dim, spacedim, n_components &gt;::interpolate_boundary_values </td>
           <td>(</td>
-          <td class="paramtype">const DoFHandler&lt; dim, spacedim &gt; &amp;&#160;</td>
+          <td class="paramtype">const <a class="elRef" doxygen="/Users/heltai/c++/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classDoFHandler.html">DoFHandler</a>&lt; dim, spacedim &gt; &amp;&#160;</td>
           <td class="paramname"><em>dof_handler</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">std::map&lt; types::global_dof_index, double &gt; &amp;&#160;</td>
+          <td class="paramtype">std::map&lt; <a class="elRef" doxygen="/Users/heltai/c++/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/namespacetypes.html#a3bf9e493f1aab00b04933b81856144c4">types::global_dof_index</a>, double &gt; &amp;&#160;</td>
           <td class="paramname"><em>d_dofs</em>&#160;</td>
         </tr>
         <tr>
@@ -629,9 +655,9 @@ template&lt;int dim, int spacedim, int n_components&gt; </div>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>This function must be called in order to apply the boundary conditions to the ConstraintMatrix. It relies on the VectorTools::interpolate_boundary_values functions of the deal.II library </p>
+<p>This function must be called in order to apply the boundary conditions to the <a class="elRef" doxygen="/Users/heltai/c++/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classConstraintMatrix.html">ConstraintMatrix</a>. It relies on the <a class="elRef" doxygen="/Users/heltai/c++/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/namespaceVectorTools.html#a26d2d252a5288a045905b5dc19329d01">VectorTools::interpolate_boundary_values</a> functions of the deal.II library </p>
 
-<p>Definition at line <a class="el" href="parsed__dirichlet__bcs_8h_source.html#l00307">307</a> of file <a class="el" href="parsed__dirichlet__bcs_8h_source.html">parsed_dirichlet_bcs.h</a>.</p>
+<p>Definition at line <a class="el" href="parsed__dirichlet__bcs_8h_source.html#l00308">308</a> of file <a class="el" href="parsed__dirichlet__bcs_8h_source.html">parsed_dirichlet_bcs.h</a>.</p>
 
 </div>
 </div>
@@ -644,19 +670,19 @@ template&lt;int dim, int spacedim, int n_components&gt; </div>
         <tr>
           <td class="memname">void <a class="el" href="class_parsed_dirichlet_b_cs.html">ParsedDirichletBCs</a>&lt; dim, spacedim, n_components &gt;::interpolate_boundary_values </td>
           <td>(</td>
-          <td class="paramtype">const Mapping&lt; dim, spacedim &gt; &amp;&#160;</td>
+          <td class="paramtype">const <a class="elRef" doxygen="/Users/heltai/c++/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classMapping.html">Mapping</a>&lt; dim, spacedim &gt; &amp;&#160;</td>
           <td class="paramname"><em>mapping</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const DoFHandler&lt; dim, spacedim &gt; &amp;&#160;</td>
+          <td class="paramtype">const <a class="elRef" doxygen="/Users/heltai/c++/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classDoFHandler.html">DoFHandler</a>&lt; dim, spacedim &gt; &amp;&#160;</td>
           <td class="paramname"><em>dof_handler</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">std::map&lt; types::global_dof_index, double &gt; &amp;&#160;</td>
+          <td class="paramtype">std::map&lt; <a class="elRef" doxygen="/Users/heltai/c++/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/namespacetypes.html#a3bf9e493f1aab00b04933b81856144c4">types::global_dof_index</a>, double &gt; &amp;&#160;</td>
           <td class="paramname"><em>d_dofs</em>&#160;</td>
         </tr>
         <tr>
@@ -666,9 +692,9 @@ template&lt;int dim, int spacedim, int n_components&gt; </div>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>This function must be called in order to apply the boundary conditions to the ConstraintMatrix. It relies on the VectorTools::interpolate_boundary_values functions of the deal.II library </p>
+<p>This function must be called in order to apply the boundary conditions to the <a class="elRef" doxygen="/Users/heltai/c++/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classConstraintMatrix.html">ConstraintMatrix</a>. It relies on the <a class="elRef" doxygen="/Users/heltai/c++/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/namespaceVectorTools.html#a26d2d252a5288a045905b5dc19329d01">VectorTools::interpolate_boundary_values</a> functions of the deal.II library </p>
 
-<p>Definition at line <a class="el" href="parsed__dirichlet__bcs_8h_source.html#l00320">320</a> of file <a class="el" href="parsed__dirichlet__bcs_8h_source.html">parsed_dirichlet_bcs.h</a>.</p>
+<p>Definition at line <a class="el" href="parsed__dirichlet__bcs_8h_source.html#l00321">321</a> of file <a class="el" href="parsed__dirichlet__bcs_8h_source.html">parsed_dirichlet_bcs.h</a>.</p>
 
 </div>
 </div>
@@ -698,7 +724,7 @@ template&lt;int dim, int spacedim, int n_components&gt; </div>
 
 <p>Reimplemented from <a class="el" href="class_parsed_mapped_functions.html#a328c5ab6be8c8f398a753a4fa6d76422">ParsedMappedFunctions&lt; spacedim, n_components &gt;</a>.</p>
 
-<p>Definition at line <a class="el" href="parsed__dirichlet__bcs_8h_source.html#l00273">273</a> of file <a class="el" href="parsed__dirichlet__bcs_8h_source.html">parsed_dirichlet_bcs.h</a>.</p>
+<p>Definition at line <a class="el" href="parsed__dirichlet__bcs_8h_source.html#l00274">274</a> of file <a class="el" href="parsed__dirichlet__bcs_8h_source.html">parsed_dirichlet_bcs.h</a>.</p>
 
 </div>
 </div>
@@ -711,19 +737,19 @@ template&lt;int dim, int spacedim, int n_components&gt; </div>
         <tr>
           <td class="memname">void <a class="el" href="class_parsed_dirichlet_b_cs.html">ParsedDirichletBCs</a>&lt; dim, spacedim, n_components &gt;::project_boundary_values </td>
           <td>(</td>
-          <td class="paramtype">const DoFHandler&lt; dim, spacedim &gt; &amp;&#160;</td>
+          <td class="paramtype">const <a class="elRef" doxygen="/Users/heltai/c++/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classDoFHandler.html">DoFHandler</a>&lt; dim, spacedim &gt; &amp;&#160;</td>
           <td class="paramname"><em>dof_handler</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const Quadrature&lt; dim-1 &gt; &amp;&#160;</td>
+          <td class="paramtype">const <a class="elRef" doxygen="/Users/heltai/c++/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classQuadrature.html">Quadrature</a>&lt; dim-1 &gt; &amp;&#160;</td>
           <td class="paramname"><em>quadrature</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">ConstraintMatrix &amp;&#160;</td>
+          <td class="paramtype"><a class="elRef" doxygen="/Users/heltai/c++/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classConstraintMatrix.html">ConstraintMatrix</a> &amp;&#160;</td>
           <td class="paramname"><em>constraints</em>&#160;</td>
         </tr>
         <tr>
@@ -733,9 +759,9 @@ template&lt;int dim, int spacedim, int n_components&gt; </div>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>This function must be called in order to apply the boundary conditions to the ConstraintMatrix. It relies on the VectorTools::project_boundary_values functions of the deal.II library </p>
+<p>This function must be called in order to apply the boundary conditions to the <a class="elRef" doxygen="/Users/heltai/c++/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classConstraintMatrix.html">ConstraintMatrix</a>. It relies on the <a class="elRef" doxygen="/Users/heltai/c++/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/namespaceVectorTools.html#a0c684536027758309d42a546d8e6ca48">VectorTools::project_boundary_values</a> functions of the deal.II library </p>
 
-<p>Definition at line <a class="el" href="parsed__dirichlet__bcs_8h_source.html#l00365">365</a> of file <a class="el" href="parsed__dirichlet__bcs_8h_source.html">parsed_dirichlet_bcs.h</a>.</p>
+<p>Definition at line <a class="el" href="parsed__dirichlet__bcs_8h_source.html#l00366">366</a> of file <a class="el" href="parsed__dirichlet__bcs_8h_source.html">parsed_dirichlet_bcs.h</a>.</p>
 
 </div>
 </div>
@@ -748,25 +774,25 @@ template&lt;int dim, int spacedim, int n_components&gt; </div>
         <tr>
           <td class="memname">void <a class="el" href="class_parsed_dirichlet_b_cs.html">ParsedDirichletBCs</a>&lt; dim, spacedim, n_components &gt;::project_boundary_values </td>
           <td>(</td>
-          <td class="paramtype">const Mapping&lt; dim, spacedim &gt; &amp;&#160;</td>
+          <td class="paramtype">const <a class="elRef" doxygen="/Users/heltai/c++/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classMapping.html">Mapping</a>&lt; dim, spacedim &gt; &amp;&#160;</td>
           <td class="paramname"><em>mapping</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const DoFHandler&lt; dim, spacedim &gt; &amp;&#160;</td>
+          <td class="paramtype">const <a class="elRef" doxygen="/Users/heltai/c++/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classDoFHandler.html">DoFHandler</a>&lt; dim, spacedim &gt; &amp;&#160;</td>
           <td class="paramname"><em>dof_handler</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const Quadrature&lt; dim-1 &gt; &amp;&#160;</td>
+          <td class="paramtype">const <a class="elRef" doxygen="/Users/heltai/c++/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classQuadrature.html">Quadrature</a>&lt; dim-1 &gt; &amp;&#160;</td>
           <td class="paramname"><em>quadrature</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">ConstraintMatrix &amp;&#160;</td>
+          <td class="paramtype"><a class="elRef" doxygen="/Users/heltai/c++/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classConstraintMatrix.html">ConstraintMatrix</a> &amp;&#160;</td>
           <td class="paramname"><em>constraints</em>&#160;</td>
         </tr>
         <tr>
@@ -776,9 +802,9 @@ template&lt;int dim, int spacedim, int n_components&gt; </div>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>This function must be called in order to apply the boundary conditions to the ConstraintMatrix. It relies on the VectorTools::project_boundary_values functions of the deal.II library </p>
+<p>This function must be called in order to apply the boundary conditions to the <a class="elRef" doxygen="/Users/heltai/c++/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classConstraintMatrix.html">ConstraintMatrix</a>. It relies on the <a class="elRef" doxygen="/Users/heltai/c++/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/namespaceVectorTools.html#a0c684536027758309d42a546d8e6ca48">VectorTools::project_boundary_values</a> functions of the deal.II library </p>
 
-<p>Definition at line <a class="el" href="parsed__dirichlet__bcs_8h_source.html#l00335">335</a> of file <a class="el" href="parsed__dirichlet__bcs_8h_source.html">parsed_dirichlet_bcs.h</a>.</p>
+<p>Definition at line <a class="el" href="parsed__dirichlet__bcs_8h_source.html#l00336">336</a> of file <a class="el" href="parsed__dirichlet__bcs_8h_source.html">parsed_dirichlet_bcs.h</a>.</p>
 
 </div>
 </div>
@@ -791,19 +817,19 @@ template&lt;int dim, int spacedim, int n_components&gt; </div>
         <tr>
           <td class="memname">void <a class="el" href="class_parsed_dirichlet_b_cs.html">ParsedDirichletBCs</a>&lt; dim, spacedim, n_components &gt;::project_boundary_values </td>
           <td>(</td>
-          <td class="paramtype">const DoFHandler&lt; dim, spacedim &gt; &amp;&#160;</td>
+          <td class="paramtype">const <a class="elRef" doxygen="/Users/heltai/c++/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classDoFHandler.html">DoFHandler</a>&lt; dim, spacedim &gt; &amp;&#160;</td>
           <td class="paramname"><em>dof_handler</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const Quadrature&lt; dim-1 &gt; &amp;&#160;</td>
+          <td class="paramtype">const <a class="elRef" doxygen="/Users/heltai/c++/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classQuadrature.html">Quadrature</a>&lt; dim-1 &gt; &amp;&#160;</td>
           <td class="paramname"><em>quadrature</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">std::map&lt; types::global_dof_index, double &gt; &amp;&#160;</td>
+          <td class="paramtype">std::map&lt; <a class="elRef" doxygen="/Users/heltai/c++/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/namespacetypes.html#a3bf9e493f1aab00b04933b81856144c4">types::global_dof_index</a>, double &gt; &amp;&#160;</td>
           <td class="paramname"><em>projected_bv</em>&#160;</td>
         </tr>
         <tr>
@@ -813,9 +839,9 @@ template&lt;int dim, int spacedim, int n_components&gt; </div>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>This function must be called in order to apply the boundary conditions to the ConstraintMatrix. It relies on the VectorTools::project_boundary_values functions of the deal.II library </p>
+<p>This function must be called in order to apply the boundary conditions to the <a class="elRef" doxygen="/Users/heltai/c++/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classConstraintMatrix.html">ConstraintMatrix</a>. It relies on the <a class="elRef" doxygen="/Users/heltai/c++/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/namespaceVectorTools.html#a0c684536027758309d42a546d8e6ca48">VectorTools::project_boundary_values</a> functions of the deal.II library </p>
 
-<p>Definition at line <a class="el" href="parsed__dirichlet__bcs_8h_source.html#l00425">425</a> of file <a class="el" href="parsed__dirichlet__bcs_8h_source.html">parsed_dirichlet_bcs.h</a>.</p>
+<p>Definition at line <a class="el" href="parsed__dirichlet__bcs_8h_source.html#l00426">426</a> of file <a class="el" href="parsed__dirichlet__bcs_8h_source.html">parsed_dirichlet_bcs.h</a>.</p>
 
 </div>
 </div>
@@ -828,25 +854,25 @@ template&lt;int dim, int spacedim, int n_components&gt; </div>
         <tr>
           <td class="memname">void <a class="el" href="class_parsed_dirichlet_b_cs.html">ParsedDirichletBCs</a>&lt; dim, spacedim, n_components &gt;::project_boundary_values </td>
           <td>(</td>
-          <td class="paramtype">const Mapping&lt; dim, spacedim &gt; &amp;&#160;</td>
+          <td class="paramtype">const <a class="elRef" doxygen="/Users/heltai/c++/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classMapping.html">Mapping</a>&lt; dim, spacedim &gt; &amp;&#160;</td>
           <td class="paramname"><em>mapping</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const DoFHandler&lt; dim, spacedim &gt; &amp;&#160;</td>
+          <td class="paramtype">const <a class="elRef" doxygen="/Users/heltai/c++/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classDoFHandler.html">DoFHandler</a>&lt; dim, spacedim &gt; &amp;&#160;</td>
           <td class="paramname"><em>dof_handler</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const Quadrature&lt; dim-1 &gt; &amp;&#160;</td>
+          <td class="paramtype">const <a class="elRef" doxygen="/Users/heltai/c++/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classQuadrature.html">Quadrature</a>&lt; dim-1 &gt; &amp;&#160;</td>
           <td class="paramname"><em>quadrature</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">std::map&lt; types::global_dof_index, double &gt; &amp;&#160;</td>
+          <td class="paramtype">std::map&lt; <a class="elRef" doxygen="/Users/heltai/c++/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/namespacetypes.html#a3bf9e493f1aab00b04933b81856144c4">types::global_dof_index</a>, double &gt; &amp;&#160;</td>
           <td class="paramname"><em>projected_bv</em>&#160;</td>
         </tr>
         <tr>
@@ -856,14 +882,14 @@ template&lt;int dim, int spacedim, int n_components&gt; </div>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>This function must be called in order to apply the boundary conditions to the ConstraintMatrix. It relies on the VectorTools::project_boundary_values functions of the deal.II library </p>
+<p>This function must be called in order to apply the boundary conditions to the <a class="elRef" doxygen="/Users/heltai/c++/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classConstraintMatrix.html">ConstraintMatrix</a>. It relies on the <a class="elRef" doxygen="/Users/heltai/c++/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/namespaceVectorTools.html#a0c684536027758309d42a546d8e6ca48">VectorTools::project_boundary_values</a> functions of the deal.II library </p>
 
-<p>Definition at line <a class="el" href="parsed__dirichlet__bcs_8h_source.html#l00393">393</a> of file <a class="el" href="parsed__dirichlet__bcs_8h_source.html">parsed_dirichlet_bcs.h</a>.</p>
+<p>Definition at line <a class="el" href="parsed__dirichlet__bcs_8h_source.html#l00394">394</a> of file <a class="el" href="parsed__dirichlet__bcs_8h_source.html">parsed_dirichlet_bcs.h</a>.</p>
 
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following file:<ul>
-<li>include/<a class="el" href="parsed__dirichlet__bcs_8h_source.html">parsed_dirichlet_bcs.h</a></li>
+<li>include/deal2lkit/<a class="el" href="parsed__dirichlet__bcs_8h_source.html">parsed_dirichlet_bcs.h</a></li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->
@@ -871,7 +897,7 @@ template&lt;int dim, int spacedim, int n_components&gt; </div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="class_parsed_dirichlet_b_cs.html">ParsedDirichletBCs</a></li>
-    <li class="footer">Generated on Wed Sep 9 2015 17:25:33 for Deal.II Swiss Army Knife library by
+    <li class="footer">Generated on Wed Sep 30 2015 13:45:08 for Deal.II Swiss Army Knife library by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.10 </li>
   </ul>

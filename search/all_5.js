@@ -1,6 +1,9 @@
 var searchData=
 [
-  ['fe_5fvalues_5fcache_2eh',['fe_values_cache.h',['../fe__values__cache_8h.html',1,'']]],
-  ['fevaluescache',['FEValuesCache',['../class_f_e_values_cache.html',1,'FEValuesCache&lt; dim, spacedim &gt;'],['../class_f_e_values_cache.html#acedce02eced5b09b932d58e444604e1e',1,'FEValuesCache::FEValuesCache(const Mapping&lt; dim, spacedim &gt; &amp;mapping, const FiniteElement&lt; dim, spacedim &gt; &amp;fe, const Quadrature&lt; dim &gt; &amp;quadrature, const UpdateFlags &amp;update_flags, const Quadrature&lt; dim-1 &gt; &amp;face_quadrature, const UpdateFlags &amp;face_update_flags)'],['../class_f_e_values_cache.html#aa987f9c5eb4bcdcc8d3419422400eb48',1,'FEValuesCache::FEValuesCache(const FEValuesCache&lt; dim, spacedim &gt; &amp;scratch)']]],
-  ['file_5fexists',['file_exists',['../utilities_8cc.html#a8d3e59f8d256d7703e84064d7ca70879',1,'file_exists(const std::string &amp;file):&#160;utilities.cc'],['../utilities_8h.html#a8d3e59f8d256d7703e84064d7ca70879',1,'file_exists(const std::string &amp;file):&#160;utilities.cc']]]
+  ['6_2e0_2e0_2dvs_2d6_2e1_2e0_2eh',['6.0.0-vs-6.1.0.h',['http://www.dealii.org/developer/doxygen/deal.II/6_80_80-vs-6_81_80_8h.html',1,'']]],
+  ['6_2e1_2e0_2dvs_2d6_2e2_2e0_2eh',['6.1.0-vs-6.2.0.h',['http://www.dealii.org/developer/doxygen/deal.II/6_81_80-vs-6_82_80_8h.html',1,'']]],
+  ['6_2e2_2e0_2dvs_2d6_2e2_2e1_2eh',['6.2.0-vs-6.2.1.h',['http://www.dealii.org/developer/doxygen/deal.II/6_82_80-vs-6_82_81_8h.html',1,'']]],
+  ['6_2e2_2e0_2dvs_2d6_2e3_2e0_2eh',['6.2.0-vs-6.3.0.h',['http://www.dealii.org/developer/doxygen/deal.II/6_82_80-vs-6_83_80_8h.html',1,'']]],
+  ['6_2e3_2e0_2dvs_2d6_2e3_2e1_2eh',['6.3.0-vs-6.3.1.h',['http://www.dealii.org/developer/doxygen/deal.II/6_83_80-vs-6_83_81_8h.html',1,'']]],
+  ['6_2e3_2e0_2dvs_2d7_2e0_2e0_2eh',['6.3.0-vs-7.0.0.h',['http://www.dealii.org/developer/doxygen/deal.II/6_83_80-vs-7_80_80_8h.html',1,'']]]
 ];

@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['global_5frefinement',['global_refinement',['../class_conv_tables_1_1_helmholtz_problem.html#ae2ae9cf75c9fd789ad9f2a579f30fffbaf52ee86734c393557771e6759dcff053',1,'ConvTables::HelmholtzProblem']]]
+  ['h1',['H1',['../error__handler_8h.html#afdb1b3484ed14e30fcdbfdbdd004922ba7ec6526640e5add74fe4b322e6343120',1,'error_handler.h']]]
 ];
