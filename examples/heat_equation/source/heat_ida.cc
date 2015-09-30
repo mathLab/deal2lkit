@@ -495,7 +495,7 @@ bool Heat<dim>::solver_should_restart (const double t,
 
 
       max_kelly = estimated_error_per_cell.linfty_norm();
-      max_kelly = Utilities::MPI::sum(max_kelly, comm);
+      max_kelly = Utilities::MPI::max(max_kelly, comm);
 
       if (max_kelly > kelly_threshold)
 
