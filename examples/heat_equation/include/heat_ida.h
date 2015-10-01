@@ -163,7 +163,7 @@ private:
   mutable TimerOutput     computing_timer;
 
 
-  //ErrorHandler<1>       eh;
+  ErrorHandler<dim>       eh;
   ParsedGridGenerator<dim,dim>   pgg;
   ParsedFiniteElement<dim,dim> fe_builder;
 
@@ -186,9 +186,10 @@ private:
   bool use_direct_solver;
   bool use_space_adaptivity;
   double kelly_threshold;
-  unsigned int max_dofs;
+  int max_cells;
   double top_fraction;
   double bottom_fraction;
+  double diffusivity;
 };
 
 #endif

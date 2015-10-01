@@ -1,13 +1,13 @@
 # Parameter file generated with 
-# D2K_GIT_BRANCH=       space_adaptivity
-# D2K_GIT_SHORTREV=     4de973e
+# D2K_GIT_BRANCH=       heat_example
+# D2K_GIT_SHORTREV=     65ae35b
 # DEAL_II_GIT_BRANCH=   master
-# DEAL_II_GIT_SHORTREV= 7ef2ce9
+# DEAL_II_GIT_SHORTREV= 02fd3a2
 subsection Dirichlet BCs
   set IDs and component masks = 0=u
-  set IDs and expressions     = 
+  set IDs and expressions     = 0=(1-y)*y*sin(2*pi*(x-t)) 
   set Known component names   = u
-  set Used constants          = 
+  set Used constants          = A=10.
 end
 subsection Domain
   set Grid to generate           = rectangle
@@ -22,9 +22,32 @@ subsection Domain
   set Optional vector of dim int = 1,1
   set Output grid file name      = 
 end
+subsection Error Tables
+  set Compute error            = true
+  set Error file format        = tex
+  set Output error tables      = true
+  set Solution names           = u
+  set Solution names for latex = u
+  set Table names              = error0, error2
+  set Write error files        = false
+  subsection Table 0
+    set Add convergence rates          = true
+    set Extra terms                    = cells,dofs
+    set Latex table caption            = error
+    set List of error norms to compute = L2,H1
+    set Rate key                       = 
+  end
+  subsection Table 1
+    set Add convergence rates          = true
+    set Extra terms                    = cells,dofs
+    set Latex table caption            = error
+    set List of error norms to compute = L2,H1
+    set Rate key                       = 
+  end
+end
 subsection Exact solution
   set Function constants  = 
-  set Function expression = 0
+  set Function expression = (1-y)*y*sin(2*pi*(x-t))
   set Variable names      = x,y,t
 end
 subsection Finite Element
@@ -34,21 +57,22 @@ subsection Finite Element
   set Preconditioner block coupling  = 
 end
 subsection Forcing term
-  set Function constants  = A=10.
-  set Function expression = A*sin(2*pi*t)
+  set Function constants  = D=0.5
+  set Function expression = 2*pi*(y-1)*y*cos(-2*pi*(t-x))-2*(2*pi^2*(y-1)*y*sin(-2*pi*(t-x))-sin(-2*pi*(t-x)))*D 
   set Variable names      = x,y,t
 end
 subsection Heat<2>
   set Adaptive refinement            = true
-  set Bottom fraction                = 0.1
-  set Initial global refinement      = 1
-  set Maximum number of dofs         = 40
+  set Bottom fraction                = 0.2
+  set Diffusivity                    = 0.5
+  set Initial global refinement      = 2
+  set Maximum number of cells        = -100
   set Maximum number of time steps   = 10000
   set Number of cycles               = 1
   set Refine mesh during transient   = true
-  set Threshold for restart solver   = 1e-1
+  set Threshold for restart solver   = 1e-2
   set Timer output file              = timer.txt
-  set Top fraction                   = 0.3
+  set Top fraction                   = 0.2
   set Use direct solver if available = true
 end
 subsection IDA Solver Parameters
@@ -57,14 +81,14 @@ subsection IDA Solver Parameters
   set Ignore algebraic terms for error computations = false
   set Initial condition Newton max iterations       = 5
   set Initial condition Newton parameter            = 0.33
-  set Initial condition type                        = use_y_diff
+  set Initial condition type                        = use_y_dot
   set Initial step size                             = 1e-4
   set Initial time                                  = 0
   set Maximum number of nonlinear iterations        = 10
   set Maximum order of BDF                          = 5
   set Min step size                                 = 5e-5
   set Relative error tolerance                      = 1e-3
-  set Seconds between each output                   = 1e-1
+  set Seconds between each output                   = 1e-2
   set Use local tolerances                          = false
 end
 subsection Initial solution
