@@ -227,6 +227,7 @@ void Heat<dim>::assemble_jacobian_matrix(const double t,
   computing_timer.enter_section ("   Assemble jacobian matrix");
   jacobian_matrix = 0;
   dirichlet_bcs.set_time(t);
+  exact_solution.set_time(t);
   constraints.clear();
   DoFTools::make_hanging_node_constraints (*dof_handler,
                                            constraints);
@@ -315,6 +316,7 @@ int Heat<dim>::residual (const double t,
   computing_timer.enter_section ("Residual");
   dirichlet_bcs.set_time(t);
   forcing_term.set_time(t);
+  exact_solution.set_time(t);
   constraints.clear();
   DoFTools::make_hanging_node_constraints (*dof_handler,
                                            constraints);

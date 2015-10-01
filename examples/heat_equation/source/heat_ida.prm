@@ -65,7 +65,7 @@ subsection Heat<2>
   set Adaptive refinement            = true
   set Bottom fraction                = 0.2
   set Diffusivity                    = 0.5
-  set Initial global refinement      = 3
+  set Initial global refinement      = 2
   set Maximum number of cells        = -100
   set Maximum number of time steps   = 10000
   set Number of cycles               = 1

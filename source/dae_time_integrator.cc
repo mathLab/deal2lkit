@@ -310,7 +310,7 @@ unsigned int DAETimeIntegrator<VEC>::start_ode(VEC &solution,
       bool reset = solver.solver_should_restart(t, step_number, h, solution, solution_dot);
 
 
-      if ( reset == true )
+      while ( reset == true )
         {
           double frac = 0;
           int k = 0;
@@ -318,6 +318,7 @@ unsigned int DAETimeIntegrator<VEC>::start_ode(VEC &solution,
           frac = std::pow((double)k,2.);
           reset_ode(t, solution, solution_dot,
                     h/frac, max_steps);
+          reset = solver.solver_should_restart(t, step_number, h, solution, solution_dot);
         }
 
       solver.output_step(t, solution, solution_dot,  step_number, h);
