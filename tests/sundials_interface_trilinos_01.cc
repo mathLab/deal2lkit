@@ -18,6 +18,7 @@
 
 #include <mpi.h>
 
+#include <deal2lkit/utilities.h>
 #include <deal2lkit/sundials_interface.h>
 #include <deal2lkit/dae_time_integrator.h>
 #include <deal2lkit/parameter_acceptor.h>
@@ -98,7 +99,7 @@ public:
     dy += ydot;
 
     dp = p;
-    dp.add(-1);
+    vector_shift(dp,-1.);
     dp.scale(p);
     return 0;
   }
@@ -135,7 +136,7 @@ public:
     static bool initialized = false;
     if (initialized == false)
       {
-        diff->add(1.0);
+        vector_shift(*diff, 1.0);
         initialized = true;
       }
     return *diff;
@@ -191,7 +192,7 @@ int main(int argc, char **argv)
   ParameterAcceptor::initialize(SOURCE_DIR "/parameters/sundials_interface_trilinos_01.prm", "ode.prm");
 
   shared_ptr<VEC> sol = solver.create_new_vector();
-  sol->add(1);
+  vector_shift(*sol,1.);
 
   shared_ptr<VEC> sol_dot = solver.create_new_vector();
 

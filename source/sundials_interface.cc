@@ -36,7 +36,7 @@ VEC &SundialsInterface<VEC>::differential_components() const
   static bool init = true;
   if (init == true)
     {
-      tmp->add(1.0);
+      vector_shift(*tmp, 1.0);
       init = false;
     }
   return (*tmp);
@@ -49,7 +49,7 @@ VEC &SundialsInterface<VEC>::get_local_tolerances() const
   static bool init = true;
   if (init == true)
     {
-      tmp->add(1.0);
+      vector_shift(*tmp, 1.0);
       init = false;
     }
   return *tmp;
