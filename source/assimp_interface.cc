@@ -66,7 +66,7 @@ namespace AssimpInterface
         return false;
       }
 
-    AssertThrow((mesh_index == -1) || (mesh_index < scene->mNumMeshes),
+    AssertThrow((mesh_index == -1) || (mesh_index < (int) scene->mNumMeshes),
                 ExcMessage("Too few meshes in the file."));
 
     cout << "The given file contains "
@@ -77,7 +77,7 @@ namespace AssimpInterface
       cout << "Trying to import mesh number " << mesh_index << endl;
 
     int start_mesh = (mesh_index == -1 ? 0 : mesh_index);
-    int end_mesh = (mesh_index == -1 ? scene->mNumMeshes : mesh_index+1);
+    int end_mesh = (mesh_index == -1 ? (int) scene->mNumMeshes : mesh_index+1);
 
 
 
