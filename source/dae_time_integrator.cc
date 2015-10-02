@@ -321,11 +321,12 @@ unsigned int DAETimeIntegrator<VEC>::start_ode(VEC &solution,
           reset = solver.solver_should_restart(t, step_number, h, solution, solution_dot);
         }
 
+      step_number++;
+
       solver.output_step(t, solution, solution_dot,  step_number, h);
 
 
 
-      step_number++;
     }
 
   std::cout << std::endl;
