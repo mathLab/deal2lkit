@@ -1,5 +1,6 @@
 sudo: false
 cache:
+  apt: true
   directories:
   - programs
 notifications:
@@ -38,6 +39,9 @@ script:
 - cmake -GNinja -DCMAKE_INSTALL_PREFIX=/home/travis/deal2lkit-inst -DD2K_ENABLE_TESTING=ON -DCMAKE_BUILD_TYPE=DebugRelease ..
 - ninja -j4 install
 - tar cvfz /home/travis/deal2lkit-CI-build.tgz /home/travis/deal2lkit-inst
+- cmake -DCMAKE_BUILD_TYPE=Debug .
+- ctest -j4 -V
+- cmake -DCMAKE_BUILD_TYPE=Release .
 - ctest -j4 -V
   #- ../scripts/build_documentation.sh
 - cd ..; ./scripts/check_indentation.sh
