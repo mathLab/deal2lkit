@@ -34,7 +34,18 @@ public:
    * parameters of this class will be filled with values from the
    * argument ParameterHandler.
    */
-  ParsedGridGenerator (std::string section_name="");
+  ParsedGridGenerator (const std::string section_name="",
+                       const std::string grid_type="rectangle",
+                       const std::string input_grid_file="",
+                       const std::string opt_point_1="",
+                       const std::string opt_point_2="",
+                       const std::string opt_bool="false",
+                       const std::string opt_double_1="1.0",
+                       const std::string opt_double_2="0.5",
+                       const std::string opt_int="1",
+                       const std::string opt_vec_of_int="",
+                       const std::string mesh_smoothing="none",
+                       const std::string output_grid_file="");
 
   /**
    * Declare possible parameters of this class.
@@ -69,10 +80,10 @@ public:
 
   std::string create_default_value(const Point<spacedim> &input);
 
-
   void write(const Triangulation<dim, spacedim> &tria) const;
 
 private:
+
   typename Triangulation<dim,spacedim>::MeshSmoothing
   get_smoothing();
   /**
@@ -89,6 +100,7 @@ private:
   /**
    * The optional argument for the grid generators. We choose two doubles and two points.
    */
+
   double double_option_one;
 
   double double_option_two;
@@ -109,6 +121,15 @@ private:
   std::string input_grid_file_name;
 
   std::string output_grid_file_name;
+
+  // strings for prm
+  std::string str_point_1;
+  std::string str_point_2;
+  std::string str_bool;
+  std::string str_double_1;
+  std::string str_double_2;
+  std::string str_un_int;
+  std::string str_vec_int;
 };
 
 #endif

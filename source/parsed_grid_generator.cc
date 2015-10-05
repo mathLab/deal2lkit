@@ -20,10 +20,33 @@ std::string extension(const std::string &filename)
     }
 }
 
+
 template <int dim, int spacedim>
-ParsedGridGenerator<dim, spacedim>::ParsedGridGenerator(std::string name) :
-  ParameterAcceptor(name)
-  //un_int_vec_option_one(dim)
+ParsedGridGenerator<dim, spacedim>::ParsedGridGenerator(const std::string _section_name,
+                                                        const std::string _grid_type,
+                                                        const std::string _input_grid_file,
+                                                        const std::string _point_1,
+                                                        const std::string _point_2,
+                                                        const std::string _bool,
+                                                        const std::string _double_1,
+                                                        const std::string _double_2,
+                                                        const std::string _int,
+                                                        const std::string _vec_of_int,
+                                                        const std::string _mesh_smoothing,
+                                                        const std::string _output_grid_file)
+  :
+  ParameterAcceptor(_section_name),
+  mesh_smoothing(_mesh_smoothing),
+  grid_name(_grid_type),
+  input_grid_file_name(_input_grid_file),
+  output_grid_file_name(_output_grid_file),
+  str_point_1(_point_1),
+  str_point_2(_point_2),
+  str_un_int(_int),
+  str_double_1(_double_1),
+  str_double_2(_double_2),
+  str_bool(_bool),
+  str_vec_int(_vec_of_int)
 {}
 
 template <int dim, int spacedim>
@@ -77,7 +100,7 @@ void ParsedGridGenerator<dim, spacedim>::declare_parameters(ParameterHandler &pr
   def_double = create_default_value(dummy_vec_double);
 
   add_parameter(prm, &grid_name,
-                "Grid to generate", "rectangle",
+                "Grid to generate", grid_name,
                 Patterns::Selection("file|rectangle"), //|unit_hyperball|unit_hypershell|subhyperrectangle"),
                 "The grid to generate. You can choose among:\n"
                 "- file: read grid from a file using:\n"
@@ -89,7 +112,7 @@ void ParsedGridGenerator<dim, spacedim>::declare_parameters(ParameterHandler &pr
                 "	- Optional bool 1	    : colorize grid\n");
 
   add_parameter(prm, &mesh_smoothing,
-                "Mesh smoothing alogrithm", "none",
+                "Mesh smoothing alogrithm", mesh_smoothing,
                 Patterns::MultipleSelection("none|"
                                             "limit_level_difference_at_vertices|"
                                             "eliminate_unrefined_islands|"
@@ -104,59 +127,59 @@ void ParsedGridGenerator<dim, spacedim>::declare_parameters(ParameterHandler &pr
                                             "maximum_smoothing"));
 
   add_parameter(prm, &input_grid_file_name,
-                "Input grid file name", "",
+                "Input grid file name", input_grid_file_name,
                 Patterns::FileName(),
                 "Name of the input grid. All supported deal.II formats. "
                 "The extestion will be used to decide what "
                 "grid format to use.");
 
   add_parameter(prm, &double_option_one,
-                "Optional double 1", "1.",
+                "Optional double 1", str_double_1,
                 Patterns::Double(),
                 "First additional double to be used in the generation of the grid. "
                 "The use of it will depend on the specific grid.");
 
   add_parameter(prm, &double_option_two,
-                "Optional double 2", "0.5",
+                "Optional double 2", str_double_2,
                 Patterns::Double(),
                 "Second additional double to be used in the generation of the grid. "
                 "The use of it will depend on the specific grid.");
 
 
   add_parameter(prm, &point_option_one,
-                "Optional Point<spacedim> 1", def_point,
+                "Optional Point<spacedim> 1", (str_point_1==""?def_point:str_point_1),
                 Patterns::List(Patterns::Double(), spacedim, spacedim),
                 "First additional Point<spacedim> to be used in the generation of the grid. "
                 "The use of it will depend on the specific grid.");
 
   add_parameter(prm, &point_option_two,
-                "Optional Point<spacedim> 2", def_point_2,
+                "Optional Point<spacedim> 2", (str_point_2==""?def_point_2:str_point_2),
                 Patterns::List(Patterns::Double(), spacedim, spacedim),
                 "Second additional Point<spacedim> to be used in the generation of the grid. "
                 "The use of it will depend on the specific grid.");
 
 
   add_parameter(prm, &un_int_option_one,
-                "Optional int 1","1",
+                "Optional int 1",str_un_int,
                 Patterns::Integer(),
                 "Unsigned int to be used in the generation of the grid. "
                 "The use of it will depend on the specific grid.");
 
   add_parameter(prm, &un_int_vec_option_one,
-                "Optional vector of dim int", def_int,
+                "Optional vector of dim int", (str_vec_int==""?def_int:str_vec_int),
                 Patterns::List(Patterns::Integer(1), dim, dim),
                 "Vector of positive unsigned int to be used in the generation of the grid. "
                 "The use of it will depend on the specific grid.");
 
   add_parameter(prm, &bool_option_one,
-                "Optional bool 1","false",
+                "Optional bool 1",str_bool,
                 Patterns::Bool(),
                 "Bool be used in the generation of the grid. "
                 "The use of it will depend on the specific grid.");
 
 
   add_parameter(prm, &output_grid_file_name,
-                "Output grid file name", "",
+                "Output grid file name", output_grid_file_name,
                 Patterns::FileName(),
                 "Name of the output grid. All supported deal.II formats. "
                 "The extestion will be used to decide what "
