@@ -18,7 +18,7 @@ using namespace dealii;
 #ifdef DEAL_II_WITH_CXX11
 
 /**
- * A wrapper for refinement strategies. 
+ * A wrapper for refinement strategies.
  */
 class ParsedGridRefinement : public ParameterAcceptor
 {
@@ -27,18 +27,18 @@ public:
    * Constructor.
    */
   ParsedGridRefinement(const std::string &name="",
-		       const std::string &strategy="fraction",
-		       const double &top_parameter=.3,
-		       const double &bottom_parameter=.1,
-		       const unsigned int &max_cells=std::numeric_limits< unsigned int >::max(),
-		       const unsigned int &order=2);
+                       const std::string &strategy="fraction",
+                       const double &top_parameter=.3,
+                       const double &bottom_parameter=.1,
+                       const unsigned int &max_cells=std::numeric_limits< unsigned int >::max(),
+                       const unsigned int &order=2);
 
   /**
    * Declare local parameters.
    */
   virtual void declare_parameters(ParameterHandler &prm);
 
-  
+
   /**
    * Mark cells a the triangulation for refinement or coarsening,
    * according to the given strategy applied to the supplied vector
@@ -50,9 +50,9 @@ public:
    */
   template<int dim, class Vector , int spacedim>
   void mark_cells(const Vector &criteria,
-		  Triangulation< dim, spacedim > &tria) const;
+                  Triangulation< dim, spacedim > &tria) const;
 
-  
+
   /**
    * Mark cells of a distribtued triangulation for refinement or
    * coarsening, according to the given strategy applied to the
@@ -66,7 +66,7 @@ public:
    */
   template<int dim, class Vector , int spacedim>
   void mark_cells(const Vector &criteria,
-		  parallel::distributed::Triangulation< dim, spacedim > &tria) const;
+                  parallel::distributed::Triangulation< dim, spacedim > &tria) const;
 
 private:
   /**
@@ -83,16 +83,17 @@ private:
 
 template<int dim, class Vector , int spacedim>
 void ParsedGridRefinement::mark_cells(const Vector &criteria,
-				      parallel::distributed::Triangulation< dim, spacedim > &tria) const {
-  if(strategy == "number")
+                                      parallel::distributed::Triangulation< dim, spacedim > &tria) const
+{
+  if (strategy == "number")
     GridRefinement::refine_and_coarsen_fixed_number (tria,
-						     criteria,
-						     top_parameter, bottom_parameter,
-						     max_cells);
-  else if(strategy == "fraction")
+                                                     criteria,
+                                                     top_parameter, bottom_parameter,
+                                                     max_cells);
+  else if (strategy == "fraction")
     GridRefinement::refine_and_coarsen_fixed_fraction (tria,
-						       criteria,
-						       top_parameter, bottom_parameter);
+                                                       criteria,
+                                                       top_parameter, bottom_parameter);
   else
     Assert(false, ExcInternalError());
 
@@ -101,18 +102,19 @@ void ParsedGridRefinement::mark_cells(const Vector &criteria,
 
 template<int dim, class Vector , int spacedim>
 void ParsedGridRefinement::mark_cells(const Vector &criteria,
-				      Triangulation< dim, spacedim > &tria) const {
-  
-  if(strategy == "number")
+                                      Triangulation< dim, spacedim > &tria) const
+{
+
+  if (strategy == "number")
     GridRefinement::refine_and_coarsen_fixed_number (tria,
-						     criteria,
-						     top_parameter, bottom_parameter,
-						     max_cells);
-  else if(strategy == "fraction")
+                                                     criteria,
+                                                     top_parameter, bottom_parameter,
+                                                     max_cells);
+  else if (strategy == "fraction")
     GridRefinement::refine_and_coarsen_fixed_fraction (tria,
-						       criteria,
-						       top_parameter, bottom_parameter,
-						       max_cells);
+                                                       criteria,
+                                                       top_parameter, bottom_parameter,
+                                                       max_cells);
   // This one does not seem to work properly
   // else if(strategy == "optimize")
   //   GridRefinement::refine_and_coarsen_optimize (tria, order);

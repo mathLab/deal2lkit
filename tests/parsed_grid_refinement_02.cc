@@ -25,28 +25,28 @@ void test()
 {
   ParsedGridGenerator<dim, spacedim> pgg;
   ParsedGridRefinement pgr("", "number");
-  
+
   ParameterAcceptor::initialize();
-  
+
   Triangulation<dim, spacedim> *tria = pgg.serial();
-  
+
   tria->refine_global(3);
 
   Vector<float> criteria(tria->n_active_cells());
-  
-  for(auto cell : tria->active_cell_iterators())
+
+  for (auto cell : tria->active_cell_iterators())
     criteria[cell->index()] = cell->center().norm();
 
   pgr.mark_cells(criteria, *tria);
 
   tria->execute_coarsening_and_refinement();
-  
+
   GridOut go;
   go.write_msh(*tria, deallog.get_file_stream());
   std::ofstream ofile(("/tmp/mesh_"+Utilities::int_to_string(dim)
                        +Utilities::int_to_string(spacedim)+".msh").c_str());
   go.write_msh(*tria, ofile);
-  
+
   delete tria;
 }
 
