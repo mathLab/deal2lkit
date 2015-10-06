@@ -13,6 +13,7 @@ ParsedGridRefinement::ParsedGridRefinement(const std::string &name,
   strategy(strategy),
   top_parameter(top_parameter),
   bottom_parameter(bottom_parameter),
+  max_cells(max_cells),
   order(order)
 {}
 

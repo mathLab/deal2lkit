@@ -30,7 +30,7 @@ public:
                        const std::string &strategy="fraction",
                        const double &top_parameter=.3,
                        const double &bottom_parameter=.1,
-                       const unsigned int &max_cells=std::numeric_limits< unsigned int >::max(),
+                       const unsigned int &max_cells=0,
                        const unsigned int &order=2);
 
   /**
@@ -89,7 +89,8 @@ void ParsedGridRefinement::mark_cells(const Vector &criteria,
     GridRefinement::refine_and_coarsen_fixed_number (tria,
                                                      criteria,
                                                      top_parameter, bottom_parameter,
-                                                     max_cells);
+                                                     max_cells ? max_cells :
+                                                     std::numeric_limits< unsigned int >::max());
   else if (strategy == "fraction")
     GridRefinement::refine_and_coarsen_fixed_fraction (tria,
                                                        criteria,
@@ -104,17 +105,18 @@ template<int dim, class Vector , int spacedim>
 void ParsedGridRefinement::mark_cells(const Vector &criteria,
                                       Triangulation< dim, spacedim > &tria) const
 {
-
   if (strategy == "number")
     GridRefinement::refine_and_coarsen_fixed_number (tria,
                                                      criteria,
                                                      top_parameter, bottom_parameter,
-                                                     max_cells);
+                                                     max_cells ? max_cells :
+                                                     std::numeric_limits< unsigned int >::max());
   else if (strategy == "fraction")
     GridRefinement::refine_and_coarsen_fixed_fraction (tria,
                                                        criteria,
                                                        top_parameter, bottom_parameter,
-                                                       max_cells);
+                                                       max_cells ? max_cells :
+                                                       std::numeric_limits< unsigned int >::max());
   // This one does not seem to work properly
   // else if(strategy == "optimize")
   //   GridRefinement::refine_and_coarsen_optimize (tria, order);
