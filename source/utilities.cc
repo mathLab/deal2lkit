@@ -4,14 +4,8 @@
 #include <chrono>
 #include <thread>
 
-#ifdef DEAL_II_SAK_WITH_BOOST
-#include <boost/algorithm/string/classification.hpp>
-#include <boost/algorithm/string/split.hpp>
-#include "boost/filesystem.hpp"
-#else
 #include <stdlib.h>
 #include <sys/stat.h>
-#endif
 
 namespace
 {
@@ -77,30 +71,14 @@ void append_to_file(const std::string &in_file, const std::string &out_file)
 
 bool file_exists(const std::string &file)
 {
-#ifdef DEAL_II_SAK_WITH_BOOST
-  return boost::filesystem::exists( file );
-#else
   struct stat st;
-  lstat(file.c_str(), &st);
-  if (S_ISREG(st.st_mode))
-    return true;
-  else
-    return false;
-#endif
+  return (stat (file.c_str(), &st) == 0);
 }
 
 bool dir_exists(const std::string &dir)
 {
-#ifdef DEAL_II_SAK_WITH_BOOST
-  return boost::filesystem::exists( dir );
-#else
   struct stat st;
-  lstat(dir.c_str(), &st);
-  if (S_ISDIR(st.st_mode))
-    return true;
-  else
-    return false;
-#endif
+  return (stat (dir.c_str(), &st) == 0);
 }
 
 unsigned int get_next_available_index_directory_name(const std::string &base, int n_digits, unsigned int start, unsigned int index_max)
@@ -124,69 +102,44 @@ std::string get_next_available_directory_name(const std::string &base, int n_dig
 
 bool create_directory(const std::string &name)
 {
-  std::string name_cleaned = name;
-  name_cleaned.erase(std::remove(name_cleaned.begin(),name_cleaned.end(),' '),name_cleaned.end());
-#ifdef DEAL_II_SAK_WITH_BOOST
-  boost::filesystem::create_directories("./" + name_cleaned + "/");
-#else
-  std::string cmd = "";
-  cmd = "mkdir -p " + name_cleaned + "/ ;";
+  Assert((std::find(name.begin(), name.end(), ' ') == name.end()),
+         ExcMessage("Invalid name of directory."));
+  std::string cmd = "mkdir -p " + name;
   std::system(cmd.c_str());
-#endif
-  return dir_exists(name_cleaned + "/");
+  return dir_exists(name);
 }
 
 bool copy_files(const std::string &files, const std::string &destination)
 {
-  if (files!="")
+  create_directory("./"+destination);
+  bool result = true;
+  std::vector<std::string> strs;
+  std::string new_file;
+  strs = dealii::Utilities::split_string_list(files, ' ');
+  for (size_t i = 0; i < strs.size(); i++)
     {
-      create_directory("./"+destination);
-      bool result = true;
-      std::vector<std::string> strs;
-      std::string new_file;
-      strs = dealii::Utilities::split_string_list(files, ' ');
-      for (size_t i = 0; i < strs.size(); i++)
-        {
-          if (file_exists(strs[i]))
-            {
-              new_file = destination+"/"+strs[i];
-#ifdef DEAL_II_SAK_WITH_BOOST
-              boost::filesystem::copy_file(strs[i], new_file,
-                                           boost::filesystem::copy_option::overwrite_if_exists);
-#else
-              std::string cmd = "cp " + strs[i] + " " +new_file + " ;";
-              std::system( cmd.c_str() );
-#endif
-            }
-          result &= file_exists(new_file);
-        }
-      return result;
+      Assert(file_exists(strs[i]), ExcMessage("Invalid name of file"));
+      new_file = destination+"/"+strs[i];
+      std::string cmd = "cp " + strs[i] + " " + new_file;
+      std::system( cmd.c_str() );
+      result &= file_exists(new_file);
     }
-  else
-    {
-      return false;
-    }
+  return result;
 }
 
 bool copy_file(const std::string &file, const std::string &new_file)
 {
-#ifdef DEAL_II_SAK_WITH_BOOST
-  boost::filesystem::copy_file(file, new_file,
-                               boost::filesystem::copy_option::overwrite_if_exists);
-#else
-  std::string cmd = "cp " + file + " " + new_file + " ;" ;
+  Assert(file_exists(file),ExcMessage("No such file or directory"));
+  std::string cmd = "cp " + file + " " + new_file ;
   std::system( cmd.c_str() );
-#endif
   return file_exists(new_file);
 }
 
 bool rename_file(const std::string &file, const std::string &new_file)
 {
-#ifdef DEAL_II_SAK_WITH_BOOST
-  boost::filesystem::rename(file, new_file);
-#else
-  std::string cmd = "mv " + file + " " + new_file +" ;";
+  Assert(file_exists(file),ExcMessage("No such file or directory"));
+  std::string cmd = "mv " + file + " " + new_file;
   std::system( cmd.c_str() );
-#endif
   return file_exists(new_file);
 }
+
