@@ -1,3 +1,6 @@
+env:
+  - BUILD_TYPE=Release
+  - BUILD_TYPE=Debug
 sudo: false
 cache:
   apt: true
@@ -32,17 +35,14 @@ install:
 - export PATH=$PWD/programs/astyle/build/gcc/bin:$PATH
 - export PATH=$PRG/numdiff/bin:$PATH
 - ./scripts/set_cache.sh
-script:
 - mkdir build
 - cd build
 - echo $PATH
-- cmake -GNinja -DCMAKE_INSTALL_PREFIX=/home/travis/deal2lkit-inst -DD2K_ENABLE_TESTING=ON -DCMAKE_BUILD_TYPE=DebugRelease ..
+- cmake -GNinja -DCMAKE_INSTALL_PREFIX=/home/travis/deal2lkit-inst -DD2K_ENABLE_TESTING=ON -DCMAKE_BUILD_TYPE=$BUILD_TYPE ..
 - ninja -j4 install
-- tar cvfz /home/travis/deal2lkit-CI-build.tgz /home/travis/deal2lkit-inst
-- cmake -DCMAKE_BUILD_TYPE=Debug .
-- ctest -j4 -V
-- cmake -DCMAKE_BUILD_TYPE=Release .
-- ctest -j4 -V
+#- tar cvfz /home/travis/deal2lkit-CI-build.tgz /home/travis/deal2lkit-inst
+script:
+- ctest -j4 -V -R "${BUILD_TYPE,,}"
   #- ../scripts/build_documentation.sh
 - cd ..; ./scripts/check_indentation.sh
 deploy:
