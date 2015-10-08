@@ -67,12 +67,10 @@
 ########################################################################
 
 
-If(D2K_HAVE_DOC_DIRECTORY)
-  OPTION(D2K_COMPONENT_DOCUMENTATION
-    "Enable configuration, build and installation of the documentation. This adds a COMPONENT \"documentation\" to the build system."
-    OFF
-    )
-ENDIF()
+OPTION(D2K_COMPONENT_DOCUMENTATION
+  "Enable configuration, build and installation of the documentation. This adds a COMPONENT \"documentation\" to the build system."
+  ON
+  )
 
 OPTION(D2K_COMPONENT_EXAMPLES
   "Enable configuration and installation of the example steps. This adds a COMPONENT \"examples\" to the build system."

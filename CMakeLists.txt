@@ -193,7 +193,7 @@ MESSAGE(STATUS "Setting up library - Done")
 
 
 ADD_SUBDIRECTORY(cmake/config) # has to be included after source
-#ADD_SUBDIRECTORY(examples)
+ADD_SUBDIRECTORY(examples)
 
 #Do not automatically include the testsuite subproject on Windows.
 IF(D2K_HAVE_TESTS_DIRECTORY AND NOT DEAL_II_MSVC AND D2K_ENABLE_TESTING)
@@ -201,17 +201,20 @@ IF(D2K_HAVE_TESTS_DIRECTORY AND NOT DEAL_II_MSVC AND D2K_ENABLE_TESTING)
   ENABLE_TESTING()
 ENDIF()
 
-
-# Doxygen
-find_package(Doxygen)
-if(DOXYGEN_FOUND)
-  CONFIGURE_FILE(${CMAKE_CURRENT_SOURCE_DIR}/Doxyfile.in ${CMAKE_CURRENT_BINARY_DIR}/Doxyfile @ONLY)
-  ADD_CUSTOM_TARGET(doc
-    ${DOXYGEN_EXECUTABLE} ${CMAKE_CURRENT_BINARY_DIR}/Doxyfile
-    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
-    COMMENT "Generating API documentation with Doxygen" VERBATIM
-    )
-endif(DOXYGEN_FOUND)
+IF(D2K_COMPONENT_DOCUMENTATION)
+  MESSAGE(STATUS "Setting up documentation")
+  # Doxygen
+  FIND_PACKAGE(Doxygen)
+  IF(DOXYGEN_FOUND)
+    CONFIGURE_FILE(${CMAKE_CURRENT_SOURCE_DIR}/Doxyfile.in ${CMAKE_CURRENT_BINARY_DIR}/Doxyfile @ONLY)
+    ADD_CUSTOM_TARGET(doc
+      ${DOXYGEN_EXECUTABLE} ${CMAKE_CURRENT_BINARY_DIR}/Doxyfile
+      WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
+      COMMENT "Generating API documentation with Doxygen" VERBATIM
+      )
+  MESSAGE(STATUS "Setting up documentation - Done")
+  ENDIF()
+ENDIF()
 
 #
 # And finally, print the configuration:
