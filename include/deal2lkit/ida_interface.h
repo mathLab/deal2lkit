@@ -13,8 +13,8 @@
 //
 //-----------------------------------------------------------
 
-#ifndef __dae_time_integrator_h
-#define __dae_time_integrator_h
+#ifndef _d2k_ida_interface_h
+#define _d2k_ida_interface_h
 
 #include <deal2lkit/config.h>
 #include <deal.II/base/logstream.h>
@@ -37,17 +37,17 @@
 #include <deal2lkit/parameter_acceptor.h>
 
 template<typename VEC=Vector<double> >
-class DAETimeIntegrator : public ParameterAcceptor
+class IDAInterface : public ParameterAcceptor
 {
 public:
-  /** Constructor for the DAETimeIntegrator class. The Solver class is
+  /** Constructor for the IDAInterface class. The Solver class is
    * required to have a Solver.solve(VEC &dst, const
    * VEC &src) method that will be called by the time
    * integrator to find out about the solution to a given src. */
-  DAETimeIntegrator(SundialsInterface<VEC> &solver);
+  IDAInterface(SundialsInterface<VEC> &solver);
 
   /** House cleaning. */
-  ~DAETimeIntegrator();
+  ~IDAInterface();
 
   /** Declare parameters for this class to function properly. */
   virtual void declare_parameters(ParameterHandler &prm);
