@@ -6,3 +6,4 @@ DEAL::create --> new_folder000 - 1
 DEAL::copy   --> 1
 DEAL::exist  --> 1
 DEAL::exist  --> 1
+DEAL::exist  --> 0
