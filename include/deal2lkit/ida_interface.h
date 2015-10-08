@@ -67,7 +67,8 @@ public:
   you need to refine your
   mesh between stesp. */
   void reset_ode(const double t, VEC &y, VEC &yp,
-                 double h, unsigned int max_steps);
+                 double h, unsigned int max_steps,
+                 bool first_step);
 
 
   /** Final time. */
@@ -106,6 +107,9 @@ private:
 
   /** Type of initial conditions. */
   std::string ic_type;
+
+  /** Type of conditions to be used after a solver restart. */
+  std::string reset_type;
 
   /** Alpha to use in Newton method for IC calculation. */
   double ic_alpha;

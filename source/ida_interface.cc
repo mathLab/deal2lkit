@@ -277,6 +277,18 @@ void IDAInterface<VEC>::declare_parameters(ParameterHandler &prm)
                 "    algebraic components in the function get_differential_components.\n"
                 " use_y_dot: compute all components of y, given y_dot.");
 
+  add_parameter(prm, &reset_type,
+                "Initial condition type after restart", "use_y_dot",
+                Patterns::Selection("none|use_y_diff|use_y_dot"),
+                "This is one of the following thress options for the "
+                "initial condition calculation. \n"
+                " none: do not try to make initial conditions consistent. \n"
+                " use_y_diff: compute the algebraic components of y and differential\n"
+                "    components of y_dot, given the differential components of y. \n"
+                "    This option requires that the user specifies differential and \n"
+                "    algebraic components in the function get_differential_components.\n"
+                " use_y_dot: compute all components of y, given y_dot.");
+
   add_parameter(prm, &ic_alpha,
                 "Initial condition Newton parameter", "0.33", Patterns::Double());
 
@@ -314,9 +326,9 @@ unsigned int IDAInterface<VEC>::start_ode(VEC &solution,
   // solution. Here we take only a
   // view of it.
 
+#ifdef DEAL_II_WITH_MPI
   IndexSet is = solution.locally_owned_elements();
 
-#ifdef DEAL_II_WITH_MPI
   yy        = N_VNew_Parallel(solver.get_comm(), is.n_elements(), solver.n_dofs());
   yp        = N_VNew_Parallel(solver.get_comm(), is.n_elements(), solver.n_dofs());
   diff_id   = N_VNew_Parallel(solver.get_comm(), is.n_elements(), solver.n_dofs());
@@ -328,7 +340,7 @@ unsigned int IDAInterface<VEC>::start_ode(VEC &solution,
   abs_tolls = N_VNew_Serial(solver.n_dofs());
 #endif
 
-  reset_ode(initial_time, solution, solution_dot, initial_step_size, max_steps);
+  reset_ode(initial_time, solution, solution_dot, initial_step_size, max_steps, true);
 
   double next_time = 0;
 
@@ -364,7 +376,7 @@ unsigned int IDAInterface<VEC>::start_ode(VEC &solution,
           IDAGetLastOrder(ida_mem, &k);
           frac = std::pow((double)k,2.);
           reset_ode(t, solution, solution_dot,
-                    h/frac, max_steps);
+                    h/2.0, max_steps, false);
           reset = solver.solver_should_restart(t, step_number, h, solution, solution_dot);
         }
 
@@ -398,7 +410,8 @@ void IDAInterface<VEC>::reset_ode(double current_time,
                                   VEC &solution,
                                   VEC &solution_dot,
                                   double current_time_step,
-                                  unsigned int max_steps)
+                                  unsigned int max_steps,
+                                  bool first_step)
 {
   if (ida_mem)
     IDAFree(&ida_mem);
@@ -430,9 +443,9 @@ void IDAInterface<VEC>::reset_ode(double current_time,
          ExcDimensionMismatch(solution_dot.size(), solver.n_dofs()));
 
 
+#ifdef DEAL_II_WITH_MPI
   IndexSet is = solution.locally_owned_elements();
 
-#ifdef DEAL_II_WITH_MPI
   yy        = N_VNew_Parallel(solver.get_comm(), is.n_elements(), solver.n_dofs());
   yp        = N_VNew_Parallel(solver.get_comm(), is.n_elements(), solver.n_dofs());
   diff_id   = N_VNew_Parallel(solver.get_comm(), is.n_elements(), solver.n_dofs());
@@ -488,7 +501,13 @@ void IDAInterface<VEC>::reset_ode(double current_time,
 
   AssertThrow(status == 0, ExcMessage("Error initializing IDA."));
 
-  if (ic_type == "use_y_dot")
+  std::string type;
+  if (first_step)
+    type = ic_type;
+  else
+    type = reset_type;
+
+  if (type == "use_y_dot")
     {
       // (re)initialization of the vectors
       IDACalcIC(ida_mem, IDA_Y_INIT, current_time+current_time_step);
@@ -497,7 +516,7 @@ void IDAInterface<VEC>::reset_ode(double current_time,
       copy(solution, yy);
       copy(solution_dot, yp);
     }
-  else if (ic_type == "use_y_diff")
+  else if (type == "use_y_diff")
     {
       IDACalcIC(ida_mem, IDA_YA_YDP_INIT, current_time+current_time_step);
       IDAGetConsistentIC(ida_mem, yy, yp);

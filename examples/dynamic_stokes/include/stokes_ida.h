@@ -13,25 +13,28 @@
 //
 //-----------------------------------------------------------
 
-#ifndef _d2k_heat_ida_h
-#define _d2k_heat_ida_h
+#ifndef _stokes_ida_h
+#define _stokes_ida_h
 
 #include <deal2lkit/config.h>
 
 #ifdef D2K_WITH_SUNDIALS
 #include <deal.II/base/timer.h>
-#include <deal.II/base/index_set.h>
+//#include <deal.II/base/index_set.h>
 
 #include <deal.II/dofs/dof_handler.h>
 
 #include <deal.II/lac/constraint_matrix.h>
 #include <deal.II/lac/block_sparsity_pattern.h>
 #include <deal.II/lac/sparsity_tools.h>
-#include <deal.II/lac/trilinos_vector.h>
+#include <deal.II/lac/trilinos_block_vector.h>
 #include <deal.II/lac/trilinos_sparse_matrix.h>
+#include <deal.II/lac/trilinos_block_sparse_matrix.h>
 #include <deal.II/lac/trilinos_precondition.h>
 
 #include <deal.II/numerics/error_estimator.h>
+#include <deal.II/lac/linear_operator.h>
+#include <deal.II/lac/block_linear_operator.h>
 
 #include <deal2lkit/sundials_interface.h>
 #include <deal2lkit/ida_interface.h>
@@ -39,11 +42,12 @@
 #include <deal2lkit/parsed_grid_generator.h>
 #include <deal2lkit/parsed_grid_refinement.h>
 #include <deal2lkit/parsed_finite_element.h>
-#include <deal2lkit/error_handler.h>
 #include <deal2lkit/parsed_function.h>
 #include <deal2lkit/parsed_data_out.h>
 #include <deal2lkit/parsed_dirichlet_bcs.h>
 #include <deal2lkit/parsed_solver.h>
+#include <deal.II/lac/solver_cg.h>
+#include <deal.II/lac/trilinos_solver.h>
 
 #include <fstream>
 #include <mpi.h>
@@ -54,13 +58,13 @@
 using namespace dealii;
 using namespace deal2lkit;
 
-typedef TrilinosWrappers::MPI::Vector VEC;
+typedef TrilinosWrappers::MPI::BlockVector VEC;
 template<int dim>
-class Heat : public SundialsInterface<VEC>, public ParameterAcceptor
+class Stokes : public SundialsInterface<VEC>, public ParameterAcceptor
 {
 public:
 
-  Heat (const MPI_Comm &comm);
+  Stokes (const MPI_Comm &comm);
 
   virtual void declare_parameters (ParameterHandler &prm);
 
@@ -144,6 +148,8 @@ private:
 
   void set_constrained_dofs_to_zero(VEC &v) const;
 
+  void update_constraints(const double &t);
+
   const MPI_Comm &comm;
 
   unsigned int initial_global_refinement;
@@ -162,11 +168,17 @@ private:
   shared_ptr<DoFHandler<dim,dim> >          dof_handler;
 
   ConstraintMatrix                          constraints;
+  ConstraintMatrix                          constraints_dot;
 
-  TrilinosWrappers::SparsityPattern       jacobian_matrix_sp;
-  TrilinosWrappers::SparseMatrix          jacobian_matrix;
+  TrilinosWrappers::BlockSparsityPattern       jacobian_matrix_sp;
+  TrilinosWrappers::BlockSparseMatrix          jacobian_matrix;
+
+  TrilinosWrappers::BlockSparsityPattern       jacobian_preconditioner_matrix_sp;
+  TrilinosWrappers::BlockSparseMatrix          jacobian_preconditioner_matrix;
 
   TrilinosWrappers::PreconditionAMG       preconditioner;
+  LinearOperator<VEC> jacobian_preconditioner_op;
+  LinearOperator<VEC> jacobian_op;
 
   VEC        solution;
   VEC        solution_dot;
@@ -177,33 +189,99 @@ private:
 
   mutable TimerOutput     computing_timer;
 
-  ErrorHandler<dim>       eh;
+
+//  ParsedSolver<VEC> parsed_solver;
   ParsedGridGenerator<dim,dim>   pgg;
   ParsedGridRefinement           pgr;
   ParsedFiniteElement<dim,dim> fe_builder;
 
-  ParsedFunction<dim, 1>        exact_solution;
-  ParsedFunction<dim, 1>        forcing_term;
+  ParsedFunction<dim, dim+1>        exact_solution;
+  ParsedFunction<dim, dim+1>        forcing_term;
 
-  ParsedFunction<dim, 1>        initial_solution;
-  ParsedFunction<dim, 1>        initial_solution_dot;
-  ParsedDirichletBCs<dim,dim,1> dirichlet_bcs;
+  ParsedFunction<dim, dim+1>        initial_solution;
+  ParsedFunction<dim, dim+1>        initial_solution_dot;
+  ParsedDirichletBCs<dim,dim,dim+1> dirichlet_bcs;
+  ParsedDirichletBCs<dim,dim,dim+1> dirichlet_dot;
 
-  ParsedDataOut<dim, dim>       data_out;
-
-  ParsedSolver<VEC>             Ainv;
+  ParsedDataOut<dim, dim>                  data_out;
 
   IDAInterface<VEC>  dae;
 
   IndexSet global_partitioning;
-  IndexSet partitioning;
-  IndexSet relevant_partitioning;
+  std::vector<IndexSet> partitioning;
+  std::vector<IndexSet> relevant_partitioning;
+  std::vector<types::global_dof_index> dofs_per_block;
 
   bool adaptive_refinement;
   bool use_space_adaptivity;
   double kelly_threshold;
-  double diffusivity;
+  double mu;
+
+  shared_ptr<TrilinosWrappers::PreconditionAMG>    Amg_preconditioner;
+  shared_ptr<TrilinosWrappers::PreconditionJacobi> Mp_preconditioner;
 };
+
+namespace LinearSolvers
+{
+  template <class PreconditionerA, class PreconditionerMp>
+  class BlockSchurPreconditioner : public Subscriptor
+  {
+  public:
+    BlockSchurPreconditioner (const TrilinosWrappers::BlockSparseMatrix  &S,
+                              const TrilinosWrappers::BlockSparseMatrix  &Spre,
+                              const PreconditionerMp                     &Mppreconditioner,
+                              const PreconditionerA                      &Apreconditioner,
+                              const bool                                  do_solve_A)
+      :
+      stokes_matrix     (&S),
+      stokes_preconditioner_matrix     (&Spre),
+      mp_preconditioner (Mppreconditioner),
+      a_preconditioner  (Apreconditioner),
+      do_solve_A        (do_solve_A)
+    {}
+
+    void vmult (TrilinosWrappers::MPI::BlockVector       &dst,
+                const TrilinosWrappers::MPI::BlockVector &src) const
+    {
+      TrilinosWrappers::MPI::Vector utmp(src.block(0));
+
+      {
+        SolverControl solver_control(5000, 1e-6 * src.block(1).l2_norm());
+
+        SolverCG<TrilinosWrappers::MPI::Vector> solver(solver_control);
+
+        solver.solve(stokes_preconditioner_matrix->block(1,1),
+                     dst.block(1), src.block(1),
+                     mp_preconditioner);
+
+        dst.block(1) *= -1.0;
+      }
+
+      {
+        stokes_matrix->block(0,1).vmult(utmp, dst.block(1));
+        utmp*=-1.0;
+        utmp.add(src.block(0));
+      }
+
+      if (do_solve_A == true)
+        {
+          SolverControl solver_control(5000, utmp.l2_norm()*1e-2);
+          TrilinosWrappers::SolverCG solver(solver_control);
+          solver.solve(stokes_matrix->block(0,0), dst.block(0), utmp,
+                       a_preconditioner);
+        }
+      else
+        a_preconditioner.vmult (dst.block(0), utmp);
+    }
+
+  private:
+    const SmartPointer<const TrilinosWrappers::BlockSparseMatrix> stokes_matrix;
+    const SmartPointer<const TrilinosWrappers::BlockSparseMatrix> stokes_preconditioner_matrix;
+    const PreconditionerMp &mp_preconditioner;
+    const PreconditionerA  &a_preconditioner;
+    const bool do_solve_A;
+  };
+}
 
 #endif
 
