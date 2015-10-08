@@ -92,11 +92,11 @@ OPTION(D2K_ENABLE_TESTING
 #
 # Setup CMAKE_BUILD_TYPE:
 #
-
 SET(CMAKE_BUILD_TYPE
-  "DebugRelease"
+  ${DEAL_II_BUILD_TYPE}
   CACHE STRING
   "Choose the type of build, options are: Debug, Release and DebugRelease."
+  FORCE
   )
 
 # This is cruel, I know. But it is better to only have a known number of
