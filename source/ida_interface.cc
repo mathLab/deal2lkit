@@ -14,7 +14,7 @@
 //-----------------------------------------------------------
 
 
-#include <deal2lkit/dae_time_integrator.h>
+#include <deal2lkit/ida_interface.h>
 #include <deal2lkit/sundials_interface.h>
 #ifdef D2K_WITH_SUNDIALS
 
@@ -182,7 +182,7 @@ int t_dae_solve(IDAMem IDA_mem,
 
 
 template <typename VEC>
-DAETimeIntegrator<VEC>::DAETimeIntegrator(SundialsInterface<VEC> &bubble) :
+IDAInterface<VEC>::IDAInterface(SundialsInterface<VEC> &bubble) :
   ParameterAcceptor("IDA Solver Parameters"),
   solver(bubble),
   is_initialized(false)
@@ -199,14 +199,14 @@ DAETimeIntegrator<VEC>::DAETimeIntegrator(SundialsInterface<VEC> &bubble) :
 }
 
 template <typename VEC>
-DAETimeIntegrator<VEC>::~DAETimeIntegrator()
+IDAInterface<VEC>::~IDAInterface()
 {
   if (ida_mem)
     IDAFree(&ida_mem);
 }
 
 template <typename VEC>
-void DAETimeIntegrator<VEC>::declare_parameters(ParameterHandler &prm)
+void IDAInterface<VEC>::declare_parameters(ParameterHandler &prm)
 {
   add_parameter(prm, &initial_step_size,
                 "Initial step size", "1e-4", Patterns::Double());
@@ -269,9 +269,9 @@ void DAETimeIntegrator<VEC>::declare_parameters(ParameterHandler &prm)
 
 
 template <typename VEC>
-unsigned int DAETimeIntegrator<VEC>::start_ode(VEC &solution,
-                                               VEC &solution_dot,
-                                               const unsigned int max_steps)
+unsigned int IDAInterface<VEC>::start_ode(VEC &solution,
+                                          VEC &solution_dot,
+                                          const unsigned int max_steps)
 {
 
 
@@ -355,11 +355,11 @@ unsigned int DAETimeIntegrator<VEC>::start_ode(VEC &solution,
 }
 
 template <typename VEC>
-void DAETimeIntegrator<VEC>::reset_ode(double current_time,
-                                       VEC &solution,
-                                       VEC &solution_dot,
-                                       double current_time_step,
-                                       unsigned int max_steps)
+void IDAInterface<VEC>::reset_ode(double current_time,
+                                  VEC &solution,
+                                  VEC &solution_dot,
+                                  double current_time_step,
+                                  unsigned int max_steps)
 {
   if (ida_mem)
     IDAFree(&ida_mem);
@@ -456,9 +456,9 @@ void DAETimeIntegrator<VEC>::reset_ode(double current_time,
 
 
 #ifdef DEAL_II_WITH_TRILINOS
-template class DAETimeIntegrator<TrilinosWrappers::MPI::Vector>;
-template class DAETimeIntegrator<TrilinosWrappers::MPI::BlockVector>;
+template class IDAInterface<TrilinosWrappers::MPI::Vector>;
+template class IDAInterface<TrilinosWrappers::MPI::BlockVector>;
 #endif
 
-template class DAETimeIntegrator<BlockVector<double> >;
+template class IDAInterface<BlockVector<double> >;
 #endif

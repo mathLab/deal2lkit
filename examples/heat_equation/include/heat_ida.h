@@ -34,7 +34,7 @@
 #include <deal.II/numerics/error_estimator.h>
 
 #include <deal2lkit/sundials_interface.h>
-#include <deal2lkit/dae_time_integrator.h>
+#include <deal2lkit/ida_interface.h>
 #include <deal2lkit/parameter_acceptor.h>
 #include <deal2lkit/parsed_grid_generator.h>
 #include <deal2lkit/parsed_finite_element.h>
@@ -191,7 +191,7 @@ private:
 
   ParsedDataOut<dim, dim>                  data_out;
 
-  DAETimeIntegrator<VEC>  dae;
+  IDAInterface<VEC>  dae;
 
   IndexSet global_partitioning;
   IndexSet partitioning;

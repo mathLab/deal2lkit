@@ -35,7 +35,7 @@
 
 #include <deal2lkit/utilities.h>
 #include <deal2lkit/sundials_interface.h>
-#include <deal2lkit/dae_time_integrator.h>
+#include <deal2lkit/ida_interface.h>
 #include <deal2lkit/parameter_acceptor.h>
 
 #include <fstream>
@@ -202,7 +202,7 @@ int main(int argc, char **argv)
   typedef TrilinosWrappers::MPI::BlockVector VEC;
 
   Solver<VEC> solver(comm);
-  DAETimeIntegrator<VEC> ode(solver);
+  IDAInterface<VEC> ode(solver);
 
   ParameterAcceptor::initialize(SOURCE_DIR "/parameters/sundials_interface_trilinos_01.prm", "ode.prm");
 
