@@ -39,7 +39,8 @@ IF(D2K_COMPONENT_EXAMPLES)
     # All CMakeLists.txt except the one in examples/
     #
     PATTERN "assimp_importer/CMakeLists.txt"
-    PATTERN "heat_equation/*/CMakeLists.txt"
+    PATTERN "heat_equation/CMakeLists.txt"
+    PATTERN "heat_equation/tests/CMakeLists.txt"
     #
     # Special files:
     #
