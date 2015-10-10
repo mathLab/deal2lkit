@@ -13,8 +13,8 @@
 //
 //-----------------------------------------------------------
 
-#ifndef _d2k_sak_data_h
-#define _d2k_sak_data_h
+#ifndef _d2k_any_data_h
+#define _d2k_any_data_h
 
 #include <deal2lkit/config.h>
 #include <deal.II/base/config.h>
@@ -46,7 +46,7 @@ D2K_NAMESPACE_OPEN
  *
  * A typical usage of this class is the following
  * @code
- * SAKData data;
+ * AnyData data;
  * const unsigned int n_q = 5;
  * std::vector<double> v_double(n_q);
  * ...
@@ -62,7 +62,7 @@ D2K_NAMESPACE_OPEN
  * @endcode
  */
 
-class SAKData : public Subscriptor
+class AnyData : public Subscriptor
 {
 public:
 
@@ -123,7 +123,7 @@ public:
   template <class STREAM>
   void print_info (STREAM &os);
 
-  /// An entry with this name does not exist in the SAKData object.
+  /// An entry with this name does not exist in the AnyData object.
   DeclException1(ExcNameNotFound, std::string,
                  << "No entry with the name " << arg1 << " exists.");
 
@@ -140,20 +140,20 @@ private:
 }; // end class
 
 template <typename type>
-void SAKData::add_copy (const type &entry, const std::string &name)
+void AnyData::add_copy (const type &entry, const std::string &name)
 {
   mydata[name] = entry;
 }
 
 template <typename type>
-void SAKData::add_ref (type &entry, const std::string &name)
+void AnyData::add_ref (type &entry, const std::string &name)
 {
   type *ptr = &entry;
   mydata[name] = ptr;
 }
 
 template <typename type>
-type &SAKData::get(const std::string &name)
+type &AnyData::get(const std::string &name)
 {
   Assert( mydata.find(name) != mydata.end(),
           ExcNameNotFound(name));
@@ -178,7 +178,7 @@ type &SAKData::get(const std::string &name)
 }
 
 template <typename type>
-const type &SAKData::get(const std::string &name) const
+const type &AnyData::get(const std::string &name) const
 {
   Assert( mydata.find(name) != mydata.end(),
           ExcNameNotFound(name));
@@ -207,14 +207,14 @@ const type &SAKData::get(const std::string &name) const
 }
 
 
-bool SAKData::have(const std::string &name) const
+bool AnyData::have(const std::string &name) const
 {
   return mydata.find(name) != mydata.end();
 }
 
 template <class STREAM>
 inline
-void SAKData::print_info(STREAM &os)
+void AnyData::print_info(STREAM &os)
 {
   for (std::map<std::string, boost::any>::iterator  it=mydata.begin(); it != mydata.end(); ++it)
     {

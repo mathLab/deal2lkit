@@ -13,9 +13,8 @@
 //
 //-----------------------------------------------------------
 
-
 #include "tests.h"
-#include <deal2lkit/sak_data.h>
+#include <deal2lkit/any_data.h>
 #include <deal.II/base/tensor.h>
 
 
@@ -27,7 +26,7 @@ int main ()
 {
   initlog();
 
-  SAKData data;
+  AnyData data;
 
 
   const unsigned int n_q = 5;
@@ -37,8 +36,6 @@ int main ()
 
   data.add_ref(v_int, "int_ref");
   data.add_copy(v_double, "double_copy");
-
-  SAKData newdata = data;
 
   deallog << "verify that add_ref actually stored the reference"
           << std::endl;
@@ -52,19 +49,9 @@ int main ()
       deallog << data.get<std::vector<double> > ("double_copy")[i];
     }
   deallog << std::endl;
-  deallog << "newdata::double_copy: ";
-  for (unsigned int i=0; i<n_q; ++i)
-    {
-      deallog << newdata.get<std::vector<double> > ("double_copy")[i];
-    }
-  deallog << std::endl;
   deallog << "int_ref: ";
   for (unsigned int i=0; i<n_q; ++i)
     deallog << data.get<std::vector<int> >("int_ref")[i] << " ";
-  deallog << std::endl;
-  deallog << "newdata::int_ref: ";
-  for (unsigned int i=0; i<n_q; ++i)
-    deallog << newdata.get<std::vector<int> >("int_ref")[i] << " ";
   deallog << std::endl;
   deallog << std::endl;
 
@@ -87,13 +74,4 @@ int main ()
     deallog << data.get<std::vector<int> >("int_ref")[i] << " ";
   deallog << std::endl;
 
-  deallog << "read newdata" << std::endl;
-  deallog << "double: ";
-  for (unsigned int i=0; i<n_q; ++i)
-    deallog << newdata.get<std::vector<double> >("double_copy")[i] << " ";
-  deallog << std::endl;
-  deallog << "int: ";
-  for (unsigned int i=0; i<n_q; ++i)
-    deallog << newdata.get<std::vector<int> >("int_ref")[i] << " ";
-  deallog << std::endl;
 }
