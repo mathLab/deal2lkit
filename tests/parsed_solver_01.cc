@@ -18,6 +18,9 @@
 
 #include <deal.II/lac/vector.h>
 
+
+using namespace deal2lkit;
+
 int main ()
 {
   initlog();

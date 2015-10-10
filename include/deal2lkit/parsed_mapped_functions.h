@@ -28,6 +28,9 @@
 
 using namespace dealii;
 
+
+D2K_NAMESPACE_OPEN
+
 /**
  * ParsedMappedFunctions object.
  * It allows you to set a mapped functions, i.e., parsed functions
@@ -201,4 +204,8 @@ protected:
 };
 
 
+
+D2K_NAMESPACE_CLOSE
+
 #endif
+

@@ -22,8 +22,10 @@
 
 using namespace dealii;
 
+D2K_NAMESPACE_OPEN
+
 /**
- * A SAK wrapper for dealii::Functions::ParsedFunction. The template
+ * A deal2lkit wrapper for dealii::Functions::ParsedFunction. The template
  * integegers specify the dimension of points this function accepts,
  * and the number of components.
  */
@@ -90,4 +92,9 @@ void ParsedFunction<dim, ncomponents>:: parse_parameters(ParameterHandler &prm)
 {
   Functions::ParsedFunction<dim>::parse_parameters(prm);
 }
+
+
+D2K_NAMESPACE_CLOSE
+
 #endif
+

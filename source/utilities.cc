@@ -22,6 +22,9 @@
 #include <stdlib.h>
 #include <sys/stat.h>
 
+
+D2K_NAMESPACE_OPEN
+
 namespace
 {
   struct handle
@@ -157,4 +160,7 @@ bool rename_file(const std::string &file, const std::string &new_file)
   std::system( cmd.c_str() );
   return file_exists(new_file);
 }
+
+
+D2K_NAMESPACE_CLOSE
 

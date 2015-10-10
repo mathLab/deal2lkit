@@ -39,6 +39,9 @@
 #include <deal2lkit/parsed_dirichlet_bcs.h>
 
 
+using namespace deal2lkit;
+
+
 template<int dim>
 void test (const Triangulation<dim> &tr,
            const FiniteElement<dim> &fe)

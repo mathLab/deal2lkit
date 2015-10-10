@@ -21,6 +21,9 @@
 
 #include <fstream>
 
+
+D2K_NAMESPACE_OPEN
+
 std::string extension(const std::string &filename)
 {
   std::string::size_type idx;
@@ -366,9 +369,12 @@ ParsedGridGenerator<dim, spacedim>::get_smoothing()
 }
 
 
+D2K_NAMESPACE_CLOSE
 
-template class ParsedGridGenerator<1,1>;
-template class ParsedGridGenerator<1,2>;
-template class ParsedGridGenerator<2,2>;
-template class ParsedGridGenerator<2,3>;
-template class ParsedGridGenerator<3,3>;
+
+
+template class deal2lkit::ParsedGridGenerator<1,1>;
+template class deal2lkit::ParsedGridGenerator<1,2>;
+template class deal2lkit::ParsedGridGenerator<2,2>;
+template class deal2lkit::ParsedGridGenerator<2,3>;
+template class deal2lkit::ParsedGridGenerator<3,3>;

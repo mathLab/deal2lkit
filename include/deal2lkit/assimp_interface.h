@@ -22,7 +22,9 @@
 
 using namespace dealii;
 
+
 #ifdef D2K_WITH_ASSIMP
+D2K_NAMESPACE_OPEN
 namespace AssimpInterface
 {
 
@@ -56,6 +58,7 @@ namespace AssimpInterface
                               double tol = 1e-12);
 
 }
+D2K_NAMESPACE_CLOSE
 #endif
 
 #endif

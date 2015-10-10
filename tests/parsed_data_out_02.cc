@@ -21,6 +21,9 @@
 #include <deal.II/base/utilities.h>
 #include <deal.II/base/mpi.h>
 
+
+using namespace deal2lkit;
+
 int main (int argc, char *argv[])
 {
 #ifdef DEAL_II_WITH_MPI

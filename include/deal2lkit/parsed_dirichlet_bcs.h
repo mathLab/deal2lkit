@@ -25,6 +25,9 @@
 #include <deal.II/numerics/vector_tools.h>
 
 using namespace dealii;
+
+D2K_NAMESPACE_OPEN
+
 /**
  * Parsed DirichletBCs.
  * This class allows to set dirichlet boundary conditions,
@@ -578,4 +581,7 @@ void ParsedDirichletBCs<dim,spacedim,n_components>::compute_nonzero_normal_flux_
 }
 
 
+D2K_NAMESPACE_CLOSE
+
 #endif
+

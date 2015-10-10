@@ -31,6 +31,9 @@
 
 using namespace dealii;
 
+
+D2K_NAMESPACE_OPEN
+
 /**
  * Store any amount of any type of data accessible by an identifier string.
  *
@@ -222,4 +225,8 @@ void SAKData::print_info(STREAM &os)
     }
 }
 
+
+D2K_NAMESPACE_CLOSE
+
 #endif
+

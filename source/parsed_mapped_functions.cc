@@ -15,6 +15,9 @@
 
 #include <deal2lkit/parsed_mapped_functions.h>
 
+
+D2K_NAMESPACE_OPEN
+
 template <int spacedim, int n_components>
 ParsedMappedFunctions<spacedim,n_components>::ParsedMappedFunctions(const std::string &parsed_name,
     const std::string &parsed_component_names,
@@ -346,22 +349,25 @@ void ParsedMappedFunctions<spacedim,n_components>::set_normal_functions()
     }
 }
 
-template class ParsedMappedFunctions<1,1>;
 
-template class ParsedMappedFunctions<2,1>;
-template class ParsedMappedFunctions<2,2>;
-template class ParsedMappedFunctions<2,3>;
-template class ParsedMappedFunctions<2,4>;
-template class ParsedMappedFunctions<2,5>;
-template class ParsedMappedFunctions<2,6>;
-template class ParsedMappedFunctions<2,7>;
-template class ParsedMappedFunctions<2,8>;
+D2K_NAMESPACE_CLOSE
 
-template class ParsedMappedFunctions<3,1>;
-template class ParsedMappedFunctions<3,2>;
-template class ParsedMappedFunctions<3,3>;
-template class ParsedMappedFunctions<3,4>;
-template class ParsedMappedFunctions<3,5>;
-template class ParsedMappedFunctions<3,6>;
-template class ParsedMappedFunctions<3,7>;
-template class ParsedMappedFunctions<3,8>;
+template class deal2lkit::ParsedMappedFunctions<1,1>;
+
+template class deal2lkit::ParsedMappedFunctions<2,1>;
+template class deal2lkit::ParsedMappedFunctions<2,2>;
+template class deal2lkit::ParsedMappedFunctions<2,3>;
+template class deal2lkit::ParsedMappedFunctions<2,4>;
+template class deal2lkit::ParsedMappedFunctions<2,5>;
+template class deal2lkit::ParsedMappedFunctions<2,6>;
+template class deal2lkit::ParsedMappedFunctions<2,7>;
+template class deal2lkit::ParsedMappedFunctions<2,8>;
+
+template class deal2lkit::ParsedMappedFunctions<3,1>;
+template class deal2lkit::ParsedMappedFunctions<3,2>;
+template class deal2lkit::ParsedMappedFunctions<3,3>;
+template class deal2lkit::ParsedMappedFunctions<3,4>;
+template class deal2lkit::ParsedMappedFunctions<3,5>;
+template class deal2lkit::ParsedMappedFunctions<3,6>;
+template class deal2lkit::ParsedMappedFunctions<3,7>;
+template class deal2lkit::ParsedMappedFunctions<3,8>;

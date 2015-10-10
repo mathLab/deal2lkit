@@ -16,6 +16,8 @@
 #include <stdio.h>
 // #include <sys/types.h> // for ftruncate...
 
+
+
 int
 main ()
 {

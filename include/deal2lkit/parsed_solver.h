@@ -36,6 +36,9 @@
 
 using namespace dealii;
 
+
+D2K_NAMESPACE_OPEN
+
 template <typename VECTOR>
 std::function<void(VECTOR &, bool)> default_reinit()
 {
@@ -238,5 +241,9 @@ void ParsedSolver<VECTOR>::parse_parameters_call_back()
     }
 }
 
+D2K_NAMESPACE_CLOSE
+
 #endif // CXX11
+
 #endif
+

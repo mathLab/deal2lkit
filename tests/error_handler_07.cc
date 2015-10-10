@@ -24,6 +24,9 @@
 #include <deal.II/fe/fe_system.h>
 #include <deal.II/dofs/dof_handler.h>
 
+
+using namespace deal2lkit;
+
 int main ()
 {
   initlog();

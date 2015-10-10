@@ -35,6 +35,9 @@
 
 using namespace dealii;
 
+
+D2K_NAMESPACE_OPEN
+
 void copy(TrilinosWrappers::MPI::Vector &dst, const N_Vector &src)
 {
   IndexSet is = dst.locally_owned_elements();
@@ -455,10 +458,13 @@ void IDAInterface<VEC>::reset_ode(double current_time,
 }
 
 
+D2K_NAMESPACE_CLOSE
+
+
 #ifdef DEAL_II_WITH_TRILINOS
-template class IDAInterface<TrilinosWrappers::MPI::Vector>;
-template class IDAInterface<TrilinosWrappers::MPI::BlockVector>;
+template class deal2lkit::IDAInterface<TrilinosWrappers::MPI::Vector>;
+template class deal2lkit::IDAInterface<TrilinosWrappers::MPI::BlockVector>;
 #endif
 
-template class IDAInterface<BlockVector<double> >;
+template class deal2lkit::IDAInterface<BlockVector<double> >;
 #endif

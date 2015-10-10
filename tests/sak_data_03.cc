@@ -20,6 +20,9 @@
 
 
 
+using namespace deal2lkit;
+
+
 int main ()
 {
   initlog();

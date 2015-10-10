@@ -16,6 +16,9 @@
 #include "tests.h"
 #include <deal2lkit/parsed_finite_element.h>
 
+
+using namespace deal2lkit;
+
 void log(const Table<2, DoFTools::Coupling> &c)
 {
   for (unsigned int i=0; i<c.size(0); ++i)

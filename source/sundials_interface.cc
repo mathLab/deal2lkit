@@ -33,6 +33,9 @@
 
 #include <deal2lkit/utilities.h>
 
+
+D2K_NAMESPACE_OPEN
+
 template<typename VEC>
 bool SundialsInterface<VEC>::solver_should_restart(const double,
                                                    const unsigned int,
@@ -70,17 +73,20 @@ VEC &SundialsInterface<VEC>::get_local_tolerances() const
   return *tmp;
 }
 
-template class SundialsInterface<Vector<double> >;
-template class SundialsInterface<BlockVector<double> >;
+D2K_NAMESPACE_CLOSE
+
+
+template class deal2lkit::SundialsInterface<Vector<double> >;
+template class deal2lkit::SundialsInterface<BlockVector<double> >;
 
 #ifdef DEAL_II_WITH_PETSC
-template class SundialsInterface<PETScWrappers::MPI::Vector>;
-template class SundialsInterface<PETScWrappers::MPI::BlockVector>;
+template class deal2lkit::SundialsInterface<PETScWrappers::MPI::Vector>;
+template class deal2lkit::SundialsInterface<PETScWrappers::MPI::BlockVector>;
 #endif
 
 #ifdef DEAL_II_WITH_TRILINOS
-template class SundialsInterface<TrilinosWrappers::MPI::Vector>;
-template class SundialsInterface<TrilinosWrappers::MPI::BlockVector>;
+template class deal2lkit::SundialsInterface<TrilinosWrappers::MPI::Vector>;
+template class deal2lkit::SundialsInterface<TrilinosWrappers::MPI::BlockVector>;
 #endif
 
 #endif

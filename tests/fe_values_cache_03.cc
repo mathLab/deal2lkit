@@ -22,6 +22,9 @@
 #include <deal.II/dofs/dof_handler.h>
 #include <deal.II/numerics/vector_tools.h>
 
+
+using namespace deal2lkit;
+
 int main ()
 {
   initlog();

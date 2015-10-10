@@ -20,6 +20,9 @@
 #include <deal.II/lac/parallel_vector.h>
 
 
+using namespace deal2lkit;
+
+
 int main (int argc, char *argv[])
 {
   Utilities::MPI::MPI_InitFinalize mpi_initialization(argc, argv, numbers::invalid_unsigned_int);

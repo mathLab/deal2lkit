@@ -16,6 +16,9 @@
 #include "tests.h"
 #include <deal2lkit/parsed_function.h>
 
+
+using namespace deal2lkit;
+
 int main ()
 {
   initlog();

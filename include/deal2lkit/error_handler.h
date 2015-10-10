@@ -62,6 +62,10 @@
 #include <functional>
 #endif
 
+using namespace dealii;
+
+D2K_NAMESPACE_OPEN
+
 enum NormFlags
 {
   None = 0x00,
@@ -73,7 +77,6 @@ enum NormFlags
   Custom = 0x20
 };
 
-using namespace dealii;
 
 template <int ntables=1>
 class ErrorHandler : public ParameterAcceptor
@@ -619,5 +622,6 @@ void ErrorHandler<ntables>::custom_error(const std::function<double(const unsign
 #endif
 
 
+D2K_NAMESPACE_CLOSE
 
 #endif

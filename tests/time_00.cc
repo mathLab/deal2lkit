@@ -20,6 +20,9 @@
 #include <chrono>
 #include <thread>
 
+
+using namespace deal2lkit;
+
 int main ()
 {
   initlog();

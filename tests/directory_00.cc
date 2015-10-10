@@ -16,6 +16,8 @@
 #include "tests.h"
 #include <stdlib.h>
 
+
+
 int main ()
 {
   initlog();

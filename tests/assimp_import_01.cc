@@ -18,6 +18,8 @@
 
 #include <deal2lkit/assimp_interface.h>
 
+using namespace deal2lkit;
+
 int main ()
 {
   Triangulation<2,3> tria;

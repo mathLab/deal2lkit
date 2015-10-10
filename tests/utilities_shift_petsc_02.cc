@@ -20,6 +20,9 @@
 #include <deal.II/lac/petsc_parallel_vector.h>
 
 
+using namespace deal2lkit;
+
+
 int main (int argc, char *argv[])
 {
   Utilities::MPI::MPI_InitFinalize mpi_initialization(argc, argv, 1);

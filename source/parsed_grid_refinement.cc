@@ -18,6 +18,9 @@
 
 #ifdef DEAL_II_WITH_CXX11
 
+D2K_NAMESPACE_OPEN
+
+
 ParsedGridRefinement::ParsedGridRefinement(const std::string &name,
                                            const std::string &strategy,
                                            const double &top_parameter,
@@ -62,4 +65,7 @@ void ParsedGridRefinement::declare_parameters(ParameterHandler &prm)
 
 }
 
+D2K_NAMESPACE_CLOSE
+
 #endif
+

@@ -19,6 +19,9 @@
 #include <deal.II/base/tensor.h>
 
 
+
+using namespace deal2lkit;
+
 template<int dim, int spacedim>
 class Energy
 {

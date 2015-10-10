@@ -28,6 +28,9 @@
 #include <sstream>
 
 using namespace dealii;
+
+
+
 /**
  *  Define namespace "DOFUtilities"
  *  some utilities aimed at solving non-linear problems
@@ -43,6 +46,7 @@ typedef Sacado::Fad::DFad<double> Sdouble;
 typedef Sacado::Fad::DFad<Sdouble> SSdouble;
 #endif
 
+D2K_NAMESPACE_OPEN
 namespace DOFUtilities
 {
   /**
@@ -407,5 +411,6 @@ namespace DOFUtilities
 
 }// end namespace
 
+D2K_NAMESPACE_CLOSE
 
 #endif

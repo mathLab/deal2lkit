@@ -19,6 +19,9 @@
 #include <deal.II/base/revision.h>
 #include <fstream>
 
+D2K_NAMESPACE_OPEN
+
+
 // Static empty class list
 std::vector<SmartPointer<ParameterAcceptor> > ParameterAcceptor::class_list;
 // Static parameter handler
@@ -215,3 +218,6 @@ void ParameterAcceptor::parse_parameters(ParameterHandler &prm)
 
 
 void ParameterAcceptor::parse_parameters_call_back() {}
+
+D2K_NAMESPACE_CLOSE
+

@@ -36,6 +36,9 @@
 #include <deal2lkit/sundials_interface.h>
 #include <deal2lkit/parameter_acceptor.h>
 
+
+D2K_NAMESPACE_OPEN
+
 template<typename VEC=Vector<double> >
 class IDAInterface : public ParameterAcceptor
 {
@@ -133,5 +136,10 @@ private:
 
 };
 
+D2K_NAMESPACE_CLOSE
+
 #endif
+
+
 #endif
+

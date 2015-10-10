@@ -37,6 +37,9 @@
 #include <deal2lkit/dof_utilities.h>
 #include <deal.II/base/sacado_product_type.h>
 
+using namespace deal2lkit;
+
+
 typedef Sacado::Fad::DFad<double> Sdouble;
 typedef Sacado::Fad::DFad<Sdouble> SSdouble;
 
