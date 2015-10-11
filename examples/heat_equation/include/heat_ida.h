@@ -50,6 +50,7 @@
 
 
 using namespace dealii;
+using namespace deal2lkit;
 
 typedef TrilinosWrappers::MPI::Vector VEC;
 template<int dim>
