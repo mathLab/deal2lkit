@@ -26,6 +26,8 @@
 
 using namespace dealii;
 
+D2K_NAMESPACE_OPEN
+
 /**
  * A parameter acceptor base class. This class is used to define a
  * public interface for classes wich use ParameterHandler to obtain
@@ -195,4 +197,9 @@ protected:
   /** The subsection name for this class. */
   const std::string section_name;
 };
+
+
+D2K_NAMESPACE_CLOSE
+
 #endif
+

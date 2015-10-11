@@ -18,10 +18,11 @@
 
 #include <deal2lkit/config.h>
 #include <deal.II/fe/fe_values.h>
-#include <deal2lkit/sak_data.h>
+#include <deal2lkit/any_data.h>
 #include <deal2lkit/dof_utilities.h>
 #include <deal2lkit/utilities.h>
 
+D2K_NAMESPACE_OPEN
 
 template <int dim, int spacedim=dim>
 class FEValuesCache
@@ -493,10 +494,13 @@ public:
 
 private:
 
-  SAKData                                           cache;
+  AnyData                                           cache;
   FEValues<dim, spacedim>                           fe_values;
   FEFaceValues<dim, spacedim>                       fe_face_values;
   std::vector<types::global_dof_index>  local_dof_indices;
 };
 
+D2K_NAMESPACE_CLOSE
+
 #endif
+

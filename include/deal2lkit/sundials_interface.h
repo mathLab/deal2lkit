@@ -29,6 +29,9 @@
 
 using namespace dealii;
 
+
+D2K_NAMESPACE_OPEN
+
 /**
  * IDA (Implicit Differential-Algebraic solver) is a package contaied in the
  * suite SUNDIALS (SUite of Nonlinear and DIfferential/ALgebraic equation
@@ -189,8 +192,12 @@ private:
 
 };
 
+
+
+D2K_NAMESPACE_CLOSE
+
 #endif
 #endif
 
-
 #endif
+

@@ -25,6 +25,9 @@
 #include <deal2lkit/parsed_mapped_functions.h>
 
 
+using namespace deal2lkit;
+
+
 int main ()
 {
   initlog();

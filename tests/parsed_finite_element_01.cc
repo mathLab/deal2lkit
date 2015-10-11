@@ -19,6 +19,9 @@
 #include <deal2lkit/parameter_acceptor.h>
 #include <deal2lkit/parsed_finite_element.h>
 
+
+using namespace deal2lkit;
+
 int main ()
 {
   initlog();

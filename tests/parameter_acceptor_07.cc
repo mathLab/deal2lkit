@@ -19,6 +19,9 @@
 #include <deal2lkit/utilities.h>
 #include <deal2lkit/parameter_acceptor.h>
 
+
+using namespace deal2lkit;
+
 template<int dim>
 class Test : public ParameterAcceptor
 {

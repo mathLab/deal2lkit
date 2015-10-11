@@ -30,6 +30,8 @@
 #include <deal2lkit/parameter_acceptor.h>
 #include <deal2lkit/utilities.h>
 
+D2K_NAMESPACE_OPEN
+
 
 template <int dim, int spacedim=dim>
 class ParsedDataOut : public ParameterAcceptor
@@ -177,5 +179,6 @@ void ParsedDataOut<dim,spacedim>::add_data_vector(const VECTOR &data_vector,
 }
 
 
+D2K_NAMESPACE_CLOSE
 
 #endif

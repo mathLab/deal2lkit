@@ -20,6 +20,9 @@
 #include <deal.II/base/function_lib.h>
 #include <deal.II/dofs/dof_handler.h>
 
+
+using namespace deal2lkit;
+
 int main ()
 {
   initlog();

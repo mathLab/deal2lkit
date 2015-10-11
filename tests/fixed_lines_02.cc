@@ -20,6 +20,9 @@
 
 #include <iomanip>
 
+
+using namespace deal2lkit;
+
 int main ()
 {
   std::fstream fs ("test_fstream.txt", std::fstream::out);

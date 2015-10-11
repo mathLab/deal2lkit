@@ -24,6 +24,9 @@
 
 #include <deal.II/lac/vector.h>
 
+
+using namespace deal2lkit;
+
 template<int dim, int spacedim>
 void test()
 {

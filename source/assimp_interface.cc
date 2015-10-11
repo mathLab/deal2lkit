@@ -43,6 +43,9 @@ using namespace Assimp;
 
 using namespace std;
 
+
+D2K_NAMESPACE_OPEN
+
 namespace AssimpInterface
 {
 
@@ -246,4 +249,7 @@ namespace AssimpInterface
 
 }
 
+D2K_NAMESPACE_CLOSE
 #endif
+
+

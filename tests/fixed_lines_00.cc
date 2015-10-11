@@ -20,6 +20,9 @@
 #include "tests.h"
 #include <deal2lkit/utilities.h>
 
+
+using namespace deal2lkit;
+
 int main ()
 {
   initlog();

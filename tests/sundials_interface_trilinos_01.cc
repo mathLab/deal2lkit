@@ -40,6 +40,9 @@
 
 #include <fstream>
 
+
+using namespace deal2lkit;
+
 template <typename VEC>
 class Solver : public SundialsInterface<VEC>, public ParameterAcceptor
 {

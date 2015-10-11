@@ -37,6 +37,9 @@
 #include <deal2lkit/dof_utilities.h>
 
 
+using namespace deal2lkit;
+
+
 template<int dim>
 void test (const Triangulation<dim> &tr,
            const FiniteElement<dim> &fe)

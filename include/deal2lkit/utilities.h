@@ -34,6 +34,9 @@
 using namespace dealii;
 using std_cxx11::shared_ptr;
 
+
+D2K_NAMESPACE_OPEN
+
 /**
  * SmartPointers are usually not used to point to objects created with
  * new. However, sometimes this is useful. The distruction of a
@@ -495,4 +498,8 @@ void vector_shift(VEC &in_vec, double a_scalar)
 #endif
 }
 
+
+D2K_NAMESPACE_CLOSE
+
 #endif
+

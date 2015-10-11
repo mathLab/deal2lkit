@@ -14,16 +14,19 @@
 //-----------------------------------------------------------
 
 #include "tests.h"
-#include <deal2lkit/sak_data.h>
+#include <deal2lkit/any_data.h>
 #include <deal.II/base/tensor.h>
 
+
+
+using namespace deal2lkit;
 
 
 int main ()
 {
   initlog();
 
-  SAKData data;
+  AnyData data;
 
   data.add_copy(0, "zero");
   deallog << (data.have("zero") ? "OK" : "KO") << std::endl;

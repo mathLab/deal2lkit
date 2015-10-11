@@ -17,6 +17,9 @@
 #include <deal2lkit/utilities.h>
 #include <deal.II/fe/fe_tools.h>
 
+
+D2K_NAMESPACE_OPEN
+
 template <int dim, int spacedim>
 ParsedFiniteElement<dim, spacedim>::ParsedFiniteElement(const std::string &name,
                                                         const std::string &default_name,
@@ -205,10 +208,13 @@ const Table<2, DoFTools::Coupling> &ParsedFiniteElement<dim,spacedim>::get_preco
 }
 
 
-template class ParsedFiniteElement<1,1>;
-template class ParsedFiniteElement<1,2>;
-template class ParsedFiniteElement<1,3>;
-template class ParsedFiniteElement<2,2>;
-template class ParsedFiniteElement<2,3>;
-template class ParsedFiniteElement<3,3>;
+D2K_NAMESPACE_CLOSE
+
+
+template class deal2lkit::ParsedFiniteElement<1,1>;
+template class deal2lkit::ParsedFiniteElement<1,2>;
+template class deal2lkit::ParsedFiniteElement<1,3>;
+template class deal2lkit::ParsedFiniteElement<2,2>;
+template class deal2lkit::ParsedFiniteElement<2,3>;
+template class deal2lkit::ParsedFiniteElement<3,3>;
 

@@ -48,6 +48,9 @@
 #include <deal2lkit/parsed_dirichlet_bcs.h>
 
 
+using namespace deal2lkit;
+
+
 template <int dim>
 class FindBug
 {

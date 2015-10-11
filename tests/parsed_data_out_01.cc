@@ -16,6 +16,9 @@
 #include "tests.h"
 #include <deal2lkit/parsed_data_out.h>
 
+
+using namespace deal2lkit;
+
 int main (int argc, char **argv)
 {
 #ifdef DEAL_II_WITH_MPI

@@ -20,6 +20,9 @@
 
 #include <deal.II/base/point.h>
 
+
+using namespace deal2lkit;
+
 template<int dim>
 class Test : public ParameterAcceptor
 {

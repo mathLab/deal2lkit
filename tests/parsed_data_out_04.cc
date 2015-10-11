@@ -34,6 +34,9 @@
 
 #include <deal.II/base/mpi.h>
 
+
+using namespace deal2lkit;
+
 template<int dim, int spacedim>
 class Test : public ParameterAcceptor
 {

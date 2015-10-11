@@ -33,6 +33,9 @@
 #include <vector>
 #include <string>
 
+
+D2K_NAMESPACE_OPEN
+
 template <int ntables>
 ErrorHandler<ntables>::ErrorHandler (   const std::string name,
                                         const std::string solution_names,
@@ -258,7 +261,10 @@ void ErrorHandler<ntables>::output_table (ConditionalOStream &pout, const unsign
   if ( pout.is_active() ) output_table (pout.get_stream(), table_no);
 }
 
-template class ErrorHandler<1>;
-template class ErrorHandler<2>;
-template class ErrorHandler<3>;
-template class ErrorHandler<4>;
+D2K_NAMESPACE_CLOSE
+
+
+template class deal2lkit::ErrorHandler<1>;
+template class deal2lkit::ErrorHandler<2>;
+template class deal2lkit::ErrorHandler<3>;
+template class deal2lkit::ErrorHandler<4>;

@@ -26,6 +26,8 @@
 
 using namespace dealii;
 
+D2K_NAMESPACE_OPEN
+
 /**
  * Parsed FiniteElement. Read from a parameter file the name of a
  * finite element, generate one for you, and return a pointer to it.
@@ -275,4 +277,7 @@ private:
   Table<2,DoFTools::Coupling> preconditioner_coupling;
 };
 
+D2K_NAMESPACE_CLOSE
+
 #endif
+

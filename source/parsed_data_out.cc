@@ -35,6 +35,9 @@
 
 #include <deal.II/base/utilities.h>
 
+
+D2K_NAMESPACE_OPEN
+
 template <int dim, int spacedim>
 ParsedDataOut<dim,spacedim>::ParsedDataOut (const std::string &name,
                                             const std::string &default_format,
@@ -196,9 +199,13 @@ void ParsedDataOut<dim,spacedim>::write_data_and_clear( const std::string &used_
   deallog.pop();
 }
 
-template class ParsedDataOut<1,1>;
-template class ParsedDataOut<1,2>;
-template class ParsedDataOut<1,3>;
-template class ParsedDataOut<2,2>;
-template class ParsedDataOut<2,3>;
-template class ParsedDataOut<3,3>;
+
+D2K_NAMESPACE_CLOSE
+
+template class deal2lkit::ParsedDataOut<1,1>;
+template class deal2lkit::ParsedDataOut<1,2>;
+template class deal2lkit::ParsedDataOut<1,3>;
+template class deal2lkit::ParsedDataOut<2,2>;
+template class deal2lkit::ParsedDataOut<2,3>;
+template class deal2lkit::ParsedDataOut<3,3>;
+

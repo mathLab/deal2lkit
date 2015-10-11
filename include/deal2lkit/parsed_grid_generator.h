@@ -27,6 +27,8 @@
 
 using namespace dealii;
 
+D2K_NAMESPACE_OPEN
+
 /**
  * Parsed grid generator. Create a grid reading a parameter file. This
  * can be either generated using dealii::GridGenerator functions, or
@@ -147,4 +149,7 @@ private:
   std::string str_vec_int;
 };
 
+D2K_NAMESPACE_CLOSE
+
 #endif
+

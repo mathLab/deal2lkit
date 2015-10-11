@@ -20,6 +20,9 @@
 #include <deal.II/grid/grid_out.h>
 #include <deal.II/base/utilities.h>
 
+
+using namespace deal2lkit;
+
 template<int dim, int spacedim>
 void test(ParsedGridGenerator<dim, spacedim> &pgg)
 {
