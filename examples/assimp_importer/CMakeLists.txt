@@ -17,7 +17,7 @@
 # CMake script for small projects, with one executable
 # depending on deal2lkit.
 #
-# If you set the environemnt variable D2K_DIR, 
+# If you set the environemnt variable DEAL2LKIT_DIR or D2K_DIR, 
 # everything will work out of the box
 ##
 
@@ -44,7 +44,7 @@ DEAL_II_INITIALIZE_CACHED_VARIABLES()
 
 PROJECT(${TARGET})
 FIND_PACKAGE(deal2lkit 1.0 REQUIRED
-	HINTS ${D2K_DIR} $ENV{D2K_DIR}
+  HINTS ${D2K_DIR} $ENV{D2K_DIR} $ENV{DEAL2LKIT_DIR}
 )
 D2K_INITIALIZE_CACHED_VARIABLES()
 
