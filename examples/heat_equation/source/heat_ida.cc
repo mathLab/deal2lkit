@@ -456,6 +456,16 @@ void Heat<dim>::output_step(const double t,
                             const double /* h */ )
 {
   computing_timer.enter_section ("Postprocessing");
+  dirichlet_bcs.set_time(t);
+  forcing_term.set_time(t);
+  exact_solution.set_time(t);
+  constraints.clear();
+  DoFTools::make_hanging_node_constraints (*dof_handler,
+                                           constraints);
+
+  dirichlet_bcs.interpolate_boundary_values(*dof_handler, constraints);
+
+  constraints.close ();
   VEC tmp(solution);
   constraints.distribute(tmp);
   distributed_solution = tmp;
