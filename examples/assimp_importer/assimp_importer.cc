@@ -22,6 +22,7 @@
 #include <fstream>
 
 using namespace dealii;
+using namespace deal2lkit;
 
 // A minimal program that takes as input a file in a format supported
 // by Assimp, and generates a grid supported by deal.II
