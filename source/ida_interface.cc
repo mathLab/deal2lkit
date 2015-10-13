@@ -268,6 +268,9 @@ void IDAInterface<VEC>::declare_parameters(ParameterHandler &prm)
 
   add_parameter(prm, &use_local_tolerances,
                 "Use local tolerances", "false", Patterns::Bool());
+
+  add_parameter(prm, &verbose,
+                "Show output of time steps", "true", Patterns::Bool());
 }
 
 
@@ -311,11 +314,13 @@ unsigned int IDAInterface<VEC>::start_ode(VEC &solution,
     {
 
       next_time += outputs_period;
-      std::cout << " "//"\r"
-                << std::setw(5) << t << " ----> "
-                << std::setw(5) << next_time
-                << std::endl;
-
+      if (verbose)
+        {
+          std::cout << " "//"\r"
+                    << std::setw(5) << t << " ----> "
+                    << std::setw(5) << next_time
+                    << std::endl;
+        }
       status = IDASolve(ida_mem, next_time, &t, yy, yp, IDA_NORMAL);
 
       status = IDAGetLastStep(ida_mem, &h);

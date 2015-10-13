@@ -118,6 +118,9 @@ private:
   /** Initialization flag.*/
   bool is_initialized;
 
+  /** Show the progress of time steps. */
+  bool verbose;
+
   /** Use local tolerances when computing absolute tolerance. */
   bool use_local_tolerances;
 
@@ -142,4 +145,3 @@ D2K_NAMESPACE_CLOSE
 
 
 #endif
-
