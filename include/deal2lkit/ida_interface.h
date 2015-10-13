@@ -58,7 +58,8 @@ public:
   /** Evolve. This function returns the final number of steps. */
   unsigned int start_ode(VEC &solution,
                          VEC &solution_dot,
-                         const unsigned int max_steps);
+                         const unsigned int max_steps,
+                         bool write_output=true);
 
   /** Clear internal memory, and
   start with clean
@@ -142,4 +143,3 @@ D2K_NAMESPACE_CLOSE
 
 
 #endif
-

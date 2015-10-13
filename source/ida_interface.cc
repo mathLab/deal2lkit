@@ -274,7 +274,8 @@ void IDAInterface<VEC>::declare_parameters(ParameterHandler &prm)
 template <typename VEC>
 unsigned int IDAInterface<VEC>::start_ode(VEC &solution,
                                           VEC &solution_dot,
-                                          const unsigned int max_steps)
+                                          const unsigned int max_steps,
+                                          bool write_output /*=true*/)
 {
 
 
@@ -311,11 +312,13 @@ unsigned int IDAInterface<VEC>::start_ode(VEC &solution,
     {
 
       next_time += outputs_period;
-      std::cout << " "//"\r"
-                << std::setw(5) << t << " ----> "
-                << std::setw(5) << next_time
-                << std::endl;
-
+      if (write_output)
+        {
+          std::cout << " "//"\r"
+                    << std::setw(5) << t << " ----> "
+                    << std::setw(5) << next_time
+                    << std::endl;
+        }
       status = IDASolve(ida_mem, next_time, &t, yy, yp, IDA_NORMAL);
 
       status = IDAGetLastStep(ida_mem, &h);
