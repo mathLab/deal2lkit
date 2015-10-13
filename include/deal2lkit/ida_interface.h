@@ -58,8 +58,7 @@ public:
   /** Evolve. This function returns the final number of steps. */
   unsigned int start_ode(VEC &solution,
                          VEC &solution_dot,
-                         const unsigned int max_steps,
-                         bool write_output=true);
+                         const unsigned int max_steps);
 
   /** Clear internal memory, and
   start with clean
@@ -118,6 +117,9 @@ private:
 
   /** Initialization flag.*/
   bool is_initialized;
+
+  /** Show the progress of time steps. */
+  bool verbose;
 
   /** Use local tolerances when computing absolute tolerance. */
   bool use_local_tolerances;

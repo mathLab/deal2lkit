@@ -268,14 +268,16 @@ void IDAInterface<VEC>::declare_parameters(ParameterHandler &prm)
 
   add_parameter(prm, &use_local_tolerances,
                 "Use local tolerances", "false", Patterns::Bool());
+
+  add_parameter(prm, &verbose,
+                "Show output of time steps", "true", Patterns::Bool());
 }
 
 
 template <typename VEC>
 unsigned int IDAInterface<VEC>::start_ode(VEC &solution,
                                           VEC &solution_dot,
-                                          const unsigned int max_steps,
-                                          bool write_output /*=true*/)
+                                          const unsigned int max_steps)
 {
 
 
@@ -312,7 +314,7 @@ unsigned int IDAInterface<VEC>::start_ode(VEC &solution,
     {
 
       next_time += outputs_period;
-      if (write_output)
+      if (verbose)
         {
           std::cout << " "//"\r"
                     << std::setw(5) << t << " ----> "
