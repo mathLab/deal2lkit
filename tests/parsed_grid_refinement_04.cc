@@ -23,7 +23,11 @@
 #include <deal.II/base/utilities.h>
 
 #include <deal.II/lac/vector.h>
+#include <deal.II/base/mpi.h>
 
+#include <iostream>
+#include <fstream>
+#include <sstream>
 
 using namespace deal2lkit;
 
@@ -31,11 +35,11 @@ template<int dim, int spacedim>
 void test()
 {
   ParsedGridGenerator<dim, spacedim> pgg;
-  ParsedGridRefinement pgr;
+  ParsedGridRefinement pgr("", "number");
 
   ParameterAcceptor::initialize();
 
-  Triangulation<dim, spacedim> *tria = pgg.serial();
+  parallel::distributed::Triangulation<dim, spacedim> *tria = pgg.distributed(MPI_COMM_WORLD);
 
   tria->refine_global(3);
 
@@ -49,21 +53,28 @@ void test()
   tria->prepare_coarsening_and_refinement();
   tria->execute_coarsening_and_refinement();
 
+  std::ostringstream filename;
+  filename << "/tmp/mesh_"
+           << dim
+           << spacedim
+           << "-mpi-"
+           <<Utilities::MPI::this_mpi_process(MPI_COMM_WORLD)
+           << ".msh";
   GridOut go;
   go.write_msh(*tria, deallog.get_file_stream());
-  std::ofstream ofile(("/tmp/mesh_"+Utilities::int_to_string(dim)
-                       +Utilities::int_to_string(spacedim)+".msh").c_str());
+  std::ofstream ofile(filename.str().c_str());
   go.write_msh(*tria, ofile);
 
   delete tria;
 }
 
-int main ()
+int main (int argc, char *argv[])
 {
-  initlog();
+  Utilities::MPI::MPI_InitFinalize mpi_initialization(argc, argv, 1);
+  MPILogInitAll log;
 
-  test<1,1>();
-  test<1,2>();
+//  test<1,1>();
+//  test<1,2>();
   test<2,2>();
   test<2,3>();
   test<3,3>();

@@ -19,8 +19,12 @@
 #include <deal.II/grid/tria.h>
 #include <deal.II/grid/grid_refinement.h>
 
+#ifdef DEAL_II_WITH_MPI
+#ifdef DEAL_II_WITH_P4EST
 #include <deal.II/distributed/tria.h>
 #include <deal.II/distributed/grid_refinement.h>
+#endif
+#endif
 
 
 #include <deal2lkit/config.h>
@@ -70,7 +74,8 @@ public:
   void mark_cells(const Vector &criteria,
                   Triangulation< dim, spacedim > &tria) const;
 
-
+#ifdef DEAL_II_WITH_MPI
+#ifdef DEAL_II_WITH_P4EST
   /**
    * Mark cells of a distribtued triangulation for refinement or
    * coarsening, according to the given strategy applied to the
@@ -85,6 +90,8 @@ public:
   template<int dim, class Vector , int spacedim>
   void mark_cells(const Vector &criteria,
                   parallel::distributed::Triangulation< dim, spacedim > &tria) const;
+#endif
+#endif
 
 private:
   /**
@@ -99,25 +106,28 @@ private:
 
 
 
+#ifdef DEAL_II_WITH_MPI
+#ifdef DEAL_II_WITH_P4EST
 template<int dim, class Vector , int spacedim>
 void ParsedGridRefinement::mark_cells(const Vector &criteria,
                                       parallel::distributed::Triangulation< dim, spacedim > &tria) const
 {
   if (strategy == "number")
-    GridRefinement::refine_and_coarsen_fixed_number (tria,
-                                                     criteria,
-                                                     top_parameter, bottom_parameter,
-                                                     max_cells ? max_cells :
-                                                     std::numeric_limits< unsigned int >::max());
+    parallel::distributed::GridRefinement::refine_and_coarsen_fixed_number (tria,
+        criteria,
+        top_parameter, bottom_parameter,
+        max_cells ? max_cells :
+        std::numeric_limits< unsigned int >::max());
   else if (strategy == "fraction")
-    GridRefinement::refine_and_coarsen_fixed_fraction (tria,
-                                                       criteria,
-                                                       top_parameter, bottom_parameter);
+    parallel::distributed::GridRefinement::refine_and_coarsen_fixed_fraction (tria,
+        criteria,
+        top_parameter, bottom_parameter);
   else
     Assert(false, ExcInternalError());
 
 }
-
+#endif
+#endif
 
 template<int dim, class Vector , int spacedim>
 void ParsedGridRefinement::mark_cells(const Vector &criteria,
