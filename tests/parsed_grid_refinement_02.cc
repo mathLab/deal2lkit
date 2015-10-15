@@ -46,6 +46,7 @@ void test()
 
   pgr.mark_cells(criteria, *tria);
 
+  tria->prepare_coarsening_and_refinement();
   tria->execute_coarsening_and_refinement();
 
   GridOut go;
