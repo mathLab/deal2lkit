@@ -42,6 +42,7 @@
 #include <deal2lkit/parsed_function.h>
 #include <deal2lkit/parsed_data_out.h>
 #include <deal2lkit/parsed_dirichlet_bcs.h>
+#include <deal2lkit/parsed_solver.h>
 
 #include <fstream>
 #include <mpi.h>
@@ -178,7 +179,6 @@ private:
 
   mutable TimerOutput     computing_timer;
 
-
   ErrorHandler<dim>       eh;
   ParsedGridGenerator<dim,dim>   pgg;
   ParsedFiniteElement<dim,dim> fe_builder;
@@ -190,7 +190,9 @@ private:
   ParsedFunction<dim, 1>        initial_solution_dot;
   ParsedDirichletBCs<dim,dim,1> dirichlet_bcs;
 
-  ParsedDataOut<dim, dim>                  data_out;
+  ParsedDataOut<dim, dim>       data_out;
+
+  ParsedSolver<VEC>             Ainv;
 
   IDAInterface<VEC>  dae;
 

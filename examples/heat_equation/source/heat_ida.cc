@@ -23,11 +23,10 @@
 #include <deal.II/dofs/dof_accessor.h>
 #include <deal.II/dofs/dof_tools.h>
 
-#include <deal.II/lac/solver_cg.h>
-#include <deal.II/lac/trilinos_solver.h>
-
 #include <nvector/nvector_parallel.h>
 #include <deal.II/lac/parallel_vector.h>
+#include <deal.II/lac/packaged_operation.h>
+
 #include <deal.II/numerics/vector_tools.h>
 #include <deal.II/numerics/matrix_tools.h>
 #include <deal.II/numerics/solution_transfer.h>
@@ -72,6 +71,10 @@ Heat<dim>::Heat (const MPI_Comm &communicator)
   dirichlet_bcs("Dirichlet BCs", "u", "0=u"),
 
   data_out("Output Parameters", "vtu"),
+  Ainv( "Solver", "cg",
+        /* iter= */ 1000,
+        /* reduction= */1e-8,
+        linear_operator<VEC>(jacobian_matrix) ),
   dae(*this)
 {}
 
@@ -619,13 +622,7 @@ int Heat<dim>::solve_jacobian_system (const double t,
   computing_timer.enter_section ("   Solve system");
   set_constrained_dofs_to_zero(dst);
 
-
-  SolverControl solver_control (dof_handler->n_dofs(), 1e-8);
-
-  SolverCG<VEC> solver(solver_control,
-                       SolverCG<VEC>::AdditionalData(dof_handler->n_dofs(),true));
-  solver.solve (jacobian_matrix, dst, src,
-                TrilinosWrappers::PreconditionIdentity());
+  dst = Ainv * src;
 
   set_constrained_dofs_to_zero(dst);
 
