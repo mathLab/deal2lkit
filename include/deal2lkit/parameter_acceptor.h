@@ -20,6 +20,7 @@
 #include <deal.II/base/parameter_handler.h>
 #include <deal.II/base/smartpointer.h>
 #include <deal.II/base/logstream.h>
+#include <deal.II/base/exceptions.h>
 #include <boost/any.hpp>
 #include <typeinfo>
 

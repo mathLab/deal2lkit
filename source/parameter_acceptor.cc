@@ -54,18 +54,40 @@ ParameterAcceptor::initialize(const std::string filename,
   prm.clear();
   declare_all_parameters(prm);
   if (filename != "")
-    prm.read_input(filename);
+    {
+      // check the extension of input file
+      if (filename.substr(filename.find_last_of(".") + 1) == "prm")
+        prm.read_input(filename);
+      else if (filename.substr(filename.find_last_of(".") + 1) == "xml")
+        {
+          std::ifstream is(filename);
+          prm.read_input_from_xml(is);
+        }
+      else
+        AssertThrow(false, ExcMessage("Invalid extension of parameter file. Please use .prm or .xml"));
+    }
   parse_all_parameters(prm);
   if (out_filename != "")
     {
       std::ofstream outfile(out_filename.c_str());
       Assert(outfile, ExcIO());
-      outfile << "# Parameter file generated with " << std::endl
-              << "# D2K_GIT_BRANCH=       " << D2K_GIT_BRANCH << std::endl
-              << "# D2K_GIT_SHORTREV=     " << D2K_GIT_SHORTREV << std::endl
-              << "# DEAL_II_GIT_BRANCH=   " << DEAL_II_GIT_BRANCH  << std::endl
-              << "# DEAL_II_GIT_SHORTREV= " << DEAL_II_GIT_SHORTREV << std::endl;
-      prm.print_parameters(outfile, ParameterHandler::ShortText);
+      std::string extension = out_filename.substr(out_filename.find_last_of(".") + 1);
+
+      if ( extension == "prm")
+        {
+          outfile << "# Parameter file generated with " << std::endl
+                  << "# D2K_GIT_BRANCH=       " << D2K_GIT_BRANCH << std::endl
+                  << "# D2K_GIT_SHORTREV=     " << D2K_GIT_SHORTREV << std::endl
+                  << "# DEAL_II_GIT_BRANCH=   " << DEAL_II_GIT_BRANCH  << std::endl
+                  << "# DEAL_II_GIT_SHORTREV= " << DEAL_II_GIT_SHORTREV << std::endl;
+          prm.print_parameters(outfile, ParameterHandler::ShortText);
+        }
+      else if (extension == "xml")
+        prm.print_parameters(outfile, ParameterHandler::XML);
+      else if (extension == "latex" || extension == "tex")
+        prm.print_parameters(outfile, ParameterHandler::LaTeX);
+      else
+        AssertThrow(false,ExcNotImplemented());
     }
 }
 
