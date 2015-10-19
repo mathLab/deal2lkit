@@ -1,11 +1,11 @@
 # Parameter file generated with 
-# D2K_GIT_BRANCH=       heat_example
-# D2K_GIT_SHORTREV=     65ae35b
+# D2K_GIT_BRANCH=       parameter_acceptor
+# D2K_GIT_SHORTREV=     dbfbe4d
 # DEAL_II_GIT_BRANCH=   master
-# DEAL_II_GIT_SHORTREV= 02fd3a2
+# DEAL_II_GIT_SHORTREV= a49790d
 subsection Dirichlet BCs
   set IDs and component masks = 0=u
-  set IDs and expressions     = 0=(1-y)*y*sin(2*pi*(x-t)) 
+  set IDs and expressions     = 0=(1-y)*y*sin(2*pi*(x-t))
   set Known component names   = u
   set Used constants          = A=10.
 end
@@ -58,7 +58,7 @@ subsection Finite Element
 end
 subsection Forcing term
   set Function constants  = D=0.5
-  set Function expression = 2*pi*(y-1)*y*cos(-2*pi*(t-x))-2*(2*pi^2*(y-1)*y*sin(-2*pi*(t-x))-sin(-2*pi*(t-x)))*D 
+  set Function expression = 2*pi*(y-1)*y*cos(-2*pi*(t-x))-2*(2*pi^2*(y-1)*y*sin(-2*pi*(t-x))-sin(-2*pi*(t-x)))*D
   set Variable names      = x,y,t
 end
 subsection Heat<2>
@@ -89,6 +89,7 @@ subsection IDA Solver Parameters
   set Min step size                                 = 5e-5
   set Relative error tolerance                      = 1e-3
   set Seconds between each output                   = 1e-2
+  set Show output of time steps                     = true
   set Use local tolerances                          = false
 end
 subsection Initial solution
@@ -148,4 +149,20 @@ subsection Output Parameters
     subsection deal.II intermediate output parameters
     end
   end
+end
+subsection Refinement
+  set Bottom fraction                        = 0.2
+  set Maximum number of cells (if available) = 0
+  set Order (optimize)                       = 2
+  set Refinement strategy                    = fraction
+  set Top fraction                           = 0.2
+end
+subsection Solver
+  set Log frequency = 1
+  set Log history   = false
+  set Log result    = true
+  set Max steps     = 1000
+  set Reduction     = 1e-08
+  set Solver name   = cg
+  set Tolerance     = 1.e-10
 end

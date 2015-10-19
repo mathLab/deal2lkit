@@ -62,6 +62,7 @@ Heat<dim>::Heat (const MPI_Comm &communicator)
      "L2,H1"),
 
   pgg("Domain"),
+  pgr("Refinement"),
   fe_builder("Finite Element"),
 
   exact_solution("Exact solution"),
@@ -535,16 +536,8 @@ bool Heat<dim>::solver_should_restart (const double t,
                 << max_kelly  << " >  " << kelly_threshold
                 << std::endl
                 << "######################################\n";
-          if (max_cells < 0)
-            parallel::distributed::GridRefinement::
-            refine_and_coarsen_fixed_fraction (*triangulation,
-                                               estimated_error_per_cell,
-                                               top_fraction, bottom_fraction);
-          else
-            parallel::distributed::GridRefinement::
-            refine_and_coarsen_fixed_number (*triangulation,
-                                             estimated_error_per_cell,
-                                             top_fraction, bottom_fraction,max_cells);
+
+          pgr.mark_cells(estimated_error_per_cell, *triangulation);
 
           parallel::distributed::SolutionTransfer<dim,VEC> sol_tr(*dof_handler);
           parallel::distributed::SolutionTransfer<dim,VEC> sol_dot_tr(*dof_handler);

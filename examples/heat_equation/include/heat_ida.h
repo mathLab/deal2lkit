@@ -37,6 +37,7 @@
 #include <deal2lkit/ida_interface.h>
 #include <deal2lkit/parameter_acceptor.h>
 #include <deal2lkit/parsed_grid_generator.h>
+#include <deal2lkit/parsed_grid_refinement.h>
 #include <deal2lkit/parsed_finite_element.h>
 #include <deal2lkit/error_handler.h>
 #include <deal2lkit/parsed_function.h>
@@ -181,6 +182,7 @@ private:
 
   ErrorHandler<dim>       eh;
   ParsedGridGenerator<dim,dim>   pgg;
+  ParsedGridRefinement           pgr;
   ParsedFiniteElement<dim,dim> fe_builder;
 
   ParsedFunction<dim, 1>        exact_solution;
