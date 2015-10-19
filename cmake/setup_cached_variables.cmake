@@ -96,7 +96,6 @@ SET(CMAKE_BUILD_TYPE
   ${DEAL_II_BUILD_TYPE}
   CACHE STRING
   "Choose the type of build, options are: Debug, Release and DebugRelease."
-  FORCE
   )
 
 # This is cruel, I know. But it is better to only have a known number of

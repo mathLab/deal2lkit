@@ -69,8 +69,6 @@
 
 MACRO(D2K_SETUP_TARGET _target)
 
-  DEAL_II_SETUP_TARGET(${_target})
-
   IF(NOT D2K_PROJECT_CONFIG_INCLUDED)
     MESSAGE(FATAL_ERROR
       "\nD2K_SETUP_TARGET can only be called in external projects after "
@@ -133,5 +131,7 @@ MACRO(D2K_SETUP_TARGET _target)
       LINK_SEARCH_END_STATIC TRUE
       )
   ENDIF()
+
+  DEAL_II_SETUP_TARGET(${_target})
 
 ENDMACRO()

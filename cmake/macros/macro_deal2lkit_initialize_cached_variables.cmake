@@ -57,17 +57,10 @@ MACRO(D2K_INITIALIZE_CACHED_VARIABLES)
   ENDIF()
 
   #
-  # Set build type according to available libraries
+  # Set build type according to build type of deal2lkit
   #
-  IF(D2K_BUILD_TYPE MATCHES "Debug")
-    SET(CMAKE_BUILD_TYPE "Debug" CACHE STRING
-      "Choose the type of build, options are: Debug, Release"
-      )
-  ELSE()
-    SET(CMAKE_BUILD_TYPE "Release" CACHE STRING
-      "Choose the type of build, options are: Debug, Release"
-      )
-  ENDIF()
+  SET(CMAKE_BUILD_TYPE ${D2K_BUILD_TYPE} CACHE STRING
+    "Choose the type of build, options are: Debug, Release, DebugRelease")
 
   #
   # Reset build type if unsupported, i.e. if it is not (case insensitively
@@ -77,26 +70,21 @@ MACRO(D2K_INITIALIZE_CACHED_VARIABLES)
 
   IF(NOT "${_cmake_build_type}" MATCHES "^(debug|release|debugrelease)$")
 
-    IF("${D2K_BUILD_TYPE}" STREQUAL "DebugRelease")
-      SET(_new_build_type "Debug")
-    ELSE()
-      SET(_new_build_type "${D2K_BUILD_TYPE}")
-    ENDIF()
 
     MESSAGE(
-      "###
-      #
-      #  WARNING:
-      #
-      #  CMAKE_BUILD_TYPE \"${CMAKE_BUILD_TYPE}\" unsupported by current installation!
-      #  deal2lkit was built with CMAKE_BUILD_TYPE \"${D2K_BUILD_TYPE}\".
-      #
-      #  CMAKE_BUILD_TYPE is forced to \"${_new_build_type}\".
-      #
-      ###"
+"###
+#
+#  WARNING:
+#
+#  CMAKE_BUILD_TYPE \"${CMAKE_BUILD_TYPE}\" unsupported by current installation!
+#  deal2lkit was built with CMAKE_BUILD_TYPE \"${D2K_BUILD_TYPE}\".
+#
+#  CMAKE_BUILD_TYPE is forced to \"${D2K_BUILD_TYPE}\".
+#
+###"
       )
-    SET(CMAKE_BUILD_TYPE "${_new_build_type}" CACHE STRING
-      "Choose the type of build, options are: Debug, Release"
+    SET(CMAKE_BUILD_TYPE ${D2K_BUILD_TYPE} CACHE STRING
+      "Choose the type of build, options are: Debug, Release, DebugRelease"
       FORCE
       )
 
