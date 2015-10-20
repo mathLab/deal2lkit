@@ -132,6 +132,6 @@ MACRO(D2K_SETUP_TARGET _target)
       )
   ENDIF()
 
-  DEAL_II_SETUP_TARGET(${_target})
+  DEAL_II_SETUP_TARGET(${_target} ${ARGN})
 
 ENDMACRO()
