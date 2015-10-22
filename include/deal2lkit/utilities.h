@@ -497,7 +497,7 @@ void vector_shift(VEC &in_vec, double a_scalar)
 #else
   IndexSet loc = in_vec.locally_owned_elements();
   loc.compress();
-  for (IndexSet::size_type i=0; i < loc.n_elements(); ++i)
+  for (unsigned int i=0; i < loc.n_elements(); ++i)
     in_vec[loc.nth_index_in_set(i)] += a_scalar;
 #endif
 }
