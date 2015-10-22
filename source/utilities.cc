@@ -16,8 +16,9 @@
 #include <deal2lkit/utilities.h>
 #include <vector>
 #include <fstream>
-#include <chrono>
+#ifdef DEAL_II_WITH_CXX11
 #include <thread>
+#endif
 
 #include <stdlib.h>
 #include <sys/stat.h>
@@ -45,6 +46,7 @@ std::string demangle(const char *name)
   return (status==0) ? result.p : name ;
 }
 
+#ifdef DEAL_II_WITH_CXX11
 void TimeUtilities::sleep(unsigned int t)
 {
   std::this_thread::sleep_for(std::chrono::milliseconds(t));
@@ -76,6 +78,7 @@ int TimeUtilities::get_num_measures()
 {
   return times.size();
 }
+#endif
 
 void append_to_file(const std::string &in_file, const std::string &out_file)
 {
