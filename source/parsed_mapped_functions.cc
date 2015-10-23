@@ -162,7 +162,7 @@ void ParsedMappedFunctions<spacedim,n_components>::split_id_functions(const std:
 
           id_functions[ids[i]] = ptr;
           std::string str;
-          for (unsigned int i=0; i<n_components-1; ++i)
+          for (unsigned int j=0; j<n_components-1; ++j)
             str += "0;";
           str+="0";
 
@@ -335,8 +335,8 @@ void ParsedMappedFunctions<spacedim,n_components>::set_normal_functions()
           dealii::Functions::ParsedFunction<spacedim>::declare_parameters(normal_prm, spacedim);
           std::string str_normal_func;
           Assert(spacedim>1, ExcNotImplemented());
-          for (unsigned int i=0; i<spacedim-1; ++i)
-            str_normal_func += normal_func[fcv+i] + ";";
+          for (unsigned int j=0; j<spacedim-1; ++j)
+            str_normal_func += normal_func[fcv+j] + ";";
           str_normal_func += normal_func[fcv+spacedim-1];
 
           normal_prm.set("Function expression", str_normal_func);
