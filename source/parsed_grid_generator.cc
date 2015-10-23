@@ -60,10 +60,10 @@ ParsedGridGenerator<dim, spacedim>::ParsedGridGenerator(const std::string _secti
   output_grid_file_name(_output_grid_file),
   str_point_1(_point_1),
   str_point_2(_point_2),
-  str_un_int(_int),
+  str_bool(_bool),
   str_double_1(_double_1),
   str_double_2(_double_2),
-  str_bool(_bool),
+  str_un_int(_int),
   str_vec_int(_vec_of_int)
 {}
 
