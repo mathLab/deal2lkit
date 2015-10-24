@@ -40,18 +40,18 @@ std::string extension(const std::string &filename)
 
 
 template <int dim, int spacedim>
-ParsedGridGeneratorBase<dim, spacedim>::ParsedGridGeneratorBase(const std::string _section_name,
-    const std::string _grid_type,
-    const std::string _input_grid_file,
-    const std::string _point_1,
-    const std::string _point_2,
-    const std::string _bool,
-    const std::string _double_1,
-    const std::string _double_2,
-    const std::string _int,
-    const std::string _vec_of_int,
-    const std::string _mesh_smoothing,
-    const std::string _output_grid_file)
+ParsedGridGenerator<dim, spacedim>::ParsedGridGenerator(const std::string _section_name,
+                                                        const std::string _grid_type,
+                                                        const std::string _input_grid_file,
+                                                        const std::string _point_1,
+                                                        const std::string _point_2,
+                                                        const std::string _bool,
+                                                        const std::string _double_1,
+                                                        const std::string _double_2,
+                                                        const std::string _int,
+                                                        const std::string _vec_of_int,
+                                                        const std::string _mesh_smoothing,
+                                                        const std::string _output_grid_file)
   :
   ParameterAcceptor(_section_name),
   mesh_smoothing(_mesh_smoothing),
@@ -68,7 +68,7 @@ ParsedGridGeneratorBase<dim, spacedim>::ParsedGridGeneratorBase(const std::strin
 {}
 
 template <int dim, int spacedim>
-std::string ParsedGridGeneratorBase<dim, spacedim>::create_default_value(const Point<spacedim> &input)
+std::string ParsedGridGenerator<dim, spacedim>::create_default_value(const Point<spacedim> &input)
 {
   std::ostringstream strs;
   strs << input[0];
@@ -80,7 +80,7 @@ std::string ParsedGridGeneratorBase<dim, spacedim>::create_default_value(const P
 }
 
 template <int dim, int spacedim>
-std::string ParsedGridGeneratorBase<dim, spacedim>::create_default_value(const std::vector<double> &input)
+std::string ParsedGridGenerator<dim, spacedim>::create_default_value(const std::vector<double> &input)
 {
   std::ostringstream strs;
   strs << input[0];
@@ -92,7 +92,7 @@ std::string ParsedGridGeneratorBase<dim, spacedim>::create_default_value(const s
 }
 
 template <int dim, int spacedim>
-std::string ParsedGridGeneratorBase<dim, spacedim>::create_default_value(const std::vector<unsigned int> &input)
+std::string ParsedGridGenerator<dim, spacedim>::create_default_value(const std::vector<unsigned int> &input)
 {
   std::string def = Utilities::int_to_string(input[0]);
   for (unsigned int i=1; i<input.size(); ++i)
@@ -101,7 +101,7 @@ std::string ParsedGridGeneratorBase<dim, spacedim>::create_default_value(const s
 }
 
 template <int dim, int spacedim>
-void ParsedGridGeneratorBase<dim, spacedim>::declare_parameters(ParameterHandler &prm)
+void ParsedGridGenerator<dim, spacedim>::declare_parameters(ParameterHandler &prm)
 {
 
   std::vector<unsigned int> dummy_vec_int(dim, 1);
@@ -119,7 +119,7 @@ void ParsedGridGeneratorBase<dim, spacedim>::declare_parameters(ParameterHandler
 
   add_parameter(prm, &grid_name,
                 "Grid to generate", grid_name,
-                Patterns::Selection("file|rectangle|unit_hyperball|subhyperrectangle"/*unit_hypershell*/),
+                Patterns::Selection("file|rectangle|unit_hyperball|hyper_shell|subhyperrectangle"),
                 "The grid to generate. You can choose among:\n"
                 "- file: read grid from a file using:\n"
                 "	- Input grid filename	    : input filename\n\n"
@@ -209,7 +209,7 @@ void ParsedGridGeneratorBase<dim, spacedim>::declare_parameters(ParameterHandler
 #ifdef DEAL_II_WITH_P4EST
 template <int dim, int spacedim>
 parallel::distributed::Triangulation<dim, spacedim> *
-ParsedGridGeneratorBase<dim, spacedim>::distributed(MPI_Comm comm)
+ParsedGridGenerator<dim, spacedim>::distributed(MPI_Comm comm)
 {
   Assert(grid_name != "", ExcNotInitialized());
   parallel::distributed::Triangulation<dim,spacedim> *tria = new parallel::distributed::Triangulation<dim,spacedim>
@@ -224,7 +224,7 @@ ParsedGridGeneratorBase<dim, spacedim>::distributed(MPI_Comm comm)
 
 template <int dim, int spacedim>
 Triangulation<dim, spacedim> *
-ParsedGridGeneratorBase<dim, spacedim>::serial()
+ParsedGridGenerator<dim, spacedim>::serial()
 {
   Assert(grid_name != "", ExcNotInitialized());
   Triangulation<dim,spacedim> *tria = new Triangulation<dim,spacedim>(get_smoothing());
@@ -232,95 +232,150 @@ ParsedGridGeneratorBase<dim, spacedim>::serial()
   return tria;
 }
 
+namespace
+{
+  template<int dim, int spacedim>
+  bool
+  default_create_grid( Triangulation<dim,spacedim> &tria,
+                       std::string grid_name,
+                       Point<spacedim> point_option_one,
+                       Point<spacedim> point_option_two,
+                       double double_option_two,
+                       double double_option_one,
+                       bool bool_option_one,
+                       unsigned int un_int_option_one,
+                       std::vector<unsigned int> un_int_vec_option_one,
+                       std::string input_grid_file_name)
+  {
+    if (grid_name == "rectangle")
+      {
+        GridGenerator::subdivided_hyper_rectangle (tria,
+                                                   un_int_vec_option_one,
+                                                   point_option_two,
+                                                   point_option_one,
+                                                   bool_option_one);
+        return true;
+      }
+    else if (grid_name == "file")
+      {
+        GridIn<dim, spacedim> gi;
+        gi.attach_triangulation(tria);
+
+        std::ifstream in(input_grid_file_name.c_str());
+        AssertThrow(in, ExcIO());
+
+        std::string ext = extension(input_grid_file_name);
+        if (ext == "vtk")
+          gi.read_vtk(in);
+        else if (ext == "msh")
+          gi.read_msh(in);
+        else if (ext == "ucd" || ext == "inp")
+          gi.read_ucd(in);
+        else if (ext == "unv")
+          gi.read_unv(in);
+        else
+          Assert(false, ExcNotImplemented());
+        return true;
+      }
+    return false;
+  }
+
+  template<int dim, int spacedim>
+  bool
+  create_grid(Triangulation<dim,dim+1> &tria,
+              std::string grid_name,
+              Point<spacedim> point_option_one,
+              Point<spacedim> point_option_two,
+              double double_option_two,
+              double double_option_one,
+              bool bool_option_one,
+              unsigned int un_int_option_one,
+              std::vector<unsigned int> un_int_vec_option_one)
+  {
+    return false;
+  }
+
+  template<int dim, int spacedim>
+  bool
+  create_grid(Triangulation<dim,dim> &tria,
+              std::string grid_name,
+              Point<spacedim> point_option_one,
+              Point<spacedim> point_option_two,
+              double double_option_two,
+              double double_option_one,
+              bool bool_option_one,
+              unsigned int un_int_option_one,
+              std::vector<unsigned int> un_int_vec_option_one)
+  {
+    if (grid_name == "unit_hyperball")
+      {
+
+        GridGenerator::hyper_ball( tria,
+                                   point_option_one,
+                                   double_option_one);
+        return true;
+      }
+    else if (grid_name == "subhyperrectangle")
+      {
+
+        std::vector<unsigned int> refinement(dim);
+        for (unsigned int i=0; i<dim; ++i)
+          refinement[i] = un_int_option_one;
+        GridGenerator::subdivided_hyper_rectangle ( tria,
+                                                    refinement,
+                                                    point_option_two,
+                                                    point_option_one);
+        return true;
+      }
+    else if (grid_name == "hyper_shell")
+      {
+        GridGenerator::hyper_shell( tria,
+                                    point_option_one,
+                                    double_option_two,
+                                    double_option_one
+                                    /* const unsigned int   n_cells = 0,
+                                    bool  colorize = false */
+                                  );
+        return true;
+      }
+    return false;
+  }
+}
+
 template <int dim, int spacedim>
-void ParsedGridGeneratorBase<dim, spacedim>::create(Triangulation<dim,spacedim> &tria)
+void ParsedGridGenerator<dim, spacedim>::create(Triangulation<dim,spacedim> &tria)
 {
   Assert(grid_name != "", ExcNotInitialized());
-  if (grid_name == "rectangle")
-    {
-      GridGenerator::subdivided_hyper_rectangle (tria, un_int_vec_option_one,
-                                                 point_option_two, point_option_one,
-                                                 bool_option_one);
-    }
-  else if (grid_name == "file")
-    {
-      GridIn<dim, spacedim> gi;
-      gi.attach_triangulation(tria);
+  bool status = false;
 
-      std::ifstream in(input_grid_file_name.c_str());
-      AssertThrow(in, ExcIO());
+  status |= default_create_grid<dim, spacedim>( tria,
+                                                grid_name,
+                                                point_option_one,
+                                                point_option_two,
+                                                double_option_two,
+                                                double_option_one,
+                                                bool_option_one,
+                                                un_int_option_one,
+                                                un_int_vec_option_one,
+                                                input_grid_file_name);
 
-      std::string ext = extension(input_grid_file_name);
-      if (ext == "vtk")
-        gi.read_vtk(in);
-      else if (ext == "msh")
-        gi.read_msh(in);
-      else if (ext == "ucd" || ext == "inp")
-        gi.read_ucd(in);
-      else if (ext == "unv")
-        gi.read_unv(in);
-      else
-        Assert(false, ExcNotImplemented());
-    }
-  else
-    Assert(false, ExcInternalError("Unrecognized grid."));
+  if (!status)
+    status |= create_grid<dim, spacedim>( tria,
+                                          grid_name,
+                                          point_option_one,
+                                          point_option_two,
+                                          double_option_two,
+                                          double_option_one,
+                                          bool_option_one,
+                                          un_int_option_one,
+                                          un_int_vec_option_one);
 
-}
-
-template <int dim>
-void ParsedGridGenerator<dim,dim>::create(Triangulation<dim,dim> &tria)
-{
-  Assert(this->grid_name != "", ExcNotInitialized());
-  if (this->grid_name == "rectangle")
-    {
-      GridGenerator::subdivided_hyper_rectangle ( tria,
-                                                  this->un_int_vec_option_one,
-                                                  this->point_option_two,
-                                                  this->point_option_one,
-                                                  this->bool_option_one);
-    }
-  else if (this->grid_name == "unit_hyperball")
-    {
-      Point<dim> center;
-      double radius=1.;
-      GridGenerator::hyper_ball (tria, center, radius);
-    }
-  else if (this->grid_name == "subhyperrectangle")
-    {
-      std::vector<unsigned int> refinement(dim);
-      for (unsigned int i=0; i<dim; ++i)
-        refinement[i] = this->un_int_option_one;
-      GridGenerator::subdivided_hyper_rectangle ( tria,
-                                                  refinement,
-                                                  this->point_option_two,
-                                                  this->point_option_one);
-    }
-  else if (this->grid_name == "file")
-    {
-      GridIn<dim, dim> gi;
-      gi.attach_triangulation(tria);
-
-      std::ifstream in(this->input_grid_file_name.c_str());
-      AssertThrow(in, ExcIO());
-
-      std::string ext = extension(this->input_grid_file_name);
-      if (ext == "vtk")
-        gi.read_vtk(in);
-      else if (ext == "msh")
-        gi.read_msh(in);
-      else if (ext == "ucd" || ext == "inp")
-        gi.read_ucd(in);
-      else if (ext == "unv")
-        gi.read_unv(in);
-      else
-        Assert(false, ExcNotImplemented());
-    }
-  else
+  if (!status)
     Assert(false, ExcInternalError("Unrecognized grid."));
 }
 
 template <int dim, int spacedim>
-void ParsedGridGeneratorBase<dim, spacedim>::write(const Triangulation<dim,spacedim> &tria) const
+void ParsedGridGenerator<dim, spacedim>::write(const Triangulation<dim,spacedim> &tria) const
 {
   if (output_grid_file_name != "")
     {
@@ -361,7 +416,7 @@ namespace
 
 template <int dim, int spacedim>
 typename Triangulation<dim,spacedim>::MeshSmoothing
-ParsedGridGeneratorBase<dim, spacedim>::get_smoothing()
+ParsedGridGenerator<dim, spacedim>::get_smoothing()
 {
   int smoothing = 0;
   std::vector<std::string> ss = Utilities::split_string_list(mesh_smoothing);
@@ -401,11 +456,7 @@ ParsedGridGeneratorBase<dim, spacedim>::get_smoothing()
 D2K_NAMESPACE_CLOSE
 
 
-template class deal2lkit::ParsedGridGeneratorBase<1,1>;
-template class deal2lkit::ParsedGridGeneratorBase<1,2>;
-template class deal2lkit::ParsedGridGeneratorBase<2,2>;
-template class deal2lkit::ParsedGridGeneratorBase<2,3>;
-template class deal2lkit::ParsedGridGeneratorBase<3,3>;
+
 template class deal2lkit::ParsedGridGenerator<1,1>;
 template class deal2lkit::ParsedGridGenerator<1,2>;
 template class deal2lkit::ParsedGridGenerator<2,2>;

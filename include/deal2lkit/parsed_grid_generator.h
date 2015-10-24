@@ -38,7 +38,7 @@ D2K_NAMESPACE_OPEN
  * well as all formats supported by deal.II.
  */
 template<int dim, int spacedim=dim>
-class ParsedGridGeneratorBase : public ParameterAcceptor
+class ParsedGridGenerator : public ParameterAcceptor
 {
 public:
   /**
@@ -51,18 +51,18 @@ public:
    * parameters of this class will be filled with values from the
    * argument ParameterHandler.
    */
-  ParsedGridGeneratorBase (const std::string section_name="",
-                           const std::string grid_type="rectangle",
-                           const std::string input_grid_file="",
-                           const std::string opt_point_1="",
-                           const std::string opt_point_2="",
-                           const std::string opt_bool="false",
-                           const std::string opt_double_1="1.0",
-                           const std::string opt_double_2="0.5",
-                           const std::string opt_int="1",
-                           const std::string opt_vec_of_int="",
-                           const std::string mesh_smoothing="none",
-                           const std::string output_grid_file="");
+  ParsedGridGenerator (const std::string section_name="",
+                       const std::string grid_type="rectangle",
+                       const std::string input_grid_file="",
+                       const std::string opt_point_1="",
+                       const std::string opt_point_2="",
+                       const std::string opt_bool="false",
+                       const std::string opt_double_1="1.0",
+                       const std::string opt_double_2="0.5",
+                       const std::string opt_int="1",
+                       const std::string opt_vec_of_int="",
+                       const std::string mesh_smoothing="none",
+                       const std::string output_grid_file="");
 
   /**
    * Declare possible parameters of this class.
@@ -77,7 +77,7 @@ public:
    */
   Triangulation<dim, spacedim> *serial();
 
-  virtual void create(Triangulation<dim, spacedim> &tria);
+  void create(Triangulation<dim, spacedim> &tria);
 
   /**
      * Return a pointer to a newly created Triangulation. It will
@@ -99,7 +99,7 @@ public:
 
   void write(const Triangulation<dim, spacedim> &tria) const;
 
-// private:
+private:
 
   typename Triangulation<dim,spacedim>::MeshSmoothing
   get_smoothing();
@@ -149,68 +149,7 @@ public:
   std::string str_vec_int;
 };
 
-template<int dim, int spacedim = dim>
-class ParsedGridGenerator: public ParsedGridGeneratorBase<dim, spacedim>
-{
-public:
-  ParsedGridGenerator ( const std::string section_name="",
-                        const std::string grid_type="rectangle",
-                        const std::string input_grid_file="",
-                        const std::string opt_point_1="",
-                        const std::string opt_point_2="",
-                        const std::string opt_bool="false",
-                        const std::string opt_double_1="1.0",
-                        const std::string opt_double_2="0.5",
-                        const std::string opt_int="1",
-                        const std::string opt_vec_of_int="",
-                        const std::string mesh_smoothing="none",
-                        const std::string output_grid_file="") :
-    ParsedGridGeneratorBase<dim, spacedim>(  section_name,
-                                             grid_type,
-                                             input_grid_file,
-                                             opt_point_1,
-                                             opt_point_2,
-                                             opt_bool,
-                                             opt_double_1,
-                                             opt_double_2,
-                                             opt_int,
-                                             opt_vec_of_int,
-                                             mesh_smoothing,
-                                             output_grid_file) {};
-};
-
-template<int dim>
-class ParsedGridGenerator<dim,dim> : public ParsedGridGeneratorBase<dim,dim>
-{
-public:
-  ParsedGridGenerator ( const std::string section_name="",
-                        const std::string grid_type="rectangle",
-                        const std::string input_grid_file="",
-                        const std::string opt_point_1="",
-                        const std::string opt_point_2="",
-                        const std::string opt_bool="false",
-                        const std::string opt_double_1="1.0",
-                        const std::string opt_double_2="0.5",
-                        const std::string opt_int="1",
-                        const std::string opt_vec_of_int="",
-                        const std::string mesh_smoothing="none",
-                        const std::string output_grid_file="") :
-    ParsedGridGeneratorBase<dim,dim>(  section_name,
-                                       grid_type,
-                                       input_grid_file,
-                                       opt_point_1,
-                                       opt_point_2,
-                                       opt_bool,
-                                       opt_double_1,
-                                       opt_double_2,
-                                       opt_int,
-                                       opt_vec_of_int,
-                                       mesh_smoothing,
-                                       output_grid_file) {};
-
-  void create(Triangulation<dim, dim> &tria);
-};
-
 D2K_NAMESPACE_CLOSE
 
 #endif
+

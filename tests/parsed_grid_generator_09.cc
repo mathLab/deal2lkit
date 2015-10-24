@@ -38,6 +38,7 @@ int main ()
   initlog();
   ParsedGridGenerator<2,2> a("Unit Hyperball", "unit_hyperball");
   ParsedGridGenerator<2,2> b("Sub Hyper Rectangle", "subhyperrectangle");
+  ParsedGridGenerator<2,2> c("Hyper Shell", "hyper_shell");
 
   ParameterAcceptor::initialize();
   ParameterAcceptor::prm.log_parameters(deallog);
@@ -46,4 +47,6 @@ int main ()
   test(a);
   deallog <<"Sub Hyper Rectangle"<<std::endl;
   test(b);
+  deallog <<"Hyper Shell"<<std::endl;
+  test(c);
 }
