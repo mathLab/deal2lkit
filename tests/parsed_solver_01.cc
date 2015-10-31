@@ -21,11 +21,18 @@
 
 using namespace deal2lkit;
 
+std::function<void(Vector<double> &, bool)> default_reinit()
+{
+  return [](Vector<double> &, bool) { };
+}
+
 int main ()
 {
   initlog();
 
-  ParsedSolver<Vector<double> > solver("Solver", "cg", 100, 1e-6);
+  ParsedSolver<Vector<double> > solver("Solver", "cg", 100, 1e-6,
+                                       identity_operator<Vector<double>>(default_reinit()),
+                                       identity_operator<Vector<double>>(default_reinit()) );
   ParameterAcceptor::initialize();
 
   ParameterAcceptor::prm.log_parameters(deallog);
