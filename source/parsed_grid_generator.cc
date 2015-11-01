@@ -119,15 +119,32 @@ void ParsedGridGenerator<dim, spacedim>::declare_parameters(ParameterHandler &pr
 
   add_parameter(prm, &grid_name,
                 "Grid to generate", grid_name,
-                Patterns::Selection("file|rectangle|unit_hyperball|hyper_shell|subhyperrectangle|hyper_sphere"),
+                Patterns::Selection("file|rectangle|unit_hyperball|hyper_shell|subdivided_hyper_rectangle|hyper_sphere"),
                 "The grid to generate. You can choose among:\n"
                 "- file: read grid from a file using:\n"
                 "	- Input grid filename	    : input filename\n\n"
                 "- rectangle: create a subdivided hyperrectangle using:\n"
-                "	- Optional Point<spacedim> 1: left corner\n"
-                "	- Optional Point<spacedim> 2: right corner\n"
+                "	- Optional Point<spacedim> 1: lower-left corner\n"
+                "	- Optional Point<spacedim> 2: upper-right corner\n"
                 "	- Optional Vector of dim int: subdivisions on each direction\n"
-                "	- Optional bool 1	    : colorize grid\n");
+                "	- Optional bool 1	    : colorize grid\n"
+                "- hyper_sphere  : generate an hyper sphere with center and radius prescribed:\n\n"
+                "	- Optional Point<spacedim> : center\n"
+                "	- Optional double : radius\n"
+                "- unit_hyperball  : initialize the given triangulation with a hyperball:\n\n"
+                "	- Optional Point<spacedim> : center\n"
+                "	- Optional double : radius\n"
+                "- subdivided_hyper_rectangle   : create a coordinate-parallel parallelepiped:\n\n"
+                "	- Optional std::vector<unsigned int> : number of subdivisions in each coordinate direction\n"
+                "	- Optional Point<spacedim> : lower-left corner\n"
+                "	- Optional Point<spacedim> : upper-right corner\n"
+                "	- Optional bool 1	    : colorize grid\n"
+                "- hyper_shell   : create a gird represented by the region between two spheres with fixed center:\n\n"
+                "	- Optional Point<spacedim> : center\n"
+                "	- Optional double : inner sphere radius\n"
+                "	- Optional double : outer sphere radius\n"
+                "	- Optional unsigned int : number of cells of the resulting triangulation (In 3d, only 6, 12, and 96 are allowed)\n"
+                "	- Optional bool : colorize grid\n");
 
   add_parameter(prm, &mesh_smoothing,
                 "Mesh smoothing alogrithm", mesh_smoothing,
@@ -234,6 +251,11 @@ ParsedGridGenerator<dim, spacedim>::serial()
 
 namespace
 {
+  /**
+   * This function is used to generate grids when there are no restriction on
+   * the template parameters. This is the reason it is called inside the
+   * following functions (create_grid).
+   */
   template<int dim, int spacedim>
   void
   default_create_grid( Triangulation<dim,spacedim> &tria,
@@ -277,6 +299,10 @@ namespace
       }
   }
 
+  /**
+   * This function is used to generate grids when there spacedim is required
+   * to be equal to dim + 1.
+   */
   template<int dim>
   void
   create_grid( Triangulation<dim,dim+1> &tria,
@@ -311,6 +337,10 @@ namespace
       }
   }
 
+  /**
+   * This function is used to generate grids when there spacedim is required
+   * to be equal to dim.
+   */
   template<int dim>
   void
   create_grid( Triangulation<dim,dim> &tria,
@@ -331,7 +361,7 @@ namespace
                                    point_option_one,
                                    double_option_one);
       }
-    else if (grid_name == "subhyperrectangle")
+    else if (grid_name == "subdivided_hyper_rectangle")
       {
 
         std::vector<unsigned int> refinement(dim);
@@ -340,7 +370,8 @@ namespace
         GridGenerator::subdivided_hyper_rectangle ( tria,
                                                     refinement,
                                                     point_option_two,
-                                                    point_option_one);
+                                                    point_option_one,
+                                                    bool_option_one);
       }
     else if (grid_name == "hyper_shell")
       {
