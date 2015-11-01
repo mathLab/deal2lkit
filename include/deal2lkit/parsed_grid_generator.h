@@ -56,10 +56,12 @@ public:
                        const std::string input_grid_file="",
                        const std::string opt_point_1="",
                        const std::string opt_point_2="",
+                       const std::string opt_point_3="",
                        const std::string opt_bool="false",
                        const std::string opt_double_1="1.0",
                        const std::string opt_double_2="0.5",
-                       const std::string opt_int="1",
+                       const std::string opt_int_1="1",
+                       const std::string opt_int_2="2",
                        const std::string opt_vec_of_int="",
                        const std::string mesh_smoothing="none",
                        const std::string output_grid_file="");
@@ -161,11 +163,15 @@ private:
 
   double double_option_two;
 
+  double double_option_three;
+
   Point<spacedim> point_option_one;
 
   Point<spacedim> point_option_two;
 
   unsigned int un_int_option_one;
+
+  unsigned int un_int_option_two;
 
   bool bool_option_one;
 
@@ -184,7 +190,9 @@ private:
   std::string str_bool;
   std::string str_double_1;
   std::string str_double_2;
-  std::string str_un_int;
+  std::string str_double_3;
+  std::string str_un_int_1;
+  std::string str_un_int_2;
   std::string str_vec_int;
 };
 

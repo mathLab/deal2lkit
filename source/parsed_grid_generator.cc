@@ -48,7 +48,9 @@ ParsedGridGenerator<dim, spacedim>::ParsedGridGenerator(const std::string _secti
                                                         const std::string _bool,
                                                         const std::string _double_1,
                                                         const std::string _double_2,
-                                                        const std::string _int,
+                                                        const std::string _double_3,
+                                                        const std::string _int_1,
+                                                        const std::string _int_2,
                                                         const std::string _vec_of_int,
                                                         const std::string _mesh_smoothing,
                                                         const std::string _output_grid_file)
@@ -63,7 +65,9 @@ ParsedGridGenerator<dim, spacedim>::ParsedGridGenerator(const std::string _secti
   str_bool(_bool),
   str_double_1(_double_1),
   str_double_2(_double_2),
-  str_un_int(_int),
+  str_double_3(_double_3),
+  str_un_int_1(_int_1),
+  str_un_int_2(_int_2),
   str_vec_int(_vec_of_int)
 {}
 
@@ -119,7 +123,7 @@ void ParsedGridGenerator<dim, spacedim>::declare_parameters(ParameterHandler &pr
 
   add_parameter(prm, &grid_name,
                 "Grid to generate", grid_name,
-                Patterns::Selection("file|rectangle|unit_hyperball|hyper_shell|subdivided_hyper_rectangle|hyper_sphere"),
+                Patterns::Selection("file|rectangle|unit_hyperball|hyper_shell|subdivided_hyper_rectangle|hyper_sphere|hyper_L|half_hyper_ball|cylinder|truncated_cone|hyper_cross|hyper_cube_slit|half_hyper_shell|quarter_hyper_shell|cylinder_shell|torus|hyper_cube_with_cylindrical_hole|moebius"),
                 "The grid to generate. You can choose among:\n"
                 "- file: read grid from a file using:\n"
                 "	- Input grid filename	    : input filename\n\n"
@@ -180,6 +184,11 @@ void ParsedGridGenerator<dim, spacedim>::declare_parameters(ParameterHandler &pr
                 "Second additional double to be used in the generation of the grid. "
                 "The use of it will depend on the specific grid.");
 
+  add_parameter(prm, &double_option_three,
+                "Optional double 3", str_double_3,
+                Patterns::Double(),
+                "Second additional double to be used in the generation of the grid. "
+                "The use of it will depend on the specific grid.");
 
   add_parameter(prm, &point_option_one,
                 "Optional Point<spacedim> 1", (str_point_1==""?def_point:str_point_1),
@@ -195,7 +204,13 @@ void ParsedGridGenerator<dim, spacedim>::declare_parameters(ParameterHandler &pr
 
 
   add_parameter(prm, &un_int_option_one,
-                "Optional int 1",str_un_int,
+                "Optional int 1",str_un_int_1,
+                Patterns::Integer(),
+                "Unsigned int to be used in the generation of the grid. "
+                "The use of it will depend on the specific grid.");
+
+  add_parameter(prm, &un_int_option_one,
+                "Optional int 2",str_un_int_2,
                 Patterns::Integer(),
                 "Unsigned int to be used in the generation of the grid. "
                 "The use of it will depend on the specific grid.");
@@ -264,8 +279,10 @@ namespace
                        Point<spacedim> point_option_two,
                        double double_option_two,
                        double double_option_one,
+                       double double_option_three,
                        bool bool_option_one,
                        unsigned int un_int_option_one,
+                       unsigned int un_int_option_two,
                        std::vector<unsigned int> un_int_vec_option_one,
                        std::string input_grid_file_name)
   {
@@ -273,8 +290,8 @@ namespace
       {
         GridGenerator::subdivided_hyper_rectangle (tria,
                                                    un_int_vec_option_one,
-                                                   point_option_two,
                                                    point_option_one,
+                                                   point_option_two,
                                                    bool_option_one);
       }
     else if (grid_name == "file")
@@ -300,8 +317,7 @@ namespace
   }
 
   /**
-   * This function is used to generate grids when there spacedim is required
-   * to be equal to dim + 1.
+   * This function is used to generate grids when spacedim = dim + 1.
    */
   template<int dim>
   void
@@ -311,8 +327,10 @@ namespace
                Point<dim+1> point_option_two,
                double double_option_two,
                double double_option_one,
+               double double_option_three,
                bool bool_option_one,
                unsigned int un_int_option_one,
+               unsigned int un_int_option_two,
                std::vector<unsigned int> un_int_vec_option_one,
                std::string input_grid_file_name)
   {
@@ -330,16 +348,17 @@ namespace
                                          point_option_two,
                                          double_option_two,
                                          double_option_one,
+                                         double_option_three,
                                          bool_option_one,
                                          un_int_option_one,
+                                         un_int_option_two,
                                          un_int_vec_option_one,
                                          input_grid_file_name);
       }
   }
 
   /**
-   * This function is used to generate grids when there spacedim is required
-   * to be equal to dim.
+   * This function is used to generate grids when spacedim = dim.
    */
   template<int dim>
   void
@@ -349,8 +368,10 @@ namespace
                Point<dim> point_option_two,
                double double_option_two,
                double double_option_one,
+               double double_option_three,
                bool bool_option_one,
                unsigned int un_int_option_one,
+               unsigned int un_int_option_two,
                std::vector<unsigned int> un_int_vec_option_one,
                std::string input_grid_file_name)
   {
@@ -361,6 +382,80 @@ namespace
                                    point_option_one,
                                    double_option_one);
       }
+      if (grid_name == "hyper_L")
+        {
+          GridGenerator::hyper_L  ( tria,
+                                    double_option_one,
+                                    double_option_two );
+        }
+        if (grid_name == "half_hyper_ball")
+          {
+            GridGenerator::half_hyper_ball (tria,
+                                            point_option_one,
+                                            double_option_one);
+          }
+        if (grid_name == "cylinder")
+          {
+            GridGenerator::cylinder ( tria,
+                                      double_option_one,
+                                      double_option_two);
+          }
+        if (grid_name == "truncated_cone")
+          {
+            GridGenerator::truncated_cone  ( tria,
+                                             double_option_one,
+                                             double_option_two,
+                                             double_option_three);
+          }
+        if (grid_name == "hyper_cross")
+          {
+            GridGenerator::hyper_cross  (tria,
+                                         un_int_vec_option_one,
+                                         bool_option_one);
+          }
+        if (grid_name == "hyper_cube_slit")
+          {
+            GridGenerator::hyper_cube_slit  (tria,
+                                             double_option_one,
+                                             double_option_two,
+                                             bool_option_one);
+          }
+        if (grid_name == "half_hyper_shell")
+          {
+            GridGenerator::half_hyper_shell ( tria,
+                                              point_option_one,
+                                              double_option_one,
+                                              double_option_two,
+                                              un_int_option_one,
+                                              bool_option_one);
+          }
+        if (grid_name == "quarter_hyper_shell")
+          {
+            GridGenerator::quarter_hyper_shell  ( tria,
+                                                  point_option_one,
+                                                  double_option_one,
+                                                  double_option_two,
+                                                  un_int_option_one,
+                                                  bool_option_one);
+          }
+        if (grid_name == "cylinder_shell")
+          {
+            GridGenerator::cylinder_shell ( tria,
+                                            double_option_one,
+                                            double_option_two,
+                                            double_option_three,
+                                            un_int_option_one,
+                                            un_int_option_two);
+          }
+        if (grid_name == "hyper_cube_with_cylindrical_hole")
+          {
+            GridGenerator::hyper_cube_with_cylindrical_hole ( tria,
+                                                              double_option_one,
+                                                              double_option_two,
+                                                              double_option_three,
+                                                              un_int_option_one,
+                                                              bool_option_one );
+          }
     else if (grid_name == "subdivided_hyper_rectangle")
       {
 
@@ -382,21 +477,88 @@ namespace
                                     un_int_option_one,
                                     bool_option_one);
       }
+  }
+
+  void
+  create_grid( Triangulation<3,3> &tria,
+               std::string grid_name,
+               Point<3> point_option_one,
+               Point<3> point_option_two,
+               double double_option_two,
+               double double_option_one,
+               double double_option_three,
+               bool bool_option_one,
+               unsigned int un_int_option_one,
+               unsigned int un_int_option_two,
+               std::vector<unsigned int> un_int_vec_option_one,
+               std::string input_grid_file_name)
+  {
+  if (grid_name == "moebius")
+    {
+      GridGenerator::moebius  ( tria,
+                                un_int_option_one,
+                                un_int_option_two,
+                                double_option_two,
+                                double_option_one );
+    }
+  else
+    {
+      default_create_grid<3, 3>( tria,
+                                     grid_name,
+                                     point_option_one,
+                                     point_option_two,
+                                     double_option_two,
+                                     double_option_one,
+                                     double_option_three,
+                                     bool_option_one,
+                                     un_int_option_one,
+                                     un_int_option_two,
+                                     un_int_vec_option_one,
+                                     input_grid_file_name);
+    }
+  }
+
+  void
+  create_grid( Triangulation<2,3> &tria,
+               std::string grid_name,
+               Point<3> point_option_one,
+               Point<3> point_option_two,
+               double double_option_two,
+               double double_option_one,
+               double double_option_three,
+               bool bool_option_one,
+               unsigned int un_int_option_one,
+               unsigned int un_int_option_two,
+               std::vector<unsigned int> un_int_vec_option_one,
+               std::string input_grid_file_name)
+  {
+  if (grid_name == "torus")
+    {
+      GridGenerator::torus  (tria,
+                             double_option_one,
+                             double_option_two);
+    }
     else
       {
-        default_create_grid<dim, dim>( tria,
+        default_create_grid<2, 3>( tria,
                                        grid_name,
                                        point_option_one,
                                        point_option_two,
                                        double_option_two,
                                        double_option_one,
+                                       double_option_three,
                                        bool_option_one,
                                        un_int_option_one,
+                                       un_int_option_two,
                                        un_int_vec_option_one,
                                        input_grid_file_name);
       }
   }
 }
+
+
+
+
 
 template <int dim, int spacedim>
 void ParsedGridGenerator<dim, spacedim>::create(Triangulation<dim,spacedim> &tria)
@@ -409,8 +571,10 @@ void ParsedGridGenerator<dim, spacedim>::create(Triangulation<dim,spacedim> &tri
                point_option_two,
                double_option_two,
                double_option_one,
+               double_option_three,
                bool_option_one,
                un_int_option_one,
+               un_int_option_two,
                un_int_vec_option_one,
                input_grid_file_name);
 
