@@ -1,6 +1,6 @@
 
 DEAL:parameters:Hyper Shell::Grid to generate: hyper_shell
-DEAL:parameters:Hyper Shell::Input grid file name: 
+DEAL:parameters:Hyper Shell::Input grid file name:
 DEAL:parameters:Hyper Shell::Mesh smoothing alogrithm: none
 DEAL:parameters:Hyper Shell::Optional Point<spacedim> 1: 0,0
 DEAL:parameters:Hyper Shell::Optional Point<spacedim> 2: 1,1
@@ -9,9 +9,9 @@ DEAL:parameters:Hyper Shell::Optional double 1: 1.0
 DEAL:parameters:Hyper Shell::Optional double 2: 0.5
 DEAL:parameters:Hyper Shell::Optional int 1: 1
 DEAL:parameters:Hyper Shell::Optional vector of dim int: 1,1
-DEAL:parameters:Hyper Shell::Output grid file name: 
+DEAL:parameters:Hyper Shell::Output grid file name:
 DEAL:parameters:Hyper Sphere::Grid to generate: hyper_sphere
-DEAL:parameters:Hyper Sphere::Input grid file name: 
+DEAL:parameters:Hyper Sphere::Input grid file name:
 DEAL:parameters:Hyper Sphere::Mesh smoothing alogrithm: none
 DEAL:parameters:Hyper Sphere::Optional Point<spacedim> 1: 0,0
 DEAL:parameters:Hyper Sphere::Optional Point<spacedim> 2: 1,0
@@ -20,9 +20,9 @@ DEAL:parameters:Hyper Sphere::Optional double 1: 1.0
 DEAL:parameters:Hyper Sphere::Optional double 2: 0.5
 DEAL:parameters:Hyper Sphere::Optional int 1: 1
 DEAL:parameters:Hyper Sphere::Optional vector of dim int: 1
-DEAL:parameters:Hyper Sphere::Output grid file name: 
-DEAL:parameters:Sub Hyper Rectangle::Grid to generate: subhyperrectangle
-DEAL:parameters:Sub Hyper Rectangle::Input grid file name: 
+DEAL:parameters:Hyper Sphere::Output grid file name:
+DEAL:parameters:Sub Hyper Rectangle::Grid to generate: subdivided_hyper_rectangle
+DEAL:parameters:Sub Hyper Rectangle::Input grid file name:
 DEAL:parameters:Sub Hyper Rectangle::Mesh smoothing alogrithm: none
 DEAL:parameters:Sub Hyper Rectangle::Optional Point<spacedim> 1: 0,0
 DEAL:parameters:Sub Hyper Rectangle::Optional Point<spacedim> 2: 1,1
@@ -31,9 +31,9 @@ DEAL:parameters:Sub Hyper Rectangle::Optional double 1: 1.0
 DEAL:parameters:Sub Hyper Rectangle::Optional double 2: 0.5
 DEAL:parameters:Sub Hyper Rectangle::Optional int 1: 1
 DEAL:parameters:Sub Hyper Rectangle::Optional vector of dim int: 1,1
-DEAL:parameters:Sub Hyper Rectangle::Output grid file name: 
+DEAL:parameters:Sub Hyper Rectangle::Output grid file name:
 DEAL:parameters:Unit Hyperball::Grid to generate: unit_hyperball
-DEAL:parameters:Unit Hyperball::Input grid file name: 
+DEAL:parameters:Unit Hyperball::Input grid file name:
 DEAL:parameters:Unit Hyperball::Mesh smoothing alogrithm: none
 DEAL:parameters:Unit Hyperball::Optional Point<spacedim> 1: 0,0
 DEAL:parameters:Unit Hyperball::Optional Point<spacedim> 2: 1,1
@@ -42,7 +42,7 @@ DEAL:parameters:Unit Hyperball::Optional double 1: 1.0
 DEAL:parameters:Unit Hyperball::Optional double 2: 0.5
 DEAL:parameters:Unit Hyperball::Optional int 1: 1
 DEAL:parameters:Unit Hyperball::Optional vector of dim int: 1,1
-DEAL:parameters:Unit Hyperball::Output grid file name: 
+DEAL:parameters:Unit Hyperball::Output grid file name:
 DEAL::Unit Hyperball
 $NOD
 8
@@ -57,11 +57,11 @@ $NOD
 $ENDNOD
 $ELM
 5
-1 3 0 0 4 1 2 4 3 
-2 3 0 0 4 1 3 5 7 
-3 3 0 0 4 3 4 6 5 
-4 3 0 0 4 2 8 6 4 
-5 3 0 0 4 7 5 6 8 
+1 3 0 0 4 1 2 4 3
+2 3 0 0 4 1 3 5 7
+3 3 0 0 4 3 4 6 5
+4 3 0 0 4 2 8 6 4
+5 3 0 0 4 7 5 6 8
 $ENDELM
 DEAL::Sub Hyper Rectangle
 $NOD
@@ -73,7 +73,7 @@ $NOD
 $ENDNOD
 $ELM
 1
-1 3 0 0 4 1 2 4 3 
+1 3 0 0 4 1 2 4 3
 $ENDELM
 DEAL::Hyper Shell
 $NOD
@@ -83,7 +83,7 @@ $NOD
 $ENDNOD
 $ELM
 1
-1 3 0 0 4 1 1 2 2 
+1 3 0 0 4 1 1 2 2
 $ENDELM
 DEAL::Hyper Sphere
 $NOD
@@ -95,8 +95,8 @@ $NOD
 $ENDNOD
 $ELM
 4
-1 1 0 0 2 1 2 
-2 1 0 0 2 1 3 
-3 1 0 0 2 2 4 
-4 1 0 0 2 3 4 
+1 1 0 0 2 1 2
+2 1 0 0 2 1 3
+3 1 0 0 2 2 4
+4 1 0 0 2 3 4
 $ENDELM

@@ -77,6 +77,45 @@ public:
    */
   Triangulation<dim, spacedim> *serial();
 
+  /**
+   * Generate the grid.
+   *
+   * The following grids are implemented:
+   * - **file** -> read grid from a file (*vtk*, *msh*, *ucd*, *inp* and *unv*)
+   * using:
+   *  - Input grid filename     : input filename
+   *
+   * - **rectangle** -> create a subdivided hyperrectangle using:
+   *  - *Point<spacedim>* : lower-left corner
+   *  - *Point<spacedim>* : upper-right corner
+   *  - *std::vector<unsigned int>* : subdivisions on each direction
+   *  - *bool* : colorize grid
+   *
+   * - **hyper_sphere** -> generate an hyper sphere with center and radius
+   * prescribed:
+   *  - *Point<spacedim>* : center
+   *  - *double* : radius
+   *
+   * - **unit_hyperball** -> initialize the given triangulation with a hyperball
+   *  - *Point<spacedim>* : center
+   *  - *double* : radius
+   *
+   * - **subdivided_hyper_rectangle** -> create a coordinate-parallel parallelepiped:
+   *  - *std::vector<unsigned int>* : number of subdivisions in each coordinate
+   *  direction
+   *  - *Point<spacedim>* : lower-left corner
+   *  - *Point<spacedim>* : upper-right corner
+   *  - *bool* : colorize grid
+   *
+   * - **hyper_shell** -> create a gird represented by the region between
+   * two spheres with fixed center:
+   *  - *Point<spacedim>* : center
+   *  - *double* : inner sphere radius
+   *  - *double* : outer sphere radius
+   *  - *unsigned int* : number of cells of the resulting triangulation (In 3d,
+   *  only 6, 12, and 96 are allowed)
+   *  - *bool* : colorize grid
+   */
   void create(Triangulation<dim, spacedim> &tria);
 
   /**
@@ -152,4 +191,3 @@ private:
 D2K_NAMESPACE_CLOSE
 
 #endif
-

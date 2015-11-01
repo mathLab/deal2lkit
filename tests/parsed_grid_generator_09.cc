@@ -37,7 +37,7 @@ int main ()
 {
   initlog();
   ParsedGridGenerator<2,2> a("Unit Hyperball", "unit_hyperball");
-  ParsedGridGenerator<2,2> b("Sub Hyper Rectangle", "subhyperrectangle");
+  ParsedGridGenerator<2,2> b("Sub Hyper Rectangle", "subdivided_hyper_rectangle");
   ParsedGridGenerator<2,2> c("Hyper Shell", "hyper_shell");
   ParsedGridGenerator<1,2> d("Hyper Sphere", "hyper_sphere");
 
