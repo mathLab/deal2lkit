@@ -7,7 +7,9 @@ DEAL:parameters:Cube::Optional Point<spacedim> 2: 15,16,16
 DEAL:parameters:Cube::Optional bool 1: false
 DEAL:parameters:Cube::Optional double 1: 1.0
 DEAL:parameters:Cube::Optional double 2: 0.5
+DEAL:parameters:Cube::Optional double 3: 1.5
 DEAL:parameters:Cube::Optional int 1: 1
+DEAL:parameters:Cube::Optional int 2: 2
 DEAL:parameters:Cube::Optional vector of dim int: 1,1,1
 DEAL:parameters:Cube::Output grid file name: 
 DEAL:parameters:Rectangle::Grid to generate: rectangle
@@ -18,7 +20,9 @@ DEAL:parameters:Rectangle::Optional Point<spacedim> 2: 20,20
 DEAL:parameters:Rectangle::Optional bool 1: true
 DEAL:parameters:Rectangle::Optional double 1: 1.0
 DEAL:parameters:Rectangle::Optional double 2: 0.5
+DEAL:parameters:Rectangle::Optional double 3: 1.5
 DEAL:parameters:Rectangle::Optional int 1: 1
+DEAL:parameters:Rectangle::Optional int 2: 2
 DEAL:parameters:Rectangle::Optional vector of dim int: 1,1
 DEAL:parameters:Rectangle::Output grid file name: 
 DEAL::2D

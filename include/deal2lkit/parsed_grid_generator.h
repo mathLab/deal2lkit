@@ -56,10 +56,10 @@ public:
                        const std::string input_grid_file="",
                        const std::string opt_point_1="",
                        const std::string opt_point_2="",
-                       const std::string opt_point_3="",
                        const std::string opt_bool="false",
                        const std::string opt_double_1="1.0",
                        const std::string opt_double_2="0.5",
+                       const std::string opt_double_3="1.5",
                        const std::string opt_int_1="1",
                        const std::string opt_int_2="2",
                        const std::string opt_vec_of_int="",
@@ -102,7 +102,7 @@ public:
    *  - *Point<spacedim>* : center
    *  - *double* : radius
    *
-   * - **subdivided_hyper_rectangle** -> create a coordinate-parallel parallelepiped:
+   * - **rectangle** -> create a coordinate-parallel parallelepiped:
    *  - *std::vector<unsigned int>* : number of subdivisions in each coordinate
    *  direction
    *  - *Point<spacedim>* : lower-left corner

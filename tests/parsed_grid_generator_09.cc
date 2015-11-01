@@ -37,9 +37,21 @@ int main ()
 {
   initlog();
   ParsedGridGenerator<2,2> a("Unit Hyperball", "unit_hyperball");
-  ParsedGridGenerator<2,2> b("Sub Hyper Rectangle", "subdivided_hyper_rectangle");
+  ParsedGridGenerator<2,2> b("Sub Hyper Rectangle", "rectangle");
   ParsedGridGenerator<2,2> c("Hyper Shell", "hyper_shell");
   ParsedGridGenerator<1,2> d("Hyper Sphere", "hyper_sphere");
+  ParsedGridGenerator<3,3> e("Hyper Cube with Cylindrical Hole", "hyper_cube_with_cylindrical_hole");
+  ParsedGridGenerator<3,3> f("Hyper L", "hyper_L");
+  ParsedGridGenerator<3,3> g("Half Hyper Ball", "half_hyper_ball");
+  ParsedGridGenerator<2,2> h("Cylinder", "cylinder");
+  ParsedGridGenerator<2,2> i("Truncated Cone", "truncated_cone");
+  // ParsedGridGenerator<2,2> l("Hyper Cross", "hyper_cross");
+  ParsedGridGenerator<2,2> m("Hyper Cube Slit", "hyper_cube_slit");
+  ParsedGridGenerator<2,2> n("Half Hyper Shell", "half_hyper_shell");
+  ParsedGridGenerator<2,2> o("Quarter Hyper Shell", "quarter_hyper_shell");
+  ParsedGridGenerator<3,3> p("Cylinder Shell", "cylinder_shell");
+  ParsedGridGenerator<2,3> q("Torus", "torus");
+  // ParsedGridGenerator<3,3> q("Moebius", "moebius");
 
   ParameterAcceptor::initialize();
   ParameterAcceptor::prm.log_parameters(deallog);
@@ -52,4 +64,26 @@ int main ()
   test(c);
   deallog <<"Hyper Sphere"<<std::endl;
   test(d);
+  deallog <<"Hyper L"<<std::endl;
+  test(f);
+  deallog <<"Half Hyper Ball"<<std::endl;
+  test(g);
+  deallog <<"Cylinder"<<std::endl;
+  test(h);
+  deallog <<"Truncated Cone"<<std::endl;
+  test(i);
+  // deallog <<"Hyper Cross"<<std::endl;
+  // test(l);
+  deallog <<"Hyper Cube Slit"<<std::endl;
+  test(m);
+  deallog <<"Half Hyper Shell"<<std::endl;
+  test(n);
+  deallog <<"Quarter Hyper Shell"<<std::endl;
+  test(o);
+  deallog <<"Cylinder Shell"<<std::endl;
+  test(p);
+  deallog <<"Torus"<<std::endl;
+  test(q);
+  // deallog <<"Moebius"<<std::endl;
+  // test(r);
 }
