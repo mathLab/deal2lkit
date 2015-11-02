@@ -58,9 +58,7 @@
 #include <string>
 
 
-#ifdef DEAL_II_WITH_CXX11
 #include <functional>
-#endif
 
 using namespace dealii;
 
@@ -114,7 +112,6 @@ public:
                         double dt=0.);
 
 
-#ifdef DEAL_II_WITH_CXX11
   /** Call the given custom function to compute the custom error for
     * the given component and store the result in the given table. If
     * a name is specified, then this function can be called several
@@ -132,7 +129,6 @@ public:
                     const bool add_table_extras = false,
                     const unsigned int table_no = 0,
                     const double dt=0.);
-#endif
 
   /** Difference between two solutions in two different vector spaces. */
   template<typename DH, typename VEC>
@@ -521,7 +517,6 @@ void ErrorHandler<ntables>::error_from_exact(const Mapping<DH::dimension, DH::sp
 
 
 
-#ifdef DEAL_II_WITH_CXX11
 template <int ntables>
 template<typename DH>
 void ErrorHandler<ntables>::custom_error(const std::function<double(const unsigned int component)> &custom_error_function,
@@ -619,7 +614,6 @@ void ErrorHandler<ntables>::custom_error(const std::function<double(const unsign
     }
 }
 
-#endif
 
 
 D2K_NAMESPACE_CLOSE

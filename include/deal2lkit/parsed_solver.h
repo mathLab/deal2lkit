@@ -19,7 +19,6 @@
 #include <deal2lkit/config.h>
 #include <deal.II/base/config.h>
 
-#ifdef DEAL_II_WITH_CXX11
 
 #include <deal.II/lac/solver.h>
 #include <deal.II/lac/solver_cg.h>
@@ -243,7 +242,6 @@ void ParsedSolver<VECTOR>::parse_parameters_call_back()
 
 D2K_NAMESPACE_CLOSE
 
-#endif // CXX11
 
 #endif
 

@@ -27,9 +27,7 @@
 #include <cxxabi.h>
 #include <sstream>
 #include <sys/ioctl.h>    // to know the number of cols and rows of a shell
-#ifdef DEAL_II_WITH_CXX11
 #include <chrono>         // for TimeUtilities std::chrono
-#endif
 #include <stdio.h>
 
 #include <deal.II/base/index_set.h>
@@ -54,7 +52,6 @@ void smart_delete (SmartPointer<TYPE> &sp) DEAL_II_DEPRECATED;
 /** Demangle c++ names. */
 std::string demangle(const char *name);
 
-#ifdef DEAL_II_WITH_CXX11
 /**
  * This function collects some time utilities.
  *
@@ -109,7 +106,6 @@ private:
   std::chrono::high_resolution_clock::time_point t_end;
   std::vector<double> times;
 };
-#endif
 
 /**
  * This function copyt the text contained in @p in_file to the file
@@ -491,15 +487,8 @@ void smart_delete (SmartPointer<TYPE> &sp)
 template <typename VEC>
 void vector_shift(VEC &in_vec, double a_scalar)
 {
-#ifdef DEAL_II_WITH_CXX11
   for (auto i : in_vec.locally_owned_elements())
     in_vec[i] += a_scalar;
-#else
-  IndexSet loc = in_vec.locally_owned_elements();
-  loc.compress();
-  for (unsigned int i=0; i < loc.n_elements(); ++i)
-    in_vec[loc.nth_index_in_set(i)] += a_scalar;
-#endif
 }
 
 
