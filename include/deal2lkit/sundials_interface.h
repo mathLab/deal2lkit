@@ -23,6 +23,7 @@
 
 #ifdef DEAL_II_WITH_MPI
 #include "mpi.h"
+#endif
 
 #ifdef D2K_WITH_SUNDIALS
 #include <ida/ida_impl.h>
@@ -60,6 +61,7 @@ template<typename VEC=Vector<double> > class SundialsInterface
 
 public :
 
+#ifdef DEAL_II_WITH_MPI
   /**
    * @brief Constructor
    */
@@ -73,6 +75,9 @@ public :
   {
     return communicator;
   }
+#else
+  SundialsInterface() {};
+#endif
 
 
   /**
@@ -184,11 +189,13 @@ public :
    */
   virtual VEC &get_local_tolerances() const;
 
+#ifdef DEAL_II_WITH_MPI
 private:
   /**
    * MPI communicator needed for parallel solver.
    */
   const MPI_Comm &communicator;
+#endif
 
 };
 
@@ -196,7 +203,6 @@ private:
 
 D2K_NAMESPACE_CLOSE
 
-#endif
 #endif
 
 #endif

@@ -30,14 +30,16 @@
 #include <iostream>
 #include <iomanip>
 
+#ifdef DEAL_II_WITH_MPI
 #include <nvector/nvector_parallel.h>
-#include <nvector/nvector_serial.h>
+#endif
 
 using namespace dealii;
 
 
 D2K_NAMESPACE_OPEN
 
+#ifdef DEAL_II_WITH_MPI
 void copy(TrilinosWrappers::MPI::Vector &dst, const N_Vector &src)
 {
   IndexSet is = dst.locally_owned_elements();
@@ -77,23 +79,39 @@ void copy(N_Vector &dst, const TrilinosWrappers::MPI::BlockVector &src)
       NV_Ith_P(dst, i) = src[is.nth_index_in_set(i)];
     }
 }
-
+#endif
 
 void copy(BlockVector<double> &dst, const N_Vector &src)
 {
+#ifdef DEAL_II_WITH_MPI
   AssertDimension((unsigned int)NV_LOCLENGTH_P(src), dst.size());
+#else
+  AssertDimension((unsigned int)NV_LENGTH_S(src), dst.size());
+#endif
   for (unsigned int i=0; i<dst.size(); ++i)
     {
+#ifdef DEAL_II_WITH_MPI
       dst[i] = NV_Ith_P(src, i);
+#else
+      dst[i] = NV_Ith_S(src, i);
+#endif
     }
 }
 
 void copy(N_Vector &dst, const BlockVector<double> &src)
 {
+#ifdef DEAL_II_WITH_MPI
   AssertDimension((unsigned int)NV_LOCLENGTH_P(dst), src.size());
+#else
+  AssertDimension((unsigned int)NV_LENGTH_S(dst), src.size());
+#endif
   for (unsigned int i=0; i<src.size(); ++i)
     {
+#ifdef DEAL_II_WITH_MPI
       NV_Ith_P(dst, i) = src[i];
+#else
+      NV_Ith_S(dst, i) = src[i];
+#endif
     }
 }
 
@@ -298,11 +316,17 @@ unsigned int IDAInterface<VEC>::start_ode(VEC &solution,
 
   IndexSet is = solution.locally_owned_elements();
 
-
+#ifdef DEAL_II_WITH_MPI
   yy        = N_VNew_Parallel(solver.get_comm(), is.n_elements(), solver.n_dofs());
   yp        = N_VNew_Parallel(solver.get_comm(), is.n_elements(), solver.n_dofs());
   diff_id   = N_VNew_Parallel(solver.get_comm(), is.n_elements(), solver.n_dofs());
   abs_tolls = N_VNew_Parallel(solver.get_comm(), is.n_elements(), solver.n_dofs());
+#else
+  yy        = N_VNew_Serial(solver.n_dofs());
+  yp        = N_VNew_Serial(solver.n_dofs());
+  diff_id   = N_VNew_Serial(solver.n_dofs());
+  abs_tolls = N_VNew_Serial(solver.n_dofs());
+#endif
 
   reset_ode(initial_time, solution, solution_dot, initial_step_size, max_steps);
 
@@ -354,10 +378,17 @@ unsigned int IDAInterface<VEC>::start_ode(VEC &solution,
 
   std::cout << std::endl;
   // Free the vectors which are no longer used.
+#ifdef DEAL_II_WITH_MPI
   N_VDestroy_Parallel(yy);
   N_VDestroy_Parallel(yp);
   N_VDestroy_Parallel(abs_tolls);
   N_VDestroy_Parallel(diff_id);
+#else
+  N_VDestroy_Serial(yy);
+  N_VDestroy_Serial(yp);
+  N_VDestroy_Serial(abs_tolls);
+  N_VDestroy_Serial(diff_id);
+#endif
 
   return step_number;
 }
@@ -378,10 +409,17 @@ void IDAInterface<VEC>::reset_ode(double current_time,
   // Free the vectors which are no longer used.
   if (yy)
     {
+#ifdef DEAL_II_WITH_MPI
       N_VDestroy_Parallel(yy);
       N_VDestroy_Parallel(yp);
       N_VDestroy_Parallel(abs_tolls);
       N_VDestroy_Parallel(diff_id);
+#else
+      N_VDestroy_Serial(yy);
+      N_VDestroy_Serial(yp);
+      N_VDestroy_Serial(abs_tolls);
+      N_VDestroy_Serial(diff_id);
+#endif
     }
 
   int status;
@@ -394,10 +432,17 @@ void IDAInterface<VEC>::reset_ode(double current_time,
 
   IndexSet is = solution.locally_owned_elements();
 
+#ifdef DEAL_II_WITH_MPI
   yy        = N_VNew_Parallel(solver.get_comm(), is.n_elements(), solver.n_dofs());
   yp        = N_VNew_Parallel(solver.get_comm(), is.n_elements(), solver.n_dofs());
   diff_id   = N_VNew_Parallel(solver.get_comm(), is.n_elements(), solver.n_dofs());
   abs_tolls = N_VNew_Parallel(solver.get_comm(), is.n_elements(), solver.n_dofs());
+#else
+  yy        = N_VNew_Serial(solver.n_dofs());
+  yp        = N_VNew_Serial(solver.n_dofs());
+  diff_id   = N_VNew_Serial(solver.n_dofs());
+  abs_tolls = N_VNew_Serial(solver.n_dofs());
+#endif
 
   copy(yy, solution);
   copy(yp, solution_dot);
@@ -465,11 +510,15 @@ void IDAInterface<VEC>::reset_ode(double current_time,
 
 D2K_NAMESPACE_CLOSE
 
+template class deal2lkit::IDAInterface<BlockVector<double> >;
+
+#ifdef DEAL_II_WITH_MPI
 
 #ifdef DEAL_II_WITH_TRILINOS
 template class deal2lkit::IDAInterface<TrilinosWrappers::MPI::Vector>;
 template class deal2lkit::IDAInterface<TrilinosWrappers::MPI::BlockVector>;
 #endif
 
-template class deal2lkit::IDAInterface<BlockVector<double> >;
+#endif
+
 #endif

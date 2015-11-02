@@ -21,13 +21,17 @@
 #include <deal.II/lac/generic_linear_algebra.h>
 
 #ifdef DEAL_II_WITH_PETSC
-#include <deal.II/lac/petsc_parallel_vector.h>
 #include <deal.II/lac/petsc_solver.h>
+#ifdef DEAL_II_WITH_MPI
+#include <deal.II/lac/petsc_parallel_vector.h>
+#endif
 #endif
 
 #ifdef DEAL_II_WITH_TRILINOS
 #include <deal.II/lac/trilinos_block_vector.h>
+#ifdef DEAL_II_WITH_MPI
 #include <deal.II/lac/trilinos_parallel_block_vector.h>
+#endif
 #endif
 
 
@@ -79,6 +83,7 @@ D2K_NAMESPACE_CLOSE
 template class deal2lkit::SundialsInterface<Vector<double> >;
 template class deal2lkit::SundialsInterface<BlockVector<double> >;
 
+#ifdef DEAL_II_WITH_MPI
 #ifdef DEAL_II_WITH_PETSC
 template class deal2lkit::SundialsInterface<PETScWrappers::MPI::Vector>;
 template class deal2lkit::SundialsInterface<PETScWrappers::MPI::BlockVector>;
@@ -87,6 +92,7 @@ template class deal2lkit::SundialsInterface<PETScWrappers::MPI::BlockVector>;
 #ifdef DEAL_II_WITH_TRILINOS
 template class deal2lkit::SundialsInterface<TrilinosWrappers::MPI::Vector>;
 template class deal2lkit::SundialsInterface<TrilinosWrappers::MPI::BlockVector>;
+#endif
 #endif
 
 #endif

@@ -40,12 +40,12 @@ install:
   - export PATH=$PWD/programs/ninja:$PATH
   - export TRILINOS_DIR=$PWD/programs/trilinos
   - export DEAL_II_DIR=$PWD/programs/dealii
+  - export SUNDIALS_DIR=$PWD/programs/sundials
   - export PATH=$PWD/programs/astyle/build/gcc/bin:$PATH
   - export PATH=$PRG/numdiff/bin:$PATH
   - ./scripts/set_cache.sh
   - mkdir build
   - cd build
-  - echo $PATH
   - cmake -GNinja -DCMAKE_INSTALL_PREFIX=/home/travis/deal2lkit-inst -DD2K_ENABLE_TESTING=ON -DCMAKE_BUILD_TYPE=$BUILD_TYPE ..
   - ninja -j4 install
   #- tar cvfz /home/travis/deal2lkit-CI-build.tgz /home/travis/deal2lkit-inst
