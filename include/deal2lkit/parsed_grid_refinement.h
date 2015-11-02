@@ -33,11 +33,6 @@
 using namespace dealii;
 
 
-
-
-// I'm using std::to_string. I didn't bother changing this.
-#ifdef DEAL_II_WITH_CXX11
-
 D2K_NAMESPACE_OPEN
 /**
  * A wrapper for refinement strategies.
@@ -153,9 +148,6 @@ void ParsedGridRefinement::mark_cells(const Vector &criteria,
 }
 
 D2K_NAMESPACE_CLOSE
-
-#endif
-
 
 
 #endif

@@ -72,6 +72,14 @@ FIND_PACKAGE(deal.II 8.3 REQUIRED
 DEAL_II_INITIALIZE_CACHED_VARIABLES()
 DEAL_II_QUERY_GIT_INFORMATION()
 
+# deal2lkit requires c++11 support
+IF(NOT DEAL_II_WITH_CXX11)
+  MESSAGE(FATAL_ERROR "
+  Error! The deal.II library found at ${DEAL_II_PATH} was not configured with
+  DEAL_II_WITH_CXX11 = ON
+  Please recompile deal.II enabling this feature."
+  )
+ENDIF()
 
 #
 # The INCLUDE() and FIND_PACKAGE() search first in these directories

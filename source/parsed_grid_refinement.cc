@@ -16,7 +16,6 @@
 #include <deal2lkit/parsed_grid_refinement.h>
 
 
-#ifdef DEAL_II_WITH_CXX11
 
 D2K_NAMESPACE_OPEN
 
@@ -67,5 +66,4 @@ void ParsedGridRefinement::declare_parameters(ParameterHandler &prm)
 
 D2K_NAMESPACE_CLOSE
 
-#endif
 
