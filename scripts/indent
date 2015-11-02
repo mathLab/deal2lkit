@@ -14,7 +14,7 @@
 ##
 ## ---------------------------------------------------------------------
 
-if test ! -d source -o ! -d include -o ! -d apps ; then
+if test ! -d source -o ! -d include; then
   echo "*** This script must be run from the top-level directory of deal2lkit."
   exit
 fi
@@ -29,7 +29,7 @@ fi
 # collect a list of files and then spawn a parallel process to
 # indent all of them
 echo "--- Indenting all header and source files"
-for dir in source include apps tests; do
+for dir in source include tests examples; do
 files=`find $dir | egrep '\.(cc|h)$'` ;
     if test -n "$files" ; then
 	(astyle --options=scripts/astyle.rc $files ) &

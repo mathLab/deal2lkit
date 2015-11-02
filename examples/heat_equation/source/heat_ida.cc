@@ -73,8 +73,8 @@ Heat<dim>::Heat (const MPI_Comm &communicator)
 
   data_out("Output Parameters", "vtu"),
   Ainv( "Solver", "cg",
-        /* iter= */ 1000,
-        /* reduction= */1e-8,
+      /* iter= */ 1000,
+      /* reduction= */1e-8,
         linear_operator<VEC>(jacobian_matrix) ),
   dae(*this)
 {}
