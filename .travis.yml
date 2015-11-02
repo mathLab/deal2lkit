@@ -61,8 +61,8 @@ deploy:
     - /home/travis/deal2lkit-CI-build.tgz
     - $PRG/trilinos-serial-CI-build.tgz
     - $PRG/dealii-trilinos-serial-CI-build.tgz
-skip_cleanup: true
-on:
-  repo: mathlab/deal2lkit
-  tags: true
-  all_branches: true
+  skip_cleanup: true
+  on:
+    repo: mathlab/deal2lkit
+    tags: true
+    all_branches: true
