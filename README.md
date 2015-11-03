@@ -1,4 +1,4 @@
-# deal2lkit: A ToolKit library for deal.II (www.dealii.org) #
+# deal2lkit: A ToolKit library for deal.II (www.dealii.org) [![Build Status](https://travis-ci.org/mathLab/deal2lkit.svg)](https://travis-ci.org/mathLab/deal2lkit)
 
 Copyright (C) 2014 -- 2015 by Luca Heltai (1) 
 
@@ -87,7 +87,3 @@ for example, using wget
 =======================
 
 See the LICENCE file in this directory.
-
-6. Continuous Integration status
-================================
-[![Build Status](https://travis-ci.org/mathLab/deal2lkit.svg)](https://travis-ci.org/mathLab/deal2lkit)
