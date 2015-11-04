@@ -46,7 +46,7 @@ IF(D2K_COMPONENT_EXAMPLES)
     #
     # Special files:
     #
-    #PATTERN "particular_file.special_format"
+    PATTERN "grid-2.2.ucd" # dynamic_stokes
     )
 
   MESSAGE(STATUS "Setting up examples - Done")
