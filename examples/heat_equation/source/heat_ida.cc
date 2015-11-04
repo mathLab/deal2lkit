@@ -89,12 +89,6 @@ void Heat<dim>::declare_parameters (ParameterHandler &prm)
                   Patterns::Integer (0));
 
   add_parameter(  prm,
-                  &n_cycles,
-                  "Number of cycles",
-                  "3",
-                  Patterns::Integer (0));
-
-  add_parameter(  prm,
                   &max_time_iterations,
                   "Maximum number of time steps",
                   "10000",
@@ -113,13 +107,6 @@ void Heat<dim>::declare_parameters (ParameterHandler &prm)
                   "true",
                   Patterns::Bool());
 
-
-  add_parameter(  prm,
-                  &use_direct_solver,
-                  "Use direct solver if available",
-                  "true",
-                  Patterns::Bool());
-
   add_parameter(  prm,
                   &use_space_adaptivity,
                   "Refine mesh during transient",
@@ -130,25 +117,6 @@ void Heat<dim>::declare_parameters (ParameterHandler &prm)
                   &kelly_threshold,
                   "Threshold for restart solver",
                   "1e-2",
-                  Patterns::Double(0.0));
-
-  add_parameter(  prm,
-                  &max_cells,
-                  "Maximum number of cells",
-                  "1000",
-                  Patterns::Integer(),
-                  "If negative, there is no upper bound");
-
-  add_parameter(  prm,
-                  &top_fraction,
-                  "Top fraction",
-                  "0.3",
-                  Patterns::Double(0.0));
-
-  add_parameter(  prm,
-                  &bottom_fraction,
-                  "Bottom fraction",
-                  "0.1",
                   Patterns::Double(0.0));
 
   add_parameter(  prm,
@@ -476,7 +444,7 @@ void Heat<dim>::output_step(const double t,
   distributed_solution_dot = solution_dot;
 
   std::stringstream suffix;
-  suffix << "." << current_cycle << "." << step_number;
+  suffix << "." << step_number;
   data_out.prepare_data_output( *dof_handler,
                                 suffix.str());
   data_out.add_data_vector (distributed_solution, "u");
@@ -648,29 +616,18 @@ void Heat<dim>::set_constrained_dofs_to_zero(VEC &v) const
 template <int dim>
 void Heat<dim>::run ()
 {
+  make_grid_fe();
+  setup_dofs(true);
 
-  for (current_cycle=0; current_cycle<n_cycles; ++current_cycle)
-    {
-      if (current_cycle == 0)
-        {
-          make_grid_fe();
-          setup_dofs(true);
-        }
-      //  else
-      //    refine_mesh();
+  constraints.distribute(solution);
 
-      constraints.distribute(solution);
-
-      dae.start_ode(solution, solution_dot, max_time_iterations);
-      eh.error_from_exact(*mapping, *dof_handler, distributed_solution, exact_solution);
-    }
+  dae.start_ode(solution, solution_dot, max_time_iterations);
+  eh.error_from_exact(*mapping, *dof_handler, distributed_solution, exact_solution);
 
   eh.output_table(pcout);
 
-  // std::ofstream f("errors.txt");
   computing_timer.print_summary();
   timer_outfile.close();
-  // f.close();
 }
 
 template class Heat<2>;
