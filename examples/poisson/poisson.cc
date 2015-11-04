@@ -23,7 +23,7 @@
 #include <deal2lkit/utilities.h>
 
 
-#include <deal.II/lac/sparse_direct.h>
+#include <deal.II/lac/sparse_ilu.h>
 #include <deal.II/lac/precondition.h>
 #include <deal.II/lac/sparsity_pattern.h>
 #include <deal.II/lac/dynamic_sparsity_pattern.h>
@@ -85,7 +85,7 @@ int main(int argc, char **argv)
   Vector<double> solution;
   Vector<double> rhs;
 
-  PreconditionIdentity prec;
+  SparseILU<double> prec;
 
   ParsedSolver<Vector<double> > inverse("Solver",
                                         "cg",
@@ -93,7 +93,6 @@ int main(int argc, char **argv)
                                         1e-8,
                                         linear_operator<Vector<double> >(matrix),
                                         linear_operator<Vector<double> >(matrix, prec));
-
 
 
   shared_ptr<Triangulation<dim,spacedim> > tria;
@@ -105,7 +104,6 @@ int main(int argc, char **argv)
 
   // Generate Triangulation, DoFHandler, and FE
   ParameterAcceptor::initialize("poisson.prm", "used_parameters.prm");
-
 
   tria = SP(pgg.serial());
   pgg.write(*tria);
@@ -136,15 +134,11 @@ int main(int argc, char **argv)
       constraints.close();
 
       MatrixCreator::create_laplace_matrix(dh, quad, matrix, force, rhs, &kappa);
-
       constraints.condense(matrix, rhs);
 
+      prec.initialize(matrix);
 
-      // solution = inverse*rhs;
-
-      SparseDirectUMFPACK solver;
-      solver.initialize(matrix);
-      solver.vmult(solution, rhs);
+      solution = inverse*rhs;
       constraints.distribute(solution);
 
       pdo.prepare_data_output(dh, std::to_string(i));
