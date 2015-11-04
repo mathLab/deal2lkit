@@ -133,9 +133,8 @@ int main(int argc, char **argv)
       bcs.interpolate_boundary_values(dh, constraints);
       constraints.close();
 
-      MatrixCreator::create_laplace_matrix(dh, quad, matrix, force, rhs, &kappa);
-      constraints.condense(matrix, rhs);
-
+      MatrixCreator::create_laplace_matrix(dh, quad, matrix, force,
+                                           rhs, &kappa, constraints);
       prec.initialize(matrix);
 
       solution = inverse*rhs;
