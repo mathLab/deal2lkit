@@ -30,7 +30,7 @@ SET(TARGET poisson)
 ############################################################
 CMAKE_MINIMUM_REQUIRED(VERSION 2.8.8)
 
-FIND_PACKAGE(deal.II 8.3 REQUIRED
+FIND_PACKAGE(deal.II 8.4 REQUIRED
   HINTS ${deal.II_DIR} ${DEAL_II_DIR} ../ ../../ $ENV{DEAL_II_DIR}
   )
 DEAL_II_INITIALIZE_CACHED_VARIABLES()
