@@ -48,4 +48,3 @@ int main ()
   deallog <<"3D"<<std::endl;
   test(b);
 }
-
