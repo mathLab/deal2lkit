@@ -1,10 +1,10 @@
 
+DEAL:parameters:Cube::Colorize: false
 DEAL:parameters:Cube::Grid to generate: rectangle
 DEAL:parameters:Cube::Input grid file name: 
 DEAL:parameters:Cube::Mesh smoothing alogrithm: none
 DEAL:parameters:Cube::Optional Point<spacedim> 1: 0,0,0
 DEAL:parameters:Cube::Optional Point<spacedim> 2: 1,1,1
-DEAL:parameters:Cube::Optional bool 1: false
 DEAL:parameters:Cube::Optional double 1: 1.0
 DEAL:parameters:Cube::Optional double 2: 0.5
 DEAL:parameters:Cube::Optional double 3: 1.5
@@ -12,12 +12,12 @@ DEAL:parameters:Cube::Optional int 1: 1
 DEAL:parameters:Cube::Optional int 2: 2
 DEAL:parameters:Cube::Optional vector of dim int: 1,1,1
 DEAL:parameters:Cube::Output grid file name: 
+DEAL:parameters:Rectangle::Colorize: false
 DEAL:parameters:Rectangle::Grid to generate: rectangle
 DEAL:parameters:Rectangle::Input grid file name: 
 DEAL:parameters:Rectangle::Mesh smoothing alogrithm: none
 DEAL:parameters:Rectangle::Optional Point<spacedim> 1: 0,0
 DEAL:parameters:Rectangle::Optional Point<spacedim> 2: 1,1
-DEAL:parameters:Rectangle::Optional bool 1: false
 DEAL:parameters:Rectangle::Optional double 1: 1.0
 DEAL:parameters:Rectangle::Optional double 2: 0.5
 DEAL:parameters:Rectangle::Optional double 3: 1.5
