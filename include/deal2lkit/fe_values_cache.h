@@ -116,7 +116,7 @@ public:
            ExcMessage("You did not call cache_local_solution_vector with the right types!"));
 
     return  cache.template get<std::vector<Number> >(dofs_name);
-  };
+  }
 
 
   /**
