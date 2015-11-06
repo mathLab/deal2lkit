@@ -45,7 +45,7 @@ ParsedGridGenerator<dim, spacedim>::ParsedGridGenerator(const std::string _secti
                                                         const std::string _input_grid_file,
                                                         const std::string _point_1,
                                                         const std::string _point_2,
-                                                        const std::string _bool,
+                                                        const std::string _colorize,
                                                         const std::string _double_1,
                                                         const std::string _double_2,
                                                         const std::string _double_3,
@@ -62,7 +62,7 @@ ParsedGridGenerator<dim, spacedim>::ParsedGridGenerator(const std::string _secti
   output_grid_file_name(_output_grid_file),
   str_point_1(_point_1),
   str_point_2(_point_2),
-  str_bool(_bool),
+  str_colorize(_colorize),
   str_double_1(_double_1),
   str_double_2(_double_2),
   str_double_3(_double_3),
@@ -278,10 +278,10 @@ void ParsedGridGenerator<dim, spacedim>::declare_parameters(ParameterHandler &pr
                 "Vector of positive unsigned int to be used in the generation of the grid. "
                 "The use of it will depend on the specific grid.");
 
-  add_parameter(prm, &bool_option_one,
-                "Optional bool 1",str_bool,
+  add_parameter(prm, &colorize,
+                "Colorize",str_colorize,
                 Patterns::Bool(),
-                "Bool be used in the generation of the grid. "
+                "Bool be used in the generation of the grid to set colorize. "
                 "The use of it will depend on the specific grid.");
 
 
@@ -337,7 +337,7 @@ namespace
                        double double_option_two,
                        double double_option_one,
                        double double_option_three,
-                       bool bool_option_one,
+                       bool colorize,
                        unsigned int un_int_option_one,
                        unsigned int un_int_option_two,
                        std::vector<unsigned int> un_int_vec_option_one,
@@ -349,7 +349,7 @@ namespace
                                                    un_int_vec_option_one,
                                                    point_option_two,
                                                    point_option_one,
-                                                   bool_option_one);
+                                                   colorize);
       }
     else if (grid_name == "file")
       {
@@ -385,7 +385,7 @@ namespace
                double double_option_two,
                double double_option_one,
                double double_option_three,
-               bool bool_option_one,
+               bool colorize,
                unsigned int un_int_option_one,
                unsigned int un_int_option_two,
                std::vector<unsigned int> un_int_vec_option_one,
@@ -406,7 +406,7 @@ namespace
                                          double_option_two,
                                          double_option_one,
                                          double_option_three,
-                                         bool_option_one,
+                                         colorize,
                                          un_int_option_one,
                                          un_int_option_two,
                                          un_int_vec_option_one,
@@ -426,7 +426,7 @@ namespace
                double double_option_two,
                double double_option_one,
                double double_option_three,
-               bool bool_option_one,
+               bool colorize,
                unsigned int un_int_option_one,
                unsigned int un_int_option_two,
                std::vector<unsigned int> un_int_vec_option_one,
@@ -468,14 +468,14 @@ namespace
       {
         GridGenerator::hyper_cross  (tria,
                                      un_int_vec_option_one,
-                                     bool_option_one);
+                                     colorize);
       }
     else if (grid_name == "hyper_cube_slit")
       {
         GridGenerator::hyper_cube_slit  (tria,
                                          double_option_two,
                                          double_option_one,
-                                         bool_option_one);
+                                         colorize);
       }
     else if (grid_name == "half_hyper_shell")
       {
@@ -484,7 +484,7 @@ namespace
                                           double_option_two,
                                           double_option_one,
                                           un_int_option_one,
-                                          bool_option_one);
+                                          colorize);
       }
     else if (grid_name == "quarter_hyper_shell")
       {
@@ -493,7 +493,7 @@ namespace
                                               double_option_two,
                                               double_option_one,
                                               un_int_option_one,
-                                              bool_option_one);
+                                              colorize);
       }
     else if (grid_name == "cylinder_shell")
       {
@@ -511,7 +511,7 @@ namespace
                                                           double_option_one,
                                                           double_option_three,
                                                           un_int_option_one,
-                                                          bool_option_one);
+                                                          colorize);
       }
     else if (grid_name == "hyper_shell")
       {
@@ -520,7 +520,7 @@ namespace
                                     double_option_two,
                                     double_option_one,
                                     un_int_option_one,
-                                    bool_option_one);
+                                    colorize);
       }
     else
       {
@@ -531,7 +531,7 @@ namespace
                                        double_option_two,
                                        double_option_one,
                                        double_option_three,
-                                       bool_option_one,
+                                       colorize,
                                        un_int_option_one,
                                        un_int_option_two,
                                        un_int_vec_option_one,
@@ -550,7 +550,7 @@ namespace
                double double_option_two,
                double double_option_one,
                double double_option_three,
-               bool bool_option_one,
+               bool colorize,
                unsigned int un_int_option_one,
                unsigned int un_int_option_two,
                std::vector<unsigned int> un_int_vec_option_one,
@@ -573,7 +573,7 @@ namespace
                         double_option_two,
                         double_option_one,
                         double_option_three,
-                        bool_option_one,
+                        colorize,
                         un_int_option_one,
                         un_int_option_two,
                         un_int_vec_option_one,
@@ -592,7 +592,7 @@ namespace
                double double_option_two,
                double double_option_one,
                double double_option_three,
-               bool bool_option_one,
+               bool colorize,
                unsigned int un_int_option_one,
                unsigned int un_int_option_two,
                std::vector<unsigned int> un_int_vec_option_one,
@@ -612,7 +612,7 @@ namespace
                       double_option_two,
                       double_option_one,
                       double_option_three,
-                      bool_option_one,
+                      colorize,
                       un_int_option_one,
                       un_int_option_two,
                       un_int_vec_option_one,
@@ -638,7 +638,7 @@ void ParsedGridGenerator<dim, spacedim>::create(Triangulation<dim,spacedim> &tri
                double_option_two,
                double_option_one,
                double_option_three,
-               bool_option_one,
+               colorize,
                un_int_option_one,
                un_int_option_two,
                un_int_vec_option_one,

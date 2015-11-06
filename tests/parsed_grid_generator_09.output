@@ -1,10 +1,10 @@
 
+DEAL:parameters:Cylinder::Colorize: false
 DEAL:parameters:Cylinder::Grid to generate: cylinder
 DEAL:parameters:Cylinder::Input grid file name: 
 DEAL:parameters:Cylinder::Mesh smoothing alogrithm: none
 DEAL:parameters:Cylinder::Optional Point<spacedim> 1: 0,0
 DEAL:parameters:Cylinder::Optional Point<spacedim> 2: 1,1
-DEAL:parameters:Cylinder::Optional bool 1: false
 DEAL:parameters:Cylinder::Optional double 1: 1.0
 DEAL:parameters:Cylinder::Optional double 2: 0.5
 DEAL:parameters:Cylinder::Optional double 3: 1.5
@@ -12,12 +12,12 @@ DEAL:parameters:Cylinder::Optional int 1: 1
 DEAL:parameters:Cylinder::Optional int 2: 2
 DEAL:parameters:Cylinder::Optional vector of dim int: 1,1
 DEAL:parameters:Cylinder::Output grid file name: 
+DEAL:parameters:Cylinder Shell::Colorize: false
 DEAL:parameters:Cylinder Shell::Grid to generate: cylinder_shell
 DEAL:parameters:Cylinder Shell::Input grid file name: 
 DEAL:parameters:Cylinder Shell::Mesh smoothing alogrithm: none
 DEAL:parameters:Cylinder Shell::Optional Point<spacedim> 1: 0,0,0
 DEAL:parameters:Cylinder Shell::Optional Point<spacedim> 2: 1,1,1
-DEAL:parameters:Cylinder Shell::Optional bool 1: false
 DEAL:parameters:Cylinder Shell::Optional double 1: 1.0
 DEAL:parameters:Cylinder Shell::Optional double 2: 0.5
 DEAL:parameters:Cylinder Shell::Optional double 3: 1.5
@@ -25,12 +25,12 @@ DEAL:parameters:Cylinder Shell::Optional int 1: 0
 DEAL:parameters:Cylinder Shell::Optional int 2: 0
 DEAL:parameters:Cylinder Shell::Optional vector of dim int: 1,1,1
 DEAL:parameters:Cylinder Shell::Output grid file name: 
+DEAL:parameters:Half Hyper Ball::Colorize: false
 DEAL:parameters:Half Hyper Ball::Grid to generate: half_hyper_ball
 DEAL:parameters:Half Hyper Ball::Input grid file name: 
 DEAL:parameters:Half Hyper Ball::Mesh smoothing alogrithm: none
 DEAL:parameters:Half Hyper Ball::Optional Point<spacedim> 1: 0,0,0
 DEAL:parameters:Half Hyper Ball::Optional Point<spacedim> 2: 1,1,1
-DEAL:parameters:Half Hyper Ball::Optional bool 1: false
 DEAL:parameters:Half Hyper Ball::Optional double 1: 1.0
 DEAL:parameters:Half Hyper Ball::Optional double 2: 0.5
 DEAL:parameters:Half Hyper Ball::Optional double 3: 1.5
@@ -38,12 +38,12 @@ DEAL:parameters:Half Hyper Ball::Optional int 1: 1
 DEAL:parameters:Half Hyper Ball::Optional int 2: 2
 DEAL:parameters:Half Hyper Ball::Optional vector of dim int: 1,1,1
 DEAL:parameters:Half Hyper Ball::Output grid file name: 
+DEAL:parameters:Half Hyper Shell::Colorize: false
 DEAL:parameters:Half Hyper Shell::Grid to generate: half_hyper_shell
 DEAL:parameters:Half Hyper Shell::Input grid file name: 
 DEAL:parameters:Half Hyper Shell::Mesh smoothing alogrithm: none
 DEAL:parameters:Half Hyper Shell::Optional Point<spacedim> 1: 0,0
 DEAL:parameters:Half Hyper Shell::Optional Point<spacedim> 2: 1,1
-DEAL:parameters:Half Hyper Shell::Optional bool 1: false
 DEAL:parameters:Half Hyper Shell::Optional double 1: 1.0
 DEAL:parameters:Half Hyper Shell::Optional double 2: 0.5
 DEAL:parameters:Half Hyper Shell::Optional double 3: 1.5
@@ -51,12 +51,12 @@ DEAL:parameters:Half Hyper Shell::Optional int 1: 1
 DEAL:parameters:Half Hyper Shell::Optional int 2: 2
 DEAL:parameters:Half Hyper Shell::Optional vector of dim int: 1,1
 DEAL:parameters:Half Hyper Shell::Output grid file name: 
+DEAL:parameters:Hyper Cube Slit::Colorize: false
 DEAL:parameters:Hyper Cube Slit::Grid to generate: hyper_cube_slit
 DEAL:parameters:Hyper Cube Slit::Input grid file name: 
 DEAL:parameters:Hyper Cube Slit::Mesh smoothing alogrithm: none
 DEAL:parameters:Hyper Cube Slit::Optional Point<spacedim> 1: 0,0
 DEAL:parameters:Hyper Cube Slit::Optional Point<spacedim> 2: 1,1
-DEAL:parameters:Hyper Cube Slit::Optional bool 1: false
 DEAL:parameters:Hyper Cube Slit::Optional double 1: 1.0
 DEAL:parameters:Hyper Cube Slit::Optional double 2: 0.5
 DEAL:parameters:Hyper Cube Slit::Optional double 3: 1.5
@@ -64,12 +64,12 @@ DEAL:parameters:Hyper Cube Slit::Optional int 1: 1
 DEAL:parameters:Hyper Cube Slit::Optional int 2: 2
 DEAL:parameters:Hyper Cube Slit::Optional vector of dim int: 1,1
 DEAL:parameters:Hyper Cube Slit::Output grid file name: 
+DEAL:parameters:Hyper Cube with Cylindrical Hole::Colorize: false
 DEAL:parameters:Hyper Cube with Cylindrical Hole::Grid to generate: hyper_cube_with_cylindrical_hole
 DEAL:parameters:Hyper Cube with Cylindrical Hole::Input grid file name: 
 DEAL:parameters:Hyper Cube with Cylindrical Hole::Mesh smoothing alogrithm: none
 DEAL:parameters:Hyper Cube with Cylindrical Hole::Optional Point<spacedim> 1: 0,0,0
 DEAL:parameters:Hyper Cube with Cylindrical Hole::Optional Point<spacedim> 2: 1,1,1
-DEAL:parameters:Hyper Cube with Cylindrical Hole::Optional bool 1: false
 DEAL:parameters:Hyper Cube with Cylindrical Hole::Optional double 1: 1.0
 DEAL:parameters:Hyper Cube with Cylindrical Hole::Optional double 2: 0.5
 DEAL:parameters:Hyper Cube with Cylindrical Hole::Optional double 3: 1.5
@@ -77,12 +77,12 @@ DEAL:parameters:Hyper Cube with Cylindrical Hole::Optional int 1: 1
 DEAL:parameters:Hyper Cube with Cylindrical Hole::Optional int 2: 2
 DEAL:parameters:Hyper Cube with Cylindrical Hole::Optional vector of dim int: 1,1,1
 DEAL:parameters:Hyper Cube with Cylindrical Hole::Output grid file name: 
+DEAL:parameters:Hyper L::Colorize: false
 DEAL:parameters:Hyper L::Grid to generate: hyper_L
 DEAL:parameters:Hyper L::Input grid file name: 
 DEAL:parameters:Hyper L::Mesh smoothing alogrithm: none
 DEAL:parameters:Hyper L::Optional Point<spacedim> 1: 0,0,0
 DEAL:parameters:Hyper L::Optional Point<spacedim> 2: 1,1,1
-DEAL:parameters:Hyper L::Optional bool 1: false
 DEAL:parameters:Hyper L::Optional double 1: 1.0
 DEAL:parameters:Hyper L::Optional double 2: 0.5
 DEAL:parameters:Hyper L::Optional double 3: 1.5
@@ -90,12 +90,12 @@ DEAL:parameters:Hyper L::Optional int 1: 1
 DEAL:parameters:Hyper L::Optional int 2: 2
 DEAL:parameters:Hyper L::Optional vector of dim int: 1,1,1
 DEAL:parameters:Hyper L::Output grid file name: 
+DEAL:parameters:Hyper Shell::Colorize: false
 DEAL:parameters:Hyper Shell::Grid to generate: hyper_shell
 DEAL:parameters:Hyper Shell::Input grid file name: 
 DEAL:parameters:Hyper Shell::Mesh smoothing alogrithm: none
 DEAL:parameters:Hyper Shell::Optional Point<spacedim> 1: 0,0
 DEAL:parameters:Hyper Shell::Optional Point<spacedim> 2: 1,1
-DEAL:parameters:Hyper Shell::Optional bool 1: false
 DEAL:parameters:Hyper Shell::Optional double 1: 1.0
 DEAL:parameters:Hyper Shell::Optional double 2: 0.5
 DEAL:parameters:Hyper Shell::Optional double 3: 1.5
@@ -103,12 +103,12 @@ DEAL:parameters:Hyper Shell::Optional int 1: 0
 DEAL:parameters:Hyper Shell::Optional int 2: 0
 DEAL:parameters:Hyper Shell::Optional vector of dim int: 1,1
 DEAL:parameters:Hyper Shell::Output grid file name: 
+DEAL:parameters:Hyper Sphere::Colorize: false
 DEAL:parameters:Hyper Sphere::Grid to generate: hyper_sphere
 DEAL:parameters:Hyper Sphere::Input grid file name: 
 DEAL:parameters:Hyper Sphere::Mesh smoothing alogrithm: none
 DEAL:parameters:Hyper Sphere::Optional Point<spacedim> 1: 0,0
 DEAL:parameters:Hyper Sphere::Optional Point<spacedim> 2: 1,0
-DEAL:parameters:Hyper Sphere::Optional bool 1: false
 DEAL:parameters:Hyper Sphere::Optional double 1: 1.0
 DEAL:parameters:Hyper Sphere::Optional double 2: 0.5
 DEAL:parameters:Hyper Sphere::Optional double 3: 1.5
@@ -116,12 +116,12 @@ DEAL:parameters:Hyper Sphere::Optional int 1: 1
 DEAL:parameters:Hyper Sphere::Optional int 2: 2
 DEAL:parameters:Hyper Sphere::Optional vector of dim int: 1
 DEAL:parameters:Hyper Sphere::Output grid file name: 
+DEAL:parameters:Quarter Hyper Shell::Colorize: false
 DEAL:parameters:Quarter Hyper Shell::Grid to generate: quarter_hyper_shell
 DEAL:parameters:Quarter Hyper Shell::Input grid file name: 
 DEAL:parameters:Quarter Hyper Shell::Mesh smoothing alogrithm: none
 DEAL:parameters:Quarter Hyper Shell::Optional Point<spacedim> 1: 0,0
 DEAL:parameters:Quarter Hyper Shell::Optional Point<spacedim> 2: 1,1
-DEAL:parameters:Quarter Hyper Shell::Optional bool 1: false
 DEAL:parameters:Quarter Hyper Shell::Optional double 1: 1.0
 DEAL:parameters:Quarter Hyper Shell::Optional double 2: 0.5
 DEAL:parameters:Quarter Hyper Shell::Optional double 3: 1.5
@@ -129,12 +129,12 @@ DEAL:parameters:Quarter Hyper Shell::Optional int 1: 1
 DEAL:parameters:Quarter Hyper Shell::Optional int 2: 2
 DEAL:parameters:Quarter Hyper Shell::Optional vector of dim int: 1,1
 DEAL:parameters:Quarter Hyper Shell::Output grid file name: 
+DEAL:parameters:Sub Hyper Rectangle::Colorize: false
 DEAL:parameters:Sub Hyper Rectangle::Grid to generate: rectangle
 DEAL:parameters:Sub Hyper Rectangle::Input grid file name: 
 DEAL:parameters:Sub Hyper Rectangle::Mesh smoothing alogrithm: none
 DEAL:parameters:Sub Hyper Rectangle::Optional Point<spacedim> 1: 0,0
 DEAL:parameters:Sub Hyper Rectangle::Optional Point<spacedim> 2: 1,1
-DEAL:parameters:Sub Hyper Rectangle::Optional bool 1: false
 DEAL:parameters:Sub Hyper Rectangle::Optional double 1: 1.0
 DEAL:parameters:Sub Hyper Rectangle::Optional double 2: 0.5
 DEAL:parameters:Sub Hyper Rectangle::Optional double 3: 1.5
@@ -142,12 +142,12 @@ DEAL:parameters:Sub Hyper Rectangle::Optional int 1: 1
 DEAL:parameters:Sub Hyper Rectangle::Optional int 2: 2
 DEAL:parameters:Sub Hyper Rectangle::Optional vector of dim int: 1,1
 DEAL:parameters:Sub Hyper Rectangle::Output grid file name: 
+DEAL:parameters:Torus::Colorize: false
 DEAL:parameters:Torus::Grid to generate: torus
 DEAL:parameters:Torus::Input grid file name: 
 DEAL:parameters:Torus::Mesh smoothing alogrithm: none
 DEAL:parameters:Torus::Optional Point<spacedim> 1: 0,0,0
 DEAL:parameters:Torus::Optional Point<spacedim> 2: 1,1,0
-DEAL:parameters:Torus::Optional bool 1: false
 DEAL:parameters:Torus::Optional double 1: 1.0
 DEAL:parameters:Torus::Optional double 2: 0.5
 DEAL:parameters:Torus::Optional double 3: 1.5
@@ -155,12 +155,12 @@ DEAL:parameters:Torus::Optional int 1: 1
 DEAL:parameters:Torus::Optional int 2: 2
 DEAL:parameters:Torus::Optional vector of dim int: 1,1
 DEAL:parameters:Torus::Output grid file name: 
+DEAL:parameters:Truncated Cone::Colorize: false
 DEAL:parameters:Truncated Cone::Grid to generate: truncated_cone
 DEAL:parameters:Truncated Cone::Input grid file name: 
 DEAL:parameters:Truncated Cone::Mesh smoothing alogrithm: none
 DEAL:parameters:Truncated Cone::Optional Point<spacedim> 1: 0,0
 DEAL:parameters:Truncated Cone::Optional Point<spacedim> 2: 1,1
-DEAL:parameters:Truncated Cone::Optional bool 1: false
 DEAL:parameters:Truncated Cone::Optional double 1: 1.0
 DEAL:parameters:Truncated Cone::Optional double 2: 0.5
 DEAL:parameters:Truncated Cone::Optional double 3: 1.5
@@ -168,12 +168,12 @@ DEAL:parameters:Truncated Cone::Optional int 1: 1
 DEAL:parameters:Truncated Cone::Optional int 2: 2
 DEAL:parameters:Truncated Cone::Optional vector of dim int: 1,1
 DEAL:parameters:Truncated Cone::Output grid file name: 
+DEAL:parameters:Unit Hyperball::Colorize: false
 DEAL:parameters:Unit Hyperball::Grid to generate: unit_hyperball
 DEAL:parameters:Unit Hyperball::Input grid file name: 
 DEAL:parameters:Unit Hyperball::Mesh smoothing alogrithm: none
 DEAL:parameters:Unit Hyperball::Optional Point<spacedim> 1: 0,0
 DEAL:parameters:Unit Hyperball::Optional Point<spacedim> 2: 1,1
-DEAL:parameters:Unit Hyperball::Optional bool 1: false
 DEAL:parameters:Unit Hyperball::Optional double 1: 1.0
 DEAL:parameters:Unit Hyperball::Optional double 2: 0.5
 DEAL:parameters:Unit Hyperball::Optional double 3: 1.5
