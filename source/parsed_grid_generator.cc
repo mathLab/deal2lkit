@@ -371,6 +371,12 @@ namespace
         else
           Assert(false, ExcNotImplemented());
       }
+    // silence warnings of unused variables
+    (void)double_option_one;
+    (void)double_option_two;
+    (void)double_option_three;
+    (void)un_int_option_one;
+    (void)un_int_option_two;
   }
 
   /**
