@@ -160,6 +160,10 @@ bool copy_file(const std::string &files, const std::string &destination);
  */
 bool rename_file(const std::string &file, const std::string &new_file);
 
+/// Cannot execute std::system(command)
+DeclException1(ExcCannottExecuteCommand, std::string,
+               << "Cannot execute command " << arg1 << "\n Please verify you have "
+               << "the needed permissions.");
 
 // Forward declaration for OverWriteStream:
 template<typename Stream = std::ostream> class OverWriteStream;
