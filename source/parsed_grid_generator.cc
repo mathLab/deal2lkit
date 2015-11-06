@@ -500,9 +500,9 @@ namespace
         GridGenerator::cylinder_shell ( tria,
                                         double_option_three,
                                         double_option_two,
-                                        double_option_one/*,
+                                        double_option_one,
                                         un_int_option_one,
-                                        un_int_option_two*/);
+                                        un_int_option_two);
       }
     else if (grid_name == "hyper_cube_with_cylindrical_hole")
       {
@@ -518,9 +518,9 @@ namespace
         GridGenerator::hyper_shell( tria,
                                     point_option_one,
                                     double_option_two,
-                                    double_option_one/*,
+                                    double_option_one,
                                     un_int_option_one,
-                                    bool_option_one*/);
+                                    bool_option_one);
       }
     else
       {
