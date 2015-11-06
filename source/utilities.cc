@@ -122,7 +122,9 @@ bool create_directory(const std::string &name)
   Assert((std::find(name.begin(), name.end(), ' ') == name.end()),
          ExcMessage("Invalid name of directory."));
   std::string cmd = "mkdir -p " + name;
-  std::system(cmd.c_str());
+  int status;
+  status = std::system(cmd.c_str());
+  AssertThrow(status == 0, ExcCannottExecuteCommand(cmd));
   return dir_exists(name);
 }
 
@@ -130,6 +132,7 @@ bool copy_files(const std::string &files, const std::string &destination)
 {
   create_directory("./"+destination);
   bool result = true;
+  int status;
   std::vector<std::string> strs;
   std::string new_file;
   strs = dealii::Utilities::split_string_list(files, ' ');
@@ -138,7 +141,8 @@ bool copy_files(const std::string &files, const std::string &destination)
       Assert(file_exists(strs[i]), ExcMessage("Invalid name of file"));
       new_file = destination+"/"+strs[i];
       std::string cmd = "cp " + strs[i] + " " + new_file;
-      std::system( cmd.c_str() );
+      status = std::system( cmd.c_str() );
+      AssertThrow(status == 0, ExcCannottExecuteCommand(cmd));
       result &= file_exists(new_file);
     }
   return result;
@@ -148,7 +152,9 @@ bool copy_file(const std::string &file, const std::string &new_file)
 {
   Assert(file_exists(file),ExcMessage("No such file or directory"));
   std::string cmd = "cp " + file + " " + new_file ;
-  std::system( cmd.c_str() );
+  int status;
+  status = std::system(cmd.c_str());
+  AssertThrow(status == 0, ExcCannottExecuteCommand(cmd));
   return file_exists(new_file);
 }
 
@@ -156,7 +162,9 @@ bool rename_file(const std::string &file, const std::string &new_file)
 {
   Assert(file_exists(file),ExcMessage("No such file or directory"));
   std::string cmd = "mv " + file + " " + new_file;
-  std::system( cmd.c_str() );
+  int status;
+  status = std::system(cmd.c_str());
+  AssertThrow(status == 0, ExcCannottExecuteCommand(cmd));
   return file_exists(new_file);
 }
 
