@@ -54,6 +54,8 @@ int main ()
                              "0", "0","","none","");
   ParsedGridGenerator<2,3> q("Torus", "torus");
   // ParsedGridGenerator<3,3> q("Moebius", "moebius");
+  ParsedGridGenerator<2,2> s("Cheese", "cheese", "", "", "", "false", "1.0", "0.5", "1.5",
+                             "0", "0","1,2","none","");
 
   ParameterAcceptor::initialize();
   ParameterAcceptor::prm.log_parameters(deallog);
@@ -88,4 +90,6 @@ int main ()
   test(q);
   // deallog <<"Moebius"<<std::endl;
   // test(r);
+  deallog <<"Cheese"<<std::endl;
+  test(s);
 }

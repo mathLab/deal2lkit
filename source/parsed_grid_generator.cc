@@ -123,7 +123,7 @@ void ParsedGridGenerator<dim, spacedim>::declare_parameters(ParameterHandler &pr
 
   add_parameter(prm, &grid_name,
                 "Grid to generate", grid_name,
-                Patterns::Selection("file|rectangle|unit_hyperball|hyper_shell|subdivided_hyper_rectangle|hyper_sphere|hyper_L|half_hyper_ball|cylinder|truncated_cone|hyper_cross|hyper_cube_slit|half_hyper_shell|quarter_hyper_shell|cylinder_shell|torus|hyper_cube_with_cylindrical_hole|moebius"),
+                Patterns::Selection("file|rectangle|unit_hyperball|hyper_shell|subdivided_hyper_rectangle|hyper_sphere|hyper_L|half_hyper_ball|cylinder|truncated_cone|hyper_cross|hyper_cube_slit|half_hyper_shell|quarter_hyper_shell|cylinder_shell|torus|hyper_cube_with_cylindrical_hole|moebius|cheese"),
                 "The grid to generate. You can choose among:\n"
                 "- file: read grid from a file using:\n"
                 "	- Input grid filename	    : input filename\n\n"
@@ -205,7 +205,10 @@ void ParsedGridGenerator<dim, spacedim>::declare_parameters(ParameterHandler &pr
                 "	- Optional bool : colorize grid\n"
                 "- torus : produce the surface meshing of the torus :\n"
                 "	- Optional double : radius of the circle which forms the middle line of the torus containing the loop of cells\n"
-                "	- Optional double :  inner radius of the torus\n");
+                "	- Optional double :  inner radius of the torus\n"
+                "- cheese : domain itself is rectangular. The argument holes specifies how many square holes the domain should have in each coordinate direction :\n"
+                "	- Optional Vector of dim int: number of holes on each direction\n"
+               );
 
   add_parameter(prm, &mesh_smoothing,
                 "Mesh smoothing alogrithm", mesh_smoothing,
@@ -527,6 +530,11 @@ namespace
                                     double_option_one,
                                     un_int_option_one,
                                     colorize);
+      }
+    else if (grid_name == "cheese")
+      {
+        GridGenerator::cheese(tria,
+                              un_int_vec_option_one);
       }
     else
       {

@@ -1,4 +1,17 @@
 
+DEAL:parameters:Cheese::Colorize: false
+DEAL:parameters:Cheese::Grid to generate: cheese
+DEAL:parameters:Cheese::Input grid file name: 
+DEAL:parameters:Cheese::Mesh smoothing alogrithm: none
+DEAL:parameters:Cheese::Optional Point<spacedim> 1: 0,0
+DEAL:parameters:Cheese::Optional Point<spacedim> 2: 1,1
+DEAL:parameters:Cheese::Optional double 1: 1.0
+DEAL:parameters:Cheese::Optional double 2: 0.5
+DEAL:parameters:Cheese::Optional double 3: 1.5
+DEAL:parameters:Cheese::Optional int 1: 0
+DEAL:parameters:Cheese::Optional int 2: 0
+DEAL:parameters:Cheese::Optional vector of dim int: 1,2
+DEAL:parameters:Cheese::Output grid file name: 
 DEAL:parameters:Cylinder::Colorize: false
 DEAL:parameters:Cylinder::Grid to generate: cylinder
 DEAL:parameters:Cylinder::Input grid file name: 
@@ -447,4 +460,48 @@ $ELM
 14 3 0 0 4 14 2 1 13 
 15 3 0 0 4 15 3 2 14 
 16 3 0 0 4 16 4 3 15 
+$ENDELM
+DEAL::Cheese
+$NOD
+24
+1  0.00000 0.00000 0
+2  1.00000 0.00000 0
+3  2.00000 0.00000 0
+4  3.00000 0.00000 0
+5  0.00000 1.00000 0
+6  1.00000 1.00000 0
+7  2.00000 1.00000 0
+8  3.00000 1.00000 0
+9  0.00000 2.00000 0
+10  1.00000 2.00000 0
+11  2.00000 2.00000 0
+12  3.00000 2.00000 0
+13  0.00000 3.00000 0
+14  1.00000 3.00000 0
+15  2.00000 3.00000 0
+16  3.00000 3.00000 0
+17  0.00000 4.00000 0
+18  1.00000 4.00000 0
+19  2.00000 4.00000 0
+20  3.00000 4.00000 0
+21  0.00000 5.00000 0
+22  1.00000 5.00000 0
+23  2.00000 5.00000 0
+24  3.00000 5.00000 0
+$ENDNOD
+$ELM
+13
+1 3 0 0 4 1 2 6 5 
+2 3 0 0 4 2 3 7 6 
+3 3 0 0 4 3 4 8 7 
+4 3 0 0 4 5 6 10 9 
+5 3 0 0 4 7 8 12 11 
+6 3 0 0 4 9 10 14 13 
+7 3 0 0 4 10 11 15 14 
+8 3 0 0 4 11 12 16 15 
+9 3 0 0 4 13 14 18 17 
+10 3 0 0 4 15 16 20 19 
+11 3 0 0 4 17 18 22 21 
+12 3 0 0 4 18 19 23 22 
+13 3 0 0 4 19 20 24 23 
 $ENDELM
