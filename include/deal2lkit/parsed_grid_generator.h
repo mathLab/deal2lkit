@@ -184,7 +184,7 @@ public:
    *   - *double*: radius of the circle which forms the middle line of the torus containing the loop of cells
    *   - *double*: inner radius of the torus
    *
-   * - **cheese **-> omain itself is rectangular. The argument holes specifies how many square holes the domain should have in each coordinate direction :"
+   * - **cheese **-> domain itself is rectangular. The argument holes specifies how many square holes the domain should have in each coordinate direction :"
    *   - *Vector of dim int*: number of holes on each direction"
    */
   void create(Triangulation<dim, spacedim> &tria);
