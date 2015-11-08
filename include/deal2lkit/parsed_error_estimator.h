@@ -33,17 +33,27 @@ D2K_NAMESPACE_OPEN
 /**
  * TODO:
  */
-template <int dim, int spacedim=dim, int n_components=dim>
+template <int dim, int spacedim=dim, int n_components=1>
 class ParsedErrorEstimator : public ParameterAcceptor
 {
 public:
   /**
    * TODO:
    */
-  ParsedErrorEstimator( const std::string &name,
-                        const std::string &default_name,
-                        const std::string &_estimator_strategy =
-                          "cell_diameter_over_24");
+  ParsedErrorEstimator( const std::string &name =
+                              "",
+                        const std::string &estimator =
+                              "kelly",
+                        const std::string &string_component_mask =
+                              "1,1,0",
+                        const std::string &string_subdomain_id =
+                              "numbers::invalid_subdomain_id",
+                        const std::string &string_material_id =
+                              "numbers::invalid_material_id",
+                        const std::string &string_estimator_strategy =
+                              "cell_diameter_over_24",
+                        const string_n_threads =
+                              "0");
 
   /**
    * TODO:
@@ -60,39 +70,24 @@ public:
    */
   template<typename InputVector>
   void compute_estimator(
-    const DoFHandler<dim,spacedim> &dof,
-    const Quadrature< dim-1 > &   quadrature,
-    const InputVector    &solution,
-    const typename FunctionMap< spacedim >::type   &neumann_bc =
-      typename FunctionMap<dim>::type(),
-    const Function< spacedim >  *coefficients =
-      0,
-    const unsigned int  n_threads =
-      numbers::invalid_unsigned_int,
-    const types::subdomain_id   subdomain_id =
-      numbers::invalid_subdomain_id,
-    const types::material_id  material_id =
-      numbers::invalid_material_id
+    const DoFHandler<dim,spacedim>  &dof,
+    const InputVector               &solution,
+    const Vector<float>             &estimated_error_per_cell;
   );
-
-  /**
-   * TODO:
-   */
-  double linfty_norm();
-
-  /**
-   * TODO:
-   */
-  void set_mask(const std::vector<bool> new_mask);
 
 private:
 
-  const unsigned int _n_components;
-  std::string estimator_strategy;
+  std::string string_estimator_strategy;
+  std::string string_subdomain_id;
+  std::string string_material_id;
+  std::string string_component_mask;
+  std::string string_n_threads;
 
-  double estimator_linfty_norm;
-  Vector<float> estimated_error_per_cell;
-  std::vector<bool> mask;
+  KellyErrorEstimator::Strategy   estimator_strategy;
+  unsigned int                    subdomain_id;
+  unsigned int                    material_id;
+  unsigned int                    n_threads;
+  std::vector<bool>               mask;
 
 };
 

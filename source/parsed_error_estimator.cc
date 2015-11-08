@@ -39,13 +39,16 @@ D2K_NAMESPACE_OPEN
 template <int dim, int spacedim, int n_components>
 ParsedErrorEstimator<dim, spacedim, n_components>::
 ParsedErrorEstimator( const std::string &name,
-                      const std::string &default_name,
-                      const std::string &_estimator_strategy)
+                      const std::string &estimator,
+                      const std::string &string_subdomain_id,
+                      const std::string &string_material_id,
+                      const std::string &string_estimator_strategy,
+                      const string_n_threads);
   :
   ParameterAcceptor(name),
   _n_components(n_components),
   mask(true),
-  estimator_strategy(_estimator_strategy)
+  string_estimator_strategy(string_estimator_strategy)
 {
   parse_parameters_call_back();
 }
@@ -55,11 +58,22 @@ void
 ParsedErrorEstimator<dim, spacedim, n_components>::
 declare_parameters(ParameterHandler &prm)
 {
-  add_parameter(prm, &estimator_strategy,
-                "Estimator strategy", estimator_strategy,
+  add_parameter(prm, &string_estimator_strategy,
+                "Estimator strategy", string_estimator_strategy,
                 Patterns::Selection("cell_diameter_over_24|face_diameter_over_twice_max_degree"),
                 "- cell_diameter_over_24 : Kelly error estimator with the factor h/24.\n"
                 "- face_diameter_over_twice_max_degree : the boundary residual estimator with the factor h_F/(2max(p+,p−)).");
+}
+
+template <int dim, int spacedim, int n_components>
+void
+ParsedErrorEstimator<dim, spacedim, n_components>::
+parse_parameters_call_back()
+{
+  if(string_estimator_strategy=="cell_diameter_over_24")
+    estimator_strategy = cell_diameter_over_24;
+  else
+    estimator_strategy = face_diameter_over_twice_max_degree;
 }
 
 template <int dim, int spacedim, int n_components>
@@ -68,46 +82,21 @@ void
 ParsedErrorEstimator<dim, spacedim, n_components>::
 compute_estimator(
   const DoFHandler<dim,spacedim> &dof,
-  const Quadrature< dim-1 > &   quadrature,
-  const InputVector    &solution,
-  const typename FunctionMap< spacedim >::type   &neumann_bc,
-  const Function< spacedim >  *coefficients,
-  const unsigned int  n_threads,
-  const types::subdomain_id subdomain_id,
-  const types::material_id material_id
+  const InputVector              &solution,
+  const Vector<float>            &estimated_error_per_cell;
 )
 {
-  KellyErrorEstimator< dim, spacedim >::
-  estimate  (
-    dof,
-    quadrature,
-    neumann_bc,
-    solution,
-    estimated_error_per_cell,
-    ComponentMask(mask),
-    coefficients,
-    n_threads,
-    subdomain_id,
-    material_id,
-    estimator_strategy
-  );
+  KellyErrorEstimator<dim>::estimate (dh,
+                                      QGauss<dim-1>(dh.get_fe().degree + 1),
+                                      typename FunctionMap<dim>::type(),
+                                      solution,
+                                      estimated_error_per_cell,
+                                      ComponentMask(mask),
+                                      0,
+                                      n_threads,
+                                      subdomain_id,
+                                      material_id,
+                                      strategy);
 };
-
-template <int dim, int spacedim, int n_components>
-double
-ParsedErrorEstimator<dim, spacedim, n_components>::
-linfty_norm()
-{
-  return estimated_error_per_cell.linfty_norm();
-};
-
-template <int dim, int spacedim, int n_components>
-void
-ParsedErrorEstimator<dim, spacedim, n_components>::
-set_mask(const std::vector<bool> new_mask)
-{
-  mask = new_mask;
-};
-
 
 D2K_NAMESPACE_CLOSE
