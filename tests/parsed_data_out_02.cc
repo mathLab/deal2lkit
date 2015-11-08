@@ -37,6 +37,7 @@ int main (int argc, char *argv[])
 
   ParsedDataOut<2,2> pp("test",
                         "vtu",
+                        1,
                         "solution/run",
                         "solution",
                         MPI_COMM_WORLD);
