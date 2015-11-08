@@ -35,30 +35,33 @@ public:
   /**
    * TODO:
    */
-  ParsedQuadrature( const std::string &name="",
-                    const std::string &string_quadrature="gauss",
-                    const std::string &string_order="3");
+  ParsedQuadrature( const std::string   &name=" ",
+                    const std::string   &quadrature_type="gauss",
+                    const unsigned int  order = 3);
+
+                    /**
+                     * Declare quadrature type and quadrature options.
+                     */
+                    virtual void declare_parameters(ParameterHandler &prm);
+
+                    /**
+                     * Parse quadrature type and quadrature options.
+                     */
+                    virtual void parse_parameters(ParameterHandler &prm);
+
+                    /**
+                     * Initialize internal variables.
+                     */
+                    virtual void parse_parameters_call_back();
 
   /**
-   * Declare quadrature type and solver options.
+   * TODO:
    */
-  virtual void declare_parameters(ParameterHandler &prm);
-
-  /**
-   * Parse quadrature type and solver options.
-   */
-  virtual void parse_parameters(ParameterHandler &prm);
-
-  /**
-   * Initialize internal variables.
-   */
-  virtual void parse_parameters_call_back();
+  Quadrature<dim> get_quadrature();
 
 private:
-  std::string string_quadrature;
-  std::string string_order;
-
-  unsigned int order;
+  const std::string   quadrature_type;
+  const unsigned int  order;
 };
 
 D2K_NAMESPACE_CLOSE

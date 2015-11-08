@@ -19,13 +19,13 @@ D2K_NAMESPACE_OPEN
 
 template <int dim>
 ParsedQuadrature<dim>::
-ParsedQuadrature(const std::string &name,
-                 const std::string &string_quadrature,
-                 const std::string &string_order)
+ParsedQuadrature(const std::string    &name,
+                 const std::string    &quadrature_type,
+                 const unsigned int   order)
   :
   ParameterAcceptor(name),
-  string_quadrature(string_quadrature),
-  string_order(string_order)
+  quadrature_type(quadrature_type),
+  order(order)
 {};
 
 template <int dim>
@@ -33,16 +33,40 @@ void
 ParsedQuadrature<dim>::
 declare_parameters(ParameterHandler &prm)
 {
-  add_parameter(prm, &string_quadrature,
-                "Quadrature to generate", string_quadrature,
+  add_parameter(prm, &quadrature_type,
+                "Quadrature to generate", quadrature_type,
                 Patterns::Selection("gauss|midpoint|milne|simpson|trapez|weddle"),
                 "Description");
 
   add_parameter(prm, &order,
-                "Quadrature order", string_order,
-                Patterns::Integer(),
+                "Quadrature order", std::to_string(order),
+                Patterns::Integer(0),
                 "Description");
+};
+
+template <int dim>
+void
+ParsedQuadrature<dim>::
+parse_parameters(ParameterHandler &prm)
+{};
+
+template <int dim>
+void
+ParsedQuadrature<dim>::
+parse_parameters_call_back()
+{};
+
+template <int dim>
+Quadrature<dim>
+ParsedQuadrature<dim>::
+get_quadrature()
+{
+  return QuadratureSelector<dim>(quadrature_type, order);
 };
 
 
 D2K_NAMESPACE_CLOSE
+
+template class deal2lkit::ParsedQuadrature<1>;
+template class deal2lkit::ParsedQuadrature<2>;
+template class deal2lkit::ParsedQuadrature<3>;
