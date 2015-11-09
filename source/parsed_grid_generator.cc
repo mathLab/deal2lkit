@@ -40,18 +40,8 @@ namespace
         return "";
       }
   }
-
-  template <int spacedim>
-  std::string create_default_value(const Point<spacedim> &input)
-  {
-    std::ostringstream strs;
-    strs << input[0];
-    for (unsigned int i=1; i<spacedim; ++i)
-      strs<< ","<< input[i];
-    std::string def = strs.str();
-    return def;
-  }
 }
+
 
 template <int dim, int spacedim>
 ParsedGridGenerator<dim, spacedim>::ParsedGridGenerator(const std::string _section_name,
@@ -98,8 +88,8 @@ void ParsedGridGenerator<dim, spacedim>::declare_parameters(ParameterHandler &pr
     dummy_point_2[d]=1.0;
 
   std::string def_point, def_point_2, def_int, def_double;
-  def_point = create_default_value(dummy_point);
-  def_point_2 = create_default_value(dummy_point_2);
+  def_point = print(dummy_point);
+  def_point_2 = print(dummy_point_2);
   def_int = print(dummy_vec_int);
   def_double = print(dummy_vec_double);
 

@@ -411,6 +411,25 @@ std::string print(const std::vector<Type> &list, const std::string sep=",")
 
 
 /**
+ * Return a string containing the content of the Point, with elements
+ * separated by the @ sep parameter.
+ */
+template<int dim>
+std::string print(const Point<dim> &point, const std::string sep=",")
+{
+  std::stringstream ret;
+  ret << point[0];
+
+  for (unsigned int i=1; i<dim; ++i)
+    ret << sep << point[i];
+
+  return ret.str();
+}
+
+
+
+
+/**
  * Return a human readable name of the type passed as argument.
  */
 template <class T>
