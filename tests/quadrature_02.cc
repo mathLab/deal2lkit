@@ -23,18 +23,18 @@ int main ()
 {
   initlog();
 
-  ParsedQuadrature<2> quadrature("", "gauss", 1, 3);
+  ParsedQuadrature<2> quadrature;
 
-  ParameterAcceptor::initialize();
+  ParameterAcceptor::initialize(SOURCE_DIR "/parameters/quadrature_02.prm", "used_parameters.prm");
   ParameterAcceptor::prm.log_parameters(deallog);
 
-  QGauss<2> quad(3);
+  QSimpson<2> quad;
 
   if ( quad.size () == quadrature.size() )
-    deallog << "OK!" << std::endl;
+    deallog << "OK! " << std::endl;
 
   for (unsigned int i = 0 ; i < quad.size (); ++ i)
-    if ( quad.weight(i) != quadrature.weight(i) )
+    if ( quad.weight(i)!=quadrature.weight(i) )
       deallog << "FAIL! " << std::endl;
 
   deallog << "DONE! " << std::endl;
