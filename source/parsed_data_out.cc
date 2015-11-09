@@ -40,7 +40,8 @@ D2K_NAMESPACE_OPEN
 
 template <int dim, int spacedim>
 ParsedDataOut<dim,spacedim>::ParsedDataOut (const std::string &name,
-                                            const std::string &default_format,
+                                            const std::string &output_format,
+                                            const unsigned int &subdivisions,
                                             const std::string &incremental_run_prefix,
                                             const std::string &base_name_input,
                                             const MPI_Comm &comm) :
@@ -48,7 +49,8 @@ ParsedDataOut<dim,spacedim>::ParsedDataOut (const std::string &name,
   comm(comm),
   n_mpi_processes(Utilities::MPI::n_mpi_processes(comm)),
   this_mpi_process(Utilities::MPI::this_mpi_process(comm)),
-  default_format(default_format),
+  output_format(output_format),
+  subdivisions(subdivisions),
   base_name(base_name_input),
   incremental_run_prefix(incremental_run_prefix)
 {
@@ -67,23 +69,12 @@ void ParsedDataOut<dim,spacedim>::declare_parameters (ParameterHandler &prm)
                 "name is repeated, then the repeated names are grouped into "
                 "vectors.");
 
-  prm.enter_subsection("Solution output format");
-  DataOut<dim, DoFHandler<dim,spacedim> >::declare_parameters(prm);
-  prm.set("Output format", default_format);
-  prm.leave_subsection();
-}
+  add_parameter(prm, &output_format, "Output format", output_format,
+                Patterns::Selection(DataOutBase::get_output_format_names()));
 
+  add_parameter(prm, &subdivisions, "Subdivisions", std::to_string(subdivisions),
+                Patterns::Integer(0));
 
-template <int dim, int spacedim>
-void ParsedDataOut<dim,spacedim>::parse_parameters (ParameterHandler &prm)
-{
-  ParameterAcceptor::parse_parameters(prm);
-
-  prm.enter_subsection("Solution output format");
-  data_out.parse_parameters(prm);
-  prm.leave_subsection();
-
-  initialized = true;
 }
 
 template <int dim, int spacedim>
@@ -114,14 +105,15 @@ template <int dim, int spacedim>
 void ParsedDataOut<dim,spacedim>::prepare_data_output(const DoFHandler<dim,spacedim> &dh,
                                                       const std::string &suffix)
 {
-  AssertThrow(initialized, ExcNotInitialized());
   deallog.push("PrepareOutput");
+  data_out = SP(new DataOut<dim, DoFHandler<dim, spacedim> > ());
+  data_out->set_default_format(DataOutBase::parse_output_format(output_format));
 
   current_name = path_solution_dir + base_name + suffix;
 
   std::string fname = current_name;
 
-  if (data_out.default_suffix() != "")
+  if (data_out->default_suffix() != "")
     {
 
       // If the output is needed and we have many processes, just output
@@ -130,17 +122,17 @@ void ParsedDataOut<dim,spacedim>::prepare_data_output(const DoFHandler<dim,space
         {
           fname += ("." + Utilities::int_to_string(this_mpi_process, 2) +
                     "." + Utilities::int_to_string(n_mpi_processes, 2) +
-                    data_out.default_suffix()) ;
+                    data_out->default_suffix()) ;
         }
       else
         {
-          fname += data_out.default_suffix();
+          fname += data_out->default_suffix();
         }
 
       deallog << "Will write on file: " << fname.c_str() << std::endl;
       output_file.open(fname.c_str());
       AssertThrow(output_file, ExcIO());
-      data_out.attach_dof_handler (dh);
+      data_out->attach_dof_handler (dh);
 
       if (n_mpi_processes > 1)
         {
@@ -153,11 +145,11 @@ void ParsedDataOut<dim,spacedim>::prepare_data_output(const DoFHandler<dim,space
                 partitioning(i) = this_mpi_process;
               static Vector<float> static_partitioning;
               static_partitioning.swap(partitioning);
-              data_out.add_data_vector (static_partitioning, "partitioning");
+              data_out->add_data_vector (static_partitioning, "partitioning");
             }
         }
     }
-
+  initialized = true;
   deallog.pop();
 }
 
@@ -172,30 +164,30 @@ void ParsedDataOut<dim,spacedim>::write_data_and_clear( const std::string &used_
   AssertThrow(initialized, ExcNotInitialized());
   AssertThrow(output_file, ExcIO());
   deallog.push("WritingData");
-  if (data_out.default_suffix() != "")
+  if (data_out->default_suffix() != "")
     {
-      data_out.build_patches(mapping, 0,
-                             DataOut<dim, DoFHandler<dim,spacedim> >::curved_inner_cells);
-      data_out.write(output_file);
+      data_out->build_patches(mapping, subdivisions,
+                              DataOut<dim, DoFHandler<dim,spacedim> >::curved_inner_cells);
+      data_out->write(output_file);
       deallog << "Wrote output file." << std::endl;
 
-      if (this_mpi_process == 0 && n_mpi_processes > 0 && data_out.default_suffix() == ".vtu")
+      if (this_mpi_process == 0 && n_mpi_processes > 1 && data_out->default_suffix() == ".vtu")
         {
           std::vector<std::string> filenames;
           for (unsigned int i=0; i<n_mpi_processes; ++i)
             filenames.push_back (current_name +
                                  "." + Utilities::int_to_string(i, 2) +
                                  "." + Utilities::int_to_string(n_mpi_processes, 2) +
-                                 data_out.default_suffix());
+                                 data_out->default_suffix());
 
           std::ofstream master_output ((current_name + ".pvtu").c_str());
-          data_out.write_pvtu_record (master_output, filenames);
+          data_out->write_pvtu_record (master_output, filenames);
         }
-
-      data_out.clear();
-      output_file.close();
-      deallog << "Reset output." << std::endl;
     }
+  data_out = 0;
+  deallog << "Reset output." << std::endl;
+  initialized = false;
+  output_file.close();
   deallog.pop();
 }
 

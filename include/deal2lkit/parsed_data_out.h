@@ -43,7 +43,8 @@ public:
       the function will create sol/run001 the first time the code is runned,
       sol/run002 the second time, and so on.*/
   ParsedDataOut (const std::string &name="",
-                 const std::string &default_format="vtu",
+                 const std::string &output_format="vtu",
+                 const unsigned int &subdivisions=1,
                  const std::string &incremental_run_prefix="",
                  const std::string &base_name_input="solution",
                  const MPI_Comm &comm=MPI_COMM_WORLD);
@@ -51,9 +52,7 @@ public:
   /** Initialize the given values for the paramter file. */
   virtual void declare_parameters(ParameterHandler &prm);
 
-  /** Parse the given parameters. */
-  virtual void parse_parameters(ParameterHandler &prm);
-
+  /** Prepare names for output directories. */
   virtual void parse_parameters_call_back();
 
   /** Prepare to output data on the given file. This will initialize
@@ -98,8 +97,11 @@ private:
   /** Folder where solutions are stored. */
   std::string path_solution_dir;
 
-  /** Default format at construction time. */
-  const std::string default_format;
+  /** Output format. */
+  std::string output_format;
+
+  /** Number of subdivisions. */
+  unsigned int subdivisions;
 
   /** Base name for output files. This base is used to generate all
       filenames. */
@@ -125,7 +127,7 @@ private:
   std::ofstream output_file;
 
   /** Outputs only the data that refers to this process. */
-  DataOut<dim, DoFHandler<dim, spacedim> > data_out;
+  shared_ptr<DataOut<dim, DoFHandler<dim, spacedim> > > data_out;
 };
 
 
@@ -141,11 +143,11 @@ void ParsedDataOut<dim,spacedim>::add_data_vector(const VECTOR &data_vector,
   AssertThrow(initialized, ExcNotInitialized());
   deallog.push("AddingData");
   std::vector<std::string> dd = Utilities::split_string_list(desc);
-  if (data_out.default_suffix() != "")
+  if (data_out->default_suffix() != "")
     {
       if (dd.size() ==1 )
         {
-          data_out.add_data_vector (data_vector, desc);
+          data_out->add_data_vector (data_vector, desc);
         }
       else
         {
@@ -169,8 +171,8 @@ void ParsedDataOut<dim,spacedim>::add_data_vector(const VECTOR &data_vector,
                 data_component_interpretation.push_back(DataComponentInterpretation::component_is_scalar);
             }
 
-          data_out.add_data_vector (data_vector, dd, DataOut<dim, DoFHandler<dim, spacedim> >::type_dof_data,
-                                    data_component_interpretation);
+          data_out->add_data_vector (data_vector, dd, DataOut<dim, DoFHandler<dim, spacedim> >::type_dof_data,
+                                     data_component_interpretation);
 
         }
       deallog << "Added data: " << desc << std::endl;

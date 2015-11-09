@@ -64,7 +64,7 @@ Test<dim>::Test ()
   tria_builder("Triangulation"),
   fe_builder("FE_Q",
              "FESystem[FE_Q(2)^dim-FE_Q(1)]","u,u,p"),
-  data_out("Data out","vtk","","output")
+  data_out("Data out","vtk",1,"","output")
 {}
 
 template <int dim>
