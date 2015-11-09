@@ -228,6 +228,26 @@ values if it does not exist) and subsequently calls the method
 ParameterAcceptor::parse_parameters(), again for each of the
 registered classes.
 
+@subsection grid_generator ParsedGridGenerator
+
+Of the basic steps for any finite element code, mesh generation and
+mesh import are among those tasks which are almost equal in every user
+code. ParsedGridGenerator is \dk interface to a collection of \dealii
+classed dedicated to creating, reading, and writing a Triangulation to
+and from files. ParsedGridGenerator is a wrapper, derived from
+ParameterAcceptor, to the following methods and classes:
+
+- GridGenerator: all meshes that \dealii can generate are available
+  by selecting their name in a parameter file;
+
+- GridIn: all formats that \dealii can read are available, by
+  selecting `file` as the mesh to generate, and then specifying an
+  input file name;
+
+- GridOut: selecting a non empty output file name one can create also
+  a file containing the Triangulation in any of the output format
+  supported by GridOut, by calling the ParsedGridGenerator::write()
+  method.
 @}
 */
 

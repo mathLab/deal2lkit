@@ -30,12 +30,92 @@ using namespace dealii;
 D2K_NAMESPACE_OPEN
 
 /**
- * Parsed grid generator. Create a grid reading a parameter file. This
- * can be either generated using dealii::GridGenerator functions, or
- * read from a file.
+ * Parsed grid generator. Create a grid by reading a parameter file,
+ * either using dealii::GridGenerator functions, or by reading it from
+ * a file in supported format.
  *
  * All Triangulations in the GridGenerator Namespace are supported, as
- * well as all formats supported by deal.II.
+ * well as all file formats supported by GridIn. This class is in all
+ * effects a wrapper around the GridGenerator namespace functions,
+ * GridIn, and GridOut classes of the \dealii library
+ *
+ *
+ * ParsedGridGenerator can be used both in serial and parallel
+ * settings, and a typical usage of this class is
+ * \code
+ *   // 2D square - serial mesh
+ *   // by default it constructs the rectangle whos opposite corner points
+ *   // are p1=(10.0,10.0) and p2=(20.0,20.0)
+ *   ParsedGridGenerator<2,2> tria_builder_2d("2D mesh",
+ *                                            "rectangle",
+ *                                            "",
+ *                                            "10.0,10.0",
+ *                                            "20.0,20.0",
+ *                                            "true");
+ *
+ *   // 3D parallelepiped - parallel distributed mesh
+ *   // by default it constructs the parallelepiped whos opposite corner
+ *   // points are p1=(7.0,8.0,9.0) and p2=(15.0.16.0,16.7)
+ *   ParsedGridGenerator<3,3> tria_builder_3d("3D mesh",
+ *                                             "rectangle",
+ *                                             "",
+ *                                             "7.0,8.0,9.0",
+ *                                             "15.0,16.0,16.7");
+ *
+ *   // call ParameterAcceptor
+ *   ParameterAcceptor::initialize("file.prm", "no_descriptions.prm");
+ *
+ *   // Construct a serial mesh following the indications in "file.prm"
+ *   // in the section "2D mesh"
+ *   Triangulation<2,2> *tria_serial  = tria_builder_2d.serial();
+ *
+ *   // Construct a parallel::distributed::Triangulation following the
+ *   // indications in "file.prm'', in the section "3D mesh"
+ *   parallel::distributed::Triangulation<3,3> *tria_mpi =
+ *         tria_builder_3d.distributed(MPI_COMM_WORLD);
+ * \endcode
+ *
+ * Once the function ParameterAcceptor::initialize("file.prm",
+ * "no_descriptions.prm") is called, the "no_descriptions.prm" is
+ * filled with the following entries:
+ *
+ * \code{bash}
+ * subsection 3D mesh
+ *   set Colorize                   = false
+ *   set Grid to generate           = rectangle
+ *   set Input grid file name       =
+ *   set Mesh smoothing alogrithm   = none
+ *   set Optional Point<spacedim> 1 = 7.0,8.0,9.0
+ *   set Optional Point<spacedim> 2 = 15.0,16.0,16.7
+ *   set Optional double 1          = 1.0
+ *   set Optional double 2          = 0.5
+ *   set Optional int 1             = 1
+ *   set Optional vector of dim int = 1,1,1
+ *   set Output grid file name      =
+ * end
+ * subsection 2D mesh
+ *   set Colorize                   = true
+ *   set Grid to generate           = rectangle
+ *   set Input grid file name       =
+ *   set Mesh smoothing alogrithm   = none
+ *   set Optional Point<spacedim> 1 = 10.0,10.0
+ *   set Optional Point<spacedim> 2 = 20.0,20.0
+ *   set Optional double 1          = 1.0
+ *   set Optional double 2          = 0.5
+ *   set Optional int 1             = 1
+ *   set Optional vector of dim int = 1,1
+ *   set Output grid file name      =
+ * end
+ * \endcode
+ *
+ * If the user would then change the parameter file to generate a sphere,
+ * or read a file, no change in the code would be necessary, as at run
+ * time the new parameters would be used.
+ *
+ * If the option `Output grid file name` is set to non-empty, when the
+ * user calls ParsedGridGenerator::write(), an output grid would be
+ * generated using GridOut, choosing the right format according to the
+ * extension of the file.
  */
 template<int dim, int spacedim=dim>
 class ParsedGridGenerator : public ParameterAcceptor
@@ -47,9 +127,21 @@ public:
    *
    * This class is derived from ParameterAcceptor. Once you
    * constructed an object of this class, if you call
-   * ParameterAcceptor::parse_all_parameters(prm), also the
+   * ParameterAcceptor::parse_all_parameters(), also the
    * parameters of this class will be filled with values from the
    * argument ParameterHandler.
+   *
+   * This constructor takes optional strings which allow the user to
+   * decide what are the **default** values that will be written on
+   * the parameter file. The first optional argument specifies the
+   * section name within the parameter file. If the section name is
+   * empty, by default it is set to ParsedGridGenerator<x,x> where
+   * `x,x` is replaced with the actual `dim` and `spacedim` numbers
+   * with which the user instantiated the class.
+   *
+   * Since every GridGenerator function takes a different set of
+   * arguments, we provide a list of optional arguments that will be
+   * used by the class itself.
    */
   ParsedGridGenerator (const std::string section_name="",
                        const std::string grid_type="rectangle",
@@ -67,20 +159,22 @@ public:
                        const std::string output_grid_file="");
 
   /**
-   * Declare possible parameters of this class.
+   * Declare all parameters of this class.
    */
   virtual void declare_parameters(ParameterHandler &prm);
 
   /**
-   * Return a pointer to a newly created Triangulation. It will
-   * throw an exception if called before any parsing has
-   * occured. It's the user's responsability to destroy the created
-   * grid once it is no longer needed.
+   * Return a pointer to a newly created serial Triangulation. It will
+   * throw an exception if called before any parsing has occured. It
+   * is the user's responsability to destroy the created grid once it
+   * is no longer needed.
    */
   Triangulation<dim, spacedim> *serial();
 
   /**
-   * Generate the grid.
+   * Generate the grid. Fill a user supplied empty Triangulation using
+   * the parameter file. If the Triangulation is not empty, an
+   * exception is thrown.
    *
    * The following grids are implemented:
    *
@@ -180,42 +274,51 @@ public:
    *   - *unsigned int*: repetitions (number of subdivisions along the z-direction)
    *   - *bool*: colorize grid
    *
-   * - **torus **-> produce the surface meshing of the torus:
+   * - **torus**-> produce the surface meshing of the torus:
    *   - *double*: radius of the circle which forms the middle line of the torus containing the loop of cells
    *   - *double*: inner radius of the torus
    *
-   * - **cheese **-> domain itself is rectangular. The argument holes specifies how many square holes the domain should have in each coordinate direction :"
+   * - **cheese**-> domain itself is rectangular. The argument holes specifies how many square holes the domain should have in each coordinate direction :"
    *   - *Vector of dim int*: number of holes on each direction"
    */
   void create(Triangulation<dim, spacedim> &tria);
 
-  /**
-     * Return a pointer to a newly created Triangulation. It will
-     * throw an exception if called before any parsing has
-     * occured. It's the user's responsability to destroy the created
-     * grid once it is no longer needed.
-     */
 #ifdef DEAL_II_WITH_MPI
 #ifdef DEAL_II_WITH_P4EST
+  /**
+   * Return a pointer to a newly created parallel Triangulation. It
+   * will throw an exception if called before any parsing has
+   * occured. It is the user's responsability to destroy the created
+   * grid once it is no longer needed.
+   */
   parallel::distributed::Triangulation<dim, spacedim> *distributed(MPI_Comm mpi_communicator);
 #endif
 #endif
 
-  std::string create_default_value(const std::vector<unsigned int> &input);
-
-  std::string create_default_value(const std::vector<double> &input);
-
-  std::string create_default_value(const Point<spacedim> &input);
-
+  /**
+   * Write the given Triangulation to the output file specified in
+   * `Output file name`.
+   *
+   * If no `Output file name` is given, this function does nothing. If
+   * an output file name is provided, then this function will call the
+   * appropriate GridOut method according to the extension of the file
+   * name.
+   */
   void write(const Triangulation<dim, spacedim> &tria) const;
 
 private:
-
-  typename Triangulation<dim,spacedim>::MeshSmoothing
-  get_smoothing();
   /**
    * Mesh smoothing. Parse the type of MeshSmoothing for the
    * generated Triangulation.
+   */
+  typename Triangulation<dim,spacedim>::MeshSmoothing
+  get_smoothing();
+
+  /**
+   * Mesh smoothing to apply to the newly created Triangulation. This
+   * variable is only used if the method serial() is called. For the
+   * method parallel(), mesh smoothing is not yet supported by
+   * \dealii.
    */
   std::string mesh_smoothing;
 
@@ -225,32 +328,59 @@ private:
   std::string grid_name;
 
   /**
-   * The optional argument for the grid generators. We choose two doubles and two points.
+   * Optional double argument. First option.
    */
-
   double double_option_one;
 
+  /**
+   * Optional double argument. Second option.
+   */
   double double_option_two;
 
+  /**
+   * Optional double argument. Third option.
+   */
   double double_option_three;
 
+  /**
+   * Optional Point argument. First Option.
+   */
   Point<spacedim> point_option_one;
 
+  /**
+   * Optional Point argument. Second Option.
+   */
   Point<spacedim> point_option_two;
 
+  /**
+   * Optional int argument. First Option.
+   */
   unsigned int un_int_option_one;
 
+  /**
+   * Optional int argument. First Option.
+   */
   unsigned int un_int_option_two;
 
+  /**
+   * For all the internally generated meshes that support it, turn on
+   * colorizing.
+   */
   bool colorize;
 
+  /**
+   * Optional vector of integers.
+   */
   std::vector<unsigned int> un_int_vec_option_one;
 
   /**
-   * Grid file name.
+   * Input grid file name.
    */
   std::string input_grid_file_name;
 
+  /**
+   * Output grid file name.
+   */
   std::string output_grid_file_name;
 
   // strings for prm

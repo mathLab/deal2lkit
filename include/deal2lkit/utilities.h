@@ -37,17 +37,6 @@ using std_cxx11::shared_ptr;
 
 D2K_NAMESPACE_OPEN
 
-/**
- * SmartPointers are usually not used to point to objects created with
- * new. However, sometimes this is useful. The distruction of a
- * SmartPointer requires to split the step in two parts. This little
- * utility does precisely this.
- *
- * @deprecated SmartPointers have been supersed by
- * std_cxx11::shared_ptr, which takes care of destruction as well.
- */
-template <typename TYPE>
-void smart_delete (SmartPointer<TYPE> &sp) DEAL_II_DEPRECATED;
 
 /** Demangle c++ names. */
 std::string demangle(const char *name);
@@ -108,7 +97,7 @@ private:
 };
 
 /**
- * This function copyt the text contained in @p in_file to the file
+ * This function copy the text contained in @p in_file to the file
  * @p out_file .
  */
 void append_to_file(const std::string &in_file, const std::string &out_file);
@@ -119,7 +108,8 @@ void append_to_file(const std::string &in_file, const std::string &out_file);
  * The research of the index starts from the value @p start and ends when @p index_max
  * is reached.
  */
-unsigned int get_next_available_index_directory_name(const std::string &base, int n_digits=3, unsigned int start=0, unsigned int index_max = 1000);
+unsigned int get_next_available_index_directory_name(const std::string &base, int n_digits=3,
+                                                     unsigned int start=0, unsigned int index_max = 1000);
 
 /**
  * A function that return the name of the first non existing folder matching
@@ -127,7 +117,8 @@ unsigned int get_next_available_index_directory_name(const std::string &base, in
  * The research of the index starts from the value @p start and ends when @p index_max
  * is reached.
  */
-std::string get_next_available_directory_name(const std::string &base, int n_digits=3, unsigned int start=0, unsigned int index_max = 1000);
+std::string get_next_available_directory_name(const std::string &base, int n_digits=3,
+                                              unsigned int start=0, unsigned int index_max = 1000);
 
 /**
  * A function to check the existence of @p dir directory.
@@ -470,17 +461,6 @@ inline shared_ptr<const T>
 SP(const T *t)
 {
   return shared_ptr<const T>(t);
-}
-
-template <typename TYPE>
-void smart_delete (SmartPointer<TYPE> &sp)
-{
-  if (sp)
-    {
-      TYPE *p = sp;
-      sp = 0;
-      delete p;
-    }
 }
 
 /**

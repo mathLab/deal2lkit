@@ -15,6 +15,7 @@
 
 #include <deal.II/base/config.h>
 #include <deal2lkit/parsed_grid_generator.h>
+#include <deal2lkit/utilities.h>
 #include <deal.II/grid/grid_generator.h>
 #include <deal.II/grid/grid_in.h>
 #include <deal.II/grid/grid_out.h>
@@ -24,20 +25,33 @@
 
 D2K_NAMESPACE_OPEN
 
-std::string extension(const std::string &filename)
+namespace
 {
-  std::string::size_type idx;
-  idx = filename.rfind('.');
-  if (idx != std::string::npos)
-    {
-      return filename.substr(idx+1);
-    }
-  else
-    {
-      return "";
-    }
-}
+  std::string extension(const std::string &filename)
+  {
+    std::string::size_type idx;
+    idx = filename.rfind('.');
+    if (idx != std::string::npos)
+      {
+        return filename.substr(idx+1);
+      }
+    else
+      {
+        return "";
+      }
+  }
 
+  template <int spacedim>
+  std::string create_default_value(const Point<spacedim> &input)
+  {
+    std::ostringstream strs;
+    strs << input[0];
+    for (unsigned int i=1; i<spacedim; ++i)
+      strs<< ","<< input[i];
+    std::string def = strs.str();
+    return def;
+  }
+}
 
 template <int dim, int spacedim>
 ParsedGridGenerator<dim, spacedim>::ParsedGridGenerator(const std::string _section_name,
@@ -71,38 +85,6 @@ ParsedGridGenerator<dim, spacedim>::ParsedGridGenerator(const std::string _secti
   str_vec_int(_vec_of_int)
 {}
 
-template <int dim, int spacedim>
-std::string ParsedGridGenerator<dim, spacedim>::create_default_value(const Point<spacedim> &input)
-{
-  std::ostringstream strs;
-  strs << input[0];
-  for (unsigned int i=1; i<spacedim; ++i)
-    strs<< ","<< input[i];
-  std::string def = strs.str();
-  return def;
-
-}
-
-template <int dim, int spacedim>
-std::string ParsedGridGenerator<dim, spacedim>::create_default_value(const std::vector<double> &input)
-{
-  std::ostringstream strs;
-  strs << input[0];
-  for (unsigned int i=1; i<input.size(); ++i)
-    strs<< ","<< input[i];
-  std::string def = strs.str();
-  return def;
-
-}
-
-template <int dim, int spacedim>
-std::string ParsedGridGenerator<dim, spacedim>::create_default_value(const std::vector<unsigned int> &input)
-{
-  std::string def = Utilities::int_to_string(input[0]);
-  for (unsigned int i=1; i<input.size(); ++i)
-    def += "," + Utilities::int_to_string(input[i]);
-  return def;
-}
 
 template <int dim, int spacedim>
 void ParsedGridGenerator<dim, spacedim>::declare_parameters(ParameterHandler &prm)
@@ -118,8 +100,8 @@ void ParsedGridGenerator<dim, spacedim>::declare_parameters(ParameterHandler &pr
   std::string def_point, def_point_2, def_int, def_double;
   def_point = create_default_value(dummy_point);
   def_point_2 = create_default_value(dummy_point_2);
-  def_int = create_default_value(dummy_vec_int);
-  def_double = create_default_value(dummy_vec_double);
+  def_int = print(dummy_vec_int);
+  def_double = print(dummy_vec_double);
 
   add_parameter(prm, &grid_name,
                 "Grid to generate", grid_name,
