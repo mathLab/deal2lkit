@@ -26,41 +26,62 @@ using namespace dealii;
 D2K_NAMESPACE_OPEN
 
 /**
- * TODO:
+ * A deal2lkit wrapper for dealii::QuadratureSelector.
+ * The template integegers specify the dimension of the quadrature.
  */
 template<int dim>
 class ParsedQuadrature : public ParameterAcceptor
 {
 public:
   /**
-   * TODO:
+   * Constructor: takes an optional name for the section.
+   * Moreover, it Takes the name of the quadrature rule @p quadrature_type that
+   * could be chosen among following names:
+   * -  gauss;
+   * -  midpoint;
+   * -  milne;
+   * -  simpson;
+   * -  trapez;
+   * -  weddle;
+   * If @p quadrature_type is "gauss" it is possible to specify the number of
+   * quadrature points in each coordinate direction (@p order).
    */
   ParsedQuadrature( const std::string   &name=" ",
                     const std::string   &quadrature_type="gauss",
                     const unsigned int  order = 3);
 
-                    /**
-                     * Declare quadrature type and quadrature options.
-                     */
-                    virtual void declare_parameters(ParameterHandler &prm);
-
-                    /**
-                     * Parse quadrature type and quadrature options.
-                     */
-                    virtual void parse_parameters(ParameterHandler &prm);
-
-                    /**
-                     * Initialize internal variables.
-                     */
-                    virtual void parse_parameters_call_back();
+  /**
+   * Declare quadrature type and quadrature options.
+   */
+  virtual void declare_parameters(ParameterHandler &prm);
 
   /**
-   * TODO:
+   * Parse quadrature type and quadrature options.
+   */
+  virtual void parse_parameters(ParameterHandler &prm);
+
+  /**
+   * Initialize internal variables.
+   */
+  virtual void parse_parameters_call_back();
+
+  /**
+   * Return the quadrature rule.
    */
   Quadrature<dim> get_quadrature();
 
 private:
+
+  /**
+   * Name of the quadrature of the quadrature rule: "gauss", "midpoint",
+   * "milne", "simpson", "trapez", or "weddle".
+   */
   const std::string   quadrature_type;
+
+  /**
+   * Number of quadrature points in each coordinate direction.
+   * This variable is only valid for gauss rule.
+   */
   const unsigned int  order;
 };
 
