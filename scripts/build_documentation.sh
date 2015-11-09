@@ -1,7 +1,7 @@
 #!/bin/bash -e
 
 # Settings
-REPO_PATH=git@github.com:luca-heltai/dealii-sak.git
+REPO_PATH=git@github.com:mathLab/deal2lkit.git
 HTML_PATH=../doc/html
 COMMIT_USER="Documentation Builder"
 COMMIT_EMAIL="luca.heltai@gmail.com"
