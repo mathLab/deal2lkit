@@ -24,18 +24,15 @@
 
 D2K_NAMESPACE_OPEN
 
-namespace
+struct handle
 {
-  struct handle
+  char *p;
+  handle(char *ptr) : p(ptr) { }
+  ~handle()
   {
-    char *p;
-    handle(char *ptr) : p(ptr) { }
-    ~handle()
-    {
-      delete p;
-    }
-  };
-}
+    delete p;
+  }
+};
 
 std::string demangle(const char *name)
 {
