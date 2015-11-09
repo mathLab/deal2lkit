@@ -1,0 +1,79 @@
+subsection Dirichlet BCs
+  set IDs and component masks = 0=ALL
+  set IDs and expressions     = 
+  set Known component names   = u
+  set Used constants          = 
+end
+subsection Exact solution
+  set Function constants  = 
+  set Function expression = sin(2*pi*x)*sin(2*pi*y)
+  set Variable names      = x,y,t
+end
+subsection Forcing term
+  set Function constants  = 
+  set Function expression = 8*pi*pi*sin(2*pi*x)*sin(2*pi*y)
+  set Variable names      = x,y,t
+end
+subsection Kappa
+  set Function constants  = 
+  set Function expression = 1.0
+  set Variable names      = x,y,t
+end
+subsection PoissonParameters
+  set Initial refinement = 2
+  set Number of cycles   = 5
+end
+subsection Solver
+  set Log frequency = 1
+  set Log history   = false
+  set Log result    = true
+  set Max steps     = 1000
+  set Reduction     = 1e-08
+  set Solver name   = cg
+  set Tolerance     = 1.e-10
+end
+subsection deal2lkit::ErrorHandler<1>
+  set Compute error            = true
+  set Error file format        = tex
+  set Output error tables      = true
+  set Solution names           = u
+  set Solution names for latex = u
+  set Table names              = error
+  set Write error files        = false
+  subsection Table 0
+    set Add convergence rates          = true
+    set Extra terms                    = cells,dofs
+    set Latex table caption            = error
+    set List of error norms to compute = Linfty, L2, H1
+    set Rate key                       = 
+  end
+end
+subsection deal2lkit::ParsedDataOut<2, 2>
+  set Incremental run prefix = 
+  set Output partitioning    = false
+  set Problem base name      = solution
+  set Solution names         = u
+  subsection Solution output format
+    set Output format = vtu
+    set Subdivisions  = 1
+  end
+end
+subsection deal2lkit::ParsedFiniteElement<2, 2>
+  set Block coupling                 = 
+  set Blocking of the finite element = u
+  set Finite element space           = FE_Q(1)
+  set Preconditioner block coupling  = 
+end
+subsection deal2lkit::ParsedGridGenerator<2, 2>
+  set Colorize                   = false
+  set Grid to generate           = rectangle
+  set Input grid file name       = 
+  set Mesh smoothing alogrithm   = none
+  set Optional Point<spacedim> 1 = 0,0
+  set Optional Point<spacedim> 2 = 1,1
+  set Optional double 1          = 1.0
+  set Optional double 2          = 0.5
+  set Optional int 1             = 1
+  set Optional vector of dim int = 1,1
+  set Output grid file name =
+end
