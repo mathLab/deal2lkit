@@ -1,6 +1,7 @@
 var class_error_handler =
 [
-    [ "ErrorHandler", "class_error_handler.html#aa16bb93ca1775f2231c287b5ea5e55b5", null ],
+    [ "ErrorHandler", "class_error_handler.html#ae91eb928f28f8f0ef5814e5f63b6d220", null ],
+    [ "custom_error", "class_error_handler.html#a8cebeaf932d4e6c5fb8d755dfd2526c4", null ],
     [ "declare_parameters", "class_error_handler.html#a1b82f2b733264bd0f6dbc0b58fdc7a92", null ],
     [ "difference", "class_error_handler.html#ac055b93a612054be319c2c1e352bec04", null ],
     [ "difference", "class_error_handler.html#a688a665a37a38fe75e5edec1f39429a0", null ],
@@ -11,5 +12,21 @@ var class_error_handler =
     [ "error_from_exact", "class_error_handler.html#a462d3aa63171254b2f7c8b399d6a9380", null ],
     [ "output_table", "class_error_handler.html#a55ad14f7cbf37250984cdb8c2c58b627", null ],
     [ "output_table", "class_error_handler.html#acb1346193951e2af47642b6f99b32f94", null ],
-    [ "parse_parameters", "class_error_handler.html#a464f1ba3a697df8ffcb35b0edfe1fbd3", null ]
+    [ "parse_parameters", "class_error_handler.html#a464f1ba3a697df8ffcb35b0edfe1fbd3", null ],
+    [ "add_rates", "class_error_handler.html#aa2cdcc95811a03d99fab988fd12caa63", null ],
+    [ "compute_error", "class_error_handler.html#aca5abf562cb96e8848fab0d2c27d7dd7", null ],
+    [ "error_file_format", "class_error_handler.html#add5790c81437a1c8a700f2c5ff34cb31", null ],
+    [ "extras", "class_error_handler.html#af378b4af7c3b4ec50fba891c5a2d6a6a", null ],
+    [ "headers", "class_error_handler.html#aff8ff2712e15cfb519a370e287341a2a", null ],
+    [ "initialized", "class_error_handler.html#a1acd4a28667a67458784cb225ed9c06f", null ],
+    [ "latex_captions", "class_error_handler.html#a266adc96d289e9165eedda2099145a87", null ],
+    [ "latex_headers", "class_error_handler.html#a3c289c50d58c9fe895cf87ae7639f72d", null ],
+    [ "list_of_error_norms", "class_error_handler.html#ac0225b2a6cb395faca85f7ecd09a9b71", null ],
+    [ "names", "class_error_handler.html#ab3a76b83efc900ec6c1245caa96f2be0", null ],
+    [ "output_error", "class_error_handler.html#a0a838619f62db59888395f4cbe8c7533", null ],
+    [ "rate_keys", "class_error_handler.html#a31f66dfe53412a9e0169e6a0f88b449b", null ],
+    [ "solution_names", "class_error_handler.html#a0958d47fc5c8e32019ac5ecc0366dcb5", null ],
+    [ "tables", "class_error_handler.html#af744b90188b33e047628ec511466ef5f", null ],
+    [ "types", "class_error_handler.html#a275b2aa6a2e5baef76620c1d840c27d4", null ],
+    [ "write_error", "class_error_handler.html#a492b12f83f0746495593d684e91c707e", null ]
 ];

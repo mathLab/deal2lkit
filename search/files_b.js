@@ -1,7 +1,5 @@
 var searchData=
 [
-  ['dae_5ftime_5fintegrator_2ecc',['dae_time_integrator.cc',['../dae__time__integrator_8cc.html',1,'']]],
-  ['dae_5ftime_5fintegrator_2eh',['dae_time_integrator.h',['../dae__time__integrator_8h.html',1,'']]],
   ['data_5fcomponent_5finterpretation_2eh',['data_component_interpretation.h',['http://www.dealii.org/developer/doxygen/deal.II/data__component__interpretation_8h.html',1,'']]],
   ['data_5fout_2ecc',['data_out.cc',['http://www.dealii.org/developer/doxygen/deal.II/data__out_8cc.html',1,'']]],
   ['data_5fout_2eh',['data_out.h',['http://www.dealii.org/developer/doxygen/deal.II/data__out_8h.html',1,'']]],
@@ -50,7 +48,7 @@ var searchData=
   ['dof_5ftools_5fsparsity_2ecc',['dof_tools_sparsity.cc',['http://www.dealii.org/developer/doxygen/deal.II/dof__tools__sparsity_8cc.html',1,'']]],
   ['dof_5futilities_2eh',['dof_utilities.h',['../dof__utilities_8h.html',1,'']]],
   ['dofs_2eh',['dofs.h',['http://www.dealii.org/developer/doxygen/deal.II/dofs_8h.html',1,'']]],
-  ['dummy_2ecc',['dummy.cc',['../dummy_8cc.html',1,'(Global Namespace)'],['http://www.dealii.org/developer/doxygen/deal.II/dummy_8cc.html',1,'(Global Namespace)']]],
+  ['dummy_2ecc',['dummy.cc',['http://www.dealii.org/developer/doxygen/deal.II/dummy_8cc.html',1,'']]],
   ['dynamic_5fsparsity_5fpattern_2ecc',['dynamic_sparsity_pattern.cc',['http://www.dealii.org/developer/doxygen/deal.II/dynamic__sparsity__pattern_8cc.html',1,'']]],
   ['dynamic_5fsparsity_5fpattern_2eh',['dynamic_sparsity_pattern.h',['http://www.dealii.org/developer/doxygen/deal.II/dynamic__sparsity__pattern_8h.html',1,'']]]
 ];

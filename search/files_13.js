@@ -44,7 +44,6 @@ var searchData=
   ['matrix_5ftools_2eh',['matrix_tools.h',['http://www.dealii.org/developer/doxygen/deal.II/matrix__tools_8h.html',1,'']]],
   ['maxwell_2eh',['maxwell.h',['http://www.dealii.org/developer/doxygen/deal.II/maxwell_8h.html',1,'']]],
   ['memory_2eh',['memory.h',['http://www.dealii.org/developer/doxygen/deal.II/memory_8h.html',1,'']]],
-  ['memory_5fconsumption_2ecc',['memory_consumption.cc',['http://www.dealii.org/developer/doxygen/deal.II/memory__consumption_8cc.html',1,'']]],
   ['memory_5fconsumption_2eh',['memory_consumption.h',['http://www.dealii.org/developer/doxygen/deal.II/memory__consumption_8h.html',1,'']]],
   ['mesh_5fworker_2ecc',['mesh_worker.cc',['http://www.dealii.org/developer/doxygen/deal.II/mesh__worker_8cc.html',1,'']]],
   ['mesh_5fworker_2eh',['mesh_worker.h',['http://www.dealii.org/developer/doxygen/deal.II/mesh__worker_8h.html',1,'']]],

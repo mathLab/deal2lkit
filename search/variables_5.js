@@ -33,10 +33,11 @@ var searchData=
   ['eps_5fflags_5f1',['eps_flags_1',['http://www.dealii.org/developer/doxygen/deal.II/classGridOut.html#a2a4cde0d530816c3ce19d1c25dcfd7ba',1,'GridOut']]],
   ['eps_5fflags_5f2',['eps_flags_2',['http://www.dealii.org/developer/doxygen/deal.II/classGridOut.html#a16d4c7a32485f90a6fc536a4c090c0c7',1,'GridOut']]],
   ['eps_5fflags_5f3',['eps_flags_3',['http://www.dealii.org/developer/doxygen/deal.II/classGridOut.html#a8a4cf5a0d3f28d473ce0067f2837cd3b',1,'GridOut']]],
+  ['error_5ffile_5fformat',['error_file_format',['../class_error_handler.html#add5790c81437a1c8a700f2c5ff34cb31',1,'ErrorHandler']]],
   ['euler',['Euler',['http://www.dealii.org/developer/doxygen/deal.II/group__functions.html#gga8e3a3152c1a97076b961dcb35a3bb36babf0b91e6181d44127eb8d23ff080f286',1,'AutoDerivativeFunction']]],
-  ['euler_5fdof_5fhandler',['euler_dof_handler',['http://www.dealii.org/developer/doxygen/deal.II/classMappingFEField.html#abdb8317f5043f6958417aff1ec14bdd1',1,'MappingFEField::euler_dof_handler()'],['http://www.dealii.org/developer/doxygen/deal.II/classMappingQEulerian.html#a492abd42f3e34b68fb30881cf41157ad',1,'MappingQEulerian::euler_dof_handler()']]],
+  ['euler_5fdof_5fhandler',['euler_dof_handler',['http://www.dealii.org/developer/doxygen/deal.II/classMappingFEField.html#a04458436195026beeadb0fb82b4df5cb',1,'MappingFEField::euler_dof_handler()'],['http://www.dealii.org/developer/doxygen/deal.II/classMappingQEulerian.html#a492abd42f3e34b68fb30881cf41157ad',1,'MappingQEulerian::euler_dof_handler()']]],
   ['euler_5ftransform_5fvectors',['euler_transform_vectors',['http://www.dealii.org/developer/doxygen/deal.II/classMappingQ1Eulerian.html#acc67faa2e935043fac23b57a6d4d6686',1,'MappingQ1Eulerian']]],
-  ['euler_5fvector',['euler_vector',['http://www.dealii.org/developer/doxygen/deal.II/classMappingFEField.html#a2f59fe47474671a67dd79b4b7fdea75b',1,'MappingFEField::euler_vector()'],['http://www.dealii.org/developer/doxygen/deal.II/classMappingQEulerian.html#a6bf95166d772d64fc297cc6194708605',1,'MappingQEulerian::euler_vector()']]],
+  ['euler_5fvector',['euler_vector',['http://www.dealii.org/developer/doxygen/deal.II/classMappingFEField.html#a6b4992c2a3d34110874f1abda092db1d',1,'MappingFEField::euler_vector()'],['http://www.dealii.org/developer/doxygen/deal.II/classMappingQEulerian.html#a6bf95166d772d64fc297cc6194708605',1,'MappingQEulerian::euler_vector()']]],
   ['evaluate_5ffunct',['evaluate_funct',['http://www.dealii.org/developer/doxygen/deal.II/classFEEvaluation.html#a049bbfa2223fdcbbfb66543a76d9530f',1,'FEEvaluation']]],
   ['exact_5fresidual',['exact_residual',['http://www.dealii.org/developer/doxygen/deal.II/structSolverBicgstab_1_1AdditionalData.html#abcbb1af60a1146cb76145e381f91eb98',1,'SolverBicgstab::AdditionalData::exact_residual()'],['http://www.dealii.org/developer/doxygen/deal.II/structSolverQMRS_1_1AdditionalData.html#a9a09e6401b49eb57b0b74fed14054af2',1,'SolverQMRS::AdditionalData::exact_residual()']]],
   ['exc',['exc',['http://www.dealii.org/developer/doxygen/deal.II/classExceptionBase.html#a822f546ca2b857587526aa68818cf85b',1,'ExceptionBase']]],
@@ -48,5 +49,6 @@ var searchData=
   ['exterior',['exterior',['http://www.dealii.org/developer/doxygen/deal.II/classMeshWorker_1_1DoFInfoBox.html#ac132b4affba4bdb3c4c21c937b50d694',1,'MeshWorker::DoFInfoBox']]],
   ['exterior_5fface_5favailable',['exterior_face_available',['http://www.dealii.org/developer/doxygen/deal.II/classMeshWorker_1_1DoFInfoBox.html#aa83e950e0f9451404651ca1dfb32e448',1,'MeshWorker::DoFInfoBox']]],
   ['external_5fdata',['external_data',['http://www.dealii.org/developer/doxygen/deal.II/structDataOutBase_1_1PovrayFlags.html#a2f18e4a6835debc48914148e27f0c21e',1,'DataOutBase::PovrayFlags']]],
-  ['extra_5foff_5fdiagonals',['extra_off_diagonals',['http://www.dealii.org/developer/doxygen/deal.II/classSparseLUDecomposition_1_1AdditionalData.html#a4f50008942dbfef89b34404e47ebde2c',1,'SparseLUDecomposition::AdditionalData']]]
+  ['extra_5foff_5fdiagonals',['extra_off_diagonals',['http://www.dealii.org/developer/doxygen/deal.II/classSparseLUDecomposition_1_1AdditionalData.html#a4f50008942dbfef89b34404e47ebde2c',1,'SparseLUDecomposition::AdditionalData']]],
+  ['extras',['extras',['../class_error_handler.html#af378b4af7c3b4ec50fba891c5a2d6a6a',1,'ErrorHandler']]]
 ];

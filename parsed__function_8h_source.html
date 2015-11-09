@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.10"/>
-<title>deal2lkit: Deal.II ToolKit library: include/deal2lkit/parsed_function.h Source File</title>
+<title>deal2lkit: A ToolKit library for Deal.II: include/deal2lkit/parsed_function.h Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -37,7 +37,7 @@
  <tbody>
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
-   <div id="projectname">deal2lkit: Deal.II ToolKit library
+   <div id="projectname">deal2lkit: A ToolKit library for Deal.II
    </div>
   </td>
    <td>        <div id="MSearchBox" class="MSearchBoxInactive">
@@ -98,86 +98,111 @@ $(document).ready(function(){initNavTree('parsed__function_8h_source.html','');}
 <div class="title">parsed_function.h</div>  </div>
 </div><!--header-->
 <div class="contents">
-<a href="parsed__function_8h.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="preprocessor">#ifndef __dealii_sak_parsed_function_h</span></div>
-<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="preprocessor">#define __dealii_sak_parsed_function_h</span></div>
-<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;</div>
-<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="preprocessor">#include &lt;deal2lkit/config.h&gt;</span></div>
-<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="preprocessor">#include &lt;<a class="codeRef" doxygen="/Users/heltai/c++/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/parsed__function_8h.html">deal.II/base/parsed_function.h</a>&gt;</span></div>
-<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="parameter__acceptor_8h.html">deal2lkit/parameter_acceptor.h</a>&gt;</span></div>
-<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;</div>
-<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="keyword">using namespace </span><a class="codeRef" doxygen="/Users/heltai/c++/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/namespacedealii.html">dealii</a>;</div>
-<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;</div>
-<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="keyword">template</span>&lt;<span class="keywordtype">int</span> dim, <span class="keywordtype">int</span> ncomponents=1&gt;</div>
-<div class="line"><a name="l00016"></a><span class="lineno"><a class="line" href="class_parsed_function.html">   16</a></span>&#160;<span class="keyword">class </span><a class="code" href="class_parsed_function.html">ParsedFunction</a> : <span class="keyword">public</span> <a class="code" href="class_parameter_acceptor.html">ParameterAcceptor</a>, <span class="keyword">public</span> <a class="codeRef" doxygen="/Users/heltai/c++/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classFunctions_1_1ParsedFunction.html">Functions::ParsedFunction</a>&lt;dim&gt;</div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;{</div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;  <a class="code" href="class_parsed_function.html">ParsedFunction</a>(<span class="keyword">const</span> std::string &amp;name=<span class="stringliteral">&quot;&quot;</span>,</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;                 <span class="keyword">const</span> std::string &amp;default_exp=<span class="stringliteral">&quot;&quot;</span>,</div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;                 <span class="keyword">const</span> std::string &amp;default_const=<span class="stringliteral">&quot;&quot;</span>);</div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;</div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;  <span class="keyword">virtual</span> <span class="keywordtype">void</span> declare_parameters(<a class="codeRef" doxygen="/Users/heltai/c++/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classParameterHandler.html">ParameterHandler</a> &amp;prm);</div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;  <span class="keyword">virtual</span> <span class="keywordtype">void</span> parse_parameters(<a class="codeRef" doxygen="/Users/heltai/c++/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classParameterHandler.html">ParameterHandler</a> &amp;prm);</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;<span class="keyword">private</span>:</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;  <span class="keyword">const</span> std::string default_exp;</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;  <span class="keyword">const</span> std::string default_const;</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;};</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;<span class="comment">// ============================================================</span></div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;<span class="comment">// Explicit template functions</span></div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;<span class="comment">// ============================================================</span></div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;<span class="keyword">template</span>&lt;<span class="keywordtype">int</span> dim, <span class="keywordtype">int</span> ncomponents&gt;</div>
-<div class="line"><a name="l00052"></a><span class="lineno"><a class="line" href="class_parsed_function.html#af9529969ac314e7233a5091671c0e81a">   52</a></span>&#160;<a class="code" href="class_parsed_function.html#af9529969ac314e7233a5091671c0e81a">ParsedFunction&lt;dim, ncomponents&gt;::ParsedFunction</a>(<span class="keyword">const</span> std::string &amp;name,</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;                                                 <span class="keyword">const</span> std::string &amp;default_exp,</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;                                                 <span class="keyword">const</span> std::string &amp;default_const) :</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;  <a class="code" href="class_parameter_acceptor.html">ParameterAcceptor</a>(name),</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;  <a class="codeRef" doxygen="/Users/heltai/c++/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/namespaceFunctions.html">Functions</a>::<a class="code" href="class_parsed_function.html">ParsedFunction</a>&lt;dim&gt;(ncomponents),</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;  default_exp(default_exp),</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;  default_const(default_const)</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;{}</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;<span class="keyword">template</span>&lt;<span class="keywordtype">int</span> dim, <span class="keywordtype">int</span> ncomponents&gt;</div>
-<div class="line"><a name="l00063"></a><span class="lineno"><a class="line" href="class_parsed_function.html#a036684efc1b4e405448f83ad82a9a685">   63</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="class_parsed_function.html#a036684efc1b4e405448f83ad82a9a685">ParsedFunction&lt;dim, ncomponents&gt;:: declare_parameters</a>(<a class="codeRef" doxygen="/Users/heltai/c++/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classParameterHandler.html">ParameterHandler</a> &amp;prm)</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;{</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;  <a class="codeRef" doxygen="/Users/heltai/c++/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classFunctions_1_1ParsedFunction.html#a57fd4a680441ae940812431a421c9c40">Functions::ParsedFunction&lt;dim&gt;::declare_parameters</a>(prm, ncomponents);</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;  <span class="keywordflow">if</span> (default_exp != <span class="stringliteral">&quot;&quot;</span>)</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;    prm.<a class="codeRef" doxygen="/Users/heltai/c++/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classParameterHandler.html#aa6418ea655b1b550b9dcf63513030196">set</a>(<span class="stringliteral">&quot;Function expression&quot;</span>, default_exp);</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;  <span class="keywordflow">if</span> (default_const != <span class="stringliteral">&quot;&quot;</span>)</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;    prm.<a class="codeRef" doxygen="/Users/heltai/c++/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classParameterHandler.html#aa6418ea655b1b550b9dcf63513030196">set</a>(<span class="stringliteral">&quot;Function constants&quot;</span>, default_const);</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;}</div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;</div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;<span class="keyword">template</span>&lt;<span class="keywordtype">int</span> dim, <span class="keywordtype">int</span> ncomponents&gt;</div>
-<div class="line"><a name="l00074"></a><span class="lineno"><a class="line" href="class_parsed_function.html#a2faeb0a75157659cce56275ef3270b0e">   74</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="class_parsed_function.html#a2faeb0a75157659cce56275ef3270b0e">ParsedFunction&lt;dim, ncomponents&gt;:: parse_parameters</a>(<a class="codeRef" doxygen="/Users/heltai/c++/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classParameterHandler.html">ParameterHandler</a> &amp;prm)</div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;{</div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;  <a class="codeRef" doxygen="/Users/heltai/c++/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classFunctions_1_1ParsedFunction.html#ad63dc7cf2f447d3acfec839f28416914">Functions::ParsedFunction&lt;dim&gt;::parse_parameters</a>(prm);</div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;}</div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="ttc" id="class_parsed_function_html_a036684efc1b4e405448f83ad82a9a685"><div class="ttname"><a href="class_parsed_function.html#a036684efc1b4e405448f83ad82a9a685">ParsedFunction::declare_parameters</a></div><div class="ttdeci">virtual void declare_parameters(ParameterHandler &amp;prm)</div><div class="ttdef"><b>Definition:</b> <a href="parsed__function_8h_source.html#l00063">parsed_function.h:63</a></div></div>
-<div class="ttc" id="class_parameter_acceptor_html"><div class="ttname"><a href="class_parameter_acceptor.html">ParameterAcceptor</a></div><div class="ttdef"><b>Definition:</b> <a href="parameter__acceptor_8h_source.html#l00054">parameter_acceptor.h:54</a></div></div>
+<a href="parsed__function_8h.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">//-----------------------------------------------------------</span></div>
+<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="comment">//</span></div>
+<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="comment">//    Copyright (C) 2015 by the deal2lkit authors</span></div>
+<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="comment">//</span></div>
+<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="comment">//    This file is part of the deal2lkit library.</span></div>
+<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="comment">//</span></div>
+<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="comment">//    The deal2lkit library is free software; you can use it, redistribute</span></div>
+<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="comment">//    it, and/or modify it under the terms of the GNU Lesser General</span></div>
+<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="comment">//    Public License as published by the Free Software Foundation; either</span></div>
+<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="comment">//    version 2.1 of the License, or (at your option) any later version.</span></div>
+<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="comment">//    The full text of the license can be found in the file LICENSE at</span></div>
+<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="comment">//    the top level of the deal2lkit distribution.</span></div>
+<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<span class="comment">//</span></div>
+<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="comment">//-----------------------------------------------------------</span></div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;</div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="preprocessor">#ifndef _d2k_parsed_function_h</span></div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="preprocessor">#define _d2k_parsed_function_h</span></div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;</div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="preprocessor">#include &lt;deal2lkit/config.h&gt;</span></div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="preprocessor">#include &lt;<a class="codeRef" doxygen="/usr/local/src/d2-parallel-package/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/parsed__function_8h.html">deal.II/base/parsed_function.h</a>&gt;</span></div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="parameter__acceptor_8h.html">deal2lkit/parameter_acceptor.h</a>&gt;</span></div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;</div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="keyword">using namespace </span><a class="codeRef" doxygen="/usr/local/src/d2-parallel-package/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/namespacedealii.html">dealii</a>;</div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;</div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<a class="code" href="namespace_d2_k___n_a_m_e_s_p_a_c_e___o_p_e_n.html">D2K_NAMESPACE_OPEN</a></div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="keyword">template</span>&lt;<span class="keywordtype">int</span> dim, <span class="keywordtype">int</span> ncomponents=1&gt;</div>
+<div class="line"><a name="l00033"></a><span class="lineno"><a class="line" href="class_parsed_function.html">   33</a></span>&#160;<span class="keyword">class </span><a class="code" href="class_parsed_function.html">ParsedFunction</a> : <span class="keyword">public</span> <a class="code" href="class_parameter_acceptor.html">ParameterAcceptor</a>, <span class="keyword">public</span> <a class="codeRef" doxygen="/usr/local/src/d2-parallel-package/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classFunctions_1_1ParsedFunction.html">Functions::ParsedFunction</a>&lt;dim&gt;</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;{</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;  <a class="code" href="class_parsed_function.html">ParsedFunction</a>(<span class="keyword">const</span> std::string &amp;name=<span class="stringliteral">&quot;&quot;</span>,</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;                 <span class="keyword">const</span> std::string &amp;default_exp=<span class="stringliteral">&quot;&quot;</span>,</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;                 <span class="keyword">const</span> std::string &amp;default_const=<span class="stringliteral">&quot;&quot;</span>);</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;  <span class="keyword">virtual</span> <span class="keywordtype">void</span> declare_parameters(<a class="codeRef" doxygen="/usr/local/src/d2-parallel-package/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classParameterHandler.html">ParameterHandler</a> &amp;prm);</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;  <span class="keyword">virtual</span> <span class="keywordtype">void</span> parse_parameters(<a class="codeRef" doxygen="/usr/local/src/d2-parallel-package/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classParameterHandler.html">ParameterHandler</a> &amp;prm);</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;<span class="keyword">private</span>:</div>
+<div class="line"><a name="l00060"></a><span class="lineno"><a class="line" href="class_parsed_function.html#aa6ebb9ad7d477ea2751077017c2058f2">   60</a></span>&#160;  <span class="keyword">const</span> std::string <a class="code" href="class_parsed_function.html#aa6ebb9ad7d477ea2751077017c2058f2">default_exp</a>;</div>
+<div class="line"><a name="l00061"></a><span class="lineno"><a class="line" href="class_parsed_function.html#ac6770abd6549788cf85b635dc0506449">   61</a></span>&#160;  <span class="keyword">const</span> std::string <a class="code" href="class_parsed_function.html#ac6770abd6549788cf85b635dc0506449">default_const</a>;</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;};</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;<span class="comment">// ============================================================</span></div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;<span class="comment">// Explicit template functions</span></div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;<span class="comment">// ============================================================</span></div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;<span class="keyword">template</span>&lt;<span class="keywordtype">int</span> dim, <span class="keywordtype">int</span> ncomponents&gt;</div>
+<div class="line"><a name="l00069"></a><span class="lineno"><a class="line" href="class_parsed_function.html#af9529969ac314e7233a5091671c0e81a">   69</a></span>&#160;<a class="code" href="class_parsed_function.html#af9529969ac314e7233a5091671c0e81a">ParsedFunction&lt;dim, ncomponents&gt;::ParsedFunction</a>(<span class="keyword">const</span> std::string &amp;name,</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;                                                 <span class="keyword">const</span> std::string &amp;default_exp,</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;                                                 <span class="keyword">const</span> std::string &amp;default_const) :</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;  <a class="code" href="class_parameter_acceptor.html">ParameterAcceptor</a>(name),</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;  <a class="codeRef" doxygen="/usr/local/src/d2-parallel-package/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/namespaceFunctions.html">Functions</a>::<a class="code" href="class_parsed_function.html">ParsedFunction</a>&lt;dim&gt;(ncomponents),</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;  default_exp(default_exp),</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;  default_const(default_const)</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;{}</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;<span class="keyword">template</span>&lt;<span class="keywordtype">int</span> dim, <span class="keywordtype">int</span> ncomponents&gt;</div>
+<div class="line"><a name="l00080"></a><span class="lineno"><a class="line" href="class_parsed_function.html#a036684efc1b4e405448f83ad82a9a685">   80</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="class_parsed_function.html#a036684efc1b4e405448f83ad82a9a685">ParsedFunction&lt;dim, ncomponents&gt;:: declare_parameters</a>(<a class="codeRef" doxygen="/usr/local/src/d2-parallel-package/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classParameterHandler.html">ParameterHandler</a> &amp;prm)</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;{</div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;  <a class="codeRef" doxygen="/usr/local/src/d2-parallel-package/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classFunctions_1_1ParsedFunction.html#a57fd4a680441ae940812431a421c9c40">Functions::ParsedFunction&lt;dim&gt;::declare_parameters</a>(prm, ncomponents);</div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;  <span class="keywordflow">if</span> (default_exp != <span class="stringliteral">&quot;&quot;</span>)</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;    prm.<a class="codeRef" doxygen="/usr/local/src/d2-parallel-package/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classParameterHandler.html#aa6418ea655b1b550b9dcf63513030196">set</a>(<span class="stringliteral">&quot;Function expression&quot;</span>, default_exp);</div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;  <span class="keywordflow">if</span> (default_const != <span class="stringliteral">&quot;&quot;</span>)</div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;    prm.<a class="codeRef" doxygen="/usr/local/src/d2-parallel-package/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classParameterHandler.html#aa6418ea655b1b550b9dcf63513030196">set</a>(<span class="stringliteral">&quot;Function constants&quot;</span>, default_const);</div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;}</div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;</div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;</div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;<span class="keyword">template</span>&lt;<span class="keywordtype">int</span> dim, <span class="keywordtype">int</span> ncomponents&gt;</div>
+<div class="line"><a name="l00091"></a><span class="lineno"><a class="line" href="class_parsed_function.html#a2faeb0a75157659cce56275ef3270b0e">   91</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="class_parsed_function.html#a2faeb0a75157659cce56275ef3270b0e">ParsedFunction&lt;dim, ncomponents&gt;:: parse_parameters</a>(<a class="codeRef" doxygen="/usr/local/src/d2-parallel-package/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classParameterHandler.html">ParameterHandler</a> &amp;prm)</div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;{</div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;  <a class="codeRef" doxygen="/usr/local/src/d2-parallel-package/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classFunctions_1_1ParsedFunction.html#ad63dc7cf2f447d3acfec839f28416914">Functions::ParsedFunction&lt;dim&gt;::parse_parameters</a>(prm);</div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;}</div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;</div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;</div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;D2K_NAMESPACE_CLOSE</div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;</div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;</div>
+<div class="ttc" id="class_parsed_function_html_a036684efc1b4e405448f83ad82a9a685"><div class="ttname"><a href="class_parsed_function.html#a036684efc1b4e405448f83ad82a9a685">ParsedFunction::declare_parameters</a></div><div class="ttdeci">virtual void declare_parameters(ParameterHandler &amp;prm)</div><div class="ttdef"><b>Definition:</b> <a href="parsed__function_8h_source.html#l00080">parsed_function.h:80</a></div></div>
+<div class="ttc" id="class_parameter_acceptor_html"><div class="ttname"><a href="class_parameter_acceptor.html">ParameterAcceptor</a></div><div class="ttdef"><b>Definition:</b> <a href="parameter__acceptor_8h_source.html#l00335">parameter_acceptor.h:335</a></div></div>
 <div class="ttc" id="parameter__acceptor_8h_html"><div class="ttname"><a href="parameter__acceptor_8h.html">parameter_acceptor.h</a></div></div>
+<div class="ttc" id="class_parsed_function_html_aa6ebb9ad7d477ea2751077017c2058f2"><div class="ttname"><a href="class_parsed_function.html#aa6ebb9ad7d477ea2751077017c2058f2">ParsedFunction::default_exp</a></div><div class="ttdeci">const std::string default_exp</div><div class="ttdef"><b>Definition:</b> <a href="parsed__function_8h_source.html#l00060">parsed_function.h:60</a></div></div>
 <div class="ttc" id="classFunctions_1_1ParsedFunction_html"><div class="ttname"><a href="http://www.dealii.org/developer/doxygen/deal.II/classFunctions_1_1ParsedFunction.html">Functions::ParsedFunction</a></div></div>
 <div class="ttc" id="classParameterHandler_html_aa6418ea655b1b550b9dcf63513030196"><div class="ttname"><a href="http://www.dealii.org/developer/doxygen/deal.II/classParameterHandler.html#aa6418ea655b1b550b9dcf63513030196">ParameterHandler::set</a></div><div class="ttdeci">void set(const std::string &amp;entry_name, const std::string &amp;new_value)</div></div>
+<div class="ttc" id="class_parsed_function_html_ac6770abd6549788cf85b635dc0506449"><div class="ttname"><a href="class_parsed_function.html#ac6770abd6549788cf85b635dc0506449">ParsedFunction::default_const</a></div><div class="ttdeci">const std::string default_const</div><div class="ttdef"><b>Definition:</b> <a href="parsed__function_8h_source.html#l00061">parsed_function.h:61</a></div></div>
+<div class="ttc" id="namespace_d2_k___n_a_m_e_s_p_a_c_e___o_p_e_n_html"><div class="ttname"><a href="namespace_d2_k___n_a_m_e_s_p_a_c_e___o_p_e_n.html">D2K_NAMESPACE_OPEN</a></div><div class="ttdef"><b>Definition:</b> <a href="utilities_8cc_source.html#l00027">utilities.cc:27</a></div></div>
 <div class="ttc" id="classFunctions_1_1ParsedFunction_html_a57fd4a680441ae940812431a421c9c40"><div class="ttname"><a href="http://www.dealii.org/developer/doxygen/deal.II/classFunctions_1_1ParsedFunction.html#a57fd4a680441ae940812431a421c9c40">Functions::ParsedFunction::declare_parameters</a></div><div class="ttdeci">static void declare_parameters(ParameterHandler &amp;prm, const unsigned int n_components=1)</div></div>
 <div class="ttc" id="classParameterHandler_html"><div class="ttname"><a href="http://www.dealii.org/developer/doxygen/deal.II/classParameterHandler.html">ParameterHandler</a></div></div>
 <div class="ttc" id="namespaceFunctions_html"><div class="ttname"><a href="http://www.dealii.org/developer/doxygen/deal.II/namespaceFunctions.html">Functions</a></div></div>
-<div class="ttc" id="class_parsed_function_html_af9529969ac314e7233a5091671c0e81a"><div class="ttname"><a href="class_parsed_function.html#af9529969ac314e7233a5091671c0e81a">ParsedFunction::ParsedFunction</a></div><div class="ttdeci">ParsedFunction(const std::string &amp;name=&quot;&quot;, const std::string &amp;default_exp=&quot;&quot;, const std::string &amp;default_const=&quot;&quot;)</div><div class="ttdef"><b>Definition:</b> <a href="parsed__function_8h_source.html#l00052">parsed_function.h:52</a></div></div>
-<div class="ttc" id="class_parsed_function_html_a2faeb0a75157659cce56275ef3270b0e"><div class="ttname"><a href="class_parsed_function.html#a2faeb0a75157659cce56275ef3270b0e">ParsedFunction::parse_parameters</a></div><div class="ttdeci">virtual void parse_parameters(ParameterHandler &amp;prm)</div><div class="ttdef"><b>Definition:</b> <a href="parsed__function_8h_source.html#l00074">parsed_function.h:74</a></div></div>
+<div class="ttc" id="class_parsed_function_html_af9529969ac314e7233a5091671c0e81a"><div class="ttname"><a href="class_parsed_function.html#af9529969ac314e7233a5091671c0e81a">ParsedFunction::ParsedFunction</a></div><div class="ttdeci">ParsedFunction(const std::string &amp;name=&quot;&quot;, const std::string &amp;default_exp=&quot;&quot;, const std::string &amp;default_const=&quot;&quot;)</div><div class="ttdef"><b>Definition:</b> <a href="parsed__function_8h_source.html#l00069">parsed_function.h:69</a></div></div>
+<div class="ttc" id="class_parsed_function_html_a2faeb0a75157659cce56275ef3270b0e"><div class="ttname"><a href="class_parsed_function.html#a2faeb0a75157659cce56275ef3270b0e">ParsedFunction::parse_parameters</a></div><div class="ttdeci">virtual void parse_parameters(ParameterHandler &amp;prm)</div><div class="ttdef"><b>Definition:</b> <a href="parsed__function_8h_source.html#l00091">parsed_function.h:91</a></div></div>
 <div class="ttc" id="classFunctions_1_1ParsedFunction_html_ad63dc7cf2f447d3acfec839f28416914"><div class="ttname"><a href="http://www.dealii.org/developer/doxygen/deal.II/classFunctions_1_1ParsedFunction.html#ad63dc7cf2f447d3acfec839f28416914">Functions::ParsedFunction::parse_parameters</a></div><div class="ttdeci">void parse_parameters(ParameterHandler &amp;prm)</div></div>
 <div class="ttc" id="parsed__function_8h_html"><div class="ttname"><a href="http://www.dealii.org/developer/doxygen/deal.II/parsed__function_8h.html">parsed_function.h</a></div></div>
 <div class="ttc" id="namespacedealii_html"><div class="ttname"><a href="http://www.dealii.org/developer/doxygen/deal.II/namespacedealii.html">dealii</a></div></div>
-<div class="ttc" id="class_parsed_function_html"><div class="ttname"><a href="class_parsed_function.html">ParsedFunction</a></div><div class="ttdef"><b>Definition:</b> <a href="parsed__function_8h_source.html#l00016">parsed_function.h:16</a></div></div>
+<div class="ttc" id="class_parsed_function_html"><div class="ttname"><a href="class_parsed_function.html">ParsedFunction</a></div><div class="ttdef"><b>Definition:</b> <a href="parsed__function_8h_source.html#l00033">parsed_function.h:33</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_5401fe99141ed2453494b7c40eaaa779.html">deal2lkit</a></li><li class="navelem"><a class="el" href="parsed__function_8h.html">parsed_function.h</a></li>
-    <li class="footer">Generated on Wed Sep 30 2015 13:47:21 for deal2lkit: Deal.II ToolKit library by
+    <li class="footer">Generated on Mon Nov 9 2015 08:08:06 for deal2lkit: A ToolKit library for Deal.II by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.10 </li>
   </ul>

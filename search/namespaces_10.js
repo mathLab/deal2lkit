@@ -25,6 +25,7 @@ var searchData=
   ['sparseludecomposition',['SparseLUDecomposition',['http://www.dealii.org/developer/doxygen/deal.II/classSparseLUDecomposition_1_1AdditionalData.html',1,'']]],
   ['sparsematrixez',['SparseMatrixEZ',['http://www.dealii.org/developer/doxygen/deal.II/classSparseMatrixEZ_1_1const__iterator_1_1Accessor.html',1,'']]],
   ['sparsematrixiterators',['SparseMatrixIterators',['http://www.dealii.org/developer/doxygen/deal.II/namespaceSparseMatrixIterators.html',1,'']]],
+  ['sparsevanka',['SparseVanka',['http://www.dealii.org/developer/doxygen/deal.II/classSparseVanka_1_1AdditionalData.html',1,'']]],
   ['sparsitypatterniterators',['SparsityPatternIterators',['http://www.dealii.org/developer/doxygen/deal.II/namespaceSparsityPatternIterators.html',1,'']]],
   ['sparsitytools',['SparsityTools',['http://www.dealii.org/developer/doxygen/deal.II/namespaceSparsityTools.html',1,'']]],
   ['standardexceptions',['StandardExceptions',['http://www.dealii.org/developer/doxygen/deal.II/namespaceStandardExceptions.html',1,'']]],

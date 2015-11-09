@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.10"/>
-<title>deal2lkit: Deal.II ToolKit library: Main Page</title>
+<title>deal2lkit: A ToolKit library for Deal.II: deal2lkit documentation</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -37,7 +37,7 @@
  <tbody>
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
-   <div id="projectname">deal2lkit: Deal.II ToolKit library
+   <div id="projectname">deal2lkit: A ToolKit library for Deal.II
    </div>
   </td>
    <td>        <div id="MSearchBox" class="MSearchBoxInactive">
@@ -95,32 +95,92 @@ $(document).ready(function(){initNavTree('index.html','');});
 
 <div class="header">
   <div class="headertitle">
-<div class="title">deal2lkit: Deal.II ToolKit library Documentation</div>  </div>
+<div class="title">deal2lkit documentation </div>  </div>
 </div><!--header-->
 <div class="contents">
-<ul><li><a href="index.html"><span>Main&#160;Page</span></a>
-</li><li><a href="pages.html"><span>Related&#160;Pages</span></a>
-</li><li><a href="namespaces.html"><span>Namespaces</span></a>
-<ul><li><a href="namespaces.html"><span>Namespace&#160;List</span></a>
-</li><li><a href="namespacemembers.html"><span>Namespace&#160;Members</span></a>
-</li></ul>
-</li><li><a href="annotated.html"><span>Classes</span></a>
-<ul><li><a href="annotated.html"><span>Class&#160;List</span></a>
-</li><li><a href="classes.html"><span>Class&#160;Index</span></a>
-</li><li><a href="hierarchy.html"><span>Class&#160;Hierarchy</span></a>
-</li><li><a href="functions.html"><span>Class&#160;Members</span></a>
-</li></ul>
-</li><li><a href="files.html"><span>Files</span></a>
-<ul><li><a href="files.html"><span>File&#160;List</span></a>
-</li><li><a href="globals.html"><span>File&#160;Members</span></a>
-</li></ul>
-</li></ul>
-</div><!-- contents -->
+<div class="textblock"><h1><a class="anchor" id="intro"></a>
+Introduction</h1>
+<p><code>deal2lkit</code> is a collection of modules and classes for the general purpose finite element library <a href="http://www.dealii.org"><code>deal.II</code></a>. Its principal aim is to provide a high level interface, controlled via parameter files, for those steps that are common in all finite element programs: mesh generation, selection of the finite element type, application of boundary conditions and many others. Each module can be used as a building block independently on the others, and can be integrated in existing finite element codes based on <a href="http://www.dealii.org"><code>deal.II</code></a>, drastically reducing the size of programs, rendering their use automatically parametrised, and reducing the overall time-to-market of finite element programming. Moreover, <code>deal2lkit</code> features interfaces with the <a href="https://computation.llnl.gov/casc/sundials/main.html"><code>SUNDIALS</code></a> library (SUite of Nonlinear and DIfferential/ALgebraic equation Solvers) and with the <a href="http://assimp.sourceforge.net/"><code>Assimp</code></a> library (Open Asset Import Library).</p>
+<p>The <code>deal2lkit</code> library is released under the GNU Lesser General Public License (LGPL) and can be retrieved from the <code>deal2lkit</code> repository <a href="https://github.com/mathLab/deal2lkit">https://github.com/mathLab/deal2lkit</a>.</p>
+<h1><a class="anchor" id="motivation"></a>
+Motivation</h1>
+<p>The solution of partial differential equations by means of a finite element method always requires at least the following steps:</p>
+<ul>
+<li>generation of a geometrical grid to represent the domain of the simulation;</li>
+<li>definition of the discrete functional space for the solution;</li>
+<li>application of proper boundary conditions;</li>
+<li>actual solution of the algebraic problem;</li>
+<li>post-processing of the result (data output and error analysis).</li>
+</ul>
+<p>Such a structure usually implies that different problems share a considerable amount of code. A natural response to such common background lies in the use of open source libraries as building blocks for advanced numerical solvers. The general purpose finite element library <a href="http://www.dealii.org"><code>deal.II</code></a> is one of the most successful libraries of this kind, and allows considerable simplification when writing complex finite element codes.</p>
+<p>The <a href="http://www.dealii.org"><code>deal.II</code></a> library has been written with generality in mind, and allows the solution of several classes of finite element problems. Its flexibility can be attributed to the granularity and modularity of the code base, in which only the building blocks of finite element codes are programmed, and the semantic for the solution of an actual problem is left to users of the library. This approach has the advantage that <a href="http://www.dealii.org"><code>deal.II</code></a> can be used to solve virtually any problem that can be written into a partial differential equation, but leaves to the user the burden to stich together the various building blocks. A typical approach is to start from one of the many example programs that the library comes with (more than 50), and modify it to suite the needs of the user. While the approach copy-modify-run may be well suited for a single person working on a single project, it falls short when one wishes to reuse the same code base to solve possibly very different problems. The biggest difficulty comes from the fact that most of the tasks above have slightly different specialisations depending on the problem at hand. These specialisation are usually difficult to generalize, since they depend, for example, on the number of variables of a problem, the types of boundary conditions one would like to impose, or the type of norm one would like to use when computing errors during the post-processing phase of a program.</p>
+<p><code>deal2lkit</code> is a <b>library of modules</b> built on top of <a href="http://www.dealii.org"><code>deal.II</code></a> that drastically reduces the amount of repeated lines of code between different projects, by introducing an extensive use of parameter files into every step of a general finite element code.</p>
+<p><code>deal2lkit</code> features also interfaces for other scientific libraries in order to tackle problems of increasing difficulties. So far we have constructed convenience wrappers around the following external libraries:</p>
+<ul>
+<li><a href="https://computation.llnl.gov/casc/sundials/main.html"><code>SUNDIALS</code></a></li>
+<li><a href="http://assimp.sourceforge.net/"><code>Assimp</code></a></li>
+</ul>
+<p><code>deal2lkit</code> is distributed under the free GNU Lesser General Public License (LGPL) and is available from the <code>deal2lkit</code> repository at <a href="https://github.com/mathLab/deal2lkit">https://github.com/mathLab/deal2lkit</a>. The library is tested by means of the continuous integration service hosted by Travis CI (<a href="https://travis-ci.org/">https://travis-ci.org/</a>).</p>
+<h1><a class="anchor" id="overview"></a>
+Modules overview</h1>
+<h2><a class="anchor" id="parameter_acceptor"></a>
+ParameterAcceptor: the base of all deal2lkit classes</h2>
+<p>In general, a <em>parameter file</em> is used to steer the execution of a program at run time, without the need to recompile the executable, with clear advantages in terms of <b>human-time</b>.</p>
+<p>In the <a href="http://www.dealii.org"><code>deal.II</code></a> library, reading and writing parameter files is done through the <a class="elRef" doxygen="/usr/local/src/d2-parallel-package/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classParameterHandler.html">ParameterHandler</a> class, that provides a standard interface to an input file that can be used to feed run-time parameters to a program, such as time step sizes, geometries, right hand sides, etc.</p>
+<p><a href="http://www.dealii.org"><code>deal.II</code></a> supports the standard <code>xml</code> or <code>JSON</code> formats, or a custom text format which resemble bash files with support for sections, as in the following example: </p><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;subsection Nonlinear solver</div>
+<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;  set Nonlinear method = Gradient</div>
+<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;  # this is a comment</div>
+<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;  subsection Linear solver</div>
+<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;    set Solver                       = CG</div>
+<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;    set Maximum number of iterations = 30</div>
+<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;  end</div>
+<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;end</div>
+</div><!-- fragment --><p>Typically, the following four steps are required to let a program use a parameter file:</p>
+<ul>
+<li>make sure that the program knows what entries will be in the file;</li>
+<li>create a parameter file with default values if one does not exist;</li>
+<li>parse all entries of the file (possibly raising exceptions if the entries were not previously declared, or if the parsed entries contain illegal values);</li>
+<li>assign the parsed entries to local variables of the program.</li>
+</ul>
+<p>The <a class="elRef" doxygen="/usr/local/src/d2-parallel-package/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classParameterHandler.html">ParameterHandler</a> class of the <a href="http://www.dealii.org"><code>deal.II</code></a> library provides facilities to perform the above four steps, through the following methods:</p>
+<ul>
+<li><a class="elRef" doxygen="/usr/local/src/d2-parallel-package/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classParameterHandler.html#a5d5f6dff73abcca2b6abca8d8a18afa1">ParameterHandler::print_parameters()</a></li>
+<li><a class="elRef" doxygen="/usr/local/src/d2-parallel-package/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classParameterHandler.html#a84937b206a8e4e0fed261a4fbe22809c">ParameterHandler::read_input()</a></li>
+<li><a class="elRef" doxygen="/usr/local/src/d2-parallel-package/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classParameterHandler.html#afb951f101e0969416f7f47d24c03bcfa">ParameterHandler::declare_entry()</a></li>
+<li><a class="elRef" doxygen="/usr/local/src/d2-parallel-package/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classParameterHandler.html#a7589d0ed2a7e70532853e1e378130c88">ParameterHandler::get()</a></li>
+</ul>
+<p>In large programs, where the number of parameters easily exceeds hundreds of entries, managing the above four actions for different classes is far from trivial. The <a href="http://www.dealii.org"><code>deal.II</code></a> documentation advocates the creation of a class that would store all parameters of the problem, with two methods:</p>
+<ul>
+<li><code>declare_parameters(prm)</code></li>
+<li><code>parse_parameters(prm)</code> or <code>get_parameters(prm)</code></li>
+</ul>
+<p>that should be called by the program before writing or reading a parameter file, and right after having read the parameter file into an object <code>prm</code> of type <a class="elRef" doxygen="/usr/local/src/d2-parallel-package/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classParameterHandler.html">ParameterHandler</a></p>
+<p>Such an approach has the advantage that bookkeeping is simple, if compared to a scattered approach where each class keeps track of its own parameters, but it suffers one big draw back: it is not reusable for problems of different type and it has still the defect that one has to separate declaration and recovery of each parameter, as in the following short example:</p>
+<div class="fragment"><div class="line"> <span class="keywordtype">void</span> NonLinEq::declare_parameters (<a class="codeRef" doxygen="/usr/local/src/d2-parallel-package/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classParameterHandler.html">ParameterHandler</a> &amp;prm) {</div>
+<div class="line">  prm.<a class="codeRef" doxygen="/usr/local/src/d2-parallel-package/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classParameterHandler.html#af29c20cde6d44186806d559beb468696">enter_subsection</a> (<span class="stringliteral">&quot;Nonlinear solver&quot;</span>);</div>
+<div class="line">  {</div>
+<div class="line">    prm.<a class="codeRef" doxygen="/usr/local/src/d2-parallel-package/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classParameterHandler.html#afb951f101e0969416f7f47d24c03bcfa">declare_entry</a> (<span class="stringliteral">&quot;Nonlinear method&quot;</span>,</div>
+<div class="line">                       <span class="stringliteral">&quot;Newton-Raphson&quot;</span>,</div>
+<div class="line">                       ParameterHandler::RegularExpressions::Anything());</div>
+<div class="line">    eq.declare_parameters (prm);</div>
+<div class="line">  }</div>
+<div class="line">  prm.<a class="codeRef" doxygen="/usr/local/src/d2-parallel-package/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classParameterHandler.html#a599462cacd492e2f712bf7369507dcff">leave_subsection</a> ();</div>
+<div class="line">}</div>
+</div><!-- fragment --><p>The complementary part of this code is contained in the <code>parse_parameters</code> method, which actually fills the values of the local variables. </p><div class="fragment"><div class="line"><span class="keywordtype">void</span> NonLinEq::parse_parameters (<a class="codeRef" doxygen="/usr/local/src/d2-parallel-package/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classParameterHandler.html">ParameterHandler</a> &amp;prm) {</div>
+<div class="line">  prm.<a class="codeRef" doxygen="/usr/local/src/d2-parallel-package/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classParameterHandler.html#af29c20cde6d44186806d559beb468696">enter_subsection</a> (<span class="stringliteral">&quot;Nonlinear solver&quot;</span>);</div>
+<div class="line">  std::string method = prm.<a class="codeRef" doxygen="/usr/local/src/d2-parallel-package/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classParameterHandler.html#a7589d0ed2a7e70532853e1e378130c88">get</a> (<span class="stringliteral">&quot;Nonlinear method&quot;</span>);</div>
+<div class="line">  eq.parse_parameters (prm);</div>
+<div class="line">  prm.<a class="codeRef" doxygen="/usr/local/src/d2-parallel-package/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classParameterHandler.html#a599462cacd492e2f712bf7369507dcff">leave_subsection</a> ();</div>
+<div class="line">}</div>
+</div><!-- fragment --><p>According to the proposed design in the <a href="http://www.dealii.org"><code>deal.II</code></a> documentation, such separation is necessary (with a consequent proliferation of several places where one has to keep track of what variables have been declared and what variables have been assigned locally) since the declaration, reading and writing of a parameter file, and the assignment to local variables have to be done <em>exactly</em> in this sequence.</p>
+<p><code>deal2lkit</code> implements a <b>global subscription mechanism</b> and a <b>local subscription mechanism</b> through the base class <a class="el" href="class_parameter_acceptor.html">ParameterAcceptor</a>, which maintains compatibility with all classes written following the <a href="http://www.dealii.org"><code>deal.II</code></a> suggested construction, and provides an additional method which removes the necessity to split the declaration and parsing of parameters.</p>
+<p>The global subscription mechanism is such that whenever a class that was derived by <a class="el" href="class_parameter_acceptor.html">ParameterAcceptor</a> is constructed, a static registry in the base class is updated with a pointer to the derived class. Such registry is traversed upon invocation of the single function <a class="el" href="class_parameter_acceptor.html#af04c215672e63f03a942ae4c55b57c27">ParameterAcceptor::initialize</a>(file.prm) which in turn calls the method <a class="el" href="class_parameter_acceptor.html#ace1609b41eeb6a5461a388061d23b1bd">ParameterAcceptor::declare_parameters()</a> for each of the registered classes, reads the file <code>file.prm</code>, (creating it first with default values if it does not exist) and subsequently calls the method <a class="el" href="class_parameter_acceptor.html#ab3ee6cabf1ff10be362ac65495183c52">ParameterAcceptor::parse_parameters()</a>, again for each of the registered classes. </p>
+</div></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Wed Sep 30 2015 13:47:21 for deal2lkit: Deal.II ToolKit library by
+    <li class="footer">Generated on Mon Nov 9 2015 08:08:06 for deal2lkit: A ToolKit library for Deal.II by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.10 </li>
   </ul>

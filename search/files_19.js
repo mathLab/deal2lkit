@@ -1,7 +1,6 @@
 var searchData=
 [
   ['sacado_5fproduct_5ftype_2eh',['sacado_product_type.h',['http://www.dealii.org/developer/doxygen/deal.II/sacado__product__type_8h.html',1,'']]],
-  ['sak_5fdata_2eh',['sak_data.h',['../sak__data_8h.html',1,'']]],
   ['schur_5fmatrix_2eh',['schur_matrix.h',['http://www.dealii.org/developer/doxygen/deal.II/schur__matrix_8h.html',1,'']]],
   ['shape_5finfo_2eh',['shape_info.h',['http://www.dealii.org/developer/doxygen/deal.II/shape__info_8h.html',1,'']]],
   ['shared_5fptr_2eh',['shared_ptr.h',['http://www.dealii.org/developer/doxygen/deal.II/std__cxx11_2shared__ptr_8h.html',1,'(Global Namespace)'],['http://www.dealii.org/developer/doxygen/deal.II/std__cxx1x_2shared__ptr_8h.html',1,'(Global Namespace)']]],

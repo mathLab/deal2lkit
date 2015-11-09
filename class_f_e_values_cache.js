@@ -17,5 +17,9 @@ var class_f_e_values_cache =
     [ "get_values", "class_f_e_values_cache.html#af28ab55dfe7af7786b514013f4d9ccfa", null ],
     [ "print_info", "class_f_e_values_cache.html#afd35c8ebeb61188e63a24e7064efba62", null ],
     [ "reinit", "class_f_e_values_cache.html#aaf663f2038c3bb71908ab24a9374d2a1", null ],
-    [ "reinit", "class_f_e_values_cache.html#a83f713ff42d9e96c2ca4edfa3480b3f7", null ]
+    [ "reinit", "class_f_e_values_cache.html#a83f713ff42d9e96c2ca4edfa3480b3f7", null ],
+    [ "cache", "class_f_e_values_cache.html#a97150671f1f06a55ec41eb35260966f7", null ],
+    [ "fe_face_values", "class_f_e_values_cache.html#a0985ee1a5a95c96c6de90bab328df0ba", null ],
+    [ "fe_values", "class_f_e_values_cache.html#a83c0af938880d16dc26b62034deedc88", null ],
+    [ "local_dof_indices", "class_f_e_values_cache.html#a44e37658b296dcecdc3acf5d977c0a83", null ]
 ];

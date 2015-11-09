@@ -1,11 +1,16 @@
 var dir_5401fe99141ed2453494b7c40eaaa779 =
 [
-    [ "assimp_interface.h", "assimp__interface_8h.html", null ],
-    [ "dae_time_integrator.h", "dae__time__integrator_8h.html", null ],
+    [ "any_data.h", "any__data_8h.html", [
+      [ "AnyData", "http://www.dealii.org/developer/doxygen/deal.II/classAnyData.html", "classAnyData" ]
+    ] ],
+    [ "assimp_interface.h", "assimp__interface_8h.html", "assimp__interface_8h" ],
     [ "dof_utilities.h", "dof__utilities_8h.html", "dof__utilities_8h" ],
     [ "error_handler.h", "error__handler_8h.html", "error__handler_8h" ],
     [ "fe_values_cache.h", "fe__values__cache_8h.html", [
       [ "FEValuesCache", "class_f_e_values_cache.html", "class_f_e_values_cache" ]
+    ] ],
+    [ "ida_interface.h", "ida__interface_8h.html", [
+      [ "IDAInterface", "class_i_d_a_interface.html", "class_i_d_a_interface" ]
     ] ],
     [ "parameter_acceptor.h", "parameter__acceptor_8h.html", [
       [ "ParameterAcceptor", "class_parameter_acceptor.html", "class_parameter_acceptor" ]
@@ -25,13 +30,15 @@ var dir_5401fe99141ed2453494b7c40eaaa779 =
     [ "parsed_grid_generator.h", "parsed__grid__generator_8h.html", [
       [ "ParsedGridGenerator", "class_parsed_grid_generator.html", "class_parsed_grid_generator" ]
     ] ],
+    [ "parsed_grid_refinement.h", "parsed__grid__refinement_8h.html", [
+      [ "ParsedGridRefinement", "class_parsed_grid_refinement.html", "class_parsed_grid_refinement" ]
+    ] ],
     [ "parsed_mapped_functions.h", "parsed__mapped__functions_8h.html", [
       [ "ParsedMappedFunctions", "class_parsed_mapped_functions.html", "class_parsed_mapped_functions" ]
     ] ],
-    [ "parsed_solver.h", "parsed__solver_8h.html", null ],
-    [ "sak_data.h", "sak__data_8h.html", [
-      [ "SAKData", "class_s_a_k_data.html", "class_s_a_k_data" ]
+    [ "parsed_solver.h", "parsed__solver_8h.html", "parsed__solver_8h" ],
+    [ "sundials_interface.h", "sundials__interface_8h.html", [
+      [ "SundialsInterface", "class_sundials_interface.html", "class_sundials_interface" ]
     ] ],
-    [ "sundials_interface.h", "sundials__interface_8h.html", null ],
     [ "utilities.h", "utilities_8h.html", "utilities_8h" ]
 ];

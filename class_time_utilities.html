@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.10"/>
-<title>deal2lkit: Deal.II ToolKit library: TimeUtilities Class Reference</title>
+<title>deal2lkit: A ToolKit library for Deal.II: TimeUtilities Class Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -37,7 +37,7 @@
  <tbody>
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
-   <div id="projectname">deal2lkit: Deal.II ToolKit library
+   <div id="projectname">deal2lkit: A ToolKit library for Deal.II
    </div>
   </td>
    <td>        <div id="MSearchBox" class="MSearchBoxInactive">
@@ -96,6 +96,7 @@ $(document).ready(function(){initNavTree('class_time_utilities.html','');});
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pri-attribs">Private Attributes</a> &#124;
 <a href="class_time_utilities-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">TimeUtilities Class Reference</div>  </div>
@@ -118,12 +119,23 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:ad4dabd515d4aa24a7dcd6e0a6872644b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aadb98d1aa3ebbba8d48a8048c7db84b7"><td class="memItemLeft" align="right" valign="top">double &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_time_utilities.html#aadb98d1aa3ebbba8d48a8048c7db84b7">operator[]</a> (const unsigned int num)</td></tr>
 <tr class="separator:aadb98d1aa3ebbba8d48a8048c7db84b7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-attribs"></a>
+Private Attributes</h2></td></tr>
+<tr class="memitem:a60752fc85add1789bac9f52172a95198"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_time_utilities.html#a60752fc85add1789bac9f52172a95198">status</a></td></tr>
+<tr class="separator:a60752fc85add1789bac9f52172a95198"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a94e538656cf5211f202c22f5e096d388"><td class="memItemLeft" align="right" valign="top">std::chrono::high_resolution_clock::time_point&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_time_utilities.html#a94e538656cf5211f202c22f5e096d388">t_start</a></td></tr>
+<tr class="separator:a94e538656cf5211f202c22f5e096d388"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aac06b36b3910f9b9075469054849a044"><td class="memItemLeft" align="right" valign="top">std::chrono::high_resolution_clock::time_point&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_time_utilities.html#aac06b36b3910f9b9075469054849a044">t_end</a></td></tr>
+<tr class="separator:aac06b36b3910f9b9075469054849a044"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8eae7d5c795ebfdb16390c194bcc8cc9"><td class="memItemLeft" align="right" valign="top">std::vector&lt; double &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_time_utilities.html#a8eae7d5c795ebfdb16390c194bcc8cc9">times</a></td></tr>
+<tr class="separator:a8eae7d5c795ebfdb16390c194bcc8cc9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>This function collects some time utilities.</p>
 <p>All measures are stored in seconds. Usage: <a class="el" href="class_time_utilities.html#ab4dd2d6e8dbb980d4fa126d3e10b673e">get_start_time()</a> should be used before <a class="el" href="class_time_utilities.html#aa235477ab10436fd75816fc0618dc924">get_end_time()</a> and viceversa. </p>
 
-<p>Definition at line <a class="el" href="utilities_8h_source.html#l00043">43</a> of file <a class="el" href="utilities_8h_source.html">utilities.h</a>.</p>
+<p>Definition at line <a class="el" href="utilities_8h_source.html#l00061">61</a> of file <a class="el" href="utilities_8h_source.html">utilities.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a class="anchor" id="ab2da82f46de42016ea965d607e0db015"></a>
 <div class="memitem">
@@ -146,7 +158,7 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="utilities_8h_source.html#l00047">47</a> of file <a class="el" href="utilities_8h_source.html">utilities.h</a>.</p>
+<p>Definition at line <a class="el" href="utilities_8h_source.html#l00065">65</a> of file <a class="el" href="utilities_8h_source.html">utilities.h</a>.</p>
 
 </div>
 </div>
@@ -165,7 +177,7 @@ Public Member Functions</h2></td></tr>
 </div><div class="memdoc">
 <p>It sets the end time for a measure. </p>
 
-<p>Definition at line <a class="el" href="utilities_8cc_source.html#l00051">51</a> of file <a class="el" href="utilities_8cc_source.html">utilities.cc</a>.</p>
+<p>Definition at line <a class="el" href="utilities_8cc_source.html#l00062">62</a> of file <a class="el" href="utilities_8cc_source.html">utilities.cc</a>.</p>
 
 </div>
 </div>
@@ -183,7 +195,7 @@ Public Member Functions</h2></td></tr>
 </div><div class="memdoc">
 <p>It returns the number of measures done </p>
 
-<p>Definition at line <a class="el" href="utilities_8cc_source.html#l00063">63</a> of file <a class="el" href="utilities_8cc_source.html">utilities.cc</a>.</p>
+<p>Definition at line <a class="el" href="utilities_8cc_source.html#l00074">74</a> of file <a class="el" href="utilities_8cc_source.html">utilities.cc</a>.</p>
 
 </div>
 </div>
@@ -201,7 +213,7 @@ Public Member Functions</h2></td></tr>
 </div><div class="memdoc">
 <p>It sets the start time for a measure. </p>
 
-<p>Definition at line <a class="el" href="utilities_8cc_source.html#l00041">41</a> of file <a class="el" href="utilities_8cc_source.html">utilities.cc</a>.</p>
+<p>Definition at line <a class="el" href="utilities_8cc_source.html#l00052">52</a> of file <a class="el" href="utilities_8cc_source.html">utilities.cc</a>.</p>
 
 </div>
 </div>
@@ -228,7 +240,7 @@ Public Member Functions</h2></td></tr>
 </div><div class="memdoc">
 <p>An overload of the operator [] is provided to access to all measures. </p>
 
-<p>Definition at line <a class="el" href="utilities_8h_source.html#l00076">76</a> of file <a class="el" href="utilities_8h_source.html">utilities.h</a>.</p>
+<p>Definition at line <a class="el" href="utilities_8h_source.html#l00094">94</a> of file <a class="el" href="utilities_8h_source.html">utilities.h</a>.</p>
 
 </div>
 </div>
@@ -247,7 +259,96 @@ Public Member Functions</h2></td></tr>
 </div><div class="memdoc">
 <p>It freezes the thread for t milliseconds. </p>
 
-<p>Definition at line <a class="el" href="utilities_8cc_source.html#l00036">36</a> of file <a class="el" href="utilities_8cc_source.html">utilities.cc</a>.</p>
+<p>Definition at line <a class="el" href="utilities_8cc_source.html#l00047">47</a> of file <a class="el" href="utilities_8cc_source.html">utilities.cc</a>.</p>
+
+</div>
+</div>
+<h2 class="groupheader">Member Data Documentation</h2>
+<a class="anchor" id="a60752fc85add1789bac9f52172a95198"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool TimeUtilities::status</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="utilities_8h_source.html#l00100">100</a> of file <a class="el" href="utilities_8h_source.html">utilities.h</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="aac06b36b3910f9b9075469054849a044"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::chrono::high_resolution_clock::time_point TimeUtilities::t_end</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="utilities_8h_source.html#l00106">106</a> of file <a class="el" href="utilities_8h_source.html">utilities.h</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a94e538656cf5211f202c22f5e096d388"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::chrono::high_resolution_clock::time_point TimeUtilities::t_start</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="utilities_8h_source.html#l00105">105</a> of file <a class="el" href="utilities_8h_source.html">utilities.h</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a8eae7d5c795ebfdb16390c194bcc8cc9"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt;double&gt; TimeUtilities::times</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="utilities_8h_source.html#l00107">107</a> of file <a class="el" href="utilities_8h_source.html">utilities.h</a>.</p>
 
 </div>
 </div>
@@ -261,7 +362,7 @@ Public Member Functions</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="class_time_utilities.html">TimeUtilities</a></li>
-    <li class="footer">Generated on Wed Sep 30 2015 13:47:21 for deal2lkit: Deal.II ToolKit library by
+    <li class="footer">Generated on Mon Nov 9 2015 08:08:06 for deal2lkit: A ToolKit library for Deal.II by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.10 </li>
   </ul>

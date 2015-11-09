@@ -6,6 +6,7 @@ var searchData=
   ['vector_5fmemory_2eh',['vector_memory.h',['http://www.dealii.org/developer/doxygen/deal.II/doc_2doxygen_2headers_2vector__memory_8h.html',1,'(Global Namespace)'],['http://www.dealii.org/developer/doxygen/deal.II/include_2deal_8II_2lac_2vector__memory_8h.html',1,'(Global Namespace)']]],
   ['vector_5fselector_2eh',['vector_selector.h',['http://www.dealii.org/developer/doxygen/deal.II/vector__selector_8h.html',1,'']]],
   ['vector_5fslice_2eh',['vector_slice.h',['http://www.dealii.org/developer/doxygen/deal.II/vector__slice_8h.html',1,'']]],
+  ['vector_5fspace_5fvector_2eh',['vector_space_vector.h',['http://www.dealii.org/developer/doxygen/deal.II/vector__space__vector_8h.html',1,'']]],
   ['vector_5ftools_2eh',['vector_tools.h',['http://www.dealii.org/developer/doxygen/deal.II/vector__tools_8h.html',1,'']]],
   ['vector_5ftools_5fboundary_2ecc',['vector_tools_boundary.cc',['http://www.dealii.org/developer/doxygen/deal.II/vector__tools__boundary_8cc.html',1,'']]],
   ['vector_5ftools_5fconstraints_2ecc',['vector_tools_constraints.cc',['http://www.dealii.org/developer/doxygen/deal.II/vector__tools__constraints_8cc.html',1,'']]],

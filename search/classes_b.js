@@ -7,6 +7,8 @@ var searchData=
   ['levelequalto',['LevelEqualTo',['http://www.dealii.org/developer/doxygen/deal.II/classIteratorFilters_1_1LevelEqualTo.html',1,'IteratorFilters']]],
   ['line',['Line',['http://www.dealii.org/developer/doxygen/deal.II/structDynamicSparsityPattern_1_1Line.html',1,'DynamicSparsityPattern']]],
   ['linearoperator',['LinearOperator',['http://www.dealii.org/developer/doxygen/deal.II/classLinearOperator.html',1,'']]],
+  ['linearoperator_3c_20vector_20_3e',['LinearOperator&lt; VECTOR &gt;',['http://www.dealii.org/developer/doxygen/deal.II/classLinearOperator.html',1,'']]],
+  ['linearoperator_3c_20vector_2c_20vector_20_3e',['LinearOperator&lt; VECTOR, VECTOR &gt;',['http://www.dealii.org/developer/doxygen/deal.II/classLinearOperator.html',1,'']]],
   ['list',['List',['http://www.dealii.org/developer/doxygen/deal.II/classPatterns_1_1List.html',1,'Patterns']]],
   ['lobatto',['Lobatto',['http://www.dealii.org/developer/doxygen/deal.II/classPolynomials_1_1Lobatto.html',1,'Polynomials']]],
   ['localintegrator',['LocalIntegrator',['http://www.dealii.org/developer/doxygen/deal.II/classMeshWorker_1_1LocalIntegrator.html',1,'MeshWorker']]],

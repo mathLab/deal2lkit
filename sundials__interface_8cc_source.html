@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.10"/>
-<title>deal2lkit: Deal.II ToolKit library: source/sundials_interface.cc Source File</title>
+<title>deal2lkit: A ToolKit library for Deal.II: source/sundials_interface.cc Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -37,7 +37,7 @@
  <tbody>
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
-   <div id="projectname">deal2lkit: Deal.II ToolKit library
+   <div id="projectname">deal2lkit: A ToolKit library for Deal.II
    </div>
   </td>
    <td>        <div id="MSearchBox" class="MSearchBoxInactive">
@@ -98,84 +98,116 @@ $(document).ready(function(){initNavTree('sundials__interface_8cc_source.html','
 <div class="title">sundials_interface.cc</div>  </div>
 </div><!--header-->
 <div class="contents">
-<a href="sundials__interface_8cc.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;</div>
-<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="sundials__interface_8h.html">deal2lkit/sundials_interface.h</a>&gt;</span></div>
-<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="preprocessor">#ifdef D2K_WITH_SUNDIALS</span></div>
-<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="preprocessor">#include &lt;<a class="codeRef" doxygen="/Users/heltai/c++/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/vector_8h.html">deal.II/lac/vector.h</a>&gt;</span></div>
-<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="preprocessor">#include &lt;<a class="codeRef" doxygen="/Users/heltai/c++/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/block__vector_8h.html">deal.II/lac/block_vector.h</a>&gt;</span></div>
-<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="preprocessor">#include &lt;<a class="codeRef" doxygen="/Users/heltai/c++/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/generic__linear__algebra_8h.html">deal.II/lac/generic_linear_algebra.h</a>&gt;</span></div>
-<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;</div>
-<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="preprocessor">#ifdef DEAL_II_WITH_PETSC</span></div>
-<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="preprocessor">#include &lt;<a class="codeRef" doxygen="/Users/heltai/c++/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/petsc__parallel__vector_8h.html">deal.II/lac/petsc_parallel_vector.h</a>&gt;</span></div>
-<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="preprocessor">#include &lt;<a class="codeRef" doxygen="/Users/heltai/c++/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/petsc__solver_8h.html">deal.II/lac/petsc_solver.h</a>&gt;</span></div>
-<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;</div>
-<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<span class="preprocessor">#ifdef DEAL_II_WITH_TRILINOS</span></div>
-<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="preprocessor">#include &lt;<a class="codeRef" doxygen="/Users/heltai/c++/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/trilinos__block__vector_8h.html">deal.II/lac/trilinos_block_vector.h</a>&gt;</span></div>
-<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="preprocessor">#include &lt;<a class="codeRef" doxygen="/Users/heltai/c++/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/trilinos__parallel__block__vector_8h.html">deal.II/lac/trilinos_parallel_block_vector.h</a>&gt;</span></div>
-<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;</div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;</div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="utilities_8h.html">deal2lkit/utilities.h</a>&gt;</span></div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;</div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">typename</span> VEC&gt;</div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="keywordtype">bool</span> SundialsInterface&lt;VEC&gt;::solver_should_restart(<span class="keyword">const</span> <span class="keywordtype">double</span>,</div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;                                                   <span class="keyword">const</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span>,</div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;                                                   <span class="keyword">const</span> <span class="keywordtype">double</span>,</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;                                                   VEC &amp;,</div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;                                                   VEC &amp;)</div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;{</div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;  <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;}</div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;</div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;</div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">typename</span> VEC&gt;</div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;VEC &amp;SundialsInterface&lt;VEC&gt;::differential_components()<span class="keyword"> const</span></div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<span class="keyword"></span>{</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;  <span class="keyword">static</span> shared_ptr&lt;VEC&gt; tmp = create_new_vector();</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;  <span class="keyword">static</span> <span class="keywordtype">bool</span> init = <span class="keyword">true</span>;</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;  <span class="keywordflow">if</span> (init == <span class="keyword">true</span>)</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;    {</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;      tmp-&gt;add(1.0);</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;      init = <span class="keyword">false</span>;</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;    }</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;  <span class="keywordflow">return</span> (*tmp);</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;}</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">typename</span> VEC&gt;</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;VEC &amp;SundialsInterface&lt;VEC&gt;::get_local_tolerances()<span class="keyword"> const</span></div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;<span class="keyword"></span>{</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;  <span class="keyword">static</span> shared_ptr&lt;VEC&gt; tmp = create_new_vector();</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;  <span class="keyword">static</span> <span class="keywordtype">bool</span> init = <span class="keyword">true</span>;</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;  <span class="keywordflow">if</span> (init == <span class="keyword">true</span>)</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;    {</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;      tmp-&gt;add(1.0);</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;      init = <span class="keyword">false</span>;</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;    }</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;  <span class="keywordflow">return</span> *tmp;</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;}</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;<span class="keyword">template</span> <span class="keyword">class </span>SundialsInterface&lt;Vector&lt;double&gt; &gt;;</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;<span class="keyword">template</span> <span class="keyword">class </span>SundialsInterface&lt;BlockVector&lt;double&gt; &gt;;</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;<span class="preprocessor">#ifdef DEAL_II_WITH_PETSC</span></div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;<span class="keyword">template</span> <span class="keyword">class </span>SundialsInterface&lt;PETScWrappers::MPI::Vector&gt;;</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;<span class="keyword">template</span> <span class="keyword">class </span>SundialsInterface&lt;PETScWrappers::MPI::BlockVector&gt;;</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;<span class="preprocessor">#ifdef DEAL_II_WITH_TRILINOS</span></div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;<span class="keyword">template</span> <span class="keyword">class </span>SundialsInterface&lt;TrilinosWrappers::MPI::Vector&gt;;</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;<span class="keyword">template</span> <span class="keyword">class </span>SundialsInterface&lt;TrilinosWrappers::MPI::BlockVector&gt;;</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;</div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;<span class="preprocessor">#endif</span></div>
+<a href="sundials__interface_8cc.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">//-----------------------------------------------------------</span></div>
+<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="comment">//</span></div>
+<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="comment">//    Copyright (C) 2015 by the deal2lkit authors</span></div>
+<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="comment">//</span></div>
+<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="comment">//    This file is part of the deal2lkit library.</span></div>
+<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="comment">//</span></div>
+<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="comment">//    The deal2lkit library is free software; you can use it, redistribute</span></div>
+<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="comment">//    it, and/or modify it under the terms of the GNU Lesser General</span></div>
+<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="comment">//    Public License as published by the Free Software Foundation; either</span></div>
+<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="comment">//    version 2.1 of the License, or (at your option) any later version.</span></div>
+<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="comment">//    The full text of the license can be found in the file LICENSE at</span></div>
+<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="comment">//    the top level of the deal2lkit distribution.</span></div>
+<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<span class="comment">//</span></div>
+<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="comment">//-----------------------------------------------------------</span></div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;</div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;</div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="sundials__interface_8h.html">deal2lkit/sundials_interface.h</a>&gt;</span></div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="preprocessor">#ifdef D2K_WITH_SUNDIALS</span></div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="preprocessor">#include &lt;<a class="codeRef" doxygen="/usr/local/src/d2-parallel-package/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/vector_8h.html">deal.II/lac/vector.h</a>&gt;</span></div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="preprocessor">#include &lt;<a class="codeRef" doxygen="/usr/local/src/d2-parallel-package/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/block__vector_8h.html">deal.II/lac/block_vector.h</a>&gt;</span></div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="preprocessor">#include &lt;<a class="codeRef" doxygen="/usr/local/src/d2-parallel-package/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/generic__linear__algebra_8h.html">deal.II/lac/generic_linear_algebra.h</a>&gt;</span></div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;</div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="preprocessor">#ifdef DEAL_II_WITH_PETSC</span></div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="preprocessor">#include &lt;<a class="codeRef" doxygen="/usr/local/src/d2-parallel-package/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/petsc__solver_8h.html">deal.II/lac/petsc_solver.h</a>&gt;</span></div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">#ifdef DEAL_II_WITH_MPI</span></div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="preprocessor">#include &lt;<a class="codeRef" doxygen="/usr/local/src/d2-parallel-package/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/petsc__parallel__vector_8h.html">deal.II/lac/petsc_parallel_vector.h</a>&gt;</span></div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;</div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="preprocessor">#ifdef DEAL_II_WITH_TRILINOS</span></div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="preprocessor">#include &lt;<a class="codeRef" doxygen="/usr/local/src/d2-parallel-package/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/trilinos__block__vector_8h.html">deal.II/lac/trilinos_block_vector.h</a>&gt;</span></div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="preprocessor">#ifdef DEAL_II_WITH_MPI</span></div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="preprocessor">#include &lt;<a class="codeRef" doxygen="/usr/local/src/d2-parallel-package/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/trilinos__parallel__block__vector_8h.html">deal.II/lac/trilinos_parallel_block_vector.h</a>&gt;</span></div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="utilities_8h.html">deal2lkit/utilities.h</a>&gt;</span></div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;<a class="code" href="namespace_d2_k___n_a_m_e_s_p_a_c_e___o_p_e_n.html">D2K_NAMESPACE_OPEN</a></div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">typename</span> VEC&gt;</div>
+<div class="line"><a name="l00044"></a><span class="lineno"><a class="line" href="class_sundials_interface.html#a4a0cf1213c7a02cca14ae24bc8dc74e6">   44</a></span>&#160;<span class="keywordtype">bool</span> <a class="code" href="class_sundials_interface.html#a4a0cf1213c7a02cca14ae24bc8dc74e6">SundialsInterface&lt;VEC&gt;::solver_should_restart</a>(<span class="keyword">const</span> <span class="keywordtype">double</span>,</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;                                                   <span class="keyword">const</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span>,</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;                                                   <span class="keyword">const</span> <span class="keywordtype">double</span>,</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;                                                   VEC &amp;,</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;                                                   VEC &amp;)</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;{</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;  <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;}</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">typename</span> VEC&gt;</div>
+<div class="line"><a name="l00055"></a><span class="lineno"><a class="line" href="class_sundials_interface.html#a6094ddd618793ad4ca392275782f54e1">   55</a></span>&#160;VEC &amp;<a class="code" href="class_sundials_interface.html#a6094ddd618793ad4ca392275782f54e1">SundialsInterface&lt;VEC&gt;::differential_components</a>()<span class="keyword"> const</span></div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;<span class="keyword"></span>{</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;  <span class="keyword">static</span> shared_ptr&lt;VEC&gt; tmp = create_new_vector();</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;  <span class="keyword">static</span> <span class="keywordtype">bool</span> init = <span class="keyword">true</span>;</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;  <span class="keywordflow">if</span> (init == <span class="keyword">true</span>)</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;    {</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;      <a class="code" href="utilities_8h.html#ac3675b110cbe4374dcaaae114ec3982c">vector_shift</a>(*tmp, 1.0);</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;      init = <span class="keyword">false</span>;</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;    }</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;  <span class="keywordflow">return</span> (*tmp);</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;}</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">typename</span> VEC&gt;</div>
+<div class="line"><a name="l00068"></a><span class="lineno"><a class="line" href="class_sundials_interface.html#a76f100a930e58360da10bcd50ed2fa5e">   68</a></span>&#160;VEC &amp;<a class="code" href="class_sundials_interface.html#a76f100a930e58360da10bcd50ed2fa5e">SundialsInterface&lt;VEC&gt;::get_local_tolerances</a>()<span class="keyword"> const</span></div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;<span class="keyword"></span>{</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;  <span class="keyword">static</span> shared_ptr&lt;VEC&gt; tmp = create_new_vector();</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;  <span class="keyword">static</span> <span class="keywordtype">bool</span> init = <span class="keyword">true</span>;</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;  <span class="keywordflow">if</span> (init == <span class="keyword">true</span>)</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;    {</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;      <a class="code" href="utilities_8h.html#ac3675b110cbe4374dcaaae114ec3982c">vector_shift</a>(*tmp, 1.0);</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;      init = <span class="keyword">false</span>;</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;    }</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;  <span class="keywordflow">return</span> *tmp;</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;}</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;D2K_NAMESPACE_CLOSE</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;</div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;</div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;<span class="keyword">template</span> <span class="keyword">class </span>deal2lkit::SundialsInterface&lt;Vector&lt;double&gt; &gt;;</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;<span class="keyword">template</span> <span class="keyword">class </span>deal2lkit::SundialsInterface&lt;BlockVector&lt;double&gt; &gt;;</div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;</div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;<span class="preprocessor">#ifdef DEAL_II_WITH_MPI</span></div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;<span class="preprocessor">#ifdef DEAL_II_WITH_PETSC</span></div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;<span class="keyword">template</span> <span class="keyword">class </span>deal2lkit::SundialsInterface&lt;PETScWrappers::MPI::Vector&gt;;</div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;<span class="keyword">template</span> <span class="keyword">class </span>deal2lkit::SundialsInterface&lt;PETScWrappers::MPI::BlockVector&gt;;</div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;</div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;<span class="preprocessor">#ifdef DEAL_II_WITH_TRILINOS</span></div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;<span class="keyword">template</span> <span class="keyword">class </span>deal2lkit::SundialsInterface&lt;TrilinosWrappers::MPI::Vector&gt;;</div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;<span class="keyword">template</span> <span class="keyword">class </span>deal2lkit::SundialsInterface&lt;TrilinosWrappers::MPI::BlockVector&gt;;</div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;</div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;<span class="preprocessor">#endif</span></div>
 <div class="ttc" id="petsc__parallel__vector_8h_html"><div class="ttname"><a href="http://www.dealii.org/developer/doxygen/deal.II/petsc__parallel__vector_8h.html">petsc_parallel_vector.h</a></div></div>
 <div class="ttc" id="sundials__interface_8h_html"><div class="ttname"><a href="sundials__interface_8h.html">sundials_interface.h</a></div></div>
 <div class="ttc" id="utilities_8h_html"><div class="ttname"><a href="utilities_8h.html">utilities.h</a></div></div>
 <div class="ttc" id="block__vector_8h_html"><div class="ttname"><a href="http://www.dealii.org/developer/doxygen/deal.II/block__vector_8h.html">block_vector.h</a></div></div>
 <div class="ttc" id="trilinos__block__vector_8h_html"><div class="ttname"><a href="http://www.dealii.org/developer/doxygen/deal.II/trilinos__block__vector_8h.html">trilinos_block_vector.h</a></div></div>
 <div class="ttc" id="trilinos__parallel__block__vector_8h_html"><div class="ttname"><a href="http://www.dealii.org/developer/doxygen/deal.II/trilinos__parallel__block__vector_8h.html">trilinos_parallel_block_vector.h</a></div></div>
+<div class="ttc" id="namespace_d2_k___n_a_m_e_s_p_a_c_e___o_p_e_n_html"><div class="ttname"><a href="namespace_d2_k___n_a_m_e_s_p_a_c_e___o_p_e_n.html">D2K_NAMESPACE_OPEN</a></div><div class="ttdef"><b>Definition:</b> <a href="utilities_8cc_source.html#l00027">utilities.cc:27</a></div></div>
+<div class="ttc" id="class_sundials_interface_html_a76f100a930e58360da10bcd50ed2fa5e"><div class="ttname"><a href="class_sundials_interface.html#a76f100a930e58360da10bcd50ed2fa5e">SundialsInterface::get_local_tolerances</a></div><div class="ttdeci">virtual VEC &amp; get_local_tolerances() const </div><div class="ttdef"><b>Definition:</b> <a href="sundials__interface_8cc_source.html#l00068">sundials_interface.cc:68</a></div></div>
+<div class="ttc" id="class_sundials_interface_html_a4a0cf1213c7a02cca14ae24bc8dc74e6"><div class="ttname"><a href="class_sundials_interface.html#a4a0cf1213c7a02cca14ae24bc8dc74e6">SundialsInterface::solver_should_restart</a></div><div class="ttdeci">virtual bool solver_should_restart(const double t, const unsigned int step_number, const double h, VEC &amp;solution, VEC &amp;solution_dot)</div><div class="ttdef"><b>Definition:</b> <a href="sundials__interface_8cc_source.html#l00044">sundials_interface.cc:44</a></div></div>
+<div class="ttc" id="class_sundials_interface_html_a6094ddd618793ad4ca392275782f54e1"><div class="ttname"><a href="class_sundials_interface.html#a6094ddd618793ad4ca392275782f54e1">SundialsInterface::differential_components</a></div><div class="ttdeci">virtual VEC &amp; differential_components() const </div><div class="ttdef"><b>Definition:</b> <a href="sundials__interface_8cc_source.html#l00055">sundials_interface.cc:55</a></div></div>
 <div class="ttc" id="vector_8h_html"><div class="ttname"><a href="http://www.dealii.org/developer/doxygen/deal.II/vector_8h.html">vector.h</a></div></div>
+<div class="ttc" id="utilities_8h_html_ac3675b110cbe4374dcaaae114ec3982c"><div class="ttname"><a href="utilities_8h.html#ac3675b110cbe4374dcaaae114ec3982c">vector_shift</a></div><div class="ttdeci">void vector_shift(VEC &amp;in_vec, double a_scalar)</div><div class="ttdef"><b>Definition:</b> <a href="utilities_8h_source.html#l00492">utilities.h:492</a></div></div>
 <div class="ttc" id="petsc__solver_8h_html"><div class="ttname"><a href="http://www.dealii.org/developer/doxygen/deal.II/petsc__solver_8h.html">petsc_solver.h</a></div></div>
 <div class="ttc" id="generic__linear__algebra_8h_html"><div class="ttname"><a href="http://www.dealii.org/developer/doxygen/deal.II/generic__linear__algebra_8h.html">generic_linear_algebra.h</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
@@ -184,7 +216,7 @@ $(document).ready(function(){initNavTree('sundials__interface_8cc_source.html','
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_b2f33c71d4aa5e7af42a1ca61ff5af1b.html">source</a></li><li class="navelem"><a class="el" href="sundials__interface_8cc.html">sundials_interface.cc</a></li>
-    <li class="footer">Generated on Wed Sep 30 2015 13:47:21 for deal2lkit: Deal.II ToolKit library by
+    <li class="footer">Generated on Mon Nov 9 2015 08:08:06 for deal2lkit: A ToolKit library for Deal.II by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.10 </li>
   </ul>

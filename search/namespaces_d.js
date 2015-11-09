@@ -31,6 +31,7 @@ var searchData=
   ['preconditionlu',['PreconditionLU',['http://www.dealii.org/developer/doxygen/deal.II/structPETScWrappers_1_1PreconditionLU_1_1AdditionalData.html',1,'PETScWrappers']]],
   ['preconditionnone',['PreconditionNone',['http://www.dealii.org/developer/doxygen/deal.II/structPETScWrappers_1_1PreconditionNone_1_1AdditionalData.html',1,'PETScWrappers']]],
   ['preconditionparasails',['PreconditionParaSails',['http://www.dealii.org/developer/doxygen/deal.II/structPETScWrappers_1_1PreconditionParaSails_1_1AdditionalData.html',1,'PETScWrappers']]],
+  ['preconditionpsor',['PreconditionPSOR',['http://www.dealii.org/developer/doxygen/deal.II/classPreconditionPSOR_1_1AdditionalData.html',1,'']]],
   ['preconditionrelaxation',['PreconditionRelaxation',['http://www.dealii.org/developer/doxygen/deal.II/classPreconditionRelaxation_1_1AdditionalData.html',1,'']]],
   ['preconditionrichardson',['PreconditionRichardson',['http://www.dealii.org/developer/doxygen/deal.II/classPreconditionRichardson_1_1AdditionalData.html',1,'']]],
   ['preconditionsor',['PreconditionSOR',['http://www.dealii.org/developer/doxygen/deal.II/structPETScWrappers_1_1PreconditionSOR_1_1AdditionalData.html',1,'PETScWrappers']]],
