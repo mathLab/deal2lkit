@@ -53,8 +53,8 @@ int main ()
   int_vec_3[2] = 2;
 
 
-  int_string_2 = b.create_default_value(int_vec_2);
-  int_string_3 = b.create_default_value(int_vec_3);
+  int_string_2 = print(int_vec_2);
+  int_string_3 = print(int_vec_3);
   ParameterAcceptor::declare_all_parameters(prm);
 
   string3 = ""

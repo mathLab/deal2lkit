@@ -49,8 +49,8 @@ int main ()
   p2[1] = 2.;
 
 
-  string1 = b.create_default_value(p1);
-  string2 = b.create_default_value(p2);
+  string1 = print(p1);
+  string2 = print(p2);
   ParameterAcceptor::declare_all_parameters(prm);
 
   prm.read_input_from_string(""
