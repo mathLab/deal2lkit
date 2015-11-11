@@ -56,6 +56,7 @@ install:
   - tar cfz /home/travis/dealii-CI-environment.tgz $PRG
   
 script:
+  - ninja setup_tests
   - ctest -j4 -V -R "${BUILD_TYPE,,}"
     
 deploy:
