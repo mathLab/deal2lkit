@@ -1,0 +1,18 @@
+# Listing of Parameters
+# ---------------------
+subsection deal2lkit::ParsedQuadrature<2>
+  # In one space dimension, the given base formula is copied and scaled onto a
+  # given number of subintervals of length 1/repetitions. In more than one
+  # space dimension, the resulting quadrature formula is constructed in the
+  # usual way by building the tensor product of the respective iterated
+  # quadrature formula in one space dimension.
+  set Number of repetitions  = 1
+
+  # The number of quadrature points in each coordinate direction. (Avaible
+  # only for gauss otherwise it should be 0)
+  set Quadrature order       = 0
+
+  # Quadrature rule:
+  # gauss|midpoint|milne|simpson|trapez|weddle
+  set Quadrature to generate = simpson
+end

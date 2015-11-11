@@ -1,0 +1,6 @@
+
+DEAL:parameters:deal2lkit::ParsedQuadrature<2>::Number of repetitions: 1
+DEAL:parameters:deal2lkit::ParsedQuadrature<2>::Quadrature order: 3
+DEAL:parameters:deal2lkit::ParsedQuadrature<2>::Quadrature to generate: gauss
+DEAL::OK!
+DEAL::DONE!
