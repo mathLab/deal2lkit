@@ -47,8 +47,8 @@ public:
    */
   ParsedQuadrature( const std::string   &name="",
                     const std::string   &quadrature_type="gauss",
-                    const unsigned int  repetitions = 2,
-                    const unsigned int  order = 0);
+                    const unsigned int  order = 3,
+                    const unsigned int  repetitions = 1);
 
   /**
    * Declare quadrature type and quadrature options.

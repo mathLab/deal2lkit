@@ -22,8 +22,8 @@ template <int dim>
 ParsedQuadrature<dim>::
 ParsedQuadrature(const std::string    &name,
                  const std::string    &quadrature_type,
-                 const unsigned int   repetitions,
-                 const unsigned int   order)
+                 const unsigned int   order,
+                 const unsigned int   repetitions)
   :
   ParameterAcceptor(name),
   quadrature_type(quadrature_type),

@@ -23,7 +23,7 @@ int main ()
 {
   initlog();
 
-  ParsedQuadrature<2> quadrature("", "gauss", 1, 3);
+  ParsedQuadrature<2> quadrature("", "gauss", 3, 1);
 
   ParameterAcceptor::initialize();
   ParameterAcceptor::prm.log_parameters(deallog);
