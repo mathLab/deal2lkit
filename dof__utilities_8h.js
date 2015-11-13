@@ -1,7 +1,5 @@
 var dof__utilities_8h =
 [
-    [ "Sdouble", "dof__utilities_8h.html#a86798882becc15ed4d50c01d521cf518", null ],
-    [ "SSdouble", "dof__utilities_8h.html#abed3b6e004228d1f3fe43fa64dc8aa2a", null ],
     [ "extract_local_dofs", "dof__utilities_8h.html#aa519352faa949c54bcc0938d3220df61", null ],
     [ "get_deformation_gradients", "dof__utilities_8h.html#aa8f99e4940133aa923964f6d780be747", null ],
     [ "get_divergences", "dof__utilities_8h.html#afe5cebb27b5c5cfb84caca25d0d29273", null ],

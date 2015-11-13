@@ -5,10 +5,11 @@ var NAVTREE =
       [ "Introduction", "index.html#intro", null ],
       [ "Motivation", "index.html#motivation", null ],
       [ "Modules overview", "index.html#overview", [
-        [ "ParameterAcceptor: the base of all deal2lkit classes", "index.html#parameter_acceptor", null ]
+        [ "ParameterAcceptor: the base of all deal2lkit classes", "index.html#parameter_acceptor", null ],
+        [ "Preprocessing", "index.html#pre_processing", null ],
+        [ "Postprocessing", "index.html#post_processing", null ]
       ] ]
     ] ],
-    [ "Deprecated List", "deprecated.html", null ],
     [ "Namespaces", null, [
       [ "Namespace List", "namespaces.html", "namespaces" ],
       [ "Namespace Members", "namespacemembers.html", [
@@ -32,7 +33,6 @@ var NAVTREE =
       [ "File Members", "globals.html", [
         [ "All", "globals.html", null ],
         [ "Functions", "globals_func.html", null ],
-        [ "Typedefs", "globals_type.html", null ],
         [ "Enumerations", "globals_enum.html", null ],
         [ "Enumerator", "globals_eval.html", null ]
       ] ]
@@ -43,7 +43,7 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "annotated.html",
-"class_parsed_mapped_functions.html#a2990bf8fb2c8c20b77c9559420ef0755"
+"class_parsed_solver.html#a417ba9ea0730c5b777d50fbac4a6e1eb"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

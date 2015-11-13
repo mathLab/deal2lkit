@@ -2,7 +2,7 @@ var searchData=
 [
   ['magic_5fnumbers_2eh',['magic_numbers.h',['http://www.dealii.org/developer/doxygen/deal.II/magic__numbers_8h.html',1,'']]],
   ['main_2ecpp',['main.cpp',['http://www.dealii.org/developer/doxygen/deal.II/main_8cpp.html',1,'']]],
-  ['main_2eh',['main.h',['http://www.dealii.org/developer/doxygen/deal.II/main_8h.html',1,'']]],
+  ['main_2eh',['main.h',['../main_8h.html',1,'(Global Namespace)'],['http://www.dealii.org/developer/doxygen/deal.II/main_8h.html',1,'(Global Namespace)']]],
   ['mainwindow_2ecpp',['mainwindow.cpp',['http://www.dealii.org/developer/doxygen/deal.II/mainwindow_8cpp.html',1,'']]],
   ['mainwindow_2eh',['mainwindow.h',['http://www.dealii.org/developer/doxygen/deal.II/mainwindow_8h.html',1,'']]],
   ['manifold_2ecc',['manifold.cc',['http://www.dealii.org/developer/doxygen/deal.II/manifold_8cc.html',1,'']]],

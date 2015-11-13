@@ -25,7 +25,6 @@ var searchData=
   ['use_5fcell',['use_cell',['http://www.dealii.org/developer/doxygen/deal.II/classMeshWorker_1_1LocalIntegrator.html#afc6cbbf7be81bbb847b1544145eda7c5',1,'MeshWorker::LocalIntegrator']]],
   ['use_5fdefault_5fresidual',['use_default_residual',['http://www.dealii.org/developer/doxygen/deal.II/structSolverGMRES_1_1AdditionalData.html#adad1480833ae0344a372cd2b5e6730fd',1,'SolverGMRES::AdditionalData']]],
   ['use_5fface',['use_face',['http://www.dealii.org/developer/doxygen/deal.II/classMeshWorker_1_1LocalIntegrator.html#ab3f30c724df2808606540d00dae5f84a',1,'MeshWorker::LocalIntegrator']]],
-  ['use_5flocal_5ftolerances',['use_local_tolerances',['../class_i_d_a_interface.html#ab577dc5039ccb34f2f48d6d232dc8b17',1,'IDAInterface']]],
   ['use_5fmapping_5fq1_5fon_5fcurrent_5fcell',['use_mapping_q1_on_current_cell',['http://www.dealii.org/developer/doxygen/deal.II/classMappingQ_1_1InternalData.html#a1201e8843376426c471e40c964e09e52',1,'MappingQ::InternalData']]],
   ['use_5fmapping_5fq_5fon_5fall_5fcells',['use_mapping_q_on_all_cells',['http://www.dealii.org/developer/doxygen/deal.II/classMappingQ.html#a9d9bd27a3448d74cc7a737f6044facf0',1,'MappingQ']]],
   ['use_5fpreconditioned_5fresidual',['use_preconditioned_residual',['http://www.dealii.org/developer/doxygen/deal.II/structSolverRichardson_1_1AdditionalData.html#abb6512d057e131f994d9215ce1cae16f',1,'SolverRichardson::AdditionalData']]],

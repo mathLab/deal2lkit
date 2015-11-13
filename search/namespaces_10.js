@@ -29,7 +29,7 @@ var searchData=
   ['sparsitypatterniterators',['SparsityPatternIterators',['http://www.dealii.org/developer/doxygen/deal.II/namespaceSparsityPatternIterators.html',1,'']]],
   ['sparsitytools',['SparsityTools',['http://www.dealii.org/developer/doxygen/deal.II/namespaceSparsityTools.html',1,'']]],
   ['standardexceptions',['StandardExceptions',['http://www.dealii.org/developer/doxygen/deal.II/namespaceStandardExceptions.html',1,'']]],
-  ['std',['std',['http://www.dealii.org/developer/doxygen/deal.II/namespacestd.html',1,'']]],
+  ['std',['std',['../namespacestd.html',1,'']]],
   ['std_5fcxx11',['std_cxx11',['http://www.dealii.org/developer/doxygen/deal.II/namespacestd__cxx11.html',1,'']]],
   ['transformationcayley',['TransformationCayley',['http://www.dealii.org/developer/doxygen/deal.II/structSLEPcWrappers_1_1TransformationCayley_1_1AdditionalData.html',1,'SLEPcWrappers']]],
   ['transformationshift',['TransformationShift',['http://www.dealii.org/developer/doxygen/deal.II/structSLEPcWrappers_1_1TransformationShift_1_1AdditionalData.html',1,'SLEPcWrappers']]],

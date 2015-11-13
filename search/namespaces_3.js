@@ -10,7 +10,6 @@ var searchData=
   ['assembler',['Assembler',['http://www.dealii.org/developer/doxygen/deal.II/namespaceDoFTools_1_1internal_1_1Assembler.html',1,'DoFTools::internal']]],
   ['boost',['boost',['http://www.dealii.org/developer/doxygen/deal.II/namespaceDoFRenumbering_1_1boost.html',1,'DoFRenumbering']]],
   ['boosttypes',['boosttypes',['http://www.dealii.org/developer/doxygen/deal.II/namespaceDoFRenumbering_1_1boost_1_1boosttypes.html',1,'DoFRenumbering::boost']]],
-  ['d2k_5fnamespace_5fopen',['D2K_NAMESPACE_OPEN',['../namespace_d2_k___n_a_m_e_s_p_a_c_e___o_p_e_n.html',1,'']]],
   ['datacomponentinterpretation',['DataComponentInterpretation',['http://www.dealii.org/developer/doxygen/deal.II/namespaceDataComponentInterpretation.html',1,'']]],
   ['dataoutbase',['DataOutBase',['http://www.dealii.org/developer/doxygen/deal.II/namespaceDataOutBase.html',1,'']]],
   ['deal_5fii_5fexceptions',['deal_II_exceptions',['http://www.dealii.org/developer/doxygen/deal.II/namespacedeal__II__exceptions.html',1,'']]],
@@ -20,11 +19,11 @@ var searchData=
   ['doftools',['DoFTools',['http://www.dealii.org/developer/doxygen/deal.II/namespaceDoFTools.html',1,'']]],
   ['dofutilities',['DOFUtilities',['../namespace_d_o_f_utilities.html',1,'']]],
   ['dynamicsparsitypatterniterators',['DynamicSparsityPatternIterators',['http://www.dealii.org/developer/doxygen/deal.II/namespaceDynamicSparsityPatternIterators.html',1,'']]],
-  ['internal',['internal',['http://www.dealii.org/developer/doxygen/deal.II/namespaceDoFTools_1_1internal_1_1internal.html',1,'DoFTools::internal']]],
-  ['internal',['internal',['http://www.dealii.org/developer/doxygen/deal.II/namespaceDerivativeApproximation_1_1internal.html',1,'DerivativeApproximation']]],
   ['internal',['internal',['http://www.dealii.org/developer/doxygen/deal.II/namespaceDoFRenumbering_1_1boost_1_1internal.html',1,'DoFRenumbering::boost']]],
-  ['internal',['internal',['http://www.dealii.org/developer/doxygen/deal.II/namespaceDoFRenumbering_1_1internal.html',1,'DoFRenumbering']]],
   ['internal',['internal',['http://www.dealii.org/developer/doxygen/deal.II/namespaceDoFTools_1_1internal.html',1,'DoFTools']]],
+  ['internal',['internal',['http://www.dealii.org/developer/doxygen/deal.II/namespaceDoFRenumbering_1_1internal.html',1,'DoFRenumbering']]],
+  ['internal',['internal',['http://www.dealii.org/developer/doxygen/deal.II/namespaceDerivativeApproximation_1_1internal.html',1,'DerivativeApproximation']]],
+  ['internal',['internal',['http://www.dealii.org/developer/doxygen/deal.II/namespaceDoFTools_1_1internal_1_1internal.html',1,'DoFTools::internal']]],
   ['internals',['internals',['http://www.dealii.org/developer/doxygen/deal.II/namespacedeal__II__exceptions_1_1internals.html',1,'deal_II_exceptions']]],
   ['parametergui',['ParameterGui',['http://www.dealii.org/developer/doxygen/deal.II/namespacedealii_1_1ParameterGui.html',1,'dealii']]]
 ];

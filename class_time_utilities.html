@@ -103,6 +103,9 @@ $(document).ready(function(){initNavTree('class_time_utilities.html','');});
 </div><!--header-->
 <div class="contents">
 
+<p>This function collects some time utilities.  
+ <a href="class_time_utilities.html#details">More...</a></p>
+
 <p><code>#include &lt;<a class="el" href="utilities_8h_source.html">utilities.h</a>&gt;</code></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
@@ -110,14 +113,19 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ab2da82f46de42016ea965d607e0db015"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_time_utilities.html#ab2da82f46de42016ea965d607e0db015">TimeUtilities</a> ()</td></tr>
 <tr class="separator:ab2da82f46de42016ea965d607e0db015"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7e08186f762a77e597b8e05a43a2f36c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_time_utilities.html#a7e08186f762a77e597b8e05a43a2f36c">sleep</a> (unsigned int t)</td></tr>
+<tr class="memdesc:a7e08186f762a77e597b8e05a43a2f36c"><td class="mdescLeft">&#160;</td><td class="mdescRight">It freezes the thread for t milliseconds.  <a href="#a7e08186f762a77e597b8e05a43a2f36c">More...</a><br /></td></tr>
 <tr class="separator:a7e08186f762a77e597b8e05a43a2f36c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab4dd2d6e8dbb980d4fa126d3e10b673e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_time_utilities.html#ab4dd2d6e8dbb980d4fa126d3e10b673e">get_start_time</a> ()</td></tr>
+<tr class="memdesc:ab4dd2d6e8dbb980d4fa126d3e10b673e"><td class="mdescLeft">&#160;</td><td class="mdescRight">It sets the start time for a measure.  <a href="#ab4dd2d6e8dbb980d4fa126d3e10b673e">More...</a><br /></td></tr>
 <tr class="separator:ab4dd2d6e8dbb980d4fa126d3e10b673e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa235477ab10436fd75816fc0618dc924"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_time_utilities.html#aa235477ab10436fd75816fc0618dc924">get_end_time</a> ()</td></tr>
+<tr class="memdesc:aa235477ab10436fd75816fc0618dc924"><td class="mdescLeft">&#160;</td><td class="mdescRight">It sets the end time for a measure.  <a href="#aa235477ab10436fd75816fc0618dc924">More...</a><br /></td></tr>
 <tr class="separator:aa235477ab10436fd75816fc0618dc924"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad4dabd515d4aa24a7dcd6e0a6872644b"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_time_utilities.html#ad4dabd515d4aa24a7dcd6e0a6872644b">get_num_measures</a> ()</td></tr>
+<tr class="memdesc:ad4dabd515d4aa24a7dcd6e0a6872644b"><td class="mdescLeft">&#160;</td><td class="mdescRight">It returns the number of measures done.  <a href="#ad4dabd515d4aa24a7dcd6e0a6872644b">More...</a><br /></td></tr>
 <tr class="separator:ad4dabd515d4aa24a7dcd6e0a6872644b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aadb98d1aa3ebbba8d48a8048c7db84b7"><td class="memItemLeft" align="right" valign="top">double &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_time_utilities.html#aadb98d1aa3ebbba8d48a8048c7db84b7">operator[]</a> (const unsigned int num)</td></tr>
+<tr class="memdesc:aadb98d1aa3ebbba8d48a8048c7db84b7"><td class="mdescLeft">&#160;</td><td class="mdescRight">An overload of the operator [] is provided to access to all measures.  <a href="#aadb98d1aa3ebbba8d48a8048c7db84b7">More...</a><br /></td></tr>
 <tr class="separator:aadb98d1aa3ebbba8d48a8048c7db84b7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-attribs"></a>
@@ -132,10 +140,10 @@ Private Attributes</h2></td></tr>
 <tr class="separator:a8eae7d5c795ebfdb16390c194bcc8cc9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>This function collects some time utilities.</p>
-<p>All measures are stored in seconds. Usage: <a class="el" href="class_time_utilities.html#ab4dd2d6e8dbb980d4fa126d3e10b673e">get_start_time()</a> should be used before <a class="el" href="class_time_utilities.html#aa235477ab10436fd75816fc0618dc924">get_end_time()</a> and viceversa. </p>
+<div class="textblock"><p>This function collects some time utilities. </p>
+<p>All measures are stored in seconds. Usage: <a class="el" href="class_time_utilities.html#ab4dd2d6e8dbb980d4fa126d3e10b673e" title="It sets the start time for a measure. ">get_start_time()</a> should be used before <a class="el" href="class_time_utilities.html#aa235477ab10436fd75816fc0618dc924" title="It sets the end time for a measure. ">get_end_time()</a> and viceversa. </p>
 
-<p>Definition at line <a class="el" href="utilities_8h_source.html#l00061">61</a> of file <a class="el" href="utilities_8h_source.html">utilities.h</a>.</p>
+<p>Definition at line <a class="el" href="utilities_8h_source.html#l00050">50</a> of file <a class="el" href="utilities_8h_source.html">utilities.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a class="anchor" id="ab2da82f46de42016ea965d607e0db015"></a>
 <div class="memitem">
@@ -158,7 +166,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="utilities_8h_source.html#l00065">65</a> of file <a class="el" href="utilities_8h_source.html">utilities.h</a>.</p>
+<p>Definition at line <a class="el" href="utilities_8h_source.html#l00054">54</a> of file <a class="el" href="utilities_8h_source.html">utilities.h</a>.</p>
 
 </div>
 </div>
@@ -175,9 +183,10 @@ Private Attributes</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
 <p>It sets the end time for a measure. </p>
 
-<p>Definition at line <a class="el" href="utilities_8cc_source.html#l00062">62</a> of file <a class="el" href="utilities_8cc_source.html">utilities.cc</a>.</p>
+<p>Definition at line <a class="el" href="utilities_8cc_source.html#l00059">59</a> of file <a class="el" href="utilities_8cc_source.html">utilities.cc</a>.</p>
 
 </div>
 </div>
@@ -193,9 +202,10 @@ Private Attributes</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>It returns the number of measures done </p>
 
-<p>Definition at line <a class="el" href="utilities_8cc_source.html#l00074">74</a> of file <a class="el" href="utilities_8cc_source.html">utilities.cc</a>.</p>
+<p>It returns the number of measures done. </p>
+
+<p>Definition at line <a class="el" href="utilities_8cc_source.html#l00071">71</a> of file <a class="el" href="utilities_8cc_source.html">utilities.cc</a>.</p>
 
 </div>
 </div>
@@ -211,9 +221,10 @@ Private Attributes</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
 <p>It sets the start time for a measure. </p>
 
-<p>Definition at line <a class="el" href="utilities_8cc_source.html#l00052">52</a> of file <a class="el" href="utilities_8cc_source.html">utilities.cc</a>.</p>
+<p>Definition at line <a class="el" href="utilities_8cc_source.html#l00049">49</a> of file <a class="el" href="utilities_8cc_source.html">utilities.cc</a>.</p>
 
 </div>
 </div>
@@ -238,9 +249,10 @@ Private Attributes</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+
 <p>An overload of the operator [] is provided to access to all measures. </p>
 
-<p>Definition at line <a class="el" href="utilities_8h_source.html#l00094">94</a> of file <a class="el" href="utilities_8h_source.html">utilities.h</a>.</p>
+<p>Definition at line <a class="el" href="utilities_8h_source.html#l00083">83</a> of file <a class="el" href="utilities_8h_source.html">utilities.h</a>.</p>
 
 </div>
 </div>
@@ -257,9 +269,10 @@ Private Attributes</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
 <p>It freezes the thread for t milliseconds. </p>
 
-<p>Definition at line <a class="el" href="utilities_8cc_source.html#l00047">47</a> of file <a class="el" href="utilities_8cc_source.html">utilities.cc</a>.</p>
+<p>Definition at line <a class="el" href="utilities_8cc_source.html#l00044">44</a> of file <a class="el" href="utilities_8cc_source.html">utilities.cc</a>.</p>
 
 </div>
 </div>
@@ -282,7 +295,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="utilities_8h_source.html#l00100">100</a> of file <a class="el" href="utilities_8h_source.html">utilities.h</a>.</p>
+<p>Definition at line <a class="el" href="utilities_8h_source.html#l00089">89</a> of file <a class="el" href="utilities_8h_source.html">utilities.h</a>.</p>
 
 </div>
 </div>
@@ -304,7 +317,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="utilities_8h_source.html#l00106">106</a> of file <a class="el" href="utilities_8h_source.html">utilities.h</a>.</p>
+<p>Definition at line <a class="el" href="utilities_8h_source.html#l00095">95</a> of file <a class="el" href="utilities_8h_source.html">utilities.h</a>.</p>
 
 </div>
 </div>
@@ -326,7 +339,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="utilities_8h_source.html#l00105">105</a> of file <a class="el" href="utilities_8h_source.html">utilities.h</a>.</p>
+<p>Definition at line <a class="el" href="utilities_8h_source.html#l00094">94</a> of file <a class="el" href="utilities_8h_source.html">utilities.h</a>.</p>
 
 </div>
 </div>
@@ -348,7 +361,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="utilities_8h_source.html#l00107">107</a> of file <a class="el" href="utilities_8h_source.html">utilities.h</a>.</p>
+<p>Definition at line <a class="el" href="utilities_8h_source.html#l00096">96</a> of file <a class="el" href="utilities_8h_source.html">utilities.h</a>.</p>
 
 </div>
 </div>
@@ -362,7 +375,7 @@ Private Attributes</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="class_time_utilities.html">TimeUtilities</a></li>
-    <li class="footer">Generated on Mon Nov 9 2015 08:08:06 for deal2lkit: A ToolKit library for Deal.II by
+    <li class="footer">Generated on Fri Nov 13 2015 13:06:10 for deal2lkit: A ToolKit library for Deal.II by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.10 </li>
   </ul>

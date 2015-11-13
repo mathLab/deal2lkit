@@ -26,6 +26,8 @@ var searchData=
   ['parsed_5fgrid_5frefinement_2eh',['parsed_grid_refinement.h',['../parsed__grid__refinement_8h.html',1,'']]],
   ['parsed_5fmapped_5ffunctions_2ecc',['parsed_mapped_functions.cc',['../parsed__mapped__functions_8cc.html',1,'']]],
   ['parsed_5fmapped_5ffunctions_2eh',['parsed_mapped_functions.h',['../parsed__mapped__functions_8h.html',1,'']]],
+  ['parsed_5fquadrature_2ecc',['parsed_quadrature.cc',['../parsed__quadrature_8cc.html',1,'']]],
+  ['parsed_5fquadrature_2eh',['parsed_quadrature.h',['../parsed__quadrature_8h.html',1,'']]],
   ['parsed_5fsolver_2eh',['parsed_solver.h',['../parsed__solver_8h.html',1,'']]],
   ['partitioner_2ecc',['partitioner.cc',['http://www.dealii.org/developer/doxygen/deal.II/partitioner_8cc.html',1,'']]],
   ['partitioner_2eh',['partitioner.h',['http://www.dealii.org/developer/doxygen/deal.II/partitioner_8h.html',1,'']]],

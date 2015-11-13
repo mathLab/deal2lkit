@@ -96,46 +96,56 @@ $(document).ready(function(){initNavTree('utilities_8cc.html','');});
 <div class="header">
   <div class="summary">
 <a href="#nested-classes">Classes</a> &#124;
-<a href="#namespaces">Namespaces</a> &#124;
 <a href="#func-members">Functions</a>  </div>
   <div class="headertitle">
 <div class="title">utilities.cc File Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
-
+<div class="textblock"><code>#include &lt;<a class="el" href="utilities_8h_source.html">deal2lkit/utilities.h</a>&gt;</code><br />
+<code>#include &lt;vector&gt;</code><br />
+<code>#include &lt;fstream&gt;</code><br />
+<code>#include &lt;thread&gt;</code><br />
+<code>#include &lt;stdlib.h&gt;</code><br />
+<code>#include &lt;sys/stat.h&gt;</code><br />
+</div>
 <p><a href="utilities_8cc_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
 Classes</h2></td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_d2_k___n_a_m_e_s_p_a_c_e___o_p_e_n_1_1handle.html">D2K_NAMESPACE_OPEN::handle</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="namespaces"></a>
-Namespaces</h2></td></tr>
-<tr class="memitem:namespace_d2_k___n_a_m_e_s_p_a_c_e___o_p_e_n"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespace_d2_k___n_a_m_e_s_p_a_c_e___o_p_e_n.html">D2K_NAMESPACE_OPEN</a></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structhandle.html">handle</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
 <tr class="memitem:a979982102c0dbd9e9c970d56c96481e3"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="utilities_8cc.html#a979982102c0dbd9e9c970d56c96481e3">demangle</a> (const char *name)</td></tr>
+<tr class="memdesc:a979982102c0dbd9e9c970d56c96481e3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Demangle c++ names.  <a href="#a979982102c0dbd9e9c970d56c96481e3">More...</a><br /></td></tr>
 <tr class="separator:a979982102c0dbd9e9c970d56c96481e3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae9d18b5ae9168b6597aa7955b32d45af"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="utilities_8cc.html#ae9d18b5ae9168b6597aa7955b32d45af">append_to_file</a> (const std::string &amp;in_file, const std::string &amp;out_file)</td></tr>
+<tr class="memdesc:ae9d18b5ae9168b6597aa7955b32d45af"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function copy the text contained in <code>in_file</code> to the file <code>out_file</code> .  <a href="#ae9d18b5ae9168b6597aa7955b32d45af">More...</a><br /></td></tr>
 <tr class="separator:ae9d18b5ae9168b6597aa7955b32d45af"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8d3e59f8d256d7703e84064d7ca70879"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="utilities_8cc.html#a8d3e59f8d256d7703e84064d7ca70879">file_exists</a> (const std::string &amp;file)</td></tr>
+<tr class="memdesc:a8d3e59f8d256d7703e84064d7ca70879"><td class="mdescLeft">&#160;</td><td class="mdescRight">A function to check the existence of <code>file</code> file.  <a href="#a8d3e59f8d256d7703e84064d7ca70879">More...</a><br /></td></tr>
 <tr class="separator:a8d3e59f8d256d7703e84064d7ca70879"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a18f0bb97e3480908a5d2ebeba2effb17"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="utilities_8cc.html#a18f0bb97e3480908a5d2ebeba2effb17">dir_exists</a> (const std::string &amp;dir)</td></tr>
+<tr class="memdesc:a18f0bb97e3480908a5d2ebeba2effb17"><td class="mdescLeft">&#160;</td><td class="mdescRight">A function to check the existence of <code>dir</code> directory.  <a href="#a18f0bb97e3480908a5d2ebeba2effb17">More...</a><br /></td></tr>
 <tr class="separator:a18f0bb97e3480908a5d2ebeba2effb17"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a99d8a5e3b70818d195de1da01449842c"><td class="memItemLeft" align="right" valign="top">unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="utilities_8cc.html#a99d8a5e3b70818d195de1da01449842c">get_next_available_index_directory_name</a> (const std::string &amp;base, int n_digits, unsigned int start, unsigned int index_max)</td></tr>
+<tr class="memdesc:a99d8a5e3b70818d195de1da01449842c"><td class="mdescLeft">&#160;</td><td class="mdescRight">A function that return the index of the first non existing folder matching a pattern make by <code>base</code> and <code>n_digits</code> number.  <a href="#a99d8a5e3b70818d195de1da01449842c">More...</a><br /></td></tr>
 <tr class="separator:a99d8a5e3b70818d195de1da01449842c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a272d99ac9ddb94edb9bfd4fa186f6a1d"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="utilities_8cc.html#a272d99ac9ddb94edb9bfd4fa186f6a1d">get_next_available_directory_name</a> (const std::string &amp;base, int n_digits, unsigned int start, unsigned int index_max)</td></tr>
+<tr class="memdesc:a272d99ac9ddb94edb9bfd4fa186f6a1d"><td class="mdescLeft">&#160;</td><td class="mdescRight">A function that return the name of the first non existing folder matching a pattern make by <code>base</code> and <code>n_digits</code> number.  <a href="#a272d99ac9ddb94edb9bfd4fa186f6a1d">More...</a><br /></td></tr>
 <tr class="separator:a272d99ac9ddb94edb9bfd4fa186f6a1d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a10da2716560c74a4cd0c25e1ac6d7c42"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="utilities_8cc.html#a10da2716560c74a4cd0c25e1ac6d7c42">create_directory</a> (const std::string &amp;name)</td></tr>
+<tr class="memdesc:a10da2716560c74a4cd0c25e1ac6d7c42"><td class="mdescLeft">&#160;</td><td class="mdescRight">A function to create directory.  <a href="#a10da2716560c74a4cd0c25e1ac6d7c42">More...</a><br /></td></tr>
 <tr class="separator:a10da2716560c74a4cd0c25e1ac6d7c42"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad498e0db011f68bed8742b4287c3f74f"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="utilities_8cc.html#ad498e0db011f68bed8742b4287c3f74f">copy_files</a> (const std::string &amp;files, const std::string &amp;destination)</td></tr>
+<tr class="memdesc:ad498e0db011f68bed8742b4287c3f74f"><td class="mdescLeft">&#160;</td><td class="mdescRight">A function to copy a list of <code>file</code> ( "file1 file2 file3" ) in the destination folder (<code>destination</code>)  <a href="#ad498e0db011f68bed8742b4287c3f74f">More...</a><br /></td></tr>
 <tr class="separator:ad498e0db011f68bed8742b4287c3f74f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5a4c779136578ad3e27a66304d7b6207"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="utilities_8cc.html#a5a4c779136578ad3e27a66304d7b6207">copy_file</a> (const std::string &amp;file, const std::string &amp;new_file)</td></tr>
+<tr class="memdesc:a5a4c779136578ad3e27a66304d7b6207"><td class="mdescLeft">&#160;</td><td class="mdescRight">A function to make a copy of <code>file</code> with the name <code>destination</code>.  <a href="#a5a4c779136578ad3e27a66304d7b6207">More...</a><br /></td></tr>
 <tr class="separator:a5a4c779136578ad3e27a66304d7b6207"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af26a2180c53520a7a51aafed511953f1"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="utilities_8cc.html#af26a2180c53520a7a51aafed511953f1">rename_file</a> (const std::string &amp;file, const std::string &amp;new_file)</td></tr>
+<tr class="memdesc:af26a2180c53520a7a51aafed511953f1"><td class="mdescLeft">&#160;</td><td class="mdescRight">A function to rename a <code>file</code> with a new name <code>new_file</code>.  <a href="#af26a2180c53520a7a51aafed511953f1">More...</a><br /></td></tr>
 <tr class="separator:af26a2180c53520a7a51aafed511953f1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Function Documentation</h2>
@@ -162,9 +172,10 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>This function copyt the text contained in <code>in_file</code> to the file <code>out_file</code> . </p>
 
-<p>Definition at line <a class="el" href="utilities_8cc_source.html#l00079">79</a> of file <a class="el" href="utilities_8cc_source.html">utilities.cc</a>.</p>
+<p>This function copy the text contained in <code>in_file</code> to the file <code>out_file</code> . </p>
+
+<p>Definition at line <a class="el" href="utilities_8cc_source.html#l00076">76</a> of file <a class="el" href="utilities_8cc_source.html">utilities.cc</a>.</p>
 
 </div>
 </div>
@@ -176,13 +187,13 @@ Functions</h2></td></tr>
           <td class="memname">bool copy_file </td>
           <td>(</td>
           <td class="paramtype">const std::string &amp;&#160;</td>
-          <td class="paramname"><em>files</em>, </td>
+          <td class="paramname"><em>file</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">const std::string &amp;&#160;</td>
-          <td class="paramname"><em>destination</em>&#160;</td>
+          <td class="paramname"><em>new_file</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -191,9 +202,10 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>A function to make a copy of <code>file</code> with the name <code>destination</code> </p>
 
-<p>Definition at line <a class="el" href="utilities_8cc_source.html#l00151">151</a> of file <a class="el" href="utilities_8cc_source.html">utilities.cc</a>.</p>
+<p>A function to make a copy of <code>file</code> with the name <code>destination</code>. </p>
+
+<p>Definition at line <a class="el" href="utilities_8cc_source.html#l00148">148</a> of file <a class="el" href="utilities_8cc_source.html">utilities.cc</a>.</p>
 
 </div>
 </div>
@@ -220,9 +232,10 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
 <p>A function to copy a list of <code>file</code> ( "file1 file2 file3" ) in the destination folder (<code>destination</code>) </p>
 
-<p>Definition at line <a class="el" href="utilities_8cc_source.html#l00131">131</a> of file <a class="el" href="utilities_8cc_source.html">utilities.cc</a>.</p>
+<p>Definition at line <a class="el" href="utilities_8cc_source.html#l00128">128</a> of file <a class="el" href="utilities_8cc_source.html">utilities.cc</a>.</p>
 
 </div>
 </div>
@@ -239,9 +252,11 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>A function to create directory. It creates all directories needed. </p>
 
-<p>Definition at line <a class="el" href="utilities_8cc_source.html#l00120">120</a> of file <a class="el" href="utilities_8cc_source.html">utilities.cc</a>.</p>
+<p>A function to create directory. </p>
+<p>It creates all directories needed. </p>
+
+<p>Definition at line <a class="el" href="utilities_8cc_source.html#l00117">117</a> of file <a class="el" href="utilities_8cc_source.html">utilities.cc</a>.</p>
 
 </div>
 </div>
@@ -258,9 +273,10 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
 <p>Demangle c++ names. </p>
 
-<p>Definition at line <a class="el" href="utilities_8cc_source.html#l00040">40</a> of file <a class="el" href="utilities_8cc_source.html">utilities.cc</a>.</p>
+<p>Definition at line <a class="el" href="utilities_8cc_source.html#l00037">37</a> of file <a class="el" href="utilities_8cc_source.html">utilities.cc</a>.</p>
 
 </div>
 </div>
@@ -277,9 +293,10 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
 <p>A function to check the existence of <code>dir</code> directory. </p>
 
-<p>Definition at line <a class="el" href="utilities_8cc_source.html#l00095">95</a> of file <a class="el" href="utilities_8cc_source.html">utilities.cc</a>.</p>
+<p>Definition at line <a class="el" href="utilities_8cc_source.html#l00092">92</a> of file <a class="el" href="utilities_8cc_source.html">utilities.cc</a>.</p>
 
 </div>
 </div>
@@ -296,9 +313,10 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
 <p>A function to check the existence of <code>file</code> file. </p>
 
-<p>Definition at line <a class="el" href="utilities_8cc_source.html#l00089">89</a> of file <a class="el" href="utilities_8cc_source.html">utilities.cc</a>.</p>
+<p>Definition at line <a class="el" href="utilities_8cc_source.html#l00086">86</a> of file <a class="el" href="utilities_8cc_source.html">utilities.cc</a>.</p>
 
 </div>
 </div>
@@ -337,9 +355,11 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>A function that return the name of the first non existing folder matching a pattern make by <code>base</code> and <code>n_digits</code> number. (base000, base001, base002, ...) The research of the index starts from the value <code>start</code> and ends when <code>index_max</code> is reached. </p>
 
-<p>Definition at line <a class="el" href="utilities_8cc_source.html#l00114">114</a> of file <a class="el" href="utilities_8cc_source.html">utilities.cc</a>.</p>
+<p>A function that return the name of the first non existing folder matching a pattern make by <code>base</code> and <code>n_digits</code> number. </p>
+<p>(base000, base001, base002, ...) The research of the index starts from the value <code>start</code> and ends when <code>index_max</code> is reached. </p>
+
+<p>Definition at line <a class="el" href="utilities_8cc_source.html#l00111">111</a> of file <a class="el" href="utilities_8cc_source.html">utilities.cc</a>.</p>
 
 </div>
 </div>
@@ -378,9 +398,11 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>A function that return the index of the first non existing folder matching a pattern make by <code>base</code> and <code>n_digits</code> number. (base000, base001, base002, ...) The research of the index starts from the value <code>start</code> and ends when <code>index_max</code> is reached. </p>
 
-<p>Definition at line <a class="el" href="utilities_8cc_source.html#l00101">101</a> of file <a class="el" href="utilities_8cc_source.html">utilities.cc</a>.</p>
+<p>A function that return the index of the first non existing folder matching a pattern make by <code>base</code> and <code>n_digits</code> number. </p>
+<p>(base000, base001, base002, ...) The research of the index starts from the value <code>start</code> and ends when <code>index_max</code> is reached. </p>
+
+<p>Definition at line <a class="el" href="utilities_8cc_source.html#l00098">98</a> of file <a class="el" href="utilities_8cc_source.html">utilities.cc</a>.</p>
 
 </div>
 </div>
@@ -407,9 +429,10 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>A function to rename a <code>file</code> with a new name <code>new_file</code> </p>
 
-<p>Definition at line <a class="el" href="utilities_8cc_source.html#l00161">161</a> of file <a class="el" href="utilities_8cc_source.html">utilities.cc</a>.</p>
+<p>A function to rename a <code>file</code> with a new name <code>new_file</code>. </p>
+
+<p>Definition at line <a class="el" href="utilities_8cc_source.html#l00158">158</a> of file <a class="el" href="utilities_8cc_source.html">utilities.cc</a>.</p>
 
 </div>
 </div>
@@ -419,7 +442,7 @@ Functions</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_b2f33c71d4aa5e7af42a1ca61ff5af1b.html">source</a></li><li class="navelem"><a class="el" href="utilities_8cc.html">utilities.cc</a></li>
-    <li class="footer">Generated on Mon Nov 9 2015 08:08:06 for deal2lkit: A ToolKit library for Deal.II by
+    <li class="footer">Generated on Fri Nov 13 2015 13:06:10 for deal2lkit: A ToolKit library for Deal.II by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.10 </li>
   </ul>

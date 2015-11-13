@@ -101,42 +101,65 @@ $(document).ready(function(){initNavTree('utilities_8h.html','');});
 <div class="title">utilities.h File Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
-
+<div class="textblock"><code>#include &lt;deal2lkit/config.h&gt;</code><br />
+<code>#include &lt;<a class="elRef" doxygen="/Users/heltai/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/include_2deal_8II_2base_2utilities_8h.html">deal.II/base/utilities.h</a>&gt;</code><br />
+<code>#include &lt;<a class="elRef" doxygen="/Users/heltai/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/smartpointer_8h.html">deal.II/base/smartpointer.h</a>&gt;</code><br />
+<code>#include &lt;<a class="elRef" doxygen="/Users/heltai/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/include_2deal_8II_2base_2exceptions_8h.html">deal.II/base/exceptions.h</a>&gt;</code><br />
+<code>#include &lt;<a class="elRef" doxygen="/Users/heltai/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/include_2deal_8II_2fe_2fe_8h.html">deal.II/fe/fe.h</a>&gt;</code><br />
+<code>#include &lt;<a class="elRef" doxygen="/Users/heltai/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/std__cxx11_2shared__ptr_8h.html">deal.II/base/std_cxx11/shared_ptr.h</a>&gt;</code><br />
+<code>#include &lt;typeinfo&gt;</code><br />
+<code>#include &lt;cxxabi.h&gt;</code><br />
+<code>#include &lt;sstream&gt;</code><br />
+<code>#include &lt;sys/ioctl.h&gt;</code><br />
+<code>#include &lt;chrono&gt;</code><br />
+<code>#include &lt;stdio.h&gt;</code><br />
+<code>#include &lt;<a class="elRef" doxygen="/Users/heltai/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/index__set_8h.html">deal.II/base/index_set.h</a>&gt;</code><br />
+</div>
 <p><a href="utilities_8h_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
 Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_time_utilities.html">TimeUtilities</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function collects some time utilities.  <a href="class_time_utilities.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_over_write_stream.html">OverWriteStream&lt; Stream &gt;</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">This class uses <code>n_lines</code> lines of <code>stream_out</code> to show the output.  <a href="class_over_write_stream.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_over_write_stream.html">OverWriteStream&lt; Stream &gt;</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">This class uses <code>n_lines</code> lines of <code>stream_out</code> to show the output.  <a href="class_over_write_stream.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a3c2812ecc5d3315a90c0d7bdc11cd5e9"><td class="memTemplParams" colspan="2">template&lt;typename TYPE &gt; </td></tr>
-<tr class="memitem:a3c2812ecc5d3315a90c0d7bdc11cd5e9"><td class="memTemplItemLeft" align="right" valign="top">D2K_NAMESPACE_OPEN void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="utilities_8h.html#a3c2812ecc5d3315a90c0d7bdc11cd5e9">smart_delete</a> (<a class="elRef" doxygen="/usr/local/src/d2-parallel-package/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classSmartPointer.html">SmartPointer</a>&lt; TYPE &gt; &amp;sp) <a class="elRef" doxygen="/usr/local/src/d2-parallel-package/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/group__Sparsity.html#ga5c1d56f490eb28635d59df9da24c7122">DEAL_II_DEPRECATED</a></td></tr>
-<tr class="separator:a3c2812ecc5d3315a90c0d7bdc11cd5e9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a979982102c0dbd9e9c970d56c96481e3"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="utilities_8h.html#a979982102c0dbd9e9c970d56c96481e3">demangle</a> (const char *name)</td></tr>
-<tr class="separator:a979982102c0dbd9e9c970d56c96481e3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0a47ba2545e01458bf6abc6169aaa392"><td class="memItemLeft" align="right" valign="top">D2K_NAMESPACE_OPEN std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="utilities_8h.html#a0a47ba2545e01458bf6abc6169aaa392">demangle</a> (const char *name)</td></tr>
+<tr class="memdesc:a0a47ba2545e01458bf6abc6169aaa392"><td class="mdescLeft">&#160;</td><td class="mdescRight">Demangle c++ names.  <a href="#a0a47ba2545e01458bf6abc6169aaa392">More...</a><br /></td></tr>
+<tr class="separator:a0a47ba2545e01458bf6abc6169aaa392"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae9d18b5ae9168b6597aa7955b32d45af"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="utilities_8h.html#ae9d18b5ae9168b6597aa7955b32d45af">append_to_file</a> (const std::string &amp;in_file, const std::string &amp;out_file)</td></tr>
+<tr class="memdesc:ae9d18b5ae9168b6597aa7955b32d45af"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function copy the text contained in <code>in_file</code> to the file <code>out_file</code> .  <a href="#ae9d18b5ae9168b6597aa7955b32d45af">More...</a><br /></td></tr>
 <tr class="separator:ae9d18b5ae9168b6597aa7955b32d45af"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a945c29631b059d65f38652ced8584dc8"><td class="memItemLeft" align="right" valign="top">unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="utilities_8h.html#a945c29631b059d65f38652ced8584dc8">get_next_available_index_directory_name</a> (const std::string &amp;base, int n_digits=3, unsigned int start=0, unsigned int index_max=1000)</td></tr>
+<tr class="memdesc:a945c29631b059d65f38652ced8584dc8"><td class="mdescLeft">&#160;</td><td class="mdescRight">A function that return the index of the first non existing folder matching a pattern make by <code>base</code> and <code>n_digits</code> number.  <a href="#a945c29631b059d65f38652ced8584dc8">More...</a><br /></td></tr>
 <tr class="separator:a945c29631b059d65f38652ced8584dc8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1383e971275ecae650c7c7008571380a"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="utilities_8h.html#a1383e971275ecae650c7c7008571380a">get_next_available_directory_name</a> (const std::string &amp;base, int n_digits=3, unsigned int start=0, unsigned int index_max=1000)</td></tr>
+<tr class="memdesc:a1383e971275ecae650c7c7008571380a"><td class="mdescLeft">&#160;</td><td class="mdescRight">A function that return the name of the first non existing folder matching a pattern make by <code>base</code> and <code>n_digits</code> number.  <a href="#a1383e971275ecae650c7c7008571380a">More...</a><br /></td></tr>
 <tr class="separator:a1383e971275ecae650c7c7008571380a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a18f0bb97e3480908a5d2ebeba2effb17"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="utilities_8h.html#a18f0bb97e3480908a5d2ebeba2effb17">dir_exists</a> (const std::string &amp;dir)</td></tr>
+<tr class="memdesc:a18f0bb97e3480908a5d2ebeba2effb17"><td class="mdescLeft">&#160;</td><td class="mdescRight">A function to check the existence of <code>dir</code> directory.  <a href="#a18f0bb97e3480908a5d2ebeba2effb17">More...</a><br /></td></tr>
 <tr class="separator:a18f0bb97e3480908a5d2ebeba2effb17"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8d3e59f8d256d7703e84064d7ca70879"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="utilities_8h.html#a8d3e59f8d256d7703e84064d7ca70879">file_exists</a> (const std::string &amp;file)</td></tr>
+<tr class="memdesc:a8d3e59f8d256d7703e84064d7ca70879"><td class="mdescLeft">&#160;</td><td class="mdescRight">A function to check the existence of <code>file</code> file.  <a href="#a8d3e59f8d256d7703e84064d7ca70879">More...</a><br /></td></tr>
 <tr class="separator:a8d3e59f8d256d7703e84064d7ca70879"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a10da2716560c74a4cd0c25e1ac6d7c42"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="utilities_8h.html#a10da2716560c74a4cd0c25e1ac6d7c42">create_directory</a> (const std::string &amp;name)</td></tr>
+<tr class="memdesc:a10da2716560c74a4cd0c25e1ac6d7c42"><td class="mdescLeft">&#160;</td><td class="mdescRight">A function to create directory.  <a href="#a10da2716560c74a4cd0c25e1ac6d7c42">More...</a><br /></td></tr>
 <tr class="separator:a10da2716560c74a4cd0c25e1ac6d7c42"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad498e0db011f68bed8742b4287c3f74f"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="utilities_8h.html#ad498e0db011f68bed8742b4287c3f74f">copy_files</a> (const std::string &amp;files, const std::string &amp;destination)</td></tr>
+<tr class="memdesc:ad498e0db011f68bed8742b4287c3f74f"><td class="mdescLeft">&#160;</td><td class="mdescRight">A function to copy a list of <code>file</code> ( "file1 file2 file3" ) in the destination folder (<code>destination</code>)  <a href="#ad498e0db011f68bed8742b4287c3f74f">More...</a><br /></td></tr>
 <tr class="separator:ad498e0db011f68bed8742b4287c3f74f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab0a7d30434e83a9cf5b52608ccc25c04"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="utilities_8h.html#ab0a7d30434e83a9cf5b52608ccc25c04">copy_file</a> (const std::string &amp;files, const std::string &amp;destination)</td></tr>
+<tr class="memdesc:ab0a7d30434e83a9cf5b52608ccc25c04"><td class="mdescLeft">&#160;</td><td class="mdescRight">A function to make a copy of <code>file</code> with the name <code>destination</code>.  <a href="#ab0a7d30434e83a9cf5b52608ccc25c04">More...</a><br /></td></tr>
 <tr class="separator:ab0a7d30434e83a9cf5b52608ccc25c04"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af26a2180c53520a7a51aafed511953f1"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="utilities_8h.html#af26a2180c53520a7a51aafed511953f1">rename_file</a> (const std::string &amp;file, const std::string &amp;new_file)</td></tr>
+<tr class="memdesc:af26a2180c53520a7a51aafed511953f1"><td class="mdescLeft">&#160;</td><td class="mdescRight">A function to rename a <code>file</code> with a new name <code>new_file</code>.  <a href="#af26a2180c53520a7a51aafed511953f1">More...</a><br /></td></tr>
 <tr class="separator:af26a2180c53520a7a51aafed511953f1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4c9e86136ea2163747280de99052a5c2"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="utilities_8h.html#a4c9e86136ea2163747280de99052a5c2">DeclException1</a> (ExcCannottExecuteCommand, std::string,&lt;&lt; &quot;Cannot execute command &quot;&lt;&lt; arg1&lt;&lt; &quot;\n Please verify you have &quot;&lt;&lt; &quot;the needed permissions.&quot;)</td></tr>
 <tr class="memdesc:a4c9e86136ea2163747280de99052a5c2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Cannot execute std::system(command)  <a href="#a4c9e86136ea2163747280de99052a5c2">More...</a><br /></td></tr>
@@ -146,24 +169,31 @@ Functions</h2></td></tr>
 <tr class="separator:ad3824888cdac2c92b0d9b0dc93000973"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a91880381bd0d40a816265756f810bdbb"><td class="memTemplParams" colspan="2">template&lt;class T &gt; </td></tr>
 <tr class="memitem:a91880381bd0d40a816265756f810bdbb"><td class="memTemplItemLeft" align="right" valign="top">std::vector&lt; T &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="utilities_8h.html#a91880381bd0d40a816265756f810bdbb">unique</a> (const std::vector&lt; T &gt; &amp;myvector)</td></tr>
+<tr class="memdesc:a91880381bd0d40a816265756f810bdbb"><td class="mdescLeft">&#160;</td><td class="mdescRight">A simple function that accepts a vector as an input and returns a second vector containing only the unique value among consecutive entries of the original vector.  <a href="#a91880381bd0d40a816265756f810bdbb">More...</a><br /></td></tr>
 <tr class="separator:a91880381bd0d40a816265756f810bdbb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a60da3c41d25db4e9fe95955ea8b5402b"><td class="memTemplParams" colspan="2">template&lt;class Type &gt; </td></tr>
 <tr class="memitem:a60da3c41d25db4e9fe95955ea8b5402b"><td class="memTemplItemLeft" align="right" valign="top">std::string&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="utilities_8h.html#a60da3c41d25db4e9fe95955ea8b5402b">print</a> (const std::vector&lt; Type &gt; &amp;list, const std::string sep=&quot;,&quot;)</td></tr>
+<tr class="memdesc:a60da3c41d25db4e9fe95955ea8b5402b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return a string containing the content of the vector, with elements separated by the @ sep parameter.  <a href="#a60da3c41d25db4e9fe95955ea8b5402b">More...</a><br /></td></tr>
 <tr class="separator:a60da3c41d25db4e9fe95955ea8b5402b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad81b5bb31f4a1608639a04bf96be8d22"><td class="memTemplParams" colspan="2">template&lt;int dim&gt; </td></tr>
+<tr class="memitem:ad81b5bb31f4a1608639a04bf96be8d22"><td class="memTemplItemLeft" align="right" valign="top">std::string&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="utilities_8h.html#ad81b5bb31f4a1608639a04bf96be8d22">print</a> (const <a class="elRef" doxygen="/Users/heltai/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classPoint.html">Point</a>&lt; dim &gt; &amp;<a class="elRef" doxygen="/Users/heltai/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/namespaceOpenCASCADE.html#a7e8e544997e65b29b37a43e82e2afcbc">point</a>, const std::string sep=&quot;,&quot;)</td></tr>
+<tr class="memdesc:ad81b5bb31f4a1608639a04bf96be8d22"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return a string containing the content of the <a class="elRef" doxygen="/Users/heltai/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classPoint.html">Point</a>, with elements separated by the @ sep parameter.  <a href="#ad81b5bb31f4a1608639a04bf96be8d22">More...</a><br /></td></tr>
+<tr class="separator:ad81b5bb31f4a1608639a04bf96be8d22"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a404b9edc38fc645a8913ccaf22d117ab"><td class="memTemplParams" colspan="2">template&lt;class T &gt; </td></tr>
 <tr class="memitem:a404b9edc38fc645a8913ccaf22d117ab"><td class="memTemplItemLeft" align="right" valign="top">std::string&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="utilities_8h.html#a404b9edc38fc645a8913ccaf22d117ab">type</a> (const T &amp;t)</td></tr>
+<tr class="memdesc:a404b9edc38fc645a8913ccaf22d117ab"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return a human readable name of the type passed as argument.  <a href="#a404b9edc38fc645a8913ccaf22d117ab">More...</a><br /></td></tr>
 <tr class="separator:a404b9edc38fc645a8913ccaf22d117ab"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0701af1a2bda2f87929c69a1c669bbf0"><td class="memTemplParams" colspan="2">template&lt;class T &gt; </td></tr>
 <tr class="memitem:a0701af1a2bda2f87929c69a1c669bbf0"><td class="memTemplItemLeft" align="right" valign="top">shared_ptr&lt; T &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="utilities_8h.html#a0701af1a2bda2f87929c69a1c669bbf0">SP</a> (T *t)</td></tr>
+<tr class="memdesc:a0701af1a2bda2f87929c69a1c669bbf0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Construct a shared pointer to a non const class T.  <a href="#a0701af1a2bda2f87929c69a1c669bbf0">More...</a><br /></td></tr>
 <tr class="separator:a0701af1a2bda2f87929c69a1c669bbf0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a128184b85f3ebf61285504704e178db4"><td class="memTemplParams" colspan="2">template&lt;class T &gt; </td></tr>
 <tr class="memitem:a128184b85f3ebf61285504704e178db4"><td class="memTemplItemLeft" align="right" valign="top">shared_ptr&lt; const T &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="utilities_8h.html#a128184b85f3ebf61285504704e178db4">SP</a> (const T *t)</td></tr>
+<tr class="memdesc:a128184b85f3ebf61285504704e178db4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Construct a shared pointer to a const class T.  <a href="#a128184b85f3ebf61285504704e178db4">More...</a><br /></td></tr>
 <tr class="separator:a128184b85f3ebf61285504704e178db4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3ddff274655bf03e3b49cf5ddc06dd8b"><td class="memTemplParams" colspan="2">template&lt;typename TYPE &gt; </td></tr>
-<tr class="memitem:a3ddff274655bf03e3b49cf5ddc06dd8b"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="utilities_8h.html#a3ddff274655bf03e3b49cf5ddc06dd8b">smart_delete</a> (<a class="elRef" doxygen="/usr/local/src/d2-parallel-package/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classSmartPointer.html">SmartPointer</a>&lt; TYPE &gt; &amp;sp)</td></tr>
-<tr class="separator:a3ddff274655bf03e3b49cf5ddc06dd8b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac3675b110cbe4374dcaaae114ec3982c"><td class="memTemplParams" colspan="2">template&lt;typename VEC &gt; </td></tr>
 <tr class="memitem:ac3675b110cbe4374dcaaae114ec3982c"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="utilities_8h.html#ac3675b110cbe4374dcaaae114ec3982c">vector_shift</a> (VEC &amp;in_vec, double a_scalar)</td></tr>
+<tr class="memdesc:ac3675b110cbe4374dcaaae114ec3982c"><td class="mdescLeft">&#160;</td><td class="mdescRight">A simple class to shift a vector by a scalar.  <a href="#ac3675b110cbe4374dcaaae114ec3982c">More...</a><br /></td></tr>
 <tr class="separator:ac3675b110cbe4374dcaaae114ec3982c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Function Documentation</h2>
@@ -190,9 +220,10 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>This function copyt the text contained in <code>in_file</code> to the file <code>out_file</code> . </p>
 
-<p>Definition at line <a class="el" href="utilities_8cc_source.html#l00079">79</a> of file <a class="el" href="utilities_8cc_source.html">utilities.cc</a>.</p>
+<p>This function copy the text contained in <code>in_file</code> to the file <code>out_file</code> . </p>
+
+<p>Definition at line <a class="el" href="utilities_8cc_source.html#l00076">76</a> of file <a class="el" href="utilities_8cc_source.html">utilities.cc</a>.</p>
 
 </div>
 </div>
@@ -219,9 +250,10 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>A function to make a copy of <code>file</code> with the name <code>destination</code> </p>
 
-<p>Definition at line <a class="el" href="utilities_8cc_source.html#l00151">151</a> of file <a class="el" href="utilities_8cc_source.html">utilities.cc</a>.</p>
+<p>A function to make a copy of <code>file</code> with the name <code>destination</code>. </p>
+
+<p>Definition at line <a class="el" href="utilities_8cc_source.html#l00148">148</a> of file <a class="el" href="utilities_8cc_source.html">utilities.cc</a>.</p>
 
 </div>
 </div>
@@ -248,9 +280,10 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
 <p>A function to copy a list of <code>file</code> ( "file1 file2 file3" ) in the destination folder (<code>destination</code>) </p>
 
-<p>Definition at line <a class="el" href="utilities_8cc_source.html#l00131">131</a> of file <a class="el" href="utilities_8cc_source.html">utilities.cc</a>.</p>
+<p>Definition at line <a class="el" href="utilities_8cc_source.html#l00128">128</a> of file <a class="el" href="utilities_8cc_source.html">utilities.cc</a>.</p>
 
 </div>
 </div>
@@ -267,9 +300,11 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>A function to create directory. It creates all directories needed. </p>
 
-<p>Definition at line <a class="el" href="utilities_8cc_source.html#l00120">120</a> of file <a class="el" href="utilities_8cc_source.html">utilities.cc</a>.</p>
+<p>A function to create directory. </p>
+<p>It creates all directories needed. </p>
+
+<p>Definition at line <a class="el" href="utilities_8cc_source.html#l00117">117</a> of file <a class="el" href="utilities_8cc_source.html">utilities.cc</a>.</p>
 
 </div>
 </div>
@@ -307,12 +342,12 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a979982102c0dbd9e9c970d56c96481e3"></a>
+<a class="anchor" id="a0a47ba2545e01458bf6abc6169aaa392"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">std::string demangle </td>
+          <td class="memname">D2K_NAMESPACE_OPEN std::string demangle </td>
           <td>(</td>
           <td class="paramtype">const char *&#160;</td>
           <td class="paramname"><em>name</em></td><td>)</td>
@@ -320,9 +355,10 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
 <p>Demangle c++ names. </p>
 
-<p>Definition at line <a class="el" href="utilities_8cc_source.html#l00040">40</a> of file <a class="el" href="utilities_8cc_source.html">utilities.cc</a>.</p>
+<p>Definition at line <a class="el" href="utilities_8cc_source.html#l00037">37</a> of file <a class="el" href="utilities_8cc_source.html">utilities.cc</a>.</p>
 
 </div>
 </div>
@@ -339,9 +375,10 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
 <p>A function to check the existence of <code>dir</code> directory. </p>
 
-<p>Definition at line <a class="el" href="utilities_8cc_source.html#l00095">95</a> of file <a class="el" href="utilities_8cc_source.html">utilities.cc</a>.</p>
+<p>Definition at line <a class="el" href="utilities_8cc_source.html#l00092">92</a> of file <a class="el" href="utilities_8cc_source.html">utilities.cc</a>.</p>
 
 </div>
 </div>
@@ -358,9 +395,10 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
 <p>A function to check the existence of <code>file</code> file. </p>
 
-<p>Definition at line <a class="el" href="utilities_8cc_source.html#l00089">89</a> of file <a class="el" href="utilities_8cc_source.html">utilities.cc</a>.</p>
+<p>Definition at line <a class="el" href="utilities_8cc_source.html#l00086">86</a> of file <a class="el" href="utilities_8cc_source.html">utilities.cc</a>.</p>
 
 </div>
 </div>
@@ -399,9 +437,11 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>A function that return the name of the first non existing folder matching a pattern make by <code>base</code> and <code>n_digits</code> number. (base000, base001, base002, ...) The research of the index starts from the value <code>start</code> and ends when <code>index_max</code> is reached. </p>
 
-<p>Definition at line <a class="el" href="utilities_8cc_source.html#l00114">114</a> of file <a class="el" href="utilities_8cc_source.html">utilities.cc</a>.</p>
+<p>A function that return the name of the first non existing folder matching a pattern make by <code>base</code> and <code>n_digits</code> number. </p>
+<p>(base000, base001, base002, ...) The research of the index starts from the value <code>start</code> and ends when <code>index_max</code> is reached. </p>
+
+<p>Definition at line <a class="el" href="utilities_8cc_source.html#l00111">111</a> of file <a class="el" href="utilities_8cc_source.html">utilities.cc</a>.</p>
 
 </div>
 </div>
@@ -440,9 +480,11 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>A function that return the index of the first non existing folder matching a pattern make by <code>base</code> and <code>n_digits</code> number. (base000, base001, base002, ...) The research of the index starts from the value <code>start</code> and ends when <code>index_max</code> is reached. </p>
 
-<p>Definition at line <a class="el" href="utilities_8cc_source.html#l00101">101</a> of file <a class="el" href="utilities_8cc_source.html">utilities.cc</a>.</p>
+<p>A function that return the index of the first non existing folder matching a pattern make by <code>base</code> and <code>n_digits</code> number. </p>
+<p>(base000, base001, base002, ...) The research of the index starts from the value <code>start</code> and ends when <code>index_max</code> is reached. </p>
+
+<p>Definition at line <a class="el" href="utilities_8cc_source.html#l00098">98</a> of file <a class="el" href="utilities_8cc_source.html">utilities.cc</a>.</p>
 
 </div>
 </div>
@@ -480,7 +522,7 @@ template&lt;typename S , typename T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="utilities_8h_source.html#l00379">379</a> of file <a class="el" href="utilities_8h_source.html">utilities.h</a>.</p>
+<p>Definition at line <a class="el" href="utilities_8h_source.html#l00370">370</a> of file <a class="el" href="utilities_8h_source.html">utilities.h</a>.</p>
 
 </div>
 </div>
@@ -509,9 +551,42 @@ template&lt;class Type &gt; </div>
         </tr>
       </table>
 </div><div class="memdoc">
+
 <p>Return a string containing the content of the vector, with elements separated by the @ sep parameter. </p>
 
-<p>Definition at line <a class="el" href="utilities_8h_source.html#l00409">409</a> of file <a class="el" href="utilities_8h_source.html">utilities.h</a>.</p>
+<p>Definition at line <a class="el" href="utilities_8h_source.html#l00400">400</a> of file <a class="el" href="utilities_8h_source.html">utilities.h</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ad81b5bb31f4a1608639a04bf96be8d22"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;int dim&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">std::string print </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="elRef" doxygen="/Users/heltai/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classPoint.html">Point</a>&lt; dim &gt; &amp;&#160;</td>
+          <td class="paramname"><em>point</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::string&#160;</td>
+          <td class="paramname"><em>sep</em> = <code>&quot;,&quot;</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Return a string containing the content of the <a class="elRef" doxygen="/Users/heltai/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classPoint.html">Point</a>, with elements separated by the @ sep parameter. </p>
+
+<p>Definition at line <a class="el" href="utilities_8h_source.html#l00418">418</a> of file <a class="el" href="utilities_8h_source.html">utilities.h</a>.</p>
 
 </div>
 </div>
@@ -538,53 +613,10 @@ template&lt;class Type &gt; </div>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>A function to rename a <code>file</code> with a new name <code>new_file</code> </p>
 
-<p>Definition at line <a class="el" href="utilities_8cc_source.html#l00161">161</a> of file <a class="el" href="utilities_8cc_source.html">utilities.cc</a>.</p>
+<p>A function to rename a <code>file</code> with a new name <code>new_file</code>. </p>
 
-</div>
-</div>
-<a class="anchor" id="a3c2812ecc5d3315a90c0d7bdc11cd5e9"></a>
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename TYPE &gt; </div>
-      <table class="memname">
-        <tr>
-          <td class="memname">D2K_NAMESPACE_OPEN void smart_delete </td>
-          <td>(</td>
-          <td class="paramtype"><a class="elRef" doxygen="/usr/local/src/d2-parallel-package/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classSmartPointer.html">SmartPointer</a>&lt; TYPE &gt; &amp;&#160;</td>
-          <td class="paramname"><em>sp</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>SmartPointers are usually not used to point to objects created with new. However, sometimes this is useful. The distruction of a <a class="elRef" doxygen="/usr/local/src/d2-parallel-package/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classSmartPointer.html">SmartPointer</a> requires to split the step in two parts. This little utility does precisely this.</p>
-<dl class="deprecated"><dt><b><a class="el" href="deprecated.html#_deprecated000001">Deprecated:</a></b></dt><dd>SmartPointers have been supersed by std_cxx11::shared_ptr, which takes care of destruction as well. </dd></dl>
-
-<p>Definition at line <a class="el" href="utilities_8h_source.html#l00476">476</a> of file <a class="el" href="utilities_8h_source.html">utilities.h</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="a3ddff274655bf03e3b49cf5ddc06dd8b"></a>
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename TYPE &gt; </div>
-      <table class="memname">
-        <tr>
-          <td class="memname">void smart_delete </td>
-          <td>(</td>
-          <td class="paramtype"><a class="elRef" doxygen="/usr/local/src/d2-parallel-package/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classSmartPointer.html">SmartPointer</a>&lt; TYPE &gt; &amp;&#160;</td>
-          <td class="paramname"><em>sp</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>SmartPointers are usually not used to point to objects created with new. However, sometimes this is useful. The distruction of a <a class="elRef" doxygen="/usr/local/src/d2-parallel-package/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classSmartPointer.html">SmartPointer</a> requires to split the step in two parts. This little utility does precisely this.</p>
-<dl class="deprecated"><dt><b><a class="el" href="deprecated.html#_deprecated000001">Deprecated:</a></b></dt><dd>SmartPointers have been supersed by std_cxx11::shared_ptr, which takes care of destruction as well. </dd></dl>
-
-<p>Definition at line <a class="el" href="utilities_8h_source.html#l00476">476</a> of file <a class="el" href="utilities_8h_source.html">utilities.h</a>.</p>
+<p>Definition at line <a class="el" href="utilities_8cc_source.html#l00158">158</a> of file <a class="el" href="utilities_8cc_source.html">utilities.cc</a>.</p>
 
 </div>
 </div>
@@ -611,13 +643,15 @@ template&lt;class T &gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>Construct a shared pointer to a non const class T. This is a convenience function to simplify the construction of shared pointers (which should replace dealii::SmartPointers):</p>
+
+<p>Construct a shared pointer to a non const class T. </p>
+<p>This is a convenience function to simplify the construction of shared pointers (which should replace dealii::SmartPointers):</p>
 <p>code</p>
 <p>std_cxx11::shared_ptr&lt;MyClass&gt; my_ptr;</p>
 <p>...</p>
 <p>my_ptr = SP(new MyClass);</p>
 
-<p>Definition at line <a class="el" href="utilities_8h_source.html#l00448">448</a> of file <a class="el" href="utilities_8h_source.html">utilities.h</a>.</p>
+<p>Definition at line <a class="el" href="utilities_8h_source.html#l00458">458</a> of file <a class="el" href="utilities_8h_source.html">utilities.h</a>.</p>
 
 </div>
 </div>
@@ -644,12 +678,14 @@ template&lt;class T &gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>Construct a shared pointer to a const class T. This is a convenience function to simplify the construction of shared pointers (which should replace dealii::SmartPointers):</p>
+
+<p>Construct a shared pointer to a const class T. </p>
+<p>This is a convenience function to simplify the construction of shared pointers (which should replace dealii::SmartPointers):</p>
 <p>code</p>
 <p>std_cxx11::shared_ptr&lt;const MyClass&gt; my_ptr;</p>
 <p>... const MyClass * p = new MyClass; my_ptr = SP(p);</p>
 
-<p>Definition at line <a class="el" href="utilities_8h_source.html#l00470">470</a> of file <a class="el" href="utilities_8h_source.html">utilities.h</a>.</p>
+<p>Definition at line <a class="el" href="utilities_8h_source.html#l00480">480</a> of file <a class="el" href="utilities_8h_source.html">utilities.h</a>.</p>
 
 </div>
 </div>
@@ -668,9 +704,10 @@ template&lt;class T &gt; </div>
         </tr>
       </table>
 </div><div class="memdoc">
+
 <p>Return a human readable name of the type passed as argument. </p>
 
-<p>Definition at line <a class="el" href="utilities_8h_source.html#l00426">426</a> of file <a class="el" href="utilities_8h_source.html">utilities.h</a>.</p>
+<p>Definition at line <a class="el" href="utilities_8h_source.html#l00436">436</a> of file <a class="el" href="utilities_8h_source.html">utilities.h</a>.</p>
 
 </div>
 </div>
@@ -689,9 +726,10 @@ template&lt;class T &gt; </div>
         </tr>
       </table>
 </div><div class="memdoc">
+
 <p>A simple function that accepts a vector as an input and returns a second vector containing only the unique value among consecutive entries of the original vector. </p>
 
-<p>Definition at line <a class="el" href="utilities_8h_source.html#l00396">396</a> of file <a class="el" href="utilities_8h_source.html">utilities.h</a>.</p>
+<p>Definition at line <a class="el" href="utilities_8h_source.html#l00387">387</a> of file <a class="el" href="utilities_8h_source.html">utilities.h</a>.</p>
 
 </div>
 </div>
@@ -720,9 +758,11 @@ template&lt;typename VEC &gt; </div>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>A simple class to shift a vector by a scalar. This function is deprecated in deal but needed in many codes </p>
 
-<p>Definition at line <a class="el" href="utilities_8h_source.html#l00492">492</a> of file <a class="el" href="utilities_8h_source.html">utilities.h</a>.</p>
+<p>A simple class to shift a vector by a scalar. </p>
+<p>This function is deprecated in deal but needed in many codes </p>
+
+<p>Definition at line <a class="el" href="utilities_8h_source.html#l00491">491</a> of file <a class="el" href="utilities_8h_source.html">utilities.h</a>.</p>
 
 </div>
 </div>
@@ -732,7 +772,7 @@ template&lt;typename VEC &gt; </div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_5401fe99141ed2453494b7c40eaaa779.html">deal2lkit</a></li><li class="navelem"><a class="el" href="utilities_8h.html">utilities.h</a></li>
-    <li class="footer">Generated on Mon Nov 9 2015 08:08:06 for deal2lkit: A ToolKit library for Deal.II by
+    <li class="footer">Generated on Fri Nov 13 2015 13:06:10 for deal2lkit: A ToolKit library for Deal.II by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.10 </li>
   </ul>

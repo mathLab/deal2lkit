@@ -3,7 +3,7 @@ var searchData=
   ['q1wedgefunction',['Q1WedgeFunction',['http://www.dealii.org/developer/doxygen/deal.II/classFunctions_1_1Q1WedgeFunction.html',1,'Functions']]],
   ['qanisotropic',['QAnisotropic',['http://www.dealii.org/developer/doxygen/deal.II/classQAnisotropic.html',1,'']]],
   ['qcollection',['QCollection',['http://www.dealii.org/developer/doxygen/deal.II/classhp_1_1QCollection.html',1,'hp']]],
-  ['qcollection_3c_20dim_2d1_20_3e',['QCollection&lt; dim-1 &gt;',['http://www.dealii.org/developer/doxygen/deal.II/classhp_1_1QCollection.html',1,'hp::QCollection&lt; dim-1 &gt;'],['http://www.dealii.org/developer/doxygen/deal.II/classhp_1_1QCollection.html',1,'QCollection&lt; dim-1 &gt;']]],
+  ['qcollection_3c_20dim_2d1_20_3e',['QCollection&lt; dim-1 &gt;',['http://www.dealii.org/developer/doxygen/deal.II/classhp_1_1QCollection.html',1,'QCollection&lt; dim-1 &gt;'],['http://www.dealii.org/developer/doxygen/deal.II/classhp_1_1QCollection.html',1,'hp::QCollection&lt; dim-1 &gt;']]],
   ['qcollection_3c_20q_5fdim_20_3e',['QCollection&lt; q_dim &gt;',['http://www.dealii.org/developer/doxygen/deal.II/classhp_1_1QCollection.html',1,'hp::QCollection&lt; q_dim &gt;'],['http://www.dealii.org/developer/doxygen/deal.II/classhp_1_1QCollection.html',1,'QCollection&lt; q_dim &gt;']]],
   ['qdialog',['QDialog',['http://www.dealii.org/developer/doxygen/deal.II/classQDialog.html',1,'']]],
   ['qframe',['QFrame',['http://www.dealii.org/developer/doxygen/deal.II/classQFrame.html',1,'']]],
