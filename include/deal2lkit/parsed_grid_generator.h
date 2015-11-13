@@ -159,7 +159,8 @@ public:
                        const std::string opt_int_2="2",
                        const std::string opt_vec_of_int="",
                        const std::string mesh_smoothing="none",
-                       const std::string output_grid_file="");
+                       const std::string output_grid_file="",
+                       const std::string opt_manifold_descriptors="");
 
   /**
    * Declare all parameters of this class.
@@ -321,12 +322,14 @@ private:
   get_smoothing();
 
   /**
-   * TODO:
+   * Take @p str_manifold_descriptors and fill @p manifold_descriptors with
+   * ids and manifolds.
    */
   void parse_manifold_descriptors();
 
   /**
-   * TODO:
+   * Take @p manifold_descriptors and apply these manifolds to the
+   * Triangulation @p tria.
    */
   void apply_manifold_descriptors(Triangulation<dim,spacedim> &tria);
 
@@ -348,17 +351,13 @@ private:
    * Pattern to be used: id followed by '=' manifold descriptor
    * each couple of id and  manifold descriptor is separated by '%'
    * Avaible manifold descriptor:
-   * - sphere
+   * - HyperBallBoundary
+   * - HyperShellBoundary
    */
   std::string str_manifold_descriptors;
 
   /**
-   * TODO:
-   */
-  bool attach_manifold_ids;
-
-  /**
-   * TODO:
+   * *std::map* containing boundary ids and associated manifolds.
    */
   std::map< types::manifold_id, shared_ptr<Manifold<dim,spacedim>> > manifold_descriptors;
 
