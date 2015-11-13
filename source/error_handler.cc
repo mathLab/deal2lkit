@@ -68,6 +68,7 @@ void ErrorHandler<ntables>::declare_parameters (ParameterHandler &prm)
   prm.declare_entry ("Compute error", "true", Patterns::Bool());
   prm.declare_entry ("Table names", dummy_names, Patterns::List(Patterns::Anything(), ntables, ntables),
                      "Comma separated list of table names. ");
+  prm.declare_entry ("Error precision", "3", Patterns::Integer());
   prm.declare_entry ("Solution names", solution_names, Patterns::Anything(),
                      "Comma separated list of names for the components. This "
                      "will be used both for error tables in text format and to "
@@ -118,6 +119,7 @@ void ErrorHandler<ntables>::parse_parameters (ParameterHandler &prm)
   error_file_format = prm.get ("Error file format");
   compute_error = prm.get_bool ("Compute error");
   std::string all_names = prm.get ("Table names");
+  precision = prm.get_integer ("Error precision");
   headers = Utilities::split_string_list(prm.get ("Solution names"));
   latex_headers = Utilities::split_string_list(prm.get ("Solution names for latex"));
 
