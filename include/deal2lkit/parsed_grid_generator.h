@@ -17,12 +17,15 @@
 #define _d2k_parsed_grid_generator_h
 
 #include <deal2lkit/config.h>
+#include <deal2lkit/utilities.h>
+
 #include <deal.II/base/config.h>
 #include <deal.II/base/parameter_handler.h>
 #include <deal.II/grid/tria.h>
 #include <deal.II/distributed/tria.h>
 #include <deal.II/grid/manifold_lib.h>
 #include <deal.II/grid/grid_generator.h>
+
 #include <deal2lkit/parameter_acceptor.h>
 
 using namespace dealii;
@@ -318,6 +321,16 @@ private:
   get_smoothing();
 
   /**
+   * TODO:
+   */
+  void parse_manifold_descriptors();
+
+  /**
+   * TODO:
+   */
+  void apply_manifold_descriptors(Triangulation<dim,spacedim> &tria);
+
+  /**
    * Mesh smoothing to apply to the newly created Triangulation. This
    * variable is only used if the method serial() is called. For the
    * method parallel(), mesh smoothing is not yet supported by
@@ -329,6 +342,25 @@ private:
    * The grid to generate. Use the name "file" to read from a file.
    */
   std::string grid_name;
+
+  /**
+   * Manifold descriptors.
+   * Pattern to be used: id followed by '=' manifold descriptor
+   * each couple of id and  manifold descriptor is separated by '%'
+   * Avaible manifold descriptor:
+   * - sphere
+   */
+  std::string str_manifold_descriptors;
+
+  /**
+   * TODO:
+   */
+  bool attach_manifold_ids;
+
+  /**
+   * TODO:
+   */
+  std::map< types::manifold_id, shared_ptr<Manifold<dim,spacedim>> > manifold_descriptors;
 
   /**
    * Optional double argument. First option.
