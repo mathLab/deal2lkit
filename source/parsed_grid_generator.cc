@@ -16,6 +16,7 @@
 #include <deal.II/base/config.h>
 #include <deal2lkit/parsed_grid_generator.h>
 #include <deal2lkit/utilities.h>
+#include <deal.II/grid/tria_boundary_lib.h>
 #include <deal.II/grid/grid_generator.h>
 #include <deal.II/grid/grid_in.h>
 #include <deal.II/grid/grid_out.h>
@@ -261,6 +262,20 @@ void ParsedGridGenerator<dim, spacedim>::declare_parameters(ParameterHandler &pr
                 "Bool be used in the generation of the grid to set colorize. "
                 "The use of it will depend on the specific grid.");
 
+  add_parameter(prm, &attach_manifold_ids,
+                "Attach default manifold descriptors", "true",
+                Patterns::Bool(),
+                "Attach default manifold descriptors.");
+
+  add_parameter(prm, &str_manifold_descriptors,
+                "Manifold descriptors", "",
+                Patterns::Anything(),
+                "Manifold descriptors.\n"
+                "Pattern to be used: \n"
+                "id followed by '=' manifold descriptor \n "
+                "each couple of id and  manifold descriptor is separated by '%' \n"
+                "Avaible manifold descriptor: \n"
+                " - sphere \n");
 
   add_parameter(prm, &output_grid_file_name,
                 "Output grid file name", output_grid_file_name,
@@ -282,6 +297,7 @@ ParsedGridGenerator<dim, spacedim>::distributed(MPI_Comm comm)
   (comm);//, get_smoothing());
 
   create(*tria);
+  apply_manifold_descriptors(*tria);
   return tria;
 }
 #endif
@@ -295,6 +311,7 @@ ParsedGridGenerator<dim, spacedim>::serial()
   Assert(grid_name != "", ExcNotInitialized());
   Triangulation<dim,spacedim> *tria = new Triangulation<dim,spacedim>(get_smoothing());
   create(*tria);
+  apply_manifold_descriptors(*tria);
   return tria;
 }
 
@@ -722,6 +739,108 @@ ParsedGridGenerator<dim, spacedim>::get_smoothing()
         Assert(false, ExcInternalError("Found a non supported smoothing. Should not happen:"+s))
       }
   return static_cast<typename Triangulation<dim,spacedim>::MeshSmoothing>(smoothing);
+}
+
+namespace
+{
+  template<int dim>
+  void
+  add_manifold_descriptors(
+    std::string str_manifold_descriptors,
+    std::map<
+    types::manifold_id,
+    shared_ptr<Manifold<dim>>
+    > & manifold_descriptors)
+  {
+    std::vector<std::string> idcomponents;
+    idcomponents = Utilities::split_string_list(str_manifold_descriptors, '%');
+
+    for (unsigned int i=0; i<idcomponents.size(); ++i)
+      {
+        std::vector<std::string> comp;
+        comp = Utilities::split_string_list(idcomponents[i], '=');
+        unsigned int id = Utilities::string_to_int(comp[0]);
+
+        shared_ptr<Manifold<dim>> manifold_sp;
+
+        if (comp[1]=="HyperBallBoundary")
+          {
+            HyperBallBoundary<dim> manifold;
+            manifold_sp = std::make_shared<HyperBallBoundary<dim>>(manifold);
+          }
+        else if (comp[1]=="HyperShellBoundary")
+          {
+            HyperShellBoundary<dim> manifold;
+            manifold_sp = std::make_shared<HyperShellBoundary<dim>>(manifold);
+          }
+        else
+          {
+            Assert(false, ExcInternalError("Not a valid manifold."))
+          }
+
+        manifold_descriptors.insert( std::pair< types::manifold_id, shared_ptr <Manifold <dim> > >(id, manifold_sp ) );
+      }
+  }
+
+  template<int dim>
+  void
+  add_manifold_descriptors(
+    std::string str_manifold_descriptors,
+    std::map<
+    types::manifold_id,
+    shared_ptr<Manifold<dim,dim+1>>
+    > &manifold_descriptors)
+  {
+    std::vector<std::string> idcomponents;
+    idcomponents = Utilities::split_string_list(str_manifold_descriptors, '%');
+
+    for (unsigned int i=0; i<idcomponents.size(); ++i)
+      {
+        std::vector<std::string> comp;
+        comp = Utilities::split_string_list(idcomponents[i], '=');
+        unsigned int id = Utilities::string_to_int(comp[0]);
+
+        shared_ptr<Manifold<dim,dim+1>> manifold_sp;
+
+        if (comp[1]=="HyperBallBoundary")
+          {
+            HyperBallBoundary<dim,dim+1> manifold;
+            manifold_sp = std::make_shared<HyperBallBoundary<dim,dim+1>>(manifold);
+          }
+        else
+          {
+            Assert(false, ExcInternalError("Not a valid manifold."))
+          }
+
+        manifold_descriptors.insert( std::pair< types::manifold_id, shared_ptr <Manifold <dim,dim+1> > >(id, manifold_sp ) );
+      }
+  }
+}
+template <int dim, int spacedim>
+void
+ParsedGridGenerator<dim, spacedim>::
+parse_manifold_descriptors()
+{
+  add_manifold_descriptors(str_manifold_descriptors, manifold_descriptors);
+}
+
+template <int dim, int spacedim>
+void
+ParsedGridGenerator<dim, spacedim>::
+apply_manifold_descriptors(Triangulation<dim,spacedim> &tria)
+{
+  parse_manifold_descriptors();
+  unsigned int manifold_id = 99;
+  for ( auto it = manifold_descriptors.begin();
+        it != manifold_descriptors.end();
+        ++it)
+    {
+      auto id       = it->first;
+      auto manifold = it->second;
+      tria.set_all_manifold_ids_on_boundary(id , manifold_id);
+      tria.set_manifold (manifold_id, *manifold);
+      manifold_id--;
+    }
 }
 
 
