@@ -60,11 +60,13 @@ ParsedGridGenerator<dim, spacedim>::ParsedGridGenerator(const std::string _secti
                                                         const std::string _int_2,
                                                         const std::string _vec_of_int,
                                                         const std::string _mesh_smoothing,
-                                                        const std::string _output_grid_file)
+                                                        const std::string _output_grid_file,
+                                                        const std::string _manifold_descriptors)
   :
   ParameterAcceptor(_section_name),
   mesh_smoothing(_mesh_smoothing),
   grid_name(_grid_type),
+  str_manifold_descriptors(_manifold_descriptors),
   input_grid_file_name(_input_grid_file),
   output_grid_file_name(_output_grid_file),
   str_point_1(_point_1),
@@ -262,20 +264,16 @@ void ParsedGridGenerator<dim, spacedim>::declare_parameters(ParameterHandler &pr
                 "Bool be used in the generation of the grid to set colorize. "
                 "The use of it will depend on the specific grid.");
 
-  add_parameter(prm, &attach_manifold_ids,
-                "Attach default manifold descriptors", "true",
-                Patterns::Bool(),
-                "Attach default manifold descriptors.");
-
   add_parameter(prm, &str_manifold_descriptors,
-                "Manifold descriptors", "",
+                "Manifold descriptors", str_manifold_descriptors,
                 Patterns::Anything(),
                 "Manifold descriptors.\n"
                 "Pattern to be used: \n"
                 "id followed by '=' manifold descriptor \n "
                 "each couple of id and  manifold descriptor is separated by '%' \n"
                 "Avaible manifold descriptor: \n"
-                " - sphere \n");
+                " - HyperBallBoundary \n"
+                " - HyperShellBoundary \n");
 
   add_parameter(prm, &output_grid_file_name,
                 "Output grid file name", output_grid_file_name,
@@ -631,11 +629,6 @@ namespace
 
 }
 
-
-
-
-
-
 template <int dim, int spacedim>
 void ParsedGridGenerator<dim, spacedim>::create(Triangulation<dim,spacedim> &tria)
 {
@@ -743,6 +736,12 @@ ParsedGridGenerator<dim, spacedim>::get_smoothing()
 
 namespace
 {
+  /**
+   * @fun parse_manifold_descriptors cannot handle tempalte <dim,dim> and
+   * tempalte <dim,dim+1>: some manifolds are defined only in dim-dim case.
+   * This function is used to specialize @fun parse_manifold_descriptors in
+   * the case dim-dim
+   */
   template<int dim>
   void
   add_manifold_descriptors(
@@ -782,6 +781,12 @@ namespace
       }
   }
 
+  /**
+   * @fun parse_manifold_descriptors cannot handle tempalte <dim,dim> and
+   * tempalte <dim,dim+1>: some manifolds are defined only in dim-dim case.
+   * This function is used to specialize @fun parse_manifold_descriptors in
+   * the case dim-dim+1
+   */
   template<int dim>
   void
   add_manifold_descriptors(
@@ -816,6 +821,7 @@ namespace
       }
   }
 }
+
 template <int dim, int spacedim>
 void
 ParsedGridGenerator<dim, spacedim>::
