@@ -1,30 +1,32 @@
 # Parameter file generated with 
-# D2K_GIT_BRANCH=       stokes_example
-# D2K_GIT_SHORTREV=     9e39554
+# D2K_GIT_BRANCH=       master
+# D2K_GIT_SHORTREV=     c95bd0b
 # DEAL_II_GIT_BRANCH=   master
-# DEAL_II_GIT_SHORTREV= 8455e67
+# DEAL_II_GIT_SHORTREV= aec02b7
 subsection Dirichlet BCs
-  set IDs and component masks = 1=u % 5=u %4=u %3=u #% 2=p
-  set IDs and expressions     = 1=(t<0.1?t*10* (-1.0)*(y-1)*(y+1)/6.0*k: (-1.0)*(y-1)*(y+1)/6.0*k );0;0 % 5=0;0;0 % 3=0;0;0 % 4=0;0;0 #% 2=0;0;0
+  set IDs and component masks = 1=u % 5=u %4=u %3=u
+  set IDs and expressions     = 1=(t<0.1?t*10* (-1.0)*(y-1)*(y+1)/6.0*k: (-1.0)*(y-1)*(y+1)/6.0*k );0;0 % 5=0;0;0 % 3=0;0;0 % 4=0;0;0
   set Known component names   = u,u,p
   set Used constants          = k=5
 end
 subsection Dirichlet dot
-  set IDs and component masks = 1=u % 5=u %3=u % 4=u #%2=p #
-  set IDs and expressions     = 1=(t<0.1?10* (-1.0)*(y-1)*(y+1)/6.0*k:0.);0;0 % 5=0;0;0 % 3=0;0;0 % 4=0;0;0 #% 2=0;0;0
+  set IDs and component masks = 1=u % 5=u %3=u % 4=u
+  set IDs and expressions     = 1=(t<0.1?10* (-1.0)*(y-1)*(y+1)/6.0*k:0.);0;0 % 5=0;0;0 % 3=0;0;0 % 4=0;0;0
   set Known component names   = u,u,p
   set Used constants          = k=5
 end
 subsection Domain
+  set Colorize                   = false
   set Grid to generate           = file
   set Input grid file name       = ../source/grid-2.2.ucd
   set Mesh smoothing alogrithm   = none
   set Optional Point<spacedim> 1 = 0,0
   set Optional Point<spacedim> 2 = 1,1
-  set Optional bool 1            = true
   set Optional double 1          = 1.0
   set Optional double 2          = 0.5
+  set Optional double 3          = 1.5
   set Optional int 1             = 1
+  set Optional int 2             = 2
   set Optional vector of dim int = 1,1
   set Output grid file name      = 
 end
@@ -71,6 +73,15 @@ subsection Initial solution_dot
   set Function constants  = 
   set Function expression = 0; 0; 0
   set Variable names      = x,y,t
+end
+subsection NavierStokes<2>
+  set Adaptive refinement          = true
+  set Initial global refinement    = 2
+  set Maximum number of time steps = 10000
+  set Refine mesh during transient = false
+  set Threshold for restart solver = 1e-2
+  set Timer output file            = timer.txt
+  set mu                           = 5e-3
 end
 subsection Output Parameters
   set Incremental run prefix = 
@@ -126,13 +137,4 @@ subsection Refinement
   set Order (optimize)                       = 2
   set Refinement strategy                    = fraction
   set Top fraction                           = 0.300000
-end
-subsection NavierStokes<2>
-  set Adaptive refinement          = true
-  set Initial global refinement    = 2
-  set Maximum number of time steps = 10000
-  set Refine mesh during transient = false
-  set Threshold for restart solver = 1e-2
-  set Timer output file            = timer.txt
-  set mu                           = 5e-3
 end
