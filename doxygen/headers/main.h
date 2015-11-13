@@ -202,25 +202,39 @@ values if it does not exist) and subsequently calls the method
 ParameterAcceptor::parse_parameters(), again for each of the
 registered classes.
 
-@subsection grid_generator ParsedGridGenerator
-Of the basic steps for any finite element code, mesh generation and
-mesh import are among those tasks which are almost equal in every user
-code. ParsedGridGenerator is \dk interface to a collection of \dealii
-classed dedicated to creating, reading, and writing a Triangulation to
-and from files. ParsedGridGenerator is a wrapper, derived from
-ParameterAcceptor, to the following methods and classes:
+@subsection pre_processing Preprocessing
 
-- GridGenerator: all meshes that \dealii can generate are available
-  by selecting their name in a parameter file;
+Of the basic steps for any finite element code, the intial
+preprocessing phase (mesh generation, mesh import, definition of
+finite element spaces, definition of the quadrature formulas to use,
+definition of the boundary conditions and of the forcing terms, etc)
+are among those tasks which are almost equal in every user code.
 
-- GridIn: all formats that \dealii can read are available, by
-  selecting `file` as the mesh to generate, and then specifying an
-  input file name;
+\dk provides the following preprocessing classes 
 
-- GridOut: selecting a non empty output file name one can create also
-  a file containing the Triangulation in any of the output format
-  supported by GridOut, by calling the ParsedGridGenerator::write()
-  method.
+- ParsedGridGenerator
+- ParsedFiniteElement
+- ParsedQuadrature
+- ParsedFunction
+- ParsedMappedFunctions
+- ParsedDirichletBCs
+- ParsedSolver
+
+that help in the definition of a finite element program, by creating
+parsed interfaces for all common tasks for the **precprocessing**
+phase of any finite element code.
+
+@subsection post_processing Postprocessing
+
+When a solution is available, usual postprocessing tasks for finite
+element codes include the computation of errors w.r.t. exact, known,
+solutions, and the output of the computed solution.
+
+Also in this framework, \dk offers some classes to simplify through
+parameter files the above tasks:
+
+- ErrorHandler
+- ParsedDataOut
 
 @}
 */

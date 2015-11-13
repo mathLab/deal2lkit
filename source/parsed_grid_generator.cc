@@ -23,8 +23,6 @@
 #include <fstream>
 
 
-D2K_NAMESPACE_OPEN
-
 namespace
 {
   std::string extension(const std::string &filename)
@@ -41,6 +39,8 @@ namespace
       }
   }
 }
+
+D2K_NAMESPACE_OPEN
 
 
 template <int dim, int spacedim>

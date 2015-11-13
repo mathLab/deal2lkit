@@ -25,9 +25,9 @@ using namespace dealii;
 D2K_NAMESPACE_OPEN
 
 /**
- * A deal2lkit wrapper for dealii::Functions::ParsedFunction. The template
- * integegers specify the dimension of points this function accepts,
- * and the number of components.
+ * A deal2lkit wrapper for dealii::Functions::ParsedFunction. The
+ * template integers specify the dimension of points this function
+ * accepts, and the number of components of the Function.
  */
 template<int dim, int ncomponents=1>
 class ParsedFunction : public ParameterAcceptor, public Functions::ParsedFunction<dim>
