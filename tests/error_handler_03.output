@@ -1,6 +1,7 @@
 
 DEAL:parameters: ::Compute error: true
 DEAL:parameters: ::Error file format: tex
+DEAL:parameters: ::Error precision: 3
 DEAL:parameters: ::Output error tables: true
 DEAL:parameters: ::Solution names: u, u, p
 DEAL:parameters: ::Solution names for latex: u, u, p

@@ -199,6 +199,9 @@ private:
 
   /** Wether or not to calculate the rates according to the given keys. */
   std::vector<std::string> rate_keys;
+
+  /** The precision with which the table is written. */
+  unsigned int precision;
 };
 
 /**
@@ -466,7 +469,7 @@ void ErrorHandler<ntables>::error_from_exact(const Mapping<DH::dimension, DH::sp
                   double this_error =  error[j][0];
 
                   tables[table_no].add_value(name, this_error);
-                  tables[table_no].set_precision(name, 3);
+                  tables[table_no].set_precision(name, precision);
                   tables[table_no].set_scientific(name, true);
                   tables[table_no].set_tex_caption(name, latex_name);
                 }
@@ -480,7 +483,7 @@ void ErrorHandler<ntables>::error_from_exact(const Mapping<DH::dimension, DH::sp
                   double this_error =  error[j][1];
 
                   tables[table_no].add_value(name, this_error);
-                  tables[table_no].set_precision(name, 3);
+                  tables[table_no].set_precision(name, precision);
                   tables[table_no].set_scientific(name, true);
                   tables[table_no].set_tex_caption(name, latex_name);
                 }
@@ -493,7 +496,7 @@ void ErrorHandler<ntables>::error_from_exact(const Mapping<DH::dimension, DH::sp
                   double this_error =  error[j][2];
 
                   tables[table_no].add_value(name, this_error);
-                  tables[table_no].set_precision(name, 3);
+                  tables[table_no].set_precision(name, precision);
                   tables[table_no].set_scientific(name, true);
                   tables[table_no].set_tex_caption(name, latex_name);
                 }
@@ -506,7 +509,7 @@ void ErrorHandler<ntables>::error_from_exact(const Mapping<DH::dimension, DH::sp
                   double this_error =  error[j][3];
 
                   tables[table_no].add_value(name, this_error);
-                  tables[table_no].set_precision(name, 3);
+                  tables[table_no].set_precision(name, precision);
                   tables[table_no].set_scientific(name, true);
                   tables[table_no].set_tex_caption(name, latex_name);
                 }
@@ -605,7 +608,7 @@ void ErrorHandler<ntables>::custom_error(const std::function<double(const unsign
                   double this_error =  c_error[j];
 
                   tables[table_no].add_value(name, this_error);
-                  tables[table_no].set_precision(name, 3);
+                  tables[table_no].set_precision(name, precision);
                   tables[table_no].set_scientific(name, true);
                   tables[table_no].set_tex_caption(name, latex_name);
                 }
