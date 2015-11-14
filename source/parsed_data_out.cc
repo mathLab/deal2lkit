@@ -44,6 +44,7 @@ ParsedDataOut<dim,spacedim>::ParsedDataOut (const std::string &name,
                                             const unsigned int &subdivisions,
                                             const std::string &incremental_run_prefix,
                                             const std::string &base_name_input,
+                                            const std::string &files_to_save,
                                             const MPI_Comm &comm) :
   ParameterAcceptor(name),
   comm(comm),
@@ -52,7 +53,8 @@ ParsedDataOut<dim,spacedim>::ParsedDataOut (const std::string &name,
   output_format(output_format),
   subdivisions(subdivisions),
   base_name(base_name_input),
-  incremental_run_prefix(incremental_run_prefix)
+  incremental_run_prefix(incremental_run_prefix),
+  files_to_save(files_to_save)
 {
   initialized = false;
 }
@@ -61,7 +63,10 @@ template <int dim, int spacedim>
 void ParsedDataOut<dim,spacedim>::declare_parameters (ParameterHandler &prm)
 {
   add_parameter(prm, &base_name, "Problem base name", base_name, Patterns::Anything());
+
   add_parameter(prm, &incremental_run_prefix, "Incremental run prefix", incremental_run_prefix, Patterns::Anything());
+
+  add_parameter(prm, &files_to_save, "Files to save in run directory", files_to_save, Patterns::Anything());
 
   add_parameter(prm, &output_partitioning, "Output partitioning", "false", Patterns::Bool());
   add_parameter(prm, &solution_names, "Solution names", "u", Patterns::Anything(),
@@ -156,10 +161,12 @@ void ParsedDataOut<dim,spacedim>::prepare_data_output(const DoFHandler<dim,space
 
 
 template <int dim, int spacedim>
-void ParsedDataOut<dim,spacedim>::write_data_and_clear( const std::string &used_files,
-                                                        const Mapping<dim,spacedim> &mapping)
+void ParsedDataOut<dim,spacedim>::write_data_and_clear( const Mapping<dim,spacedim> &mapping)
 {
-  copy_files(used_files, path_solution_dir);
+  std::vector<std::string> files;
+  files = Utilities::split_string_list(files_to_save, '%');
+  for(unsigned int i = 0; i<files.size(); ++i)
+    copy_file(files[i], path_solution_dir);
 
   AssertThrow(initialized, ExcNotInitialized());
   AssertThrow(output_file, ExcIO());
@@ -200,4 +207,3 @@ template class deal2lkit::ParsedDataOut<1,3>;
 template class deal2lkit::ParsedDataOut<2,2>;
 template class deal2lkit::ParsedDataOut<2,3>;
 template class deal2lkit::ParsedDataOut<3,3>;
-
