@@ -163,11 +163,16 @@ void ParsedDataOut<dim,spacedim>::prepare_data_output(const DoFHandler<dim,space
 template <int dim, int spacedim>
 void ParsedDataOut<dim,spacedim>::write_data_and_clear( const Mapping<dim,spacedim> &mapping)
 {
-  std::vector<std::string> files;
-  files = Utilities::split_string_list(files_to_save, '%');
-  for(unsigned int i = 0; i<files.size(); ++i)
-    copy_file(files[i], path_solution_dir);
-
+  if (files_to_save!="")
+    {
+      std::vector<std::string> files;
+      files = Utilities::split_string_list(files_to_save, '%');
+      for (unsigned int i = 0; i<files.size(); ++i)
+        {
+          if (this_mpi_process == 0)
+            copy_files(files[i], path_solution_dir);
+        }
+    }
   AssertThrow(initialized, ExcNotInitialized());
   AssertThrow(output_file, ExcIO());
   deallog.push("WritingData");

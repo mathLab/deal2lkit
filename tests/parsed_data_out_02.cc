@@ -40,6 +40,7 @@ int main (int argc, char *argv[])
                         1,
                         "solution/run",
                         "solution",
+                        "",
                         MPI_COMM_WORLD);
 
   ParameterAcceptor::initialize();
