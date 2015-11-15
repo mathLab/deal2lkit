@@ -29,7 +29,7 @@ ParsedQuadrature(const std::string    &name,
   quadrature_type(quadrature_type),
   repetitions(repetitions),
   order(order)
-{};
+{}
 
 template <int dim>
 void
@@ -54,7 +54,7 @@ declare_parameters(ParameterHandler &prm)
                 "Number of repetitions", std::to_string(repetitions),
                 Patterns::Integer(1),
                 "In one space dimension, the given base formula is copied and scaled onto a given number of subintervals of length 1/repetitions. In more than one space dimension, the resulting quadrature formula is constructed in the usual way by building the tensor product of the respective iterated quadrature formula in one space dimension.");
-};
+}
 
 template <int dim>
 void
