@@ -22,6 +22,7 @@
 #include <deal.II/grid/grid_out.h>
 #include <boost/archive/text_oarchive.hpp>
 #include <boost/archive/text_iarchive.hpp>
+#include <deal.II/grid/grid_tools.h>
 
 #include <fstream>
 
@@ -100,7 +101,7 @@ void ParsedGridGenerator<dim, spacedim>::declare_parameters(ParameterHandler &pr
 
   add_parameter(prm, &grid_name,
                 "Grid to generate", grid_name,
-                Patterns::Selection("file|rectangle|unit_hyperball|hyper_shell|subdivided_hyper_rectangle|hyper_sphere|hyper_L|half_hyper_ball|cylinder|truncated_cone|hyper_cross|hyper_cube_slit|half_hyper_shell|quarter_hyper_shell|cylinder_shell|torus|hyper_cube_with_cylindrical_hole|moebius|cheese"),
+                Patterns::Selection("file|rectangle|hyperball|hyper_shell|subdivided_hyper_rectangle|hyper_sphere|hyper_L|half_hyper_ball|cylinder|truncated_cone|hyper_cross|hyper_cube_slit|half_hyper_shell|quarter_hyper_shell|cylinder_shell|torus|hyper_cube_with_cylindrical_hole|moebius|cheese"),
                 "The grid to generate. You can choose among:\n"
                 "- file: read grid from a file using:\n"
                 "	- Input grid filename	    : input filename\n\n"
@@ -117,7 +118,7 @@ void ParsedGridGenerator<dim, spacedim>::declare_parameters(ParameterHandler &pr
                 "- hyper_sphere  : generate an hyper sphere with center and radius prescribed:\n"
                 "	- Optional Point<spacedim> : center\n"
                 "	- Optional double : radius\n"
-                "- unit_hyperball  : initialize the given triangulation with a hyperball:\n\n"
+                "- hyperball  : initialize the given triangulation with a hyperball:\n\n"
                 "	- Optional Point<spacedim> : center\n"
                 "	- Optional double : radius\n"
                 "- subdivided_hyper_rectangle   : create a coordinate-parallel parallelepiped:\n\n"
@@ -264,6 +265,15 @@ void ParsedGridGenerator<dim, spacedim>::declare_parameters(ParameterHandler &pr
                 "Bool be used in the generation of the grid to set colorize. "
                 "The use of it will depend on the specific grid.");
 
+  add_parameter(prm, &create_default_manifolds,
+                "Create default manifolds",
+                std::to_string(create_default_manifolds),
+                Patterns::Bool(),
+                "If set to true, boundary ids and material ids "
+                "will be copied over the manifold ids, and the "
+                "default manifolds for this triangulation will be"
+                "Generated.");
+
   add_parameter(prm, &str_manifold_descriptors,
                 "Manifold descriptors", str_manifold_descriptors,
                 Patterns::Anything(),
@@ -271,9 +281,14 @@ void ParsedGridGenerator<dim, spacedim>::declare_parameters(ParameterHandler &pr
                 "Pattern to be used: \n"
                 "id followed by '=' manifold descriptor \n "
                 "each couple of id and  manifold descriptor is separated by '%' \n"
-                "Avaible manifold descriptor: \n"
+                "Available manifold descriptor: \n"
                 " - HyperBallBoundary \n"
-                " - HyperShellBoundary \n");
+                " - HyperShellBoundary \n"
+                " - CADSurface\n"
+                " - CADLine\n"
+                "If CADSurface or CADLine is used, then the parameter\n"
+                "CAD file names\n is used to create the OpenCascade "
+                "objects that describe the manifolds using CAD files.");
 
   add_parameter(prm, &output_grid_file_name,
                 "Output grid file name", output_grid_file_name,
@@ -281,6 +296,14 @@ void ParsedGridGenerator<dim, spacedim>::declare_parameters(ParameterHandler &pr
                 "Name of the output grid. All supported deal.II formats. "
                 "The extestion will be used to decide what "
                 "grid format to use. If empty, no grid will be written.");
+
+  add_parameter(prm, &cad_file_names,
+                "CAD file names",
+                print(cad_file_names),
+                Patterns::List(Patterns::Anything()),
+                "A matching list of files, one for each entry in "
+                "Manifold descriptors that uses either CADSurface or "
+                "CADLine.");
 
 }
 
@@ -323,7 +346,9 @@ namespace
   template<int dim, int spacedim>
   void
   default_create_grid( Triangulation<dim,spacedim> &tria,
+                       std::map< types::manifold_id, shared_ptr<Manifold<dim,spacedim>> > manifold_descriptors,
                        std::string grid_name,
+                       bool create_default_manifolds,
                        Point<spacedim> point_option_one,
                        Point<spacedim> point_option_two,
                        double double_option_two,
@@ -382,7 +407,9 @@ namespace
   template<int dim>
   void
   create_grid( Triangulation<dim,dim+1> &tria,
+               std::map< types::manifold_id, shared_ptr<Manifold<dim,dim+1>> > manifold_descriptors,
                std::string grid_name,
+               bool create_default_manifolds,
                Point<dim+1> point_option_one,
                Point<dim+1> point_option_two,
                double double_option_two,
@@ -399,11 +426,20 @@ namespace
         GridGenerator::hyper_sphere<dim,dim+1> ( tria,
                                                  point_option_one,
                                                  double_option_one);
+        if (create_default_manifolds)
+          {
+            GridTools::copy_boundary_to_manifold_id(tria);
+            manifold_descriptors[0] = SP(new HyperBallBoundary<dim,dim+1>(point_option_one,
+                                         double_option_one));
+            tria.set_manifold(0, *manifold_descriptors[0]);
+          }
       }
     else
       {
         default_create_grid<dim, dim+1>( tria,
+                                         manifold_descriptors,
                                          grid_name,
+                                         create_default_manifolds,
                                          point_option_one,
                                          point_option_two,
                                          double_option_two,
@@ -423,7 +459,9 @@ namespace
   template<int dim>
   void
   create_grid( Triangulation<dim,dim> &tria,
+               std::map< types::manifold_id, shared_ptr<Manifold<dim,dim>> > manifold_descriptors,
                std::string grid_name,
+               bool create_default_manifolds,
                Point<dim> point_option_one,
                Point<dim> point_option_two,
                double double_option_two,
@@ -435,12 +473,19 @@ namespace
                std::vector<unsigned int> un_int_vec_option_one,
                std::string input_grid_file_name)
   {
-    if (grid_name == "unit_hyperball")
+    if (grid_name == "hyperball")
       {
 
         GridGenerator::hyper_ball( tria,
                                    point_option_one,
                                    double_option_one);
+        if (create_default_manifolds)
+          {
+            GridTools::copy_boundary_to_manifold_id(tria);
+            manifold_descriptors[0] = SP(new HyperBallBoundary<dim,dim>(point_option_one,
+                                                                        double_option_one));
+            tria.set_manifold(0, *manifold_descriptors[0]);
+          }
       }
     else if (grid_name == "hyper_L")
       {
@@ -453,12 +498,23 @@ namespace
         GridGenerator::half_hyper_ball (tria,
                                         point_option_one,
                                         double_option_one);
+        if (create_default_manifolds)
+          {
+            GridTools::copy_boundary_to_manifold_id(tria);
+            manifold_descriptors[0] = SP(new HalfHyperBallBoundary<dim>(point_option_one,
+                                                                        double_option_one));
+            tria.set_manifold(0, *manifold_descriptors[0]);
+          }
       }
     else if (grid_name == "cylinder")
       {
         GridGenerator::cylinder ( tria,
                                   double_option_one,
                                   double_option_two);
+        if (create_default_manifolds)
+          {
+            // etc.
+          }
       }
     else if (grid_name == "truncated_cone")
       {
@@ -533,7 +589,9 @@ namespace
     else
       {
         default_create_grid<dim, dim>( tria,
+                                       manifold_descriptors,
                                        grid_name,
+                                       create_default_manifolds,
                                        point_option_one,
                                        point_option_two,
                                        double_option_two,
@@ -552,7 +610,9 @@ namespace
    */
   void
   create_grid( Triangulation<3,3> &tria,
+               std::map< types::manifold_id, shared_ptr<Manifold<3,3>> > manifold_descriptors,
                std::string grid_name,
+               bool create_default_manifolds,
                Point<3> point_option_one,
                Point<3> point_option_two,
                double double_option_two,
@@ -575,7 +635,9 @@ namespace
     else
       {
         create_grid<3>( tria,
+                        manifold_descriptors,
                         grid_name,
+                        create_default_manifolds,
                         point_option_one,
                         point_option_two,
                         double_option_two,
@@ -594,7 +656,9 @@ namespace
    */
   void
   create_grid( Triangulation<2,3> &tria,
+               std::map< types::manifold_id, shared_ptr<Manifold<2,3>> > manifold_descriptors,
                std::string grid_name,
+               bool create_default_manifolds,
                Point<3> point_option_one,
                Point<3> point_option_two,
                double double_option_two,
@@ -614,7 +678,9 @@ namespace
       }
     else
       create_grid<2>( tria,
+                      manifold_descriptors,
                       grid_name,
+                      create_default_manifolds,
                       point_option_one,
                       point_option_two,
                       double_option_two,
@@ -635,7 +701,9 @@ void ParsedGridGenerator<dim, spacedim>::create(Triangulation<dim,spacedim> &tri
   Assert(grid_name != "", ExcNotInitialized());
 
   create_grid( tria,
+               manifold_descriptors,
                grid_name,
+               create_default_manifolds,
                point_option_one,
                point_option_two,
                double_option_two,
@@ -766,6 +834,7 @@ namespace
           {
             HyperBallBoundary<dim> manifold;
             manifold_sp = std::make_shared<HyperBallBoundary<dim>>(manifold);
+
           }
         else if (comp[1]=="HyperShellBoundary")
           {

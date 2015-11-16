@@ -353,11 +353,13 @@ private:
    * Avaible manifold descriptor:
    * - HyperBallBoundary
    * - HyperShellBoundary
+   * - CADSurface
+   * - CADLine
    */
   std::string str_manifold_descriptors;
 
   /**
-   * *std::map* containing boundary ids and associated manifolds.
+   * A map of Manifold associated to the given manifold_ids.
    */
   std::map< types::manifold_id, shared_ptr<Manifold<dim,spacedim>> > manifold_descriptors;
 
@@ -401,6 +403,21 @@ private:
    * colorizing.
    */
   bool colorize;
+
+  /**
+   * Create default manifold descriptors. If set to true, boundary ids and
+   * material ids will be copied over manifold ids on the newly created
+   * triangulation, and for each triangulation where we know how to create
+   * and associate their manifolds, we create them and associate them to
+   * the newly created triangulation.
+   */
+  bool create_default_manifolds;
+
+  /**
+   * CAD file names. Optional argument to read a CAD file in either .iges
+   * or .step format and create manifold descriptors using OpenCASCADE.
+   */
+  std::vector<std::string> cad_file_names;
 
   /**
    * Optional vector of integers.
