@@ -33,13 +33,13 @@ D2K_NAMESPACE_OPEN
  * finite element, generate one for you, and return a pointer to it.
  *
  * The name must be in the form which is returned by the
- * FiniteElement::get_name function, where dimension template
+ * FiniteElement::get_name() function, where dimension template
  * parameters <2> etc. can be omitted. Alternatively, the explicit
- * number can be replaced by dim or d. If a number is given, it must
- * match the template parameter of this function.
+ * number can be replaced by `dim` or `d`. If a number is given, it
+ * must match the template parameter of this function.
  *
  * The names of FESystem elements follow the pattern
- * FESystem[FE_Base1^p1-FE_Base2^p2] The powers p1 etc. may either be
+ * `FESystem[FE_Base1^p1-FE_Base2^p2]` The powers p1 etc. may either be
  * numbers or can be replaced by dim or d.
  *
  * If no finite element can be reconstructed from this string, an

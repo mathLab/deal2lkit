@@ -25,8 +25,9 @@ using namespace dealii;
 D2K_NAMESPACE_OPEN
 
 /**
- * A deal2lkit wrapper for dealii::QuadratureSelector.
- * The template integers specify the dimension of the quadrature.
+ * A deal2lkit wrapper for an iterated version of
+ * dealii::QuadratureSelector.  The template integer specifies the
+ * dimension of the quadrature.
  */
 template<int dim>
 class ParsedQuadrature : public Quadrature<dim>, public ParameterAcceptor
@@ -44,6 +45,14 @@ public:
    * -  weddle;
    * If @p quadrature_type is "gauss" it is possible to specify the number of
    * quadrature points in each coordinate direction (@p order).
+   *
+   * The last parameter specify how many times this quadrature should
+   * be repeated, i.e., in one space dimension, the given base formula
+   * is copied and scaled onto a given number of subintervals of
+   * length 1/@p repetitions. In more than one space dimension, the
+   * resulting quadrature formula is constructed by tensor product of
+   * the respective iterated quadrature formula in one space
+   * dimension.
    */
   ParsedQuadrature( const std::string   &name="",
                     const std::string   &quadrature_type="gauss",
