@@ -21,21 +21,16 @@
 #include <deal.II/grid/grid_out.h>
 #include <deal.II/base/utilities.h>
 
-<<<<<<< dbb719552cb629e1cb45b93c3ccb0c4ac9bad55d
 #include <string>
 #include <fstream>
 #include <streambuf>
-=======
 #include <deal.II/grid/grid_out.h>
->>>>>>> manifold
 
 
 using namespace deal2lkit;
 
-<<<<<<< dbb719552cb629e1cb45b93c3ccb0c4ac9bad55d
 // Create a grid, refine it locally, write it out in ar format, read it
 // back in, and check that everything is fine.
-=======
 template<int dim, int spacedim>
 void test(ParsedGridGenerator<dim, spacedim> &pgg)
 {
@@ -43,52 +38,10 @@ void test(ParsedGridGenerator<dim, spacedim> &pgg)
   GridOut go;
   go.write_msh(*tria, deallog.get_file_stream());
 }
->>>>>>> manifold
 
 int main ()
 {
   initlog();
-<<<<<<< dbb719552cb629e1cb45b93c3ccb0c4ac9bad55d
-  ParsedGridGenerator<2,2> a("Grid");
-
-  ParameterHandler prm;
-  ParameterAcceptor::declare_all_parameters(prm);
-
-  prm.read_input_from_string(""
-                             "subsection Grid\n"
-                             "  set Output grid file name = grid.ar\n"
-                             "end\n");
-
-  ParameterAcceptor::parse_all_parameters(prm);
-
-  auto t = SP(a.serial());
-  t->refine_global(1);
-  t->begin_active()->set_refine_flag();
-  t->execute_coarsening_and_refinement();
-
-  a.write(*t);
-  std::ifstream is("grid.ar");
-  std::string str((std::istreambuf_iterator<char>(is)),
-                  std::istreambuf_iterator<char>());
-  deallog << str;
-  is.close();
-
-  prm.read_input_from_string(""
-                             "subsection Grid\n"
-                             "  set Grid to generate = file\n"
-                             "  set Input grid file name = grid.ar\n"
-                             "  set Output grid file name = grid2.ar\n"
-                             "end\n");
-
-  ParameterAcceptor::parse_all_parameters(prm);
-  auto t2 = SP(a.serial());
-  a.write(*t2);
-  deallog << std::endl << "========================================" << std::endl;
-  is.open("grid2.ar");
-  std::string str2((std::istreambuf_iterator<char>(is)),
-                   std::istreambuf_iterator<char>());
-  deallog << str2 << std::endl;
-=======
   ParsedGridGenerator<2> a("Read");
 
   ParameterHandler prm;
@@ -104,11 +57,7 @@ int main ()
   ParameterAcceptor::parse_all_parameters(prm);
   shared_ptr<Triangulation<2> > tria = SP(a.serial());
   tria->refine_global();
-  // tria->execute_coarsening_and_refinement ();
 
-  std::ofstream out ("output");
   GridOut grid_out;
-  grid_out.write_eps (*tria, out);
-
->>>>>>> manifold
+  grid_out.write_msh (*tria, deallog.get_file_stream());
 }

@@ -32,6 +32,8 @@ using namespace dealii;
 
 D2K_NAMESPACE_OPEN
 
+struct PGGHelper;
+
 /**
  * Parsed grid generator. Create a grid by reading a parameter file,
  * either using dealii::GridGenerator functions, or by reading it from
@@ -47,7 +49,7 @@ D2K_NAMESPACE_OPEN
  * settings, and a typical usage of this class is
  * \code
  *   // 2D square - serial mesh
- *   // by default it constructs the rectangle whos opposite corner points
+ *   // by default it constructs the rectangle whose opposite corner points
  *   // are p1=(10.0,10.0) and p2=(20.0,20.0)
  *   ParsedGridGenerator<2,2> tria_builder_2d("2D mesh",
  *                                            "rectangle",
@@ -57,7 +59,7 @@ D2K_NAMESPACE_OPEN
  *                                            "true");
  *
  *   // 3D parallelepiped - parallel distributed mesh
- *   // by default it constructs the parallelepiped whos opposite corner
+ *   // by default it constructs the parallelepiped whose opposite corner
  *   // points are p1=(7.0,8.0,9.0) and p2=(15.0.16.0,16.7)
  *   ParsedGridGenerator<3,3> tria_builder_3d("3D mesh",
  *                                             "rectangle",
@@ -162,6 +164,12 @@ public:
                        const std::string output_grid_file="",
                        const std::string opt_manifold_descriptors="");
 
+
+  /**
+   * Return a list of implemented grids.
+   */
+  static std::string get_grid_names();
+
   /**
    * Declare all parameters of this class.
    */
@@ -185,40 +193,34 @@ public:
    * - **file**-> read grid from a file using:
    *   - *Input grid filename*  : input filename\n
    *
-   * - **rectangle**-> create a subdivided hyperrectangle using:
+   * - **rectangle**-> calls GridGenerator::SubdividedHyperRectangle() using:
    *   - *Point<spacedim>*: lower-left corner
    *   - *Point<spacedim>*: upper-right corner
    *   - *Vector of dim int*: subdivisions on each direction
    *   - *bool*: colorize grid
    *
-   * - **subdivided_hyper_rectangle**-> create a subdivided hyperrectangle using:
-   *   - *Point<spacedim>*: lower-left corner
-   *   - *Point<spacedim>*: upper-right corner
-   *   - *Vector of dim int*: subdivisions on each direction
-   *   - *bool*: colorize grid
-   *
-   * - **hyper_sphere**-> generate an hyper sphere with center and radius prescribed:
+   * - **hyper_sphere**-> calls GridGenerator::HyperSphere() using:
    *   - *Point<spacedim>*: center
    *   - *double*: radius
    *
-   * - **unit_hyperball**-> initialize the given triangulation with a hyperball:
+   * - **hyper_ball**-> calls GridGenerator::HyperBall() using:
    *   - *Point<spacedim>*: center
    *   - *double*: radius
    *
-   * - **subdivided_hyper_rectangle**-> create a coordinate-parallel parallelepiped:
+   * - **parallelepiped**-> ccalls GridGenerator::Parallelepiped() using:
    *   - std::vector<unsigned int> : number of subdivisions in each coordinate direction
    *   - *Point<spacedim>*: lower-left corner
    *   - *Point<spacedim>*: upper-right corner
    *   - *bool*: colorize grid
    *
-   * - **hyper_shell**-> create a gird represented by the region between two spheres with fixed center:
+   * - **hyper_shell**-> calls GridGenerator::HyperShell() using:
    *   - *Point<spacedim>*: center
    *   - *double*: inner sphere radius
    *   - *double*: outer sphere radius
    *   - *unsigned int*: number of cells of the resulting triangulation (In 3D, only 6, 12, and 96 are allowed)
    *   - *bool*: colorize grid
    *
-   * - **hyper_L**-> initialize the given triangulation with a hyper-L. It produces the hypercube with the interval [left,right] without the hypercube made out of the interval [(left+right)/2,right] for each coordinate.:
+   * - **hyper_L**-> GridGenerator::HyperL(). It produces the hypercube with the interval [left,right] without the hypercube made out of the interval [(left+right)/2,right] for each coordinate.:
    *   - *double*: left
    *   - *double*: right
    *
@@ -325,13 +327,7 @@ private:
    * Take @p str_manifold_descriptors and fill @p manifold_descriptors with
    * ids and manifolds.
    */
-  void parse_manifold_descriptors();
-
-  /**
-   * Take @p manifold_descriptors and apply these manifolds to the
-   * Triangulation @p tria.
-   */
-  void apply_manifold_descriptors(Triangulation<dim,spacedim> &tria);
+  void parse_manifold_descriptors(const std::string &str_manifold_descriptors);
 
   /**
    * Mesh smoothing to apply to the newly created Triangulation. This
@@ -353,13 +349,22 @@ private:
    * Avaible manifold descriptor:
    * - HyperBallBoundary
    * - HyperShellBoundary
+   * - CADSurface
+   * - CADLine
    */
-  std::string str_manifold_descriptors;
+  std::string optional_manifold_descriptors;
+
 
   /**
-   * *std::map* containing boundary ids and associated manifolds.
+   * Default Manifold descriptors. This is filled when creating the grid,
+   * and is later translated into an actual manifold.
    */
-  std::map< types::manifold_id, shared_ptr<Manifold<dim,spacedim>> > manifold_descriptors;
+  std::string default_manifold_descriptors;
+
+  /**
+   * A map of Manifold associated to the given manifold_ids.
+   */
+  std::map<types::manifold_id, shared_ptr<Manifold<dim,spacedim> > > manifold_descriptors;
 
   /**
    * Optional double argument. First option.
@@ -403,6 +408,35 @@ private:
   bool colorize;
 
   /**
+   * Create default manifold descriptors. If set to true, boundary ids will
+   * be copied over manifold ids on the newly created
+   * triangulation (independently on the value of the variable
+   * copy_boundary_to_manifold_ids, and for each triangulation where we know how
+   * to create
+   * and associate their manifolds, we create them and associate them to
+   * the newly created triangulation.
+   *
+   * This option produces different associations depending on the colorize
+   * parameter. The created manifolds will be compatible with the triangulation
+   * and the colorize parameter used.
+   */
+  bool create_default_manifolds;
+
+  /**
+   * Copy boundary ids to manifold ids. If set to true, boundary ids will be
+   * copied over manifold ids on the newly created
+   * triangulation.
+   */
+  bool copy_boundary_to_manifold_ids;
+
+  /**
+   * Copy material ids to manifold ids. If set to true, material ids will be
+   * copied over manifold ids on the newly created
+   * triangulation.
+   */
+  bool copy_material_to_manifold_ids;
+
+  /**
    * Optional vector of integers.
    */
   std::vector<unsigned int> un_int_vec_option_one;
@@ -427,6 +461,11 @@ private:
   std::string str_un_int_1;
   std::string str_un_int_2;
   std::string str_vec_int;
+
+  /**
+   * Helper function to create grids.
+   */
+  friend struct PGGHelper;
 };
 
 D2K_NAMESPACE_CLOSE
