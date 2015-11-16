@@ -19,7 +19,7 @@
 
 
 /***********************************************************************
- * Information about deal.II:
+ * Information about deal2lkit:
  */
 
 #define D2K_PACKAGE_NAME "@D2K_PACKAGE_NAME@"
@@ -46,7 +46,7 @@
 #define D2K_GIT_SHORTREV "@D2K_GIT_SHORTREV@"
 
 /***********************************************************************
- * Configured deal.II features:
+ * Configured deal2lkit features:
  */
 
 #cmakedefine D2K_WITH_SUNDIALS
@@ -62,7 +62,7 @@
  */
 
 /*
- * deal.II:
+ * deal2lkit:
  */
 
 #define D2K_VERSION_GTE(major,minor,subminor) \
@@ -75,7 +75,7 @@
 
 
 /***********************************************************************
- * Two macro names that we put at the top and bottom of all deal.II files
+ * Two macro names that we put at the top and bottom of all deal2lkit files
  * and that will be expanded to "namespace deal2lkit {" and "}".
  */
 
