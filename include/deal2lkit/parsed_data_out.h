@@ -47,6 +47,7 @@ public:
                  const unsigned int &subdivisions=1,
                  const std::string &incremental_run_prefix="",
                  const std::string &base_name_input="solution",
+                 const std::string &files_to_save="",
                  const MPI_Comm &comm=MPI_COMM_WORLD);
 
   /** Initialize the given values for the paramter file. */
@@ -78,8 +79,7 @@ public:
       @p used_files is an optional variable that takes a list of useful files
       (ex. "parameter.prm time.dat") and copies these files
       in the @p incremental_run_prefix of the costructor function.*/
-  void write_data_and_clear(const std::string &used_files="",
-                            const Mapping<dim,spacedim> &mapping=StaticMappingQ1<dim,spacedim>::mapping);
+  void write_data_and_clear(const Mapping<dim,spacedim> &mapping=StaticMappingQ1<dim,spacedim>::mapping);
 
 private:
   /** Initialization flag.*/
@@ -111,6 +111,13 @@ private:
       For example sol/run will produces sol/run001
       for the first run, sol/run002 for the second, and so on. */
   std::string incremental_run_prefix;
+
+  /**
+   * a list of file to save at each run in @ incremental_run_prefix
+   * directory. This list should be separated usign '%', e.g.:
+   * file1.txt % file2.dat % etc..
+   */
+  std::string files_to_save;
 
   /** Solution names. */
   std::string solution_names;

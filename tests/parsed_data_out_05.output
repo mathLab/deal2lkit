@@ -1,0 +1,7 @@
+
+DEAL:PrepareOutput::Will write on file: run/out000/output.vtk
+DEAL:AddingData::Added data: u,u,p
+DEAL:WritingData::Wrote output file.
+DEAL:WritingData::Reset output.
+DEAL::Exist ./run/out001/parameters_new.prm =0
+DEAL::Exist ./run/out001/used_parameters_new.prm =0
