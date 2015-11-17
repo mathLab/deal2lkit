@@ -30,13 +30,14 @@ void test(ParsedGridGenerator<dim, spacedim> &pgg)
   Triangulation<dim, spacedim> *tria = pgg.serial();
   GridOut go;
   go.write_msh(*tria, deallog.get_file_stream());
+  delete tria;
 }
 
 
 int main ()
 {
   initlog();
-  ParsedGridGenerator<2,2> a("Unit Hyperball", "unit_hyperball");
+  ParsedGridGenerator<2,2> a("Unit Hyperball", "hyperball");
   ParsedGridGenerator<2,2> b("Sub Hyper Rectangle", "rectangle");
   ParsedGridGenerator<2,2> c("Hyper Shell", "hyper_shell", "", "", "", "false", "1.0", "0.5", "1.5",
                              "0", "0","","none","");

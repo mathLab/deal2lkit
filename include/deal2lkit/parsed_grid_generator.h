@@ -405,13 +405,34 @@ private:
   bool colorize;
 
   /**
-   * Create default manifold descriptors. If set to true, boundary ids and
-   * material ids will be copied over manifold ids on the newly created
-   * triangulation, and for each triangulation where we know how to create
+   * Create default manifold descriptors. If set to true, boundary ids will
+   * be copied over manifold ids on the newly created
+   * triangulation (independently on the value of the variable
+   * copy_boundary_to_manifold_ids, and for each triangulation where we know how
+   * to create
    * and associate their manifolds, we create them and associate them to
    * the newly created triangulation.
+   *
+   * This option produces different associations depending on the colorize
+   * parameter. The created manifolds will be compatible with the triangulation
+   * and the colorize parameter used.
    */
   bool create_default_manifolds;
+
+  /**
+   * Copy boundary ids to manifold ids. If set to true, boundary ids will be
+   * copied over manifold ids on the newly created
+   * triangulation.
+   */
+  bool copy_boundary_to_manifold_ids;
+
+  /**
+   * Copy material ids to manifold ids. If set to true, material ids will be
+   * copied over manifold ids on the newly created
+   * triangulation.
+   */
+  bool copy_material_to_manifold_ids;
+
 
   /**
    * CAD file names. Optional argument to read a CAD file in either .iges

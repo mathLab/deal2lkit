@@ -267,12 +267,28 @@ void ParsedGridGenerator<dim, spacedim>::declare_parameters(ParameterHandler &pr
 
   add_parameter(prm, &create_default_manifolds,
                 "Create default manifolds",
-                std::to_string(create_default_manifolds),
+                create_default_manifolds ? "true" : "false",
                 Patterns::Bool(),
-                "If set to true, boundary ids and material ids "
+                "If set to true, boundary ids "
                 "will be copied over the manifold ids, and the "
                 "default manifolds for this triangulation will be"
                 "Generated.");
+
+
+  add_parameter(prm, &copy_boundary_to_manifold_ids,
+                "Copy boundary to manifold ids",
+                copy_boundary_to_manifold_ids ? "true" : "false",
+                Patterns::Bool(),
+                "If set to true, boundary ids will be copied over "
+                "the manifold ids.");
+
+  add_parameter(prm, &create_default_manifolds,
+                "Copy material to manifold ids",
+                create_default_manifolds ? "true" : "false",
+                Patterns::Bool(),
+                "If set to true, material ids "
+                "will be copied over the manifold ids.");
+
 
   add_parameter(prm, &str_manifold_descriptors,
                 "Manifold descriptors", str_manifold_descriptors,
@@ -346,7 +362,7 @@ namespace
   template<int dim, int spacedim>
   void
   default_create_grid( Triangulation<dim,spacedim> &tria,
-                       std::map< types::manifold_id, shared_ptr<Manifold<dim,spacedim>> > manifold_descriptors,
+                       std::map< types::manifold_id, shared_ptr<Manifold<dim,spacedim>> > &manifold_descriptors,
                        std::string grid_name,
                        bool create_default_manifolds,
                        Point<spacedim> point_option_one,
@@ -407,7 +423,7 @@ namespace
   template<int dim>
   void
   create_grid( Triangulation<dim,dim+1> &tria,
-               std::map< types::manifold_id, shared_ptr<Manifold<dim,dim+1>> > manifold_descriptors,
+               std::map< types::manifold_id, shared_ptr<Manifold<dim,dim+1>> > &manifold_descriptors,
                std::string grid_name,
                bool create_default_manifolds,
                Point<dim+1> point_option_one,
@@ -431,7 +447,6 @@ namespace
             GridTools::copy_boundary_to_manifold_id(tria);
             manifold_descriptors[0] = SP(new HyperBallBoundary<dim,dim+1>(point_option_one,
                                          double_option_one));
-            tria.set_manifold(0, *manifold_descriptors[0]);
           }
       }
     else
@@ -459,7 +474,7 @@ namespace
   template<int dim>
   void
   create_grid( Triangulation<dim,dim> &tria,
-               std::map< types::manifold_id, shared_ptr<Manifold<dim,dim>> > manifold_descriptors,
+               std::map< types::manifold_id, shared_ptr<Manifold<dim,dim>> > &manifold_descriptors,
                std::string grid_name,
                bool create_default_manifolds,
                Point<dim> point_option_one,
@@ -484,7 +499,6 @@ namespace
             GridTools::copy_boundary_to_manifold_id(tria);
             manifold_descriptors[0] = SP(new HyperBallBoundary<dim,dim>(point_option_one,
                                                                         double_option_one));
-            tria.set_manifold(0, *manifold_descriptors[0]);
           }
       }
     else if (grid_name == "hyper_L")
@@ -503,7 +517,6 @@ namespace
             GridTools::copy_boundary_to_manifold_id(tria);
             manifold_descriptors[0] = SP(new HalfHyperBallBoundary<dim>(point_option_one,
                                                                         double_option_one));
-            tria.set_manifold(0, *manifold_descriptors[0]);
           }
       }
     else if (grid_name == "cylinder")
@@ -610,7 +623,7 @@ namespace
    */
   void
   create_grid( Triangulation<3,3> &tria,
-               std::map< types::manifold_id, shared_ptr<Manifold<3,3>> > manifold_descriptors,
+               std::map< types::manifold_id, shared_ptr<Manifold<3,3>> > &manifold_descriptors,
                std::string grid_name,
                bool create_default_manifolds,
                Point<3> point_option_one,
@@ -656,7 +669,7 @@ namespace
    */
   void
   create_grid( Triangulation<2,3> &tria,
-               std::map< types::manifold_id, shared_ptr<Manifold<2,3>> > manifold_descriptors,
+               std::map< types::manifold_id, shared_ptr<Manifold<2,3>> > &manifold_descriptors,
                std::string grid_name,
                bool create_default_manifolds,
                Point<3> point_option_one,
@@ -826,27 +839,17 @@ namespace
       {
         std::vector<std::string> comp;
         comp = Utilities::split_string_list(idcomponents[i], '=');
-        unsigned int id = Utilities::string_to_int(comp[0]);
-
-        shared_ptr<Manifold<dim>> manifold_sp;
+        types::manifold_id id =
+          static_cast<types::manifold_id>(Utilities::string_to_int(comp[0]));
 
         if (comp[1]=="HyperBallBoundary")
-          {
-            HyperBallBoundary<dim> manifold;
-            manifold_sp = std::make_shared<HyperBallBoundary<dim>>(manifold);
-
-          }
+          manifold_descriptors[id] = SP(new HyperBallBoundary<dim>());
         else if (comp[1]=="HyperShellBoundary")
-          {
-            HyperShellBoundary<dim> manifold;
-            manifold_sp = std::make_shared<HyperShellBoundary<dim>>(manifold);
-          }
+          manifold_descriptors[id] = SP(new HyperShellBoundary<dim>());
         else
           {
-            Assert(false, ExcInternalError("Not a valid manifold."))
+            Assert(false, ExcInternalError("Not a valid manifold descriptor."))
           }
-
-        manifold_descriptors.insert( std::pair< types::manifold_id, shared_ptr <Manifold <dim> > >(id, manifold_sp ) );
       }
   }
 
@@ -905,16 +908,21 @@ ParsedGridGenerator<dim, spacedim>::
 apply_manifold_descriptors(Triangulation<dim,spacedim> &tria)
 {
   parse_manifold_descriptors();
-  unsigned int manifold_id = 99;
-  for ( auto it = manifold_descriptors.begin();
-        it != manifold_descriptors.end();
-        ++it)
+  if (copy_boundary_to_manifold_ids)
     {
-      auto id       = it->first;
-      auto manifold = it->second;
-      tria.set_all_manifold_ids_on_boundary(id , manifold_id);
-      tria.set_manifold (manifold_id, *manifold);
-      manifold_id--;
+      GridTools::copy_boundary_to_manifold_id(tria);
+    }
+
+  if (copy_material_to_manifold_ids)
+    {
+      GridTools::copy_material_to_manifold_id(tria);
+    }
+
+  for ( auto it : manifold_descriptors)
+    {
+      auto id       = it.first;
+      auto manifold = it.second;
+      tria.set_manifold (id, *manifold);
     }
 }
 
