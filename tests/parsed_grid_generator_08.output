@@ -1,7 +1,7 @@
 
 DEAL:parameters:Cube::CAD file names: 
 DEAL:parameters:Cube::Colorize: false
-DEAL:parameters:Cube::Copy boundary to manifold ids: true
+DEAL:parameters:Cube::Copy boundary to manifold ids: false
 DEAL:parameters:Cube::Copy material to manifold ids: false
 DEAL:parameters:Cube::Create default manifolds: false
 DEAL:parameters:Cube::Grid to generate: rectangle

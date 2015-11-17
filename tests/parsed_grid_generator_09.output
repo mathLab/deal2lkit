@@ -1,7 +1,7 @@
 
 DEAL:parameters:Cheese::CAD file names: 
 DEAL:parameters:Cheese::Colorize: false
-DEAL:parameters:Cheese::Copy boundary to manifold ids: true
+DEAL:parameters:Cheese::Copy boundary to manifold ids: false
 DEAL:parameters:Cheese::Copy material to manifold ids: false
 DEAL:parameters:Cheese::Create default manifolds: false
 DEAL:parameters:Cheese::Grid to generate: cheese
@@ -38,8 +38,8 @@ DEAL:parameters:Cylinder::Output grid file name:
 DEAL:parameters:Cylinder Shell::CAD file names: 
 DEAL:parameters:Cylinder Shell::Colorize: false
 DEAL:parameters:Cylinder Shell::Copy boundary to manifold ids: false
-DEAL:parameters:Cylinder Shell::Copy material to manifold ids: true
-DEAL:parameters:Cylinder Shell::Create default manifolds: true
+DEAL:parameters:Cylinder Shell::Copy material to manifold ids: false
+DEAL:parameters:Cylinder Shell::Create default manifolds: false
 DEAL:parameters:Cylinder Shell::Grid to generate: cylinder_shell
 DEAL:parameters:Cylinder Shell::Input grid file name: 
 DEAL:parameters:Cylinder Shell::Manifold descriptors: 
@@ -55,7 +55,7 @@ DEAL:parameters:Cylinder Shell::Optional vector of dim int: 1,1,1
 DEAL:parameters:Cylinder Shell::Output grid file name: 
 DEAL:parameters:Half Hyper Ball::CAD file names: 
 DEAL:parameters:Half Hyper Ball::Colorize: false
-DEAL:parameters:Half Hyper Ball::Copy boundary to manifold ids: true
+DEAL:parameters:Half Hyper Ball::Copy boundary to manifold ids: false
 DEAL:parameters:Half Hyper Ball::Copy material to manifold ids: false
 DEAL:parameters:Half Hyper Ball::Create default manifolds: false
 DEAL:parameters:Half Hyper Ball::Grid to generate: half_hyper_ball
@@ -91,7 +91,7 @@ DEAL:parameters:Half Hyper Shell::Optional vector of dim int: 1,1
 DEAL:parameters:Half Hyper Shell::Output grid file name: 
 DEAL:parameters:Hyper Cube Slit::CAD file names: 
 DEAL:parameters:Hyper Cube Slit::Colorize: false
-DEAL:parameters:Hyper Cube Slit::Copy boundary to manifold ids: true
+DEAL:parameters:Hyper Cube Slit::Copy boundary to manifold ids: false
 DEAL:parameters:Hyper Cube Slit::Copy material to manifold ids: false
 DEAL:parameters:Hyper Cube Slit::Create default manifolds: false
 DEAL:parameters:Hyper Cube Slit::Grid to generate: hyper_cube_slit
@@ -109,9 +109,9 @@ DEAL:parameters:Hyper Cube Slit::Optional vector of dim int: 1,1
 DEAL:parameters:Hyper Cube Slit::Output grid file name: 
 DEAL:parameters:Hyper Cube with Cylindrical Hole::CAD file names: 
 DEAL:parameters:Hyper Cube with Cylindrical Hole::Colorize: false
-DEAL:parameters:Hyper Cube with Cylindrical Hole::Copy boundary to manifold ids: true
-DEAL:parameters:Hyper Cube with Cylindrical Hole::Copy material to manifold ids: true
-DEAL:parameters:Hyper Cube with Cylindrical Hole::Create default manifolds: true
+DEAL:parameters:Hyper Cube with Cylindrical Hole::Copy boundary to manifold ids: false
+DEAL:parameters:Hyper Cube with Cylindrical Hole::Copy material to manifold ids: false
+DEAL:parameters:Hyper Cube with Cylindrical Hole::Create default manifolds: false
 DEAL:parameters:Hyper Cube with Cylindrical Hole::Grid to generate: hyper_cube_with_cylindrical_hole
 DEAL:parameters:Hyper Cube with Cylindrical Hole::Input grid file name: 
 DEAL:parameters:Hyper Cube with Cylindrical Hole::Manifold descriptors: 
@@ -146,8 +146,8 @@ DEAL:parameters:Hyper L::Output grid file name:
 DEAL:parameters:Hyper Shell::CAD file names: 
 DEAL:parameters:Hyper Shell::Colorize: false
 DEAL:parameters:Hyper Shell::Copy boundary to manifold ids: false
-DEAL:parameters:Hyper Shell::Copy material to manifold ids: true
-DEAL:parameters:Hyper Shell::Create default manifolds: true
+DEAL:parameters:Hyper Shell::Copy material to manifold ids: false
+DEAL:parameters:Hyper Shell::Create default manifolds: false
 DEAL:parameters:Hyper Shell::Grid to generate: hyper_shell
 DEAL:parameters:Hyper Shell::Input grid file name: 
 DEAL:parameters:Hyper Shell::Manifold descriptors: 
@@ -163,9 +163,9 @@ DEAL:parameters:Hyper Shell::Optional vector of dim int: 1,1
 DEAL:parameters:Hyper Shell::Output grid file name: 
 DEAL:parameters:Hyper Sphere::CAD file names: 
 DEAL:parameters:Hyper Sphere::Colorize: false
-DEAL:parameters:Hyper Sphere::Copy boundary to manifold ids: true
-DEAL:parameters:Hyper Sphere::Copy material to manifold ids: true
-DEAL:parameters:Hyper Sphere::Create default manifolds: true
+DEAL:parameters:Hyper Sphere::Copy boundary to manifold ids: false
+DEAL:parameters:Hyper Sphere::Copy material to manifold ids: false
+DEAL:parameters:Hyper Sphere::Create default manifolds: false
 DEAL:parameters:Hyper Sphere::Grid to generate: hyper_sphere
 DEAL:parameters:Hyper Sphere::Input grid file name: 
 DEAL:parameters:Hyper Sphere::Manifold descriptors: 
@@ -181,7 +181,7 @@ DEAL:parameters:Hyper Sphere::Optional vector of dim int: 1
 DEAL:parameters:Hyper Sphere::Output grid file name: 
 DEAL:parameters:Quarter Hyper Shell::CAD file names: 
 DEAL:parameters:Quarter Hyper Shell::Colorize: false
-DEAL:parameters:Quarter Hyper Shell::Copy boundary to manifold ids: true
+DEAL:parameters:Quarter Hyper Shell::Copy boundary to manifold ids: false
 DEAL:parameters:Quarter Hyper Shell::Copy material to manifold ids: false
 DEAL:parameters:Quarter Hyper Shell::Create default manifolds: false
 DEAL:parameters:Quarter Hyper Shell::Grid to generate: quarter_hyper_shell
@@ -218,8 +218,8 @@ DEAL:parameters:Sub Hyper Rectangle::Output grid file name:
 DEAL:parameters:Torus::CAD file names: 
 DEAL:parameters:Torus::Colorize: false
 DEAL:parameters:Torus::Copy boundary to manifold ids: false
-DEAL:parameters:Torus::Copy material to manifold ids: true
-DEAL:parameters:Torus::Create default manifolds: true
+DEAL:parameters:Torus::Copy material to manifold ids: false
+DEAL:parameters:Torus::Create default manifolds: false
 DEAL:parameters:Torus::Grid to generate: torus
 DEAL:parameters:Torus::Input grid file name: 
 DEAL:parameters:Torus::Manifold descriptors: 
