@@ -19,6 +19,8 @@
 #include <deal.II/grid/grid_generator.h>
 #include <deal.II/grid/grid_in.h>
 #include <deal.II/grid/grid_out.h>
+#include <boost/archive/text_oarchive.hpp>
+#include <boost/archive/text_iarchive.hpp>
 
 #include <fstream>
 
@@ -343,6 +345,11 @@ namespace
           gi.read_ucd(in);
         else if (ext == "unv")
           gi.read_unv(in);
+        else if (ext == "ar")
+          {
+            boost::archive::text_iarchive ia(in);
+            tria.load(ia, 0);
+          }
         else
           Assert(false, ExcNotImplemented());
       }
@@ -653,6 +660,11 @@ void ParsedGridGenerator<dim, spacedim>::write(const Triangulation<dim,spacedim>
         go.write_ucd(tria, out);
       else if (ext == "vtu")
         go.write_vtu(tria, out);
+      else if (ext == "ar")
+        {
+          boost::archive::text_oarchive oa(out);
+          tria.save(oa, 0);
+        }
       else
         Assert(false, ExcNotImplemented());
       out.close();
