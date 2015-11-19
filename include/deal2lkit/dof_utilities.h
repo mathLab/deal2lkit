@@ -142,7 +142,6 @@ namespace DOFUtilities
   {
     const unsigned int           dofs_per_cell = fe_values.dofs_per_cell;
     const unsigned int           n_q_points    = fe_values.n_quadrature_points;
-    const unsigned int           n_components  = fe_values.get_fe().n_components();
 
     AssertDimension(us.size(), n_q_points);
     AssertDimension(independent_local_dof_values.size(), dofs_per_cell);
