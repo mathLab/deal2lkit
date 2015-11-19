@@ -1,2 +1,10 @@
 doc/
 TAGS
+CMakeCache.txt
+CMakeFiles
+cmake_install.cmake
+Makefile
+*.vtu
+*.pvtu
+*.vtk
+*.gnuplot

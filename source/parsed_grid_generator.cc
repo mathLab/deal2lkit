@@ -640,18 +640,20 @@ void ParsedGridGenerator<dim, spacedim>::create(Triangulation<dim,spacedim> &tri
 }
 
 template <int dim, int spacedim>
-void ParsedGridGenerator<dim, spacedim>::write(const Triangulation<dim,spacedim> &tria) const
+void ParsedGridGenerator<dim, spacedim>::write(const Triangulation<dim,spacedim> &tria,
+                                               const std::string &filename) const
 {
-  if (output_grid_file_name != "")
+  std::string my_filename = filename != "" ? filename : output_grid_file_name;
+  if (my_filename != "")
     {
       GridOut go;
-      std::ofstream out(output_grid_file_name.c_str());
+      std::ofstream out(my_filename.c_str());
       AssertThrow(out, ExcIO());
 
       go.set_flags(GridOutFlags::Msh(true, true));
       go.set_flags(GridOutFlags::Ucd(false,true, true));
 
-      std::string ext = extension(output_grid_file_name);
+      std::string ext = extension(my_filename);
       if (ext == "vtk")
         go.write_vtk(tria, out);
       else if (ext == "msh")

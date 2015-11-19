@@ -297,14 +297,17 @@ public:
 
   /**
    * Write the given Triangulation to the output file specified in
-   * `Output file name`.
+   * `Output file name`, or in the optional file name.
    *
-   * If no `Output file name` is given, this function does nothing. If
-   * an output file name is provided, then this function will call the
+   * If no `Output file name` is given and filename is the empty string,
+   * this function does nothing. If
+   * an output file name is provided (either in the input file, or as an argument
+   * to this function), then this function will call the
    * appropriate GridOut method according to the extension of the file
    * name.
    */
-  void write(const Triangulation<dim, spacedim> &tria) const;
+  void write(const Triangulation<dim, spacedim> &tria,
+             const std::string &filename="") const;
 
 private:
   /**
