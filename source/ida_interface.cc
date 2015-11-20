@@ -149,7 +149,9 @@ int t_dae_lsetup(IDAMem IDA_mem,
                  N_Vector tmp2,
                  N_Vector tmp3)
 {
-
+  (void) tmp1;
+  (void) tmp2;
+  (void) tmp3;
   SundialsInterface<VEC> &solver = *static_cast<SundialsInterface<VEC> *>(IDA_mem->ida_user_data);
 
   shared_ptr<VEC> src_yy = solver.create_new_vector();
@@ -177,6 +179,7 @@ int t_dae_solve(IDAMem IDA_mem,
                 N_Vector yp,
                 N_Vector resp)
 {
+  (void) weight;
   SundialsInterface<VEC> &solver = *static_cast<SundialsInterface<VEC> *>(IDA_mem->ida_user_data);
 
   shared_ptr<VEC> src_yy = solver.create_new_vector();
@@ -371,10 +374,10 @@ unsigned int IDAInterface<VEC>::start_ode(VEC &solution,
 
       while ( reset == true )
         {
-          double frac = 0;
+          // double frac = 0;
           int k = 0;
           IDAGetLastOrder(ida_mem, &k);
-          frac = std::pow((double)k,2.);
+          // frac = std::pow((double)k,2.);
           reset_ode(t, solution, solution_dot,
                     h/2.0, max_steps, false);
           reset = solver.solver_should_restart(t, step_number, h, solution, solution_dot);
