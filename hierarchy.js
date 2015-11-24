@@ -19,6 +19,7 @@ var hierarchy =
       [ "Function< dim >", "http://www.dealii.org/developer/doxygen/deal.II/classFunction.html", null ],
       [ "ParameterAcceptor", "class_parameter_acceptor.html", [
         [ "ErrorHandler< ntables >", "class_error_handler.html", null ],
+        [ "IDAInterface< VEC >", "class_i_d_a_interface.html", null ],
         [ "ParsedDataOut< dim, spacedim >", "class_parsed_data_out.html", null ],
         [ "ParsedFiniteElement< dim, spacedim >", "class_parsed_finite_element.html", null ],
         [ "ParsedFunction< dim, ncomponents >", "class_parsed_function.html", null ],
@@ -34,5 +35,6 @@ var hierarchy =
         [ "ParsedQuadrature< dim >", "class_parsed_quadrature.html", null ]
       ] ]
     ] ],
+    [ "SundialsInterface< VEC >", "class_sundials_interface.html", null ],
     [ "TimeUtilities", "class_time_utilities.html", null ]
 ];

@@ -8,7 +8,7 @@ var utilities_8h =
     [ "copy_files", "utilities_8h.html#ad498e0db011f68bed8742b4287c3f74f", null ],
     [ "create_directory", "utilities_8h.html#a10da2716560c74a4cd0c25e1ac6d7c42", null ],
     [ "DeclException1", "utilities_8h.html#a4c9e86136ea2163747280de99052a5c2", null ],
-    [ "demangle", "utilities_8h.html#a0a47ba2545e01458bf6abc6169aaa392", null ],
+    [ "demangle", "utilities_8h.html#a979982102c0dbd9e9c970d56c96481e3", null ],
     [ "dir_exists", "utilities_8h.html#a18f0bb97e3480908a5d2ebeba2effb17", null ],
     [ "file_exists", "utilities_8h.html#a8d3e59f8d256d7703e84064d7ca70879", null ],
     [ "get_next_available_directory_name", "utilities_8h.html#a1383e971275ecae650c7c7008571380a", null ],

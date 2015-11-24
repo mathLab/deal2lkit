@@ -1,6 +1,6 @@
 var class_error_handler =
 [
-    [ "ErrorHandler", "class_error_handler.html#ae91eb928f28f8f0ef5814e5f63b6d220", null ],
+    [ "ErrorHandler", "class_error_handler.html#aa16bb93ca1775f2231c287b5ea5e55b5", null ],
     [ "custom_error", "class_error_handler.html#a8cebeaf932d4e6c5fb8d755dfd2526c4", null ],
     [ "declare_parameters", "class_error_handler.html#a1b82f2b733264bd0f6dbc0b58fdc7a92", null ],
     [ "difference", "class_error_handler.html#ac055b93a612054be319c2c1e352bec04", null ],
@@ -24,6 +24,7 @@ var class_error_handler =
     [ "list_of_error_norms", "class_error_handler.html#ac0225b2a6cb395faca85f7ecd09a9b71", null ],
     [ "names", "class_error_handler.html#ab3a76b83efc900ec6c1245caa96f2be0", null ],
     [ "output_error", "class_error_handler.html#a0a838619f62db59888395f4cbe8c7533", null ],
+    [ "precision", "class_error_handler.html#a48a20ccddde56c2481a4cff2ff343b1f", null ],
     [ "rate_keys", "class_error_handler.html#a31f66dfe53412a9e0169e6a0f88b449b", null ],
     [ "solution_names", "class_error_handler.html#a0958d47fc5c8e32019ac5ecc0366dcb5", null ],
     [ "tables", "class_error_handler.html#af744b90188b33e047628ec511466ef5f", null ],

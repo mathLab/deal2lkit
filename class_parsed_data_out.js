@@ -1,15 +1,16 @@
 var class_parsed_data_out =
 [
-    [ "ParsedDataOut", "class_parsed_data_out.html#ad3e0bc291f95381f03a930d635fe849a", null ],
+    [ "ParsedDataOut", "class_parsed_data_out.html#a6b3e58904d3f7ddf87fd704334d4c83c", null ],
     [ "add_data_vector", "class_parsed_data_out.html#ac58bd23775c33872247e768f5b11cf12", null ],
     [ "declare_parameters", "class_parsed_data_out.html#aac8af955de45324d4d5cd8108e979499", null ],
     [ "parse_parameters_call_back", "class_parsed_data_out.html#adbcd00444d6b809ce0e86d0cbb4341da", null ],
     [ "prepare_data_output", "class_parsed_data_out.html#adb9eba598c1c2a4b46a2cd1a72030a65", null ],
-    [ "write_data_and_clear", "class_parsed_data_out.html#a142ee70ccc3fd2c2c52843f982416ec2", null ],
+    [ "write_data_and_clear", "class_parsed_data_out.html#a4f8c9d664128b50abe5b63fcfb28d20e", null ],
     [ "base_name", "class_parsed_data_out.html#a632b2541f0acf32e79f39f4d394f3627", null ],
     [ "comm", "class_parsed_data_out.html#a072668a91ef0755024c1fc37e48f86c0", null ],
     [ "current_name", "class_parsed_data_out.html#aa9e7ebd8e9a46759da96f923ef4fb641", null ],
     [ "data_out", "class_parsed_data_out.html#a77b63983ffc39bb923d96e8d8eb3f928", null ],
+    [ "files_to_save", "class_parsed_data_out.html#a0370435930e64721ee3933ebc7d68236", null ],
     [ "incremental_run_prefix", "class_parsed_data_out.html#ad48a1c42e82fb06fc9d734f040abe5f5", null ],
     [ "initialized", "class_parsed_data_out.html#a64533534908da2b98efce81319fcbd92", null ],
     [ "n_mpi_processes", "class_parsed_data_out.html#abe1e02a8c6aff5abc366fc30643a9ca4", null ],

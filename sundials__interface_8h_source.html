@@ -133,14 +133,14 @@ $(document).ready(function(){initNavTree('sundials__interface_8h_source.html',''
 <div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;</div>
 <div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;D2K_NAMESPACE_OPEN</div>
 <div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">typename</span> VEC=Vector&lt;<span class="keywordtype">double</span>&gt; &gt; <span class="keyword">class </span>SundialsInterface</div>
+<div class="line"><a name="l00059"></a><span class="lineno"><a class="line" href="class_sundials_interface.html">   59</a></span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">typename</span> VEC=Vector&lt;<span class="keywordtype">double</span>&gt; &gt; <span class="keyword">class </span><a class="code" href="class_sundials_interface.html">SundialsInterface</a></div>
 <div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;{</div>
 <div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;</div>
 <div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;<span class="keyword">public</span> :</div>
 <div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;</div>
 <div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;<span class="preprocessor">#ifdef DEAL_II_WITH_MPI</span></div>
 <div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;  SundialsInterface(<span class="keyword">const</span> MPI_Comm &amp;communicator=MPI_COMM_WORLD) :</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;  <a class="code" href="class_sundials_interface.html">SundialsInterface</a>(<span class="keyword">const</span> MPI_Comm &amp;communicator=MPI_COMM_WORLD) :</div>
 <div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;    communicator(communicator) {};</div>
 <div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;</div>
 <div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;  <span class="keyword">const</span> MPI_Comm &amp;get_comm()<span class="keyword"> const</span></div>
@@ -148,7 +148,7 @@ $(document).ready(function(){initNavTree('sundials__interface_8h_source.html',''
 <div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;    <span class="keywordflow">return</span> communicator;</div>
 <div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;  }</div>
 <div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;<span class="preprocessor">#else</span></div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;  SundialsInterface() {};</div>
+<div class="line"><a name="l00079"></a><span class="lineno"><a class="line" href="class_sundials_interface.html#a91729b45cf6f5b24ce45dfe8e0daccc6">   79</a></span>&#160;  <a class="code" href="class_sundials_interface.html#a91729b45cf6f5b24ce45dfe8e0daccc6">SundialsInterface</a>() {};</div>
 <div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;<span class="preprocessor">#endif</span></div>
 <div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;</div>
 <div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;</div>
@@ -208,7 +208,9 @@ $(document).ready(function(){initNavTree('sundials__interface_8h_source.html',''
 <div class="line"><a name="l00207"></a><span class="lineno">  207</span>&#160;</div>
 <div class="line"><a name="l00208"></a><span class="lineno">  208</span>&#160;<span class="preprocessor">#endif</span></div>
 <div class="line"><a name="l00209"></a><span class="lineno">  209</span>&#160;</div>
+<div class="ttc" id="class_sundials_interface_html"><div class="ttname"><a href="class_sundials_interface.html">SundialsInterface</a></div><div class="ttdoc">IDA (Implicit Differential-Algebraic solver) is a package contaied in the suite SUNDIALS (SUite of No...</div><div class="ttdef"><b>Definition:</b> <a href="sundials__interface_8h_source.html#l00059">sundials_interface.h:59</a></div></div>
 <div class="ttc" id="utilities_8h_html"><div class="ttname"><a href="utilities_8h.html">utilities.h</a></div></div>
+<div class="ttc" id="class_sundials_interface_html_a91729b45cf6f5b24ce45dfe8e0daccc6"><div class="ttname"><a href="class_sundials_interface.html#a91729b45cf6f5b24ce45dfe8e0daccc6">SundialsInterface::SundialsInterface</a></div><div class="ttdeci">SundialsInterface()</div><div class="ttdef"><b>Definition:</b> <a href="sundials__interface_8h_source.html#l00079">sundials_interface.h:79</a></div></div>
 <div class="ttc" id="mpi_8h_html"><div class="ttname"><a href="http://www.dealii.org/developer/doxygen/deal.II/mpi_8h.html">mpi.h</a></div></div>
 <div class="ttc" id="vector_8h_html"><div class="ttname"><a href="http://www.dealii.org/developer/doxygen/deal.II/vector_8h.html">vector.h</a></div></div>
 <div class="ttc" id="vector__view_8h_html"><div class="ttname"><a href="http://www.dealii.org/developer/doxygen/deal.II/vector__view_8h.html">vector_view.h</a></div></div>
@@ -219,7 +221,7 @@ $(document).ready(function(){initNavTree('sundials__interface_8h_source.html',''
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_5401fe99141ed2453494b7c40eaaa779.html">deal2lkit</a></li><li class="navelem"><a class="el" href="sundials__interface_8h.html">sundials_interface.h</a></li>
-    <li class="footer">Generated on Fri Nov 13 2015 13:06:10 for deal2lkit: A ToolKit library for Deal.II by
+    <li class="footer">Generated on Wed Nov 25 2015 00:15:57 for deal2lkit: A ToolKit library for Deal.II by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.10 </li>
   </ul>

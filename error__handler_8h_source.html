@@ -258,409 +258,411 @@ $(document).ready(function(){initNavTree('error__handler_8h_source.html','');});
 <div class="line"><a name="l00198"></a><span class="lineno"><a class="line" href="class_error_handler.html#af378b4af7c3b4ec50fba891c5a2d6a6a">  198</a></span>&#160;  std::vector&lt;std::map&lt;std::string, bool&gt; &gt; <a class="code" href="class_error_handler.html#af378b4af7c3b4ec50fba891c5a2d6a6a">extras</a>;</div>
 <div class="line"><a name="l00199"></a><span class="lineno">  199</span>&#160;</div>
 <div class="line"><a name="l00201"></a><span class="lineno"><a class="line" href="class_error_handler.html#a31f66dfe53412a9e0169e6a0f88b449b">  201</a></span>&#160;  std::vector&lt;std::string&gt; <a class="code" href="class_error_handler.html#a31f66dfe53412a9e0169e6a0f88b449b">rate_keys</a>;</div>
-<div class="line"><a name="l00202"></a><span class="lineno">  202</span>&#160;};</div>
-<div class="line"><a name="l00203"></a><span class="lineno">  203</span>&#160;</div>
-<div class="line"><a name="l00212"></a><span class="lineno">  212</span>&#160;<span class="keyword">inline</span></div>
-<div class="line"><a name="l00213"></a><span class="lineno">  213</span>&#160;<a class="code" href="error__handler_8h.html#afdb1b3484ed14e30fcdbfdbdd004922b">NormFlags</a></div>
-<div class="line"><a name="l00214"></a><span class="lineno"><a class="line" href="error__handler_8h.html#a819210d197509417a45dd1d7979f632e">  214</a></span>&#160;<a class="code" href="error__handler_8h.html#a819210d197509417a45dd1d7979f632e">operator | </a>(<a class="code" href="error__handler_8h.html#afdb1b3484ed14e30fcdbfdbdd004922b">NormFlags</a> f1, <a class="code" href="error__handler_8h.html#afdb1b3484ed14e30fcdbfdbdd004922b">NormFlags</a> f2)</div>
-<div class="line"><a name="l00215"></a><span class="lineno">  215</span>&#160;{</div>
-<div class="line"><a name="l00216"></a><span class="lineno">  216</span>&#160;  <span class="keywordflow">return</span> <span class="keyword">static_cast&lt;</span><a class="code" href="error__handler_8h.html#afdb1b3484ed14e30fcdbfdbdd004922b">NormFlags</a><span class="keyword">&gt;</span> (</div>
-<div class="line"><a name="l00217"></a><span class="lineno">  217</span>&#160;           <span class="keyword">static_cast&lt;</span><span class="keywordtype">unsigned</span> <span class="keywordtype">int</span><span class="keyword">&gt;</span> (f1) |</div>
-<div class="line"><a name="l00218"></a><span class="lineno">  218</span>&#160;           static_cast&lt;unsigned int&gt; (f2));</div>
-<div class="line"><a name="l00219"></a><span class="lineno">  219</span>&#160;}</div>
-<div class="line"><a name="l00220"></a><span class="lineno">  220</span>&#160;</div>
-<div class="line"><a name="l00225"></a><span class="lineno">  225</span>&#160;<span class="keyword">inline</span></div>
-<div class="line"><a name="l00226"></a><span class="lineno">  226</span>&#160;<a class="code" href="error__handler_8h.html#afdb1b3484ed14e30fcdbfdbdd004922b">NormFlags</a> &amp;</div>
-<div class="line"><a name="l00227"></a><span class="lineno"><a class="line" href="error__handler_8h.html#a214c9e65fcafa2c4e5bfc3af9d7b1c6d">  227</a></span>&#160;<a class="code" href="error__handler_8h.html#a214c9e65fcafa2c4e5bfc3af9d7b1c6d">operator |= </a>(<a class="code" href="error__handler_8h.html#afdb1b3484ed14e30fcdbfdbdd004922b">NormFlags</a> &amp;f1, <a class="code" href="error__handler_8h.html#afdb1b3484ed14e30fcdbfdbdd004922b">NormFlags</a> f2)</div>
-<div class="line"><a name="l00228"></a><span class="lineno">  228</span>&#160;{</div>
-<div class="line"><a name="l00229"></a><span class="lineno">  229</span>&#160;  f1 = f1 | f2;</div>
-<div class="line"><a name="l00230"></a><span class="lineno">  230</span>&#160;  <span class="keywordflow">return</span> f1;</div>
-<div class="line"><a name="l00231"></a><span class="lineno">  231</span>&#160;}</div>
-<div class="line"><a name="l00232"></a><span class="lineno">  232</span>&#160;</div>
-<div class="line"><a name="l00233"></a><span class="lineno">  233</span>&#160;</div>
-<div class="line"><a name="l00242"></a><span class="lineno">  242</span>&#160;<span class="keyword">inline</span></div>
-<div class="line"><a name="l00243"></a><span class="lineno">  243</span>&#160;<a class="code" href="error__handler_8h.html#afdb1b3484ed14e30fcdbfdbdd004922b">NormFlags</a></div>
-<div class="line"><a name="l00244"></a><span class="lineno"><a class="line" href="error__handler_8h.html#a371a3671620aa58c894c0ab813f82e67">  244</a></span>&#160;<a class="code" href="error__handler_8h.html#a371a3671620aa58c894c0ab813f82e67">operator &amp; </a>(<a class="code" href="error__handler_8h.html#afdb1b3484ed14e30fcdbfdbdd004922b">NormFlags</a> f1, <a class="code" href="error__handler_8h.html#afdb1b3484ed14e30fcdbfdbdd004922b">NormFlags</a> f2)</div>
-<div class="line"><a name="l00245"></a><span class="lineno">  245</span>&#160;{</div>
-<div class="line"><a name="l00246"></a><span class="lineno">  246</span>&#160;  <span class="keywordflow">return</span> <span class="keyword">static_cast&lt;</span><a class="code" href="error__handler_8h.html#afdb1b3484ed14e30fcdbfdbdd004922b">NormFlags</a><span class="keyword">&gt;</span> (</div>
-<div class="line"><a name="l00247"></a><span class="lineno">  247</span>&#160;           <span class="keyword">static_cast&lt;</span><span class="keywordtype">unsigned</span> <span class="keywordtype">int</span><span class="keyword">&gt;</span> (f1) &amp;</div>
-<div class="line"><a name="l00248"></a><span class="lineno">  248</span>&#160;           static_cast&lt;unsigned int&gt; (f2));</div>
-<div class="line"><a name="l00249"></a><span class="lineno">  249</span>&#160;}</div>
-<div class="line"><a name="l00250"></a><span class="lineno">  250</span>&#160;</div>
-<div class="line"><a name="l00251"></a><span class="lineno">  251</span>&#160;</div>
-<div class="line"><a name="l00256"></a><span class="lineno">  256</span>&#160;<span class="keyword">inline</span></div>
-<div class="line"><a name="l00257"></a><span class="lineno">  257</span>&#160;<a class="code" href="error__handler_8h.html#afdb1b3484ed14e30fcdbfdbdd004922b">NormFlags</a> &amp;</div>
-<div class="line"><a name="l00258"></a><span class="lineno"><a class="line" href="error__handler_8h.html#a28019e2b66ebdb4bb7ef9ce3a2194343">  258</a></span>&#160;<a class="code" href="error__handler_8h.html#a28019e2b66ebdb4bb7ef9ce3a2194343">operator &amp;= </a>(<a class="code" href="error__handler_8h.html#afdb1b3484ed14e30fcdbfdbdd004922b">NormFlags</a> &amp;f1, <a class="code" href="error__handler_8h.html#afdb1b3484ed14e30fcdbfdbdd004922b">NormFlags</a> f2)</div>
-<div class="line"><a name="l00259"></a><span class="lineno">  259</span>&#160;{</div>
-<div class="line"><a name="l00260"></a><span class="lineno">  260</span>&#160;  f1 = f1 &amp; f2;</div>
-<div class="line"><a name="l00261"></a><span class="lineno">  261</span>&#160;  <span class="keywordflow">return</span> f1;</div>
-<div class="line"><a name="l00262"></a><span class="lineno">  262</span>&#160;}</div>
-<div class="line"><a name="l00263"></a><span class="lineno">  263</span>&#160;</div>
-<div class="line"><a name="l00264"></a><span class="lineno">  264</span>&#160;<span class="comment">// ============================================================</span></div>
-<div class="line"><a name="l00265"></a><span class="lineno">  265</span>&#160;<span class="comment">// Template instantiations</span></div>
-<div class="line"><a name="l00266"></a><span class="lineno">  266</span>&#160;<span class="comment">// ============================================================</span></div>
-<div class="line"><a name="l00267"></a><span class="lineno">  267</span>&#160;</div>
-<div class="line"><a name="l00268"></a><span class="lineno">  268</span>&#160;</div>
-<div class="line"><a name="l00269"></a><span class="lineno">  269</span>&#160;<span class="keyword">template</span> &lt;<span class="keywordtype">int</span> ntables&gt;</div>
-<div class="line"><a name="l00270"></a><span class="lineno">  270</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">typename</span> DH, <span class="keyword">typename</span> VECTOR&gt;</div>
-<div class="line"><a name="l00271"></a><span class="lineno"><a class="line" href="class_error_handler.html#a9ac9b35245da586cb5d1e8c14de21197">  271</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="class_error_handler.html#ac055b93a612054be319c2c1e352bec04">ErrorHandler&lt;ntables&gt;::difference</a>(<span class="keyword">const</span> DH &amp;dh,</div>
-<div class="line"><a name="l00272"></a><span class="lineno">  272</span>&#160;                                       <span class="keyword">const</span> VECTOR &amp;solution1,</div>
-<div class="line"><a name="l00273"></a><span class="lineno">  273</span>&#160;                                       <span class="keyword">const</span> VECTOR &amp;solution2,</div>
-<div class="line"><a name="l00274"></a><span class="lineno">  274</span>&#160;                                       <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> table_no,</div>
-<div class="line"><a name="l00275"></a><span class="lineno">  275</span>&#160;                                       <span class="keywordtype">double</span> dt)</div>
-<div class="line"><a name="l00276"></a><span class="lineno">  276</span>&#160;{</div>
-<div class="line"><a name="l00277"></a><span class="lineno">  277</span>&#160;  <a class="codeRef" doxygen="/Users/heltai/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/group__Exceptions.html#gafc0ca7ad85b3ebd64e8e51689ac85caf">AssertThrow</a>(solution1.size() == solution2.size(), ExcDimensionMismatch(</div>
-<div class="line"><a name="l00278"></a><span class="lineno">  278</span>&#160;                solution1.size(), solution2.size()));</div>
-<div class="line"><a name="l00279"></a><span class="lineno">  279</span>&#160;  VECTOR solution(solution1);</div>
-<div class="line"><a name="l00280"></a><span class="lineno">  280</span>&#160;  solution -= solution2;</div>
-<div class="line"><a name="l00281"></a><span class="lineno">  281</span>&#160;  error_from_exact(dh, solution,</div>
-<div class="line"><a name="l00282"></a><span class="lineno">  282</span>&#160;                   <a class="codeRef" doxygen="/Users/heltai/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classConstantFunction.html">ConstantFunction&lt;DH::space_dimension&gt;</a>(0, headers.size()), table_no, dt);</div>
-<div class="line"><a name="l00283"></a><span class="lineno">  283</span>&#160;}</div>
-<div class="line"><a name="l00284"></a><span class="lineno">  284</span>&#160;</div>
-<div class="line"><a name="l00285"></a><span class="lineno">  285</span>&#160;</div>
-<div class="line"><a name="l00286"></a><span class="lineno">  286</span>&#160;</div>
-<div class="line"><a name="l00287"></a><span class="lineno">  287</span>&#160;<span class="keyword">template</span> &lt;<span class="keywordtype">int</span> ntables&gt;</div>
-<div class="line"><a name="l00288"></a><span class="lineno">  288</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">typename</span> DH, <span class="keyword">typename</span> VECTOR&gt;</div>
-<div class="line"><a name="l00289"></a><span class="lineno"><a class="line" href="class_error_handler.html#ac586dfe38f7f41d806a9e80f3e99de63">  289</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="class_error_handler.html#a9de94e6c74241e407653efc26a97d2a0">ErrorHandler&lt;ntables&gt;::error_from_exact</a>(<span class="keyword">const</span> DH &amp;dh,</div>
-<div class="line"><a name="l00290"></a><span class="lineno">  290</span>&#160;                                             <span class="keyword">const</span> VECTOR &amp;solution,</div>
-<div class="line"><a name="l00291"></a><span class="lineno">  291</span>&#160;                                             <span class="keyword">const</span> <a class="codeRef" doxygen="/Users/heltai/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classFunction.html">Function&lt;DH::space_dimension&gt;</a> &amp;exact,</div>
-<div class="line"><a name="l00292"></a><span class="lineno">  292</span>&#160;                                             <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> table_no,</div>
-<div class="line"><a name="l00293"></a><span class="lineno">  293</span>&#160;                                             <span class="keywordtype">double</span> dt)</div>
-<div class="line"><a name="l00294"></a><span class="lineno">  294</span>&#160;{</div>
-<div class="line"><a name="l00295"></a><span class="lineno">  295</span>&#160;  error_from_exact(<a class="codeRef" doxygen="/Users/heltai/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/structStaticMappingQ1.html">StaticMappingQ1&lt;DH::dimension, DH::space_dimension&gt;::mapping</a>,</div>
-<div class="line"><a name="l00296"></a><span class="lineno">  296</span>&#160;                   dh, solution, exact, table_no, dt);</div>
-<div class="line"><a name="l00297"></a><span class="lineno">  297</span>&#160;}</div>
-<div class="line"><a name="l00298"></a><span class="lineno">  298</span>&#160;</div>
-<div class="line"><a name="l00299"></a><span class="lineno">  299</span>&#160;<span class="keyword">template</span> &lt;<span class="keywordtype">int</span> ntables&gt;</div>
-<div class="line"><a name="l00300"></a><span class="lineno">  300</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">typename</span> DH, <span class="keyword">typename</span> VECTOR&gt;</div>
-<div class="line"><a name="l00301"></a><span class="lineno"><a class="line" href="class_error_handler.html#a462d3aa63171254b2f7c8b399d6a9380">  301</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="class_error_handler.html#a9de94e6c74241e407653efc26a97d2a0">ErrorHandler&lt;ntables&gt;::error_from_exact</a>(<span class="keyword">const</span> <a class="codeRef" doxygen="/Users/heltai/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classMapping.html">Mapping&lt;DH::dimension, DH::space_dimension&gt;</a> &amp;mapping,</div>
-<div class="line"><a name="l00302"></a><span class="lineno">  302</span>&#160;                                             <span class="keyword">const</span> DH &amp;dh,</div>
-<div class="line"><a name="l00303"></a><span class="lineno">  303</span>&#160;                                             <span class="keyword">const</span> VECTOR &amp;solution,</div>
-<div class="line"><a name="l00304"></a><span class="lineno">  304</span>&#160;                                             <span class="keyword">const</span> <a class="codeRef" doxygen="/Users/heltai/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classFunction.html">Function&lt;DH::space_dimension&gt;</a> &amp;exact,</div>
-<div class="line"><a name="l00305"></a><span class="lineno">  305</span>&#160;                                             <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> table_no,</div>
-<div class="line"><a name="l00306"></a><span class="lineno">  306</span>&#160;                                             <span class="keywordtype">double</span> dt)</div>
-<div class="line"><a name="l00307"></a><span class="lineno">  307</span>&#160;{</div>
-<div class="line"><a name="l00308"></a><span class="lineno">  308</span>&#160;  <span class="keyword">const</span> <span class="keywordtype">int</span> dim=DH::dimension;</div>
-<div class="line"><a name="l00309"></a><span class="lineno">  309</span>&#160;  <span class="keyword">const</span> <span class="keywordtype">int</span> spacedim=DH::space_dimension;</div>
-<div class="line"><a name="l00310"></a><span class="lineno">  310</span>&#160;  <span class="keywordflow">if</span> (compute_error)</div>
-<div class="line"><a name="l00311"></a><span class="lineno">  311</span>&#160;    {</div>
-<div class="line"><a name="l00312"></a><span class="lineno">  312</span>&#160;      <a class="codeRef" doxygen="/Users/heltai/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/group__Exceptions.html#gafc0ca7ad85b3ebd64e8e51689ac85caf">AssertThrow</a>(initialized, ExcNotInitialized());</div>
-<div class="line"><a name="l00313"></a><span class="lineno">  313</span>&#160;      <a class="codeRef" doxygen="/Users/heltai/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/group__Exceptions.html#gafc0ca7ad85b3ebd64e8e51689ac85caf">AssertThrow</a>(table_no &lt; <a class="codeRef" doxygen="/Users/heltai/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/namespacetypes.html">types</a>.size(), ExcIndexRange(table_no, 0, names.size()));</div>
-<div class="line"><a name="l00314"></a><span class="lineno">  314</span>&#160;      <a class="codeRef" doxygen="/Users/heltai/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/group__Exceptions.html#gafc0ca7ad85b3ebd64e8e51689ac85caf">AssertThrow</a>(exact.<a class="codeRef" doxygen="/Users/heltai/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classFunction.html#aa568b98591fc2bda09b28539789aef7d">n_components</a> == <a class="codeRef" doxygen="/Users/heltai/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/namespacetypes.html">types</a>[table_no].size(),</div>
-<div class="line"><a name="l00315"></a><span class="lineno">  315</span>&#160;                  ExcDimensionMismatch(exact.<a class="codeRef" doxygen="/Users/heltai/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classFunction.html#aa568b98591fc2bda09b28539789aef7d">n_components</a>, <a class="codeRef" doxygen="/Users/heltai/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/namespacetypes.html">types</a>[table_no].size()));</div>
-<div class="line"><a name="l00316"></a><span class="lineno">  316</span>&#160;</div>
-<div class="line"><a name="l00317"></a><span class="lineno">  317</span>&#160;      std::vector&lt; std::vector&lt;double&gt; &gt; error( exact.<a class="codeRef" doxygen="/Users/heltai/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classFunction.html#aa568b98591fc2bda09b28539789aef7d">n_components</a>, std::vector&lt;double&gt;(4));</div>
-<div class="line"><a name="l00318"></a><span class="lineno">  318</span>&#160;      <span class="keyword">const</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> n_active_cells = dh.get_tria().n_global_active_cells();</div>
-<div class="line"><a name="l00319"></a><span class="lineno">  319</span>&#160;      <span class="keyword">const</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> n_dofs=dh.n_dofs();</div>
-<div class="line"><a name="l00320"></a><span class="lineno">  320</span>&#160;</div>
-<div class="line"><a name="l00321"></a><span class="lineno">  321</span>&#160;      <span class="keywordflow">if</span> (extras[table_no][<span class="stringliteral">&quot;cells&quot;</span>])</div>
-<div class="line"><a name="l00322"></a><span class="lineno">  322</span>&#160;        {</div>
-<div class="line"><a name="l00323"></a><span class="lineno">  323</span>&#160;          tables[table_no].add_value(<span class="stringliteral">&quot;cells&quot;</span>, n_active_cells);</div>
-<div class="line"><a name="l00324"></a><span class="lineno">  324</span>&#160;          tables[table_no].set_tex_caption(<span class="stringliteral">&quot;cells&quot;</span>, <span class="stringliteral">&quot;\\# cells&quot;</span>);</div>
-<div class="line"><a name="l00325"></a><span class="lineno">  325</span>&#160;          tables[table_no].set_tex_format(<span class="stringliteral">&quot;cells&quot;</span>, <span class="stringliteral">&quot;r&quot;</span>);</div>
-<div class="line"><a name="l00326"></a><span class="lineno">  326</span>&#160;        }</div>
-<div class="line"><a name="l00327"></a><span class="lineno">  327</span>&#160;      <span class="keywordflow">if</span> (extras[table_no][<span class="stringliteral">&quot;dofs&quot;</span>])</div>
-<div class="line"><a name="l00328"></a><span class="lineno">  328</span>&#160;        {</div>
-<div class="line"><a name="l00329"></a><span class="lineno">  329</span>&#160;          tables[table_no].add_value(<span class="stringliteral">&quot;dofs&quot;</span>, n_dofs);</div>
-<div class="line"><a name="l00330"></a><span class="lineno">  330</span>&#160;          tables[table_no].set_tex_caption(<span class="stringliteral">&quot;dofs&quot;</span>, <span class="stringliteral">&quot;\\# dofs&quot;</span>);</div>
-<div class="line"><a name="l00331"></a><span class="lineno">  331</span>&#160;          tables[table_no].set_tex_format(<span class="stringliteral">&quot;dofs&quot;</span>, <span class="stringliteral">&quot;r&quot;</span>);</div>
-<div class="line"><a name="l00332"></a><span class="lineno">  332</span>&#160;        }</div>
-<div class="line"><a name="l00333"></a><span class="lineno">  333</span>&#160;      <span class="keywordflow">if</span> (extras[table_no][<span class="stringliteral">&quot;dt&quot;</span>])</div>
-<div class="line"><a name="l00334"></a><span class="lineno">  334</span>&#160;        {</div>
-<div class="line"><a name="l00335"></a><span class="lineno">  335</span>&#160;          tables[table_no].add_value(<span class="stringliteral">&quot;dt&quot;</span>, dt);</div>
-<div class="line"><a name="l00336"></a><span class="lineno">  336</span>&#160;          tables[table_no].set_tex_caption(<span class="stringliteral">&quot;dt&quot;</span>, <span class="stringliteral">&quot;\\Delta t&quot;</span>);</div>
-<div class="line"><a name="l00337"></a><span class="lineno">  337</span>&#160;          tables[table_no].set_tex_format(<span class="stringliteral">&quot;dt&quot;</span>, <span class="stringliteral">&quot;r&quot;</span>);</div>
-<div class="line"><a name="l00338"></a><span class="lineno">  338</span>&#160;        }</div>
-<div class="line"><a name="l00339"></a><span class="lineno">  339</span>&#160;</div>
-<div class="line"><a name="l00340"></a><span class="lineno">  340</span>&#160;      <span class="keywordtype">bool</span> compute_Linfty = <span class="keyword">false</span>;</div>
-<div class="line"><a name="l00341"></a><span class="lineno">  341</span>&#160;      <span class="keywordtype">bool</span> compute_L2 = <span class="keyword">false</span>;</div>
-<div class="line"><a name="l00342"></a><span class="lineno">  342</span>&#160;      <span class="keywordtype">bool</span> compute_W1infty = <span class="keyword">false</span>;</div>
-<div class="line"><a name="l00343"></a><span class="lineno">  343</span>&#160;      <span class="keywordtype">bool</span> compute_H1 = <span class="keyword">false</span>;</div>
-<div class="line"><a name="l00344"></a><span class="lineno">  344</span>&#160;      <span class="keywordtype">bool</span> add_this = <span class="keyword">false</span>;</div>
-<div class="line"><a name="l00345"></a><span class="lineno">  345</span>&#160;</div>
-<div class="line"><a name="l00346"></a><span class="lineno">  346</span>&#160;      <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> last_non_add = 0;</div>
-<div class="line"><a name="l00347"></a><span class="lineno">  347</span>&#160;</div>
-<div class="line"><a name="l00348"></a><span class="lineno">  348</span>&#160;      <span class="keywordflow">for</span> (<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> component=0; component &lt; exact.<a class="codeRef" doxygen="/Users/heltai/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classFunction.html#aa568b98591fc2bda09b28539789aef7d">n_components</a>; ++component)</div>
-<div class="line"><a name="l00349"></a><span class="lineno">  349</span>&#160;        {</div>
-<div class="line"><a name="l00350"></a><span class="lineno">  350</span>&#160;          <a class="code" href="error__handler_8h.html#afdb1b3484ed14e30fcdbfdbdd004922b">NormFlags</a> <a class="codeRef" doxygen="/Users/heltai/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/namespaceLocalIntegrators_1_1Divergence.html#a4cee9f4ad877f0d0c471a72affe91df7">norm</a> = <a class="codeRef" doxygen="/Users/heltai/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/namespacetypes.html">types</a>[table_no][component];</div>
-<div class="line"><a name="l00351"></a><span class="lineno">  351</span>&#160;</div>
-<div class="line"><a name="l00352"></a><span class="lineno">  352</span>&#160;          <span class="comment">// Select one Component</span></div>
-<div class="line"><a name="l00353"></a><span class="lineno">  353</span>&#160;          <a class="codeRef" doxygen="/Users/heltai/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classComponentSelectFunction.html">ComponentSelectFunction&lt;spacedim&gt;</a> select_component ( component, 1. , exact.<a class="codeRef" doxygen="/Users/heltai/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classFunction.html#aa568b98591fc2bda09b28539789aef7d">n_components</a>);</div>
+<div class="line"><a name="l00202"></a><span class="lineno">  202</span>&#160;</div>
+<div class="line"><a name="l00204"></a><span class="lineno"><a class="line" href="class_error_handler.html#a48a20ccddde56c2481a4cff2ff343b1f">  204</a></span>&#160;  <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> <a class="code" href="class_error_handler.html#a48a20ccddde56c2481a4cff2ff343b1f">precision</a>;</div>
+<div class="line"><a name="l00205"></a><span class="lineno">  205</span>&#160;};</div>
+<div class="line"><a name="l00206"></a><span class="lineno">  206</span>&#160;</div>
+<div class="line"><a name="l00215"></a><span class="lineno">  215</span>&#160;<span class="keyword">inline</span></div>
+<div class="line"><a name="l00216"></a><span class="lineno">  216</span>&#160;<a class="code" href="error__handler_8h.html#afdb1b3484ed14e30fcdbfdbdd004922b">NormFlags</a></div>
+<div class="line"><a name="l00217"></a><span class="lineno"><a class="line" href="error__handler_8h.html#a819210d197509417a45dd1d7979f632e">  217</a></span>&#160;<a class="code" href="error__handler_8h.html#a819210d197509417a45dd1d7979f632e">operator | </a>(<a class="code" href="error__handler_8h.html#afdb1b3484ed14e30fcdbfdbdd004922b">NormFlags</a> f1, <a class="code" href="error__handler_8h.html#afdb1b3484ed14e30fcdbfdbdd004922b">NormFlags</a> f2)</div>
+<div class="line"><a name="l00218"></a><span class="lineno">  218</span>&#160;{</div>
+<div class="line"><a name="l00219"></a><span class="lineno">  219</span>&#160;  <span class="keywordflow">return</span> <span class="keyword">static_cast&lt;</span><a class="code" href="error__handler_8h.html#afdb1b3484ed14e30fcdbfdbdd004922b">NormFlags</a><span class="keyword">&gt;</span> (</div>
+<div class="line"><a name="l00220"></a><span class="lineno">  220</span>&#160;           <span class="keyword">static_cast&lt;</span><span class="keywordtype">unsigned</span> <span class="keywordtype">int</span><span class="keyword">&gt;</span> (f1) |</div>
+<div class="line"><a name="l00221"></a><span class="lineno">  221</span>&#160;           static_cast&lt;unsigned int&gt; (f2));</div>
+<div class="line"><a name="l00222"></a><span class="lineno">  222</span>&#160;}</div>
+<div class="line"><a name="l00223"></a><span class="lineno">  223</span>&#160;</div>
+<div class="line"><a name="l00228"></a><span class="lineno">  228</span>&#160;<span class="keyword">inline</span></div>
+<div class="line"><a name="l00229"></a><span class="lineno">  229</span>&#160;<a class="code" href="error__handler_8h.html#afdb1b3484ed14e30fcdbfdbdd004922b">NormFlags</a> &amp;</div>
+<div class="line"><a name="l00230"></a><span class="lineno"><a class="line" href="error__handler_8h.html#a214c9e65fcafa2c4e5bfc3af9d7b1c6d">  230</a></span>&#160;<a class="code" href="error__handler_8h.html#a214c9e65fcafa2c4e5bfc3af9d7b1c6d">operator |= </a>(<a class="code" href="error__handler_8h.html#afdb1b3484ed14e30fcdbfdbdd004922b">NormFlags</a> &amp;f1, <a class="code" href="error__handler_8h.html#afdb1b3484ed14e30fcdbfdbdd004922b">NormFlags</a> f2)</div>
+<div class="line"><a name="l00231"></a><span class="lineno">  231</span>&#160;{</div>
+<div class="line"><a name="l00232"></a><span class="lineno">  232</span>&#160;  f1 = f1 | f2;</div>
+<div class="line"><a name="l00233"></a><span class="lineno">  233</span>&#160;  <span class="keywordflow">return</span> f1;</div>
+<div class="line"><a name="l00234"></a><span class="lineno">  234</span>&#160;}</div>
+<div class="line"><a name="l00235"></a><span class="lineno">  235</span>&#160;</div>
+<div class="line"><a name="l00236"></a><span class="lineno">  236</span>&#160;</div>
+<div class="line"><a name="l00245"></a><span class="lineno">  245</span>&#160;<span class="keyword">inline</span></div>
+<div class="line"><a name="l00246"></a><span class="lineno">  246</span>&#160;<a class="code" href="error__handler_8h.html#afdb1b3484ed14e30fcdbfdbdd004922b">NormFlags</a></div>
+<div class="line"><a name="l00247"></a><span class="lineno"><a class="line" href="error__handler_8h.html#a371a3671620aa58c894c0ab813f82e67">  247</a></span>&#160;<a class="code" href="error__handler_8h.html#a371a3671620aa58c894c0ab813f82e67">operator &amp; </a>(<a class="code" href="error__handler_8h.html#afdb1b3484ed14e30fcdbfdbdd004922b">NormFlags</a> f1, <a class="code" href="error__handler_8h.html#afdb1b3484ed14e30fcdbfdbdd004922b">NormFlags</a> f2)</div>
+<div class="line"><a name="l00248"></a><span class="lineno">  248</span>&#160;{</div>
+<div class="line"><a name="l00249"></a><span class="lineno">  249</span>&#160;  <span class="keywordflow">return</span> <span class="keyword">static_cast&lt;</span><a class="code" href="error__handler_8h.html#afdb1b3484ed14e30fcdbfdbdd004922b">NormFlags</a><span class="keyword">&gt;</span> (</div>
+<div class="line"><a name="l00250"></a><span class="lineno">  250</span>&#160;           <span class="keyword">static_cast&lt;</span><span class="keywordtype">unsigned</span> <span class="keywordtype">int</span><span class="keyword">&gt;</span> (f1) &amp;</div>
+<div class="line"><a name="l00251"></a><span class="lineno">  251</span>&#160;           static_cast&lt;unsigned int&gt; (f2));</div>
+<div class="line"><a name="l00252"></a><span class="lineno">  252</span>&#160;}</div>
+<div class="line"><a name="l00253"></a><span class="lineno">  253</span>&#160;</div>
+<div class="line"><a name="l00254"></a><span class="lineno">  254</span>&#160;</div>
+<div class="line"><a name="l00259"></a><span class="lineno">  259</span>&#160;<span class="keyword">inline</span></div>
+<div class="line"><a name="l00260"></a><span class="lineno">  260</span>&#160;<a class="code" href="error__handler_8h.html#afdb1b3484ed14e30fcdbfdbdd004922b">NormFlags</a> &amp;</div>
+<div class="line"><a name="l00261"></a><span class="lineno"><a class="line" href="error__handler_8h.html#a28019e2b66ebdb4bb7ef9ce3a2194343">  261</a></span>&#160;<a class="code" href="error__handler_8h.html#a28019e2b66ebdb4bb7ef9ce3a2194343">operator &amp;= </a>(<a class="code" href="error__handler_8h.html#afdb1b3484ed14e30fcdbfdbdd004922b">NormFlags</a> &amp;f1, <a class="code" href="error__handler_8h.html#afdb1b3484ed14e30fcdbfdbdd004922b">NormFlags</a> f2)</div>
+<div class="line"><a name="l00262"></a><span class="lineno">  262</span>&#160;{</div>
+<div class="line"><a name="l00263"></a><span class="lineno">  263</span>&#160;  f1 = f1 &amp; f2;</div>
+<div class="line"><a name="l00264"></a><span class="lineno">  264</span>&#160;  <span class="keywordflow">return</span> f1;</div>
+<div class="line"><a name="l00265"></a><span class="lineno">  265</span>&#160;}</div>
+<div class="line"><a name="l00266"></a><span class="lineno">  266</span>&#160;</div>
+<div class="line"><a name="l00267"></a><span class="lineno">  267</span>&#160;<span class="comment">// ============================================================</span></div>
+<div class="line"><a name="l00268"></a><span class="lineno">  268</span>&#160;<span class="comment">// Template instantiations</span></div>
+<div class="line"><a name="l00269"></a><span class="lineno">  269</span>&#160;<span class="comment">// ============================================================</span></div>
+<div class="line"><a name="l00270"></a><span class="lineno">  270</span>&#160;</div>
+<div class="line"><a name="l00271"></a><span class="lineno">  271</span>&#160;</div>
+<div class="line"><a name="l00272"></a><span class="lineno">  272</span>&#160;<span class="keyword">template</span> &lt;<span class="keywordtype">int</span> ntables&gt;</div>
+<div class="line"><a name="l00273"></a><span class="lineno">  273</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">typename</span> DH, <span class="keyword">typename</span> VECTOR&gt;</div>
+<div class="line"><a name="l00274"></a><span class="lineno"><a class="line" href="class_error_handler.html#a9ac9b35245da586cb5d1e8c14de21197">  274</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="class_error_handler.html#ac055b93a612054be319c2c1e352bec04">ErrorHandler&lt;ntables&gt;::difference</a>(<span class="keyword">const</span> DH &amp;dh,</div>
+<div class="line"><a name="l00275"></a><span class="lineno">  275</span>&#160;                                       <span class="keyword">const</span> VECTOR &amp;solution1,</div>
+<div class="line"><a name="l00276"></a><span class="lineno">  276</span>&#160;                                       <span class="keyword">const</span> VECTOR &amp;solution2,</div>
+<div class="line"><a name="l00277"></a><span class="lineno">  277</span>&#160;                                       <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> table_no,</div>
+<div class="line"><a name="l00278"></a><span class="lineno">  278</span>&#160;                                       <span class="keywordtype">double</span> dt)</div>
+<div class="line"><a name="l00279"></a><span class="lineno">  279</span>&#160;{</div>
+<div class="line"><a name="l00280"></a><span class="lineno">  280</span>&#160;  <a class="codeRef" doxygen="/Users/heltai/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/group__Exceptions.html#gafc0ca7ad85b3ebd64e8e51689ac85caf">AssertThrow</a>(solution1.size() == solution2.size(), ExcDimensionMismatch(</div>
+<div class="line"><a name="l00281"></a><span class="lineno">  281</span>&#160;                solution1.size(), solution2.size()));</div>
+<div class="line"><a name="l00282"></a><span class="lineno">  282</span>&#160;  VECTOR solution(solution1);</div>
+<div class="line"><a name="l00283"></a><span class="lineno">  283</span>&#160;  solution -= solution2;</div>
+<div class="line"><a name="l00284"></a><span class="lineno">  284</span>&#160;  error_from_exact(dh, solution,</div>
+<div class="line"><a name="l00285"></a><span class="lineno">  285</span>&#160;                   <a class="codeRef" doxygen="/Users/heltai/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classConstantFunction.html">ConstantFunction&lt;DH::space_dimension&gt;</a>(0, headers.size()), table_no, dt);</div>
+<div class="line"><a name="l00286"></a><span class="lineno">  286</span>&#160;}</div>
+<div class="line"><a name="l00287"></a><span class="lineno">  287</span>&#160;</div>
+<div class="line"><a name="l00288"></a><span class="lineno">  288</span>&#160;</div>
+<div class="line"><a name="l00289"></a><span class="lineno">  289</span>&#160;</div>
+<div class="line"><a name="l00290"></a><span class="lineno">  290</span>&#160;<span class="keyword">template</span> &lt;<span class="keywordtype">int</span> ntables&gt;</div>
+<div class="line"><a name="l00291"></a><span class="lineno">  291</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">typename</span> DH, <span class="keyword">typename</span> VECTOR&gt;</div>
+<div class="line"><a name="l00292"></a><span class="lineno"><a class="line" href="class_error_handler.html#ac586dfe38f7f41d806a9e80f3e99de63">  292</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="class_error_handler.html#a9de94e6c74241e407653efc26a97d2a0">ErrorHandler&lt;ntables&gt;::error_from_exact</a>(<span class="keyword">const</span> DH &amp;dh,</div>
+<div class="line"><a name="l00293"></a><span class="lineno">  293</span>&#160;                                             <span class="keyword">const</span> VECTOR &amp;solution,</div>
+<div class="line"><a name="l00294"></a><span class="lineno">  294</span>&#160;                                             <span class="keyword">const</span> <a class="codeRef" doxygen="/Users/heltai/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classFunction.html">Function&lt;DH::space_dimension&gt;</a> &amp;exact,</div>
+<div class="line"><a name="l00295"></a><span class="lineno">  295</span>&#160;                                             <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> table_no,</div>
+<div class="line"><a name="l00296"></a><span class="lineno">  296</span>&#160;                                             <span class="keywordtype">double</span> dt)</div>
+<div class="line"><a name="l00297"></a><span class="lineno">  297</span>&#160;{</div>
+<div class="line"><a name="l00298"></a><span class="lineno">  298</span>&#160;  error_from_exact(<a class="codeRef" doxygen="/Users/heltai/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/structStaticMappingQ1.html">StaticMappingQ1&lt;DH::dimension, DH::space_dimension&gt;::mapping</a>,</div>
+<div class="line"><a name="l00299"></a><span class="lineno">  299</span>&#160;                   dh, solution, exact, table_no, dt);</div>
+<div class="line"><a name="l00300"></a><span class="lineno">  300</span>&#160;}</div>
+<div class="line"><a name="l00301"></a><span class="lineno">  301</span>&#160;</div>
+<div class="line"><a name="l00302"></a><span class="lineno">  302</span>&#160;<span class="keyword">template</span> &lt;<span class="keywordtype">int</span> ntables&gt;</div>
+<div class="line"><a name="l00303"></a><span class="lineno">  303</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">typename</span> DH, <span class="keyword">typename</span> VECTOR&gt;</div>
+<div class="line"><a name="l00304"></a><span class="lineno"><a class="line" href="class_error_handler.html#a462d3aa63171254b2f7c8b399d6a9380">  304</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="class_error_handler.html#a9de94e6c74241e407653efc26a97d2a0">ErrorHandler&lt;ntables&gt;::error_from_exact</a>(<span class="keyword">const</span> <a class="codeRef" doxygen="/Users/heltai/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classMapping.html">Mapping&lt;DH::dimension, DH::space_dimension&gt;</a> &amp;mapping,</div>
+<div class="line"><a name="l00305"></a><span class="lineno">  305</span>&#160;                                             <span class="keyword">const</span> DH &amp;dh,</div>
+<div class="line"><a name="l00306"></a><span class="lineno">  306</span>&#160;                                             <span class="keyword">const</span> VECTOR &amp;solution,</div>
+<div class="line"><a name="l00307"></a><span class="lineno">  307</span>&#160;                                             <span class="keyword">const</span> <a class="codeRef" doxygen="/Users/heltai/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classFunction.html">Function&lt;DH::space_dimension&gt;</a> &amp;exact,</div>
+<div class="line"><a name="l00308"></a><span class="lineno">  308</span>&#160;                                             <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> table_no,</div>
+<div class="line"><a name="l00309"></a><span class="lineno">  309</span>&#160;                                             <span class="keywordtype">double</span> dt)</div>
+<div class="line"><a name="l00310"></a><span class="lineno">  310</span>&#160;{</div>
+<div class="line"><a name="l00311"></a><span class="lineno">  311</span>&#160;  <span class="keyword">const</span> <span class="keywordtype">int</span> dim=DH::dimension;</div>
+<div class="line"><a name="l00312"></a><span class="lineno">  312</span>&#160;  <span class="keyword">const</span> <span class="keywordtype">int</span> spacedim=DH::space_dimension;</div>
+<div class="line"><a name="l00313"></a><span class="lineno">  313</span>&#160;  <span class="keywordflow">if</span> (compute_error)</div>
+<div class="line"><a name="l00314"></a><span class="lineno">  314</span>&#160;    {</div>
+<div class="line"><a name="l00315"></a><span class="lineno">  315</span>&#160;      <a class="codeRef" doxygen="/Users/heltai/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/group__Exceptions.html#gafc0ca7ad85b3ebd64e8e51689ac85caf">AssertThrow</a>(initialized, ExcNotInitialized());</div>
+<div class="line"><a name="l00316"></a><span class="lineno">  316</span>&#160;      <a class="codeRef" doxygen="/Users/heltai/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/group__Exceptions.html#gafc0ca7ad85b3ebd64e8e51689ac85caf">AssertThrow</a>(table_no &lt; <a class="codeRef" doxygen="/Users/heltai/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/namespacetypes.html">types</a>.size(), ExcIndexRange(table_no, 0, names.size()));</div>
+<div class="line"><a name="l00317"></a><span class="lineno">  317</span>&#160;      <a class="codeRef" doxygen="/Users/heltai/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/group__Exceptions.html#gafc0ca7ad85b3ebd64e8e51689ac85caf">AssertThrow</a>(exact.<a class="codeRef" doxygen="/Users/heltai/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classFunction.html#aa568b98591fc2bda09b28539789aef7d">n_components</a> == <a class="codeRef" doxygen="/Users/heltai/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/namespacetypes.html">types</a>[table_no].size(),</div>
+<div class="line"><a name="l00318"></a><span class="lineno">  318</span>&#160;                  ExcDimensionMismatch(exact.<a class="codeRef" doxygen="/Users/heltai/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classFunction.html#aa568b98591fc2bda09b28539789aef7d">n_components</a>, <a class="codeRef" doxygen="/Users/heltai/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/namespacetypes.html">types</a>[table_no].size()));</div>
+<div class="line"><a name="l00319"></a><span class="lineno">  319</span>&#160;</div>
+<div class="line"><a name="l00320"></a><span class="lineno">  320</span>&#160;      std::vector&lt; std::vector&lt;double&gt; &gt; error( exact.<a class="codeRef" doxygen="/Users/heltai/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classFunction.html#aa568b98591fc2bda09b28539789aef7d">n_components</a>, std::vector&lt;double&gt;(4));</div>
+<div class="line"><a name="l00321"></a><span class="lineno">  321</span>&#160;      <span class="keyword">const</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> n_active_cells = dh.get_tria().n_global_active_cells();</div>
+<div class="line"><a name="l00322"></a><span class="lineno">  322</span>&#160;      <span class="keyword">const</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> n_dofs=dh.n_dofs();</div>
+<div class="line"><a name="l00323"></a><span class="lineno">  323</span>&#160;</div>
+<div class="line"><a name="l00324"></a><span class="lineno">  324</span>&#160;      <span class="keywordflow">if</span> (extras[table_no][<span class="stringliteral">&quot;cells&quot;</span>])</div>
+<div class="line"><a name="l00325"></a><span class="lineno">  325</span>&#160;        {</div>
+<div class="line"><a name="l00326"></a><span class="lineno">  326</span>&#160;          tables[table_no].add_value(<span class="stringliteral">&quot;cells&quot;</span>, n_active_cells);</div>
+<div class="line"><a name="l00327"></a><span class="lineno">  327</span>&#160;          tables[table_no].set_tex_caption(<span class="stringliteral">&quot;cells&quot;</span>, <span class="stringliteral">&quot;\\# cells&quot;</span>);</div>
+<div class="line"><a name="l00328"></a><span class="lineno">  328</span>&#160;          tables[table_no].set_tex_format(<span class="stringliteral">&quot;cells&quot;</span>, <span class="stringliteral">&quot;r&quot;</span>);</div>
+<div class="line"><a name="l00329"></a><span class="lineno">  329</span>&#160;        }</div>
+<div class="line"><a name="l00330"></a><span class="lineno">  330</span>&#160;      <span class="keywordflow">if</span> (extras[table_no][<span class="stringliteral">&quot;dofs&quot;</span>])</div>
+<div class="line"><a name="l00331"></a><span class="lineno">  331</span>&#160;        {</div>
+<div class="line"><a name="l00332"></a><span class="lineno">  332</span>&#160;          tables[table_no].add_value(<span class="stringliteral">&quot;dofs&quot;</span>, n_dofs);</div>
+<div class="line"><a name="l00333"></a><span class="lineno">  333</span>&#160;          tables[table_no].set_tex_caption(<span class="stringliteral">&quot;dofs&quot;</span>, <span class="stringliteral">&quot;\\# dofs&quot;</span>);</div>
+<div class="line"><a name="l00334"></a><span class="lineno">  334</span>&#160;          tables[table_no].set_tex_format(<span class="stringliteral">&quot;dofs&quot;</span>, <span class="stringliteral">&quot;r&quot;</span>);</div>
+<div class="line"><a name="l00335"></a><span class="lineno">  335</span>&#160;        }</div>
+<div class="line"><a name="l00336"></a><span class="lineno">  336</span>&#160;      <span class="keywordflow">if</span> (extras[table_no][<span class="stringliteral">&quot;dt&quot;</span>])</div>
+<div class="line"><a name="l00337"></a><span class="lineno">  337</span>&#160;        {</div>
+<div class="line"><a name="l00338"></a><span class="lineno">  338</span>&#160;          tables[table_no].add_value(<span class="stringliteral">&quot;dt&quot;</span>, dt);</div>
+<div class="line"><a name="l00339"></a><span class="lineno">  339</span>&#160;          tables[table_no].set_tex_caption(<span class="stringliteral">&quot;dt&quot;</span>, <span class="stringliteral">&quot;\\Delta t&quot;</span>);</div>
+<div class="line"><a name="l00340"></a><span class="lineno">  340</span>&#160;          tables[table_no].set_tex_format(<span class="stringliteral">&quot;dt&quot;</span>, <span class="stringliteral">&quot;r&quot;</span>);</div>
+<div class="line"><a name="l00341"></a><span class="lineno">  341</span>&#160;        }</div>
+<div class="line"><a name="l00342"></a><span class="lineno">  342</span>&#160;</div>
+<div class="line"><a name="l00343"></a><span class="lineno">  343</span>&#160;      <span class="keywordtype">bool</span> compute_Linfty = <span class="keyword">false</span>;</div>
+<div class="line"><a name="l00344"></a><span class="lineno">  344</span>&#160;      <span class="keywordtype">bool</span> compute_L2 = <span class="keyword">false</span>;</div>
+<div class="line"><a name="l00345"></a><span class="lineno">  345</span>&#160;      <span class="keywordtype">bool</span> compute_W1infty = <span class="keyword">false</span>;</div>
+<div class="line"><a name="l00346"></a><span class="lineno">  346</span>&#160;      <span class="keywordtype">bool</span> compute_H1 = <span class="keyword">false</span>;</div>
+<div class="line"><a name="l00347"></a><span class="lineno">  347</span>&#160;      <span class="keywordtype">bool</span> add_this = <span class="keyword">false</span>;</div>
+<div class="line"><a name="l00348"></a><span class="lineno">  348</span>&#160;</div>
+<div class="line"><a name="l00349"></a><span class="lineno">  349</span>&#160;      <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> last_non_add = 0;</div>
+<div class="line"><a name="l00350"></a><span class="lineno">  350</span>&#160;</div>
+<div class="line"><a name="l00351"></a><span class="lineno">  351</span>&#160;      <span class="keywordflow">for</span> (<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> component=0; component &lt; exact.<a class="codeRef" doxygen="/Users/heltai/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classFunction.html#aa568b98591fc2bda09b28539789aef7d">n_components</a>; ++component)</div>
+<div class="line"><a name="l00352"></a><span class="lineno">  352</span>&#160;        {</div>
+<div class="line"><a name="l00353"></a><span class="lineno">  353</span>&#160;          <a class="code" href="error__handler_8h.html#afdb1b3484ed14e30fcdbfdbdd004922b">NormFlags</a> <a class="codeRef" doxygen="/Users/heltai/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/namespaceLocalIntegrators_1_1Divergence.html#a4cee9f4ad877f0d0c471a72affe91df7">norm</a> = <a class="codeRef" doxygen="/Users/heltai/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/namespacetypes.html">types</a>[table_no][component];</div>
 <div class="line"><a name="l00354"></a><span class="lineno">  354</span>&#160;</div>
-<div class="line"><a name="l00355"></a><span class="lineno">  355</span>&#160;          <a class="codeRef" doxygen="/Users/heltai/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classVector.html">Vector&lt;float&gt;</a> difference_per_cell (dh.get_tria().n_global_active_cells());</div>
-<div class="line"><a name="l00356"></a><span class="lineno">  356</span>&#160;</div>
-<div class="line"><a name="l00357"></a><span class="lineno">  357</span>&#160;          <a class="codeRef" doxygen="/Users/heltai/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classQGauss.html">QGauss&lt;dim&gt;</a> q_gauss((dh.get_fe().degree+1) * 2);</div>
-<div class="line"><a name="l00358"></a><span class="lineno">  358</span>&#160;</div>
-<div class="line"><a name="l00359"></a><span class="lineno">  359</span>&#160;          <span class="comment">// The add bit is set</span></div>
-<div class="line"><a name="l00360"></a><span class="lineno">  360</span>&#160;          add_this = (norm &amp; <a class="code" href="error__handler_8h.html#afdb1b3484ed14e30fcdbfdbdd004922ba84ac6c844af8594e7d35f18196f07296">AddUp</a>);</div>
+<div class="line"><a name="l00355"></a><span class="lineno">  355</span>&#160;          <span class="comment">// Select one Component</span></div>
+<div class="line"><a name="l00356"></a><span class="lineno">  356</span>&#160;          <a class="codeRef" doxygen="/Users/heltai/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classComponentSelectFunction.html">ComponentSelectFunction&lt;spacedim&gt;</a> select_component ( component, 1. , exact.<a class="codeRef" doxygen="/Users/heltai/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classFunction.html#aa568b98591fc2bda09b28539789aef7d">n_components</a>);</div>
+<div class="line"><a name="l00357"></a><span class="lineno">  357</span>&#160;</div>
+<div class="line"><a name="l00358"></a><span class="lineno">  358</span>&#160;          <a class="codeRef" doxygen="/Users/heltai/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classVector.html">Vector&lt;float&gt;</a> difference_per_cell (dh.get_tria().n_global_active_cells());</div>
+<div class="line"><a name="l00359"></a><span class="lineno">  359</span>&#160;</div>
+<div class="line"><a name="l00360"></a><span class="lineno">  360</span>&#160;          <a class="codeRef" doxygen="/Users/heltai/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classQGauss.html">QGauss&lt;dim&gt;</a> q_gauss((dh.get_fe().degree+1) * 2);</div>
 <div class="line"><a name="l00361"></a><span class="lineno">  361</span>&#160;</div>
-<div class="line"><a name="l00362"></a><span class="lineno">  362</span>&#160;          <span class="keywordflow">if</span> (!add_this)</div>
-<div class="line"><a name="l00363"></a><span class="lineno">  363</span>&#160;            {</div>
-<div class="line"><a name="l00364"></a><span class="lineno">  364</span>&#160;              last_non_add  = component;</div>
-<div class="line"><a name="l00365"></a><span class="lineno">  365</span>&#160;              compute_L2  = ( norm &amp; <a class="code" href="error__handler_8h.html#afdb1b3484ed14e30fcdbfdbdd004922ba0adffb24dae0c41be5b803f4d444f066">L2</a> );</div>
-<div class="line"><a name="l00366"></a><span class="lineno">  366</span>&#160;              compute_H1  = ( norm &amp; <a class="code" href="error__handler_8h.html#afdb1b3484ed14e30fcdbfdbdd004922ba7ec6526640e5add74fe4b322e6343120">H1</a> );</div>
-<div class="line"><a name="l00367"></a><span class="lineno">  367</span>&#160;              compute_W1infty = ( norm &amp; <a class="code" href="error__handler_8h.html#afdb1b3484ed14e30fcdbfdbdd004922ba81535b1de4af3f5ea8ed849f76a371cd">W1infty</a> ) ;</div>
-<div class="line"><a name="l00368"></a><span class="lineno">  368</span>&#160;              compute_Linfty  = ( norm &amp; <a class="code" href="error__handler_8h.html#afdb1b3484ed14e30fcdbfdbdd004922ba77ada1114934b2d6207778c40c366cb2">Linfty</a> );</div>
-<div class="line"><a name="l00369"></a><span class="lineno">  369</span>&#160;            }</div>
-<div class="line"><a name="l00370"></a><span class="lineno">  370</span>&#160;          <span class="comment">// if add is set, we do not modify the previous selection</span></div>
-<div class="line"><a name="l00371"></a><span class="lineno">  371</span>&#160;</div>
-<div class="line"><a name="l00372"></a><span class="lineno">  372</span>&#160;          <span class="keywordflow">if</span> (compute_L2)</div>
-<div class="line"><a name="l00373"></a><span class="lineno">  373</span>&#160;            {</div>
-<div class="line"><a name="l00374"></a><span class="lineno">  374</span>&#160;              <a class="codeRef" doxygen="/Users/heltai/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/namespaceVectorTools.html#a01174a2a7e2ee8fa6abdfdd93ac7a317">VectorTools::integrate_difference</a> (</div>
-<div class="line"><a name="l00375"></a><span class="lineno">  375</span>&#160;                mapping,</div>
-<div class="line"><a name="l00376"></a><span class="lineno">  376</span>&#160;                dh,</div>
-<div class="line"><a name="l00377"></a><span class="lineno">  377</span>&#160;                solution,</div>
-<div class="line"><a name="l00378"></a><span class="lineno">  378</span>&#160;                exact,</div>
-<div class="line"><a name="l00379"></a><span class="lineno">  379</span>&#160;                difference_per_cell,</div>
-<div class="line"><a name="l00380"></a><span class="lineno">  380</span>&#160;                q_gauss,</div>
-<div class="line"><a name="l00381"></a><span class="lineno">  381</span>&#160;                VectorTools::L2_norm,</div>
-<div class="line"><a name="l00382"></a><span class="lineno">  382</span>&#160;                &amp;select_component );</div>
-<div class="line"><a name="l00383"></a><span class="lineno">  383</span>&#160;            }</div>
-<div class="line"><a name="l00384"></a><span class="lineno">  384</span>&#160;</div>
-<div class="line"><a name="l00385"></a><span class="lineno">  385</span>&#160;          <span class="keyword">const</span> <span class="keywordtype">double</span> L2_error = difference_per_cell.l2_norm();</div>
-<div class="line"><a name="l00386"></a><span class="lineno">  386</span>&#160;          difference_per_cell = 0;</div>
+<div class="line"><a name="l00362"></a><span class="lineno">  362</span>&#160;          <span class="comment">// The add bit is set</span></div>
+<div class="line"><a name="l00363"></a><span class="lineno">  363</span>&#160;          add_this = (norm &amp; <a class="code" href="error__handler_8h.html#afdb1b3484ed14e30fcdbfdbdd004922ba84ac6c844af8594e7d35f18196f07296">AddUp</a>);</div>
+<div class="line"><a name="l00364"></a><span class="lineno">  364</span>&#160;</div>
+<div class="line"><a name="l00365"></a><span class="lineno">  365</span>&#160;          <span class="keywordflow">if</span> (!add_this)</div>
+<div class="line"><a name="l00366"></a><span class="lineno">  366</span>&#160;            {</div>
+<div class="line"><a name="l00367"></a><span class="lineno">  367</span>&#160;              last_non_add  = component;</div>
+<div class="line"><a name="l00368"></a><span class="lineno">  368</span>&#160;              compute_L2  = ( norm &amp; <a class="code" href="error__handler_8h.html#afdb1b3484ed14e30fcdbfdbdd004922ba0adffb24dae0c41be5b803f4d444f066">L2</a> );</div>
+<div class="line"><a name="l00369"></a><span class="lineno">  369</span>&#160;              compute_H1  = ( norm &amp; <a class="code" href="error__handler_8h.html#afdb1b3484ed14e30fcdbfdbdd004922ba7ec6526640e5add74fe4b322e6343120">H1</a> );</div>
+<div class="line"><a name="l00370"></a><span class="lineno">  370</span>&#160;              compute_W1infty = ( norm &amp; <a class="code" href="error__handler_8h.html#afdb1b3484ed14e30fcdbfdbdd004922ba81535b1de4af3f5ea8ed849f76a371cd">W1infty</a> ) ;</div>
+<div class="line"><a name="l00371"></a><span class="lineno">  371</span>&#160;              compute_Linfty  = ( norm &amp; <a class="code" href="error__handler_8h.html#afdb1b3484ed14e30fcdbfdbdd004922ba77ada1114934b2d6207778c40c366cb2">Linfty</a> );</div>
+<div class="line"><a name="l00372"></a><span class="lineno">  372</span>&#160;            }</div>
+<div class="line"><a name="l00373"></a><span class="lineno">  373</span>&#160;          <span class="comment">// if add is set, we do not modify the previous selection</span></div>
+<div class="line"><a name="l00374"></a><span class="lineno">  374</span>&#160;</div>
+<div class="line"><a name="l00375"></a><span class="lineno">  375</span>&#160;          <span class="keywordflow">if</span> (compute_L2)</div>
+<div class="line"><a name="l00376"></a><span class="lineno">  376</span>&#160;            {</div>
+<div class="line"><a name="l00377"></a><span class="lineno">  377</span>&#160;              <a class="codeRef" doxygen="/Users/heltai/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/namespaceVectorTools.html#a01174a2a7e2ee8fa6abdfdd93ac7a317">VectorTools::integrate_difference</a> (</div>
+<div class="line"><a name="l00378"></a><span class="lineno">  378</span>&#160;                mapping,</div>
+<div class="line"><a name="l00379"></a><span class="lineno">  379</span>&#160;                dh,</div>
+<div class="line"><a name="l00380"></a><span class="lineno">  380</span>&#160;                solution,</div>
+<div class="line"><a name="l00381"></a><span class="lineno">  381</span>&#160;                exact,</div>
+<div class="line"><a name="l00382"></a><span class="lineno">  382</span>&#160;                difference_per_cell,</div>
+<div class="line"><a name="l00383"></a><span class="lineno">  383</span>&#160;                q_gauss,</div>
+<div class="line"><a name="l00384"></a><span class="lineno">  384</span>&#160;                VectorTools::L2_norm,</div>
+<div class="line"><a name="l00385"></a><span class="lineno">  385</span>&#160;                &amp;select_component );</div>
+<div class="line"><a name="l00386"></a><span class="lineno">  386</span>&#160;            }</div>
 <div class="line"><a name="l00387"></a><span class="lineno">  387</span>&#160;</div>
-<div class="line"><a name="l00388"></a><span class="lineno">  388</span>&#160;          <span class="keywordflow">if</span> (compute_H1)</div>
-<div class="line"><a name="l00389"></a><span class="lineno">  389</span>&#160;            {</div>
-<div class="line"><a name="l00390"></a><span class="lineno">  390</span>&#160;              <a class="codeRef" doxygen="/Users/heltai/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/namespaceVectorTools.html#a01174a2a7e2ee8fa6abdfdd93ac7a317">VectorTools::integrate_difference</a> (</div>
-<div class="line"><a name="l00391"></a><span class="lineno">  391</span>&#160;                mapping,</div>
-<div class="line"><a name="l00392"></a><span class="lineno">  392</span>&#160;                dh, <span class="comment">//dof_handler,</span></div>
-<div class="line"><a name="l00393"></a><span class="lineno">  393</span>&#160;                solution,</div>
-<div class="line"><a name="l00394"></a><span class="lineno">  394</span>&#160;                exact,</div>
-<div class="line"><a name="l00395"></a><span class="lineno">  395</span>&#160;                difference_per_cell,</div>
-<div class="line"><a name="l00396"></a><span class="lineno">  396</span>&#160;                q_gauss,</div>
-<div class="line"><a name="l00397"></a><span class="lineno">  397</span>&#160;                VectorTools::H1_norm,</div>
-<div class="line"><a name="l00398"></a><span class="lineno">  398</span>&#160;                &amp;select_component );</div>
-<div class="line"><a name="l00399"></a><span class="lineno">  399</span>&#160;            }</div>
-<div class="line"><a name="l00400"></a><span class="lineno">  400</span>&#160;          <span class="keyword">const</span> <span class="keywordtype">double</span> H1_error = difference_per_cell.l2_norm();</div>
-<div class="line"><a name="l00401"></a><span class="lineno">  401</span>&#160;          difference_per_cell = 0;</div>
-<div class="line"><a name="l00402"></a><span class="lineno">  402</span>&#160;</div>
-<div class="line"><a name="l00403"></a><span class="lineno">  403</span>&#160;          <span class="keywordflow">if</span> (compute_W1infty)</div>
-<div class="line"><a name="l00404"></a><span class="lineno">  404</span>&#160;            {</div>
-<div class="line"><a name="l00405"></a><span class="lineno">  405</span>&#160;              <a class="codeRef" doxygen="/Users/heltai/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/namespaceVectorTools.html#a01174a2a7e2ee8fa6abdfdd93ac7a317">VectorTools::integrate_difference</a> (</div>
-<div class="line"><a name="l00406"></a><span class="lineno">  406</span>&#160;                mapping,</div>
-<div class="line"><a name="l00407"></a><span class="lineno">  407</span>&#160;                dh, <span class="comment">//dof_handler,</span></div>
-<div class="line"><a name="l00408"></a><span class="lineno">  408</span>&#160;                solution,</div>
-<div class="line"><a name="l00409"></a><span class="lineno">  409</span>&#160;                exact,</div>
-<div class="line"><a name="l00410"></a><span class="lineno">  410</span>&#160;                difference_per_cell,</div>
-<div class="line"><a name="l00411"></a><span class="lineno">  411</span>&#160;                q_gauss,</div>
-<div class="line"><a name="l00412"></a><span class="lineno">  412</span>&#160;                VectorTools::W1infty_norm,</div>
-<div class="line"><a name="l00413"></a><span class="lineno">  413</span>&#160;                &amp;select_component );</div>
-<div class="line"><a name="l00414"></a><span class="lineno">  414</span>&#160;            }</div>
-<div class="line"><a name="l00415"></a><span class="lineno">  415</span>&#160;</div>
-<div class="line"><a name="l00416"></a><span class="lineno">  416</span>&#160;          <span class="keyword">const</span> <span class="keywordtype">double</span> W1inf_error = difference_per_cell.linfty_norm();</div>
-<div class="line"><a name="l00417"></a><span class="lineno">  417</span>&#160;</div>
-<div class="line"><a name="l00418"></a><span class="lineno">  418</span>&#160;          <span class="keywordflow">if</span> (compute_Linfty)</div>
-<div class="line"><a name="l00419"></a><span class="lineno">  419</span>&#160;            {</div>
-<div class="line"><a name="l00420"></a><span class="lineno">  420</span>&#160;              <a class="codeRef" doxygen="/Users/heltai/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/namespaceVectorTools.html#a01174a2a7e2ee8fa6abdfdd93ac7a317">VectorTools::integrate_difference</a> (</div>
-<div class="line"><a name="l00421"></a><span class="lineno">  421</span>&#160;                mapping,</div>
-<div class="line"><a name="l00422"></a><span class="lineno">  422</span>&#160;                dh, <span class="comment">//dof_handler,</span></div>
-<div class="line"><a name="l00423"></a><span class="lineno">  423</span>&#160;                solution,</div>
-<div class="line"><a name="l00424"></a><span class="lineno">  424</span>&#160;                exact,</div>
-<div class="line"><a name="l00425"></a><span class="lineno">  425</span>&#160;                difference_per_cell,</div>
-<div class="line"><a name="l00426"></a><span class="lineno">  426</span>&#160;                q_gauss,</div>
-<div class="line"><a name="l00427"></a><span class="lineno">  427</span>&#160;                VectorTools::Linfty_norm,</div>
-<div class="line"><a name="l00428"></a><span class="lineno">  428</span>&#160;                &amp;select_component );</div>
-<div class="line"><a name="l00429"></a><span class="lineno">  429</span>&#160;            }</div>
-<div class="line"><a name="l00430"></a><span class="lineno">  430</span>&#160;</div>
-<div class="line"><a name="l00431"></a><span class="lineno">  431</span>&#160;          <span class="keyword">const</span> <span class="keywordtype">double</span> Linf_error = difference_per_cell.linfty_norm();</div>
-<div class="line"><a name="l00432"></a><span class="lineno">  432</span>&#160;</div>
-<div class="line"><a name="l00433"></a><span class="lineno">  433</span>&#160;          <span class="keywordflow">if</span> (add_this)</div>
-<div class="line"><a name="l00434"></a><span class="lineno">  434</span>&#160;            {</div>
-<div class="line"><a name="l00435"></a><span class="lineno">  435</span>&#160;              <a class="codeRef" doxygen="/Users/heltai/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/group__Exceptions.html#gafc0ca7ad85b3ebd64e8e51689ac85caf">AssertThrow</a>(component, <a class="codeRef" doxygen="/Users/heltai/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/group__Exceptions.html#ga7e124f28261be534af7e3399945c5e68">ExcMessage</a>(<span class="stringliteral">&quot;Cannot add on first component!&quot;</span>));</div>
-<div class="line"><a name="l00436"></a><span class="lineno">  436</span>&#160;</div>
-<div class="line"><a name="l00437"></a><span class="lineno">  437</span>&#160;              error[last_non_add][0] = std::max(error[last_non_add][0], Linf_error);</div>
-<div class="line"><a name="l00438"></a><span class="lineno">  438</span>&#160;              error[last_non_add][1] += L2_error;</div>
-<div class="line"><a name="l00439"></a><span class="lineno">  439</span>&#160;              error[last_non_add][2] = std::max(error[last_non_add][2], W1inf_error);</div>
-<div class="line"><a name="l00440"></a><span class="lineno">  440</span>&#160;              error[last_non_add][3] += H1_error;</div>
-<div class="line"><a name="l00441"></a><span class="lineno">  441</span>&#160;</div>
-<div class="line"><a name="l00442"></a><span class="lineno">  442</span>&#160;            }</div>
-<div class="line"><a name="l00443"></a><span class="lineno">  443</span>&#160;          <span class="keywordflow">else</span></div>
-<div class="line"><a name="l00444"></a><span class="lineno">  444</span>&#160;            {</div>
-<div class="line"><a name="l00445"></a><span class="lineno">  445</span>&#160;</div>
-<div class="line"><a name="l00446"></a><span class="lineno">  446</span>&#160;              error[component][0] = Linf_error;</div>
-<div class="line"><a name="l00447"></a><span class="lineno">  447</span>&#160;              error[component][1] = L2_error;</div>
-<div class="line"><a name="l00448"></a><span class="lineno">  448</span>&#160;              error[component][2] = W1inf_error;</div>
-<div class="line"><a name="l00449"></a><span class="lineno">  449</span>&#160;              error[component][3] = H1_error;</div>
-<div class="line"><a name="l00450"></a><span class="lineno">  450</span>&#160;</div>
-<div class="line"><a name="l00451"></a><span class="lineno">  451</span>&#160;            }</div>
-<div class="line"><a name="l00452"></a><span class="lineno">  452</span>&#160;        }</div>
+<div class="line"><a name="l00388"></a><span class="lineno">  388</span>&#160;          <span class="keyword">const</span> <span class="keywordtype">double</span> L2_error = difference_per_cell.l2_norm();</div>
+<div class="line"><a name="l00389"></a><span class="lineno">  389</span>&#160;          difference_per_cell = 0;</div>
+<div class="line"><a name="l00390"></a><span class="lineno">  390</span>&#160;</div>
+<div class="line"><a name="l00391"></a><span class="lineno">  391</span>&#160;          <span class="keywordflow">if</span> (compute_H1)</div>
+<div class="line"><a name="l00392"></a><span class="lineno">  392</span>&#160;            {</div>
+<div class="line"><a name="l00393"></a><span class="lineno">  393</span>&#160;              <a class="codeRef" doxygen="/Users/heltai/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/namespaceVectorTools.html#a01174a2a7e2ee8fa6abdfdd93ac7a317">VectorTools::integrate_difference</a> (</div>
+<div class="line"><a name="l00394"></a><span class="lineno">  394</span>&#160;                mapping,</div>
+<div class="line"><a name="l00395"></a><span class="lineno">  395</span>&#160;                dh, <span class="comment">//dof_handler,</span></div>
+<div class="line"><a name="l00396"></a><span class="lineno">  396</span>&#160;                solution,</div>
+<div class="line"><a name="l00397"></a><span class="lineno">  397</span>&#160;                exact,</div>
+<div class="line"><a name="l00398"></a><span class="lineno">  398</span>&#160;                difference_per_cell,</div>
+<div class="line"><a name="l00399"></a><span class="lineno">  399</span>&#160;                q_gauss,</div>
+<div class="line"><a name="l00400"></a><span class="lineno">  400</span>&#160;                VectorTools::H1_norm,</div>
+<div class="line"><a name="l00401"></a><span class="lineno">  401</span>&#160;                &amp;select_component );</div>
+<div class="line"><a name="l00402"></a><span class="lineno">  402</span>&#160;            }</div>
+<div class="line"><a name="l00403"></a><span class="lineno">  403</span>&#160;          <span class="keyword">const</span> <span class="keywordtype">double</span> H1_error = difference_per_cell.l2_norm();</div>
+<div class="line"><a name="l00404"></a><span class="lineno">  404</span>&#160;          difference_per_cell = 0;</div>
+<div class="line"><a name="l00405"></a><span class="lineno">  405</span>&#160;</div>
+<div class="line"><a name="l00406"></a><span class="lineno">  406</span>&#160;          <span class="keywordflow">if</span> (compute_W1infty)</div>
+<div class="line"><a name="l00407"></a><span class="lineno">  407</span>&#160;            {</div>
+<div class="line"><a name="l00408"></a><span class="lineno">  408</span>&#160;              <a class="codeRef" doxygen="/Users/heltai/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/namespaceVectorTools.html#a01174a2a7e2ee8fa6abdfdd93ac7a317">VectorTools::integrate_difference</a> (</div>
+<div class="line"><a name="l00409"></a><span class="lineno">  409</span>&#160;                mapping,</div>
+<div class="line"><a name="l00410"></a><span class="lineno">  410</span>&#160;                dh, <span class="comment">//dof_handler,</span></div>
+<div class="line"><a name="l00411"></a><span class="lineno">  411</span>&#160;                solution,</div>
+<div class="line"><a name="l00412"></a><span class="lineno">  412</span>&#160;                exact,</div>
+<div class="line"><a name="l00413"></a><span class="lineno">  413</span>&#160;                difference_per_cell,</div>
+<div class="line"><a name="l00414"></a><span class="lineno">  414</span>&#160;                q_gauss,</div>
+<div class="line"><a name="l00415"></a><span class="lineno">  415</span>&#160;                VectorTools::W1infty_norm,</div>
+<div class="line"><a name="l00416"></a><span class="lineno">  416</span>&#160;                &amp;select_component );</div>
+<div class="line"><a name="l00417"></a><span class="lineno">  417</span>&#160;            }</div>
+<div class="line"><a name="l00418"></a><span class="lineno">  418</span>&#160;</div>
+<div class="line"><a name="l00419"></a><span class="lineno">  419</span>&#160;          <span class="keyword">const</span> <span class="keywordtype">double</span> W1inf_error = difference_per_cell.linfty_norm();</div>
+<div class="line"><a name="l00420"></a><span class="lineno">  420</span>&#160;</div>
+<div class="line"><a name="l00421"></a><span class="lineno">  421</span>&#160;          <span class="keywordflow">if</span> (compute_Linfty)</div>
+<div class="line"><a name="l00422"></a><span class="lineno">  422</span>&#160;            {</div>
+<div class="line"><a name="l00423"></a><span class="lineno">  423</span>&#160;              <a class="codeRef" doxygen="/Users/heltai/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/namespaceVectorTools.html#a01174a2a7e2ee8fa6abdfdd93ac7a317">VectorTools::integrate_difference</a> (</div>
+<div class="line"><a name="l00424"></a><span class="lineno">  424</span>&#160;                mapping,</div>
+<div class="line"><a name="l00425"></a><span class="lineno">  425</span>&#160;                dh, <span class="comment">//dof_handler,</span></div>
+<div class="line"><a name="l00426"></a><span class="lineno">  426</span>&#160;                solution,</div>
+<div class="line"><a name="l00427"></a><span class="lineno">  427</span>&#160;                exact,</div>
+<div class="line"><a name="l00428"></a><span class="lineno">  428</span>&#160;                difference_per_cell,</div>
+<div class="line"><a name="l00429"></a><span class="lineno">  429</span>&#160;                q_gauss,</div>
+<div class="line"><a name="l00430"></a><span class="lineno">  430</span>&#160;                VectorTools::Linfty_norm,</div>
+<div class="line"><a name="l00431"></a><span class="lineno">  431</span>&#160;                &amp;select_component );</div>
+<div class="line"><a name="l00432"></a><span class="lineno">  432</span>&#160;            }</div>
+<div class="line"><a name="l00433"></a><span class="lineno">  433</span>&#160;</div>
+<div class="line"><a name="l00434"></a><span class="lineno">  434</span>&#160;          <span class="keyword">const</span> <span class="keywordtype">double</span> Linf_error = difference_per_cell.linfty_norm();</div>
+<div class="line"><a name="l00435"></a><span class="lineno">  435</span>&#160;</div>
+<div class="line"><a name="l00436"></a><span class="lineno">  436</span>&#160;          <span class="keywordflow">if</span> (add_this)</div>
+<div class="line"><a name="l00437"></a><span class="lineno">  437</span>&#160;            {</div>
+<div class="line"><a name="l00438"></a><span class="lineno">  438</span>&#160;              <a class="codeRef" doxygen="/Users/heltai/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/group__Exceptions.html#gafc0ca7ad85b3ebd64e8e51689ac85caf">AssertThrow</a>(component, <a class="codeRef" doxygen="/Users/heltai/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/group__Exceptions.html#ga7e124f28261be534af7e3399945c5e68">ExcMessage</a>(<span class="stringliteral">&quot;Cannot add on first component!&quot;</span>));</div>
+<div class="line"><a name="l00439"></a><span class="lineno">  439</span>&#160;</div>
+<div class="line"><a name="l00440"></a><span class="lineno">  440</span>&#160;              error[last_non_add][0] = std::max(error[last_non_add][0], Linf_error);</div>
+<div class="line"><a name="l00441"></a><span class="lineno">  441</span>&#160;              error[last_non_add][1] += L2_error;</div>
+<div class="line"><a name="l00442"></a><span class="lineno">  442</span>&#160;              error[last_non_add][2] = std::max(error[last_non_add][2], W1inf_error);</div>
+<div class="line"><a name="l00443"></a><span class="lineno">  443</span>&#160;              error[last_non_add][3] += H1_error;</div>
+<div class="line"><a name="l00444"></a><span class="lineno">  444</span>&#160;</div>
+<div class="line"><a name="l00445"></a><span class="lineno">  445</span>&#160;            }</div>
+<div class="line"><a name="l00446"></a><span class="lineno">  446</span>&#160;          <span class="keywordflow">else</span></div>
+<div class="line"><a name="l00447"></a><span class="lineno">  447</span>&#160;            {</div>
+<div class="line"><a name="l00448"></a><span class="lineno">  448</span>&#160;</div>
+<div class="line"><a name="l00449"></a><span class="lineno">  449</span>&#160;              error[component][0] = Linf_error;</div>
+<div class="line"><a name="l00450"></a><span class="lineno">  450</span>&#160;              error[component][1] = L2_error;</div>
+<div class="line"><a name="l00451"></a><span class="lineno">  451</span>&#160;              error[component][2] = W1inf_error;</div>
+<div class="line"><a name="l00452"></a><span class="lineno">  452</span>&#160;              error[component][3] = H1_error;</div>
 <div class="line"><a name="l00453"></a><span class="lineno">  453</span>&#160;</div>
-<div class="line"><a name="l00454"></a><span class="lineno">  454</span>&#160;      <span class="keywordflow">for</span> (<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> j=0; j&lt;exact.<a class="codeRef" doxygen="/Users/heltai/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classFunction.html#aa568b98591fc2bda09b28539789aef7d">n_components</a>; ++j)</div>
-<div class="line"><a name="l00455"></a><span class="lineno">  455</span>&#160;        {</div>
-<div class="line"><a name="l00456"></a><span class="lineno">  456</span>&#160;          <a class="code" href="error__handler_8h.html#afdb1b3484ed14e30fcdbfdbdd004922b">NormFlags</a> <a class="codeRef" doxygen="/Users/heltai/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/namespaceLocalIntegrators_1_1Divergence.html#a4cee9f4ad877f0d0c471a72affe91df7">norm</a> = <a class="codeRef" doxygen="/Users/heltai/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/namespacetypes.html">types</a>[table_no][j];</div>
-<div class="line"><a name="l00457"></a><span class="lineno">  457</span>&#160;          <span class="comment">// If this was added, don&#39;t do anything</span></div>
-<div class="line"><a name="l00458"></a><span class="lineno">  458</span>&#160;          <span class="keywordflow">if</span> ( !(norm &amp; <a class="code" href="error__handler_8h.html#afdb1b3484ed14e30fcdbfdbdd004922ba84ac6c844af8594e7d35f18196f07296">AddUp</a>) )</div>
-<div class="line"><a name="l00459"></a><span class="lineno">  459</span>&#160;            {</div>
-<div class="line"><a name="l00460"></a><span class="lineno">  460</span>&#160;              <span class="keywordflow">if</span> (norm &amp; <a class="code" href="error__handler_8h.html#afdb1b3484ed14e30fcdbfdbdd004922ba77ada1114934b2d6207778c40c366cb2">Linfty</a>)</div>
-<div class="line"><a name="l00461"></a><span class="lineno">  461</span>&#160;                {</div>
-<div class="line"><a name="l00462"></a><span class="lineno">  462</span>&#160;                  std::string name = headers[j] + <span class="stringliteral">&quot;_Linfty&quot;</span>;</div>
-<div class="line"><a name="l00463"></a><span class="lineno">  463</span>&#160;                  std::string latex_name = <span class="stringliteral">&quot;$\\| &quot;</span> +</div>
-<div class="line"><a name="l00464"></a><span class="lineno">  464</span>&#160;                                           latex_headers[j] + <span class="stringliteral">&quot; - &quot;</span> +</div>
-<div class="line"><a name="l00465"></a><span class="lineno">  465</span>&#160;                                           latex_headers[j] +<span class="stringliteral">&quot;_h \\|_\\infty $&quot;</span>;</div>
-<div class="line"><a name="l00466"></a><span class="lineno">  466</span>&#160;                  <span class="keywordtype">double</span> this_error =  error[j][0];</div>
-<div class="line"><a name="l00467"></a><span class="lineno">  467</span>&#160;</div>
-<div class="line"><a name="l00468"></a><span class="lineno">  468</span>&#160;                  tables[table_no].add_value(name, this_error);</div>
-<div class="line"><a name="l00469"></a><span class="lineno">  469</span>&#160;                  tables[table_no].set_precision(name, 3);</div>
-<div class="line"><a name="l00470"></a><span class="lineno">  470</span>&#160;                  tables[table_no].set_scientific(name, <span class="keyword">true</span>);</div>
-<div class="line"><a name="l00471"></a><span class="lineno">  471</span>&#160;                  tables[table_no].set_tex_caption(name, latex_name);</div>
-<div class="line"><a name="l00472"></a><span class="lineno">  472</span>&#160;                }</div>
-<div class="line"><a name="l00473"></a><span class="lineno">  473</span>&#160;</div>
-<div class="line"><a name="l00474"></a><span class="lineno">  474</span>&#160;              <span class="keywordflow">if</span> (norm &amp; <a class="code" href="error__handler_8h.html#afdb1b3484ed14e30fcdbfdbdd004922ba0adffb24dae0c41be5b803f4d444f066">L2</a>)</div>
-<div class="line"><a name="l00475"></a><span class="lineno">  475</span>&#160;                {</div>
-<div class="line"><a name="l00476"></a><span class="lineno">  476</span>&#160;                  std::string name = headers[j] + <span class="stringliteral">&quot;_L2&quot;</span>;</div>
-<div class="line"><a name="l00477"></a><span class="lineno">  477</span>&#160;                  std::string latex_name = <span class="stringliteral">&quot;$\\| &quot;</span> +</div>
-<div class="line"><a name="l00478"></a><span class="lineno">  478</span>&#160;                                           latex_headers[j] + <span class="stringliteral">&quot; - &quot;</span> +</div>
-<div class="line"><a name="l00479"></a><span class="lineno">  479</span>&#160;                                           latex_headers[j] +<span class="stringliteral">&quot;_h \\|_0 $&quot;</span>;</div>
-<div class="line"><a name="l00480"></a><span class="lineno">  480</span>&#160;                  <span class="keywordtype">double</span> this_error =  error[j][1];</div>
-<div class="line"><a name="l00481"></a><span class="lineno">  481</span>&#160;</div>
-<div class="line"><a name="l00482"></a><span class="lineno">  482</span>&#160;                  tables[table_no].add_value(name, this_error);</div>
-<div class="line"><a name="l00483"></a><span class="lineno">  483</span>&#160;                  tables[table_no].set_precision(name, 3);</div>
-<div class="line"><a name="l00484"></a><span class="lineno">  484</span>&#160;                  tables[table_no].set_scientific(name, <span class="keyword">true</span>);</div>
-<div class="line"><a name="l00485"></a><span class="lineno">  485</span>&#160;                  tables[table_no].set_tex_caption(name, latex_name);</div>
-<div class="line"><a name="l00486"></a><span class="lineno">  486</span>&#160;                }</div>
-<div class="line"><a name="l00487"></a><span class="lineno">  487</span>&#160;              <span class="keywordflow">if</span> (norm &amp; <a class="code" href="error__handler_8h.html#afdb1b3484ed14e30fcdbfdbdd004922ba81535b1de4af3f5ea8ed849f76a371cd">W1infty</a>)</div>
-<div class="line"><a name="l00488"></a><span class="lineno">  488</span>&#160;                {</div>
-<div class="line"><a name="l00489"></a><span class="lineno">  489</span>&#160;                  std::string name = headers[j] + <span class="stringliteral">&quot;_W1infty&quot;</span>;</div>
-<div class="line"><a name="l00490"></a><span class="lineno">  490</span>&#160;                  std::string latex_name = <span class="stringliteral">&quot;$\\| &quot;</span> +</div>
-<div class="line"><a name="l00491"></a><span class="lineno">  491</span>&#160;                                           latex_headers[j] + <span class="stringliteral">&quot; - &quot;</span> +</div>
-<div class="line"><a name="l00492"></a><span class="lineno">  492</span>&#160;                                           latex_headers[j] +<span class="stringliteral">&quot;_h \\|_{1,\\infty} $&quot;</span>;</div>
-<div class="line"><a name="l00493"></a><span class="lineno">  493</span>&#160;                  <span class="keywordtype">double</span> this_error =  error[j][2];</div>
-<div class="line"><a name="l00494"></a><span class="lineno">  494</span>&#160;</div>
-<div class="line"><a name="l00495"></a><span class="lineno">  495</span>&#160;                  tables[table_no].add_value(name, this_error);</div>
-<div class="line"><a name="l00496"></a><span class="lineno">  496</span>&#160;                  tables[table_no].set_precision(name, 3);</div>
-<div class="line"><a name="l00497"></a><span class="lineno">  497</span>&#160;                  tables[table_no].set_scientific(name, <span class="keyword">true</span>);</div>
-<div class="line"><a name="l00498"></a><span class="lineno">  498</span>&#160;                  tables[table_no].set_tex_caption(name, latex_name);</div>
-<div class="line"><a name="l00499"></a><span class="lineno">  499</span>&#160;                }</div>
-<div class="line"><a name="l00500"></a><span class="lineno">  500</span>&#160;              <span class="keywordflow">if</span> (norm &amp; <a class="code" href="error__handler_8h.html#afdb1b3484ed14e30fcdbfdbdd004922ba7ec6526640e5add74fe4b322e6343120">H1</a>)</div>
-<div class="line"><a name="l00501"></a><span class="lineno">  501</span>&#160;                {</div>
-<div class="line"><a name="l00502"></a><span class="lineno">  502</span>&#160;                  std::string name = headers[j] + <span class="stringliteral">&quot;_H1&quot;</span>;</div>
-<div class="line"><a name="l00503"></a><span class="lineno">  503</span>&#160;                  std::string latex_name = <span class="stringliteral">&quot;$\\| &quot;</span> +</div>
-<div class="line"><a name="l00504"></a><span class="lineno">  504</span>&#160;                                           latex_headers[j] + <span class="stringliteral">&quot; - &quot;</span> +</div>
-<div class="line"><a name="l00505"></a><span class="lineno">  505</span>&#160;                                           latex_headers[j] +<span class="stringliteral">&quot;_h \\|_1 $&quot;</span>;</div>
-<div class="line"><a name="l00506"></a><span class="lineno">  506</span>&#160;                  <span class="keywordtype">double</span> this_error =  error[j][3];</div>
-<div class="line"><a name="l00507"></a><span class="lineno">  507</span>&#160;</div>
-<div class="line"><a name="l00508"></a><span class="lineno">  508</span>&#160;                  tables[table_no].add_value(name, this_error);</div>
-<div class="line"><a name="l00509"></a><span class="lineno">  509</span>&#160;                  tables[table_no].set_precision(name, 3);</div>
-<div class="line"><a name="l00510"></a><span class="lineno">  510</span>&#160;                  tables[table_no].set_scientific(name, <span class="keyword">true</span>);</div>
-<div class="line"><a name="l00511"></a><span class="lineno">  511</span>&#160;                  tables[table_no].set_tex_caption(name, latex_name);</div>
-<div class="line"><a name="l00512"></a><span class="lineno">  512</span>&#160;                }</div>
-<div class="line"><a name="l00513"></a><span class="lineno">  513</span>&#160;            }</div>
-<div class="line"><a name="l00514"></a><span class="lineno">  514</span>&#160;        }</div>
-<div class="line"><a name="l00515"></a><span class="lineno">  515</span>&#160;    }</div>
-<div class="line"><a name="l00516"></a><span class="lineno">  516</span>&#160;}</div>
-<div class="line"><a name="l00517"></a><span class="lineno">  517</span>&#160;</div>
-<div class="line"><a name="l00518"></a><span class="lineno">  518</span>&#160;</div>
-<div class="line"><a name="l00519"></a><span class="lineno">  519</span>&#160;</div>
-<div class="line"><a name="l00520"></a><span class="lineno">  520</span>&#160;<span class="keyword">template</span> &lt;<span class="keywordtype">int</span> ntables&gt;</div>
-<div class="line"><a name="l00521"></a><span class="lineno">  521</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">typename</span> DH&gt;</div>
-<div class="line"><a name="l00522"></a><span class="lineno"><a class="line" href="class_error_handler.html#a8cebeaf932d4e6c5fb8d755dfd2526c4">  522</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="class_error_handler.html#a8cebeaf932d4e6c5fb8d755dfd2526c4">ErrorHandler&lt;ntables&gt;::custom_error</a>(<span class="keyword">const</span> std::function&lt;<span class="keywordtype">double</span>(<span class="keyword">const</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> component)&gt; &amp;custom_error_function,</div>
-<div class="line"><a name="l00523"></a><span class="lineno">  523</span>&#160;                                         <span class="keyword">const</span> DH &amp;dh,</div>
-<div class="line"><a name="l00524"></a><span class="lineno">  524</span>&#160;                                         <span class="keyword">const</span> std::string &amp;error_name,</div>
-<div class="line"><a name="l00525"></a><span class="lineno">  525</span>&#160;                                         <span class="keyword">const</span> <span class="keywordtype">bool</span> add_table_extras,</div>
-<div class="line"><a name="l00526"></a><span class="lineno">  526</span>&#160;                                         <span class="keyword">const</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> table_no,</div>
-<div class="line"><a name="l00527"></a><span class="lineno">  527</span>&#160;                                         <span class="keyword">const</span> <span class="keywordtype">double</span> dt)</div>
-<div class="line"><a name="l00528"></a><span class="lineno">  528</span>&#160;{</div>
-<div class="line"><a name="l00529"></a><span class="lineno">  529</span>&#160;  <span class="keywordflow">if</span> (compute_error)</div>
-<div class="line"><a name="l00530"></a><span class="lineno">  530</span>&#160;    {</div>
-<div class="line"><a name="l00531"></a><span class="lineno">  531</span>&#160;      <a class="codeRef" doxygen="/Users/heltai/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/group__Exceptions.html#gafc0ca7ad85b3ebd64e8e51689ac85caf">AssertThrow</a>(initialized, ExcNotInitialized());</div>
-<div class="line"><a name="l00532"></a><span class="lineno">  532</span>&#160;      <a class="codeRef" doxygen="/Users/heltai/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/group__Exceptions.html#gafc0ca7ad85b3ebd64e8e51689ac85caf">AssertThrow</a>(table_no &lt; <a class="codeRef" doxygen="/Users/heltai/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/namespacetypes.html">types</a>.size(), ExcIndexRange(table_no, 0, <a class="codeRef" doxygen="/Users/heltai/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/namespacetypes.html">types</a>.size()));</div>
-<div class="line"><a name="l00533"></a><span class="lineno">  533</span>&#160;</div>
-<div class="line"><a name="l00534"></a><span class="lineno">  534</span>&#160;      <span class="keyword">const</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> n_components = <a class="codeRef" doxygen="/Users/heltai/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/namespacetypes.html">types</a>.size();</div>
-<div class="line"><a name="l00535"></a><span class="lineno">  535</span>&#160;      std::vector&lt;double&gt; c_error( <a class="codeRef" doxygen="/Users/heltai/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/namespacetypes.html">types</a>[table_no].size() );</div>
-<div class="line"><a name="l00536"></a><span class="lineno">  536</span>&#160;      <span class="keyword">const</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> n_active_cells = dh.get_tria().n_global_active_cells();</div>
-<div class="line"><a name="l00537"></a><span class="lineno">  537</span>&#160;      <span class="keyword">const</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> n_dofs=dh.n_dofs();</div>
-<div class="line"><a name="l00538"></a><span class="lineno">  538</span>&#160;      <span class="keywordflow">if</span> (add_table_extras)</div>
-<div class="line"><a name="l00539"></a><span class="lineno">  539</span>&#160;        {</div>
-<div class="line"><a name="l00540"></a><span class="lineno">  540</span>&#160;          <span class="keywordflow">if</span> (extras[table_no][<span class="stringliteral">&quot;cells&quot;</span>])</div>
-<div class="line"><a name="l00541"></a><span class="lineno">  541</span>&#160;            {</div>
-<div class="line"><a name="l00542"></a><span class="lineno">  542</span>&#160;              tables[table_no].add_value(<span class="stringliteral">&quot;cells&quot;</span>, n_active_cells);</div>
-<div class="line"><a name="l00543"></a><span class="lineno">  543</span>&#160;              tables[table_no].set_tex_caption(<span class="stringliteral">&quot;cells&quot;</span>, <span class="stringliteral">&quot;\\# cells&quot;</span>);</div>
-<div class="line"><a name="l00544"></a><span class="lineno">  544</span>&#160;              tables[table_no].set_tex_format(<span class="stringliteral">&quot;cells&quot;</span>, <span class="stringliteral">&quot;r&quot;</span>);</div>
-<div class="line"><a name="l00545"></a><span class="lineno">  545</span>&#160;            }</div>
-<div class="line"><a name="l00546"></a><span class="lineno">  546</span>&#160;          <span class="keywordflow">if</span> (extras[table_no][<span class="stringliteral">&quot;dofs&quot;</span>])</div>
-<div class="line"><a name="l00547"></a><span class="lineno">  547</span>&#160;            {</div>
-<div class="line"><a name="l00548"></a><span class="lineno">  548</span>&#160;              tables[table_no].add_value(<span class="stringliteral">&quot;dofs&quot;</span>, n_dofs);</div>
-<div class="line"><a name="l00549"></a><span class="lineno">  549</span>&#160;              tables[table_no].set_tex_caption(<span class="stringliteral">&quot;dofs&quot;</span>, <span class="stringliteral">&quot;\\# dofs&quot;</span>);</div>
-<div class="line"><a name="l00550"></a><span class="lineno">  550</span>&#160;              tables[table_no].set_tex_format(<span class="stringliteral">&quot;dofs&quot;</span>, <span class="stringliteral">&quot;r&quot;</span>);</div>
-<div class="line"><a name="l00551"></a><span class="lineno">  551</span>&#160;            }</div>
-<div class="line"><a name="l00552"></a><span class="lineno">  552</span>&#160;          <span class="keywordflow">if</span> (extras[table_no][<span class="stringliteral">&quot;dt&quot;</span>])</div>
-<div class="line"><a name="l00553"></a><span class="lineno">  553</span>&#160;            {</div>
-<div class="line"><a name="l00554"></a><span class="lineno">  554</span>&#160;              tables[table_no].add_value(<span class="stringliteral">&quot;dt&quot;</span>, dt);</div>
-<div class="line"><a name="l00555"></a><span class="lineno">  555</span>&#160;              tables[table_no].set_tex_caption(<span class="stringliteral">&quot;dt&quot;</span>, <span class="stringliteral">&quot;\\Delta t&quot;</span>);</div>
-<div class="line"><a name="l00556"></a><span class="lineno">  556</span>&#160;              tables[table_no].set_tex_format(<span class="stringliteral">&quot;dt&quot;</span>, <span class="stringliteral">&quot;r&quot;</span>);</div>
-<div class="line"><a name="l00557"></a><span class="lineno">  557</span>&#160;            }</div>
-<div class="line"><a name="l00558"></a><span class="lineno">  558</span>&#160;        }</div>
-<div class="line"><a name="l00559"></a><span class="lineno">  559</span>&#160;</div>
-<div class="line"><a name="l00560"></a><span class="lineno">  560</span>&#160;      <span class="keywordtype">bool</span> add_this = <span class="keyword">false</span>;</div>
-<div class="line"><a name="l00561"></a><span class="lineno">  561</span>&#160;      <span class="keywordtype">bool</span> compute_Custom = <span class="keyword">false</span>;</div>
+<div class="line"><a name="l00454"></a><span class="lineno">  454</span>&#160;            }</div>
+<div class="line"><a name="l00455"></a><span class="lineno">  455</span>&#160;        }</div>
+<div class="line"><a name="l00456"></a><span class="lineno">  456</span>&#160;</div>
+<div class="line"><a name="l00457"></a><span class="lineno">  457</span>&#160;      <span class="keywordflow">for</span> (<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> j=0; j&lt;exact.<a class="codeRef" doxygen="/Users/heltai/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classFunction.html#aa568b98591fc2bda09b28539789aef7d">n_components</a>; ++j)</div>
+<div class="line"><a name="l00458"></a><span class="lineno">  458</span>&#160;        {</div>
+<div class="line"><a name="l00459"></a><span class="lineno">  459</span>&#160;          <a class="code" href="error__handler_8h.html#afdb1b3484ed14e30fcdbfdbdd004922b">NormFlags</a> <a class="codeRef" doxygen="/Users/heltai/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/namespaceLocalIntegrators_1_1Divergence.html#a4cee9f4ad877f0d0c471a72affe91df7">norm</a> = <a class="codeRef" doxygen="/Users/heltai/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/namespacetypes.html">types</a>[table_no][j];</div>
+<div class="line"><a name="l00460"></a><span class="lineno">  460</span>&#160;          <span class="comment">// If this was added, don&#39;t do anything</span></div>
+<div class="line"><a name="l00461"></a><span class="lineno">  461</span>&#160;          <span class="keywordflow">if</span> ( !(norm &amp; <a class="code" href="error__handler_8h.html#afdb1b3484ed14e30fcdbfdbdd004922ba84ac6c844af8594e7d35f18196f07296">AddUp</a>) )</div>
+<div class="line"><a name="l00462"></a><span class="lineno">  462</span>&#160;            {</div>
+<div class="line"><a name="l00463"></a><span class="lineno">  463</span>&#160;              <span class="keywordflow">if</span> (norm &amp; <a class="code" href="error__handler_8h.html#afdb1b3484ed14e30fcdbfdbdd004922ba77ada1114934b2d6207778c40c366cb2">Linfty</a>)</div>
+<div class="line"><a name="l00464"></a><span class="lineno">  464</span>&#160;                {</div>
+<div class="line"><a name="l00465"></a><span class="lineno">  465</span>&#160;                  std::string name = headers[j] + <span class="stringliteral">&quot;_Linfty&quot;</span>;</div>
+<div class="line"><a name="l00466"></a><span class="lineno">  466</span>&#160;                  std::string latex_name = <span class="stringliteral">&quot;$\\| &quot;</span> +</div>
+<div class="line"><a name="l00467"></a><span class="lineno">  467</span>&#160;                                           latex_headers[j] + <span class="stringliteral">&quot; - &quot;</span> +</div>
+<div class="line"><a name="l00468"></a><span class="lineno">  468</span>&#160;                                           latex_headers[j] +<span class="stringliteral">&quot;_h \\|_\\infty $&quot;</span>;</div>
+<div class="line"><a name="l00469"></a><span class="lineno">  469</span>&#160;                  <span class="keywordtype">double</span> this_error =  error[j][0];</div>
+<div class="line"><a name="l00470"></a><span class="lineno">  470</span>&#160;</div>
+<div class="line"><a name="l00471"></a><span class="lineno">  471</span>&#160;                  tables[table_no].add_value(name, this_error);</div>
+<div class="line"><a name="l00472"></a><span class="lineno">  472</span>&#160;                  tables[table_no].set_precision(name, precision);</div>
+<div class="line"><a name="l00473"></a><span class="lineno">  473</span>&#160;                  tables[table_no].set_scientific(name, <span class="keyword">true</span>);</div>
+<div class="line"><a name="l00474"></a><span class="lineno">  474</span>&#160;                  tables[table_no].set_tex_caption(name, latex_name);</div>
+<div class="line"><a name="l00475"></a><span class="lineno">  475</span>&#160;                }</div>
+<div class="line"><a name="l00476"></a><span class="lineno">  476</span>&#160;</div>
+<div class="line"><a name="l00477"></a><span class="lineno">  477</span>&#160;              <span class="keywordflow">if</span> (norm &amp; <a class="code" href="error__handler_8h.html#afdb1b3484ed14e30fcdbfdbdd004922ba0adffb24dae0c41be5b803f4d444f066">L2</a>)</div>
+<div class="line"><a name="l00478"></a><span class="lineno">  478</span>&#160;                {</div>
+<div class="line"><a name="l00479"></a><span class="lineno">  479</span>&#160;                  std::string name = headers[j] + <span class="stringliteral">&quot;_L2&quot;</span>;</div>
+<div class="line"><a name="l00480"></a><span class="lineno">  480</span>&#160;                  std::string latex_name = <span class="stringliteral">&quot;$\\| &quot;</span> +</div>
+<div class="line"><a name="l00481"></a><span class="lineno">  481</span>&#160;                                           latex_headers[j] + <span class="stringliteral">&quot; - &quot;</span> +</div>
+<div class="line"><a name="l00482"></a><span class="lineno">  482</span>&#160;                                           latex_headers[j] +<span class="stringliteral">&quot;_h \\|_0 $&quot;</span>;</div>
+<div class="line"><a name="l00483"></a><span class="lineno">  483</span>&#160;                  <span class="keywordtype">double</span> this_error =  error[j][1];</div>
+<div class="line"><a name="l00484"></a><span class="lineno">  484</span>&#160;</div>
+<div class="line"><a name="l00485"></a><span class="lineno">  485</span>&#160;                  tables[table_no].add_value(name, this_error);</div>
+<div class="line"><a name="l00486"></a><span class="lineno">  486</span>&#160;                  tables[table_no].set_precision(name, precision);</div>
+<div class="line"><a name="l00487"></a><span class="lineno">  487</span>&#160;                  tables[table_no].set_scientific(name, <span class="keyword">true</span>);</div>
+<div class="line"><a name="l00488"></a><span class="lineno">  488</span>&#160;                  tables[table_no].set_tex_caption(name, latex_name);</div>
+<div class="line"><a name="l00489"></a><span class="lineno">  489</span>&#160;                }</div>
+<div class="line"><a name="l00490"></a><span class="lineno">  490</span>&#160;              <span class="keywordflow">if</span> (norm &amp; <a class="code" href="error__handler_8h.html#afdb1b3484ed14e30fcdbfdbdd004922ba81535b1de4af3f5ea8ed849f76a371cd">W1infty</a>)</div>
+<div class="line"><a name="l00491"></a><span class="lineno">  491</span>&#160;                {</div>
+<div class="line"><a name="l00492"></a><span class="lineno">  492</span>&#160;                  std::string name = headers[j] + <span class="stringliteral">&quot;_W1infty&quot;</span>;</div>
+<div class="line"><a name="l00493"></a><span class="lineno">  493</span>&#160;                  std::string latex_name = <span class="stringliteral">&quot;$\\| &quot;</span> +</div>
+<div class="line"><a name="l00494"></a><span class="lineno">  494</span>&#160;                                           latex_headers[j] + <span class="stringliteral">&quot; - &quot;</span> +</div>
+<div class="line"><a name="l00495"></a><span class="lineno">  495</span>&#160;                                           latex_headers[j] +<span class="stringliteral">&quot;_h \\|_{1,\\infty} $&quot;</span>;</div>
+<div class="line"><a name="l00496"></a><span class="lineno">  496</span>&#160;                  <span class="keywordtype">double</span> this_error =  error[j][2];</div>
+<div class="line"><a name="l00497"></a><span class="lineno">  497</span>&#160;</div>
+<div class="line"><a name="l00498"></a><span class="lineno">  498</span>&#160;                  tables[table_no].add_value(name, this_error);</div>
+<div class="line"><a name="l00499"></a><span class="lineno">  499</span>&#160;                  tables[table_no].set_precision(name, precision);</div>
+<div class="line"><a name="l00500"></a><span class="lineno">  500</span>&#160;                  tables[table_no].set_scientific(name, <span class="keyword">true</span>);</div>
+<div class="line"><a name="l00501"></a><span class="lineno">  501</span>&#160;                  tables[table_no].set_tex_caption(name, latex_name);</div>
+<div class="line"><a name="l00502"></a><span class="lineno">  502</span>&#160;                }</div>
+<div class="line"><a name="l00503"></a><span class="lineno">  503</span>&#160;              <span class="keywordflow">if</span> (norm &amp; <a class="code" href="error__handler_8h.html#afdb1b3484ed14e30fcdbfdbdd004922ba7ec6526640e5add74fe4b322e6343120">H1</a>)</div>
+<div class="line"><a name="l00504"></a><span class="lineno">  504</span>&#160;                {</div>
+<div class="line"><a name="l00505"></a><span class="lineno">  505</span>&#160;                  std::string name = headers[j] + <span class="stringliteral">&quot;_H1&quot;</span>;</div>
+<div class="line"><a name="l00506"></a><span class="lineno">  506</span>&#160;                  std::string latex_name = <span class="stringliteral">&quot;$\\| &quot;</span> +</div>
+<div class="line"><a name="l00507"></a><span class="lineno">  507</span>&#160;                                           latex_headers[j] + <span class="stringliteral">&quot; - &quot;</span> +</div>
+<div class="line"><a name="l00508"></a><span class="lineno">  508</span>&#160;                                           latex_headers[j] +<span class="stringliteral">&quot;_h \\|_1 $&quot;</span>;</div>
+<div class="line"><a name="l00509"></a><span class="lineno">  509</span>&#160;                  <span class="keywordtype">double</span> this_error =  error[j][3];</div>
+<div class="line"><a name="l00510"></a><span class="lineno">  510</span>&#160;</div>
+<div class="line"><a name="l00511"></a><span class="lineno">  511</span>&#160;                  tables[table_no].add_value(name, this_error);</div>
+<div class="line"><a name="l00512"></a><span class="lineno">  512</span>&#160;                  tables[table_no].set_precision(name, precision);</div>
+<div class="line"><a name="l00513"></a><span class="lineno">  513</span>&#160;                  tables[table_no].set_scientific(name, <span class="keyword">true</span>);</div>
+<div class="line"><a name="l00514"></a><span class="lineno">  514</span>&#160;                  tables[table_no].set_tex_caption(name, latex_name);</div>
+<div class="line"><a name="l00515"></a><span class="lineno">  515</span>&#160;                }</div>
+<div class="line"><a name="l00516"></a><span class="lineno">  516</span>&#160;            }</div>
+<div class="line"><a name="l00517"></a><span class="lineno">  517</span>&#160;        }</div>
+<div class="line"><a name="l00518"></a><span class="lineno">  518</span>&#160;    }</div>
+<div class="line"><a name="l00519"></a><span class="lineno">  519</span>&#160;}</div>
+<div class="line"><a name="l00520"></a><span class="lineno">  520</span>&#160;</div>
+<div class="line"><a name="l00521"></a><span class="lineno">  521</span>&#160;</div>
+<div class="line"><a name="l00522"></a><span class="lineno">  522</span>&#160;</div>
+<div class="line"><a name="l00523"></a><span class="lineno">  523</span>&#160;<span class="keyword">template</span> &lt;<span class="keywordtype">int</span> ntables&gt;</div>
+<div class="line"><a name="l00524"></a><span class="lineno">  524</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">typename</span> DH&gt;</div>
+<div class="line"><a name="l00525"></a><span class="lineno"><a class="line" href="class_error_handler.html#a8cebeaf932d4e6c5fb8d755dfd2526c4">  525</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="class_error_handler.html#a8cebeaf932d4e6c5fb8d755dfd2526c4">ErrorHandler&lt;ntables&gt;::custom_error</a>(<span class="keyword">const</span> std::function&lt;<span class="keywordtype">double</span>(<span class="keyword">const</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> component)&gt; &amp;custom_error_function,</div>
+<div class="line"><a name="l00526"></a><span class="lineno">  526</span>&#160;                                         <span class="keyword">const</span> DH &amp;dh,</div>
+<div class="line"><a name="l00527"></a><span class="lineno">  527</span>&#160;                                         <span class="keyword">const</span> std::string &amp;error_name,</div>
+<div class="line"><a name="l00528"></a><span class="lineno">  528</span>&#160;                                         <span class="keyword">const</span> <span class="keywordtype">bool</span> add_table_extras,</div>
+<div class="line"><a name="l00529"></a><span class="lineno">  529</span>&#160;                                         <span class="keyword">const</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> table_no,</div>
+<div class="line"><a name="l00530"></a><span class="lineno">  530</span>&#160;                                         <span class="keyword">const</span> <span class="keywordtype">double</span> dt)</div>
+<div class="line"><a name="l00531"></a><span class="lineno">  531</span>&#160;{</div>
+<div class="line"><a name="l00532"></a><span class="lineno">  532</span>&#160;  <span class="keywordflow">if</span> (compute_error)</div>
+<div class="line"><a name="l00533"></a><span class="lineno">  533</span>&#160;    {</div>
+<div class="line"><a name="l00534"></a><span class="lineno">  534</span>&#160;      <a class="codeRef" doxygen="/Users/heltai/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/group__Exceptions.html#gafc0ca7ad85b3ebd64e8e51689ac85caf">AssertThrow</a>(initialized, ExcNotInitialized());</div>
+<div class="line"><a name="l00535"></a><span class="lineno">  535</span>&#160;      <a class="codeRef" doxygen="/Users/heltai/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/group__Exceptions.html#gafc0ca7ad85b3ebd64e8e51689ac85caf">AssertThrow</a>(table_no &lt; <a class="codeRef" doxygen="/Users/heltai/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/namespacetypes.html">types</a>.size(), ExcIndexRange(table_no, 0, <a class="codeRef" doxygen="/Users/heltai/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/namespacetypes.html">types</a>.size()));</div>
+<div class="line"><a name="l00536"></a><span class="lineno">  536</span>&#160;</div>
+<div class="line"><a name="l00537"></a><span class="lineno">  537</span>&#160;      <span class="keyword">const</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> n_components = <a class="codeRef" doxygen="/Users/heltai/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/namespacetypes.html">types</a>.size();</div>
+<div class="line"><a name="l00538"></a><span class="lineno">  538</span>&#160;      std::vector&lt;double&gt; c_error( <a class="codeRef" doxygen="/Users/heltai/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/namespacetypes.html">types</a>[table_no].size() );</div>
+<div class="line"><a name="l00539"></a><span class="lineno">  539</span>&#160;      <span class="keyword">const</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> n_active_cells = dh.get_tria().n_global_active_cells();</div>
+<div class="line"><a name="l00540"></a><span class="lineno">  540</span>&#160;      <span class="keyword">const</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> n_dofs=dh.n_dofs();</div>
+<div class="line"><a name="l00541"></a><span class="lineno">  541</span>&#160;      <span class="keywordflow">if</span> (add_table_extras)</div>
+<div class="line"><a name="l00542"></a><span class="lineno">  542</span>&#160;        {</div>
+<div class="line"><a name="l00543"></a><span class="lineno">  543</span>&#160;          <span class="keywordflow">if</span> (extras[table_no][<span class="stringliteral">&quot;cells&quot;</span>])</div>
+<div class="line"><a name="l00544"></a><span class="lineno">  544</span>&#160;            {</div>
+<div class="line"><a name="l00545"></a><span class="lineno">  545</span>&#160;              tables[table_no].add_value(<span class="stringliteral">&quot;cells&quot;</span>, n_active_cells);</div>
+<div class="line"><a name="l00546"></a><span class="lineno">  546</span>&#160;              tables[table_no].set_tex_caption(<span class="stringliteral">&quot;cells&quot;</span>, <span class="stringliteral">&quot;\\# cells&quot;</span>);</div>
+<div class="line"><a name="l00547"></a><span class="lineno">  547</span>&#160;              tables[table_no].set_tex_format(<span class="stringliteral">&quot;cells&quot;</span>, <span class="stringliteral">&quot;r&quot;</span>);</div>
+<div class="line"><a name="l00548"></a><span class="lineno">  548</span>&#160;            }</div>
+<div class="line"><a name="l00549"></a><span class="lineno">  549</span>&#160;          <span class="keywordflow">if</span> (extras[table_no][<span class="stringliteral">&quot;dofs&quot;</span>])</div>
+<div class="line"><a name="l00550"></a><span class="lineno">  550</span>&#160;            {</div>
+<div class="line"><a name="l00551"></a><span class="lineno">  551</span>&#160;              tables[table_no].add_value(<span class="stringliteral">&quot;dofs&quot;</span>, n_dofs);</div>
+<div class="line"><a name="l00552"></a><span class="lineno">  552</span>&#160;              tables[table_no].set_tex_caption(<span class="stringliteral">&quot;dofs&quot;</span>, <span class="stringliteral">&quot;\\# dofs&quot;</span>);</div>
+<div class="line"><a name="l00553"></a><span class="lineno">  553</span>&#160;              tables[table_no].set_tex_format(<span class="stringliteral">&quot;dofs&quot;</span>, <span class="stringliteral">&quot;r&quot;</span>);</div>
+<div class="line"><a name="l00554"></a><span class="lineno">  554</span>&#160;            }</div>
+<div class="line"><a name="l00555"></a><span class="lineno">  555</span>&#160;          <span class="keywordflow">if</span> (extras[table_no][<span class="stringliteral">&quot;dt&quot;</span>])</div>
+<div class="line"><a name="l00556"></a><span class="lineno">  556</span>&#160;            {</div>
+<div class="line"><a name="l00557"></a><span class="lineno">  557</span>&#160;              tables[table_no].add_value(<span class="stringliteral">&quot;dt&quot;</span>, dt);</div>
+<div class="line"><a name="l00558"></a><span class="lineno">  558</span>&#160;              tables[table_no].set_tex_caption(<span class="stringliteral">&quot;dt&quot;</span>, <span class="stringliteral">&quot;\\Delta t&quot;</span>);</div>
+<div class="line"><a name="l00559"></a><span class="lineno">  559</span>&#160;              tables[table_no].set_tex_format(<span class="stringliteral">&quot;dt&quot;</span>, <span class="stringliteral">&quot;r&quot;</span>);</div>
+<div class="line"><a name="l00560"></a><span class="lineno">  560</span>&#160;            }</div>
+<div class="line"><a name="l00561"></a><span class="lineno">  561</span>&#160;        }</div>
 <div class="line"><a name="l00562"></a><span class="lineno">  562</span>&#160;</div>
-<div class="line"><a name="l00563"></a><span class="lineno">  563</span>&#160;      <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> last_non_add = 0;</div>
-<div class="line"><a name="l00564"></a><span class="lineno">  564</span>&#160;</div>
-<div class="line"><a name="l00565"></a><span class="lineno">  565</span>&#160;      <span class="keywordflow">for</span> (<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> component=0; component &lt; n_components; ++component)</div>
-<div class="line"><a name="l00566"></a><span class="lineno">  566</span>&#160;        {</div>
-<div class="line"><a name="l00567"></a><span class="lineno">  567</span>&#160;          <a class="code" href="error__handler_8h.html#afdb1b3484ed14e30fcdbfdbdd004922b">NormFlags</a> <a class="codeRef" doxygen="/Users/heltai/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/namespaceLocalIntegrators_1_1Divergence.html#a4cee9f4ad877f0d0c471a72affe91df7">norm</a> = <a class="codeRef" doxygen="/Users/heltai/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/namespacetypes.html">types</a>[table_no][component];</div>
-<div class="line"><a name="l00568"></a><span class="lineno">  568</span>&#160;</div>
-<div class="line"><a name="l00569"></a><span class="lineno">  569</span>&#160;          <span class="comment">// The add bit is set</span></div>
-<div class="line"><a name="l00570"></a><span class="lineno">  570</span>&#160;          add_this = (norm &amp; <a class="code" href="error__handler_8h.html#afdb1b3484ed14e30fcdbfdbdd004922ba84ac6c844af8594e7d35f18196f07296">AddUp</a>);</div>
+<div class="line"><a name="l00563"></a><span class="lineno">  563</span>&#160;      <span class="keywordtype">bool</span> add_this = <span class="keyword">false</span>;</div>
+<div class="line"><a name="l00564"></a><span class="lineno">  564</span>&#160;      <span class="keywordtype">bool</span> compute_Custom = <span class="keyword">false</span>;</div>
+<div class="line"><a name="l00565"></a><span class="lineno">  565</span>&#160;</div>
+<div class="line"><a name="l00566"></a><span class="lineno">  566</span>&#160;      <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> last_non_add = 0;</div>
+<div class="line"><a name="l00567"></a><span class="lineno">  567</span>&#160;</div>
+<div class="line"><a name="l00568"></a><span class="lineno">  568</span>&#160;      <span class="keywordflow">for</span> (<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> component=0; component &lt; n_components; ++component)</div>
+<div class="line"><a name="l00569"></a><span class="lineno">  569</span>&#160;        {</div>
+<div class="line"><a name="l00570"></a><span class="lineno">  570</span>&#160;          <a class="code" href="error__handler_8h.html#afdb1b3484ed14e30fcdbfdbdd004922b">NormFlags</a> <a class="codeRef" doxygen="/Users/heltai/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/namespaceLocalIntegrators_1_1Divergence.html#a4cee9f4ad877f0d0c471a72affe91df7">norm</a> = <a class="codeRef" doxygen="/Users/heltai/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/namespacetypes.html">types</a>[table_no][component];</div>
 <div class="line"><a name="l00571"></a><span class="lineno">  571</span>&#160;</div>
-<div class="line"><a name="l00572"></a><span class="lineno">  572</span>&#160;          <span class="keywordflow">if</span> (!add_this)</div>
-<div class="line"><a name="l00573"></a><span class="lineno">  573</span>&#160;            compute_Custom  = ( norm &amp; <a class="code" href="error__handler_8h.html#afdb1b3484ed14e30fcdbfdbdd004922ba26b367bcdd210f7345b551b921c5551f">Custom</a> );</div>
-<div class="line"><a name="l00574"></a><span class="lineno">  574</span>&#160;          <span class="comment">// if add is set, we do not modify the previous selection</span></div>
-<div class="line"><a name="l00575"></a><span class="lineno">  575</span>&#160;</div>
-<div class="line"><a name="l00576"></a><span class="lineno">  576</span>&#160;          <span class="keywordtype">double</span> Custom_error = 0;</div>
-<div class="line"><a name="l00577"></a><span class="lineno">  577</span>&#160;</div>
-<div class="line"><a name="l00578"></a><span class="lineno">  578</span>&#160;          <span class="keywordflow">if</span> (compute_Custom)</div>
-<div class="line"><a name="l00579"></a><span class="lineno">  579</span>&#160;            Custom_error = custom_error_function(component);</div>
+<div class="line"><a name="l00572"></a><span class="lineno">  572</span>&#160;          <span class="comment">// The add bit is set</span></div>
+<div class="line"><a name="l00573"></a><span class="lineno">  573</span>&#160;          add_this = (norm &amp; <a class="code" href="error__handler_8h.html#afdb1b3484ed14e30fcdbfdbdd004922ba84ac6c844af8594e7d35f18196f07296">AddUp</a>);</div>
+<div class="line"><a name="l00574"></a><span class="lineno">  574</span>&#160;</div>
+<div class="line"><a name="l00575"></a><span class="lineno">  575</span>&#160;          <span class="keywordflow">if</span> (!add_this)</div>
+<div class="line"><a name="l00576"></a><span class="lineno">  576</span>&#160;            compute_Custom  = ( norm &amp; <a class="code" href="error__handler_8h.html#afdb1b3484ed14e30fcdbfdbdd004922ba26b367bcdd210f7345b551b921c5551f">Custom</a> );</div>
+<div class="line"><a name="l00577"></a><span class="lineno">  577</span>&#160;          <span class="comment">// if add is set, we do not modify the previous selection</span></div>
+<div class="line"><a name="l00578"></a><span class="lineno">  578</span>&#160;</div>
+<div class="line"><a name="l00579"></a><span class="lineno">  579</span>&#160;          <span class="keywordtype">double</span> Custom_error = 0;</div>
 <div class="line"><a name="l00580"></a><span class="lineno">  580</span>&#160;</div>
-<div class="line"><a name="l00581"></a><span class="lineno">  581</span>&#160;          <span class="keywordflow">if</span> (add_this)</div>
-<div class="line"><a name="l00582"></a><span class="lineno">  582</span>&#160;            {</div>
-<div class="line"><a name="l00583"></a><span class="lineno">  583</span>&#160;              <a class="codeRef" doxygen="/Users/heltai/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/group__Exceptions.html#gafc0ca7ad85b3ebd64e8e51689ac85caf">AssertThrow</a>(component, <a class="codeRef" doxygen="/Users/heltai/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/group__Exceptions.html#ga7e124f28261be534af7e3399945c5e68">ExcMessage</a>(<span class="stringliteral">&quot;Cannot add on first component!&quot;</span>));</div>
-<div class="line"><a name="l00584"></a><span class="lineno">  584</span>&#160;</div>
-<div class="line"><a name="l00585"></a><span class="lineno">  585</span>&#160;              c_error[last_non_add] += Custom_error;</div>
-<div class="line"><a name="l00586"></a><span class="lineno">  586</span>&#160;            }</div>
-<div class="line"><a name="l00587"></a><span class="lineno">  587</span>&#160;          <span class="keywordflow">else</span></div>
-<div class="line"><a name="l00588"></a><span class="lineno">  588</span>&#160;            {</div>
-<div class="line"><a name="l00589"></a><span class="lineno">  589</span>&#160;              c_error[last_non_add] = Custom_error;</div>
-<div class="line"><a name="l00590"></a><span class="lineno">  590</span>&#160;            }</div>
-<div class="line"><a name="l00591"></a><span class="lineno">  591</span>&#160;        }</div>
-<div class="line"><a name="l00592"></a><span class="lineno">  592</span>&#160;</div>
-<div class="line"><a name="l00593"></a><span class="lineno">  593</span>&#160;      <span class="keywordflow">for</span> (<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> j=0; j&lt;n_components; ++j)</div>
-<div class="line"><a name="l00594"></a><span class="lineno">  594</span>&#160;        {</div>
-<div class="line"><a name="l00595"></a><span class="lineno">  595</span>&#160;          <a class="code" href="error__handler_8h.html#afdb1b3484ed14e30fcdbfdbdd004922b">NormFlags</a> <a class="codeRef" doxygen="/Users/heltai/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/namespaceLocalIntegrators_1_1Divergence.html#a4cee9f4ad877f0d0c471a72affe91df7">norm</a> = <a class="codeRef" doxygen="/Users/heltai/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/namespacetypes.html">types</a>[table_no][j];</div>
-<div class="line"><a name="l00596"></a><span class="lineno">  596</span>&#160;          <span class="comment">// If this was added, don&#39;t do anything</span></div>
-<div class="line"><a name="l00597"></a><span class="lineno">  597</span>&#160;          <span class="keywordflow">if</span> ( !(norm &amp; <a class="code" href="error__handler_8h.html#afdb1b3484ed14e30fcdbfdbdd004922ba84ac6c844af8594e7d35f18196f07296">AddUp</a>) )</div>
-<div class="line"><a name="l00598"></a><span class="lineno">  598</span>&#160;            {</div>
-<div class="line"><a name="l00599"></a><span class="lineno">  599</span>&#160;              <span class="keywordflow">if</span> (norm &amp; <a class="code" href="error__handler_8h.html#afdb1b3484ed14e30fcdbfdbdd004922ba26b367bcdd210f7345b551b921c5551f">Custom</a>)</div>
-<div class="line"><a name="l00600"></a><span class="lineno">  600</span>&#160;                {</div>
-<div class="line"><a name="l00601"></a><span class="lineno">  601</span>&#160;                  std::string name = headers[j] + <span class="stringliteral">&quot;_&quot;</span> +error_name;</div>
-<div class="line"><a name="l00602"></a><span class="lineno">  602</span>&#160;                  std::string latex_name = <span class="stringliteral">&quot;$\\| &quot;</span> +</div>
-<div class="line"><a name="l00603"></a><span class="lineno">  603</span>&#160;                                           latex_headers[j] + <span class="stringliteral">&quot; - &quot;</span> +</div>
-<div class="line"><a name="l00604"></a><span class="lineno">  604</span>&#160;                                           latex_headers[j] +<span class="stringliteral">&quot;_h \\|_{\text{&quot;</span>+error_name+<span class="stringliteral">&quot;} $&quot;</span>;</div>
-<div class="line"><a name="l00605"></a><span class="lineno">  605</span>&#160;                  <span class="keywordtype">double</span> this_error =  c_error[j];</div>
-<div class="line"><a name="l00606"></a><span class="lineno">  606</span>&#160;</div>
-<div class="line"><a name="l00607"></a><span class="lineno">  607</span>&#160;                  tables[table_no].add_value(name, this_error);</div>
-<div class="line"><a name="l00608"></a><span class="lineno">  608</span>&#160;                  tables[table_no].set_precision(name, 3);</div>
-<div class="line"><a name="l00609"></a><span class="lineno">  609</span>&#160;                  tables[table_no].set_scientific(name, <span class="keyword">true</span>);</div>
-<div class="line"><a name="l00610"></a><span class="lineno">  610</span>&#160;                  tables[table_no].set_tex_caption(name, latex_name);</div>
-<div class="line"><a name="l00611"></a><span class="lineno">  611</span>&#160;                }</div>
-<div class="line"><a name="l00612"></a><span class="lineno">  612</span>&#160;            }</div>
-<div class="line"><a name="l00613"></a><span class="lineno">  613</span>&#160;        }</div>
-<div class="line"><a name="l00614"></a><span class="lineno">  614</span>&#160;    }</div>
-<div class="line"><a name="l00615"></a><span class="lineno">  615</span>&#160;}</div>
-<div class="line"><a name="l00616"></a><span class="lineno">  616</span>&#160;</div>
-<div class="line"><a name="l00617"></a><span class="lineno">  617</span>&#160;</div>
-<div class="line"><a name="l00618"></a><span class="lineno">  618</span>&#160;</div>
-<div class="line"><a name="l00619"></a><span class="lineno">  619</span>&#160;D2K_NAMESPACE_CLOSE</div>
+<div class="line"><a name="l00581"></a><span class="lineno">  581</span>&#160;          <span class="keywordflow">if</span> (compute_Custom)</div>
+<div class="line"><a name="l00582"></a><span class="lineno">  582</span>&#160;            Custom_error = custom_error_function(component);</div>
+<div class="line"><a name="l00583"></a><span class="lineno">  583</span>&#160;</div>
+<div class="line"><a name="l00584"></a><span class="lineno">  584</span>&#160;          <span class="keywordflow">if</span> (add_this)</div>
+<div class="line"><a name="l00585"></a><span class="lineno">  585</span>&#160;            {</div>
+<div class="line"><a name="l00586"></a><span class="lineno">  586</span>&#160;              <a class="codeRef" doxygen="/Users/heltai/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/group__Exceptions.html#gafc0ca7ad85b3ebd64e8e51689ac85caf">AssertThrow</a>(component, <a class="codeRef" doxygen="/Users/heltai/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/group__Exceptions.html#ga7e124f28261be534af7e3399945c5e68">ExcMessage</a>(<span class="stringliteral">&quot;Cannot add on first component!&quot;</span>));</div>
+<div class="line"><a name="l00587"></a><span class="lineno">  587</span>&#160;</div>
+<div class="line"><a name="l00588"></a><span class="lineno">  588</span>&#160;              c_error[last_non_add] += Custom_error;</div>
+<div class="line"><a name="l00589"></a><span class="lineno">  589</span>&#160;            }</div>
+<div class="line"><a name="l00590"></a><span class="lineno">  590</span>&#160;          <span class="keywordflow">else</span></div>
+<div class="line"><a name="l00591"></a><span class="lineno">  591</span>&#160;            {</div>
+<div class="line"><a name="l00592"></a><span class="lineno">  592</span>&#160;              c_error[last_non_add] = Custom_error;</div>
+<div class="line"><a name="l00593"></a><span class="lineno">  593</span>&#160;            }</div>
+<div class="line"><a name="l00594"></a><span class="lineno">  594</span>&#160;        }</div>
+<div class="line"><a name="l00595"></a><span class="lineno">  595</span>&#160;</div>
+<div class="line"><a name="l00596"></a><span class="lineno">  596</span>&#160;      <span class="keywordflow">for</span> (<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> j=0; j&lt;n_components; ++j)</div>
+<div class="line"><a name="l00597"></a><span class="lineno">  597</span>&#160;        {</div>
+<div class="line"><a name="l00598"></a><span class="lineno">  598</span>&#160;          <a class="code" href="error__handler_8h.html#afdb1b3484ed14e30fcdbfdbdd004922b">NormFlags</a> <a class="codeRef" doxygen="/Users/heltai/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/namespaceLocalIntegrators_1_1Divergence.html#a4cee9f4ad877f0d0c471a72affe91df7">norm</a> = <a class="codeRef" doxygen="/Users/heltai/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/namespacetypes.html">types</a>[table_no][j];</div>
+<div class="line"><a name="l00599"></a><span class="lineno">  599</span>&#160;          <span class="comment">// If this was added, don&#39;t do anything</span></div>
+<div class="line"><a name="l00600"></a><span class="lineno">  600</span>&#160;          <span class="keywordflow">if</span> ( !(norm &amp; <a class="code" href="error__handler_8h.html#afdb1b3484ed14e30fcdbfdbdd004922ba84ac6c844af8594e7d35f18196f07296">AddUp</a>) )</div>
+<div class="line"><a name="l00601"></a><span class="lineno">  601</span>&#160;            {</div>
+<div class="line"><a name="l00602"></a><span class="lineno">  602</span>&#160;              <span class="keywordflow">if</span> (norm &amp; <a class="code" href="error__handler_8h.html#afdb1b3484ed14e30fcdbfdbdd004922ba26b367bcdd210f7345b551b921c5551f">Custom</a>)</div>
+<div class="line"><a name="l00603"></a><span class="lineno">  603</span>&#160;                {</div>
+<div class="line"><a name="l00604"></a><span class="lineno">  604</span>&#160;                  std::string name = headers[j] + <span class="stringliteral">&quot;_&quot;</span> +error_name;</div>
+<div class="line"><a name="l00605"></a><span class="lineno">  605</span>&#160;                  std::string latex_name = <span class="stringliteral">&quot;$\\| &quot;</span> +</div>
+<div class="line"><a name="l00606"></a><span class="lineno">  606</span>&#160;                                           latex_headers[j] + <span class="stringliteral">&quot; - &quot;</span> +</div>
+<div class="line"><a name="l00607"></a><span class="lineno">  607</span>&#160;                                           latex_headers[j] +<span class="stringliteral">&quot;_h \\|_{\text{&quot;</span>+error_name+<span class="stringliteral">&quot;} $&quot;</span>;</div>
+<div class="line"><a name="l00608"></a><span class="lineno">  608</span>&#160;                  <span class="keywordtype">double</span> this_error =  c_error[j];</div>
+<div class="line"><a name="l00609"></a><span class="lineno">  609</span>&#160;</div>
+<div class="line"><a name="l00610"></a><span class="lineno">  610</span>&#160;                  tables[table_no].add_value(name, this_error);</div>
+<div class="line"><a name="l00611"></a><span class="lineno">  611</span>&#160;                  tables[table_no].set_precision(name, precision);</div>
+<div class="line"><a name="l00612"></a><span class="lineno">  612</span>&#160;                  tables[table_no].set_scientific(name, <span class="keyword">true</span>);</div>
+<div class="line"><a name="l00613"></a><span class="lineno">  613</span>&#160;                  tables[table_no].set_tex_caption(name, latex_name);</div>
+<div class="line"><a name="l00614"></a><span class="lineno">  614</span>&#160;                }</div>
+<div class="line"><a name="l00615"></a><span class="lineno">  615</span>&#160;            }</div>
+<div class="line"><a name="l00616"></a><span class="lineno">  616</span>&#160;        }</div>
+<div class="line"><a name="l00617"></a><span class="lineno">  617</span>&#160;    }</div>
+<div class="line"><a name="l00618"></a><span class="lineno">  618</span>&#160;}</div>
+<div class="line"><a name="l00619"></a><span class="lineno">  619</span>&#160;</div>
 <div class="line"><a name="l00620"></a><span class="lineno">  620</span>&#160;</div>
-<div class="line"><a name="l00621"></a><span class="lineno">  621</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="ttc" id="class_error_handler_html_a8cebeaf932d4e6c5fb8d755dfd2526c4"><div class="ttname"><a href="class_error_handler.html#a8cebeaf932d4e6c5fb8d755dfd2526c4">ErrorHandler::custom_error</a></div><div class="ttdeci">void custom_error(const std::function&lt; double(const unsigned int component)&gt; &amp;custom_error_function, const DH &amp;dh, const std::string &amp;error_name=&quot;custom&quot;, const bool add_table_extras=false, const unsigned int table_no=0, const double dt=0.)</div><div class="ttdoc">Call the given custom function to compute the custom error for the given component and store the resu...</div><div class="ttdef"><b>Definition:</b> <a href="error__handler_8h_source.html#l00522">error_handler.h:522</a></div></div>
+<div class="line"><a name="l00621"></a><span class="lineno">  621</span>&#160;</div>
+<div class="line"><a name="l00622"></a><span class="lineno">  622</span>&#160;D2K_NAMESPACE_CLOSE</div>
+<div class="line"><a name="l00623"></a><span class="lineno">  623</span>&#160;</div>
+<div class="line"><a name="l00624"></a><span class="lineno">  624</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="ttc" id="class_error_handler_html_a8cebeaf932d4e6c5fb8d755dfd2526c4"><div class="ttname"><a href="class_error_handler.html#a8cebeaf932d4e6c5fb8d755dfd2526c4">ErrorHandler::custom_error</a></div><div class="ttdeci">void custom_error(const std::function&lt; double(const unsigned int component)&gt; &amp;custom_error_function, const DH &amp;dh, const std::string &amp;error_name=&quot;custom&quot;, const bool add_table_extras=false, const unsigned int table_no=0, const double dt=0.)</div><div class="ttdoc">Call the given custom function to compute the custom error for the given component and store the resu...</div><div class="ttdef"><b>Definition:</b> <a href="error__handler_8h_source.html#l00525">error_handler.h:525</a></div></div>
 <div class="ttc" id="classConstantFunction_html"><div class="ttname"><a href="http://www.dealii.org/developer/doxygen/deal.II/classConstantFunction.html">ConstantFunction</a></div></div>
 <div class="ttc" id="function_8h_html"><div class="ttname"><a href="http://www.dealii.org/developer/doxygen/deal.II/function_8h.html">function.h</a></div></div>
 <div class="ttc" id="classFunction_html"><div class="ttname"><a href="http://www.dealii.org/developer/doxygen/deal.II/classFunction.html">Function</a></div></div>
 <div class="ttc" id="class_parameter_acceptor_html"><div class="ttname"><a href="class_parameter_acceptor.html">ParameterAcceptor</a></div><div class="ttdoc">A parameter acceptor base class. </div><div class="ttdef"><b>Definition:</b> <a href="parameter__acceptor_8h_source.html#l00129">parameter_acceptor.h:129</a></div></div>
 <div class="ttc" id="parameter__acceptor_8h_html"><div class="ttname"><a href="parameter__acceptor_8h.html">parameter_acceptor.h</a></div></div>
-<div class="ttc" id="error__handler_8h_html_a214c9e65fcafa2c4e5bfc3af9d7b1c6d"><div class="ttname"><a href="error__handler_8h.html#a214c9e65fcafa2c4e5bfc3af9d7b1c6d">operator|=</a></div><div class="ttdeci">NormFlags &amp; operator|=(NormFlags &amp;f1, NormFlags f2)</div><div class="ttdoc">Global operator which sets the bits from the second argument also in the first one. </div><div class="ttdef"><b>Definition:</b> <a href="error__handler_8h_source.html#l00227">error_handler.h:227</a></div></div>
+<div class="ttc" id="error__handler_8h_html_a214c9e65fcafa2c4e5bfc3af9d7b1c6d"><div class="ttname"><a href="error__handler_8h.html#a214c9e65fcafa2c4e5bfc3af9d7b1c6d">operator|=</a></div><div class="ttdeci">NormFlags &amp; operator|=(NormFlags &amp;f1, NormFlags f2)</div><div class="ttdoc">Global operator which sets the bits from the second argument also in the first one. </div><div class="ttdef"><b>Definition:</b> <a href="error__handler_8h_source.html#l00230">error_handler.h:230</a></div></div>
 <div class="ttc" id="class_error_handler_html_aca5abf562cb96e8848fab0d2c27d7dd7"><div class="ttname"><a href="class_error_handler.html#aca5abf562cb96e8848fab0d2c27d7dd7">ErrorHandler::compute_error</a></div><div class="ttdeci">bool compute_error</div><div class="ttdoc">Compute the error. </div><div class="ttdef"><b>Definition:</b> <a href="error__handler_8h_source.html#l00183">error_handler.h:183</a></div></div>
 <div class="ttc" id="class_error_handler_html_af744b90188b33e047628ec511466ef5f"><div class="ttname"><a href="class_error_handler.html#af744b90188b33e047628ec511466ef5f">ErrorHandler::tables</a></div><div class="ttdeci">std::vector&lt; ConvergenceTable &gt; tables</div><div class="ttdoc">Error results. </div><div class="ttdef"><b>Definition:</b> <a href="error__handler_8h_source.html#l00159">error_handler.h:159</a></div></div>
 <div class="ttc" id="classVector_html"><div class="ttname"><a href="http://www.dealii.org/developer/doxygen/deal.II/classVector.html">Vector</a></div></div>
@@ -681,7 +683,8 @@ $(document).ready(function(){initNavTree('error__handler_8h_source.html','');});
 <div class="ttc" id="classQGauss_html"><div class="ttname"><a href="http://www.dealii.org/developer/doxygen/deal.II/classQGauss.html">QGauss</a></div></div>
 <div class="ttc" id="class_error_handler_html_a275b2aa6a2e5baef76620c1d840c27d4"><div class="ttname"><a href="class_error_handler.html#a275b2aa6a2e5baef76620c1d840c27d4">ErrorHandler::types</a></div><div class="ttdeci">std::vector&lt; std::vector&lt; NormFlags &gt; &gt; types</div><div class="ttdoc">Type of error to compute per components. </div><div class="ttdef"><b>Definition:</b> <a href="error__handler_8h_source.html#l00176">error_handler.h:176</a></div></div>
 <div class="ttc" id="class_error_handler_html_ac0225b2a6cb395faca85f7ecd09a9b71"><div class="ttname"><a href="class_error_handler.html#ac0225b2a6cb395faca85f7ecd09a9b71">ErrorHandler::list_of_error_norms</a></div><div class="ttdeci">const std::string list_of_error_norms</div><div class="ttdoc">List of error norms to compute. </div><div class="ttdef"><b>Definition:</b> <a href="error__handler_8h_source.html#l00156">error_handler.h:156</a></div></div>
-<div class="ttc" id="error__handler_8h_html_a371a3671620aa58c894c0ab813f82e67"><div class="ttname"><a href="error__handler_8h.html#a371a3671620aa58c894c0ab813f82e67">operator&amp;</a></div><div class="ttdeci">NormFlags operator&amp;(NormFlags f1, NormFlags f2)</div><div class="ttdoc">Global operator which returns an object in which all bits are set which are set in the first as well ...</div><div class="ttdef"><b>Definition:</b> <a href="error__handler_8h_source.html#l00244">error_handler.h:244</a></div></div>
+<div class="ttc" id="class_error_handler_html_a48a20ccddde56c2481a4cff2ff343b1f"><div class="ttname"><a href="class_error_handler.html#a48a20ccddde56c2481a4cff2ff343b1f">ErrorHandler::precision</a></div><div class="ttdeci">unsigned int precision</div><div class="ttdoc">The precision with which the table is written. </div><div class="ttdef"><b>Definition:</b> <a href="error__handler_8h_source.html#l00204">error_handler.h:204</a></div></div>
+<div class="ttc" id="error__handler_8h_html_a371a3671620aa58c894c0ab813f82e67"><div class="ttname"><a href="error__handler_8h.html#a371a3671620aa58c894c0ab813f82e67">operator&amp;</a></div><div class="ttdeci">NormFlags operator&amp;(NormFlags f1, NormFlags f2)</div><div class="ttdoc">Global operator which returns an object in which all bits are set which are set in the first as well ...</div><div class="ttdef"><b>Definition:</b> <a href="error__handler_8h_source.html#l00247">error_handler.h:247</a></div></div>
 <div class="ttc" id="grid__tools_8h_html"><div class="ttname"><a href="http://www.dealii.org/developer/doxygen/deal.II/grid__tools_8h.html">grid_tools.h</a></div></div>
 <div class="ttc" id="namespacetypes_html"><div class="ttname"><a href="http://www.dealii.org/developer/doxygen/deal.II/namespacetypes.html">types</a></div></div>
 <div class="ttc" id="class_error_handler_html_add5790c81437a1c8a700f2c5ff34cb31"><div class="ttname"><a href="class_error_handler.html#add5790c81437a1c8a700f2c5ff34cb31">ErrorHandler::error_file_format</a></div><div class="ttdeci">std::string error_file_format</div><div class="ttdoc">The error file format. </div><div class="ttdef"><b>Definition:</b> <a href="error__handler_8h_source.html#l00195">error_handler.h:195</a></div></div>
@@ -709,7 +712,7 @@ $(document).ready(function(){initNavTree('error__handler_8h_source.html','');});
 <div class="ttc" id="vector_8h_html"><div class="ttname"><a href="http://www.dealii.org/developer/doxygen/deal.II/vector_8h.html">vector.h</a></div></div>
 <div class="ttc" id="class_error_handler_html_ab3a76b83efc900ec6c1245caa96f2be0"><div class="ttname"><a href="class_error_handler.html#ab3a76b83efc900ec6c1245caa96f2be0">ErrorHandler::names</a></div><div class="ttdeci">std::vector&lt; std::string &gt; names</div><div class="ttdoc">Names of the tables. </div><div class="ttdef"><b>Definition:</b> <a href="error__handler_8h_source.html#l00173">error_handler.h:173</a></div></div>
 <div class="ttc" id="class_error_handler_html_a9de94e6c74241e407653efc26a97d2a0"><div class="ttname"><a href="class_error_handler.html#a9de94e6c74241e407653efc26a97d2a0">ErrorHandler::error_from_exact</a></div><div class="ttdeci">void error_from_exact(const DH &amp;vspace, const VEC &amp;solution, const Function&lt; DH::space_dimension &gt; &amp;exact, unsigned int table_no=0, double dt=0.)</div><div class="ttdoc">Calculate the error of the numeric solution in variuous norms. </div></div>
-<div class="ttc" id="error__handler_8h_html_a819210d197509417a45dd1d7979f632e"><div class="ttname"><a href="error__handler_8h.html#a819210d197509417a45dd1d7979f632e">operator|</a></div><div class="ttdeci">NormFlags operator|(NormFlags f1, NormFlags f2)</div><div class="ttdoc">Global operator which returns an object in which all bits are set which are either set in the first o...</div><div class="ttdef"><b>Definition:</b> <a href="error__handler_8h_source.html#l00214">error_handler.h:214</a></div></div>
+<div class="ttc" id="error__handler_8h_html_a819210d197509417a45dd1d7979f632e"><div class="ttname"><a href="error__handler_8h.html#a819210d197509417a45dd1d7979f632e">operator|</a></div><div class="ttdeci">NormFlags operator|(NormFlags f1, NormFlags f2)</div><div class="ttdoc">Global operator which returns an object in which all bits are set which are either set in the first o...</div><div class="ttdef"><b>Definition:</b> <a href="error__handler_8h_source.html#l00217">error_handler.h:217</a></div></div>
 <div class="ttc" id="structStaticMappingQ1_html"><div class="ttname"><a href="http://www.dealii.org/developer/doxygen/deal.II/structStaticMappingQ1.html">StaticMappingQ1</a></div></div>
 <div class="ttc" id="mapping__q_8h_html"><div class="ttname"><a href="http://www.dealii.org/developer/doxygen/deal.II/mapping__q_8h.html">mapping_q.h</a></div></div>
 <div class="ttc" id="class_error_handler_html_a266adc96d289e9165eedda2099145a87"><div class="ttname"><a href="class_error_handler.html#a266adc96d289e9165eedda2099145a87">ErrorHandler::latex_captions</a></div><div class="ttdeci">std::vector&lt; std::string &gt; latex_captions</div><div class="ttdoc">Captions for latex. </div><div class="ttdef"><b>Definition:</b> <a href="error__handler_8h_source.html#l00170">error_handler.h:170</a></div></div>
@@ -718,7 +721,7 @@ $(document).ready(function(){initNavTree('error__handler_8h_source.html','');});
 <div class="ttc" id="error__handler_8h_html_afdb1b3484ed14e30fcdbfdbdd004922b"><div class="ttname"><a href="error__handler_8h.html#afdb1b3484ed14e30fcdbfdbdd004922b">NormFlags</a></div><div class="ttdeci">NormFlags</div><div class="ttdef"><b>Definition:</b> <a href="error__handler_8h_source.html#l00067">error_handler.h:67</a></div></div>
 <div class="ttc" id="class_error_handler_html"><div class="ttname"><a href="class_error_handler.html">ErrorHandler</a></div><div class="ttdef"><b>Definition:</b> <a href="error__handler_8h_source.html#l00080">error_handler.h:80</a></div></div>
 <div class="ttc" id="class_error_handler_html_a492b12f83f0746495593d684e91c707e"><div class="ttname"><a href="class_error_handler.html#a492b12f83f0746495593d684e91c707e">ErrorHandler::write_error</a></div><div class="ttdeci">bool write_error</div><div class="ttdoc">Write the error files. </div><div class="ttdef"><b>Definition:</b> <a href="error__handler_8h_source.html#l00189">error_handler.h:189</a></div></div>
-<div class="ttc" id="error__handler_8h_html_a28019e2b66ebdb4bb7ef9ce3a2194343"><div class="ttname"><a href="error__handler_8h.html#a28019e2b66ebdb4bb7ef9ce3a2194343">operator&amp;=</a></div><div class="ttdeci">NormFlags &amp; operator&amp;=(NormFlags &amp;f1, NormFlags f2)</div><div class="ttdoc">Global operator which clears all the bits in the first argument if they are not also set in the secon...</div><div class="ttdef"><b>Definition:</b> <a href="error__handler_8h_source.html#l00258">error_handler.h:258</a></div></div>
+<div class="ttc" id="error__handler_8h_html_a28019e2b66ebdb4bb7ef9ce3a2194343"><div class="ttname"><a href="error__handler_8h.html#a28019e2b66ebdb4bb7ef9ce3a2194343">operator&amp;=</a></div><div class="ttdeci">NormFlags &amp; operator&amp;=(NormFlags &amp;f1, NormFlags f2)</div><div class="ttdoc">Global operator which clears all the bits in the first argument if they are not also set in the secon...</div><div class="ttdef"><b>Definition:</b> <a href="error__handler_8h_source.html#l00261">error_handler.h:261</a></div></div>
 <div class="ttc" id="namespacedealii_html"><div class="ttname"><a href="http://www.dealii.org/developer/doxygen/deal.II/namespacedealii.html">dealii</a></div></div>
 <div class="ttc" id="classConditionalOStream_html"><div class="ttname"><a href="http://www.dealii.org/developer/doxygen/deal.II/classConditionalOStream.html">ConditionalOStream</a></div></div>
 <div class="ttc" id="class_error_handler_html_a0958d47fc5c8e32019ac5ecc0366dcb5"><div class="ttname"><a href="class_error_handler.html#a0958d47fc5c8e32019ac5ecc0366dcb5">ErrorHandler::solution_names</a></div><div class="ttdeci">const std::string solution_names</div><div class="ttdoc">Value of solution names. </div><div class="ttdef"><b>Definition:</b> <a href="error__handler_8h_source.html#l00153">error_handler.h:153</a></div></div>
@@ -729,7 +732,7 @@ $(document).ready(function(){initNavTree('error__handler_8h_source.html','');});
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_5401fe99141ed2453494b7c40eaaa779.html">deal2lkit</a></li><li class="navelem"><a class="el" href="error__handler_8h.html">error_handler.h</a></li>
-    <li class="footer">Generated on Fri Nov 13 2015 13:06:09 for deal2lkit: A ToolKit library for Deal.II by
+    <li class="footer">Generated on Wed Nov 25 2015 00:15:57 for deal2lkit: A ToolKit library for Deal.II by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.10 </li>
   </ul>

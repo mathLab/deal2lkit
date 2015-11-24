@@ -13,7 +13,7 @@ var class_parameter_acceptor =
     [ "parse_parameters", "class_parameter_acceptor.html#ab3ee6cabf1ff10be362ac65495183c52", null ],
     [ "parse_parameters_call_back", "class_parameter_acceptor.html#a5d6b8666b6b9b9898b0f584b1a602ea5", null ],
     [ "acceptor_id", "class_parameter_acceptor.html#a5175ae473c3b15d70dcf74e40b6dc2c0", null ],
-    [ "class_list", "class_parameter_acceptor.html#ad3bc4a3c5496637eaf4fa1f075ec4f74", null ],
+    [ "class_list", "class_parameter_acceptor.html#a969df055b31e4f3152b659838133e0a1", null ],
     [ "parameters", "class_parameter_acceptor.html#a232f65d19a056057bfd37c111a903ef1", null ],
     [ "prm", "class_parameter_acceptor.html#a96081d4cc985b722c9841fcf0c0e54ec", null ],
     [ "section_name", "class_parameter_acceptor.html#a52134c59ec98830230c23e080c841705", null ]

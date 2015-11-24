@@ -129,6 +129,9 @@ $(document).ready(function(){initNavTree('functions_func.html','');});
 <li>create()
 : <a class="el" href="class_parsed_grid_generator.html#a259f1ed4c34a384666d8b003260e3b44">ParsedGridGenerator&lt; dim, spacedim &gt;</a>
 </li>
+<li>create_new_vector()
+: <a class="el" href="class_sundials_interface.html#a420c541c45238e2d0f9b76812f13bbd6">SundialsInterface&lt; VEC &gt;</a>
+</li>
 <li>custom_error()
 : <a class="el" href="class_error_handler.html#a8cebeaf932d4e6c5fb8d755dfd2526c4">ErrorHandler&lt; ntables &gt;</a>
 </li>
@@ -141,6 +144,7 @@ $(document).ready(function(){initNavTree('functions_func.html','');});
 </li>
 <li>declare_parameters()
 : <a class="el" href="class_error_handler.html#a1b82f2b733264bd0f6dbc0b58fdc7a92">ErrorHandler&lt; ntables &gt;</a>
+, <a class="el" href="class_i_d_a_interface.html#a535c35503f0e6a24dbbc5cca9978c2ec">IDAInterface&lt; VEC &gt;</a>
 , <a class="el" href="class_parameter_acceptor.html#ace1609b41eeb6a5461a388061d23b1bd">ParameterAcceptor</a>
 , <a class="el" href="class_parsed_data_out.html#aac8af955de45324d4d5cd8108e979499">ParsedDataOut&lt; dim, spacedim &gt;</a>
 , <a class="el" href="class_parsed_dirichlet_b_cs.html#a59a00c9bd1ff5a50f5fc39ee80fa4bc1">ParsedDirichletBCs&lt; dim, spacedim, n_components &gt;</a>
@@ -164,6 +168,9 @@ $(document).ready(function(){initNavTree('functions_func.html','');});
 <li>difference()
 : <a class="el" href="class_error_handler.html#ac055b93a612054be319c2c1e352bec04">ErrorHandler&lt; ntables &gt;</a>
 </li>
+<li>differential_components()
+: <a class="el" href="class_sundials_interface.html#a6094ddd618793ad4ca392275782f54e1">SundialsInterface&lt; VEC &gt;</a>
+</li>
 </ul>
 
 
@@ -175,7 +182,7 @@ $(document).ready(function(){initNavTree('functions_func.html','');});
 : <a class="el" href="class_error_handler.html#a9de94e6c74241e407653efc26a97d2a0">ErrorHandler&lt; ntables &gt;</a>
 </li>
 <li>ErrorHandler()
-: <a class="el" href="class_error_handler.html#ae91eb928f28f8f0ef5814e5f63b6d220">ErrorHandler&lt; ntables &gt;</a>
+: <a class="el" href="class_error_handler.html#aa16bb93ca1775f2231c287b5ea5e55b5">ErrorHandler&lt; ntables &gt;</a>
 </li>
 </ul>
 
@@ -223,6 +230,9 @@ $(document).ready(function(){initNavTree('functions_func.html','');});
 </li>
 <li>get_JxW_values()
 : <a class="el" href="class_f_e_values_cache.html#ace5739600eb98b1dec54c12d6e9d504e">FEValuesCache&lt; dim, spacedim &gt;</a>
+</li>
+<li>get_local_tolerances()
+: <a class="el" href="class_sundials_interface.html#a76f100a930e58360da10bcd50ed2fa5e">SundialsInterface&lt; VEC &gt;</a>
 </li>
 <li>get_mapped_function()
 : <a class="el" href="class_parsed_mapped_functions.html#a7929a3d6fc68cd382370dd23c0fd911c">ParsedMappedFunctions&lt; spacedim, n_components &gt;</a>
@@ -283,6 +293,9 @@ $(document).ready(function(){initNavTree('functions_func.html','');});
 
 
 <h3><a class="anchor" id="index_i"></a>- i -</h3><ul>
+<li>IDAInterface()
+: <a class="el" href="class_i_d_a_interface.html#adb332efb07d39318bbddf22f64fee640">IDAInterface&lt; VEC &gt;</a>
+</li>
 <li>initialize()
 : <a class="el" href="class_parameter_acceptor.html#af04c215672e63f03a942ae4c55b57c27">ParameterAcceptor</a>
 </li>
@@ -316,6 +329,9 @@ $(document).ready(function(){initNavTree('functions_func.html','');});
 <li>n_components()
 : <a class="el" href="class_parsed_finite_element.html#a432814fb23a7db937442afdd70e400d1">ParsedFiniteElement&lt; dim, spacedim &gt;</a>
 </li>
+<li>n_dofs()
+: <a class="el" href="class_sundials_interface.html#a3f38522458306400423e56e4c25e2356">SundialsInterface&lt; VEC &gt;</a>
+</li>
 </ul>
 
 
@@ -328,6 +344,9 @@ $(document).ready(function(){initNavTree('functions_func.html','');});
 </li>
 <li>operator[]()
 : <a class="el" href="class_time_utilities.html#aadb98d1aa3ebbba8d48a8048c7db84b7">TimeUtilities</a>
+</li>
+<li>output_step()
+: <a class="el" href="class_sundials_interface.html#ab9b4c2a0cca443a9d06c48fb76c0b13c">SundialsInterface&lt; VEC &gt;</a>
 </li>
 <li>output_table()
 : <a class="el" href="class_error_handler.html#a55ad14f7cbf37250984cdb8c2c58b627">ErrorHandler&lt; ntables &gt;</a>
@@ -361,28 +380,28 @@ $(document).ready(function(){initNavTree('functions_func.html','');});
 , <a class="el" href="class_parsed_solver.html#a8a11047efa43f3f171c14b3b127f225a">ParsedSolver&lt; VECTOR &gt;</a>
 </li>
 <li>ParsedDataOut()
-: <a class="el" href="class_parsed_data_out.html#ad3e0bc291f95381f03a930d635fe849a">ParsedDataOut&lt; dim, spacedim &gt;</a>
+: <a class="el" href="class_parsed_data_out.html#a6b3e58904d3f7ddf87fd704334d4c83c">ParsedDataOut&lt; dim, spacedim &gt;</a>
 </li>
 <li>ParsedDirichletBCs()
 : <a class="el" href="class_parsed_dirichlet_b_cs.html#a83c86bbcd6fc9807564ac6bb1921e723">ParsedDirichletBCs&lt; dim, spacedim, n_components &gt;</a>
 </li>
 <li>ParsedFiniteElement()
-: <a class="el" href="class_parsed_finite_element.html#a83995c191ad5965e639068d34d429850">ParsedFiniteElement&lt; dim, spacedim &gt;</a>
+: <a class="el" href="class_parsed_finite_element.html#a0b32290d760794d368a4a815ec603ae6">ParsedFiniteElement&lt; dim, spacedim &gt;</a>
 </li>
 <li>ParsedFunction()
 : <a class="el" href="class_parsed_function.html#af9529969ac314e7233a5091671c0e81a">ParsedFunction&lt; dim, ncomponents &gt;</a>
 </li>
 <li>ParsedGridGenerator()
-: <a class="el" href="class_parsed_grid_generator.html#a664eb322a7e0b399d83f72776d4c7cd3">ParsedGridGenerator&lt; dim, spacedim &gt;</a>
+: <a class="el" href="class_parsed_grid_generator.html#a4be3950e0fc91e52b473d96f59778f23">ParsedGridGenerator&lt; dim, spacedim &gt;</a>
 </li>
 <li>ParsedGridRefinement()
-: <a class="el" href="class_parsed_grid_refinement.html#abd4ca397cfe27e3ed75412173e1a0ca7">ParsedGridRefinement</a>
+: <a class="el" href="class_parsed_grid_refinement.html#acbfa13dab8278da63abfaac4dda432ed">ParsedGridRefinement</a>
 </li>
 <li>ParsedMappedFunctions()
-: <a class="el" href="class_parsed_mapped_functions.html#a871a4f7be43595503ada191d6c26dce4">ParsedMappedFunctions&lt; spacedim, n_components &gt;</a>
+: <a class="el" href="class_parsed_mapped_functions.html#a0862f2207f5c86282397d4cfe930dff2">ParsedMappedFunctions&lt; spacedim, n_components &gt;</a>
 </li>
 <li>ParsedQuadrature()
-: <a class="el" href="class_parsed_quadrature.html#a435055d8c9551e410ed17da979ad3fc7">ParsedQuadrature&lt; dim &gt;</a>
+: <a class="el" href="class_parsed_quadrature.html#a53d525a39f67f4966ccb658ea90e40b0">ParsedQuadrature&lt; dim &gt;</a>
 </li>
 <li>ParsedSolver()
 : <a class="el" href="class_parsed_solver.html#aa540f1ba45b032c0f728ba47db506740">ParsedSolver&lt; VECTOR &gt;</a>
@@ -403,6 +422,12 @@ $(document).ready(function(){initNavTree('functions_func.html','');});
 <li>reinit()
 : <a class="el" href="class_f_e_values_cache.html#aaf663f2038c3bb71908ab24a9374d2a1">FEValuesCache&lt; dim, spacedim &gt;</a>
 </li>
+<li>reset_ode()
+: <a class="el" href="class_i_d_a_interface.html#a680d9db0bf5f2f5bb8bebfeac23c2c83">IDAInterface&lt; VEC &gt;</a>
+</li>
+<li>residual()
+: <a class="el" href="class_sundials_interface.html#a0226a2d16dce1af1d6590f45a0dfa08f">SundialsInterface&lt; VEC &gt;</a>
+</li>
 </ul>
 
 
@@ -416,14 +441,29 @@ $(document).ready(function(){initNavTree('functions_func.html','');});
 <li>set_time()
 : <a class="el" href="class_parsed_mapped_functions.html#a4eb50b668a99c13f8422c519dcf303d4">ParsedMappedFunctions&lt; spacedim, n_components &gt;</a>
 </li>
+<li>setup_jacobian()
+: <a class="el" href="class_sundials_interface.html#aed6926f5f779928a4491189331a017ca">SundialsInterface&lt; VEC &gt;</a>
+</li>
 <li>sleep()
 : <a class="el" href="class_time_utilities.html#a7e08186f762a77e597b8e05a43a2f36c">TimeUtilities</a>
+</li>
+<li>solve_jacobian_system()
+: <a class="el" href="class_sundials_interface.html#a87f46ceee2df7877047903088b5fde9b">SundialsInterface&lt; VEC &gt;</a>
+</li>
+<li>solver_should_restart()
+: <a class="el" href="class_sundials_interface.html#a310375f9cb92dc17a42512633db2b883">SundialsInterface&lt; VEC &gt;</a>
 </li>
 <li>split_id_components()
 : <a class="el" href="class_parsed_mapped_functions.html#a4081672429df2e0c1121168c38034694">ParsedMappedFunctions&lt; spacedim, n_components &gt;</a>
 </li>
 <li>split_id_functions()
 : <a class="el" href="class_parsed_mapped_functions.html#ac1a7c2cd36a997c7c1816f72e9da7793">ParsedMappedFunctions&lt; spacedim, n_components &gt;</a>
+</li>
+<li>start_ode()
+: <a class="el" href="class_i_d_a_interface.html#a084cbe6776dba09669e6d561325abdea">IDAInterface&lt; VEC &gt;</a>
+</li>
+<li>SundialsInterface()
+: <a class="el" href="class_sundials_interface.html#a91729b45cf6f5b24ce45dfe8e0daccc6">SundialsInterface&lt; VEC &gt;</a>
 </li>
 </ul>
 
@@ -440,10 +480,10 @@ $(document).ready(function(){initNavTree('functions_func.html','');});
 
 <h3><a class="anchor" id="index_w"></a>- w -</h3><ul>
 <li>write()
-: <a class="el" href="class_parsed_grid_generator.html#a26e64848201d80e416cf1a3fd99b0833">ParsedGridGenerator&lt; dim, spacedim &gt;</a>
+: <a class="el" href="class_parsed_grid_generator.html#a51b277d75f0b29513e58607af35816dc">ParsedGridGenerator&lt; dim, spacedim &gt;</a>
 </li>
 <li>write_data_and_clear()
-: <a class="el" href="class_parsed_data_out.html#a142ee70ccc3fd2c2c52843f982416ec2">ParsedDataOut&lt; dim, spacedim &gt;</a>
+: <a class="el" href="class_parsed_data_out.html#a4f8c9d664128b50abe5b63fcfb28d20e">ParsedDataOut&lt; dim, spacedim &gt;</a>
 </li>
 </ul>
 
@@ -451,6 +491,9 @@ $(document).ready(function(){initNavTree('functions_func.html','');});
 <h3><a class="anchor" id="index_~"></a>- ~ -</h3><ul>
 <li>~handle()
 : <a class="el" href="structhandle.html#a4a5d1fbf334ae577767c116f36ae1443">handle</a>
+</li>
+<li>~IDAInterface()
+: <a class="el" href="class_i_d_a_interface.html#aa152806e9098e6607a700cf355e3f9f0">IDAInterface&lt; VEC &gt;</a>
 </li>
 <li>~OverWriteStream()
 : <a class="el" href="class_over_write_stream.html#ab489706e36698dc8e662884d3742fb23">OverWriteStream&lt; Stream &gt;</a>
@@ -464,7 +507,7 @@ $(document).ready(function(){initNavTree('functions_func.html','');});
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Fri Nov 13 2015 13:06:10 for deal2lkit: A ToolKit library for Deal.II by
+    <li class="footer">Generated on Wed Nov 25 2015 00:15:58 for deal2lkit: A ToolKit library for Deal.II by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.10 </li>
   </ul>

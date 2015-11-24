@@ -94,21 +94,263 @@ $(document).ready(function(){initNavTree('ida__interface_8cc.html','');});
 </div>
 
 <div class="header">
+  <div class="summary">
+<a href="#func-members">Functions</a>  </div>
   <div class="headertitle">
 <div class="title">ida_interface.cc File Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><code>#include &lt;<a class="el" href="ida__interface_8h_source.html">deal2lkit/ida_interface.h</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="sundials__interface_8h_source.html">deal2lkit/sundials_interface.h</a>&gt;</code><br />
+<code>#include &lt;<a class="elRef" doxygen="/Users/heltai/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/include_2deal_8II_2base_2utilities_8h.html">deal.II/base/utilities.h</a>&gt;</code><br />
+<code>#include &lt;<a class="elRef" doxygen="/Users/heltai/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/block__vector_8h.html">deal.II/lac/block_vector.h</a>&gt;</code><br />
+<code>#include &lt;iostream&gt;</code><br />
+<code>#include &lt;iomanip&gt;</code><br />
 </div>
 <p><a href="ida__interface_8cc_source.html">Go to the source code of this file.</a></p>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
+Functions</h2></td></tr>
+<tr class="memitem:a8beb4fd3ca3444a84d2bab67512ba977"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="ida__interface_8cc.html#a8beb4fd3ca3444a84d2bab67512ba977">copy</a> (<a class="elRef" doxygen="/Users/heltai/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classBlockVector.html">BlockVector</a>&lt; double &gt; &amp;dst, const N_Vector &amp;src)</td></tr>
+<tr class="separator:a8beb4fd3ca3444a84d2bab67512ba977"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9f9a303531d23676970f08dec8fa62c8"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="ida__interface_8cc.html#a9f9a303531d23676970f08dec8fa62c8">copy</a> (N_Vector &amp;dst, const <a class="elRef" doxygen="/Users/heltai/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classBlockVector.html">BlockVector</a>&lt; double &gt; &amp;src)</td></tr>
+<tr class="separator:a9f9a303531d23676970f08dec8fa62c8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa2642994ef4ccf74112ffc6ec39d1b3d"><td class="memTemplParams" colspan="2">template&lt;typename VEC &gt; </td></tr>
+<tr class="memitem:aa2642994ef4ccf74112ffc6ec39d1b3d"><td class="memTemplItemLeft" align="right" valign="top">int&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="ida__interface_8cc.html#aa2642994ef4ccf74112ffc6ec39d1b3d">t_dae_residual</a> (realtype tt, N_Vector yy, N_Vector yp, N_Vector rr, void *user_data)</td></tr>
+<tr class="separator:aa2642994ef4ccf74112ffc6ec39d1b3d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa133316b12cb7588b35a010cd21d4853"><td class="memTemplParams" colspan="2">template&lt;typename VEC &gt; </td></tr>
+<tr class="memitem:aa133316b12cb7588b35a010cd21d4853"><td class="memTemplItemLeft" align="right" valign="top">int&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="ida__interface_8cc.html#aa133316b12cb7588b35a010cd21d4853">t_dae_lsetup</a> (IDAMem IDA_mem, N_Vector yy, N_Vector yp, N_Vector resp, N_Vector tmp1, N_Vector tmp2, N_Vector tmp3)</td></tr>
+<tr class="separator:aa133316b12cb7588b35a010cd21d4853"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a347df59d1925b8015c6abfffe8c646d2"><td class="memTemplParams" colspan="2">template&lt;typename VEC &gt; </td></tr>
+<tr class="memitem:a347df59d1925b8015c6abfffe8c646d2"><td class="memTemplItemLeft" align="right" valign="top">int&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="ida__interface_8cc.html#a347df59d1925b8015c6abfffe8c646d2">t_dae_solve</a> (IDAMem IDA_mem, N_Vector b, N_Vector weight, N_Vector yy, N_Vector yp, N_Vector resp)</td></tr>
+<tr class="separator:a347df59d1925b8015c6abfffe8c646d2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table>
+<h2 class="groupheader">Function Documentation</h2>
+<a class="anchor" id="a8beb4fd3ca3444a84d2bab67512ba977"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void copy </td>
+          <td>(</td>
+          <td class="paramtype"><a class="elRef" doxygen="/Users/heltai/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classBlockVector.html">BlockVector</a>&lt; double &gt; &amp;&#160;</td>
+          <td class="paramname"><em>dst</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const N_Vector &amp;&#160;</td>
+          <td class="paramname"><em>src</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="ida__interface_8cc_source.html#l00084">84</a> of file <a class="el" href="ida__interface_8cc_source.html">ida_interface.cc</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a9f9a303531d23676970f08dec8fa62c8"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void copy </td>
+          <td>(</td>
+          <td class="paramtype">N_Vector &amp;&#160;</td>
+          <td class="paramname"><em>dst</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="elRef" doxygen="/Users/heltai/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classBlockVector.html">BlockVector</a>&lt; double &gt; &amp;&#160;</td>
+          <td class="paramname"><em>src</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="ida__interface_8cc_source.html#l00101">101</a> of file <a class="el" href="ida__interface_8cc_source.html">ida_interface.cc</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="aa133316b12cb7588b35a010cd21d4853"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename VEC &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">int t_dae_lsetup </td>
+          <td>(</td>
+          <td class="paramtype">IDAMem&#160;</td>
+          <td class="paramname"><em>IDA_mem</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">N_Vector&#160;</td>
+          <td class="paramname"><em>yy</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">N_Vector&#160;</td>
+          <td class="paramname"><em>yp</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">N_Vector&#160;</td>
+          <td class="paramname"><em>resp</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">N_Vector&#160;</td>
+          <td class="paramname"><em>tmp1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">N_Vector&#160;</td>
+          <td class="paramname"><em>tmp2</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">N_Vector&#160;</td>
+          <td class="paramname"><em>tmp3</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="ida__interface_8cc_source.html#l00144">144</a> of file <a class="el" href="ida__interface_8cc_source.html">ida_interface.cc</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="aa2642994ef4ccf74112ffc6ec39d1b3d"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename VEC &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">int t_dae_residual </td>
+          <td>(</td>
+          <td class="paramtype">realtype&#160;</td>
+          <td class="paramname"><em>tt</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">N_Vector&#160;</td>
+          <td class="paramname"><em>yy</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">N_Vector&#160;</td>
+          <td class="paramname"><em>yp</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">N_Vector&#160;</td>
+          <td class="paramname"><em>rr</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">void *&#160;</td>
+          <td class="paramname"><em>user_data</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="ida__interface_8cc_source.html#l00122">122</a> of file <a class="el" href="ida__interface_8cc_source.html">ida_interface.cc</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a347df59d1925b8015c6abfffe8c646d2"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename VEC &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">int t_dae_solve </td>
+          <td>(</td>
+          <td class="paramtype">IDAMem&#160;</td>
+          <td class="paramname"><em>IDA_mem</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">N_Vector&#160;</td>
+          <td class="paramname"><em>b</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">N_Vector&#160;</td>
+          <td class="paramname"><em>weight</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">N_Vector&#160;</td>
+          <td class="paramname"><em>yy</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">N_Vector&#160;</td>
+          <td class="paramname"><em>yp</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">N_Vector&#160;</td>
+          <td class="paramname"><em>resp</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="ida__interface_8cc_source.html#l00175">175</a> of file <a class="el" href="ida__interface_8cc_source.html">ida_interface.cc</a>.</p>
+
+</div>
+</div>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_b2f33c71d4aa5e7af42a1ca61ff5af1b.html">source</a></li><li class="navelem"><a class="el" href="ida__interface_8cc.html">ida_interface.cc</a></li>
-    <li class="footer">Generated on Fri Nov 13 2015 13:06:10 for deal2lkit: A ToolKit library for Deal.II by
+    <li class="footer">Generated on Wed Nov 25 2015 00:15:57 for deal2lkit: A ToolKit library for Deal.II by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.10 </li>
   </ul>

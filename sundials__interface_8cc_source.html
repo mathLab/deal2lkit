@@ -141,7 +141,7 @@ $(document).ready(function(){initNavTree('sundials__interface_8cc_source.html','
 <div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;D2K_NAMESPACE_OPEN</div>
 <div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;</div>
 <div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">typename</span> VEC&gt;</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;<span class="keywordtype">bool</span> SundialsInterface&lt;VEC&gt;::solver_should_restart(<span class="keyword">const</span> <span class="keywordtype">double</span>,</div>
+<div class="line"><a name="l00044"></a><span class="lineno"><a class="line" href="class_sundials_interface.html#a310375f9cb92dc17a42512633db2b883">   44</a></span>&#160;<span class="keywordtype">bool</span> <a class="code" href="class_sundials_interface.html#a310375f9cb92dc17a42512633db2b883">SundialsInterface&lt;VEC&gt;::solver_should_restart</a>(<span class="keyword">const</span> <span class="keywordtype">double</span>,</div>
 <div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;                                                   <span class="keyword">const</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span>,</div>
 <div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;                                                   <span class="keyword">const</span> <span class="keywordtype">double</span>,</div>
 <div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;                                                   VEC &amp;,</div>
@@ -152,7 +152,7 @@ $(document).ready(function(){initNavTree('sundials__interface_8cc_source.html','
 <div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;</div>
 <div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;</div>
 <div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">typename</span> VEC&gt;</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;VEC &amp;SundialsInterface&lt;VEC&gt;::differential_components()<span class="keyword"> const</span></div>
+<div class="line"><a name="l00055"></a><span class="lineno"><a class="line" href="class_sundials_interface.html#a6094ddd618793ad4ca392275782f54e1">   55</a></span>&#160;VEC &amp;<a class="code" href="class_sundials_interface.html#a6094ddd618793ad4ca392275782f54e1">SundialsInterface&lt;VEC&gt;::differential_components</a>()<span class="keyword"> const</span></div>
 <div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;<span class="keyword"></span>{</div>
 <div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;  <span class="keyword">static</span> shared_ptr&lt;VEC&gt; tmp = create_new_vector();</div>
 <div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;  <span class="keyword">static</span> <span class="keywordtype">bool</span> init = <span class="keyword">true</span>;</div>
@@ -165,7 +165,7 @@ $(document).ready(function(){initNavTree('sundials__interface_8cc_source.html','
 <div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;}</div>
 <div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;</div>
 <div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">typename</span> VEC&gt;</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;VEC &amp;SundialsInterface&lt;VEC&gt;::get_local_tolerances()<span class="keyword"> const</span></div>
+<div class="line"><a name="l00068"></a><span class="lineno"><a class="line" href="class_sundials_interface.html#a76f100a930e58360da10bcd50ed2fa5e">   68</a></span>&#160;VEC &amp;<a class="code" href="class_sundials_interface.html#a76f100a930e58360da10bcd50ed2fa5e">SundialsInterface&lt;VEC&gt;::get_local_tolerances</a>()<span class="keyword"> const</span></div>
 <div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;<span class="keyword"></span>{</div>
 <div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;  <span class="keyword">static</span> shared_ptr&lt;VEC&gt; tmp = create_new_vector();</div>
 <div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;  <span class="keyword">static</span> <span class="keywordtype">bool</span> init = <span class="keyword">true</span>;</div>
@@ -201,7 +201,10 @@ $(document).ready(function(){initNavTree('sundials__interface_8cc_source.html','
 <div class="ttc" id="utilities_8h_html"><div class="ttname"><a href="utilities_8h.html">utilities.h</a></div></div>
 <div class="ttc" id="block__vector_8h_html"><div class="ttname"><a href="http://www.dealii.org/developer/doxygen/deal.II/block__vector_8h.html">block_vector.h</a></div></div>
 <div class="ttc" id="trilinos__block__vector_8h_html"><div class="ttname"><a href="http://www.dealii.org/developer/doxygen/deal.II/trilinos__block__vector_8h.html">trilinos_block_vector.h</a></div></div>
+<div class="ttc" id="class_sundials_interface_html_a310375f9cb92dc17a42512633db2b883"><div class="ttname"><a href="class_sundials_interface.html#a310375f9cb92dc17a42512633db2b883">SundialsInterface::solver_should_restart</a></div><div class="ttdeci">virtual bool solver_should_restart(const double t, const unsigned int step_number, const double h, VEC &amp;solution, VEC &amp;solution_dot)</div><div class="ttdoc">This implementation is smart enough to recognize whether the DAE solver should be reset or not...</div><div class="ttdef"><b>Definition:</b> <a href="sundials__interface_8cc_source.html#l00044">sundials_interface.cc:44</a></div></div>
 <div class="ttc" id="trilinos__parallel__block__vector_8h_html"><div class="ttname"><a href="http://www.dealii.org/developer/doxygen/deal.II/trilinos__parallel__block__vector_8h.html">trilinos_parallel_block_vector.h</a></div></div>
+<div class="ttc" id="class_sundials_interface_html_a76f100a930e58360da10bcd50ed2fa5e"><div class="ttname"><a href="class_sundials_interface.html#a76f100a930e58360da10bcd50ed2fa5e">SundialsInterface::get_local_tolerances</a></div><div class="ttdeci">virtual VEC &amp; get_local_tolerances() const </div><div class="ttdoc">This function is used to set different tolerances accordingly to the solver. </div><div class="ttdef"><b>Definition:</b> <a href="sundials__interface_8cc_source.html#l00068">sundials_interface.cc:68</a></div></div>
+<div class="ttc" id="class_sundials_interface_html_a6094ddd618793ad4ca392275782f54e1"><div class="ttname"><a href="class_sundials_interface.html#a6094ddd618793ad4ca392275782f54e1">SundialsInterface::differential_components</a></div><div class="ttdeci">virtual VEC &amp; differential_components() const </div><div class="ttdoc">IDA package decomposes variables in differentials and algebraics. </div><div class="ttdef"><b>Definition:</b> <a href="sundials__interface_8cc_source.html#l00055">sundials_interface.cc:55</a></div></div>
 <div class="ttc" id="vector_8h_html"><div class="ttname"><a href="http://www.dealii.org/developer/doxygen/deal.II/vector_8h.html">vector.h</a></div></div>
 <div class="ttc" id="utilities_8h_html_ac3675b110cbe4374dcaaae114ec3982c"><div class="ttname"><a href="utilities_8h.html#ac3675b110cbe4374dcaaae114ec3982c">vector_shift</a></div><div class="ttdeci">void vector_shift(VEC &amp;in_vec, double a_scalar)</div><div class="ttdoc">A simple class to shift a vector by a scalar. </div><div class="ttdef"><b>Definition:</b> <a href="utilities_8h_source.html#l00491">utilities.h:491</a></div></div>
 <div class="ttc" id="petsc__solver_8h_html"><div class="ttname"><a href="http://www.dealii.org/developer/doxygen/deal.II/petsc__solver_8h.html">petsc_solver.h</a></div></div>
@@ -212,7 +215,7 @@ $(document).ready(function(){initNavTree('sundials__interface_8cc_source.html','
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_b2f33c71d4aa5e7af42a1ca61ff5af1b.html">source</a></li><li class="navelem"><a class="el" href="sundials__interface_8cc.html">sundials_interface.cc</a></li>
-    <li class="footer">Generated on Fri Nov 13 2015 13:06:10 for deal2lkit: A ToolKit library for Deal.II by
+    <li class="footer">Generated on Wed Nov 25 2015 00:15:57 for deal2lkit: A ToolKit library for Deal.II by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.10 </li>
   </ul>

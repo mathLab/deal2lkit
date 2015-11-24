@@ -109,6 +109,9 @@ $(document).ready(function(){initNavTree('functions_s.html','');});
 <li>set_time()
 : <a class="el" href="class_parsed_mapped_functions.html#a4eb50b668a99c13f8422c519dcf303d4">ParsedMappedFunctions&lt; spacedim, n_components &gt;</a>
 </li>
+<li>setup_jacobian()
+: <a class="el" href="class_sundials_interface.html#aed6926f5f779928a4491189331a017ca">SundialsInterface&lt; VEC &gt;</a>
+</li>
 <li>sleep()
 : <a class="el" href="class_time_utilities.html#a7e08186f762a77e597b8e05a43a2f36c">TimeUtilities</a>
 </li>
@@ -116,17 +119,27 @@ $(document).ready(function(){initNavTree('functions_s.html','');});
 : <a class="el" href="class_error_handler.html#a0958d47fc5c8e32019ac5ecc0366dcb5">ErrorHandler&lt; ntables &gt;</a>
 , <a class="el" href="class_parsed_data_out.html#ad221cc4d10a756e86b79555340df4a47">ParsedDataOut&lt; dim, spacedim &gt;</a>
 </li>
+<li>solve_jacobian_system()
+: <a class="el" href="class_sundials_interface.html#a87f46ceee2df7877047903088b5fde9b">SundialsInterface&lt; VEC &gt;</a>
+</li>
 <li>solver
-: <a class="el" href="class_parsed_solver.html#a6ffac1ba54355b38881f16f2520224ab">ParsedSolver&lt; VECTOR &gt;</a>
+: <a class="el" href="class_i_d_a_interface.html#a73397b244a5d3738a86a48502dbe457a">IDAInterface&lt; VEC &gt;</a>
+, <a class="el" href="class_parsed_solver.html#a6ffac1ba54355b38881f16f2520224ab">ParsedSolver&lt; VECTOR &gt;</a>
 </li>
 <li>solver_name
 : <a class="el" href="class_parsed_solver.html#a417ba9ea0730c5b777d50fbac4a6e1eb">ParsedSolver&lt; VECTOR &gt;</a>
+</li>
+<li>solver_should_restart()
+: <a class="el" href="class_sundials_interface.html#a310375f9cb92dc17a42512633db2b883">SundialsInterface&lt; VEC &gt;</a>
 </li>
 <li>split_id_components()
 : <a class="el" href="class_parsed_mapped_functions.html#a4081672429df2e0c1121168c38034694">ParsedMappedFunctions&lt; spacedim, n_components &gt;</a>
 </li>
 <li>split_id_functions()
 : <a class="el" href="class_parsed_mapped_functions.html#ac1a7c2cd36a997c7c1816f72e9da7793">ParsedMappedFunctions&lt; spacedim, n_components &gt;</a>
+</li>
+<li>start_ode()
+: <a class="el" href="class_i_d_a_interface.html#a084cbe6776dba09669e6d561325abdea">IDAInterface&lt; VEC &gt;</a>
 </li>
 <li>status
 : <a class="el" href="class_time_utilities.html#a60752fc85add1789bac9f52172a95198">TimeUtilities</a>
@@ -179,13 +192,16 @@ $(document).ready(function(){initNavTree('functions_s.html','');});
 <li>subdivisions
 : <a class="el" href="class_parsed_data_out.html#a8a2194f416e4d7866b8fcf8490d0b8bc">ParsedDataOut&lt; dim, spacedim &gt;</a>
 </li>
+<li>SundialsInterface()
+: <a class="el" href="class_sundials_interface.html#a91729b45cf6f5b24ce45dfe8e0daccc6">SundialsInterface&lt; VEC &gt;</a>
+</li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Fri Nov 13 2015 13:06:10 for deal2lkit: A ToolKit library for Deal.II by
+    <li class="footer">Generated on Wed Nov 25 2015 00:15:58 for deal2lkit: A ToolKit library for Deal.II by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.10 </li>
   </ul>

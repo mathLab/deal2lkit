@@ -3,13 +3,15 @@ var dir_5401fe99141ed2453494b7c40eaaa779 =
     [ "any_data.h", "any__data_8h.html", [
       [ "AnyData", "http://www.dealii.org/developer/doxygen/deal.II/classAnyData.html", "classAnyData" ]
     ] ],
-    [ "assimp_interface.h", "assimp__interface_8h.html", null ],
+    [ "assimp_interface.h", "assimp__interface_8h.html", "assimp__interface_8h" ],
     [ "dof_utilities.h", "dof__utilities_8h.html", "dof__utilities_8h" ],
     [ "error_handler.h", "error__handler_8h.html", "error__handler_8h" ],
     [ "fe_values_cache.h", "fe__values__cache_8h.html", [
       [ "FEValuesCache", "class_f_e_values_cache.html", "class_f_e_values_cache" ]
     ] ],
-    [ "ida_interface.h", "ida__interface_8h.html", null ],
+    [ "ida_interface.h", "ida__interface_8h.html", [
+      [ "IDAInterface", "class_i_d_a_interface.html", "class_i_d_a_interface" ]
+    ] ],
     [ "parameter_acceptor.h", "parameter__acceptor_8h.html", [
       [ "ParameterAcceptor", "class_parameter_acceptor.html", "class_parameter_acceptor" ]
     ] ],
@@ -38,6 +40,8 @@ var dir_5401fe99141ed2453494b7c40eaaa779 =
       [ "ParsedQuadrature", "class_parsed_quadrature.html", "class_parsed_quadrature" ]
     ] ],
     [ "parsed_solver.h", "parsed__solver_8h.html", "parsed__solver_8h" ],
-    [ "sundials_interface.h", "sundials__interface_8h.html", null ],
+    [ "sundials_interface.h", "sundials__interface_8h.html", [
+      [ "SundialsInterface", "class_sundials_interface.html", "class_sundials_interface" ]
+    ] ],
     [ "utilities.h", "utilities_8h.html", "utilities_8h" ]
 ];

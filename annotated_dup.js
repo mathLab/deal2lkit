@@ -3,6 +3,7 @@ var annotated_dup =
     [ "ErrorHandler", "class_error_handler.html", "class_error_handler" ],
     [ "FEValuesCache", "class_f_e_values_cache.html", "class_f_e_values_cache" ],
     [ "handle", "structhandle.html", "structhandle" ],
+    [ "IDAInterface", "class_i_d_a_interface.html", "class_i_d_a_interface" ],
     [ "OverWriteStream", "class_over_write_stream.html", "class_over_write_stream" ],
     [ "ParameterAcceptor", "class_parameter_acceptor.html", "class_parameter_acceptor" ],
     [ "ParsedDataOut", "class_parsed_data_out.html", "class_parsed_data_out" ],
@@ -14,5 +15,6 @@ var annotated_dup =
     [ "ParsedMappedFunctions", "class_parsed_mapped_functions.html", "class_parsed_mapped_functions" ],
     [ "ParsedQuadrature", "class_parsed_quadrature.html", "class_parsed_quadrature" ],
     [ "ParsedSolver", "class_parsed_solver.html", "class_parsed_solver" ],
+    [ "SundialsInterface", "class_sundials_interface.html", "class_sundials_interface" ],
     [ "TimeUtilities", "class_time_utilities.html", "class_time_utilities" ]
 ];
