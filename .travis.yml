@@ -46,9 +46,10 @@ install:
   - ./scripts/set_cache.sh
   - mkdir build
   - cd build
-  - cmake -GNinja -DCMAKE_INSTALL_PREFIX=/home/travis/deal2lkit-inst -DD2K_ENABLE_TESTING=ON -DCMAKE_BUILD_TYPE=$BUILD_TYPE ..
+  - cmake -GNinja -DCMAKE_INSTALL_PREFIX=/home/travis/deal2lkit-$BUILD_TYPE -DD2K_ENABLE_TESTING=ON -DCMAKE_BUILD_TYPE=$BUILD_TYPE ..
   - ninja -j4 install
-  #- tar cvfz /home/travis/deal2lkit-CI-build.tgz /home/travis/deal2lkit-inst
+  - tar cfz /home/travis/deal2lkit-CI-$BUILD_TYPE.tgz /home/travis/deal2lkit-$BUILD_TYPE
+  - tar cfz /home/travis/dealii-CI-environment.tgz $PRG
   
 script:
   - ctest -j4 -V -R "${BUILD_TYPE,,}"
@@ -58,9 +59,8 @@ deploy:
   api_key:
     secure: JBIOZ2GRmxWduUKtM6E623y4lju4P7nKsa+DYh2qwrlSqQDrDoRPwGt9LW8T8l9CiMhvKbXTdzEsmQMdtHGzRW2GV9VU/lsugMTEGJMtjd/ly0dwTyscBhnBudLnk/z1lZB/wKgxi2r+fmsthRctvtzkIK8uRBqA0ivkAD9wFRU=
   file:
-    - /home/travis/deal2lkit-CI-build.tgz
-    - $PRG/trilinos-serial-CI-build.tgz
-    - $PRG/dealii-trilinos-serial-CI-build.tgz
+    - /home/travis/deal2lkit-CI-$BUILD_TYPE.tgz
+    - /home/travis/dealii-CI-environment.tgz
   skip_cleanup: true
   on:
     repo: mathlab/deal2lkit
