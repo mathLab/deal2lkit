@@ -32,9 +32,8 @@ http://mathlab.github.io/deal2lkit
 
 ## 1. Deal.II Requirements: ##
 
-Currently, the distributed source code requires the development
-version of the deal.II library. It will not work with deal.II 8.3 and
-previous versions, due to incompatibility issues.
+Currently, the distributed source code requires version 8.4 of the 
+deal.II library.
 
 2. Installation procedure:
 ==========================
@@ -83,7 +82,33 @@ for example, using wget
 	wget http://www.dealii.org/developer/doxygen/deal.tag
 	make doc
 
-5. Licence Informations
-=======================
+4. Citing this work
+===================
+
+If you use this library, please consider citing the following works:
+
+	@techreport{SartoriGiulianiBardelloni-2015-a,
+	Author = {Alberto Sartori and Nicola Giuliani and Mauro Bardelloni and Luca Heltai},
+	Institution = {SISSA},
+	Number = {57/2015/MATE},
+	Title = {deal2lkit: a Toolkit Library for deal.II},
+	Year = {2015}}
+
+
+	@techreport{MaierBardelloniHeltai-2015-a,
+	Author = {Matthias Maier and Mauro Bardelloni and Luca Heltai},
+	Institution = {SISSA},
+	Title = {LinearOperator -- a generic, high-level expression syntax for linear algebra},
+	Year = {2015}}
+
+
+	@techreport{BangerthHeisterHeltai-2016-a,
+	Author = {W. Bangerth and T. Heister and L. Heltai and G. Kanschat and M. Kronbichler and M. Maier and B. Turcksin},
+	Institution = {Submitted},
+	Title = {The \texttt{deal.II} Library, Version 8.3},
+	Year = {2015}}
+
+5. Licence Information
+======================
 
 See the LICENCE file in this directory.
