@@ -63,6 +63,6 @@ deploy:
     - /home/travis/dealii-CI-environment.tgz
   skip_cleanup: true
   on:
-    repo: mathlab/deal2lkit
+    repo: mathLab/deal2lkit
     tags: true
     all_branches: true
