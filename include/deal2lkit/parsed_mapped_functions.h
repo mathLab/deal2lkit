@@ -32,14 +32,12 @@ using namespace dealii;
 D2K_NAMESPACE_OPEN
 
 /**
- * ParsedMappedFunctions object.
- * It allows you to set a mapped functions, i.e., parsed functions
- * acting on specified id (boundary_id, material_id,etc..) and on
- * specified components.
+ * ParsedMappedFunctions object.  It allows you to set a mapped
+ * functions, i.e., parsed functions acting on specified id
+ * (boundary_id, material_id,etc..) and on specified components.
  *
  * Dirichlet Boundary conditions, Neumann boundary conditions
  * and forcing terms can be easily handled with this class.
- *
  *
  * A typical usage of this class is the following
  *
@@ -51,8 +49,9 @@ D2K_NAMESPACE_OPEN
  *
  * // create parsed_mapped_functions object
  *
- * ParsedMappedFunctions<spacedim,n_components>
+ * ParsedMappedFunctions<spacedim>
  *    parsed_mapped_functions("Forcing terms", // name for the section of the Parameter Handler to use
+ *                     n_components, // The number of components of the function
  *                     "u,u,p",         // names of known components that can be used instead of component numbers
  *                     "0=u % 1=2 % 6=ALL", // boundary_id = component;other_component % other_id = comp; other_comp
  *                     "0=x;y;0 % 1=0;0;0 % 6=y*k;0;k", // boundary_id = expression % other_id = other_expression
@@ -68,7 +67,7 @@ D2K_NAMESPACE_OPEN
  * @endcode
  */
 
-template <int spacedim, int n_components>
+template <int spacedim>
 class ParsedMappedFunctions : public ParameterAcceptor
 {
 public:
@@ -78,7 +77,9 @@ public:
    * It takes:
    * - the name for the section of the Parameter Handler to use
    *
-   * - the names of known components that can be used instead of component numbers
+   * - the number of components that this function has
+   *
+   * - the default names of known components that can be used instead of component numbers
    *
    * - a list of ids and components where the boundary conditions must be applied, which is
    *   a string with the following pattern boundary_id = component;other_component % other_id = comp; other_comp
@@ -90,6 +91,7 @@ public:
    *
    */
   ParsedMappedFunctions  (const std::string &name = "Mapped Functions",
+                          const unsigned int &n_components=1,
                           const std::string &component_names = "",
                           const std::string &default_id_components = "0=ALL",
                           const std::string &default_id_functions = "",
@@ -201,6 +203,7 @@ protected:
   std::map<unsigned int, std::string> id_str_functions;
   std::map<std::pair<unsigned int, unsigned int>, shared_ptr<dealii::Functions::ParsedFunction<spacedim> > > _normal_functions;
 
+  const unsigned int n_components;
 };
 
 

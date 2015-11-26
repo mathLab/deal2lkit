@@ -24,7 +24,7 @@ int main ()
 {
   initlog();
 
-  ParsedFunction<2> pf("Function", "x^2+y^2");
+  ParsedFunction<2> pf("Function", 1, "x^2+y^2");
 
   ParameterAcceptor::initialize();
 

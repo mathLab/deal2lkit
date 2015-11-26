@@ -26,10 +26,10 @@ D2K_NAMESPACE_OPEN
 
 /**
  * A deal2lkit wrapper for dealii::Functions::ParsedFunction. The
- * template integers specify the dimension of points this function
- * accepts, and the number of components of the Function.
+ * template integer specify the dimension of points this function
+ * accepts.
  */
-template<int dim, int ncomponents=1>
+template<int dim>
 class ParsedFunction : public ParameterAcceptor, public Functions::ParsedFunction<dim>
 {
 public:
@@ -37,8 +37,17 @@ public:
    * Constructor: takes an optional name for the section. If the
    * optional expression string is given, than it is used to set the
    * expression as soon as the parameters are declared.
+   *
+   * The n_components parameter is used to determine the number of
+   * components of this function. It defaults to one, and once it is
+   * set in the constructor, it cannot be changed by parameter file.
+   * The default_expression, instead, can be changed by acting on the
+   * parameter file. An exception will be thrown if the number of
+   * components of the expression does not coincide with the parameter
+   * passed at construction time to this function.
    */
   ParsedFunction(const std::string &name="",
+                 const unsigned int &n_components=1,
                  const std::string &default_exp="",
                  const std::string &default_const="");
 
@@ -59,40 +68,8 @@ private:
    */
   const std::string default_exp;
   const std::string default_const;
+  const unsigned int n_components;
 };
-
-// ============================================================
-// Explicit template functions
-// ============================================================
-
-template<int dim, int ncomponents>
-ParsedFunction<dim, ncomponents>::ParsedFunction(const std::string &name,
-                                                 const std::string &default_exp,
-                                                 const std::string &default_const) :
-  ParameterAcceptor(name),
-  Functions::ParsedFunction<dim>(ncomponents),
-  default_exp(default_exp),
-  default_const(default_const)
-{}
-
-
-template<int dim, int ncomponents>
-void ParsedFunction<dim, ncomponents>:: declare_parameters(ParameterHandler &prm)
-{
-  Functions::ParsedFunction<dim>::declare_parameters(prm, ncomponents);
-  if (default_exp != "")
-    prm.set("Function expression", default_exp);
-  if (default_const != "")
-    prm.set("Function constants", default_const);
-}
-
-
-template<int dim, int ncomponents>
-void ParsedFunction<dim, ncomponents>:: parse_parameters(ParameterHandler &prm)
-{
-  Functions::ParsedFunction<dim>::parse_parameters(prm);
-}
-
 
 D2K_NAMESPACE_CLOSE
 
