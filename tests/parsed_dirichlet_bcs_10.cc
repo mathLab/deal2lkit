@@ -53,10 +53,11 @@ void test (const Triangulation<dim> &tr,
           << std::endl;
 
   ConstraintMatrix cm;
-  ParsedDirichletBCs<dim,dim,dim+dim> parsed_dirichlet("ParsedDirichletBCs",
-                                                       (dim==2?"u,u,v,v":"u,u,u,v,v,v"),
-                                                       (dim==2?"0=u.N;v.N" :"5=u.N;v.N"),
-                                                       (dim==2?"0=0;0;10;10" :"5=5;5;5;15;15;15"));
+  ParsedDirichletBCs<dim,dim> parsed_dirichlet("ParsedDirichletBCs",
+                                               dim+dim,
+                                               (dim==2?"u,u,v,v":"u,u,u,v,v,v"),
+                                               (dim==2?"0=u.N;v.N" :"5=u.N;v.N"),
+                                               (dim==2?"0=0;0;10;10" :"5=5;5;5;15;15;15"));
 
 
   ParameterAcceptor::initialize();

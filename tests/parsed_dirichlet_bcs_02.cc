@@ -118,7 +118,7 @@ void FindBug<dim>::dirichlet_conditions ()
   for (unsigned int i=0; i<dof_handler.n_dofs(); ++i)
     dirichlet_dofs[i] = 1.;
 
-  ParsedDirichletBCs<dim,dim,dim+1> parsed_dirichlet("ParsedDirichletBCs","",(dim==2 ?"0=2" :"0=3"),(dim==2 ?"0=13;13;13" : "0=13;13;13;13"));
+  ParsedDirichletBCs<dim,dim> parsed_dirichlet("ParsedDirichletBCs",dim+1,"",(dim==2 ?"0=2" :"0=3"),(dim==2 ?"0=13;13;13" : "0=13;13;13;13"));
 //  if (dim ==2)
 //    ParameterAcceptor::initialize(SOURCE_DIR "/parameters/parsed_dirichlet_bcs_02_2D.prm", "used_parameters.prm");
 //  else

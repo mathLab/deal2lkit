@@ -59,9 +59,9 @@ void test ()
   triangulation.refine_global (1);
 
   dof_handler.distribute_dofs (fe);
-  ParsedDirichletBCs<dim,dim,1> parsed_dirichlet("Parsed Dirichlet BCs","","10=0 % 20=0",
-                                                 (dim==1 ?"10=x^2 % 20=x^2" :
-                                                  (dim==2 ?"10=x^2+y^2 % 20=x^2+y^2" :"10=x^2+y^2+z^2 % 20=x^2+y^2+z^2")));
+  ParsedDirichletBCs<dim,dim> parsed_dirichlet("Parsed Dirichlet BCs",1,"","10=0 % 20=0",
+                                               (dim==1 ?"10=x^2 % 20=x^2" :
+                                                (dim==2 ?"10=x^2+y^2 % 20=x^2+y^2" :"10=x^2+y^2+z^2 % 20=x^2+y^2+z^2")));
 
   ParameterAcceptor::initialize();
   std::map<types::global_dof_index,double> boundary_values;
