@@ -42,43 +42,24 @@ void test(ParsedGridGenerator<dim, spacedim> &pgg)
 int main ()
 {
   initlog();
-  ParsedGridGenerator<2,2> a("Grid");
+  ParsedGridGenerator<2> a("Read");
 
   ParameterHandler prm;
   ParameterAcceptor::declare_all_parameters(prm);
-
   prm.read_input_from_string(""
-                             "subsection Grid\n"
-                             "  set Output grid file name = grid.ar\n"
+                             "subsection Read\n"
+                             "  set Grid to generate = file \n"
+                             "  set Input grid file name = "
+                             SOURCE_DIR"/grids/obstacle.ucd\n"
+                             "  set Manifold descriptors = 5=HyperShellBoundary\n"
                              "end\n");
 
   ParameterAcceptor::parse_all_parameters(prm);
+  shared_ptr<Triangulation<2> > tria = SP(a.serial());
+  tria->refine_global();
+  // tria->execute_coarsening_and_refinement ();
 
-  auto t = SP(a.serial());
-  t->refine_global(1);
-  t->begin_active()->set_refine_flag();
-  t->execute_coarsening_and_refinement();
-
-  a.write(*t);
-  std::ifstream is("grid.ar");
-  std::string str((std::istreambuf_iterator<char>(is)),
-                  std::istreambuf_iterator<char>());
-  deallog << str;
-  is.close();
-
-  prm.read_input_from_string(""
-                             "subsection Grid\n"
-                             "  set Grid to generate = file\n"
-                             "  set Input grid file name = grid.ar\n"
-                             "  set Output grid file name = grid2.ar\n"
-                             "end\n");
-
-  ParameterAcceptor::parse_all_parameters(prm);
-  auto t2 = SP(a.serial());
-  a.write(*t2);
-  deallog << std::endl << "========================================" << std::endl;
-  is.open("grid2.ar");
-  std::string str2((std::istreambuf_iterator<char>(is)),
-                   std::istreambuf_iterator<char>());
-  deallog << str2 << std::endl;
+  std::ofstream out ("output");
+  GridOut grid_out;
+  grid_out.write_eps (*tria, out);
 }

@@ -327,7 +327,7 @@ private:
    * Take @p str_manifold_descriptors and fill @p manifold_descriptors with
    * ids and manifolds.
    */
-  void parse_manifold_descriptors();
+  void parse_manifold_descriptors(const std::string &str_manifold_descriptors);
 
   /**
    * Mesh smoothing to apply to the newly created Triangulation. This
@@ -352,7 +352,14 @@ private:
    * - CADSurface
    * - CADLine
    */
-  std::string str_manifold_descriptors;
+  std::string optional_manifold_descriptors;
+
+
+  /**
+   * Default Manifold descriptors. This is filled when creating the grid,
+   * and is later translated into an actual manifold.
+   */
+  std::string default_manifold_descriptors;
 
   /**
    * A map of Manifold associated to the given manifold_ids.
