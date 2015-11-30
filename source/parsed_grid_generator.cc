@@ -447,6 +447,7 @@ struct PGGHelper
         GridGenerator::hyper_ball( tria,
                                    p->point_option_one,
                                    p->double_option_one);
+        p->default_manifold_descriptors = "0=HyperBall";
       }
     else if (p->grid_name == "hyper_L")
       {
@@ -459,6 +460,7 @@ struct PGGHelper
         GridGenerator::half_hyper_ball (tria,
                                         p->point_option_one,
                                         p->double_option_one);
+        p->default_manifold_descriptors = "0=HalfHyperBallBoundary";
       }
     else if (p->grid_name == "cylinder")
       {
@@ -472,6 +474,7 @@ struct PGGHelper
                                          p->double_option_one,
                                          p->double_option_two,
                                          p->double_option_three);
+        p->default_manifold_descriptors = "0=ConeBoundary";
       }
     else if (p->grid_name == "hyper_cross")
       {
@@ -494,6 +497,10 @@ struct PGGHelper
                                           p->double_option_one,
                                           p->un_int_option_one,
                                           p->colorize);
+        p->default_manifold_descriptors = p->colorize ?
+                                          "0=SphericalManifold % 1=SphericalManifold" :
+                                          "0=HalfHyperShellBoundary";
+
       }
     else if (p->grid_name == "quarter_hyper_shell")
       {
@@ -503,6 +510,9 @@ struct PGGHelper
                                               p->double_option_one,
                                               p->un_int_option_one,
                                               p->colorize);
+        p->default_manifold_descriptors = p->colorize ?
+                                          "0=SphericalManifold % 1=SphericalManifold" :
+                                          "0=SphericalManifold";
       }
     else if (p->grid_name == "cylinder_shell")
       {
@@ -512,6 +522,7 @@ struct PGGHelper
                                         p->double_option_one,
                                         p->un_int_option_one,
                                         p->un_int_option_two);
+        p->default_manifold_descriptors = "0=CylinderManifold";
       }
     else if (p->grid_name == "hyper_cube_with_cylindrical_hole")
       {
@@ -530,6 +541,7 @@ struct PGGHelper
                                     p->double_option_one,
                                     p->un_int_option_one,
                                     p->colorize);
+        p->default_manifold_descriptors = "0=HalfHyperShellBoundary";
       }
     else if (p->grid_name == "cheese")
       {

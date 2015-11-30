@@ -57,9 +57,7 @@ int main ()
   ParameterAcceptor::parse_all_parameters(prm);
   shared_ptr<Triangulation<2> > tria = SP(a.serial());
   tria->refine_global();
-  // tria->execute_coarsening_and_refinement ();
 
-  std::ofstream out ("output");
   GridOut grid_out;
-  grid_out.write_eps (*tria, out);
+  grid_out.write_msh (*tria, deallog.get_file_stream());
 }
