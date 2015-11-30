@@ -69,12 +69,12 @@ Stokes<dim>::Stokes (const MPI_Comm &communicator)
              "FESystem[FE_Q(2)^dim-FE_Q(1)]",
              "u,u,p"),
 
-  exact_solution("Exact solution"),
-  forcing_term("Forcing term"),
-  initial_solution("Initial solution"),
-  initial_solution_dot("Initial solution_dot"),
-  dirichlet_bcs("Dirichlet BCs", "u,u,p", "0=u"),
-  dirichlet_dot("Dirichlet dot", "u,u,p", "0=u"),
+  exact_solution("Exact solution", 3),
+  forcing_term("Forcing term", 3),
+  initial_solution("Initial solution", 3),
+  initial_solution_dot("Initial solution_dot", 3),
+  dirichlet_bcs("Dirichlet BCs", 3, "u,u,p", "0=u"),
+  dirichlet_dot("Dirichlet dot", 3, "u,u,p", "0=u"),
 
   data_out("Output Parameters", "vtu"),
   dae(*this)
