@@ -73,8 +73,8 @@ int main(int argc, char **argv)
   ParsedGridGenerator<dim,spacedim> pgg;
 
   ParsedFiniteElement<dim,spacedim> pfe;
-  ParsedDirichletBCs<dim,dim,1> bcs;
-  ParsedFunction<spacedim> kappa("Kappa", "1.0");
+  ParsedDirichletBCs<dim> bcs;
+  ParsedFunction<spacedim> kappa("Kappa", 1, "1.0");
   ParsedFunction<spacedim> force("Forcing term");
   ParsedFunction<spacedim> exact("Exact solution");
 
