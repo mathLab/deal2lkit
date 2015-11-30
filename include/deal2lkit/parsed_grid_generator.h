@@ -32,6 +32,8 @@ using namespace dealii;
 
 D2K_NAMESPACE_OPEN
 
+struct PGGHelper;
+
 /**
  * Parsed grid generator. Create a grid by reading a parameter file,
  * either using dealii::GridGenerator functions, or by reading it from
@@ -47,7 +49,7 @@ D2K_NAMESPACE_OPEN
  * settings, and a typical usage of this class is
  * \code
  *   // 2D square - serial mesh
- *   // by default it constructs the rectangle whos opposite corner points
+ *   // by default it constructs the rectangle whose opposite corner points
  *   // are p1=(10.0,10.0) and p2=(20.0,20.0)
  *   ParsedGridGenerator<2,2> tria_builder_2d("2D mesh",
  *                                            "rectangle",
@@ -57,7 +59,7 @@ D2K_NAMESPACE_OPEN
  *                                            "true");
  *
  *   // 3D parallelepiped - parallel distributed mesh
- *   // by default it constructs the parallelepiped whos opposite corner
+ *   // by default it constructs the parallelepiped whose opposite corner
  *   // points are p1=(7.0,8.0,9.0) and p2=(15.0.16.0,16.7)
  *   ParsedGridGenerator<3,3> tria_builder_3d("3D mesh",
  *                                             "rectangle",
@@ -162,6 +164,12 @@ public:
                        const std::string output_grid_file="",
                        const std::string opt_manifold_descriptors="");
 
+
+  /**
+   * Return a list of implemented grids.
+   */
+  static std::string get_grid_names();
+
   /**
    * Declare all parameters of this class.
    */
@@ -185,40 +193,34 @@ public:
    * - **file**-> read grid from a file using:
    *   - *Input grid filename*  : input filename\n
    *
-   * - **rectangle**-> create a subdivided hyperrectangle using:
+   * - **rectangle**-> calls GridGenerator::SubdividedHyperRectangle() using:
    *   - *Point<spacedim>*: lower-left corner
    *   - *Point<spacedim>*: upper-right corner
    *   - *Vector of dim int*: subdivisions on each direction
    *   - *bool*: colorize grid
    *
-   * - **subdivided_hyper_rectangle**-> create a subdivided hyperrectangle using:
-   *   - *Point<spacedim>*: lower-left corner
-   *   - *Point<spacedim>*: upper-right corner
-   *   - *Vector of dim int*: subdivisions on each direction
-   *   - *bool*: colorize grid
-   *
-   * - **hyper_sphere**-> generate an hyper sphere with center and radius prescribed:
+   * - **hyper_sphere**-> calls GridGenerator::HyperSphere() using:
    *   - *Point<spacedim>*: center
    *   - *double*: radius
    *
-   * - **unit_hyperball**-> initialize the given triangulation with a hyperball:
+   * - **hyper_ball**-> calls GridGenerator::HyperBall() using:
    *   - *Point<spacedim>*: center
    *   - *double*: radius
    *
-   * - **subdivided_hyper_rectangle**-> create a coordinate-parallel parallelepiped:
+   * - **parallelepiped**-> ccalls GridGenerator::Parallelepiped() using:
    *   - std::vector<unsigned int> : number of subdivisions in each coordinate direction
    *   - *Point<spacedim>*: lower-left corner
    *   - *Point<spacedim>*: upper-right corner
    *   - *bool*: colorize grid
    *
-   * - **hyper_shell**-> create a gird represented by the region between two spheres with fixed center:
+   * - **hyper_shell**-> calls GridGenerator::HyperShell() using:
    *   - *Point<spacedim>*: center
    *   - *double*: inner sphere radius
    *   - *double*: outer sphere radius
    *   - *unsigned int*: number of cells of the resulting triangulation (In 3D, only 6, 12, and 96 are allowed)
    *   - *bool*: colorize grid
    *
-   * - **hyper_L**-> initialize the given triangulation with a hyper-L. It produces the hypercube with the interval [left,right] without the hypercube made out of the interval [(left+right)/2,right] for each coordinate.:
+   * - **hyper_L**-> GridGenerator::HyperL(). It produces the hypercube with the interval [left,right] without the hypercube made out of the interval [(left+right)/2,right] for each coordinate.:
    *   - *double*: left
    *   - *double*: right
    *
@@ -328,12 +330,6 @@ private:
   void parse_manifold_descriptors();
 
   /**
-   * Take @p manifold_descriptors and apply these manifolds to the
-   * Triangulation @p tria.
-   */
-  void apply_manifold_descriptors(Triangulation<dim,spacedim> &tria);
-
-  /**
    * Mesh smoothing to apply to the newly created Triangulation. This
    * variable is only used if the method serial() is called. For the
    * method parallel(), mesh smoothing is not yet supported by
@@ -361,7 +357,7 @@ private:
   /**
    * A map of Manifold associated to the given manifold_ids.
    */
-  std::map< types::manifold_id, shared_ptr<Manifold<dim,spacedim>> > manifold_descriptors;
+  std::map<types::manifold_id, shared_ptr<Manifold<dim,spacedim> > > manifold_descriptors;
 
   /**
    * Optional double argument. First option.
@@ -433,13 +429,6 @@ private:
    */
   bool copy_material_to_manifold_ids;
 
-
-  /**
-   * CAD file names. Optional argument to read a CAD file in either .iges
-   * or .step format and create manifold descriptors using OpenCASCADE.
-   */
-  std::vector<std::string> cad_file_names;
-
   /**
    * Optional vector of integers.
    */
@@ -465,6 +454,11 @@ private:
   std::string str_un_int_1;
   std::string str_un_int_2;
   std::string str_vec_int;
+
+  /**
+   * Helper function to create grids.
+   */
+  friend struct PGGHelper;
 };
 
 D2K_NAMESPACE_CLOSE

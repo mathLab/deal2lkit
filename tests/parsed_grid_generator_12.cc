@@ -27,16 +27,16 @@
 #include <streambuf>
 =======
 #include <deal.II/grid/grid_out.h>
->>>>>>> manifold
+  >>>>>>> manifold
 
 
-using namespace deal2lkit;
+  using namespace deal2lkit;
 
 <<<<<<< dbb719552cb629e1cb45b93c3ccb0c4ac9bad55d
 // Create a grid, refine it locally, write it out in ar format, read it
 // back in, and check that everything is fine.
 =======
-template<int dim, int spacedim>
+  template<int dim, int spacedim>
 void test(ParsedGridGenerator<dim, spacedim> &pgg)
 {
   Triangulation<dim, spacedim> *tria = pgg.serial();
@@ -48,7 +48,7 @@ void test(ParsedGridGenerator<dim, spacedim> &pgg)
 int main ()
 {
   initlog();
-<<<<<<< dbb719552cb629e1cb45b93c3ccb0c4ac9bad55d
+  <<<<<<< dbb719552cb629e1cb45b93c3ccb0c4ac9bad55d
   ParsedGridGenerator<2,2> a("Grid");
 
   ParameterHandler prm;
@@ -88,8 +88,8 @@ int main ()
   std::string str2((std::istreambuf_iterator<char>(is)),
                    std::istreambuf_iterator<char>());
   deallog << str2 << std::endl;
-=======
-  ParsedGridGenerator<2> a("Read");
+  =======
+    ParsedGridGenerator<2> a("Read");
 
   ParameterHandler prm;
   ParameterAcceptor::declare_all_parameters(prm);
@@ -110,5 +110,5 @@ int main ()
   GridOut grid_out;
   grid_out.write_eps (*tria, out);
 
->>>>>>> manifold
+  >>>>>>> manifold
 }

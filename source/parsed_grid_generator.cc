@@ -22,6 +22,8 @@
 #include <deal.II/grid/grid_out.h>
 #include <boost/archive/text_oarchive.hpp>
 #include <boost/archive/text_iarchive.hpp>
+#include <boost/archive/binary_oarchive.hpp>
+#include <boost/archive/binary_iarchive.hpp>
 #include <deal.II/grid/grid_tools.h>
 
 #include <fstream>
@@ -85,6 +87,13 @@ ParsedGridGenerator<dim, spacedim>::ParsedGridGenerator(const std::string _secti
 {}
 
 
+
+template <int dim, int spacedim>
+std::string ParsedGridGenerator<dim, spacedim>::get_grid_names()
+{
+  return "file|rectangle|hyperball|hyper_shell|hyper_sphere|hyper_L|half_hyper_ball|cylinder|truncated_cone|hyper_cross|hyper_cube_slit|half_hyper_shell|quarter_hyper_shell|cylinder_shell|torus|hyper_cube_with_cylindrical_hole|moebius|cheese";
+}
+
 template <int dim, int spacedim>
 void ParsedGridGenerator<dim, spacedim>::declare_parameters(ParameterHandler &prm)
 {
@@ -104,16 +113,11 @@ void ParsedGridGenerator<dim, spacedim>::declare_parameters(ParameterHandler &pr
 
   add_parameter(prm, &grid_name,
                 "Grid to generate", grid_name,
-                Patterns::Selection("file|rectangle|hyperball|hyper_shell|subdivided_hyper_rectangle|hyper_sphere|hyper_L|half_hyper_ball|cylinder|truncated_cone|hyper_cross|hyper_cube_slit|half_hyper_shell|quarter_hyper_shell|cylinder_shell|torus|hyper_cube_with_cylindrical_hole|moebius|cheese"),
+                Patterns::Selection(get_grid_names()),
                 "The grid to generate. You can choose among:\n"
                 "- file: read grid from a file using:\n"
                 "	- Input grid filename	    : input filename\n\n"
                 "- rectangle: create a subdivided hyperrectangle using:\n"
-                "	- Optional Point<spacedim> 1: lower-left corner\n"
-                "	- Optional Point<spacedim> 2: upper-right corner\n"
-                "	- Optional Vector of dim int: subdivisions on each direction\n"
-                "	- Optional bool 1	    : colorize grid\n"
-                "- subdivided_hyper_rectangle: create a subdivided hyperrectangle using:\n"
                 "	- Optional Point<spacedim> 1: lower-left corner\n"
                 "	- Optional Point<spacedim> 2: upper-right corner\n"
                 "	- Optional Vector of dim int: subdivisions on each direction\n"
@@ -315,15 +319,6 @@ void ParsedGridGenerator<dim, spacedim>::declare_parameters(ParameterHandler &pr
                 "Name of the output grid. All supported deal.II formats. "
                 "The extestion will be used to decide what "
                 "grid format to use. If empty, no grid will be written.");
-
-  add_parameter(prm, &cad_file_names,
-                "CAD file names",
-                print(cad_file_names),
-                Patterns::List(Patterns::Anything()),
-                "A matching list of files, one for each entry in "
-                "Manifold descriptors that uses either CADSurface or "
-                "CADLine.");
-
 }
 
 #ifdef DEAL_II_WITH_MPI
@@ -337,7 +332,6 @@ ParsedGridGenerator<dim, spacedim>::distributed(MPI_Comm comm)
   (comm);//, get_smoothing());
 
   create(*tria);
-  apply_manifold_descriptors(*tria);
   return tria;
 }
 #endif
@@ -351,11 +345,10 @@ ParsedGridGenerator<dim, spacedim>::serial()
   Assert(grid_name != "", ExcNotInitialized());
   Triangulation<dim,spacedim> *tria = new Triangulation<dim,spacedim>(get_smoothing());
   create(*tria);
-  apply_manifold_descriptors(*tria);
   return tria;
 }
 
-namespace
+struct PGGHelper
 {
   /**
    * This function is used to generate grids when there are no restriction on
@@ -363,39 +356,27 @@ namespace
    * following functions (create_grid).
    */
   template<int dim, int spacedim>
-  void
-  default_create_grid( Triangulation<dim,spacedim> &tria,
-                       std::map< types::manifold_id, shared_ptr<Manifold<dim,spacedim>> > &manifold_descriptors,
-                       std::string grid_name,
-                       bool create_default_manifolds,
-                       Point<spacedim> point_option_one,
-                       Point<spacedim> point_option_two,
-                       double double_option_two,
-                       double double_option_one,
-                       double double_option_three,
-                       bool colorize,
-                       unsigned int un_int_option_one,
-                       unsigned int un_int_option_two,
-                       std::vector<unsigned int> un_int_vec_option_one,
-                       std::string input_grid_file_name)
+  static void
+  default_create_grid(const ParsedGridGenerator<dim, spacedim> *p,
+                      Triangulation<dim,spacedim> &tria)
   {
-    if (grid_name == "rectangle" || grid_name == "subdivided_hyper_rectangle")
+    if (p->grid_name == "rectangle")
       {
         GridGenerator::subdivided_hyper_rectangle (tria,
-                                                   un_int_vec_option_one,
-                                                   point_option_two,
-                                                   point_option_one,
-                                                   colorize);
+                                                   p->un_int_vec_option_one,
+                                                   p->point_option_two,
+                                                   p->point_option_one,
+                                                   p->colorize);
       }
-    else if (grid_name == "file")
+    else if (p->grid_name == "file")
       {
         GridIn<dim, spacedim> gi;
         gi.attach_triangulation(tria);
 
-        std::ifstream in(input_grid_file_name.c_str());
+        std::ifstream in(p->input_grid_file_name.c_str());
         AssertThrow(in, ExcIO());
 
-        std::string ext = extension(input_grid_file_name);
+        std::string ext = extension(p->input_grid_file_name);
         if (ext == "vtk")
           gi.read_vtk(in);
         else if (ext == "msh")
@@ -409,65 +390,33 @@ namespace
             boost::archive::text_iarchive ia(in);
             tria.load(ia, 0);
           }
+        else if (ext == "bin")
+          {
+            boost::archive::binary_iarchive ia(in);
+            tria.load(ia, 0);
+          }
         else
           Assert(false, ExcNotImplemented());
       }
-    // silence warnings of unused variables
-    (void)double_option_one;
-    (void)double_option_two;
-    (void)double_option_three;
-    (void)un_int_option_one;
-    (void)un_int_option_two;
   }
 
   /**
    * This function is used to generate grids when spacedim = dim + 1.
    */
   template<int dim>
-  void
-  create_grid( Triangulation<dim,dim+1> &tria,
-               std::map< types::manifold_id, shared_ptr<Manifold<dim,dim+1>> > &manifold_descriptors,
-               std::string grid_name,
-               bool create_default_manifolds,
-               Point<dim+1> point_option_one,
-               Point<dim+1> point_option_two,
-               double double_option_two,
-               double double_option_one,
-               double double_option_three,
-               bool colorize,
-               unsigned int un_int_option_one,
-               unsigned int un_int_option_two,
-               std::vector<unsigned int> un_int_vec_option_one,
-               std::string input_grid_file_name)
+  static void
+  create_grid( const ParsedGridGenerator<dim,dim+1> *p,
+               Triangulation<dim,dim+1> &tria)
   {
-    if (grid_name == "hyper_sphere")
+    if (p->grid_name == "hyper_sphere")
       {
         GridGenerator::hyper_sphere<dim,dim+1> ( tria,
-                                                 point_option_one,
-                                                 double_option_one);
-        if (create_default_manifolds)
-          {
-            GridTools::copy_boundary_to_manifold_id(tria);
-            manifold_descriptors[0] = SP(new HyperBallBoundary<dim,dim+1>(point_option_one,
-                                         double_option_one));
-          }
+                                                 p->point_option_one,
+                                                 p->double_option_one);
       }
     else
       {
-        default_create_grid<dim, dim+1>( tria,
-                                         manifold_descriptors,
-                                         grid_name,
-                                         create_default_manifolds,
-                                         point_option_one,
-                                         point_option_two,
-                                         double_option_two,
-                                         double_option_one,
-                                         double_option_three,
-                                         colorize,
-                                         un_int_option_one,
-                                         un_int_option_two,
-                                         un_int_vec_option_one,
-                                         input_grid_file_name);
+        default_create_grid<dim, dim+1>( p, tria);
       }
   }
 
@@ -475,195 +424,129 @@ namespace
    * This function is used to generate grids when spacedim = dim.
    */
   template<int dim>
-  void
-  create_grid( Triangulation<dim,dim> &tria,
-               std::map< types::manifold_id, shared_ptr<Manifold<dim,dim>> > &manifold_descriptors,
-               std::string grid_name,
-               bool create_default_manifolds,
-               Point<dim> point_option_one,
-               Point<dim> point_option_two,
-               double double_option_two,
-               double double_option_one,
-               double double_option_three,
-               bool colorize,
-               unsigned int un_int_option_one,
-               unsigned int un_int_option_two,
-               std::vector<unsigned int> un_int_vec_option_one,
-               std::string input_grid_file_name)
+  static void
+  create_grid(const ParsedGridGenerator<dim,dim> *p,
+              Triangulation<dim,dim> &tria)
   {
-    if (grid_name == "hyperball")
+    if (p->grid_name == "hyperball")
       {
 
         GridGenerator::hyper_ball( tria,
-                                   point_option_one,
-                                   double_option_one);
-        if (create_default_manifolds)
-          {
-            GridTools::copy_boundary_to_manifold_id(tria);
-            manifold_descriptors[0] = SP(new HyperBallBoundary<dim,dim>(point_option_one,
-                                                                        double_option_one));
-          }
+                                   p->point_option_one,
+                                   p->double_option_one);
       }
-    else if (grid_name == "hyper_L")
+    else if (p->grid_name == "hyper_L")
       {
         GridGenerator::hyper_L  ( tria,
-                                  double_option_two,
-                                  double_option_one );
+                                  p->double_option_two,
+                                  p->double_option_one );
       }
-    else if (grid_name == "half_hyper_ball")
+    else if (p->grid_name == "half_hyper_ball")
       {
         GridGenerator::half_hyper_ball (tria,
-                                        point_option_one,
-                                        double_option_one);
-        if (create_default_manifolds)
-          {
-            GridTools::copy_boundary_to_manifold_id(tria);
-            manifold_descriptors[0] = SP(new HalfHyperBallBoundary<dim>(point_option_one,
-                                                                        double_option_one));
-          }
+                                        p->point_option_one,
+                                        p->double_option_one);
       }
-    else if (grid_name == "cylinder")
+    else if (p->grid_name == "cylinder")
       {
         GridGenerator::cylinder ( tria,
-                                  double_option_one,
-                                  double_option_two);
-        if (create_default_manifolds)
-          {
-            // etc.
-          }
+                                  p->double_option_one,
+                                  p->double_option_two);
       }
-    else if (grid_name == "truncated_cone")
+    else if (p->grid_name == "truncated_cone")
       {
         GridGenerator::truncated_cone  ( tria,
-                                         double_option_one,
-                                         double_option_two,
-                                         double_option_three);
+                                         p->double_option_one,
+                                         p->double_option_two,
+                                         p->double_option_three);
       }
-    else if (grid_name == "hyper_cross")
+    else if (p->grid_name == "hyper_cross")
       {
         GridGenerator::hyper_cross  (tria,
-                                     un_int_vec_option_one,
-                                     colorize);
+                                     p->un_int_vec_option_one,
+                                     p->colorize);
       }
-    else if (grid_name == "hyper_cube_slit")
+    else if (p->grid_name == "hyper_cube_slit")
       {
         GridGenerator::hyper_cube_slit  (tria,
-                                         double_option_two,
-                                         double_option_one,
-                                         colorize);
+                                         p->double_option_two,
+                                         p->double_option_one,
+                                         p->colorize);
       }
-    else if (grid_name == "half_hyper_shell")
+    else if (p->grid_name == "half_hyper_shell")
       {
         GridGenerator::half_hyper_shell ( tria,
-                                          point_option_one,
-                                          double_option_two,
-                                          double_option_one,
-                                          un_int_option_one,
-                                          colorize);
+                                          p->point_option_one,
+                                          p->double_option_two,
+                                          p->double_option_one,
+                                          p->un_int_option_one,
+                                          p->colorize);
       }
-    else if (grid_name == "quarter_hyper_shell")
+    else if (p->grid_name == "quarter_hyper_shell")
       {
         GridGenerator::quarter_hyper_shell  ( tria,
-                                              point_option_one,
-                                              double_option_two,
-                                              double_option_one,
-                                              un_int_option_one,
-                                              colorize);
+                                              p->point_option_one,
+                                              p->double_option_two,
+                                              p->double_option_one,
+                                              p->un_int_option_one,
+                                              p->colorize);
       }
-    else if (grid_name == "cylinder_shell")
+    else if (p->grid_name == "cylinder_shell")
       {
         GridGenerator::cylinder_shell ( tria,
-                                        double_option_three,
-                                        double_option_two,
-                                        double_option_one,
-                                        un_int_option_one,
-                                        un_int_option_two);
+                                        p->double_option_three,
+                                        p->double_option_two,
+                                        p->double_option_one,
+                                        p->un_int_option_one,
+                                        p->un_int_option_two);
       }
-    else if (grid_name == "hyper_cube_with_cylindrical_hole")
+    else if (p->grid_name == "hyper_cube_with_cylindrical_hole")
       {
         GridGenerator::hyper_cube_with_cylindrical_hole ( tria,
-                                                          double_option_two,
-                                                          double_option_one,
-                                                          double_option_three,
-                                                          un_int_option_one,
-                                                          colorize);
+                                                          p->double_option_two,
+                                                          p->double_option_one,
+                                                          p->double_option_three,
+                                                          p->un_int_option_one,
+                                                          p->colorize);
       }
-    else if (grid_name == "hyper_shell")
+    else if (p->grid_name == "hyper_shell")
       {
         GridGenerator::hyper_shell( tria,
-                                    point_option_one,
-                                    double_option_two,
-                                    double_option_one,
-                                    un_int_option_one,
-                                    colorize);
+                                    p->point_option_one,
+                                    p->double_option_two,
+                                    p->double_option_one,
+                                    p->un_int_option_one,
+                                    p->colorize);
       }
-    else if (grid_name == "cheese")
+    else if (p->grid_name == "cheese")
       {
         GridGenerator::cheese(tria,
-                              un_int_vec_option_one);
+                              p->un_int_vec_option_one);
       }
     else
       {
-        default_create_grid<dim, dim>( tria,
-                                       manifold_descriptors,
-                                       grid_name,
-                                       create_default_manifolds,
-                                       point_option_one,
-                                       point_option_two,
-                                       double_option_two,
-                                       double_option_one,
-                                       double_option_three,
-                                       colorize,
-                                       un_int_option_one,
-                                       un_int_option_two,
-                                       un_int_vec_option_one,
-                                       input_grid_file_name);
+        PGGHelper::default_create_grid<dim, dim>(p, tria);
       }
   }
 
   /**
    * This function is used to generate grids when spacedim = dim = 3.
    */
-  void
-  create_grid( Triangulation<3,3> &tria,
-               std::map< types::manifold_id, shared_ptr<Manifold<3,3>> > &manifold_descriptors,
-               std::string grid_name,
-               bool create_default_manifolds,
-               Point<3> point_option_one,
-               Point<3> point_option_two,
-               double double_option_two,
-               double double_option_one,
-               double double_option_three,
-               bool colorize,
-               unsigned int un_int_option_one,
-               unsigned int un_int_option_two,
-               std::vector<unsigned int> un_int_vec_option_one,
-               std::string input_grid_file_name)
+  static void
+  create_grid( const ParsedGridGenerator<3> *p,
+               Triangulation<3,3> &tria)
   {
-    if (grid_name == "moebius")
+    if (p->grid_name == "moebius")
       {
         GridGenerator::moebius  ( tria,
-                                  un_int_option_one,
-                                  un_int_option_two,
-                                  double_option_two,
-                                  double_option_one );
+                                  p->un_int_option_one,
+                                  p->un_int_option_two,
+                                  p->double_option_two,
+                                  p->double_option_one );
       }
     else
       {
-        create_grid<3>( tria,
-                        manifold_descriptors,
-                        grid_name,
-                        create_default_manifolds,
-                        point_option_one,
-                        point_option_two,
-                        double_option_two,
-                        double_option_one,
-                        double_option_three,
-                        colorize,
-                        un_int_option_one,
-                        un_int_option_two,
-                        un_int_vec_option_one,
-                        input_grid_file_name);
+        PGGHelper::create_grid<3>( p, tria);
       }
   }
 
@@ -671,67 +554,177 @@ namespace
    * This function is used to generate grids when dim = 2 and spacedim = 3.
    */
   void
-  create_grid( Triangulation<2,3> &tria,
-               std::map< types::manifold_id, shared_ptr<Manifold<2,3>> > &manifold_descriptors,
-               std::string grid_name,
-               bool create_default_manifolds,
-               Point<3> point_option_one,
-               Point<3> point_option_two,
-               double double_option_two,
-               double double_option_one,
-               double double_option_three,
-               bool colorize,
-               unsigned int un_int_option_one,
-               unsigned int un_int_option_two,
-               std::vector<unsigned int> un_int_vec_option_one,
-               std::string input_grid_file_name)
+  create_grid(const ParsedGridGenerator<2,3> *p,
+              Triangulation<2,3> &tria)
   {
-    if (grid_name == "torus")
+    if (p->grid_name == "torus")
       {
         GridGenerator::torus  (tria,
-                               double_option_one,
-                               double_option_two);
+                               p->double_option_one,
+                               p->double_option_two);
       }
     else
-      create_grid<2>( tria,
-                      manifold_descriptors,
-                      grid_name,
-                      create_default_manifolds,
-                      point_option_one,
-                      point_option_two,
-                      double_option_two,
-                      double_option_one,
-                      double_option_three,
-                      colorize,
-                      un_int_option_one,
-                      un_int_option_two,
-                      un_int_vec_option_one,
-                      input_grid_file_name);
+      default_create_grid(p, tria);
   }
 
-}
+  /**
+   * Prototype function for creating new manifolds from a name and a pgg.
+   * Codimension zero case.
+   */
+  static
+  shared_ptr<Manifold<3> > create_manifold(const ParsedGridGenerator<3> *p,
+                                           const std::string &name)
+  {
+    if (name=="CylinderBoundaryOnAxis")
+      {
+        return SP(new CylinderBoundary<3>(p->double_option_one,
+                                          p->un_int_option_one));
+      }
+    else if (name=="GeneralCylinderBoundary")
+      {
+        return SP(new CylinderBoundary<3>(p->double_option_one,
+                                          p->point_option_one,
+                                          p->point_option_two));
+      }
+    else if (name=="ConeBoundary")
+      {
+        return SP(new ConeBoundary<3>(p->double_option_one,
+                                      p->double_option_two,
+                                      p->point_option_one,
+                                      p->point_option_two));
+      }
+    else
+      {
+        return default_create_manifold(p, name);
+      }
+  }
+
+  static
+  shared_ptr<Manifold<2,3> > create_manifold(const ParsedGridGenerator<2,3> *p,
+                                             const std::string &name)
+  {
+    if (name=="TorusBoundary")
+      {
+        return SP(new TorusBoundary<2,3>(p->double_option_one,
+                                         p->double_option_two));
+      }
+    else
+      return default_create_manifold(p, name);
+  }
+
+  /**
+   * Prototype function for creating new manifolds from a name and a pgg.
+   * Codimension zero case.
+   */
+  template<int dim>
+  static
+  shared_ptr<Manifold<dim> > create_manifold(const ParsedGridGenerator<dim> *p,
+                                             const std::string &name)
+  {
+    if (name=="HalfHyperBallBoundary")
+      {
+        return SP(new HalfHyperBallBoundary<dim>(p->point_option_one,
+                                                 p->double_option_one));
+      }
+    else if (name == "HyperShellBoundary")
+      {
+        return SP(new HyperShellBoundary<dim>(p->point_option_one));
+      }
+    else if (name == "HalfHyperShellBoundary")
+      {
+        return SP(new HalfHyperShellBoundary<dim>(p->point_option_one,
+                                                  p->double_option_one,
+                                                  p->double_option_two));
+      }
+    else
+      return default_create_manifold(p, name);
+  }
+
+  /**
+   * Prototype function for creating new manifolds from a name and a pgg.
+   * Codimension one case.
+   */
+  template<int dim>
+  static
+  shared_ptr<Manifold<dim,dim+1> > create_manifold(const ParsedGridGenerator<dim, dim+1> *p,
+                                                   const std::string &name)
+  {
+    return default_create_manifold(p, name);
+  }
+
+  /**
+   * Prototype function for creating new manifolds from a name and a pgg.
+   */
+  template<int dim, int spacedim>
+  static
+  shared_ptr<Manifold<dim,spacedim> > default_create_manifold(const ParsedGridGenerator<dim,spacedim> *p,
+                                                              const std::string &name)
+  {
+    if (name=="HyperBallBoundary")
+      {
+        return SP(new HyperBallBoundary<dim,spacedim>(p->point_option_one,
+                                                      p->double_option_one));
+      }
+    else
+      {
+        Assert(false, ExcInternalError(name+" is not a valid manifold descriptor."))
+      }
+    return shared_ptr<Manifold<dim,spacedim> >();
+  }
+
+  template<int dim, int spacedim>
+  static void create_default_manifolds(ParsedGridGenerator<dim,spacedim> *p)
+  {
+    if (p->grid_name == "hyper_ball")
+      {
+        p->str_manifold_descriptors = "0=HyperBall";
+      }
+    p->parse_manifold_descriptors();
+  }
+};
 
 template <int dim, int spacedim>
 void ParsedGridGenerator<dim, spacedim>::create(Triangulation<dim,spacedim> &tria)
 {
   Assert(grid_name != "", ExcNotInitialized());
+  PGGHelper::create_grid( this, tria);
 
-  create_grid( tria,
-               manifold_descriptors,
-               grid_name,
-               create_default_manifolds,
-               point_option_one,
-               point_option_two,
-               double_option_two,
-               double_option_one,
-               double_option_three,
-               colorize,
-               un_int_option_one,
-               un_int_option_two,
-               un_int_vec_option_one,
-               input_grid_file_name);
+  parse_manifold_descriptors();
+
+  if (copy_boundary_to_manifold_ids || create_default_manifolds)
+    GridTools::copy_boundary_to_manifold_id(tria);
+
+  if (copy_material_to_manifold_ids)
+    GridTools::copy_material_to_manifold_id(tria);
+
+  if (create_default_manifolds)
+    PGGHelper::create_default_manifolds(this);
+
+  for (auto m: manifold_descriptors)
+    {
+      tria.set_manifold(m.first, *m.second);
+    }
 
 }
+
+
+template <int dim, int spacedim>
+void
+ParsedGridGenerator<dim, spacedim>::parse_manifold_descriptors()
+{
+  std::vector<std::string> idcomponents = Utilities::split_string_list(str_manifold_descriptors, ';');
+
+  for (unsigned int i=0; i<idcomponents.size(); ++i)
+    {
+      std::vector<std::string> comp = Utilities::split_string_list(idcomponents[i], '=');
+      AssertDimension(comp.size(), 2);
+
+      manifold_descriptors[static_cast<types::manifold_id>(Utilities::string_to_int(comp[0]))] =
+        PGGHelper::create_manifold(this, comp[1]);
+    }
+}
+
+
 
 template <int dim, int spacedim>
 void ParsedGridGenerator<dim, spacedim>::write(const Triangulation<dim,spacedim> &tria,
@@ -759,6 +752,11 @@ void ParsedGridGenerator<dim, spacedim>::write(const Triangulation<dim,spacedim>
       else if (ext == "ar")
         {
           boost::archive::text_oarchive oa(out);
+          tria.save(oa, 0);
+        }
+      else if (ext == "bin")
+        {
+          boost::archive::binary_oarchive oa(out);
           tria.save(oa, 0);
         }
       else
@@ -818,124 +816,12 @@ ParsedGridGenerator<dim, spacedim>::get_smoothing()
   return static_cast<typename Triangulation<dim,spacedim>::MeshSmoothing>(smoothing);
 }
 
-namespace
-{
-  /**
-   * @fun parse_manifold_descriptors cannot handle tempalte <dim,dim> and
-   * tempalte <dim,dim+1>: some manifolds are defined only in dim-dim case.
-   * This function is used to specialize @fun parse_manifold_descriptors in
-   * the case dim-dim
-   */
-  template<int dim>
-  void
-  add_manifold_descriptors(
-    std::string str_manifold_descriptors,
-    std::map<
-    types::manifold_id,
-    shared_ptr<Manifold<dim>>
-    > & manifold_descriptors)
-  {
-    std::vector<std::string> idcomponents;
-    idcomponents = Utilities::split_string_list(str_manifold_descriptors, '%');
-
-    for (unsigned int i=0; i<idcomponents.size(); ++i)
-      {
-        std::vector<std::string> comp;
-        comp = Utilities::split_string_list(idcomponents[i], '=');
-        types::manifold_id id =
-          static_cast<types::manifold_id>(Utilities::string_to_int(comp[0]));
-
-        if (comp[1]=="HyperBallBoundary")
-          manifold_descriptors[id] = SP(new HyperBallBoundary<dim>());
-        else if (comp[1]=="HyperShellBoundary")
-          manifold_descriptors[id] = SP(new HyperShellBoundary<dim>());
-        else
-          {
-            Assert(false, ExcInternalError("Not a valid manifold descriptor."))
-          }
-      }
-  }
-
-  /**
-   * @fun parse_manifold_descriptors cannot handle tempalte <dim,dim> and
-   * tempalte <dim,dim+1>: some manifolds are defined only in dim-dim case.
-   * This function is used to specialize @fun parse_manifold_descriptors in
-   * the case dim-dim+1
-   */
-  template<int dim>
-  void
-  add_manifold_descriptors(
-    std::string str_manifold_descriptors,
-    std::map<
-    types::manifold_id,
-    shared_ptr<Manifold<dim,dim+1>>
-    > &manifold_descriptors)
-  {
-    std::vector<std::string> idcomponents;
-    idcomponents = Utilities::split_string_list(str_manifold_descriptors, '%');
-
-    for (unsigned int i=0; i<idcomponents.size(); ++i)
-      {
-        std::vector<std::string> comp;
-        comp = Utilities::split_string_list(idcomponents[i], '=');
-        unsigned int id = Utilities::string_to_int(comp[0]);
-
-        shared_ptr<Manifold<dim,dim+1>> manifold_sp;
-
-        if (comp[1]=="HyperBallBoundary")
-          {
-            HyperBallBoundary<dim,dim+1> manifold;
-            manifold_sp = std::make_shared<HyperBallBoundary<dim,dim+1>>(manifold);
-          }
-        else
-          {
-            Assert(false, ExcInternalError("Not a valid manifold."))
-          }
-
-        manifold_descriptors.insert( std::pair< types::manifold_id, shared_ptr <Manifold <dim,dim+1> > >(id, manifold_sp ) );
-      }
-  }
-}
-
-template <int dim, int spacedim>
-void
-ParsedGridGenerator<dim, spacedim>::
-parse_manifold_descriptors()
-{
-  add_manifold_descriptors(str_manifold_descriptors, manifold_descriptors);
-}
-
-template <int dim, int spacedim>
-void
-ParsedGridGenerator<dim, spacedim>::
-apply_manifold_descriptors(Triangulation<dim,spacedim> &tria)
-{
-  parse_manifold_descriptors();
-  if (copy_boundary_to_manifold_ids)
-    {
-      GridTools::copy_boundary_to_manifold_id(tria);
-    }
-
-  if (copy_material_to_manifold_ids)
-    {
-      GridTools::copy_material_to_manifold_id(tria);
-    }
-
-  for ( auto it : manifold_descriptors)
-    {
-      auto id       = it.first;
-      auto manifold = it.second;
-      tria.set_manifold (id, *manifold);
-    }
-}
-
 
 D2K_NAMESPACE_CLOSE
-
-
 
 template class deal2lkit::ParsedGridGenerator<1,1>;
 template class deal2lkit::ParsedGridGenerator<1,2>;
 template class deal2lkit::ParsedGridGenerator<2,2>;
 template class deal2lkit::ParsedGridGenerator<2,3>;
 template class deal2lkit::ParsedGridGenerator<3,3>;
+
