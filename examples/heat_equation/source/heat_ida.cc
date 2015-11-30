@@ -456,7 +456,7 @@ void Heat<dim>::output_step(const double t,
     }
   data_out.add_data_vector (distributed_solution_dot, print(sol_dot_names,","));
 
-  data_out.write_data_and_clear("",*mapping);
+  data_out.write_data_and_clear(*mapping);
   eh.error_from_exact(*mapping, *dof_handler, distributed_solution, exact_solution);
 
   computing_timer.exit_section ();

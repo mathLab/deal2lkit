@@ -58,10 +58,11 @@ void test (const Triangulation<dim> &tr,
 //     boundary_ids.insert (j);
 //
 //   VectorTools::compute_no_normal_flux_constraints (dof, 1, boundary_ids, cm);
-  ParsedDirichletBCs<dim,dim,dim+1> parsed_dirichlet("ParsedDirichletBCs",
-                                                     (dim==2?"u,u,p":"u,u,u,p"),
-                                                     (dim==2?"0=u.N % 1=u.N % 2=u.N % 3=u.N" :"0=u.N % 1=u.N % 2=u.N % 3=u.N % 4=u.N % 5=u.N"),
-                                                     (dim==2?"0=0;0;0 % 1=1;1;0 % 2=2;2;0 % 3=3;3;0" :"0=0;0;0;0 % 1=1;1;1;0 % 2=2;2;2;0 % 3=3;3;3;0 % 4=4;4;4;0 % 5=5;5;5;0"));
+  ParsedDirichletBCs<dim,dim> parsed_dirichlet("ParsedDirichletBCs",
+                                               dim+1,
+                                               (dim==2?"u,u,p":"u,u,u,p"),
+                                               (dim==2?"0=u.N % 1=u.N % 2=u.N % 3=u.N" :"0=u.N % 1=u.N % 2=u.N % 3=u.N % 4=u.N % 5=u.N"),
+                                               (dim==2?"0=0;0;0 % 1=1;1;0 % 2=2;2;0 % 3=3;3;0" :"0=0;0;0;0 % 1=1;1;1;0 % 2=2;2;2;0 % 3=3;3;3;0 % 4=4;4;4;0 % 5=5;5;5;0"));
 
 
   ParameterAcceptor::initialize();

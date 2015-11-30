@@ -31,7 +31,7 @@ using namespace deal2lkit;
 int main ()
 {
   initlog();
-  ParsedMappedFunctions<3,1> pmf("Mapped functions","","5=ALL % 3=ALL");
+  ParsedMappedFunctions<3> pmf("Mapped functions",1,"","5=ALL % 3=ALL");
 
   ParameterAcceptor::initialize(SOURCE_DIR "/parameters/parsed_mapped_functions_10.prm", "used_parameters.prm");
   ParameterAcceptor::prm.log_parameters(deallog);

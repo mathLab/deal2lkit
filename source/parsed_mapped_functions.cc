@@ -18,22 +18,24 @@
 
 D2K_NAMESPACE_OPEN
 
-template <int spacedim, int n_components>
-ParsedMappedFunctions<spacedim,n_components>::ParsedMappedFunctions(const std::string &parsed_name,
-    const std::string &parsed_component_names,
-    const std::string &parsed_id_components,
-    const std::string &parsed_id_functions,
-    const std::string &parsed_constants):
+template <int spacedim>
+ParsedMappedFunctions<spacedim>::ParsedMappedFunctions(const std::string &parsed_name,
+                                                       const unsigned int &n_components,
+                                                       const std::string &parsed_component_names,
+                                                       const std::string &parsed_id_components,
+                                                       const std::string &parsed_id_functions,
+                                                       const std::string &parsed_constants):
   ParameterAcceptor(parsed_name),
   name (parsed_name),
   str_id_components (parsed_id_components),
   str_id_functions (parsed_id_functions),
   str_component_names (parsed_component_names),
-  str_constants (parsed_constants)
+  str_constants (parsed_constants),
+  n_components(n_components)
 {}
 
-template <int spacedim, int n_components>
-void ParsedMappedFunctions<spacedim,n_components>::add_normal_components()
+template <int spacedim>
+void ParsedMappedFunctions<spacedim>::add_normal_components()
 {
   std::vector<std::string> var = unique(_component_names);
   for (unsigned int i=0; i<var.size(); ++i)
@@ -49,8 +51,8 @@ void ParsedMappedFunctions<spacedim,n_components>::add_normal_components()
     }
 }
 
-template <int spacedim, int n_components>
-void ParsedMappedFunctions<spacedim,n_components>::parse_parameters_call_back()
+template <int spacedim>
+void ParsedMappedFunctions<spacedim>::parse_parameters_call_back()
 {
   add_normal_components();
   _all_components = _component_names;
@@ -76,8 +78,8 @@ void ParsedMappedFunctions<spacedim,n_components>::parse_parameters_call_back()
 
 }
 
-template <int spacedim, int n_components>
-void ParsedMappedFunctions<spacedim,n_components>::split_id_components(const std::string &parsed_idcomponents)
+template <int spacedim>
+void ParsedMappedFunctions<spacedim>::split_id_components(const std::string &parsed_idcomponents)
 {
   std::vector<std::string> idcomponents;
 
@@ -140,9 +142,9 @@ void ParsedMappedFunctions<spacedim,n_components>::split_id_components(const std
     }
 }
 
-template <int spacedim, int n_components>
-void ParsedMappedFunctions<spacedim,n_components>::split_id_functions(const std::string &parsed_idfunctions,
-    const std::string &constants)
+template <int spacedim>
+void ParsedMappedFunctions<spacedim>::split_id_functions(const std::string &parsed_idfunctions,
+                                                         const std::string &constants)
 {
   std::vector<unsigned int> id_defined_functions;
 
@@ -212,9 +214,9 @@ void ParsedMappedFunctions<spacedim,n_components>::split_id_functions(const std:
 
 }
 
-template <int spacedim, int n_components>
+template <int spacedim>
 shared_ptr<dealii::Functions::ParsedFunction<spacedim> >
-ParsedMappedFunctions<spacedim,n_components>::get_mapped_normal_function(const unsigned int &id, const unsigned int &fcv) const
+ParsedMappedFunctions<spacedim>::get_mapped_normal_function(const unsigned int &id, const unsigned int &fcv) const
 {
   std::pair<unsigned int, unsigned int> id_fcv (id,fcv);
   Assert( _normal_functions.find(id_fcv) != _normal_functions.end(),
@@ -223,36 +225,36 @@ ParsedMappedFunctions<spacedim,n_components>::get_mapped_normal_function(const u
   return _normal_functions.at(id_fcv);
 }
 
-template <int spacedim, int n_components>
-shared_ptr<dealii::Functions::ParsedFunction<spacedim> > ParsedMappedFunctions<spacedim,n_components>::get_mapped_function(const unsigned int &id) const
+template <int spacedim>
+shared_ptr<dealii::Functions::ParsedFunction<spacedim> > ParsedMappedFunctions<spacedim>::get_mapped_function(const unsigned int &id) const
 {
   Assert( mapped_functions.find(id) != mapped_functions.end(),
           ExcIdNotFound(id));
   return mapped_functions.at(id).second;
 }
 
-template <int spacedim, int n_components>
-ComponentMask ParsedMappedFunctions<spacedim,n_components>::get_mapped_mask(const unsigned int &id) const
+template <int spacedim>
+ComponentMask ParsedMappedFunctions<spacedim>::get_mapped_mask(const unsigned int &id) const
 {
   Assert( mapped_functions.find(id) != mapped_functions.end(),
           ExcIdNotFound(id));
   return mapped_functions.at(id).first;
 }
 
-template <int spacedim, int n_components>
-std::vector<unsigned int> ParsedMappedFunctions<spacedim,n_components>::get_mapped_ids() const
+template <int spacedim>
+std::vector<unsigned int> ParsedMappedFunctions<spacedim>::get_mapped_ids() const
 {
   return ids;
 }
 
-template <int spacedim, int n_components>
-std::vector<unsigned int> ParsedMappedFunctions<spacedim,n_components>::get_mapped_normal_ids() const
+template <int spacedim>
+std::vector<unsigned int> ParsedMappedFunctions<spacedim>::get_mapped_normal_ids() const
 {
   return normal_ids;
 }
 
-template <int spacedim, int n_components>
-void ParsedMappedFunctions<spacedim,n_components>::declare_parameters(ParameterHandler &prm)
+template <int spacedim>
+void ParsedMappedFunctions<spacedim>::declare_parameters(ParameterHandler &prm)
 {
   if (str_component_names != "")
     add_parameter(prm, &_component_names, "Known component names", str_component_names,
@@ -300,22 +302,22 @@ void ParsedMappedFunctions<spacedim,n_components>::declare_parameters(ParameterH
 
 }
 
-template <int spacedim, int n_components>
-bool ParsedMappedFunctions<spacedim,n_components>::acts_on_id(unsigned int &id) const
+template <int spacedim>
+bool ParsedMappedFunctions<spacedim>::acts_on_id(unsigned int &id) const
 {
   return id_components.find(id) != id_components.end();
 }
 
-template <int spacedim, int n_components>
-void ParsedMappedFunctions<spacedim,n_components>::set_time(const double &t)
+template <int spacedim>
+void ParsedMappedFunctions<spacedim>::set_time(const double &t)
 {
   typedef typename std::map<unsigned int, shared_ptr<dealii::Functions::ParsedFunction<spacedim> > >::iterator it_type;
   for (it_type it=id_functions.begin(); it != id_functions.end(); ++it)
     it->second->set_time(t);
 }
 
-template <int spacedim, int n_components>
-void ParsedMappedFunctions<spacedim,n_components>::set_normal_functions()
+template <int spacedim>
+void ParsedMappedFunctions<spacedim>::set_normal_functions()
 {
   typedef std::map<std::string, std::pair<std::vector<unsigned int>, unsigned int > >::iterator it_type;
 
@@ -352,22 +354,6 @@ void ParsedMappedFunctions<spacedim,n_components>::set_normal_functions()
 
 D2K_NAMESPACE_CLOSE
 
-template class deal2lkit::ParsedMappedFunctions<1,1>;
-
-template class deal2lkit::ParsedMappedFunctions<2,1>;
-template class deal2lkit::ParsedMappedFunctions<2,2>;
-template class deal2lkit::ParsedMappedFunctions<2,3>;
-template class deal2lkit::ParsedMappedFunctions<2,4>;
-template class deal2lkit::ParsedMappedFunctions<2,5>;
-template class deal2lkit::ParsedMappedFunctions<2,6>;
-template class deal2lkit::ParsedMappedFunctions<2,7>;
-template class deal2lkit::ParsedMappedFunctions<2,8>;
-
-template class deal2lkit::ParsedMappedFunctions<3,1>;
-template class deal2lkit::ParsedMappedFunctions<3,2>;
-template class deal2lkit::ParsedMappedFunctions<3,3>;
-template class deal2lkit::ParsedMappedFunctions<3,4>;
-template class deal2lkit::ParsedMappedFunctions<3,5>;
-template class deal2lkit::ParsedMappedFunctions<3,6>;
-template class deal2lkit::ParsedMappedFunctions<3,7>;
-template class deal2lkit::ParsedMappedFunctions<3,8>;
+template class deal2lkit::ParsedMappedFunctions<1>;
+template class deal2lkit::ParsedMappedFunctions<2>;
+template class deal2lkit::ParsedMappedFunctions<3>;

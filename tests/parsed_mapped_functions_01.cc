@@ -28,7 +28,7 @@ using namespace deal2lkit;
 int main ()
 {
   initlog();
-  ParsedMappedFunctions<2,3> pmf("Mapped Functions", "u,u,p", "0=0;1 % 1=2 % 6=0;1;2","0=x;y;0 % 1=0;0;0 % 6=y*k;beta*y;k","k=1,beta=2");
+  ParsedMappedFunctions<2> pmf("Mapped Functions", 3, "u,u,p", "0=0;1 % 1=2 % 6=0;1;2","0=x;y;0 % 1=0;0;0 % 6=y*k;beta*y;k","k=1,beta=2");
 
   ParameterAcceptor::initialize(SOURCE_DIR "/parameters/parsed_mapped_functions_01.prm", "used_parameters.prm");
   ParameterAcceptor::prm.log_parameters(deallog);
