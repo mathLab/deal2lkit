@@ -46,6 +46,11 @@ components is now specified at construction time.
 (Luca Heltai, 2015/11/26)
 </li>
 
+<li> Removed: The class ParsedFiniteElement has no more the system and
+preconditioner couplings and related variables and methods.  
+(Alberto Sartori, 2015/12/01) 
+</li>
+
 
 </ol>
 
