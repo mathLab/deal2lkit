@@ -54,16 +54,17 @@ IMEXStepper<VEC>::IMEXStepper(SundialsInterface<VEC> &interface,
   abs_tol = 1e-6;
   rel_tol = 1e-8;
   output_period = 1;
+  newton_alpha = 1.0;
   max_outer_non_linear_iterations = 5;
   max_inner_non_linear_iterations = 3;
-  update_jacobian_continuously = true;
+
 }
 
 template <typename VEC>
 void IMEXStepper<VEC>::declare_parameters(ParameterHandler &prm)
 {
   add_parameter(prm, &step_size,
-                "Initial step size", "1e-4", Patterns::Double());
+                "Step size", std::to_string(step_size), Patterns::Double());
 
   add_parameter(prm, &abs_tol,
                 "Absolute error tolerance", std::to_string(abs_tol),
@@ -103,7 +104,7 @@ void IMEXStepper<VEC>::declare_parameters(ParameterHandler &prm)
                 Patterns::Double());
 
   add_parameter(prm, &update_jacobian_continuously,
-                "Update continuously Jacobian", std::to_string(update_jacobian_continuously),
+                "Update continuously Jacobian", "true",
                 Patterns::Bool());
 }
 
@@ -137,6 +138,7 @@ unsigned int IMEXStepper<VEC>::start_ode(VEC &solution)
   // The overall cycle over time begins here.
   for (; t<=final_time; t+= step_size, ++step_number)
     {
+      std::cout << "Time = " << t << std::endl;
       // Implicit Euler scheme.
       *solution_dot = solution;
       *solution_dot -= *previous_solution;
