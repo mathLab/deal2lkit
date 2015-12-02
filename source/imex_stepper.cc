@@ -115,11 +115,6 @@ unsigned int IMEXStepper<VEC>::start_ode(VEC &solution)
 
   unsigned int step_number = 0;
 
-  int status;
-
-  // The solution is stored in
-  // solution. Here we take only a
-  // view of it.
 
   auto previous_solution = interface.create_new_vector();
   auto solution_dot = interface.create_new_vector();
