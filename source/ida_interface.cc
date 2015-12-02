@@ -16,6 +16,8 @@
 
 #include <deal2lkit/ida_interface.h>
 #include <deal2lkit/sundials_interface.h>
+#include <deal2lkit/utilities.h>
+
 #ifdef D2K_WITH_SUNDIALS
 
 #include <deal.II/base/utilities.h>
@@ -30,9 +32,6 @@
 #include <iostream>
 #include <iomanip>
 
-#ifdef DEAL_II_WITH_MPI
-#include <nvector/nvector_parallel.h>
-#endif
 
 using namespace dealii;
 

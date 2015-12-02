@@ -513,83 +513,16 @@ void vector_shift(VEC &in_vec, double a_scalar)
 #ifdef D2K_WITH_SUNDIALS
 
 #ifdef DEAL_II_WITH_MPI
-void copy(TrilinosWrappers::MPI::Vector &dst, const N_Vector &src)
-{
-  IndexSet is = dst.locally_owned_elements();
-  AssertDimension(is.n_elements(), NV_LOCLENGTH_P(src));
-  for (unsigned int i=0; i<is.n_elements(); ++i)
-    {
-      dst[is.nth_index_in_set(i)] = NV_Ith_P(src, i);
-    }
-}
-
-void copy(N_Vector &dst, const TrilinosWrappers::MPI::Vector &src)
-{
-  IndexSet is = src.locally_owned_elements();
-  AssertDimension(is.n_elements(), NV_LOCLENGTH_P(dst));
-  for (unsigned int i=0; i<is.n_elements(); ++i)
-    {
-      NV_Ith_P(dst, i) = src[is.nth_index_in_set(i)];
-    }
-}
-
-void copy(TrilinosWrappers::MPI::BlockVector &dst, const N_Vector &src)
-{
-  IndexSet is = dst.locally_owned_elements();
-  AssertDimension(is.n_elements(), NV_LOCLENGTH_P(src));
-  for (unsigned int i=0; i<is.n_elements(); ++i)
-    {
-      dst[is.nth_index_in_set(i)] = NV_Ith_P(src, i);
-    }
-}
-
-void copy(N_Vector &dst, const TrilinosWrappers::MPI::BlockVector &src)
-{
-  IndexSet is = src.locally_owned_elements();
-  AssertDimension(is.n_elements(), NV_LOCLENGTH_P(dst));
-  for (unsigned int i=0; i<is.n_elements(); ++i)
-    {
-      NV_Ith_P(dst, i) = src[is.nth_index_in_set(i)];
-    }
-}
-#endif //mpi
-
-void copy(BlockVector<double> &dst, const N_Vector &src)
-{
-#ifdef DEAL_II_WITH_MPI
-  AssertDimension((unsigned int)NV_LOCLENGTH_P(src), dst.size());
-#else
-  AssertDimension((unsigned int)NV_LENGTH_S(src), dst.size());
+void copy(TrilinosWrappers::MPI::Vector &dst, const N_Vector &src);
+void copy(N_Vector &dst, const TrilinosWrappers::MPI::Vector &src);
+void copy(TrilinosWrappers::MPI::BlockVector &dst, const N_Vector &src);
+void copy(N_Vector &dst, const TrilinosWrappers::MPI::BlockVector &src);
 #endif
-  for (unsigned int i=0; i<dst.size(); ++i)
-    {
-#ifdef DEAL_II_WITH_MPI
-      dst[i] = NV_Ith_P(src, i);
-#else
-      dst[i] = NV_Ith_S(src, i);
-#endif
-    }
-}
 
-void copy(N_Vector &dst, const BlockVector<double> &src)
-{
-#ifdef DEAL_II_WITH_MPI
-  AssertDimension((unsigned int)NV_LOCLENGTH_P(dst), src.size());
-#else
-  AssertDimension((unsigned int)NV_LENGTH_S(dst), src.size());
-#endif
-  for (unsigned int i=0; i<src.size(); ++i)
-    {
-#ifdef DEAL_II_WITH_MPI
-      NV_Ith_P(dst, i) = src[i];
-#else
-      NV_Ith_S(dst, i) = src[i];
-#endif
-    }
-}
+void copy(BlockVector<double> &dst, const N_Vector &src);
+void copy(N_Vector &dst, const BlockVector<double> &src);
 
-#endif // sundials
-
+#endif
 
 D2K_NAMESPACE_CLOSE
 

@@ -143,9 +143,9 @@ unsigned int IMEXStepper<VEC>::start_ode(VEC &solution)
   for (; t<=final_time; t+= step_size, ++step_number)
     {
       // Implicit Euler scheme.
-      solution_dot->sadd(0,
-                         alpha, solution,
-                         -alpha, *previous_solution);
+      *solution_dot = solution;
+      *solution_dot -= *previous_solution;
+      *solution_dot *= alpha;
 
       // Initialization of two counters for the monitoring of
       // progress of the nonlinear solver.
@@ -178,9 +178,10 @@ unsigned int IMEXStepper<VEC>::start_ode(VEC &solution)
               solution.sadd(1.0,
                             newton_alpha, *solution_update);
 
-              solution_dot->sadd(0,
-                                 alpha, solution,
-                                 -alpha, *previous_solution);
+              // Implicit Euler scheme.
+              *solution_dot = solution;
+              *solution_dot -= *previous_solution;
+              *solution_dot *= alpha;
 
               interface.residual(t, solution, *solution_dot, *residual);
 
@@ -210,6 +211,7 @@ unsigned int IMEXStepper<VEC>::start_ode(VEC &solution)
       update_Jacobian = update_jacobian_continuously;
 
     } // End of the cycle over time.
+  return 0;
 }
 
 
