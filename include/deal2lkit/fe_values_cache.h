@@ -200,7 +200,6 @@ public:
 
     const FEValuesBase<dim,spacedim> &fev = get_current_fe_values();
 
-    const unsigned int           dofs_per_cell = fev.dofs_per_cell;
     const unsigned int           n_q_points    = fev.n_quadrature_points;
     const unsigned int           n_components  = fev.get_fe().n_components();
 
@@ -237,9 +236,7 @@ public:
 
     const FEValuesBase<dim,spacedim> &fev = get_current_fe_values();
 
-    const unsigned int           dofs_per_cell = fev.dofs_per_cell;
     const unsigned int           n_q_points    = fev.n_quadrature_points;
-    const unsigned int           n_components  = fev.get_fe().n_components();
 
     std::string name = prefix+"_"+additional_prefix+"_scalar_values_q"+
                        Utilities::int_to_string(n_q_points)+"_"+type(dummy);
@@ -277,9 +274,7 @@ public:
 
     const FEValuesBase<dim,spacedim> &fev = get_current_fe_values();
 
-    const unsigned int           dofs_per_cell = fev.dofs_per_cell;
     const unsigned int           n_q_points    = fev.n_quadrature_points;
-    const unsigned int           n_components  = fev.get_fe().n_components();
 
     std::string name = prefix+"_"+additional_prefix+"_vector_values_q"+
                        Utilities::int_to_string(n_q_points)+"_"+type(dummy);
@@ -317,9 +312,7 @@ public:
 
     const FEValuesBase<dim,spacedim> &fev = get_current_fe_values();
 
-    const unsigned int           dofs_per_cell = fev.dofs_per_cell;
     const unsigned int           n_q_points    = fev.n_quadrature_points;
-    const unsigned int           n_components  = fev.get_fe().n_components();
 
     std::string name = prefix+"_"+additional_prefix+"_div_values_q"+
                        Utilities::int_to_string(n_q_points)+"_"+type(dummy);
@@ -357,9 +350,7 @@ public:
 
     const FEValuesBase<dim,spacedim> &fev = get_current_fe_values();
 
-    const unsigned int           dofs_per_cell = fev.dofs_per_cell;
     const unsigned int           n_q_points    = fev.n_quadrature_points;
-    const unsigned int           n_components  = fev.get_fe().n_components();
 
     std::string name = prefix+"_"+additional_prefix+"_grad_values_q"+
                        Utilities::int_to_string(n_q_points)+"_"+type(dummy);
@@ -396,9 +387,7 @@ public:
 
     const FEValuesBase<dim,spacedim> &fev = get_current_fe_values();
 
-    const unsigned int           dofs_per_cell = fev.dofs_per_cell;
     const unsigned int           n_q_points    = fev.n_quadrature_points;
-    const unsigned int           n_components  = fev.get_fe().n_components();
 
     std::string name = prefix+"_"+additional_prefix+"_grad2_values_q"+
                        Utilities::int_to_string(n_q_points)+"_"+type(dummy);
@@ -434,9 +423,7 @@ public:
 
     const FEValuesBase<dim,spacedim> &fev = get_current_fe_values();
 
-    const unsigned int           dofs_per_cell = fev.dofs_per_cell;
     const unsigned int           n_q_points    = fev.n_quadrature_points;
-    const unsigned int           n_components  = fev.get_fe().n_components();
 
     std::string name = prefix+"_"+additional_prefix+"_F_values_q"+
                        Utilities::int_to_string(n_q_points)+"_"+type(dummy);
@@ -473,9 +460,7 @@ public:
 
     const FEValuesBase<dim,spacedim> &fev = get_current_fe_values();
 
-    const unsigned int           dofs_per_cell = fev.dofs_per_cell;
     const unsigned int           n_q_points    = fev.n_quadrature_points;
-    const unsigned int           n_components  = fev.get_fe().n_components();
 
     std::string name = prefix+"_"+additional_prefix+"_sym_grad_values_q"+
                        Utilities::int_to_string(n_q_points)+"_"+type(dummy);
