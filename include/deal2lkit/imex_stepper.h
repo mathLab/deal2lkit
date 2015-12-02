@@ -1,17 +1,17 @@
-  //-----------------------------------------------------------
-  //
-  //    Copyright (C) 2015 by the deal2lkit authors
-  //
-  //    This file is part of the deal2lkit library.
-  //
-  //    The deal2lkit library is free software; you can use it, redistribute
-  //    it, and/or modify it under the terms of the GNU Lesser General
-  //    Public License as published by the Free Software Foundation; either
-  //    version 2.1 of the License, or (at your option) any later version.
-  //    The full text of the license can be found in the file LICENSE at
-  //    the top level of the deal2lkit distribution.
-  //
-  //-----------------------------------------------------------
+//-----------------------------------------------------------
+//
+//    Copyright (C) 2015 by the deal2lkit authors
+//
+//    This file is part of the deal2lkit library.
+//
+//    The deal2lkit library is free software; you can use it, redistribute
+//    it, and/or modify it under the terms of the GNU Lesser General
+//    Public License as published by the Free Software Foundation; either
+//    version 2.1 of the License, or (at your option) any later version.
+//    The full text of the license can be found in the file LICENSE at
+//    the top level of the deal2lkit distribution.
+//
+//-----------------------------------------------------------
 
 #ifndef _d2k_imex_stepper_h
 #define _d2k_imex_stepper_h
@@ -23,7 +23,7 @@
 #include <deal.II/base/parameter_handler.h>
 
 #ifdef D2K_WITH_SUNDIALS
-  // For time integration.
+// For time integration.
 #include <ida/ida.h>
 #include <ida/ida_spils.h>
 #include <ida/ida_spgmr.h>
@@ -40,7 +40,7 @@
 
 D2K_NAMESPACE_OPEN
 
-/** 
+/**
  *
  */
 template<typename VEC=Vector<double> >
@@ -55,7 +55,7 @@ public:
               const double &step_size=1e-3,
               const double &initial_time=0.0,
               const double &final_time=1.0
-              );
+             );
 
   /** Declare parameters for this class to function properly. */
   virtual void declare_parameters(ParameterHandler &prm);
@@ -97,8 +97,15 @@ private:
   /** Alpha to use in Newton method for IC calculation. */
   double newton_alpha;
 
-  /** Maximum number of iterations for Newton method in IC calculation. */
-  unsigned int max_non_linear_iterations;
+  /** Maximum number of outer iterations for Newton method. */
+  unsigned int max_outer_non_linear_iterations;
+
+  /** Maximum number of inner iterations for Newton method. */
+  unsigned int max_inner_non_linear_iterations;
+
+  /** Jacobian is updated at each outer iteration and time step */
+  bool update_jacobian_continuously;
+
 };
 
 D2K_NAMESPACE_CLOSE
