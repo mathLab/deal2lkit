@@ -30,6 +30,22 @@
 #include <chrono>         // for TimeUtilities std::chrono
 #include <stdio.h>
 
+#include <deal.II/lac/block_vector.h>
+#ifdef DEAL_II_WITH_TRILINOS
+#include <deal.II/lac/trilinos_block_vector.h>
+#include <deal.II/lac/trilinos_parallel_block_vector.h>
+#include <deal.II/lac/trilinos_vector.h>
+#endif
+#include <deal.II/base/utilities.h>
+
+#ifdef D2K_WITH_SUNDIALS
+#include <nvector/nvector_serial.h>
+#ifdef DEAL_II_WITH_MPI
+#include <nvector/nvector_parallel.h>
+#endif
+#endif
+
+
 #include <deal.II/base/index_set.h>
 using namespace dealii;
 using std_cxx11::shared_ptr;
@@ -494,6 +510,19 @@ void vector_shift(VEC &in_vec, double a_scalar)
     in_vec[i] += a_scalar;
 }
 
+#ifdef D2K_WITH_SUNDIALS
+
+#ifdef DEAL_II_WITH_MPI
+void copy(TrilinosWrappers::MPI::Vector &dst, const N_Vector &src);
+void copy(N_Vector &dst, const TrilinosWrappers::MPI::Vector &src);
+void copy(TrilinosWrappers::MPI::BlockVector &dst, const N_Vector &src);
+void copy(N_Vector &dst, const TrilinosWrappers::MPI::BlockVector &src);
+#endif
+
+void copy(BlockVector<double> &dst, const N_Vector &src);
+void copy(N_Vector &dst, const BlockVector<double> &src);
+
+#endif
 
 D2K_NAMESPACE_CLOSE
 
