@@ -203,7 +203,9 @@ unsigned int IMEXStepper<VEC>::start_ode(VEC &solution)
         } // The nonlinear solver iteration cycle ends here.
 
       *previous_solution = solution;
-      interface.output_step(t, solution, *solution_dot,  step_number, step_size);
+
+      if ((step_number % output_period) == 0)
+        interface.output_step(t, solution, *solution_dot,  step_number, step_size);
 
       update_Jacobian = update_jacobian_continuously;
 
