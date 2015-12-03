@@ -222,10 +222,17 @@ public:
    */
   template <class T>
   void add_parameter(ParameterHandler &prm, T *parameter,
-                     const std::string &entry, const std::string &default_value,
+                     const std::string &entry,
+                     const std::string &default_value,
                      const Patterns::PatternBase &pattern=Patterns::Anything(),
                      const std::string &documentation=std::string())
   {
+    AssertThrow(std::is_const<T>::value == false,
+                ExcMessage("You tried to add a parameter using a const "
+                           "variable. This is not allowed, since these "
+                           "variables will be filled later on when "
+                           "parsing the parameter."));
+
     prm.declare_entry(entry, default_value, pattern, documentation);
     parameters[entry] = boost::any(parameter);
   }
