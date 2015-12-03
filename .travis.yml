@@ -14,7 +14,11 @@ addons:
     sources:
       - ubuntu-toolchain-r-test
       - llvm-toolchain-precise-3.6
+      - george-edison55-precise-backports
     packages:
+      - ninja-build
+      - cmake
+      - cmake-data
       - build-essential
       - libblas-dev
       - liblapack-dev

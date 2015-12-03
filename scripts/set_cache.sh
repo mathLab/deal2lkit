@@ -12,15 +12,15 @@ else
   find $PRG -exec touch {} \;
 fi
 
-# installing cmake
-if [ ! -d $PRG/cmake ]
-then
-  echo "installing cmake"
-  wget http://www.cmake.org/files/v3.3/cmake-3.3.0-rc3-Linux-x86_64.tar.gz > /dev/null
-  tar xzf cmake-3.3.0-rc3-Linux-x86_64.tar.gz -C $PRG
-  rm cmake-3.3.0-rc3-Linux-x86_64.tar.gz
-  mv $PRG/cmake-* $PRG/cmake
-fi
+# # installing cmake
+# if [ ! -d $PRG/cmake ]
+# then
+#   echo "installing cmake"
+#   wget http://www.cmake.org/files/v3.3/cmake-3.3.0-rc3-Linux-x86_64.tar.gz > /dev/null
+#   tar xzf cmake-3.3.0-rc3-Linux-x86_64.tar.gz -C $PRG
+#   rm cmake-3.3.0-rc3-Linux-x86_64.tar.gz
+#   mv $PRG/cmake-* $PRG/cmake
+# fi
 
 # installing numdiff
 if [ ! -d $PRG/numdiff ]
@@ -68,7 +68,7 @@ if [ ! -d $PRG/trilinos ]
 then
   echo "installing trilinos"
   DST_INST=$PRG/trilinos
-  export PATH=$PRG/cmake/bin:$PATH
+#  export PATH=$PRG/cmake/bin:$PATH
   cd $PRG
   git clone https://github.com/trilinos/trilinos.git trilinos-tmp
   cd trilinos-tmp
@@ -121,7 +121,7 @@ then
   cd $CASA
   tar cfz $PRG/trilinos-serial-CI-build.tgz $PRG/trilinos
 fi
-  export PATH=$PRG/cmake/bin:$PATH
+#  export PATH=$PRG/cmake/bin:$PATH
   export PATH=$PWD/programs/ninja:$PATH
 
 # dealii
@@ -134,7 +134,7 @@ then
   cd dealii-tmp
   mkdir build
   cd build
-  export PATH=$PRG/cmake/bin:$PATH
+#  export PATH=$PRG/cmake/bin:$PATH
   export PATH=$PWD/programs/ninja:$PATH
   cmake \
     -G Ninja \
@@ -164,7 +164,7 @@ then
   cd sundials-tmp
   mkdir build
   cd build
-  export PATH=$PRG/cmake/bin:$PATH
+#  export PATH=$PRG/cmake/bin:$PATH
   export PATH=$PWD/programs/ninja:$PATH
   cmake \
     -G Ninja \
