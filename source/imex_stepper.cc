@@ -126,7 +126,13 @@ unsigned int IMEXStepper<VEC>::start_ode(VEC &solution)
   *previous_solution = solution;
 
   double t = initial_time;
-  const double alpha = 1./step_size;
+  double alpha;
+
+  // check if it is a stationary problem
+  if (initial_time == final_time)
+    alpha = 0.0;
+  else
+    alpha = 1./step_size;
 
   interface.output_step( 0, solution, *solution_dot, 0, step_size);
 
