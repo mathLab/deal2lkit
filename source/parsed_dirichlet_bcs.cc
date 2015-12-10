@@ -469,7 +469,7 @@ void ParsedDirichletBCs<2,3>::compute_nonzero_normal_flux_constraints (const DoF
     const Mapping<2,3> &,
     ConstraintMatrix &) const
 {
-  Assert(false,ExcImpossibleInDim(1));
+  Assert(false,ExcImpossibleInDim(2));
 }
 
 
