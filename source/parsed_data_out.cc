@@ -163,6 +163,9 @@ void ParsedDataOut<dim,spacedim>::prepare_data_output(const DoFHandler<dim,space
 template <int dim, int spacedim>
 void ParsedDataOut<dim,spacedim>::write_data_and_clear( const Mapping<dim,spacedim> &mapping)
 {
+  if (output_format=="none")
+    return;
+
   if (files_to_save!="")
     {
       std::vector<std::string> files;
