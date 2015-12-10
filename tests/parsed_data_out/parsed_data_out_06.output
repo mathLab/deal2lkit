@@ -1,7 +1,7 @@
 
 DEAL:parameters:test::Files to save in run directory: 
 DEAL:parameters:test::Incremental run prefix: solution/run
-DEAL:parameters:test::Output format: vtu
+DEAL:parameters:test::Output format: none
 DEAL:parameters:test::Output partitioning: false
 DEAL:parameters:test::Problem base name: solution
 DEAL:parameters:test::Solution names: u
