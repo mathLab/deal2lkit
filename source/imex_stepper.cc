@@ -57,7 +57,7 @@ IMEXStepper<VEC>::IMEXStepper(SundialsInterface<VEC> &interface,
   newton_alpha = 1.0;
   max_outer_non_linear_iterations = 5;
   max_inner_non_linear_iterations = 3;
-
+  norm_res="l2";
 }
 
 template <typename VEC>
@@ -93,6 +93,9 @@ void IMEXStepper<VEC>::declare_parameters(ParameterHandler &prm)
                 "Jacobian is continuously updated and a cycle of inner iterations is \n"
                 "perfomed.");
 
+  add_parameter(prm, &norm_res,
+                "Norm used for non linear iterations", norm_res,
+                Patterns::Selection("l2|linfty"));
 
   add_parameter(prm, &max_inner_non_linear_iterations,
                 "Maximum number of inner nonlinear iterations", std::to_string(max_inner_non_linear_iterations),
@@ -156,9 +159,24 @@ unsigned int IMEXStepper<VEC>::start_ode(VEC &solution)
       unsigned int outer_iter = 0;
       unsigned int nonlin_iter = 0;
       interface.residual(t, solution, *solution_dot, *residual);
-      double res_norm = residual->l2_norm();
+      double res_norm = 0.0;
+      double solution_norm = 0.0;
+
+      if (norm_res=="l2")
+        {
+          res_norm = residual->l2_norm();
+          solution_norm = solution.l2_norm();
+        }
+      else if (norm_res=="linfty")
+        {
+          res_norm = residual->linfty_norm();
+          solution_norm = solution.l2_norm();
+        }
+
       // The nonlinear solver iteration cycle begins here.
-      while (outer_iter < max_outer_non_linear_iterations && res_norm > abs_tol)
+      while (outer_iter < max_outer_non_linear_iterations &&
+             res_norm > abs_tol &&
+             res_norm > rel_tol*solution_norm)
         {
           outer_iter += 1;
           if (update_Jacobian == true)
@@ -168,7 +186,9 @@ unsigned int IMEXStepper<VEC>::start_ode(VEC &solution)
             }
 
           inner_iter = 0;
-          while (inner_iter < max_inner_non_linear_iterations && res_norm > abs_tol)
+          while (inner_iter < max_inner_non_linear_iterations &&
+                 res_norm > abs_tol &&
+                 res_norm > rel_tol*solution_norm)
             {
               inner_iter += 1;
 
@@ -188,7 +208,17 @@ unsigned int IMEXStepper<VEC>::start_ode(VEC &solution)
 
               interface.residual(t, solution, *solution_dot, *residual);
 
-              res_norm = solution_update->l2_norm();
+              if (norm_res=="l2")
+                {
+                  res_norm = residual->l2_norm();
+                  solution_norm = solution.l2_norm();
+                }
+              else if (norm_res=="linfty")
+                {
+                  res_norm = residual->linfty_norm();
+                  solution_norm = solution.l2_norm();
+                }
+
             }
 
           nonlin_iter += inner_iter;
