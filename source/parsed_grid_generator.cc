@@ -95,7 +95,7 @@ ParsedGridGenerator<dim, spacedim>::ParsedGridGenerator(const std::string _secti
 template <int dim, int spacedim>
 std::string ParsedGridGenerator<dim, spacedim>::get_grid_names()
 {
-  return "file|rectangle|hyperball|hyper_shell|hyper_sphere|hyper_L|half_hyper_ball|cylinder|truncated_cone|hyper_cross|hyper_cube_slit|half_hyper_shell|quarter_hyper_shell|cylinder_shell|torus|hyper_cube_with_cylindrical_hole|moebius|cheese";
+  return "file|rectangle|hyper_ball|hyper_shell|hyper_sphere|hyper_L|half_hyper_ball|cylinder|truncated_cone|hyper_cross|hyper_cube_slit|half_hyper_shell|quarter_hyper_shell|cylinder_shell|torus|hyper_cube_with_cylindrical_hole|moebius|cheese";
 }
 
 template <int dim, int spacedim>
@@ -129,7 +129,7 @@ void ParsedGridGenerator<dim, spacedim>::declare_parameters(ParameterHandler &pr
                 "- hyper_sphere  : generate an hyper sphere with center and radius prescribed:\n"
                 "	- Optional Point<spacedim> : center\n"
                 "	- Optional double : radius\n"
-                "- hyperball  : initialize the given triangulation with a hyperball:\n\n"
+                "- hyper_ball  : initialize the given triangulation with a hyper_ball:\n\n"
                 "	- Optional Point<spacedim> : center\n"
                 "	- Optional double : radius\n"
                 "- subdivided_hyper_rectangle   : create a coordinate-parallel parallelepiped:\n\n"
@@ -258,7 +258,7 @@ void ParsedGridGenerator<dim, spacedim>::declare_parameters(ParameterHandler &pr
                 "Unsigned int to be used in the generation of the grid. "
                 "The use of it will depend on the specific grid.");
 
-  add_parameter(prm, &un_int_option_one,
+  add_parameter(prm, &un_int_option_two,
                 "Optional int 2",str_un_int_2,
                 Patterns::Integer(),
                 "Unsigned int to be used in the generation of the grid. "
@@ -293,7 +293,7 @@ void ParsedGridGenerator<dim, spacedim>::declare_parameters(ParameterHandler &pr
                 "If set to true, boundary ids will be copied over "
                 "the manifold ids.");
 
-  add_parameter(prm, &create_default_manifolds,
+  add_parameter(prm, &copy_material_to_manifold_ids,
                 "Copy material to manifold ids",
                 create_default_manifolds ? "true" : "false",
                 Patterns::Bool(),
@@ -408,6 +408,9 @@ struct PGGHelper
         else
           Assert(false, ExcNotImplemented());
       }
+    else
+      AssertThrow(false, ExcMessage("Not implemented: " + p->grid_name));
+
   }
 
   /**
@@ -441,13 +444,13 @@ struct PGGHelper
   create_grid(ParsedGridGenerator<dim,dim> *p,
               Triangulation<dim,dim> &tria)
   {
-    if (p->grid_name == "hyperball")
+    if (p->grid_name == "hyper_ball")
       {
 
         GridGenerator::hyper_ball( tria,
                                    p->point_option_one,
                                    p->double_option_one);
-        p->default_manifold_descriptors = "0=HyperBall";
+        p->default_manifold_descriptors = "0=HyperBallBoundary";
       }
     else if (p->grid_name == "hyper_L")
       {
@@ -467,6 +470,7 @@ struct PGGHelper
         GridGenerator::cylinder ( tria,
                                   p->double_option_one,
                                   p->double_option_two);
+        p->default_manifold_descriptors = "0=CylindricalManifoldOnAxis";
       }
     else if (p->grid_name == "truncated_cone")
       {
@@ -499,7 +503,7 @@ struct PGGHelper
                                           p->colorize);
         p->default_manifold_descriptors = p->colorize ?
                                           "0=SphericalManifold % 1=SphericalManifold" :
-                                          "0=HalfHyperShellBoundary";
+                                          "0=SphericalManifold";
 
       }
     else if (p->grid_name == "quarter_hyper_shell")
@@ -522,7 +526,10 @@ struct PGGHelper
                                         p->double_option_one,
                                         p->un_int_option_one,
                                         p->un_int_option_two);
-        p->default_manifold_descriptors = "0=CylinderManifold";
+        // This won't work, because of the differen meaning of the various
+        // options...
+
+        // p->default_manifold_descriptors = "0=CylindricalManifoldOnAxis";
       }
     else if (p->grid_name == "hyper_cube_with_cylindrical_hole")
       {
@@ -541,7 +548,9 @@ struct PGGHelper
                                     p->double_option_one,
                                     p->un_int_option_one,
                                     p->colorize);
-        p->default_manifold_descriptors = "0=HalfHyperShellBoundary";
+        p->default_manifold_descriptors =  p->colorize ?
+                                           "0=SphericalManifold % 1=SphericalManifold" :
+                                           "0=SphericalManifold";
       }
     else if (p->grid_name == "cheese")
       {
@@ -587,9 +596,11 @@ struct PGGHelper
         GridGenerator::torus  (tria,
                                p->double_option_one,
                                p->double_option_two);
+
+        p->default_manifold_descriptors = "0=TorusBoundary";
       }
     else
-      PGGHelper::default_create_grid(p, tria);
+      PGGHelper::create_grid<2>(p, tria);
   }
 
   /**
@@ -652,7 +663,7 @@ struct PGGHelper
           }
 #endif
 
-        return default_create_manifold(p, name);
+        return create_manifold<3>(p, name);
       }
   }
 
@@ -723,8 +734,8 @@ struct PGGHelper
     else if (name == "HalfHyperShellBoundary")
       {
         return SP(new HalfHyperShellBoundary<dim>(p->point_option_one,
-                                                  p->double_option_one,
-                                                  p->double_option_two));
+                                                  p->double_option_two,
+                                                  p->double_option_one));
       }
     else
       return default_create_manifold(p, name);
@@ -778,7 +789,7 @@ struct PGGHelper
       {
         return SP(new CylindricalManifold<dim,spacedim>(p->un_int_option_one));
       }
-    else if (name=="GenearlCylindricalManifold")
+    else if (name=="GeneralCylindricalManifold")
       {
         return SP(new CylindricalManifold<dim,spacedim>(p->point_option_one,
                                                         p->point_option_two));

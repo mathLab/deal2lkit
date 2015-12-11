@@ -14,7 +14,7 @@
 //-----------------------------------------------------------
 
 
-#include "tests.h"
+#include "../tests.h"
 #include <deal2lkit/utilities.h>
 #include <deal2lkit/parsed_grid_generator.h>
 
@@ -24,17 +24,42 @@
 #include <string>
 #include <fstream>
 #include <streambuf>
+#include <sstream>
 #include <deal.II/grid/grid_out.h>
 
 
 using namespace deal2lkit;
 
-// Create a grid, refine it locally, write it out in ar format, read it
-// back in, and check that everything is fine.
+// Balls and spheres
+
 template<int dim, int spacedim>
-void test(ParsedGridGenerator<dim, spacedim> &pgg)
+void test(const std::string &name)
 {
-  Triangulation<dim, spacedim> *tria = pgg.serial();
+  deallog << "Testing " << name
+          <<"<"<<dim<<","<<spacedim<<">"<< std::endl;
+
+  ParsedGridGenerator<dim, spacedim> pgg("Default");
+
+  ParameterHandler prm;
+  ParameterAcceptor::declare_all_parameters(prm);
+  std::stringstream input;
+  unsigned int ncells = name=="half_hyper_shell" ? 4 : 6;
+  if (name == "cylinder")
+    ncells = 0;
+  if (name == "cylinder_shell")
+    ncells = 2;
+  input <<  "subsection Default" << std::endl
+        <<  "  set Grid to generate = " << name << std::endl
+        <<  "  set Colorize = false" << std::endl
+        <<  "  set Create default manifolds = true" << std::endl
+        <<  "  set Optional int 1 = " << ncells << std::endl
+        <<  "end" << std::endl;
+  prm.read_input_from_string(input.str().c_str());
+  ParameterAcceptor::parse_all_parameters(prm);
+
+  shared_ptr<Triangulation<dim, spacedim> > tria = SP(pgg.serial());
+  tria->refine_global(1);
+
   GridOut go;
   go.write_msh(*tria, deallog.get_file_stream());
 }
@@ -42,22 +67,9 @@ void test(ParsedGridGenerator<dim, spacedim> &pgg)
 int main ()
 {
   initlog();
-  ParsedGridGenerator<2> a("Read");
+  test<2,2>("hyper_ball");
+  test<3,3>("hyper_ball");
 
-  ParameterHandler prm;
-  ParameterAcceptor::declare_all_parameters(prm);
-  prm.read_input_from_string(""
-                             "subsection Read\n"
-                             "  set Grid to generate = file \n"
-                             "  set Input grid file name = "
-                             SOURCE_DIR"/grids/obstacle.ucd\n"
-                             "  set Manifold descriptors = 5=HyperShellBoundary\n"
-                             "end\n");
-
-  ParameterAcceptor::parse_all_parameters(prm);
-  shared_ptr<Triangulation<2> > tria = SP(a.serial());
-  tria->refine_global();
-
-  GridOut grid_out;
-  grid_out.write_msh (*tria, deallog.get_file_stream());
+  test<2,2>("half_hyper_ball");
+  test<3,3>("half_hyper_ball");
 }

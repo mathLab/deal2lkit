@@ -37,7 +37,7 @@ void test(ParsedGridGenerator<dim, spacedim> &pgg)
 int main ()
 {
   initlog();
-  ParsedGridGenerator<2,2> a("Unit Hyperball", "hyperball");
+  ParsedGridGenerator<2,2> a("Unit Hyperball", "hyper_ball");
   ParsedGridGenerator<2,2> b("Sub Hyper Rectangle", "rectangle");
   ParsedGridGenerator<2,2> c("Hyper Shell", "hyper_shell", "", "", "", "false", "1.0", "0.5", "1.5",
                              "0", "0","","none","");

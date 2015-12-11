@@ -14,7 +14,7 @@
 //-----------------------------------------------------------
 
 
-#include "tests.h"
+#include "../tests.h"
 #include <deal2lkit/utilities.h>
 #include <deal2lkit/parsed_grid_generator.h>
 
