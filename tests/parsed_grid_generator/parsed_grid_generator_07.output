@@ -2,7 +2,7 @@
 DEAL:parameters:Cube::Colorize: false
 DEAL:parameters:Cube::Copy boundary to manifold ids: false
 DEAL:parameters:Cube::Copy material to manifold ids: false
-DEAL:parameters:Cube::Create default manifolds: false
+DEAL:parameters:Cube::Create default manifolds: true
 DEAL:parameters:Cube::Grid to generate: rectangle
 DEAL:parameters:Cube::Input grid file name: 
 DEAL:parameters:Cube::Manifold descriptors: 
@@ -19,7 +19,7 @@ DEAL:parameters:Cube::Output grid file name:
 DEAL:parameters:Rectangle::Colorize: false
 DEAL:parameters:Rectangle::Copy boundary to manifold ids: false
 DEAL:parameters:Rectangle::Copy material to manifold ids: false
-DEAL:parameters:Rectangle::Create default manifolds: false
+DEAL:parameters:Rectangle::Create default manifolds: true
 DEAL:parameters:Rectangle::Grid to generate: rectangle
 DEAL:parameters:Rectangle::Input grid file name: 
 DEAL:parameters:Rectangle::Manifold descriptors: 

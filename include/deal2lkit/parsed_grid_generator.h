@@ -42,7 +42,7 @@ struct PGGHelper;
  * All Triangulations in the GridGenerator Namespace are supported, as
  * well as all file formats supported by GridIn. This class is in all
  * effects a wrapper around the GridGenerator namespace functions,
- * GridIn, and GridOut classes of the \dealii library
+ * GridIn, GridOut and some Manifold classes of the \dealii library.
  *
  *
  * ParsedGridGenerator can be used both in serial and parallel
@@ -97,6 +97,10 @@ struct PGGHelper;
  *   set Optional int 1             = 1
  *   set Optional vector of dim int = 1,1,1
  *   set Output grid file name      =
+ *   set Copy boundary to manifold ids = false
+ *   set Copy material to manifold ids = false
+ *   set Create default manifolds      = false
+ *   set Manifold descriptors          =
  * end
  * subsection 2D mesh
  *   set Colorize                   = true
@@ -110,12 +114,21 @@ struct PGGHelper;
  *   set Optional int 1             = 1
  *   set Optional vector of dim int = 1,1
  *   set Output grid file name      =
+ *   set Copy boundary to manifold ids = false
+ *   set Copy material to manifold ids = false
+ *   set Create default manifolds      = false
+ *   set Manifold descriptors          =
  * end
  * \endcode
  *
  * If the user would then change the parameter file to generate a sphere,
  * or read a file, no change in the code would be necessary, as at run
  * time the new parameters would be used.
+ *
+ * Setting the option "Create default manifolds" to true, makes sure
+ * that default manifold descritpors for each Triangulation that
+ * requires non straigth boundary is also generated together with the
+ * Triangulation, and attached to it.
  *
  * If the option `Output grid file name` is set to non-empty, when the
  * user calls ParsedGridGenerator::write(), an output grid would be

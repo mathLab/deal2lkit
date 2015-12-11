@@ -74,7 +74,7 @@ ParsedGridGenerator<dim, spacedim>::ParsedGridGenerator(const std::string _secti
   mesh_smoothing(_mesh_smoothing),
   grid_name(_grid_type),
   optional_manifold_descriptors(_manifold_descriptors),
-  create_default_manifolds(false),
+  create_default_manifolds(true),
   copy_boundary_to_manifold_ids(false),
   copy_material_to_manifold_ids(false),
   input_grid_file_name(_input_grid_file),
@@ -295,7 +295,7 @@ void ParsedGridGenerator<dim, spacedim>::declare_parameters(ParameterHandler &pr
 
   add_parameter(prm, &copy_material_to_manifold_ids,
                 "Copy material to manifold ids",
-                create_default_manifolds ? "true" : "false",
+                copy_material_to_manifold_ids ? "true" : "false",
                 Patterns::Bool(),
                 "If set to true, material ids "
                 "will be copied over the manifold ids.");
@@ -307,9 +307,27 @@ void ParsedGridGenerator<dim, spacedim>::declare_parameters(ParameterHandler &pr
                 "Manifold descriptors.\n"
                 "Pattern to be used: \n"
                 "id followed by '=' manifold descriptor \n "
-                "each couple of id and  manifold descriptor is separated by '%' \n"
+                "each couple of id and  manifold descriptor is separated by '%' "
+                "and those Manifold descriptors which require additional parameters "
+                "use the ones defined in this class.\n"
                 "Available manifold descriptor: \n"
-                " - HyperBallBoundary \n"
+                "- HyperBallBoundary : boundary of a hyper_ball :\n"
+                "	- Optional double	    : radius\n"
+                "	- Optional Point<spacedim> 1: center\n"
+                "- CylinderBoundaryOnAxis : boundary of a cylinder, given radius and axis :\n"
+                "	- Optional double	    : radius\n"
+                "	- Optional int 1	    : axis (0=x, 1=y, 2=z)\n"
+                "- GeneralCylinderBoundary : boundary of a cylinder, given radius, a point on the axis and a  direction :\n"
+                "	- Optional double	    : radius\n"
+                "	- Optional int 1	    : axis (0=x, 1=y, 2=z)\n"
+                "	- Optional Point<spacedim> 1: point on axis\n"
+                "	- Optional Point<spacedim> 2: direction\n"
+                "- ConeBoundary : boundary of a cone, given radius, a point on the axis and a  direction :\n"
+                "	- Optional double 1	    : radius 1\n"
+                "	- Optional double 2	    : radius 2\n"
+                "	- Optional Point<spacedim> 1: point on first face\n"
+                "	- Optional Point<spacedim> 2: point on second face\n"
+                " - HyperBallBoundary:  \n"
                 " - HyperShellBoundary \n"
                 " - CADSurface\n"
                 " - CADLine\n"
@@ -478,7 +496,7 @@ struct PGGHelper
                                          p->double_option_one,
                                          p->double_option_two,
                                          p->double_option_three);
-        p->default_manifold_descriptors = "0=ConeBoundary";
+        p->default_manifold_descriptors = dim == 3 ? "0=ConeBoundary" : "";
       }
     else if (p->grid_name == "hyper_cross")
       {
@@ -955,6 +973,7 @@ D2K_NAMESPACE_CLOSE
 
 template class deal2lkit::ParsedGridGenerator<1,1>;
 template class deal2lkit::ParsedGridGenerator<1,2>;
+//template class deal2lkit::ParsedGridGenerator<1,3>;
 template class deal2lkit::ParsedGridGenerator<2,2>;
 template class deal2lkit::ParsedGridGenerator<2,3>;
 template class deal2lkit::ParsedGridGenerator<3,3>;
