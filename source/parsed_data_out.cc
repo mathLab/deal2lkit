@@ -145,7 +145,7 @@ void ParsedDataOut<dim,spacedim>::prepare_data_output(const DoFHandler<dim,space
           if (output_partitioning)
             {
               deallog << "Writing partitioning" << std::endl;
-              Vector<float> partitioning(dh.get_tria().n_active_cells());
+              Vector<float> partitioning(dh.get_triangulation().n_active_cells());
               for (unsigned int i=0; i<partitioning.size(); ++i)
                 partitioning(i) = this_mpi_process;
               static Vector<float> static_partitioning;
