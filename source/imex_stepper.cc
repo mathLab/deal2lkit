@@ -164,13 +164,17 @@ unsigned int IMEXStepper<VEC>::start_ode(VEC &solution)
 
       if (norm_res=="l2")
         {
-          res_norm = residual->l2_norm();
-          solution_norm = solution.l2_norm();
+          if (abs_tol>0.0)
+            res_norm = residual->l2_norm();
+          if (rel_tol>0.0)
+            solution_norm = solution.l2_norm();
         }
       else if (norm_res=="linfty")
         {
-          res_norm = residual->linfty_norm();
-          solution_norm = solution.l2_norm();
+          if (abs_tol>0.0)
+            res_norm = residual->linfty_norm();
+          if (rel_tol>0.0)
+            solution_norm = solution.linfty_norm();
         }
 
       // The nonlinear solver iteration cycle begins here.
@@ -210,13 +214,17 @@ unsigned int IMEXStepper<VEC>::start_ode(VEC &solution)
 
               if (norm_res=="l2")
                 {
-                  res_norm = residual->l2_norm();
-                  solution_norm = solution.l2_norm();
+                  if (abs_tol>0.0)
+                    res_norm = residual->l2_norm();
+                  if (rel_tol>0.0)
+                    solution_norm = solution.l2_norm();
                 }
               else if (norm_res=="linfty")
                 {
-                  res_norm = residual->linfty_norm();
-                  solution_norm = solution.l2_norm();
+                  if (abs_tol>0.0)
+                    res_norm = residual->linfty_norm();
+                  if (rel_tol>0.0)
+                    solution_norm = solution.linfty_norm();
                 }
 
             }
