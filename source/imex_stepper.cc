@@ -57,7 +57,7 @@ IMEXStepper<VEC>::IMEXStepper(SundialsInterface<VEC> &interface,
   newton_alpha = 1.0;
   max_outer_non_linear_iterations = 5;
   max_inner_non_linear_iterations = 3;
-  norm_res="l2";
+  norm="l2";
 }
 
 template <typename VEC>
@@ -93,8 +93,8 @@ void IMEXStepper<VEC>::declare_parameters(ParameterHandler &prm)
                 "Jacobian is continuously updated and a cycle of inner iterations is \n"
                 "perfomed.");
 
-  add_parameter(prm, &norm_res,
-                "Norm used for non linear iterations", norm_res,
+  add_parameter(prm, &norm,
+                "Norm used for non linear iterations", norm,
                 Patterns::Selection("l2|linfty"));
 
   add_parameter(prm, &max_inner_non_linear_iterations,
@@ -162,16 +162,16 @@ unsigned int IMEXStepper<VEC>::start_ode(VEC &solution)
       double res_norm = 0.0;
       double solution_norm = 0.0;
 
-      if (norm_res=="l2")
+      if (norm=="l2")
         {
-          if (abs_tol>0.0)
+          if (abs_tol>0.0||rel_tol>0.0)
             res_norm = residual->l2_norm();
           if (rel_tol>0.0)
             solution_norm = solution.l2_norm();
         }
-      else if (norm_res=="linfty")
+      else if (norm=="linfty")
         {
-          if (abs_tol>0.0)
+          if (abs_tol>0.0||rel_tol>0.0)
             res_norm = residual->linfty_norm();
           if (rel_tol>0.0)
             solution_norm = solution.linfty_norm();
@@ -212,17 +212,17 @@ unsigned int IMEXStepper<VEC>::start_ode(VEC &solution)
 
               interface.residual(t, solution, *solution_dot, *residual);
 
-              if (norm_res=="l2")
+              if (norm=="l2")
                 {
-                  if (abs_tol>0.0)
-                    res_norm = residual->l2_norm();
+                  if (abs_tol>0.0||rel_tol>0.0)
+                    res_norm = solution_update->l2_norm();
                   if (rel_tol>0.0)
                     solution_norm = solution.l2_norm();
                 }
-              else if (norm_res=="linfty")
+              else if (norm=="linfty")
                 {
-                  if (abs_tol>0.0)
-                    res_norm = residual->linfty_norm();
+                  if (abs_tol>0.0||rel_tol>0.0)
+                    res_norm = solution_update->linfty_norm();
                   if (rel_tol>0.0)
                     solution_norm = solution.linfty_norm();
                 }
