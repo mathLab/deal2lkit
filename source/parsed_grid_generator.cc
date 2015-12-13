@@ -617,6 +617,33 @@ struct PGGHelper
 
         p->default_manifold_descriptors = "0=TorusBoundary";
       }
+#ifdef DEAL_II_WITH_OPENCASCADE
+    else if (p->grid_name == "file")
+      {
+        std::string ext = extension(p->input_grid_file_name);
+        if (ext == "step" || ext == "stp" ||
+            ext == "iges" || ext == "igs")
+          {
+            TopoDS_Shape sh = PGGHelper::readOCC(p->input_grid_file_name,
+                                                 p->double_option_one);
+
+
+            std::vector<TopoDS_Face> faces;
+            std::vector<TopoDS_Edge> edges;
+            std::vector<TopoDS_Vertex> vertices;
+
+            OpenCASCADE::extract_geometrical_shapes(sh, faces, edges, vertices);
+
+            AssertThrow(p->un_int_option_one < faces.size(),
+                        ExcMessage("The optional unsigned int you specified ("
+                                   +std::to_string(p->un_int_option_one) + ") does not " +
+                                   "correspond to a valid face in the CAD file " + p->input_grid_file_name));
+
+            OpenCASCADE::create_triangulation(faces[p->un_int_option_one], tria);
+          }
+      }
+#endif
+
     else
       PGGHelper::create_grid<2>(p, tria);
   }
@@ -658,26 +685,26 @@ struct PGGHelper
           {
             AssertDimension(subnames.size(), 2);
             return SP(new OpenCASCADE::ArclengthProjectionLineManifold<dim,spacedim>
-                      (PGGHelper::readOCC(subnames[1])));
+                      (PGGHelper::readOCC(subnames[1],p->double_option_one)));
           }
         else if (subnames[0] == "DirectionalProjectionBoundary")
           {
             AssertDimension(subnames.size(), 2);
             return SP(new OpenCASCADE::DirectionalProjectionBoundary<dim,spacedim>
-                      (PGGHelper::readOCC(subnames[1]),
+                      (PGGHelper::readOCC(subnames[1],p->double_option_one),
                        (Tensor<1,spacedim>)p->point_option_one));
           }
         else if (subnames[0] == "NormalProjectionBoundary")
           {
             AssertDimension(subnames.size(), 2);
             return SP(new OpenCASCADE::NormalProjectionBoundary<dim,spacedim>
-                      (PGGHelper::readOCC(subnames[1])));
+                      (PGGHelper::readOCC(subnames[1],p->double_option_one)));
           }
         else if (subnames[0] == "NormalToMeshProjectionBoundary")
           {
             AssertDimension(subnames.size(), 2);
             return SP(new OpenCASCADE::NormalToMeshProjectionBoundary<dim,spacedim>
-                      (PGGHelper::readOCC(subnames[1])));
+                      (PGGHelper::readOCC(subnames[1],p->double_option_one)));
           }
 #endif
 
@@ -705,26 +732,26 @@ struct PGGHelper
           {
             AssertDimension(subnames.size(), 2);
             return SP(new OpenCASCADE::ArclengthProjectionLineManifold<dim,spacedim>
-                      (PGGHelper::readOCC(subnames[1])));
+                      (PGGHelper::readOCC(subnames[1], p->double_option_one)));
           }
         else if (subnames[0] == "DirectionalProjectionBoundary")
           {
             AssertDimension(subnames.size(), 2);
             return SP(new OpenCASCADE::DirectionalProjectionBoundary<dim,spacedim>
-                      (PGGHelper::readOCC(subnames[1]),
+                      (PGGHelper::readOCC(subnames[1],p->double_option_one),
                        (Tensor<1,spacedim>)p->point_option_one));
           }
         else if (subnames[0] == "NormalProjectionBoundary")
           {
             AssertDimension(subnames.size(), 2);
             return SP(new OpenCASCADE::NormalProjectionBoundary<dim,spacedim>
-                      (PGGHelper::readOCC(subnames[1])));
+                      (PGGHelper::readOCC(subnames[1],p->double_option_one)));
           }
         else if (subnames[0] == "NormalToMeshProjectionBoundary")
           {
             AssertDimension(subnames.size(), 2);
             return SP(new OpenCASCADE::NormalToMeshProjectionBoundary<dim,spacedim>
-                      (PGGHelper::readOCC(subnames[1])));
+                      (PGGHelper::readOCC(subnames[1],p->double_option_one)));
           }
 #endif
         return default_create_manifold(p, name);
@@ -772,15 +799,15 @@ struct PGGHelper
   }
 
 #ifdef DEAL_II_WITH_OPENCASCADE
-  static TopoDS_Shape readOCC(const std::string &name)
+  static TopoDS_Shape readOCC(const std::string &name, const double &scale)
   {
     std::string ext = extension(name);
     TopoDS_Shape shape;
 
     if (ext == "iges" || ext == "igs")
-      shape = OpenCASCADE::read_IGES(name);
+      shape = OpenCASCADE::read_IGES(name, scale);
     else if (ext == "step" || ext == "stp")
-      shape = OpenCASCADE::read_STEP(name);
+      shape = OpenCASCADE::read_STEP(name, scale);
     return shape;
   }
 #endif

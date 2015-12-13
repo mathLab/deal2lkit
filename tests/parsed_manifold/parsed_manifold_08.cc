@@ -21,6 +21,7 @@
 #include <deal.II/grid/grid_out.h>
 #include <deal.II/base/utilities.h>
 #include <deal.II/opencascade/utilities.h>
+#include <deal.II/opencascade/boundary_lib.h>
 
 #include <string>
 #include <fstream>
@@ -55,19 +56,12 @@ int main ()
 {
   initlog();
 
-  std::string name = "NormalProjectionBoundary";
+  std::string name = "ArclengthProjectionLineManifold";
 
-  const unsigned int dim=3;
+  const unsigned int dim=2;
   const unsigned int spacedim=3;
 
-  // Constructed using these lines:
-
-  // gp_Pnt center(.5,.5,.5);
-  // Standard_Real radius(Point<3>().distance(point(center)));
-  // TopoDS_Face face = BRepPrimAPI_MakeSphere(center, radius);
-  // write_IGES(face, SOURCE_DIR "/iges_files/sphere.iges");
-
-  ParsedGridGenerator<3,3> pgg("Default");
+  ParsedGridGenerator<dim,spacedim> pgg("Default");
 
   ParameterHandler prm;
   ParameterAcceptor::declare_all_parameters(prm);
@@ -75,22 +69,24 @@ int main ()
 
   input << "subsection Default" << std::endl
         << "  set Copy boundary to manifold ids = true" << std::endl
-        << "  set Copy material to manifold ids = false" << std::endl
-        << "  set Colorize = false" << std::endl
-        << "  set Manifold descriptors = 0=NormalProjectionBoundary:"
-        << SOURCE_DIR "/iges_files/sphere.iges" << std::endl
+        << "  set Colorize = true" << std::endl
+        << "  set Manifold descriptors = "
+        << "0=ArclengthProjectionLineManifold:"
+        << SOURCE_DIR "/iges_files/edge.iges % "
+        << "1=ArclengthProjectionLineManifold:"
+        << SOURCE_DIR "/iges_files/edge.iges " << std::endl
         <<  "end" << std::endl;
 
   prm.read_input_from_string(input.str().c_str());
   ParameterAcceptor::parse_all_parameters(prm);
 
-  shared_ptr<Triangulation<3, 3> > tria = SP(pgg.serial());
+  shared_ptr<Triangulation<dim, spacedim> > tria = SP(pgg.serial());
   tria->refine_global(1);
 
   GridOut go;
   go.write_msh(*tria, deallog.get_file_stream());
 
-  // tria->refine_global(1);
+  // tria->refine_global(4);
   // std::ofstream out(("/tmp/"+name+std::to_string(dim)+std::to_string(spacedim)+".msh").c_str());
   // go.write_msh(*tria, out);
 
