@@ -327,13 +327,21 @@ void ParsedGridGenerator<dim, spacedim>::declare_parameters(ParameterHandler &pr
                 "	- Optional double 2	    : radius 2\n"
                 "	- Optional Point<spacedim> 1: point on first face\n"
                 "	- Optional Point<spacedim> 2: point on second face\n"
-                " - HyperBallBoundary:  \n"
-                " - HyperShellBoundary \n"
-                " - CADSurface\n"
-                " - CADLine\n"
-                "If CADSurface or CADLine is used, then the parameter\n"
-                "CAD file names\n is used to create the OpenCascade "
-                "objects that describe the manifolds using CAD files.");
+                "- TorusBoundary : boundary of a torus :\n"
+                "	- Optional double 1	    : radius 1\n"
+                "	- Optional double 2	    : radius 2\n"
+                "- ArclengthProjectionLineManifold:file.iges/step : interface to CAD file:\n"
+                "	- Optional double 1	    : scale to apply to input CAD file\n"
+                "- ArclengthProjectionLineManifold:file.iges/step : interface to CAD file:\n"
+                "	- Optional double 1	    : scale to apply to input CAD file\n"
+                "- DirectionalProjectionBoundary:file.iges/step : interface to CAD file:\n"
+                "	- Optional double 1	    : scale to apply to input CAD file\n"
+                "	- Optional Point<spacedim> 1: direction of projection\n"
+                "- NormalProjectionBoundary:file.iges/step : interface to CAD file:\n"
+                "	- Optional double 1	    : scale to apply to input CAD file\n"
+                "- NormalToMeshProjectionBoundary:file.iges/step : interface to CAD file:\n"
+                "	- Optional double 1	    : scale to apply to input CAD file\n"
+               );
 
   add_parameter(prm, &output_grid_file_name,
                 "Output grid file name", output_grid_file_name,

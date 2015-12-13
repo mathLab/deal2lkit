@@ -44,7 +44,6 @@ struct PGGHelper;
  * effects a wrapper around the GridGenerator namespace functions,
  * GridIn, GridOut and some Manifold classes of the \dealii library.
  *
- *
  * ParsedGridGenerator can be used both in serial and parallel
  * settings, and a typical usage of this class is
  * \code
@@ -134,6 +133,13 @@ struct PGGHelper;
  * user calls ParsedGridGenerator::write(), an output grid would be
  * generated using GridOut, choosing the right format according to the
  * extension of the file.
+ *
+ * Support for reading a single face of a NURBS surface into a
+ * Triangulationa<2,3> is also available, by specifying an input file
+ * name which is in the STEP or IGES format. In this case the
+ * OpenCASCADE::read_STEP() or OpenCASCADE::read_IGES() are called,
+ * and the resulting OpenCASCADE object is split into its faces. The
+ * face can be selected using the "Optional int 1" parameter.
  */
 template<int dim, int spacedim=dim>
 class ParsedGridGenerator : public ParameterAcceptor
@@ -338,7 +344,44 @@ private:
 
   /**
    * Take @p str_manifold_descriptors and fill @p manifold_descriptors with
-   * ids and manifolds.
+   * ids and manifolds. The format of the string is the following:
+   *
+   * - id followed by '=' manifold descriptor string
+   *
+   * Each couple of id and manifold descriptor string should be separated by '%'
+   *
+   * The manifold descriptor string can be taken among the following:
+   *
+   * - HyperBallBoundary : boundary of a hyper_ball :
+   *  - Optional double     : radius
+   *  - Optional Point<spacedim> 1: center
+   * - CylinderBoundaryOnAxis : boundary of a cylinder, given radius and axis :
+   *  - Optional double     : radius
+   *  - Optional int 1      : axis (0=x, 1=y, 2=z)
+   * - GeneralCylinderBoundary : boundary of a cylinder, given radius, a point on the axis and a  direction :
+   *  - Optional double     : radius
+   *  - Optional int 1      : axis (0=x, 1=y, 2=z)
+   *  - Optional Point<spacedim> 1: point on axis
+   *  - Optional Point<spacedim> 2: direction
+   * - ConeBoundary : boundary of a cone, given radius, a point on the axis and a  direction :
+   *  - Optional double 1     : radius 1
+   *  - Optional double 2     : radius 2
+   *  - Optional Point<spacedim> 1: point on first face
+   *  - Optional Point<spacedim> 2: point on second face
+   * - TorusBoundary : boundary of a torus :
+   *  - Optional double 1     : radius 1
+   *  - Optional double 2     : radius 2
+   * - ArclengthProjectionLineManifold:file.iges/step : interface to CAD file:
+   *  - Optional double 1     : scale to apply to input CAD file
+   * - ArclengthProjectionLineManifold:file.iges/step : interface to CAD file:
+   *  - Optional double 1     : scale to apply to input CAD file
+   * - DirectionalProjectionBoundary:file.iges/step : interface to CAD file:
+   *  - Optional double 1     : scale to apply to input CAD file
+   *  - Optional Point<spacedim> 1: direction of projection
+   * - NormalProjectionBoundary:file.iges/step : interface to CAD file:
+   *  - Optional double 1     : scale to apply to input CAD file
+   * - NormalToMeshProjectionBoundary:file.iges/step : interface to CAD file:
+   *  - Optional double 1     : scale to apply to input CAD file
    */
   void parse_manifold_descriptors(const std::string &str_manifold_descriptors);
 
@@ -356,21 +399,18 @@ private:
   std::string grid_name;
 
   /**
-   * Manifold descriptors.
-   * Pattern to be used: id followed by '=' manifold descriptor
-   * each couple of id and  manifold descriptor is separated by '%'
-   * Avaible manifold descriptor:
-   * - HyperBallBoundary
-   * - HyperShellBoundary
-   * - CADSurface
-   * - CADLine
+   * Optional Manifold descriptors. These are the ones defined by the
+   * parameter option "Manifold descriptors". See the documentation of
+   * the method parse_manifold_descriptors() for an explanation of the
+   * format to be used in the parameter file.
    */
   std::string optional_manifold_descriptors;
 
-
   /**
    * Default Manifold descriptors. This is filled when creating the grid,
-   * and is later translated into an actual manifold.
+   * and is later translated into actual manifolds. See the documentation of
+   * the method parse_manifold_descriptors() for an explanation of the
+   * format to be used in the parameter file.
    */
   std::string default_manifold_descriptors;
 
@@ -421,17 +461,16 @@ private:
   bool colorize;
 
   /**
-   * Create default manifold descriptors. If set to true, boundary ids will
-   * be copied over manifold ids on the newly created
+   * Create default manifold descriptors. If set to true, boundary ids
+   * will be copied over manifold ids on the newly created
    * triangulation (independently on the value of the variable
-   * copy_boundary_to_manifold_ids, and for each triangulation where we know how
-   * to create
-   * and associate their manifolds, we create them and associate them to
-   * the newly created triangulation.
+   * copy_boundary_to_manifold_ids, and for each triangulation where
+   * we know how to create and associate their manifolds, we create
+   * them and associate them to the newly created triangulation.
    *
-   * This option produces different associations depending on the colorize
-   * parameter. The created manifolds will be compatible with the triangulation
-   * and the colorize parameter used.
+   * This option produces different associations depending on the
+   * colorize parameter. The created manifolds will be compatible with
+   * the triangulation and the colorize parameter used.
    */
   bool create_default_manifolds;
 
