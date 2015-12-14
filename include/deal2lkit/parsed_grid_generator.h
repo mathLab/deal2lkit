@@ -17,17 +17,22 @@
 #define _d2k_parsed_grid_generator_h
 
 #include <deal2lkit/config.h>
+#include <deal2lkit/utilities.h>
+
 #include <deal.II/base/config.h>
 #include <deal.II/base/parameter_handler.h>
 #include <deal.II/grid/tria.h>
 #include <deal.II/distributed/tria.h>
 #include <deal.II/grid/manifold_lib.h>
 #include <deal.II/grid/grid_generator.h>
+
 #include <deal2lkit/parameter_acceptor.h>
 
 using namespace dealii;
 
 D2K_NAMESPACE_OPEN
+
+struct PGGHelper;
 
 /**
  * Parsed grid generator. Create a grid by reading a parameter file,
@@ -37,14 +42,13 @@ D2K_NAMESPACE_OPEN
  * All Triangulations in the GridGenerator Namespace are supported, as
  * well as all file formats supported by GridIn. This class is in all
  * effects a wrapper around the GridGenerator namespace functions,
- * GridIn, and GridOut classes of the \dealii library
- *
+ * GridIn, GridOut and some Manifold classes of the \dealii library.
  *
  * ParsedGridGenerator can be used both in serial and parallel
  * settings, and a typical usage of this class is
  * \code
  *   // 2D square - serial mesh
- *   // by default it constructs the rectangle whos opposite corner points
+ *   // by default it constructs the rectangle whose opposite corner points
  *   // are p1=(10.0,10.0) and p2=(20.0,20.0)
  *   ParsedGridGenerator<2,2> tria_builder_2d("2D mesh",
  *                                            "rectangle",
@@ -54,7 +58,7 @@ D2K_NAMESPACE_OPEN
  *                                            "true");
  *
  *   // 3D parallelepiped - parallel distributed mesh
- *   // by default it constructs the parallelepiped whos opposite corner
+ *   // by default it constructs the parallelepiped whose opposite corner
  *   // points are p1=(7.0,8.0,9.0) and p2=(15.0.16.0,16.7)
  *   ParsedGridGenerator<3,3> tria_builder_3d("3D mesh",
  *                                             "rectangle",
@@ -92,6 +96,10 @@ D2K_NAMESPACE_OPEN
  *   set Optional int 1             = 1
  *   set Optional vector of dim int = 1,1,1
  *   set Output grid file name      =
+ *   set Copy boundary to manifold ids = false
+ *   set Copy material to manifold ids = false
+ *   set Create default manifolds      = false
+ *   set Manifold descriptors          =
  * end
  * subsection 2D mesh
  *   set Colorize                   = true
@@ -105,6 +113,10 @@ D2K_NAMESPACE_OPEN
  *   set Optional int 1             = 1
  *   set Optional vector of dim int = 1,1
  *   set Output grid file name      =
+ *   set Copy boundary to manifold ids = false
+ *   set Copy material to manifold ids = false
+ *   set Create default manifolds      = false
+ *   set Manifold descriptors          =
  * end
  * \endcode
  *
@@ -112,10 +124,22 @@ D2K_NAMESPACE_OPEN
  * or read a file, no change in the code would be necessary, as at run
  * time the new parameters would be used.
  *
+ * Setting the option "Create default manifolds" to true, makes sure
+ * that default manifold descritpors for each Triangulation that
+ * requires non straigth boundary is also generated together with the
+ * Triangulation, and attached to it.
+ *
  * If the option `Output grid file name` is set to non-empty, when the
  * user calls ParsedGridGenerator::write(), an output grid would be
  * generated using GridOut, choosing the right format according to the
  * extension of the file.
+ *
+ * Support for reading a single face of a NURBS surface into a
+ * Triangulationa<2,3> is also available, by specifying an input file
+ * name which is in the STEP or IGES format. In this case the
+ * OpenCASCADE::read_STEP() or OpenCASCADE::read_IGES() are called,
+ * and the resulting OpenCASCADE object is split into its faces. The
+ * face can be selected using the "Optional int 1" parameter.
  */
 template<int dim, int spacedim=dim>
 class ParsedGridGenerator : public ParameterAcceptor
@@ -156,7 +180,14 @@ public:
                        const std::string opt_int_2="2",
                        const std::string opt_vec_of_int="",
                        const std::string mesh_smoothing="none",
-                       const std::string output_grid_file="");
+                       const std::string output_grid_file="",
+                       const std::string opt_manifold_descriptors="");
+
+
+  /**
+   * Return a list of implemented grids.
+   */
+  static std::string get_grid_names();
 
   /**
    * Declare all parameters of this class.
@@ -181,40 +212,34 @@ public:
    * - **file**-> read grid from a file using:
    *   - *Input grid filename*  : input filename\n
    *
-   * - **rectangle**-> create a subdivided hyperrectangle using:
+   * - **rectangle**-> calls GridGenerator::SubdividedHyperRectangle() using:
    *   - *Point<spacedim>*: lower-left corner
    *   - *Point<spacedim>*: upper-right corner
    *   - *Vector of dim int*: subdivisions on each direction
    *   - *bool*: colorize grid
    *
-   * - **subdivided_hyper_rectangle**-> create a subdivided hyperrectangle using:
-   *   - *Point<spacedim>*: lower-left corner
-   *   - *Point<spacedim>*: upper-right corner
-   *   - *Vector of dim int*: subdivisions on each direction
-   *   - *bool*: colorize grid
-   *
-   * - **hyper_sphere**-> generate an hyper sphere with center and radius prescribed:
+   * - **hyper_sphere**-> calls GridGenerator::HyperSphere() using:
    *   - *Point<spacedim>*: center
    *   - *double*: radius
    *
-   * - **unit_hyperball**-> initialize the given triangulation with a hyperball:
+   * - **hyper_ball**-> calls GridGenerator::HyperBall() using:
    *   - *Point<spacedim>*: center
    *   - *double*: radius
    *
-   * - **subdivided_hyper_rectangle**-> create a coordinate-parallel parallelepiped:
+   * - **parallelepiped**-> ccalls GridGenerator::Parallelepiped() using:
    *   - std::vector<unsigned int> : number of subdivisions in each coordinate direction
    *   - *Point<spacedim>*: lower-left corner
    *   - *Point<spacedim>*: upper-right corner
    *   - *bool*: colorize grid
    *
-   * - **hyper_shell**-> create a gird represented by the region between two spheres with fixed center:
+   * - **hyper_shell**-> calls GridGenerator::HyperShell() using:
    *   - *Point<spacedim>*: center
    *   - *double*: inner sphere radius
    *   - *double*: outer sphere radius
    *   - *unsigned int*: number of cells of the resulting triangulation (In 3D, only 6, 12, and 96 are allowed)
    *   - *bool*: colorize grid
    *
-   * - **hyper_L**-> initialize the given triangulation with a hyper-L. It produces the hypercube with the interval [left,right] without the hypercube made out of the interval [(left+right)/2,right] for each coordinate.:
+   * - **hyper_L**-> GridGenerator::HyperL(). It produces the hypercube with the interval [left,right] without the hypercube made out of the interval [(left+right)/2,right] for each coordinate.:
    *   - *double*: left
    *   - *double*: right
    *
@@ -318,6 +343,49 @@ private:
   get_smoothing();
 
   /**
+   * Take @p str_manifold_descriptors and fill @p manifold_descriptors with
+   * ids and manifolds. The format of the string is the following:
+   *
+   * - id followed by '=' manifold descriptor string
+   *
+   * Each couple of id and manifold descriptor string should be separated by '%'
+   *
+   * The manifold descriptor string can be taken among the following:
+   *
+   * - HyperBallBoundary : boundary of a hyper_ball :
+   *  - Optional double     : radius
+   *  - Optional Point<spacedim> 1: center
+   * - CylinderBoundaryOnAxis : boundary of a cylinder, given radius and axis :
+   *  - Optional double     : radius
+   *  - Optional int 1      : axis (0=x, 1=y, 2=z)
+   * - GeneralCylinderBoundary : boundary of a cylinder, given radius, a point on the axis and a  direction :
+   *  - Optional double     : radius
+   *  - Optional int 1      : axis (0=x, 1=y, 2=z)
+   *  - Optional Point<spacedim> 1: point on axis
+   *  - Optional Point<spacedim> 2: direction
+   * - ConeBoundary :  boundary of a cone, given radii, and two points on the faces :
+   *  - Optional double 1     : radius 1
+   *  - Optional double 2     : radius 2
+   *  - Optional Point<spacedim> 1: point on first face
+   *  - Optional Point<spacedim> 2: point on second face
+   * - TorusBoundary : boundary of a torus :
+   *  - Optional double 1     : radius 1
+   *  - Optional double 2     : radius 2
+   * - ArclengthProjectionLineManifold:file.iges/step : interface to CAD file:
+   *  - Optional double 1     : scale to apply to input CAD file
+   * - ArclengthProjectionLineManifold:file.iges/step : interface to CAD file:
+   *  - Optional double 1     : scale to apply to input CAD file
+   * - DirectionalProjectionBoundary:file.iges/step : interface to CAD file:
+   *  - Optional double 1     : scale to apply to input CAD file
+   *  - Optional Point<spacedim> 1: direction of projection
+   * - NormalProjectionBoundary:file.iges/step : interface to CAD file:
+   *  - Optional double 1     : scale to apply to input CAD file
+   * - NormalToMeshProjectionBoundary:file.iges/step : interface to CAD file:
+   *  - Optional double 1     : scale to apply to input CAD file
+   */
+  void parse_manifold_descriptors(const std::string &str_manifold_descriptors);
+
+  /**
    * Mesh smoothing to apply to the newly created Triangulation. This
    * variable is only used if the method serial() is called. For the
    * method parallel(), mesh smoothing is not yet supported by
@@ -329,6 +397,27 @@ private:
    * The grid to generate. Use the name "file" to read from a file.
    */
   std::string grid_name;
+
+  /**
+   * Optional Manifold descriptors. These are the ones defined by the
+   * parameter option "Manifold descriptors". See the documentation of
+   * the method parse_manifold_descriptors() for an explanation of the
+   * format to be used in the parameter file.
+   */
+  std::string optional_manifold_descriptors;
+
+  /**
+   * Default Manifold descriptors. This is filled when creating the grid,
+   * and is later translated into actual manifolds. See the documentation of
+   * the method parse_manifold_descriptors() for an explanation of the
+   * format to be used in the parameter file.
+   */
+  std::string default_manifold_descriptors;
+
+  /**
+   * A map of Manifold associated to the given manifold_ids.
+   */
+  std::map<types::manifold_id, shared_ptr<Manifold<dim,spacedim> > > manifold_descriptors;
 
   /**
    * Optional double argument. First option.
@@ -372,6 +461,34 @@ private:
   bool colorize;
 
   /**
+   * Create default manifold descriptors. If set to true, boundary ids
+   * will be copied over manifold ids on the newly created
+   * triangulation (independently on the value of the variable
+   * copy_boundary_to_manifold_ids, and for each triangulation where
+   * we know how to create and associate their manifolds, we create
+   * them and associate them to the newly created triangulation.
+   *
+   * This option produces different associations depending on the
+   * colorize parameter. The created manifolds will be compatible with
+   * the triangulation and the colorize parameter used.
+   */
+  bool create_default_manifolds;
+
+  /**
+   * Copy boundary ids to manifold ids. If set to true, boundary ids will be
+   * copied over manifold ids on the newly created
+   * triangulation.
+   */
+  bool copy_boundary_to_manifold_ids;
+
+  /**
+   * Copy material ids to manifold ids. If set to true, material ids will be
+   * copied over manifold ids on the newly created
+   * triangulation.
+   */
+  bool copy_material_to_manifold_ids;
+
+  /**
    * Optional vector of integers.
    */
   std::vector<unsigned int> un_int_vec_option_one;
@@ -396,6 +513,11 @@ private:
   std::string str_un_int_1;
   std::string str_un_int_2;
   std::string str_vec_int;
+
+  /**
+   * Helper function to create grids.
+   */
+  friend struct PGGHelper;
 };
 
 D2K_NAMESPACE_CLOSE
