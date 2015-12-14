@@ -322,7 +322,7 @@ void ParsedGridGenerator<dim, spacedim>::declare_parameters(ParameterHandler &pr
                 "	- Optional int 1	    : axis (0=x, 1=y, 2=z)\n"
                 "	- Optional Point<spacedim> 1: point on axis\n"
                 "	- Optional Point<spacedim> 2: direction\n"
-                "- ConeBoundary : boundary of a cone, given radius, a point on the axis and a  direction :\n"
+                "- ConeBoundary : boundary of a cone, given radii, and two points on the faces:\n"
                 "	- Optional double 1	    : radius 1\n"
                 "	- Optional double 2	    : radius 2\n"
                 "	- Optional Point<spacedim> 1: point on first face\n"
@@ -648,6 +648,10 @@ struct PGGHelper
                                    "correspond to a valid face in the CAD file " + p->input_grid_file_name));
 
             OpenCASCADE::create_triangulation(faces[p->un_int_option_one], tria);
+          }
+        else
+          {
+            PGGHelper::create_grid<2>(p, tria);
           }
       }
 #endif

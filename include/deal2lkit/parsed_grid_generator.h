@@ -363,7 +363,7 @@ private:
    *  - Optional int 1      : axis (0=x, 1=y, 2=z)
    *  - Optional Point<spacedim> 1: point on axis
    *  - Optional Point<spacedim> 2: direction
-   * - ConeBoundary : boundary of a cone, given radius, a point on the axis and a  direction :
+   * - ConeBoundary :  boundary of a cone, given radii, and two points on the faces :
    *  - Optional double 1     : radius 1
    *  - Optional double 2     : radius 2
    *  - Optional Point<spacedim> 1: point on first face
