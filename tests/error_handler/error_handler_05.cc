@@ -47,7 +47,7 @@ int main ()
       eh.error_from_exact(dh, sol, Functions::CosineFunction<3>(1));
       eh.custom_error(  [&dh](unsigned int)
       {
-        return 1.0/dh.get_tria().n_active_cells();
+        return 1.0/dh.get_triangulation().n_active_cells();
       }, dh);
     }
   eh.output_table(deallog.get_file_stream());

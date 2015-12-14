@@ -318,7 +318,7 @@ void ErrorHandler<ntables>::error_from_exact(const Mapping<DH::dimension, DH::sp
                   ExcDimensionMismatch(exact.n_components, types[table_no].size()));
 
       std::vector< std::vector<double> > error( exact.n_components, std::vector<double>(4));
-      const unsigned int n_active_cells = dh.get_tria().n_global_active_cells();
+      const unsigned int n_active_cells = dh.get_triangulation().n_global_active_cells();
       const unsigned int n_dofs=dh.n_dofs();
 
       if (extras[table_no]["cells"])
@@ -355,7 +355,7 @@ void ErrorHandler<ntables>::error_from_exact(const Mapping<DH::dimension, DH::sp
           // Select one Component
           ComponentSelectFunction<spacedim> select_component ( component, 1. , exact.n_components);
 
-          Vector<float> difference_per_cell (dh.get_tria().n_global_active_cells());
+          Vector<float> difference_per_cell (dh.get_triangulation().n_global_active_cells());
 
           QGauss<dim> q_gauss((dh.get_fe().degree+1) * 2);
 
@@ -536,7 +536,7 @@ void ErrorHandler<ntables>::custom_error(const std::function<double(const unsign
 
       const unsigned int n_components = types.size();
       std::vector<double> c_error( types[table_no].size() );
-      const unsigned int n_active_cells = dh.get_tria().n_global_active_cells();
+      const unsigned int n_active_cells = dh.get_triangulation().n_global_active_cells();
       const unsigned int n_dofs=dh.n_dofs();
       if (add_table_extras)
         {
