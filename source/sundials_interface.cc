@@ -41,6 +41,12 @@
 D2K_NAMESPACE_OPEN
 
 template<typename VEC>
+double SundialsInterface<VEC>::vector_norm(VEC &vector) const
+{
+  return vector.l2_norm();
+}
+
+template<typename VEC>
 bool SundialsInterface<VEC>::solver_should_restart(const double,
                                                    const unsigned int,
                                                    const double,
