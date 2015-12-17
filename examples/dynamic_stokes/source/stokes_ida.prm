@@ -1,8 +1,8 @@
 # Parameter file generated with 
-# D2K_GIT_BRANCH=       stokes_example
-# D2K_GIT_SHORTREV=     9e39554
+# D2K_GIT_BRANCH=       master
+# D2K_GIT_SHORTREV=     794e613
 # DEAL_II_GIT_BRANCH=   master
-# DEAL_II_GIT_SHORTREV= 8455e67
+# DEAL_II_GIT_SHORTREV= c2570a1
 subsection Dirichlet BCs
   set IDs and component masks = 1=u % 5=u %2=p
   set IDs and expressions     = 1=(t<.1? (-1.0)*t*10.0*(y-1)*(y+1)/6.0 : (-1.0)*(y-1)*(y+1)/6.0 );0;0 % 2=0;0;0 % 5=0;0;0
@@ -16,17 +16,23 @@ subsection Dirichlet dot
   set Used constants          = 
 end
 subsection Domain
-  set Grid to generate           = file
-  set Input grid file name       = ../source/grid-2.2.ucd
-  set Mesh smoothing alogrithm   = none
-  set Optional Point<spacedim> 1 = 0,0
-  set Optional Point<spacedim> 2 = 1,1
-  set Optional bool 1            = true
-  set Optional double 1          = 1.0
-  set Optional double 2          = 0.5
-  set Optional int 1             = 1
-  set Optional vector of dim int = 1,1
-  set Output grid file name      = 
+  set Colorize                      = false
+  set Copy boundary to manifold ids = false
+  set Copy material to manifold ids = false
+  set Create default manifolds      = true
+  set Grid to generate              = file
+  set Input grid file name          = ../source/grid-2.2.ucd
+  set Manifold descriptors          = 
+  set Mesh smoothing alogrithm      = none
+  set Optional Point<spacedim> 1    = 0,0
+  set Optional Point<spacedim> 2    = 1,1
+  set Optional double 1             = 1.0
+  set Optional double 2             = 0.5
+  set Optional double 3             = 1.5
+  set Optional int 1                = 1
+  set Optional int 2                = 2
+  set Optional vector of dim int    = 1,1
+  set Output grid file name         = 
 end
 subsection Exact solution
   set Function constants  = 
@@ -34,10 +40,8 @@ subsection Exact solution
   set Variable names      = x,y,t
 end
 subsection Finite Element
-  set Block coupling                 = 1,1; 1,0
   set Blocking of the finite element = u,u,p
   set Finite element space           = FESystem[FE_Q(2)^dim-FE_Q(1)]
-  set Preconditioner block coupling  = 1,0; 0,1
 end
 subsection Forcing term
   set Function constants  = 
@@ -73,52 +77,13 @@ subsection Initial solution_dot
   set Variable names      = x,y,t
 end
 subsection Output Parameters
-  set Incremental run prefix = 
-  set Output partitioning    = false
-  set Problem base name      = solution
-  set Solution names         = u
-  subsection Solution output format
-    set Output format = vtu
-    set Subdivisions  = 2
-    subsection DX output parameters
-      set Coordinates format = ascii
-      set Data format        = ascii
-      set Integer format     = ascii
-      set Write neighbors    = true
-    end
-    subsection Eps output parameters
-      set Azimut angle                        = 60
-      set Color function                      = default
-      set Color shading of interior of cells  = true
-      set Draw mesh lines                     = true
-      set Fill interior of cells              = true
-      set Index of vector for color           = 0
-      set Index of vector for height          = 0
-      set Line widths in eps units            = 0.5
-      set Scale to width or height            = width
-      set Scaling for z-axis                  = 1
-      set Size (width or height) in eps units = 300
-      set Turn angle                          = 30
-    end
-    subsection Gmv output parameters
-    end
-    subsection Gnuplot output parameters
-    end
-    subsection Povray output parameters
-      set Include external file = true
-      set Use bicubic patches   = false
-      set Use smooth triangles  = false
-    end
-    subsection Tecplot output parameters
-    end
-    subsection UCD output parameters
-      set Write preamble = true
-    end
-    subsection Vtk output parameters
-    end
-    subsection deal.II intermediate output parameters
-    end
-  end
+  set Files to save in run directory = 
+  set Incremental run prefix         = 
+  set Output format                  = vtu
+  set Output partitioning            = false
+  set Problem base name              = solution
+  set Solution names                 = u
+  set Subdivisions                   = 2
 end
 subsection Refinement
   set Bottom fraction                        = 0.1

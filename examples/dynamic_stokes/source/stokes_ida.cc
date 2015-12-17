@@ -216,8 +216,16 @@ void Stokes<dim>::setup_dofs (const bool &first_run)
   jacobian_matrix_sp.reinit(partitioning,partitioning,relevant_partitioning,comm);
 
 
+  Table<2,DoFTools::Coupling> coupling (dim+1, dim+1);
+  for (unsigned int c=0; c<dim+1; ++c)
+    for (unsigned int d=0; d<dim+1; ++d)
+      if (! ((c==dim) && (d==dim)))
+        coupling[c][d] = DoFTools::always;
+      else
+        coupling[c][d] = DoFTools::none;
+
   DoFTools::make_sparsity_pattern (*dof_handler,
-                                   fe_builder.get_coupling(),
+                                   coupling,
                                    jacobian_matrix_sp,
                                    constraints,
                                    false,
@@ -231,8 +239,16 @@ void Stokes<dim>::setup_dofs (const bool &first_run)
   jacobian_preconditioner_matrix_sp.reinit(partitioning,partitioning,relevant_partitioning,comm);
 
 
+  Table<2,DoFTools::Coupling> prec_coupling (dim+1, dim+1);
+  for (unsigned int c=0; c<dim+1; ++c)
+    for (unsigned int d=0; d<dim+1; ++d)
+      if (c==d)
+        prec_coupling[c][d] = DoFTools::always;
+      else
+        prec_coupling[c][d] = DoFTools::none;
+
   DoFTools::make_sparsity_pattern (*dof_handler,
-                                   fe_builder.get_preconditioner_coupling(),
+                                   prec_coupling,
                                    jacobian_preconditioner_matrix_sp,
                                    constraints,
                                    false,
@@ -622,17 +638,15 @@ void Stokes<dim>::output_step(const double t,
 
 template <int dim>
 bool Stokes<dim>::solver_should_restart (const double t,
-                                         const unsigned int step_number,
-                                         const double h,
+                                         const unsigned int ,
+                                         const double ,
                                          VEC &solution,
                                          VEC &solution_dot)
 {
 
   if (use_space_adaptivity)
     {
-      int check = 0;
       double max_kelly=0;
-      double mpi_max_kelly=0;
 
       computing_timer.enter_section ("   Compute error estimator");
 
@@ -736,11 +750,11 @@ int Stokes<dim>::setup_jacobian (const double t,
 }
 
 template <int dim>
-int Stokes<dim>::solve_jacobian_system (const double t,
-                                        const VEC &y,
-                                        const VEC &y_dot,
+int Stokes<dim>::solve_jacobian_system (const double ,
                                         const VEC &,
-                                        const double alpha,
+                                        const VEC &,
+                                        const VEC &,
+                                        const double ,
                                         const VEC &src,
                                         VEC &dst) const
 {
@@ -748,50 +762,6 @@ int Stokes<dim>::solve_jacobian_system (const double t,
 
   dst = solution;
   set_constrained_dofs_to_zero(dst);
-
-
-//  const double solver_tolerance = 1e-8*src.l2_norm();
-//
-//  PrimitiveVectorMemory<VEC> mem;
-//  SolverControl solver_control (30, solver_tolerance);
-//  SolverControl solver_control_refined (jacobian_matrix.m(), solver_tolerance);
-//
-//  SolverFGMRES<VEC>
-//  solver(solver_control, mem,
-//         typename SolverFGMRES<VEC>::AdditionalData(30, true));
-//
-//  SolverFGMRES<VEC>
-//  solver_refined(solver_control_refined, mem,
-//                 typename SolverFGMRES<VEC>::AdditionalData(50, true));
-//
-//  auto S_inv         = inverse_operator(jacobian_op, solver, jacobian_preconditioner_op);
-//  auto S_inv_refined = inverse_operator(jacobian_op, solver_refined, jacobian_preconditioner_op);
-//  unsigned int n_iterations = 0;
-//  try
-//    {
-//      S_inv.vmult(dst, src);
-//      n_iterations = solver_control.last_step();
-//    }
-//  catch ( SolverControl::NoConvergence )
-//    {
-//      try
-//        {
-//          S_inv_refined.vmult(dst, src);
-//          n_iterations = (solver_control.last_step() +
-//                          solver_control_refined.last_step());
-//        }
-//      catch ( SolverControl::NoConvergence )
-//        {
-//          computing_timer.exit_section();
-//          return 1;
-//        }
-//
-//    }
-//  pcout << std::endl
-//        << " iterations:                           " <<  n_iterations
-//        << std::endl;
-//
-//  set_constrained_dofs_to_zero(dst);
 
   PrimitiveVectorMemory<TrilinosWrappers::MPI::BlockVector> mem;
 
