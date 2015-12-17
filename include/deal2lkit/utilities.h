@@ -35,6 +35,7 @@
 #include <deal.II/lac/trilinos_block_vector.h>
 #include <deal.II/lac/trilinos_parallel_block_vector.h>
 #include <deal.II/lac/trilinos_vector.h>
+#include <Teuchos_TimeMonitor.hpp>
 #endif
 #include <deal.II/base/utilities.h>
 
@@ -522,6 +523,38 @@ void copy(N_Vector &dst, const TrilinosWrappers::MPI::BlockVector &src);
 void copy(BlockVector<double> &dst, const N_Vector &src);
 void copy(N_Vector &dst, const BlockVector<double> &src);
 
+#endif
+
+#ifdef DEAL_II_WITH_TRILINOS
+/**
+ * A scoped version of Teuchos::TimeMonitor. You can instantiate one object
+ * of this type, and then call, in each function you want to monitor, the
+ * method `auto t = timer.scoped_timer("Section");` which will automatically
+ * start the timer "Section", and stops it when the object `t` is destroyed.
+ *
+ * The static function Teuchos::TimeMonitor::summarize() can be used to print
+ * summaries of the various timers.
+ */
+class TimeMonitor
+{
+public:
+
+  /**
+   * Create and start a timer named after the parameter @p section. When the
+   * created object is destroyed, the timer is stopped. Repeated calls with
+   * the same timer are accumulated, together with some statistics.
+   */
+  Teuchos::TimeMonitor
+  scoped_timer(const std::string &section) const
+  {
+    if (timers.find(section) == timers.end())
+      timers[section] = Teuchos::TimeMonitor::getNewCounter(section);
+    return Teuchos::TimeMonitor(*(timers[section]));
+  }
+
+private:
+  mutable std::map<std::string, Teuchos::RCP<Teuchos::Time> > timers;
+};
 #endif
 
 D2K_NAMESPACE_CLOSE
