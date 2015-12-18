@@ -445,7 +445,8 @@ struct PGGHelper
   template<int dim>
   static void
   create_grid( ParsedGridGenerator<dim,dim+1> *p,
-               Triangulation<dim,dim+1> &tria)
+               Triangulation<dim,dim+1> &tria,
+               typename std::enable_if<(dim<3), void **>::type=0)
   {
     if (p->grid_name == "hyper_sphere")
       {
@@ -805,7 +806,8 @@ struct PGGHelper
   template<int dim>
   static
   shared_ptr<Manifold<dim,dim+1> > create_manifold(ParsedGridGenerator<dim, dim+1> *p,
-                                                   const std::string &name)
+                                                   const std::string &name,
+                                                   typename std::enable_if<(dim<3), void **>::type=0)
   {
     return default_create_manifold(p, name);
   }
