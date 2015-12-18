@@ -65,11 +65,11 @@ Heat<dim>::Heat (const MPI_Comm &communicator)
   pgr("Refinement"),
   fe_builder("Finite Element"),
 
-  exact_solution("Exact solution"),
-  forcing_term("Forcing term"),
-  initial_solution("Initial solution"),
-  initial_solution_dot("Initial solution_dot"),
-  dirichlet_bcs("Dirichlet BCs", "u", "0=u"),
+  exact_solution("Exact solution",1),
+  forcing_term("Forcing term",1),
+  initial_solution("Initial solution",1),
+  initial_solution_dot("Initial solution_dot",1),
+  dirichlet_bcs("Dirichlet BCs",1, "u", "0=u"),
 
   data_out("Output Parameters", "vtu"),
   Ainv( "Solver", "cg",
@@ -463,18 +463,16 @@ void Heat<dim>::output_step(const double t,
 }
 
 template <int dim>
-bool Heat<dim>::solver_should_restart (const double t,
-                                       const unsigned int step_number,
-                                       const double h,
+bool Heat<dim>::solver_should_restart (const double ,
+                                       const unsigned int ,
+                                       const double ,
                                        VEC &solution,
                                        VEC &solution_dot)
 {
 
   if (use_space_adaptivity)
     {
-      int check = 0;
       double max_kelly=0;
-      double mpi_max_kelly=0;
 
       computing_timer.enter_section ("   Compute error estimator");
       VEC tmp_c(solution);
@@ -572,11 +570,11 @@ int Heat<dim>::setup_jacobian (const double t,
 }
 
 template <int dim>
-int Heat<dim>::solve_jacobian_system (const double t,
-                                      const VEC &y,
-                                      const VEC &y_dot,
+int Heat<dim>::solve_jacobian_system (const double ,
                                       const VEC &,
-                                      const double alpha,
+                                      const VEC &,
+                                      const VEC &,
+                                      const double ,
                                       const VEC &src,
                                       VEC &dst) const
 {

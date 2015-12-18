@@ -30,8 +30,6 @@ int main(int argc, char **argv)
   MPI_Comm comm = MPI_COMM_WORLD;
 
 
-  int numprocs = Utilities::MPI::n_mpi_processes(comm);
-  int myid = Utilities::MPI::this_mpi_process(comm);
 
 
   Stokes<2> solver(comm);

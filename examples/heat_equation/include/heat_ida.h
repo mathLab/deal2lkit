@@ -182,12 +182,12 @@ private:
   ParsedGridRefinement           pgr;
   ParsedFiniteElement<dim,dim> fe_builder;
 
-  ParsedFunction<dim, 1>        exact_solution;
-  ParsedFunction<dim, 1>        forcing_term;
+  ParsedFunction<dim>        exact_solution;
+  ParsedFunction<dim>        forcing_term;
 
-  ParsedFunction<dim, 1>        initial_solution;
-  ParsedFunction<dim, 1>        initial_solution_dot;
-  ParsedDirichletBCs<dim,dim,1> dirichlet_bcs;
+  ParsedFunction<dim>        initial_solution;
+  ParsedFunction<dim>        initial_solution_dot;
+  ParsedDirichletBCs<dim,dim> dirichlet_bcs;
 
   ParsedDataOut<dim, dim>       data_out;
 
