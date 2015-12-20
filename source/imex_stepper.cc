@@ -57,7 +57,6 @@ IMEXStepper<VEC>::IMEXStepper(SundialsInterface<VEC> &interface,
   newton_alpha = 1.0;
   max_outer_non_linear_iterations = 5;
   max_inner_non_linear_iterations = 3;
-  norm="l2";
 }
 
 template <typename VEC>
@@ -92,10 +91,6 @@ void IMEXStepper<VEC>::declare_parameters(ParameterHandler &prm)
                 "At each outer iteration the Jacobian is updated if it is set that the \n"
                 "Jacobian is continuously updated and a cycle of inner iterations is \n"
                 "perfomed.");
-
-  add_parameter(prm, &norm,
-                "Norm used for non linear iterations", norm,
-                Patterns::Selection("l2|linfty"));
 
   add_parameter(prm, &max_inner_non_linear_iterations,
                 "Maximum number of inner nonlinear iterations", std::to_string(max_inner_non_linear_iterations),
@@ -162,20 +157,10 @@ unsigned int IMEXStepper<VEC>::start_ode(VEC &solution)
       double res_norm = 0.0;
       double solution_norm = 0.0;
 
-      if (norm=="l2")
-        {
-          if (abs_tol>0.0||rel_tol>0.0)
-            res_norm = residual->l2_norm();
-          if (rel_tol>0.0)
-            solution_norm = solution.l2_norm();
-        }
-      else if (norm=="linfty")
-        {
-          if (abs_tol>0.0||rel_tol>0.0)
-            res_norm = residual->linfty_norm();
-          if (rel_tol>0.0)
-            solution_norm = solution.linfty_norm();
-        }
+      if (abs_tol>0.0||rel_tol>0.0)
+        res_norm = interface.vector_norm(*residual);
+      if (rel_tol>0.0)
+        solution_norm = interface.vector_norm(solution);
 
       // The nonlinear solver iteration cycle begins here.
       while (outer_iter < max_outer_non_linear_iterations &&
@@ -212,25 +197,14 @@ unsigned int IMEXStepper<VEC>::start_ode(VEC &solution)
 
               interface.residual(t, solution, *solution_dot, *residual);
 
-              if (norm=="l2")
-                {
-                  if (abs_tol>0.0||rel_tol>0.0)
-                    res_norm = solution_update->l2_norm();
-                  if (rel_tol>0.0)
-                    solution_norm = solution.l2_norm();
-                }
-              else if (norm=="linfty")
-                {
-                  if (abs_tol>0.0||rel_tol>0.0)
-                    res_norm = solution_update->linfty_norm();
-                  if (rel_tol>0.0)
-                    solution_norm = solution.linfty_norm();
-                }
+              if (abs_tol>0.0||rel_tol>0.0)
+                res_norm = interface.vector_norm(*solution_update);
+              if (rel_tol>0.0)
+                solution_norm = interface.vector_norm(solution);
 
             }
 
           nonlin_iter += inner_iter;
-
 
           if (std::fabs(res_norm) < abs_tol)
             {

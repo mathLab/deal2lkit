@@ -91,9 +91,6 @@ private:
   /** Relative error tolerance for non linear iterations. */
   double rel_tol;
 
-  /** Norm used for non linear iterations. */
-  std::string norm;
-
   /** Seconds between each output. */
   unsigned int output_period;
 
