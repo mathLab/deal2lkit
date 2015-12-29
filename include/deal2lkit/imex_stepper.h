@@ -21,6 +21,7 @@
 #include <deal.II/base/logstream.h>
 #include <deal.II/base/exceptions.h>
 #include <deal.II/base/parameter_handler.h>
+#include <deal.II/base/conditional_ostream.h>
 
 #ifdef D2K_WITH_SUNDIALS
 // For time integration.
@@ -106,6 +107,8 @@ private:
   /** Jacobian is updated at each outer iteration and time step */
   bool update_jacobian_continuously;
 
+  /** Output stream */
+  ConditionalOStream pout;
 };
 
 D2K_NAMESPACE_CLOSE
