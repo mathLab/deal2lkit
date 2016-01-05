@@ -88,9 +88,8 @@ void IMEXStepper<VEC>::declare_parameters(ParameterHandler &prm)
   add_parameter(prm, &max_outer_non_linear_iterations,
                 "Maximum number of outer nonlinear iterations", std::to_string(max_outer_non_linear_iterations),
                 Patterns::Integer(),
-                "At each outer iteration the Jacobian is updated if it is set that the \n"
-                "Jacobian is continuously updated and a cycle of inner iterations is \n"
-                "perfomed.");
+                "At each outer iteration the Jacobian is updated \n"
+                "and a cycle of inner iterations is perfomed.");
 
   add_parameter(prm, &max_inner_non_linear_iterations,
                 "Maximum number of inner nonlinear iterations", std::to_string(max_inner_non_linear_iterations),
@@ -101,9 +100,6 @@ void IMEXStepper<VEC>::declare_parameters(ParameterHandler &prm)
                 "Newton relaxation parameter", std::to_string(newton_alpha),
                 Patterns::Double());
 
-  add_parameter(prm, &update_jacobian_continuously,
-                "Update continuously Jacobian", "true",
-                Patterns::Bool());
 }
 
 
@@ -134,11 +130,6 @@ unsigned int IMEXStepper<VEC>::start_ode(VEC &solution)
 
   interface.output_step( 0, solution, *solution_dot, 0, step_size);
 
-  // Initialization of the state of the boolean variable
-  // responsible to keep track of the requirement that the
-  // system's Jacobian be updated.
-  bool update_Jacobian = true;
-
   // The overall cycle over time begins here.
   for (; t<=final_time; t+= step_size, ++step_number)
     {
@@ -163,21 +154,16 @@ unsigned int IMEXStepper<VEC>::start_ode(VEC &solution)
         solution_norm = interface.vector_norm(solution);
 
       // The nonlinear solver iteration cycle begins here.
-      while (outer_iter < max_outer_non_linear_iterations &&
-             res_norm > abs_tol &&
-             res_norm > rel_tol*solution_norm)
+      do
         {
           outer_iter += 1;
-          if (update_Jacobian == true)
-            {
-              interface.setup_jacobian(t, solution, *solution_dot,
-                                       *residual, alpha);
-            }
+
+          interface.setup_jacobian(t, solution, *solution_dot,
+                                   *residual, alpha);
 
           inner_iter = 0;
-          while (inner_iter < max_inner_non_linear_iterations &&
-                 res_norm > abs_tol &&
-                 res_norm > rel_tol*solution_norm)
+
+          do
             {
               inner_iter += 1;
 
@@ -203,6 +189,9 @@ unsigned int IMEXStepper<VEC>::start_ode(VEC &solution)
                 solution_norm = interface.vector_norm(solution);
 
             }
+          while (inner_iter < max_inner_non_linear_iterations &&
+                 res_norm > abs_tol &&
+                 res_norm > rel_tol*solution_norm);
 
           nonlin_iter += inner_iter;
 
@@ -218,14 +207,16 @@ unsigned int IMEXStepper<VEC>::start_ode(VEC &solution)
                           ExcMessage ("No convergence in nonlinear solver"));
             }
 
-        } // The nonlinear solver iteration cycle ends here.
+        }
+      while (outer_iter < max_outer_non_linear_iterations &&
+             res_norm > abs_tol &&
+             res_norm > rel_tol*solution_norm);
+      // The nonlinear solver iteration cycle ends here.
 
       *previous_solution = solution;
 
       if ((step_number % output_period) == 0)
         interface.output_step(t, solution, *solution_dot,  step_number, step_size);
-
-      update_Jacobian = update_jacobian_continuously;
 
     } // End of the cycle over time.
   return 0;
