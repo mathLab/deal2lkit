@@ -103,9 +103,6 @@ private:
   /** Maximum number of inner iterations for Newton method. */
   unsigned int max_inner_non_linear_iterations;
 
-  /** Jacobian is updated at each outer iteration and time step */
-  bool update_jacobian_continuously;
-
 };
 
 D2K_NAMESPACE_CLOSE
