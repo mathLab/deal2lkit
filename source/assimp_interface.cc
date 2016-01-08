@@ -1,4 +1,4 @@
-#include "assimp_interface.h"
+#include <deal2lkit/assimp_interface.h>
 
 #include <assimp/Importer.hpp>      // C++ importer interface
 #include <assimp/scene.h>           // Output data structure
@@ -25,7 +25,7 @@ using namespace dealii;
 using namespace Assimp;
 
 using namespace std;
-
+D2K_NAMESPACE_OPEN
 namespace AssimpInterface
 {
 
@@ -212,4 +212,4 @@ namespace AssimpInterface
                                        bool, double);
 
 }
-
+D2K_NAMESPACE_CLOSE
