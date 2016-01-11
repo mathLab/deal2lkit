@@ -21,6 +21,7 @@
 #include <deal.II/base/logstream.h>
 #include <deal.II/base/exceptions.h>
 #include <deal.II/base/parameter_handler.h>
+#include <deal.II/base/conditional_ostream.h>
 
 #ifdef D2K_WITH_SUNDIALS
 // For time integration.
@@ -211,7 +212,8 @@ private:
   /** Ida differential components vector. */
   N_Vector diff_id;
 
-
+  /** Output stream */
+  ConditionalOStream pout;
 };
 
 D2K_NAMESPACE_CLOSE

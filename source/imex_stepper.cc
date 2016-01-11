@@ -49,7 +49,8 @@ IMEXStepper<VEC>::IMEXStepper(SundialsInterface<VEC> &interface,
   interface(interface),
   step_size(step_size),
   initial_time(initial_time),
-  final_time(final_time)
+  final_time(final_time),
+  pout(std::cout, Utilities::MPI::this_mpi_process(MPI_COMM_WORLD)==0)
 {
   abs_tol = 1e-6;
   rel_tol = 1e-8;
@@ -142,7 +143,7 @@ unsigned int IMEXStepper<VEC>::start_ode(VEC &solution)
   // The overall cycle over time begins here.
   for (; t<=final_time; t+= step_size, ++step_number)
     {
-      std::cout << "Time = " << t << std::endl;
+      pout << "Time = " << t << std::endl;
       // Implicit Euler scheme.
       *solution_dot = solution;
       *solution_dot -= *previous_solution;
@@ -206,14 +207,27 @@ unsigned int IMEXStepper<VEC>::start_ode(VEC &solution)
 
           nonlin_iter += inner_iter;
 
-          if (std::fabs(res_norm) < abs_tol)
+          if (std::fabs(res_norm) < abs_tol ||
+              std::fabs(res_norm) < rel_tol*solution_norm)
             {
-              std::printf("   %-16.3e (converged in %d iterations)\n\n", res_norm, nonlin_iter);
+              pout << std::endl
+                   << "   "
+                   << std::setw(19) << std::scientific << res_norm
+                   << " (converged in "
+                   << nonlin_iter
+                   << " iterations)\n\n"
+                   << std::endl;
               break; // Break of the while cycle ... after this a time advancement happens.
             }
           else if (outer_iter == max_outer_non_linear_iterations)
             {
-              std::printf("   %-16.3e (not converged in %d iterations)\n\n", res_norm, nonlin_iter);
+              pout << std::endl
+                   << "   "
+                   << std::setw(19) << std::scientific << res_norm
+                   << " (not converged in "
+                   << std::setw(3) << nonlin_iter
+                   << " iterations)\n\n"
+                   << std::endl;
               AssertThrow(false,
                           ExcMessage ("No convergence in nonlinear solver"));
             }
