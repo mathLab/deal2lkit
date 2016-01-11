@@ -87,10 +87,10 @@ public :
   create_new_vector() const = 0;
 
   /**
-   * Norm used in the solver;.
+   * Norm used in the solver.
    */
   virtual double
-  vector_norm(VEC &vector) const;
+  vector_norm(const VEC &vector) const;
 
   /**
    * This is a pure virtual function used to get the number of degrees of

@@ -41,7 +41,7 @@
 D2K_NAMESPACE_OPEN
 
 template<typename VEC>
-double SundialsInterface<VEC>::vector_norm(VEC &vector) const
+double SundialsInterface<VEC>::vector_norm(const VEC &vector) const
 {
   return vector.l2_norm();
 }
