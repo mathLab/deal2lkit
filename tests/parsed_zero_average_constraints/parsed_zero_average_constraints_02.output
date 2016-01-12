@@ -1,0 +1,10 @@
+
+DEAL:parameters:deal2lkit::ParsedZeroAverageConstraints<1, 1>::Known component names: u
+DEAL:parameters:deal2lkit::ParsedZeroAverageConstraints<1, 1>::Zero average on boundary: 
+DEAL:parameters:deal2lkit::ParsedZeroAverageConstraints<1, 1>::Zero average on whole domain: 
+DEAL:parameters:deal2lkit::ParsedZeroAverageConstraints<2, 2>::Known component names: u
+DEAL:parameters:deal2lkit::ParsedZeroAverageConstraints<2, 2>::Zero average on boundary: 
+DEAL:parameters:deal2lkit::ParsedZeroAverageConstraints<2, 2>::Zero average on whole domain: 
+DEAL:parameters:deal2lkit::ParsedZeroAverageConstraints<3, 3>::Known component names: u
+DEAL:parameters:deal2lkit::ParsedZeroAverageConstraints<3, 3>::Zero average on boundary: 
+DEAL:parameters:deal2lkit::ParsedZeroAverageConstraints<3, 3>::Zero average on whole domain: 

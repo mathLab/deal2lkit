@@ -62,9 +62,9 @@ preconditioner couplings and related variables and methods.
 
 <ol>
   <li> 
-  Empty.
+  New: The class ParsedZeroAverageConstraints has been implemented.
   <br>
-  (Empty XXXX/XX/XX)
+  (Alberto Sartori 2016/01/13)
   </li>
 
 
