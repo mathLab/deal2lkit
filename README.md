@@ -30,7 +30,8 @@ A detailed documentation constructed using Doxygen is accessible here:
 
 http://mathlab.github.io/deal2lkit
 
-## 1. Deal.II Requirements: ##
+1. Deal.II Requirements:
+========================
 
 Currently, the distributed source code requires version 8.4 of the 
 deal.II library.
@@ -51,7 +52,8 @@ The library can then be compiled by running
 
 and tested using 
     
-	make test
+	make setup_tests
+	ctest
 
 You can modify the resulting `CMakeCache.txt` to set a different
 installation path, or you can call cmake with the additional option
