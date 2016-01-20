@@ -141,7 +141,7 @@ unsigned int IMEXStepper<VEC>::start_ode(VEC &solution)
   bool update_Jacobian = true;
 
   // The overall cycle over time begins here.
-  for (; t<=final_time; t+= step_size, ++step_number)
+  for (; t<=final_time+1e-15; t+= step_size, ++step_number)
     {
       pout << "Time = " << t << std::endl;
       // Implicit Euler scheme.
