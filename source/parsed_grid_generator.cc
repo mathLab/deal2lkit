@@ -398,10 +398,20 @@ struct PGGHelper
   {
     if (p->grid_name == "rectangle")
       {
+        Tensor<1,dim> initializer1;
+        Tensor<1,dim> initializer2;
+        for (unsigned int i=0; i<dim; ++i)
+          {
+            initializer1[i]=p->point_option_one(i);
+            initializer2[i]=p->point_option_two(i);
+          }
+        Point<dim> p1(initializer1);
+        Point<dim> p2(initializer2);
+
         GridGenerator::subdivided_hyper_rectangle (tria,
                                                    p->un_int_vec_option_one,
-                                                   p->point_option_two,
-                                                   p->point_option_one,
+                                                   p2,
+                                                   p1,
                                                    p->colorize);
       }
     else if (p->grid_name == "file")
