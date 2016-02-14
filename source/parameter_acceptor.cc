@@ -17,6 +17,7 @@
 #include <deal2lkit/utilities.h>
 #include <deal.II/base/point.h>
 #include <deal.II/base/revision.h>
+#include <deal2lkit/revision.h>
 #include <fstream>
 
 D2K_NAMESPACE_OPEN
