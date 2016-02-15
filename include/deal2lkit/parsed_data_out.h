@@ -71,6 +71,14 @@ public:
   template<typename VECTOR>
   void add_data_vector(const VECTOR &data_vector, const std::string &desc);
 
+
+  /**
+   * Wrapper for the corrisponding function in dealii.
+   */
+  template<typename VECTOR>
+  void add_data_vector(const VECTOR &data_vector, const DataPostprocessor<spacedim> &postproc);
+
+
   /** Actually write the file. Once the data_out has been prepared,
       vectors have been added, the data can be written to a file. This
       is done in this class. At the end of this function call,
@@ -187,6 +195,15 @@ void ParsedDataOut<dim,spacedim>::add_data_vector(const VECTOR &data_vector,
   deallog.pop();
 }
 
+
+template <int dim, int spacedim>
+template<typename VECTOR>
+void ParsedDataOut<dim,spacedim>::add_data_vector(const VECTOR &data_vector,
+                                                  const DataPostprocessor<spacedim> &postproc)
+{
+  AssertThrow(initialized, ExcNotInitialized());
+  data_out->add_data_vector(data_vector,postproc);
+}
 
 D2K_NAMESPACE_CLOSE
 
