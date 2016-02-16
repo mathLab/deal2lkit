@@ -83,6 +83,15 @@ public:
     cache.template add_ref<FEValuesBase<dim,spacedim> >(fe_face_values, "FEValuesBase");
   };
 
+  /**
+   * @brief Get the reference to @p cache.
+   *
+   * @return reference to @p cache.
+   */
+  AnyData &get_cache()
+  {
+    return cache;
+  };
 
   /**
    * Get the currently initialized FEValues.
