@@ -62,7 +62,7 @@ public:
   virtual void declare_parameters(ParameterHandler &prm);
 
   /** Evolve. This function returns the final number of steps. */
-  unsigned int start_ode(VEC &solution);
+  unsigned int start_ode(VEC &solution, VEC &solution_dot);
 
   /** Clear internal memory, and
    start with clean
