@@ -238,10 +238,10 @@ unsigned int IMEXStepper<VEC>::start_ode(VEC &solution, VEC &solution_dot)
 
       if (restart)
         {
-	  previous_solution = interface.create_new_vector();
-	  solution_update = interface.create_new_vector();
-	  residual = interface.create_new_vector();
-	  rhs = interface.create_new_vector();
+          previous_solution = interface.create_new_vector();
+          solution_update = interface.create_new_vector();
+          residual = interface.create_new_vector();
+          rhs = interface.create_new_vector();
 
           t -= step_size;
           --step_number;
