@@ -58,9 +58,9 @@ public:
                      scratch.fe_face_values.get_quadrature(),
                      scratch.fe_face_values.get_update_flags()),
     fe_subface_values ( scratch.fe_values.get_mapping(),
-			scratch.fe_values.get_fe(),
-			scratch.fe_subface_values.get_quadrature(),
-			scratch.fe_subface_values.get_update_flags()),
+                        scratch.fe_values.get_fe(),
+                        scratch.fe_subface_values.get_quadrature(),
+                        scratch.fe_subface_values.get_update_flags()),
     local_dof_indices(scratch.fe_values.get_fe().dofs_per_cell)
   {};
 
@@ -88,11 +88,11 @@ public:
     cache.template add_ref<FEValuesBase<dim,spacedim> >(fe_face_values, "FEValuesBase");
   };
 
-  
-   /**
-   * Initialize the internal FESubFaceValues to use the given @subface_no, on @face_no, on the given
-   * @p cell.
-   */
+
+  /**
+  * Initialize the internal FESubFaceValues to use the given @subface_no, on @face_no, on the given
+  * @p cell.
+  */
   void reinit(const typename DoFHandler<dim,spacedim>::active_cell_iterator &cell,
               const unsigned int face_no, const unsigned int subface_no)
   {
@@ -430,6 +430,41 @@ public:
     return ret;
   }
 
+  /**
+   * Return the laplacian of the named cached solution vector.
+   *
+   * Before you call this function, you have to make sure you have previously
+   * called the function cache_local_solution_vector with the same @p prefix you give here
+   * and with the same dummy type you use here.
+   */
+  template<typename Number>
+  const std::vector <Number> &
+  get_laplacians(const std::string &prefix,
+                 const std::string &additional_prefix,
+                 const FEValuesExtractors::Scalar &variable,
+                 const Number dummy)
+  {
+    const std::vector<Number> &independent_local_dofs =
+      get_current_independent_local_dofs(prefix, dummy);
+
+    const FEValuesBase<dim,spacedim> &fev = get_current_fe_values();
+
+    const unsigned int           n_q_points    = fev.n_quadrature_points;
+
+    std::string name = prefix+"_"+additional_prefix+"_laplacian_values_q"+
+                       Utilities::int_to_string(n_q_points)+"_"+type(dummy);
+
+    // Now build the return type
+    typedef typename std::vector <Number> RetType;
+
+    if (!cache.have(name))
+      cache.add_copy(RetType(n_q_points), name);
+
+    RetType &ret = cache.template get<RetType>(name);
+    DOFUtilities::get_laplacians(fev, independent_local_dofs, variable, ret);
+    return ret;
+  }
+
 
   /**
    * Return the deformation gradient of the named cached solution vector.
@@ -509,7 +544,7 @@ private:
   AnyData                                           cache;
   FEValues<dim, spacedim>                           fe_values;
   FEFaceValues<dim, spacedim>                       fe_face_values;
-  FESubFaceValues<dim, spacedim>                    fe_subface_values;
+  FESubfaceValues<dim, spacedim>                    fe_subface_values;
   std::vector<types::global_dof_index>  local_dof_indices;
 };
 

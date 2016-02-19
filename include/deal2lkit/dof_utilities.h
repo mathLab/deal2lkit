@@ -332,6 +332,37 @@ namespace DOFUtilities
 
   }
 
+
+  /**
+   *  Extract laplacians local dofs values of a scalar variable
+   *  in a cell and store them in
+   *  std::vector <Number > us
+   *  whose size is number of quadrature points in the cell.
+   *
+   */
+  template <int dim, int spacedim, typename Number>
+
+  void
+  get_laplacians (const FEValuesBase<dim, spacedim> &fe_values,
+                  const std::vector<Number> &independent_local_dof_values,
+                  const FEValuesExtractors::Scalar &variable,
+                  std::vector <Number> &us)
+
+  {
+    const unsigned int           dofs_per_cell = fe_values.dofs_per_cell;
+    const unsigned int           n_q_points    = fe_values.n_quadrature_points;
+
+    AssertDimension(us.size(), n_q_points);
+    AssertDimension(independent_local_dof_values.size(), dofs_per_cell);
+
+    for (unsigned int q=0; q<n_q_points; ++q)
+      {
+        us[q] = 0;
+        for (unsigned int i=0; i<dofs_per_cell; ++i)
+          us[q] += independent_local_dof_values[i]*trace(fe_values[variable].hessian(i,q));
+      }
+  }
+
   /**
    * This function compute the scalar product
    * between two tensors with rank 1 of different types
