@@ -109,7 +109,7 @@ void IMEXStepper<VEC>::declare_parameters(ParameterHandler &prm)
 
 
 template <typename VEC>
-unsigned int IMEXStepper<VEC>::start_ode(VEC &solution)
+unsigned int IMEXStepper<VEC>::start_ode(VEC &solution, VEC &solution_dot)
 {
   AssertDimension(solution.size(), interface.n_dofs());
 
@@ -117,7 +117,6 @@ unsigned int IMEXStepper<VEC>::start_ode(VEC &solution)
 
 
   auto previous_solution = interface.create_new_vector();
-  auto solution_dot = interface.create_new_vector();
   auto solution_update = interface.create_new_vector();
   auto residual = interface.create_new_vector();
   auto rhs = interface.create_new_vector();
@@ -133,28 +132,29 @@ unsigned int IMEXStepper<VEC>::start_ode(VEC &solution)
   else
     alpha = 1./step_size;
 
-  interface.output_step( 0, solution, *solution_dot, 0, step_size);
+  interface.output_step( 0, solution, solution_dot, 0, step_size);
 
   // Initialization of the state of the boolean variable
   // responsible to keep track of the requirement that the
   // system's Jacobian be updated.
   bool update_Jacobian = true;
 
+  bool restart=false;
   // The overall cycle over time begins here.
   for (; t<=final_time+1e-15; t+= step_size, ++step_number)
     {
       pout << "Time = " << t << std::endl;
       // Implicit Euler scheme.
-      *solution_dot = solution;
-      *solution_dot -= *previous_solution;
-      *solution_dot *= alpha;
+      solution_dot = solution;
+      solution_dot -= *previous_solution;
+      solution_dot *= alpha;
 
       // Initialization of two counters for the monitoring of
       // progress of the nonlinear solver.
       unsigned int inner_iter = 0;
       unsigned int outer_iter = 0;
       unsigned int nonlin_iter = 0;
-      interface.residual(t, solution, *solution_dot, *residual);
+      interface.residual(t, solution, solution_dot, *residual);
       double res_norm = 0.0;
       double solution_norm = 0.0;
 
@@ -171,7 +171,7 @@ unsigned int IMEXStepper<VEC>::start_ode(VEC &solution)
           outer_iter += 1;
           if (update_Jacobian == true)
             {
-              interface.setup_jacobian(t, solution, *solution_dot,
+              interface.setup_jacobian(t, solution, solution_dot,
                                        *residual, alpha);
             }
 
@@ -185,18 +185,18 @@ unsigned int IMEXStepper<VEC>::start_ode(VEC &solution)
               *rhs = *residual;
               *rhs *= -1.0;
 
-              interface.solve_jacobian_system(t, solution, *solution_dot,
+              interface.solve_jacobian_system(t, solution, solution_dot,
                                               *residual, alpha,
                                               *rhs, *solution_update);
               solution.sadd(1.0,
                             newton_alpha, *solution_update);
 
               // Implicit Euler scheme.
-              *solution_dot = solution;
-              *solution_dot -= *previous_solution;
-              *solution_dot *= alpha;
+              solution_dot = solution;
+              solution_dot -= *previous_solution;
+              solution_dot *= alpha;
 
-              interface.residual(t, solution, *solution_dot, *residual);
+              interface.residual(t, solution, solution_dot, *residual);
 
               if (abs_tol>0.0||rel_tol>0.0)
                 res_norm = interface.vector_norm(*solution_update);
@@ -234,11 +234,26 @@ unsigned int IMEXStepper<VEC>::start_ode(VEC &solution)
 
         } // The nonlinear solver iteration cycle ends here.
 
+      restart = interface.solver_should_restart(t,step_number,step_size,solution,solution_dot);
+
+      if (restart)
+        {
+          previous_solution = interface.create_new_vector();
+          solution_update = interface.create_new_vector();
+          residual = interface.create_new_vector();
+          rhs = interface.create_new_vector();
+
+          t -= step_size;
+          --step_number;
+        }
+      else
+        {
+
+          if ((step_number % output_period) == 0)
+            interface.output_step(t, solution, solution_dot,  step_number, step_size);
+        }
+
       *previous_solution = solution;
-
-      if ((step_number % output_period) == 0)
-        interface.output_step(t, solution, *solution_dot,  step_number, step_size);
-
       update_Jacobian = update_jacobian_continuously;
 
     } // End of the cycle over time.
