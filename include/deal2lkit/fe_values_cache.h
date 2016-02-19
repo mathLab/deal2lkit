@@ -37,8 +37,9 @@ public:
                      const UpdateFlags                    &update_flags,
                      const Quadrature<dim-1>              &face_quadrature,
                      const UpdateFlags                    &face_update_flags):
-    fe_values       (mapping, fe, quadrature, update_flags),
-    fe_face_values  (mapping, fe, face_quadrature, face_update_flags),
+    fe_values         (mapping, fe, quadrature, update_flags),
+    fe_face_values    (mapping, fe, face_quadrature, face_update_flags),
+    fe_subface_values (mapping, fe, face_quadrature, face_update_flags),
     local_dof_indices(fe.dofs_per_cell)
 
   {};
@@ -56,6 +57,10 @@ public:
                      scratch.fe_values.get_fe(),
                      scratch.fe_face_values.get_quadrature(),
                      scratch.fe_face_values.get_update_flags()),
+    fe_subface_values ( scratch.fe_values.get_mapping(),
+			scratch.fe_values.get_fe(),
+			scratch.fe_subface_values.get_quadrature(),
+			scratch.fe_subface_values.get_update_flags()),
     local_dof_indices(scratch.fe_values.get_fe().dofs_per_cell)
   {};
 
@@ -81,6 +86,19 @@ public:
     fe_face_values.reinit(cell, face_no);
     cell->get_dof_indices(local_dof_indices);
     cache.template add_ref<FEValuesBase<dim,spacedim> >(fe_face_values, "FEValuesBase");
+  };
+
+  
+   /**
+   * Initialize the internal FESubFaceValues to use the given @subface_no, on @face_no, on the given
+   * @p cell.
+   */
+  void reinit(const typename DoFHandler<dim,spacedim>::active_cell_iterator &cell,
+              const unsigned int face_no, const unsigned int subface_no)
+  {
+    fe_subface_values.reinit(cell, face_no, subface_no);
+    cell->get_dof_indices(local_dof_indices);
+    cache.template add_ref<FEValuesBase<dim,spacedim> >(fe_subface_values, "FEValuesBase");
   };
 
   /**
@@ -491,6 +509,7 @@ private:
   AnyData                                           cache;
   FEValues<dim, spacedim>                           fe_values;
   FEFaceValues<dim, spacedim>                       fe_face_values;
+  FESubFaceValues<dim, spacedim>                    fe_subface_values;
   std::vector<types::global_dof_index>  local_dof_indices;
 };
 
