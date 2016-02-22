@@ -109,6 +109,30 @@ private:
 
   /** Output stream */
   ConditionalOStream pout;
+
+  /** print useful informations */
+  bool verbose;
+
+  /** i max */
+  unsigned int n_max_backtracking;
+
+  /** method used for alpha selection*/
+  std::string method;
+
+  /**
+   *  line search algorithm with backtracking.The following sequence
+   *  of Newton relaxation parameters is tested: 1, 1/2, 1/4,...,2^-i.
+   *  it returns the selected alpha and solution, solution_dot and
+   *  residual are accordingly updated.
+   */
+  double line_search_with_backtracking(const VEC &update,
+                                       const VEC &prev_sol,
+                                       const double &alpha,
+                                       const double &t,
+                                       VEC &sol,
+                                       VEC &sol_dot,
+                                       VEC &residual);
+
 };
 
 D2K_NAMESPACE_CLOSE

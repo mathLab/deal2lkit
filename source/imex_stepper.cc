@@ -30,6 +30,8 @@
 #include <iostream>
 #include <iomanip>
 
+#include <math.h>
+
 #ifdef DEAL_II_WITH_MPI
 #include <nvector/nvector_parallel.h>
 #endif
@@ -58,6 +60,9 @@ IMEXStepper<VEC>::IMEXStepper(SundialsInterface<VEC> &interface,
   newton_alpha = 1.0;
   max_outer_non_linear_iterations = 5;
   max_inner_non_linear_iterations = 3;
+  verbose = false;
+  n_max_backtracking = 5;
+  method = "fixed alpha";
 }
 
 template <typename VEC>
@@ -105,6 +110,22 @@ void IMEXStepper<VEC>::declare_parameters(ParameterHandler &prm)
   add_parameter(prm, &update_jacobian_continuously,
                 "Update continuously Jacobian", "true",
                 Patterns::Bool());
+
+  add_parameter(prm, &n_max_backtracking,
+                "Number of elements in backtracking sequence", std::to_string(n_max_backtracking),
+                Patterns::Integer(1),
+                "In the line seach method with backtracking the following alphas are\n"
+                "tested: 1, 1/2, 1/4,..., 2^-i. This parameter sets the maximum i.");
+  add_parameter(prm, &method,
+                "Method used", "fixed_alpha",
+                Patterns::Selection("fixed_alpha|LS_backtracking"),
+                "Fixed alpha means that the parsed alpha is used in each Newton iteration\n"
+                "LS_backtracking is the line search with backtracking method.");
+
+  add_parameter(prm, &verbose,
+                "Print useful informations", "false",
+                Patterns::Bool());
+
 }
 
 
@@ -160,8 +181,8 @@ unsigned int IMEXStepper<VEC>::start_ode(VEC &solution, VEC &solution_dot)
 
       if (abs_tol>0.0||rel_tol>0.0)
         res_norm = interface.vector_norm(*residual);
-      if (rel_tol>0.0)
-        solution_norm = interface.vector_norm(solution);
+      // if (rel_tol>0.0)
+      //   solution_norm = interface.vector_norm(solution);
 
       // The nonlinear solver iteration cycle begins here.
       while (outer_iter < max_outer_non_linear_iterations &&
@@ -180,6 +201,8 @@ unsigned int IMEXStepper<VEC>::start_ode(VEC &solution, VEC &solution_dot)
                  res_norm > abs_tol &&
                  res_norm > rel_tol*solution_norm)
             {
+
+
               inner_iter += 1;
 
               *rhs = *residual;
@@ -188,20 +211,65 @@ unsigned int IMEXStepper<VEC>::start_ode(VEC &solution, VEC &solution_dot)
               interface.solve_jacobian_system(t, solution, solution_dot,
                                               *residual, alpha,
                                               *rhs, *solution_update);
-              solution.sadd(1.0,
-                            newton_alpha, *solution_update);
 
-              // Implicit Euler scheme.
-              solution_dot = solution;
-              solution_dot -= *previous_solution;
-              solution_dot *= alpha;
 
-              interface.residual(t, solution, solution_dot, *residual);
+              if (method == "LS_backtracking")
+                {
+                  newton_alpha = line_search_with_backtracking(*solution_update,
+                                                               *previous_solution,
+                                                               alpha,
+                                                               t,
+                                                               solution,
+                                                               solution_dot,
+                                                               *residual);
+                }
+              else if (method == "fixed_alpha")
+                {
+                  solution.sadd(1.0,
+                                newton_alpha, *solution_update);
 
-              if (abs_tol>0.0||rel_tol>0.0)
-                res_norm = interface.vector_norm(*solution_update);
+                  // Implicit Euler scheme.
+                  solution_dot = solution;
+                  solution_dot -= *previous_solution;
+                  solution_dot *= alpha;
+                }
+
+              res_norm = interface.vector_norm(*solution_update);
+
               if (rel_tol>0.0)
-                solution_norm = interface.vector_norm(solution);
+                {
+                  solution_norm = interface.vector_norm(solution);
+
+                  if (verbose)
+                    {
+                      pout << std::endl
+                           << "   "
+                           << " iteration "
+                           << nonlin_iter + inner_iter
+                           << ":\n"
+                           << std::setw(19) << std::scientific << res_norm
+                           << "   update norm\n"
+                           << std::setw(19) << std::scientific << solution_norm
+                           << "   solution norm\n"
+                           << std::setw(19) << newton_alpha
+                           << "   newton alpha\n\n"
+                           << std::endl;
+                    }
+                }
+              else if (verbose)
+                {
+                  pout << std::endl
+                       << "   "
+                       << " iteration "
+                       << nonlin_iter + inner_iter
+                       << ":\n"
+                       << std::setw(19) << std::scientific << res_norm
+                       << "   update norm\n"
+                       << std::setw(19) << newton_alpha
+                       << "   newton alpha\n\n"
+                       << std::endl;
+                }
+
 
             }
 
@@ -260,6 +328,79 @@ unsigned int IMEXStepper<VEC>::start_ode(VEC &solution, VEC &solution_dot)
   return 0;
 }
 
+
+
+template <typename VEC>
+double IMEXStepper<VEC>::
+line_search_with_backtracking(const VEC &update,
+                              const VEC &previous_solution,
+                              const double &alpha,
+                              const double &t,
+                              VEC &solution,
+                              VEC &solution_dot,
+                              VEC &residual)
+{
+  auto first_trial = interface.create_new_vector();
+  auto first_residual = interface.create_new_vector();
+
+  *first_trial = solution;
+  double n_alpha = 1.0;
+
+  first_trial->sadd(1.0, n_alpha, update);
+
+  solution_dot = *first_trial;
+  solution_dot -= previous_solution;
+  solution_dot *= alpha;
+
+  interface.residual(t, *first_trial, solution_dot, *first_residual);
+
+  double first_res_norm = interface.vector_norm(*first_residual);
+
+  auto second_trial = interface.create_new_vector();
+  auto second_residual = interface.create_new_vector();
+
+  for (unsigned int i=1; i<=n_max_backtracking; ++i)
+    {
+      *second_trial = solution;
+
+      n_alpha = 1.0/(std::pow(2.0,i));
+
+      second_trial->sadd(1.0, n_alpha, update);
+
+      solution_dot = *second_trial;
+      solution_dot -= previous_solution;
+      solution_dot *= alpha;
+
+      interface.residual(t, *second_trial, solution_dot, *second_residual);
+      double second_res_norm = interface.vector_norm(*second_residual);
+      if (first_res_norm < second_res_norm)
+        {
+          solution = *first_trial;
+          residual = *first_residual;
+
+          solution_dot = *first_trial;
+          solution_dot -= previous_solution;
+          solution_dot *= alpha;
+          n_alpha = 1.0/(std::pow(2.0,i-1));
+          return n_alpha;
+
+        }
+      else if (i<(n_max_backtracking))
+        {
+          *first_trial = *second_trial;
+          *first_residual = *second_residual;
+          first_res_norm = second_res_norm;
+        }
+      else
+        {
+          solution = *second_trial;
+          residual = *second_residual;
+          /* solution dot is ok */
+          return n_alpha;
+        }
+    }
+  return n_alpha;
+}
 
 
 D2K_NAMESPACE_CLOSE
