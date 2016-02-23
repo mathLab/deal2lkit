@@ -270,7 +270,7 @@ unsigned int IMEXStepper<VEC>::start_ode(VEC &solution, VEC &solution_dot)
                        << std::endl;
                 }
 
-
+              interface.residual(t,solution,solution_dot,*residual);
             }
 
           nonlin_iter += inner_iter;
