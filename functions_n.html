@@ -100,8 +100,12 @@ $(document).ready(function(){initNavTree('functions_n.html','');});
 <li>n_blocks()
 : <a class="el" href="class_parsed_finite_element.html#a867a0f4000a5700bae7bf4dd829e51c5">ParsedFiniteElement&lt; dim, spacedim &gt;</a>
 </li>
-<li>n_components()
-: <a class="el" href="class_parsed_finite_element.html#a432814fb23a7db937442afdd70e400d1">ParsedFiniteElement&lt; dim, spacedim &gt;</a>
+<li>n_components
+: <a class="el" href="class_parsed_dirichlet_b_cs.html#a9b5c6cf07023bdb9a6aaa377951fddaf">ParsedDirichletBCs&lt; dim, spacedim &gt;</a>
+, <a class="el" href="class_parsed_finite_element.html#a432814fb23a7db937442afdd70e400d1">ParsedFiniteElement&lt; dim, spacedim &gt;</a>
+, <a class="el" href="class_parsed_function.html#a6854045a32f0498f25b6606a3d956442">ParsedFunction&lt; dim &gt;</a>
+, <a class="el" href="class_parsed_mapped_functions.html#abc205eef8719cc5bc78cb0e2628c40a1">ParsedMappedFunctions&lt; spacedim &gt;</a>
+, <a class="el" href="class_parsed_zero_average_constraints.html#a74f782dab5b953148acb2ec89abc42f2">ParsedZeroAverageConstraints&lt; dim, spacedim &gt;</a>
 </li>
 <li>n_dofs()
 : <a class="el" href="class_sundials_interface.html#a3f38522458306400423e56e4c25e2356">SundialsInterface&lt; VEC &gt;</a>
@@ -109,20 +113,27 @@ $(document).ready(function(){initNavTree('functions_n.html','');});
 <li>n_lines
 : <a class="el" href="class_over_write_stream.html#a8f8423b1dc052fb5601ac98386bcbf58">OverWriteStream&lt; Stream &gt;</a>
 </li>
+<li>n_max_backtracking
+: <a class="el" href="class_i_m_e_x_stepper.html#a2bb1a4d7c7d26e34615b24aba24e59da">IMEXStepper&lt; VEC &gt;</a>
+</li>
 <li>n_mpi_processes
 : <a class="el" href="class_parsed_data_out.html#abe1e02a8c6aff5abc366fc30643a9ca4">ParsedDataOut&lt; dim, spacedim &gt;</a>
 </li>
 <li>name
-: <a class="el" href="class_parsed_mapped_functions.html#ac24e04e4879d3358fbb32469ad2b73b2">ParsedMappedFunctions&lt; spacedim, n_components &gt;</a>
+: <a class="el" href="class_parsed_mapped_functions.html#ac59a7cb907408bedd21ac2e1e7d74140">ParsedMappedFunctions&lt; spacedim &gt;</a>
+, <a class="el" href="class_parsed_zero_average_constraints.html#a14c336b1915d7739aef28b379a2eff9b">ParsedZeroAverageConstraints&lt; dim, spacedim &gt;</a>
 </li>
 <li>names
 : <a class="el" href="class_error_handler.html#ab3a76b83efc900ec6c1245caa96f2be0">ErrorHandler&lt; ntables &gt;</a>
 </li>
+<li>newton_alpha
+: <a class="el" href="class_i_m_e_x_stepper.html#a8ed26a9cc726baba896dc7310447fb69">IMEXStepper&lt; VEC &gt;</a>
+</li>
 <li>normal_components
-: <a class="el" href="class_parsed_mapped_functions.html#ac40ba4315dc26a4c6085dbc70097547b">ParsedMappedFunctions&lt; spacedim, n_components &gt;</a>
+: <a class="el" href="class_parsed_mapped_functions.html#a03028cf97fe9eb83d23b4816502e74c9">ParsedMappedFunctions&lt; spacedim &gt;</a>
 </li>
 <li>normal_ids
-: <a class="el" href="class_parsed_mapped_functions.html#aae3a15ddaf50527a1d5b4cf23d2cc0f0">ParsedMappedFunctions&lt; spacedim, n_components &gt;</a>
+: <a class="el" href="class_parsed_mapped_functions.html#aaa588314d8fdedcf3cd4b20da4d462d6">ParsedMappedFunctions&lt; spacedim &gt;</a>
 </li>
 </ul>
 </div><!-- contents -->
@@ -130,7 +141,7 @@ $(document).ready(function(){initNavTree('functions_n.html','');});
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Wed Nov 25 2015 00:15:58 for deal2lkit: A ToolKit library for Deal.II by
+    <li class="footer">Generated on Sat Feb 27 2016 18:34:33 for deal2lkit: A ToolKit library for Deal.II by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.10 </li>
   </ul>

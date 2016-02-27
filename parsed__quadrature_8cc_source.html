@@ -114,7 +114,7 @@ $(document).ready(function(){initNavTree('parsed__quadrature_8cc_source.html',''
 <div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="comment">//-----------------------------------------------------------</span></div>
 <div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;</div>
 <div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="parsed__quadrature_8h.html">deal2lkit/parsed_quadrature.h</a>&gt;</span></div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="preprocessor">#include &lt;<a class="codeRef" doxygen="/Users/heltai/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/quadrature__selector_8h.html">deal.II/base/quadrature_selector.h</a>&gt;</span></div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="preprocessor">#include &lt;deal.II/base/quadrature_selector.h&gt;</span></div>
 <div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;</div>
 <div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;D2K_NAMESPACE_OPEN</div>
 <div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;</div>
@@ -134,25 +134,25 @@ $(document).ready(function(){initNavTree('parsed__quadrature_8cc_source.html',''
 <div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<span class="keyword">template</span> &lt;<span class="keywordtype">int</span> dim&gt;</div>
 <div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="keywordtype">void</span></div>
 <div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;<a class="code" href="class_parsed_quadrature.html#a6708a859d0ac3797c0b13ef037d15e44">ParsedQuadrature&lt;dim&gt;::</a></div>
-<div class="line"><a name="l00037"></a><span class="lineno"><a class="line" href="class_parsed_quadrature.html#a6708a859d0ac3797c0b13ef037d15e44">   37</a></span>&#160;<a class="code" href="class_parsed_quadrature.html#a6708a859d0ac3797c0b13ef037d15e44">declare_parameters</a>(<a class="codeRef" doxygen="/Users/heltai/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classParameterHandler.html">ParameterHandler</a> &amp;prm)</div>
+<div class="line"><a name="l00037"></a><span class="lineno"><a class="line" href="class_parsed_quadrature.html#a6708a859d0ac3797c0b13ef037d15e44">   37</a></span>&#160;<a class="code" href="class_parsed_quadrature.html#a6708a859d0ac3797c0b13ef037d15e44">declare_parameters</a>(ParameterHandler &amp;prm)</div>
 <div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;{</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;  std::string doc_quadrature_type = <a class="codeRef" doxygen="/Users/heltai/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classQuadratureSelector.html#a403b9c6650e5dce0b4ed93e4f8b42747">QuadratureSelector&lt;dim&gt;::get_quadrature_names</a>();</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;  std::string doc_quadrature_type = QuadratureSelector&lt;dim&gt;::get_quadrature_names();</div>
 <div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;</div>
 <div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;  add_parameter(prm, &amp;quadrature_type,</div>
 <div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;                <span class="stringliteral">&quot;Quadrature to generate&quot;</span>, quadrature_type,</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;                <a class="codeRef" doxygen="/Users/heltai/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classPatterns_1_1Selection.html">Patterns::Selection</a>(<a class="codeRef" doxygen="/Users/heltai/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classQuadratureSelector.html">QuadratureSelector&lt;dim&gt;::get_quadrature_names</a>()),</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;                Patterns::Selection(QuadratureSelector&lt;dim&gt;::get_quadrature_names()),</div>
 <div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;                <span class="stringliteral">&quot;Quadrature rule:&quot;</span>+</div>
 <div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;                doc_quadrature_type</div>
 <div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;               );</div>
 <div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;</div>
 <div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;  add_parameter(prm, &amp;order,</div>
 <div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;                <span class="stringliteral">&quot;Quadrature order&quot;</span>, std::to_string(order),</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;                <a class="codeRef" doxygen="/Users/heltai/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classPatterns_1_1Integer.html">Patterns::Integer</a>(0),</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;                Patterns::Integer(0),</div>
 <div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;                <span class="stringliteral">&quot;The number of quadrature points in each coordinate direction. (Avaible only for gauss otherwise it should be 0)&quot;</span>);</div>
 <div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;</div>
 <div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;  add_parameter(prm, &amp;repetitions,</div>
 <div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;                <span class="stringliteral">&quot;Number of repetitions&quot;</span>, std::to_string(repetitions),</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;                <a class="codeRef" doxygen="/Users/heltai/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classPatterns_1_1Integer.html">Patterns::Integer</a>(1),</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;                Patterns::Integer(1),</div>
 <div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;                <span class="stringliteral">&quot;In one space dimension, the given base formula is copied and scaled onto a given number of subintervals of length 1/repetitions. In more than one space dimension, the resulting quadrature formula is constructed in the usual way by building the tensor product of the respective iterated quadrature formula in one space dimension.&quot;</span>);</div>
 <div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;}</div>
 <div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;</div>
@@ -161,7 +161,7 @@ $(document).ready(function(){initNavTree('parsed__quadrature_8cc_source.html',''
 <div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;<a class="code" href="class_parsed_quadrature.html#a7be329a9d9c1991f9004a171e5e63100">ParsedQuadrature&lt;dim&gt;::</a></div>
 <div class="line"><a name="l00062"></a><span class="lineno"><a class="line" href="class_parsed_quadrature.html#a7be329a9d9c1991f9004a171e5e63100">   62</a></span>&#160;<a class="code" href="class_parsed_quadrature.html#a7be329a9d9c1991f9004a171e5e63100">parse_parameters_call_back</a>()</div>
 <div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;{</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;  (<a class="codeRef" doxygen="/Users/heltai/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classQuadrature.html">Quadrature&lt;dim&gt;</a> &amp;)(* <span class="keyword">this</span>) =  <a class="codeRef" doxygen="/Users/heltai/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classQIterated.html">QIterated&lt;dim&gt;</a>( <a class="codeRef" doxygen="/Users/heltai/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classQuadratureSelector.html">QuadratureSelector&lt;1&gt;</a>(quadrature_type,order), repetitions );</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;  (Quadrature&lt;dim&gt; &amp;)(* <span class="keyword">this</span>) =  QIterated&lt;dim&gt;( QuadratureSelector&lt;1&gt;(quadrature_type,order), repetitions );</div>
 <div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;}</div>
 <div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;</div>
 <div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;D2K_NAMESPACE_CLOSE</div>
@@ -169,17 +169,9 @@ $(document).ready(function(){initNavTree('parsed__quadrature_8cc_source.html',''
 <div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;<span class="keyword">template</span> <span class="keyword">class </span>deal2lkit::ParsedQuadrature&lt;1&gt;;</div>
 <div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;<span class="keyword">template</span> <span class="keyword">class </span>deal2lkit::ParsedQuadrature&lt;2&gt;;</div>
 <div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;<span class="keyword">template</span> <span class="keyword">class </span>deal2lkit::ParsedQuadrature&lt;3&gt;;</div>
-<div class="ttc" id="classPatterns_1_1Selection_html"><div class="ttname"><a href="http://www.dealii.org/developer/doxygen/deal.II/classPatterns_1_1Selection.html">Patterns::Selection</a></div></div>
 <div class="ttc" id="class_parameter_acceptor_html"><div class="ttname"><a href="class_parameter_acceptor.html">ParameterAcceptor</a></div><div class="ttdoc">A parameter acceptor base class. </div><div class="ttdef"><b>Definition:</b> <a href="parameter__acceptor_8h_source.html#l00129">parameter_acceptor.h:129</a></div></div>
-<div class="ttc" id="classQuadratureSelector_html_a403b9c6650e5dce0b4ed93e4f8b42747"><div class="ttname"><a href="http://www.dealii.org/developer/doxygen/deal.II/classQuadratureSelector.html#a403b9c6650e5dce0b4ed93e4f8b42747">QuadratureSelector::get_quadrature_names</a></div><div class="ttdeci">static std::string get_quadrature_names()</div></div>
-<div class="ttc" id="classQIterated_html"><div class="ttname"><a href="http://www.dealii.org/developer/doxygen/deal.II/classQIterated.html">QIterated</a></div></div>
-<div class="ttc" id="quadrature__selector_8h_html"><div class="ttname"><a href="http://www.dealii.org/developer/doxygen/deal.II/quadrature__selector_8h.html">quadrature_selector.h</a></div></div>
-<div class="ttc" id="classParameterHandler_html"><div class="ttname"><a href="http://www.dealii.org/developer/doxygen/deal.II/classParameterHandler.html">ParameterHandler</a></div></div>
 <div class="ttc" id="parsed__quadrature_8h_html"><div class="ttname"><a href="parsed__quadrature_8h.html">parsed_quadrature.h</a></div></div>
-<div class="ttc" id="classQuadrature_html"><div class="ttname"><a href="http://www.dealii.org/developer/doxygen/deal.II/classQuadrature.html">Quadrature</a></div></div>
-<div class="ttc" id="classPatterns_1_1Integer_html"><div class="ttname"><a href="http://www.dealii.org/developer/doxygen/deal.II/classPatterns_1_1Integer.html">Patterns::Integer</a></div></div>
 <div class="ttc" id="class_parsed_quadrature_html_a53d525a39f67f4966ccb658ea90e40b0"><div class="ttname"><a href="class_parsed_quadrature.html#a53d525a39f67f4966ccb658ea90e40b0">ParsedQuadrature::ParsedQuadrature</a></div><div class="ttdeci">ParsedQuadrature(const std::string &amp;name=&quot;&quot;, const std::string &amp;quadrature_type=&quot;gauss&quot;, const unsigned int order=3, const unsigned int repetitions=1)</div><div class="ttdoc">Constructor: takes an optional name for the section. </div><div class="ttdef"><b>Definition:</b> <a href="parsed__quadrature_8cc_source.html#l00023">parsed_quadrature.cc:23</a></div></div>
-<div class="ttc" id="classQuadratureSelector_html"><div class="ttname"><a href="http://www.dealii.org/developer/doxygen/deal.II/classQuadratureSelector.html">QuadratureSelector</a></div></div>
 <div class="ttc" id="class_parsed_quadrature_html_a6708a859d0ac3797c0b13ef037d15e44"><div class="ttname"><a href="class_parsed_quadrature.html#a6708a859d0ac3797c0b13ef037d15e44">ParsedQuadrature::declare_parameters</a></div><div class="ttdeci">virtual void declare_parameters(ParameterHandler &amp;prm)</div><div class="ttdoc">Declare quadrature type and quadrature options. </div><div class="ttdef"><b>Definition:</b> <a href="parsed__quadrature_8cc_source.html#l00037">parsed_quadrature.cc:37</a></div></div>
 <div class="ttc" id="class_parsed_quadrature_html_a7be329a9d9c1991f9004a171e5e63100"><div class="ttname"><a href="class_parsed_quadrature.html#a7be329a9d9c1991f9004a171e5e63100">ParsedQuadrature::parse_parameters_call_back</a></div><div class="ttdeci">virtual void parse_parameters_call_back()</div><div class="ttdoc">Fill information about blocks after parsing the parameters. </div><div class="ttdef"><b>Definition:</b> <a href="parsed__quadrature_8cc_source.html#l00062">parsed_quadrature.cc:62</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
@@ -188,7 +180,7 @@ $(document).ready(function(){initNavTree('parsed__quadrature_8cc_source.html',''
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_b2f33c71d4aa5e7af42a1ca61ff5af1b.html">source</a></li><li class="navelem"><a class="el" href="parsed__quadrature_8cc.html">parsed_quadrature.cc</a></li>
-    <li class="footer">Generated on Wed Nov 25 2015 00:15:57 for deal2lkit: A ToolKit library for Deal.II by
+    <li class="footer">Generated on Sat Feb 27 2016 18:34:33 for deal2lkit: A ToolKit library for Deal.II by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.10 </li>
   </ul>

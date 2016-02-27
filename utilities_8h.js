@@ -4,6 +4,8 @@ var utilities_8h =
     [ "OverWriteStream", "class_over_write_stream.html", "class_over_write_stream" ],
     [ "OverWriteStream", "class_over_write_stream.html", "class_over_write_stream" ],
     [ "append_to_file", "utilities_8h.html#ae9d18b5ae9168b6597aa7955b32d45af", null ],
+    [ "copy", "utilities_8h.html#a8beb4fd3ca3444a84d2bab67512ba977", null ],
+    [ "copy", "utilities_8h.html#a9f9a303531d23676970f08dec8fa62c8", null ],
     [ "copy_file", "utilities_8h.html#ab0a7d30434e83a9cf5b52608ccc25c04", null ],
     [ "copy_files", "utilities_8h.html#ad498e0db011f68bed8742b4287c3f74f", null ],
     [ "create_directory", "utilities_8h.html#a10da2716560c74a4cd0c25e1ac6d7c42", null ],

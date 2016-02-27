@@ -98,19 +98,20 @@ $(document).ready(function(){initNavTree('functions_vars.html','');});
 
 <h3><a class="anchor" id="index__"></a>- _ -</h3><ul>
 <li>_all_components
-: <a class="el" href="class_parsed_mapped_functions.html#a4007b26feab94e8ae89b772c81128034">ParsedMappedFunctions&lt; spacedim, n_components &gt;</a>
+: <a class="el" href="class_parsed_mapped_functions.html#a5b1acd073bddb48cd789f16d6881d481">ParsedMappedFunctions&lt; spacedim &gt;</a>
 </li>
 <li>_component_names
-: <a class="el" href="class_parsed_mapped_functions.html#a8d5abc4627d0fda4d3680fe584135d5a">ParsedMappedFunctions&lt; spacedim, n_components &gt;</a>
+: <a class="el" href="class_parsed_mapped_functions.html#a5a83905c33a5a646a489cec1fafc2077">ParsedMappedFunctions&lt; spacedim &gt;</a>
+, <a class="el" href="class_parsed_zero_average_constraints.html#afd3d4fd33437662f458e9185d011f9d7">ParsedZeroAverageConstraints&lt; dim, spacedim &gt;</a>
 </li>
 <li>_n_components
 : <a class="el" href="class_parsed_finite_element.html#ae2f1c4f9b07ff691fd979e28646f6fd0">ParsedFiniteElement&lt; dim, spacedim &gt;</a>
 </li>
 <li>_normal_components
-: <a class="el" href="class_parsed_mapped_functions.html#a44a2ffe5c349a45f725df6d16c75ce66">ParsedMappedFunctions&lt; spacedim, n_components &gt;</a>
+: <a class="el" href="class_parsed_mapped_functions.html#a94eaece68e2e656b63b43f4b1d9bf2d9">ParsedMappedFunctions&lt; spacedim &gt;</a>
 </li>
 <li>_normal_functions
-: <a class="el" href="class_parsed_mapped_functions.html#a2fa00049ef3301624b83eff0e21b3e7a">ParsedMappedFunctions&lt; spacedim, n_components &gt;</a>
+: <a class="el" href="class_parsed_mapped_functions.html#a745ece7f43fe1bde012121fd9ce6de6e">ParsedMappedFunctions&lt; spacedim &gt;</a>
 </li>
 </ul>
 
@@ -118,6 +119,7 @@ $(document).ready(function(){initNavTree('functions_vars.html','');});
 <h3><a class="anchor" id="index_a"></a>- a -</h3><ul>
 <li>abs_tol
 : <a class="el" href="class_i_d_a_interface.html#a2ba04b1e5f2de9c793086e05883781d2">IDAInterface&lt; VEC &gt;</a>
+, <a class="el" href="class_i_m_e_x_stepper.html#aa70ae98492aa79d7757dacf869dc0a5e">IMEXStepper&lt; VEC &gt;</a>
 </li>
 <li>abs_tolls
 : <a class="el" href="class_i_d_a_interface.html#ab01223c82eb44dd06f90a1f081c74555">IDAInterface&lt; VEC &gt;</a>
@@ -140,6 +142,12 @@ $(document).ready(function(){initNavTree('functions_vars.html','');});
 </li>
 <li>bottom_parameter
 : <a class="el" href="class_parsed_grid_refinement.html#a0c1c0bfb03344b0811d31e50265215b4">ParsedGridRefinement</a>
+</li>
+<li>boundary_components
+: <a class="el" href="class_parsed_zero_average_constraints.html#ad2d9069a66d3ae6851a59d38fa696bb2">ParsedZeroAverageConstraints&lt; dim, spacedim &gt;</a>
+</li>
+<li>boundary_mask
+: <a class="el" href="class_parsed_zero_average_constraints.html#aebc4f2cef9ddd395de5f0e1f52586155">ParsedZeroAverageConstraints&lt; dim, spacedim &gt;</a>
 </li>
 </ul>
 
@@ -169,17 +177,23 @@ $(document).ready(function(){initNavTree('functions_vars.html','');});
 <li>component_names
 : <a class="el" href="class_parsed_finite_element.html#a4d31ec10c64acff91e8ab3976bef6cc1">ParsedFiniteElement&lt; dim, spacedim &gt;</a>
 </li>
+<li>components
+: <a class="el" href="class_parsed_zero_average_constraints.html#affc5b9633b071088455fba002d55a6e6">ParsedZeroAverageConstraints&lt; dim, spacedim &gt;</a>
+</li>
 <li>compute_error
 : <a class="el" href="class_error_handler.html#aca5abf562cb96e8848fab0d2c27d7dd7">ErrorHandler&lt; ntables &gt;</a>
 </li>
 <li>control
 : <a class="el" href="class_parsed_solver.html#a3cc29f45c7bfd339c32956fb6aa8459b">ParsedSolver&lt; VECTOR &gt;</a>
 </li>
-<li>coupling
-: <a class="el" href="class_parsed_finite_element.html#a32c63fa540e0a72644c4321871543d83">ParsedFiniteElement&lt; dim, spacedim &gt;</a>
+<li>copy_boundary_to_manifold_ids
+: <a class="el" href="class_parsed_grid_generator.html#acd1da61d01df6b0cba53a773f4bfc446">ParsedGridGenerator&lt; dim, spacedim &gt;</a>
 </li>
-<li>coupling_int
-: <a class="el" href="class_parsed_finite_element.html#a95da1f9bb9dcb36bc5ded6b89d893b28">ParsedFiniteElement&lt; dim, spacedim &gt;</a>
+<li>copy_material_to_manifold_ids
+: <a class="el" href="class_parsed_grid_generator.html#ad46fa53ccce27314dc57f3253628223d">ParsedGridGenerator&lt; dim, spacedim &gt;</a>
+</li>
+<li>create_default_manifolds
+: <a class="el" href="class_parsed_grid_generator.html#a33f3e015121a8937b6fb693fe2dd6526">ParsedGridGenerator&lt; dim, spacedim &gt;</a>
 </li>
 <li>current_line
 : <a class="el" href="class_over_write_stream.html#a12ad8ec95489a37be638908f1647977a">OverWriteStream&lt; Stream &gt;</a>
@@ -198,16 +212,13 @@ $(document).ready(function(){initNavTree('functions_vars.html','');});
 : <a class="el" href="class_parsed_finite_element.html#a437d096094733122cb4196d18009ec8f">ParsedFiniteElement&lt; dim, spacedim &gt;</a>
 </li>
 <li>default_const
-: <a class="el" href="class_parsed_function.html#ac6770abd6549788cf85b635dc0506449">ParsedFunction&lt; dim, ncomponents &gt;</a>
-</li>
-<li>default_coupling
-: <a class="el" href="class_parsed_finite_element.html#a0eff938652afa71fe03ea2fae5056fd5">ParsedFiniteElement&lt; dim, spacedim &gt;</a>
+: <a class="el" href="class_parsed_function.html#a0d8cb5214984572f88e12ad6bc9d8430">ParsedFunction&lt; dim &gt;</a>
 </li>
 <li>default_exp
-: <a class="el" href="class_parsed_function.html#aa6ebb9ad7d477ea2751077017c2058f2">ParsedFunction&lt; dim, ncomponents &gt;</a>
+: <a class="el" href="class_parsed_function.html#a150d18330d91055d62d8408509b3b7d0">ParsedFunction&lt; dim &gt;</a>
 </li>
-<li>default_preconditioner_coupling
-: <a class="el" href="class_parsed_finite_element.html#ac7b1f7788b2f5c8e9a70314812461316">ParsedFiniteElement&lt; dim, spacedim &gt;</a>
+<li>default_manifold_descriptors
+: <a class="el" href="class_parsed_grid_generator.html#ad8268e5d07e66020e81aea813923ba09">ParsedGridGenerator&lt; dim, spacedim &gt;</a>
 </li>
 <li>diff_id
 : <a class="el" href="class_i_d_a_interface.html#a627cecea72b299ea2abd9c43fa68592e">IDAInterface&lt; VEC &gt;</a>
@@ -241,6 +252,9 @@ $(document).ready(function(){initNavTree('functions_vars.html','');});
 <li>fe_name
 : <a class="el" href="class_parsed_finite_element.html#a51233220fa169970a87154a5be1487a1">ParsedFiniteElement&lt; dim, spacedim &gt;</a>
 </li>
+<li>fe_subface_values
+: <a class="el" href="class_f_e_values_cache.html#a256accf6ebf82f780daf337a13d25a59">FEValuesCache&lt; dim, spacedim &gt;</a>
+</li>
 <li>fe_values
 : <a class="el" href="class_f_e_values_cache.html#a83c0af938880d16dc26b62034deedc88">FEValuesCache&lt; dim, spacedim &gt;</a>
 </li>
@@ -249,6 +263,7 @@ $(document).ready(function(){initNavTree('functions_vars.html','');});
 </li>
 <li>final_time
 : <a class="el" href="class_i_d_a_interface.html#a8fb867b9c2e428f04b5765fd70ad542d">IDAInterface&lt; VEC &gt;</a>
+, <a class="el" href="class_i_m_e_x_stepper.html#a3aa803c6293d29cd567e96980daf70f7">IMEXStepper&lt; VEC &gt;</a>
 </li>
 </ul>
 
@@ -278,19 +293,19 @@ $(document).ready(function(){initNavTree('functions_vars.html','');});
 : <a class="el" href="class_i_d_a_interface.html#a753d5bcee0f06d08e91f13bc23a68143">IDAInterface&lt; VEC &gt;</a>
 </li>
 <li>id_components
-: <a class="el" href="class_parsed_mapped_functions.html#a5df0ce9ac4dd511839881d2b7269e5b7">ParsedMappedFunctions&lt; spacedim, n_components &gt;</a>
+: <a class="el" href="class_parsed_mapped_functions.html#a5a29838937c461c2234794ec8646ff27">ParsedMappedFunctions&lt; spacedim &gt;</a>
 </li>
 <li>id_functions
-: <a class="el" href="class_parsed_mapped_functions.html#a99ed1dba6571768c442aab4609becd6a">ParsedMappedFunctions&lt; spacedim, n_components &gt;</a>
+: <a class="el" href="class_parsed_mapped_functions.html#a1422bc8b50890128a219bc482902f7d8">ParsedMappedFunctions&lt; spacedim &gt;</a>
 </li>
 <li>id_str_functions
-: <a class="el" href="class_parsed_mapped_functions.html#a29878886630b189eaffa46081e843bd7">ParsedMappedFunctions&lt; spacedim, n_components &gt;</a>
+: <a class="el" href="class_parsed_mapped_functions.html#a1c8f553f619139182d0d38f897195623">ParsedMappedFunctions&lt; spacedim &gt;</a>
 </li>
 <li>ida_mem
 : <a class="el" href="class_i_d_a_interface.html#a08c696e36e1652a0b8ada055b8aa8edf">IDAInterface&lt; VEC &gt;</a>
 </li>
 <li>ids
-: <a class="el" href="class_parsed_mapped_functions.html#a5a772127895c774b514014edca251a80">ParsedMappedFunctions&lt; spacedim, n_components &gt;</a>
+: <a class="el" href="class_parsed_mapped_functions.html#a85eb2148c6ed0ed10e90915a2d394d19">ParsedMappedFunctions&lt; spacedim &gt;</a>
 </li>
 <li>ignore_algebraic_terms_for_errors
 : <a class="el" href="class_i_d_a_interface.html#ac84e01f40b9ede251866ac51a741f96f">IDAInterface&lt; VEC &gt;</a>
@@ -303,6 +318,7 @@ $(document).ready(function(){initNavTree('functions_vars.html','');});
 </li>
 <li>initial_time
 : <a class="el" href="class_i_d_a_interface.html#a4bca92a42df13e836c6f41247b69d8d6">IDAInterface&lt; VEC &gt;</a>
+, <a class="el" href="class_i_m_e_x_stepper.html#a9691b083e2ca878778403802fca3a13e">IMEXStepper&lt; VEC &gt;</a>
 </li>
 <li>initialized
 : <a class="el" href="class_error_handler.html#a1acd4a28667a67458784cb225ed9c06f">ErrorHandler&lt; ntables &gt;</a>
@@ -310,6 +326,9 @@ $(document).ready(function(){initNavTree('functions_vars.html','');});
 </li>
 <li>input_grid_file_name
 : <a class="el" href="class_parsed_grid_generator.html#a84b05890fe38a5997448c9ab09c93688">ParsedGridGenerator&lt; dim, spacedim &gt;</a>
+</li>
+<li>interface
+: <a class="el" href="class_i_m_e_x_stepper.html#a243402081143d89515f675c91204e377">IMEXStepper&lt; VEC &gt;</a>
 </li>
 <li>is_initialized
 : <a class="el" href="class_i_d_a_interface.html#aabce4359919af5c5d7ac15831737cb28">IDAInterface&lt; VEC &gt;</a>
@@ -334,14 +353,23 @@ $(document).ready(function(){initNavTree('functions_vars.html','');});
 
 
 <h3><a class="anchor" id="index_m"></a>- m -</h3><ul>
+<li>manifold_descriptors
+: <a class="el" href="class_parsed_grid_generator.html#a1461b2e5d0c40dec126162c79f304ef6">ParsedGridGenerator&lt; dim, spacedim &gt;</a>
+</li>
 <li>mapped_functions
-: <a class="el" href="class_parsed_mapped_functions.html#a986fc1495367fcbcc39ccb3eae4ff4fa">ParsedMappedFunctions&lt; spacedim, n_components &gt;</a>
+: <a class="el" href="class_parsed_mapped_functions.html#ab8790dd12d2c17c3a4f4a20eadef1e01">ParsedMappedFunctions&lt; spacedim &gt;</a>
 </li>
 <li>mapped_normal_components
-: <a class="el" href="class_parsed_mapped_functions.html#a83fa03bfc2192514cdac2da268d072ae">ParsedMappedFunctions&lt; spacedim, n_components &gt;</a>
+: <a class="el" href="class_parsed_mapped_functions.html#a73433cbfe7e8e78a467623519e8d78a1">ParsedMappedFunctions&lt; spacedim &gt;</a>
+</li>
+<li>mask
+: <a class="el" href="class_parsed_zero_average_constraints.html#a925967ade296befe16e93ec4cb8b674b">ParsedZeroAverageConstraints&lt; dim, spacedim &gt;</a>
 </li>
 <li>max_cells
 : <a class="el" href="class_parsed_grid_refinement.html#aabdbbdaaf62179218fd5d87d64322f93">ParsedGridRefinement</a>
+</li>
+<li>max_inner_non_linear_iterations
+: <a class="el" href="class_i_m_e_x_stepper.html#a15b52bb1a661a54f1a5e7840a1628443">IMEXStepper&lt; VEC &gt;</a>
 </li>
 <li>max_iterations
 : <a class="el" href="class_parsed_solver.html#a084d1b144de245792da2fe673fb2ffce">ParsedSolver&lt; VECTOR &gt;</a>
@@ -355,33 +383,55 @@ $(document).ready(function(){initNavTree('functions_vars.html','');});
 <li>max_order
 : <a class="el" href="class_i_d_a_interface.html#ad27347bf05bde1e1f86f6d1c78d6e328">IDAInterface&lt; VEC &gt;</a>
 </li>
+<li>max_outer_non_linear_iterations
+: <a class="el" href="class_i_m_e_x_stepper.html#a2ba7fc38772e55de7e354559c4d87daa">IMEXStepper&lt; VEC &gt;</a>
+</li>
 <li>mesh_smoothing
 : <a class="el" href="class_parsed_grid_generator.html#a25bef6722372595a12eafa3d2f0de86d">ParsedGridGenerator&lt; dim, spacedim &gt;</a>
 </li>
+<li>method
+: <a class="el" href="class_i_m_e_x_stepper.html#a0aa078d3646b719445f9cb6b4658a92a">IMEXStepper&lt; VEC &gt;</a>
+</li>
 <li>min_step_size
 : <a class="el" href="class_i_d_a_interface.html#a701c60a4a81a8e3983c6abf38a81fb73">IDAInterface&lt; VEC &gt;</a>
+</li>
+<li>mydata
+: <a class="el" href="class_any_data.html#a266e37fd9654f946ff70bae3f71107b3">AnyData</a>
 </li>
 </ul>
 
 
 <h3><a class="anchor" id="index_n"></a>- n -</h3><ul>
+<li>n_components
+: <a class="el" href="class_parsed_dirichlet_b_cs.html#a9b5c6cf07023bdb9a6aaa377951fddaf">ParsedDirichletBCs&lt; dim, spacedim &gt;</a>
+, <a class="el" href="class_parsed_function.html#a6854045a32f0498f25b6606a3d956442">ParsedFunction&lt; dim &gt;</a>
+, <a class="el" href="class_parsed_mapped_functions.html#abc205eef8719cc5bc78cb0e2628c40a1">ParsedMappedFunctions&lt; spacedim &gt;</a>
+, <a class="el" href="class_parsed_zero_average_constraints.html#a74f782dab5b953148acb2ec89abc42f2">ParsedZeroAverageConstraints&lt; dim, spacedim &gt;</a>
+</li>
 <li>n_lines
 : <a class="el" href="class_over_write_stream.html#a8f8423b1dc052fb5601ac98386bcbf58">OverWriteStream&lt; Stream &gt;</a>
+</li>
+<li>n_max_backtracking
+: <a class="el" href="class_i_m_e_x_stepper.html#a2bb1a4d7c7d26e34615b24aba24e59da">IMEXStepper&lt; VEC &gt;</a>
 </li>
 <li>n_mpi_processes
 : <a class="el" href="class_parsed_data_out.html#abe1e02a8c6aff5abc366fc30643a9ca4">ParsedDataOut&lt; dim, spacedim &gt;</a>
 </li>
 <li>name
-: <a class="el" href="class_parsed_mapped_functions.html#ac24e04e4879d3358fbb32469ad2b73b2">ParsedMappedFunctions&lt; spacedim, n_components &gt;</a>
+: <a class="el" href="class_parsed_mapped_functions.html#ac59a7cb907408bedd21ac2e1e7d74140">ParsedMappedFunctions&lt; spacedim &gt;</a>
+, <a class="el" href="class_parsed_zero_average_constraints.html#a14c336b1915d7739aef28b379a2eff9b">ParsedZeroAverageConstraints&lt; dim, spacedim &gt;</a>
 </li>
 <li>names
 : <a class="el" href="class_error_handler.html#ab3a76b83efc900ec6c1245caa96f2be0">ErrorHandler&lt; ntables &gt;</a>
 </li>
+<li>newton_alpha
+: <a class="el" href="class_i_m_e_x_stepper.html#a8ed26a9cc726baba896dc7310447fb69">IMEXStepper&lt; VEC &gt;</a>
+</li>
 <li>normal_components
-: <a class="el" href="class_parsed_mapped_functions.html#ac40ba4315dc26a4c6085dbc70097547b">ParsedMappedFunctions&lt; spacedim, n_components &gt;</a>
+: <a class="el" href="class_parsed_mapped_functions.html#a03028cf97fe9eb83d23b4816502e74c9">ParsedMappedFunctions&lt; spacedim &gt;</a>
 </li>
 <li>normal_ids
-: <a class="el" href="class_parsed_mapped_functions.html#aae3a15ddaf50527a1d5b4cf23d2cc0f0">ParsedMappedFunctions&lt; spacedim, n_components &gt;</a>
+: <a class="el" href="class_parsed_mapped_functions.html#aaa588314d8fdedcf3cd4b20da4d462d6">ParsedMappedFunctions&lt; spacedim &gt;</a>
 </li>
 </ul>
 
@@ -389,6 +439,9 @@ $(document).ready(function(){initNavTree('functions_vars.html','');});
 <h3><a class="anchor" id="index_o"></a>- o -</h3><ul>
 <li>op
 : <a class="el" href="class_parsed_solver.html#a618e9ce2fb900b2165ace7e2403a8e65">ParsedSolver&lt; VECTOR &gt;</a>
+</li>
+<li>optional_manifold_descriptors
+: <a class="el" href="class_parsed_grid_generator.html#adbdc1bf3d911f6b96450e97b59a0fcd1">ParsedGridGenerator&lt; dim, spacedim &gt;</a>
 </li>
 <li>order
 : <a class="el" href="class_parsed_grid_refinement.html#a8e31c124dcef3d42094ead32af05044a">ParsedGridRefinement</a>
@@ -408,6 +461,9 @@ $(document).ready(function(){initNavTree('functions_vars.html','');});
 </li>
 <li>output_partitioning
 : <a class="el" href="class_parsed_data_out.html#ae160e8ca8734f597c2dbe862efac976d">ParsedDataOut&lt; dim, spacedim &gt;</a>
+</li>
+<li>output_period
+: <a class="el" href="class_i_m_e_x_stepper.html#a526cae3a897102d7298bab282a04a61f">IMEXStepper&lt; VEC &gt;</a>
 </li>
 <li>outputs_period
 : <a class="el" href="class_i_d_a_interface.html#a19faf31c6c5a8efd22adf625ac500118">IDAInterface&lt; VEC &gt;</a>
@@ -431,17 +487,15 @@ $(document).ready(function(){initNavTree('functions_vars.html','');});
 <li>point_option_two
 : <a class="el" href="class_parsed_grid_generator.html#a6d12008e79391fea9b6fd1ae9f2c7a26">ParsedGridGenerator&lt; dim, spacedim &gt;</a>
 </li>
+<li>pout
+: <a class="el" href="class_i_d_a_interface.html#ab7d8a9e9630b283ab1d0e376f5c6ba4e">IDAInterface&lt; VEC &gt;</a>
+, <a class="el" href="class_i_m_e_x_stepper.html#a558b3b22805401eeaf95c3d2411f02c9">IMEXStepper&lt; VEC &gt;</a>
+</li>
 <li>prec
 : <a class="el" href="class_parsed_solver.html#acb8fff21bc081a175bdb5063e5ba0a91">ParsedSolver&lt; VECTOR &gt;</a>
 </li>
 <li>precision
 : <a class="el" href="class_error_handler.html#a48a20ccddde56c2481a4cff2ff343b1f">ErrorHandler&lt; ntables &gt;</a>
-</li>
-<li>preconditioner_coupling
-: <a class="el" href="class_parsed_finite_element.html#ab11407456d81ad70fcaf2d0e71d8e7d4">ParsedFiniteElement&lt; dim, spacedim &gt;</a>
-</li>
-<li>preconditioner_coupling_int
-: <a class="el" href="class_parsed_finite_element.html#a2e2934654ba4a8651e8add33d47ce82b">ParsedFiniteElement&lt; dim, spacedim &gt;</a>
 </li>
 <li>prm
 : <a class="el" href="class_parameter_acceptor.html#a96081d4cc985b722c9841fcf0c0e54ec">ParameterAcceptor</a>
@@ -465,6 +519,7 @@ $(document).ready(function(){initNavTree('functions_vars.html','');});
 </li>
 <li>rel_tol
 : <a class="el" href="class_i_d_a_interface.html#a206ab56bda11522ddc99e4cdddeb156f">IDAInterface&lt; VEC &gt;</a>
+, <a class="el" href="class_i_m_e_x_stepper.html#a76e4b8ad30e082c5d45ece00dd4783ab">IMEXStepper&lt; VEC &gt;</a>
 </li>
 <li>repetitions
 : <a class="el" href="class_parsed_quadrature.html#a0494f78de47dd3b9da5cf30798e51595">ParsedQuadrature&lt; dim &gt;</a>
@@ -496,14 +551,24 @@ $(document).ready(function(){initNavTree('functions_vars.html','');});
 <li>status
 : <a class="el" href="class_time_utilities.html#a60752fc85add1789bac9f52172a95198">TimeUtilities</a>
 </li>
+<li>step_size
+: <a class="el" href="class_i_m_e_x_stepper.html#a6ee896cb9fd107626ed7b781ec48ffc9">IMEXStepper&lt; VEC &gt;</a>
+</li>
+<li>str_boundary_components
+: <a class="el" href="class_parsed_zero_average_constraints.html#a777df408f0e424f80b72c4846d360367">ParsedZeroAverageConstraints&lt; dim, spacedim &gt;</a>
+</li>
 <li>str_colorize
 : <a class="el" href="class_parsed_grid_generator.html#a27cdce807845961b51bd19ee3d57dca5">ParsedGridGenerator&lt; dim, spacedim &gt;</a>
 </li>
 <li>str_component_names
-: <a class="el" href="class_parsed_mapped_functions.html#abaaeb6d79c0d7cd4292c5ea09f711ad4">ParsedMappedFunctions&lt; spacedim, n_components &gt;</a>
+: <a class="el" href="class_parsed_mapped_functions.html#a94297e78954e08797153540009db2e9e">ParsedMappedFunctions&lt; spacedim &gt;</a>
+, <a class="el" href="class_parsed_zero_average_constraints.html#ad5816ec84832f9bc6060e116e8e87978">ParsedZeroAverageConstraints&lt; dim, spacedim &gt;</a>
+</li>
+<li>str_components
+: <a class="el" href="class_parsed_zero_average_constraints.html#ac9de8f069a0433f9fddc9d8d262c0118">ParsedZeroAverageConstraints&lt; dim, spacedim &gt;</a>
 </li>
 <li>str_constants
-: <a class="el" href="class_parsed_mapped_functions.html#a68b9aee764ba43909b25b65109d85407">ParsedMappedFunctions&lt; spacedim, n_components &gt;</a>
+: <a class="el" href="class_parsed_mapped_functions.html#a2549f14f941dc869605bedfc07446258">ParsedMappedFunctions&lt; spacedim &gt;</a>
 </li>
 <li>str_double_1
 : <a class="el" href="class_parsed_grid_generator.html#a836185e254fb2ec7f2a512706a4f2b76">ParsedGridGenerator&lt; dim, spacedim &gt;</a>
@@ -515,10 +580,10 @@ $(document).ready(function(){initNavTree('functions_vars.html','');});
 : <a class="el" href="class_parsed_grid_generator.html#aebf5d17e56f0e7fb8fdecc7919d35f5f">ParsedGridGenerator&lt; dim, spacedim &gt;</a>
 </li>
 <li>str_id_components
-: <a class="el" href="class_parsed_mapped_functions.html#a3a4f5b3cb14503bb6cf76a57eefe8edd">ParsedMappedFunctions&lt; spacedim, n_components &gt;</a>
+: <a class="el" href="class_parsed_mapped_functions.html#aac496ac45e2fbae1f975f3a14a4bd0fd">ParsedMappedFunctions&lt; spacedim &gt;</a>
 </li>
 <li>str_id_functions
-: <a class="el" href="class_parsed_mapped_functions.html#a13ab1bb101061694bffec9ea3ab856e4">ParsedMappedFunctions&lt; spacedim, n_components &gt;</a>
+: <a class="el" href="class_parsed_mapped_functions.html#afbdc837f4e18dca28e02737aa619126e">ParsedMappedFunctions&lt; spacedim &gt;</a>
 </li>
 <li>str_point_1
 : <a class="el" href="class_parsed_grid_generator.html#adef4a19435cc40d81a266fc6a682d928">ParsedGridGenerator&lt; dim, spacedim &gt;</a>
@@ -582,6 +647,9 @@ $(document).ready(function(){initNavTree('functions_vars.html','');});
 <li>un_int_vec_option_one
 : <a class="el" href="class_parsed_grid_generator.html#a67fd691897521c4f68fbf9bd8355e38e">ParsedGridGenerator&lt; dim, spacedim &gt;</a>
 </li>
+<li>update_jacobian_continuously
+: <a class="el" href="class_i_m_e_x_stepper.html#acc35bae58f33890d794d0b79b16ae8ff">IMEXStepper&lt; VEC &gt;</a>
+</li>
 <li>use_local_tolerances
 : <a class="el" href="class_i_d_a_interface.html#ab577dc5039ccb34f2f48d6d232dc8b17">IDAInterface&lt; VEC &gt;</a>
 </li>
@@ -591,6 +659,7 @@ $(document).ready(function(){initNavTree('functions_vars.html','');});
 <h3><a class="anchor" id="index_v"></a>- v -</h3><ul>
 <li>verbose
 : <a class="el" href="class_i_d_a_interface.html#ae36bf7ba6dcb5cc5e2ca2fdf8c92374d">IDAInterface&lt; VEC &gt;</a>
+, <a class="el" href="class_i_m_e_x_stepper.html#a1901ef5e29875215fc8afc462323faa6">IMEXStepper&lt; VEC &gt;</a>
 </li>
 </ul>
 
@@ -618,7 +687,7 @@ $(document).ready(function(){initNavTree('functions_vars.html','');});
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Wed Nov 25 2015 00:15:58 for deal2lkit: A ToolKit library for Deal.II by
+    <li class="footer">Generated on Sat Feb 27 2016 18:34:33 for deal2lkit: A ToolKit library for Deal.II by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.10 </li>
   </ul>

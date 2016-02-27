@@ -117,17 +117,18 @@ Inheritance diagram for ParameterAcceptor:</div>
  <div class="center">
   <img src="class_parameter_acceptor.png" usemap="#ParameterAcceptor_map" alt=""/>
   <map id="ParameterAcceptor_map" name="ParameterAcceptor_map">
-<area doxygen="/Users/heltai/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classSubscriptor.html" alt="Subscriptor" shape="rect" coords="0,0,320,24"/>
-<area href="class_error_handler.html" alt="ErrorHandler&lt; ntables &gt;" shape="rect" coords="330,112,650,136"/>
-<area href="class_i_d_a_interface.html" title="Interface to SUNDIALS IDA library. " alt="IDAInterface&lt; VEC &gt;" shape="rect" coords="330,168,650,192"/>
-<area href="class_parsed_data_out.html" alt="ParsedDataOut&lt; dim, spacedim &gt;" shape="rect" coords="330,224,650,248"/>
-<area href="class_parsed_finite_element.html" title="Parsed FiniteElement. " alt="ParsedFiniteElement&lt; dim, spacedim &gt;" shape="rect" coords="330,280,650,304"/>
-<area href="class_parsed_function.html" title="A deal2lkit wrapper for dealii::Functions::ParsedFunction. " alt="ParsedFunction&lt; dim, ncomponents &gt;" shape="rect" coords="330,336,650,360"/>
-<area href="class_parsed_grid_generator.html" title="Parsed grid generator. " alt="ParsedGridGenerator&lt; dim, spacedim &gt;" shape="rect" coords="330,392,650,416"/>
-<area href="class_parsed_grid_refinement.html" title="A wrapper for refinement strategies. " alt="ParsedGridRefinement" shape="rect" coords="330,448,650,472"/>
-<area href="class_parsed_mapped_functions.html" title="ParsedMappedFunctions object. " alt="ParsedMappedFunctions&lt; spacedim, n_components &gt;" shape="rect" coords="330,504,650,528"/>
-<area href="class_parsed_quadrature.html" title="A deal2lkit wrapper for an iterated version of dealii::QuadratureSelector. " alt="ParsedQuadrature&lt; dim &gt;" shape="rect" coords="330,560,650,584"/>
-<area href="class_parsed_solver.html" title="A solver selector which uses parameter files to choose between different options. ..." alt="ParsedSolver&lt; VECTOR &gt;" shape="rect" coords="330,616,650,640"/>
+<area href="class_error_handler.html" alt="ErrorHandler&lt; ntables &gt;" shape="rect" coords="307,112,604,136"/>
+<area href="class_i_d_a_interface.html" title="Interface to SUNDIALS IDA library. " alt="IDAInterface&lt; VEC &gt;" shape="rect" coords="307,168,604,192"/>
+<area href="class_i_m_e_x_stepper.html" alt="IMEXStepper&lt; VEC &gt;" shape="rect" coords="307,224,604,248"/>
+<area href="class_parsed_data_out.html" alt="ParsedDataOut&lt; dim, spacedim &gt;" shape="rect" coords="307,280,604,304"/>
+<area href="class_parsed_finite_element.html" title="Parsed FiniteElement. " alt="ParsedFiniteElement&lt; dim, spacedim &gt;" shape="rect" coords="307,336,604,360"/>
+<area href="class_parsed_function.html" title="A deal2lkit wrapper for dealii::Functions::ParsedFunction. " alt="ParsedFunction&lt; dim &gt;" shape="rect" coords="307,392,604,416"/>
+<area href="class_parsed_grid_generator.html" title="Parsed grid generator. " alt="ParsedGridGenerator&lt; dim, spacedim &gt;" shape="rect" coords="307,448,604,472"/>
+<area href="class_parsed_grid_refinement.html" title="A wrapper for refinement strategies. " alt="ParsedGridRefinement" shape="rect" coords="307,504,604,528"/>
+<area href="class_parsed_mapped_functions.html" title="ParsedMappedFunctions object. " alt="ParsedMappedFunctions&lt; spacedim &gt;" shape="rect" coords="307,560,604,584"/>
+<area href="class_parsed_quadrature.html" title="A deal2lkit wrapper for an iterated version of dealii::QuadratureSelector. " alt="ParsedQuadrature&lt; dim &gt;" shape="rect" coords="307,616,604,640"/>
+<area href="class_parsed_solver.html" title="A solver selector which uses parameter files to choose between different options. ..." alt="ParsedSolver&lt; VECTOR &gt;" shape="rect" coords="307,672,604,696"/>
+<area href="class_parsed_zero_average_constraints.html" title="ParsedZeroAverageConstraints class. " alt="ParsedZeroAverageConstraints&lt; dim, spacedim &gt;" shape="rect" coords="307,728,604,752"/>
 </map>
  </div></div>
 <table class="memberdecls">
@@ -139,45 +140,22 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:afadbc55490b174eb52d5b98fda2f6032"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_parameter_acceptor.html#afadbc55490b174eb52d5b98fda2f6032">~ParameterAcceptor</a> ()</td></tr>
 <tr class="memdesc:afadbc55490b174eb52d5b98fda2f6032"><td class="mdescLeft">&#160;</td><td class="mdescRight">The destructor sets to zero the pointer relative to this index, so that it is safe to destroy the mother class.  <a href="#afadbc55490b174eb52d5b98fda2f6032">More...</a><br /></td></tr>
 <tr class="separator:afadbc55490b174eb52d5b98fda2f6032"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab3ee6cabf1ff10be362ac65495183c52"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_parameter_acceptor.html#ab3ee6cabf1ff10be362ac65495183c52">parse_parameters</a> (<a class="elRef" doxygen="/Users/heltai/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classParameterHandler.html">ParameterHandler</a> &amp;<a class="el" href="class_parameter_acceptor.html#a96081d4cc985b722c9841fcf0c0e54ec">prm</a>)</td></tr>
+<tr class="memitem:ab3ee6cabf1ff10be362ac65495183c52"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_parameter_acceptor.html#ab3ee6cabf1ff10be362ac65495183c52">parse_parameters</a> (ParameterHandler &amp;<a class="el" href="class_parameter_acceptor.html#a96081d4cc985b722c9841fcf0c0e54ec">prm</a>)</td></tr>
 <tr class="memdesc:ab3ee6cabf1ff10be362ac65495183c52"><td class="mdescLeft">&#160;</td><td class="mdescRight">Parse the parameter file.  <a href="#ab3ee6cabf1ff10be362ac65495183c52">More...</a><br /></td></tr>
 <tr class="separator:ab3ee6cabf1ff10be362ac65495183c52"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5d6b8666b6b9b9898b0f584b1a602ea5"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_parameter_acceptor.html#a5d6b8666b6b9b9898b0f584b1a602ea5">parse_parameters_call_back</a> ()</td></tr>
 <tr class="memdesc:a5d6b8666b6b9b9898b0f584b1a602ea5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Parse parameter call back.  <a href="#a5d6b8666b6b9b9898b0f584b1a602ea5">More...</a><br /></td></tr>
 <tr class="separator:a5d6b8666b6b9b9898b0f584b1a602ea5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ace1609b41eeb6a5461a388061d23b1bd"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_parameter_acceptor.html#ace1609b41eeb6a5461a388061d23b1bd">declare_parameters</a> (<a class="elRef" doxygen="/Users/heltai/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classParameterHandler.html">ParameterHandler</a> &amp;<a class="el" href="class_parameter_acceptor.html#a96081d4cc985b722c9841fcf0c0e54ec">prm</a>)=0</td></tr>
+<tr class="memitem:ace1609b41eeb6a5461a388061d23b1bd"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_parameter_acceptor.html#ace1609b41eeb6a5461a388061d23b1bd">declare_parameters</a> (ParameterHandler &amp;<a class="el" href="class_parameter_acceptor.html#a96081d4cc985b722c9841fcf0c0e54ec">prm</a>)=0</td></tr>
 <tr class="memdesc:ace1609b41eeb6a5461a388061d23b1bd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Generate entries in the given parameter file.  <a href="#ace1609b41eeb6a5461a388061d23b1bd">More...</a><br /></td></tr>
 <tr class="separator:ace1609b41eeb6a5461a388061d23b1bd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abe76713f66b7319ba25a7d272126461a"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_parameter_acceptor.html#abe76713f66b7319ba25a7d272126461a">get_section_name</a> () const </td></tr>
 <tr class="memdesc:abe76713f66b7319ba25a7d272126461a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return the section name of this class.  <a href="#abe76713f66b7319ba25a7d272126461a">More...</a><br /></td></tr>
 <tr class="separator:abe76713f66b7319ba25a7d272126461a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad823f9aff71602773356405bc4566e55"><td class="memTemplParams" colspan="2">template&lt;class T &gt; </td></tr>
-<tr class="memitem:ad823f9aff71602773356405bc4566e55"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="class_parameter_acceptor.html#ad823f9aff71602773356405bc4566e55">add_parameter</a> (<a class="elRef" doxygen="/Users/heltai/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classParameterHandler.html">ParameterHandler</a> &amp;<a class="el" href="class_parameter_acceptor.html#a96081d4cc985b722c9841fcf0c0e54ec">prm</a>, T *parameter, const std::string &amp;entry, const std::string &amp;default_value, const <a class="elRef" doxygen="/Users/heltai/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classPatterns_1_1PatternBase.html">Patterns::PatternBase</a> &amp;pattern=<a class="elRef" doxygen="/Users/heltai/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classPatterns_1_1Anything.html">Patterns::Anything</a>(), const std::string &amp;documentation=std::string())</td></tr>
+<tr class="memitem:ad823f9aff71602773356405bc4566e55"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="class_parameter_acceptor.html#ad823f9aff71602773356405bc4566e55">add_parameter</a> (ParameterHandler &amp;<a class="el" href="class_parameter_acceptor.html#a96081d4cc985b722c9841fcf0c0e54ec">prm</a>, T *parameter, const std::string &amp;entry, const std::string &amp;default_value, const Patterns::PatternBase &amp;pattern=Patterns::Anything(), const std::string &amp;documentation=std::string())</td></tr>
 <tr class="memdesc:ad823f9aff71602773356405bc4566e55"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add a parameter the given parameter list.  <a href="#ad823f9aff71602773356405bc4566e55">More...</a><br /></td></tr>
 <tr class="separator:ad823f9aff71602773356405bc4566e55"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="inherit_header pub_methods_classSubscriptor"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classSubscriptor')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="http://www.dealii.org/developer/doxygen/deal.II/classSubscriptor.html">Subscriptor</a></td></tr>
-<tr class="memitem:ae5541017c0966b0af345db75895106f2 inherit pub_methods_classSubscriptor"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="elRef" doxygen="/Users/heltai/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classSubscriptor.html#ae5541017c0966b0af345db75895106f2">Subscriptor</a> ()</td></tr>
-<tr class="separator:ae5541017c0966b0af345db75895106f2 inherit pub_methods_classSubscriptor"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a367fce3122075f05f168d14f114b4c65 inherit pub_methods_classSubscriptor"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="elRef" doxygen="/Users/heltai/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classSubscriptor.html#a367fce3122075f05f168d14f114b4c65">Subscriptor</a> (const <a class="elRef" doxygen="/Users/heltai/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classSubscriptor.html">Subscriptor</a> &amp;)</td></tr>
-<tr class="separator:a367fce3122075f05f168d14f114b4c65 inherit pub_methods_classSubscriptor"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af70e597a147c532012a3115cf12ef53c inherit pub_methods_classSubscriptor"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="elRef" doxygen="/Users/heltai/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classSubscriptor.html#af70e597a147c532012a3115cf12ef53c">~Subscriptor</a> ()</td></tr>
-<tr class="separator:af70e597a147c532012a3115cf12ef53c inherit pub_methods_classSubscriptor"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5099175b75089cdc5cf4e7e64829f739 inherit pub_methods_classSubscriptor"><td class="memItemLeft" align="right" valign="top"><a class="elRef" doxygen="/Users/heltai/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classSubscriptor.html">Subscriptor</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="elRef" doxygen="/Users/heltai/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classSubscriptor.html#a5099175b75089cdc5cf4e7e64829f739">operator=</a> (const <a class="elRef" doxygen="/Users/heltai/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classSubscriptor.html">Subscriptor</a> &amp;)</td></tr>
-<tr class="separator:a5099175b75089cdc5cf4e7e64829f739 inherit pub_methods_classSubscriptor"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3422499827ecd52f1d12d65eb6cc3125 inherit pub_methods_classSubscriptor"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="elRef" doxygen="/Users/heltai/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classSubscriptor.html#a3422499827ecd52f1d12d65eb6cc3125">subscribe</a> (const char *identifier=0) const </td></tr>
-<tr class="separator:a3422499827ecd52f1d12d65eb6cc3125 inherit pub_methods_classSubscriptor"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2b4839b1cffc18781144ede1744b35ea inherit pub_methods_classSubscriptor"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="elRef" doxygen="/Users/heltai/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classSubscriptor.html#a2b4839b1cffc18781144ede1744b35ea">unsubscribe</a> (const char *identifier=0) const </td></tr>
-<tr class="separator:a2b4839b1cffc18781144ede1744b35ea inherit pub_methods_classSubscriptor"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7b45274c8e1936bff024df01d618e86f inherit pub_methods_classSubscriptor"><td class="memItemLeft" align="right" valign="top">unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="elRef" doxygen="/Users/heltai/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classSubscriptor.html#a7b45274c8e1936bff024df01d618e86f">n_subscriptions</a> () const </td></tr>
-<tr class="separator:a7b45274c8e1936bff024df01d618e86f inherit pub_methods_classSubscriptor"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:adbbc5f845063b1f23223b7ac96e89e13 inherit pub_methods_classSubscriptor"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="elRef" doxygen="/Users/heltai/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classSubscriptor.html#adbbc5f845063b1f23223b7ac96e89e13">list_subscribers</a> () const </td></tr>
-<tr class="separator:adbbc5f845063b1f23223b7ac96e89e13 inherit pub_methods_classSubscriptor"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gaa77207b86899b9eb2d9e06741426af06 inherit pub_methods_classSubscriptor"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="elRef" doxygen="/Users/heltai/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/group__Exceptions.html#gaa77207b86899b9eb2d9e06741426af06">DeclException3</a> (ExcInUse, int, char *, std::string &amp;,&lt;&lt; &quot;Object of class &quot;&lt;&lt; arg2&lt;&lt; &quot; is still used by &quot;&lt;&lt; arg1&lt;&lt; &quot; other objects.&quot;&lt;&lt; &quot;\n\n&quot;&lt;&lt; &quot;(Additional information: &quot;&lt;&lt; arg3&lt;&lt; &quot;)\n\n&quot;&lt;&lt; &quot;See the entry in the Frequently Asked Questions of &quot;&lt;&lt; &quot;deal.II (linked to from http://www.dealii.org/) for &quot;&lt;&lt; &quot;a lot more information on what this error means and &quot;&lt;&lt; &quot;how to fix programs in which it happens.&quot;)</td></tr>
-<tr class="separator:gaa77207b86899b9eb2d9e06741426af06 inherit pub_methods_classSubscriptor"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga9993dfc378830e66a92065887980e83b inherit pub_methods_classSubscriptor"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="elRef" doxygen="/Users/heltai/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/group__Exceptions.html#ga9993dfc378830e66a92065887980e83b">DeclException2</a> (ExcNoSubscriber, char *, char *,&lt;&lt; &quot;No subscriber with identifier &lt;&quot;&lt;&lt; arg2&lt;&lt; &quot;&gt; subscribes to this object of class &quot;&lt;&lt; arg1&lt;&lt; &quot;. Consequently, it cannot be unsubscribed.&quot;)</td></tr>
-<tr class="separator:ga9993dfc378830e66a92065887980e83b inherit pub_methods_classSubscriptor"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a68efd17a8330ab676d9cd711029b0f38 inherit pub_methods_classSubscriptor"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="elRef" doxygen="/Users/heltai/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classSubscriptor.html#a68efd17a8330ab676d9cd711029b0f38">serialize</a> (Archive &amp;ar, const unsigned int version)</td></tr>
-<tr class="separator:a68efd17a8330ab676d9cd711029b0f38 inherit pub_methods_classSubscriptor"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
@@ -186,19 +164,19 @@ Static Public Member Functions</h2></td></tr>
 <tr class="separator:af04c215672e63f03a942ae4c55b57c27"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2e4f8347ae5f913939ebf81a23277880"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_parameter_acceptor.html#a2e4f8347ae5f913939ebf81a23277880">clear</a> ()</td></tr>
 <tr class="separator:a2e4f8347ae5f913939ebf81a23277880"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac4b7044a9e1d53c401a50565d8996022"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_parameter_acceptor.html#ac4b7044a9e1d53c401a50565d8996022">parse_all_parameters</a> (<a class="elRef" doxygen="/Users/heltai/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classParameterHandler.html">ParameterHandler</a> &amp;<a class="el" href="class_parameter_acceptor.html#a96081d4cc985b722c9841fcf0c0e54ec">prm</a>=<a class="el" href="class_parameter_acceptor.html#a96081d4cc985b722c9841fcf0c0e54ec">ParameterAcceptor::prm</a>)</td></tr>
-<tr class="memdesc:ac4b7044a9e1d53c401a50565d8996022"><td class="mdescLeft">&#160;</td><td class="mdescRight">Parse the given <a class="elRef" doxygen="/Users/heltai/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classParameterHandler.html">ParameterHandler</a>.  <a href="#ac4b7044a9e1d53c401a50565d8996022">More...</a><br /></td></tr>
+<tr class="memitem:ac4b7044a9e1d53c401a50565d8996022"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_parameter_acceptor.html#ac4b7044a9e1d53c401a50565d8996022">parse_all_parameters</a> (ParameterHandler &amp;<a class="el" href="class_parameter_acceptor.html#a96081d4cc985b722c9841fcf0c0e54ec">prm</a>=<a class="el" href="class_parameter_acceptor.html#a96081d4cc985b722c9841fcf0c0e54ec">ParameterAcceptor::prm</a>)</td></tr>
+<tr class="memdesc:ac4b7044a9e1d53c401a50565d8996022"><td class="mdescLeft">&#160;</td><td class="mdescRight">Parse the given ParameterHandler.  <a href="#ac4b7044a9e1d53c401a50565d8996022">More...</a><br /></td></tr>
 <tr class="separator:ac4b7044a9e1d53c401a50565d8996022"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0aebd314633cdb2e48b159f2b9349c73"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_parameter_acceptor.html#a0aebd314633cdb2e48b159f2b9349c73">log_info</a> ()</td></tr>
 <tr class="memdesc:a0aebd314633cdb2e48b159f2b9349c73"><td class="mdescLeft">&#160;</td><td class="mdescRight">Print information about all stored classes.  <a href="#a0aebd314633cdb2e48b159f2b9349c73">More...</a><br /></td></tr>
 <tr class="separator:a0aebd314633cdb2e48b159f2b9349c73"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3775ed960cf63c9ae88613925d226b11"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_parameter_acceptor.html#a3775ed960cf63c9ae88613925d226b11">declare_all_parameters</a> (<a class="elRef" doxygen="/Users/heltai/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classParameterHandler.html">ParameterHandler</a> &amp;<a class="el" href="class_parameter_acceptor.html#a96081d4cc985b722c9841fcf0c0e54ec">prm</a>=<a class="el" href="class_parameter_acceptor.html#a96081d4cc985b722c9841fcf0c0e54ec">ParameterAcceptor::prm</a>)</td></tr>
-<tr class="memdesc:a3775ed960cf63c9ae88613925d226b11"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize the <a class="elRef" doxygen="/Users/heltai/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classParameterHandler.html">ParameterHandler</a> with all derived classes parameters.This function enters the subsection returned by <a class="el" href="class_parameter_acceptor.html#abe76713f66b7319ba25a7d272126461a" title="Return the section name of this class. ">get_section_name()</a> for each derived class, and declares all parameters that were added using <a class="el" href="class_parameter_acceptor.html#ad823f9aff71602773356405bc4566e55" title="Add a parameter the given parameter list. ">add_parameter()</a>.  <a href="#a3775ed960cf63c9ae88613925d226b11">More...</a><br /></td></tr>
+<tr class="memitem:a3775ed960cf63c9ae88613925d226b11"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_parameter_acceptor.html#a3775ed960cf63c9ae88613925d226b11">declare_all_parameters</a> (ParameterHandler &amp;<a class="el" href="class_parameter_acceptor.html#a96081d4cc985b722c9841fcf0c0e54ec">prm</a>=<a class="el" href="class_parameter_acceptor.html#a96081d4cc985b722c9841fcf0c0e54ec">ParameterAcceptor::prm</a>)</td></tr>
+<tr class="memdesc:a3775ed960cf63c9ae88613925d226b11"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize the ParameterHandler with all derived classes parameters.This function enters the subsection returned by <a class="el" href="class_parameter_acceptor.html#abe76713f66b7319ba25a7d272126461a" title="Return the section name of this class. ">get_section_name()</a> for each derived class, and declares all parameters that were added using <a class="el" href="class_parameter_acceptor.html#ad823f9aff71602773356405bc4566e55" title="Add a parameter the given parameter list. ">add_parameter()</a>.  <a href="#a3775ed960cf63c9ae88613925d226b11">More...</a><br /></td></tr>
 <tr class="separator:a3775ed960cf63c9ae88613925d226b11"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-attribs"></a>
 Static Public Attributes</h2></td></tr>
-<tr class="memitem:a96081d4cc985b722c9841fcf0c0e54ec"><td class="memItemLeft" align="right" valign="top">static <a class="elRef" doxygen="/Users/heltai/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classParameterHandler.html">ParameterHandler</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_parameter_acceptor.html#a96081d4cc985b722c9841fcf0c0e54ec">prm</a></td></tr>
+<tr class="memitem:a96081d4cc985b722c9841fcf0c0e54ec"><td class="memItemLeft" align="right" valign="top">static ParameterHandler&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_parameter_acceptor.html#a96081d4cc985b722c9841fcf0c0e54ec">prm</a></td></tr>
 <tr class="memdesc:a96081d4cc985b722c9841fcf0c0e54ec"><td class="mdescLeft">&#160;</td><td class="mdescRight">Static parameter.  <a href="#a96081d4cc985b722c9841fcf0c0e54ec">More...</a><br /></td></tr>
 <tr class="separator:a96081d4cc985b722c9841fcf0c0e54ec"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
@@ -219,27 +197,27 @@ Private Attributes</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-static-attribs"></a>
 Static Private Attributes</h2></td></tr>
-<tr class="memitem:a969df055b31e4f3152b659838133e0a1"><td class="memItemLeft" align="right" valign="top">static std::vector&lt; <a class="elRef" doxygen="/Users/heltai/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classSmartPointer.html">SmartPointer</a>&lt; <a class="el" href="class_parameter_acceptor.html">ParameterAcceptor</a> &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_parameter_acceptor.html#a969df055b31e4f3152b659838133e0a1">class_list</a></td></tr>
+<tr class="memitem:a969df055b31e4f3152b659838133e0a1"><td class="memItemLeft" align="right" valign="top">static std::vector&lt; SmartPointer&lt; <a class="el" href="class_parameter_acceptor.html">ParameterAcceptor</a> &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_parameter_acceptor.html#a969df055b31e4f3152b659838133e0a1">class_list</a></td></tr>
 <tr class="memdesc:a969df055b31e4f3152b659838133e0a1"><td class="mdescLeft">&#160;</td><td class="mdescRight">A list containing all constructed classes of type <a class="el" href="class_parameter_acceptor.html" title="A parameter acceptor base class. ">ParameterAcceptor</a>.  <a href="#a969df055b31e4f3152b659838133e0a1">More...</a><br /></td></tr>
 <tr class="separator:a969df055b31e4f3152b659838133e0a1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>A parameter acceptor base class. </p>
-<p>This class is used to define a public interface for classes wich want to use a <a class="elRef" doxygen="/Users/heltai/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classParameterHandler.html">ParameterHandler</a> to handle parameters. Such basic interface provides two subscription mechanisms: a <b>global subscription mechanism</b> and a <b>local subscription mechanism</b>.</p>
+<p>This class is used to define a public interface for classes wich want to use a ParameterHandler to handle parameters. Such basic interface provides two subscription mechanisms: a <b>global subscription mechanism</b> and a <b>local subscription mechanism</b>.</p>
 <p>The global subscription mechanism is such that whenever a class that was derived by <a class="el" href="class_parameter_acceptor.html" title="A parameter acceptor base class. ">ParameterAcceptor</a> is constructed, a static registry (<a class="el" href="class_parameter_acceptor.html#a969df055b31e4f3152b659838133e0a1" title="A list containing all constructed classes of type ParameterAcceptor. ">ParameterAcceptor::class_list</a>) in the base class is updated with a pointer to the derived class. Such registry is traversed upon invocation of the single function <a class="el" href="class_parameter_acceptor.html#af04c215672e63f03a942ae4c55b57c27" title="Call declare_all_parameters(), read filename (if it is present as input parameter) and parse_all_para...">ParameterAcceptor::initialize</a>(file.prm) which in turn calls the method <a class="el" href="class_parameter_acceptor.html#ace1609b41eeb6a5461a388061d23b1bd" title="Generate entries in the given parameter file. ">ParameterAcceptor::declare_parameters()</a> for each of the registered classes, reads the file <code>file.prm</code>, (creating it first with default values if it does not exist) and subsequently calls the method <a class="el" href="class_parameter_acceptor.html#ab3ee6cabf1ff10be362ac65495183c52" title="Parse the parameter file. ">ParameterAcceptor::parse_parameters()</a>, again for each of the registered classes. The method <a class="el" href="class_parameter_acceptor.html#a0aebd314633cdb2e48b159f2b9349c73" title="Print information about all stored classes. ">log_info()</a> can be used to extract informations about the classes that have been derived from <a class="el" href="class_parameter_acceptor.html" title="A parameter acceptor base class. ">ParameterAcceptor</a>, and that will be parsed when calling <a class="el" href="class_parameter_acceptor.html#af04c215672e63f03a942ae4c55b57c27" title="Call declare_all_parameters(), read filename (if it is present as input parameter) and parse_all_para...">ParameterAcceptor::initialize()</a>.</p>
-<p><a class="el" href="class_parameter_acceptor.html" title="A parameter acceptor base class. ">ParameterAcceptor</a> conforms to the standard advocated in the <a href="http://www.dealii.org"><code>deal.II</code></a> documentation, and it has a pure virtual method <a class="el" href="class_parameter_acceptor.html#ace1609b41eeb6a5461a388061d23b1bd" title="Generate entries in the given parameter file. ">ParameterAcceptor::declare_parameters</a> and a virtual method <a class="el" href="class_parameter_acceptor.html#ab3ee6cabf1ff10be362ac65495183c52" title="Parse the parameter file. ">ParameterAcceptor::parse_parameters</a> which can be overloaded as the user whishes. However, the base class also has a default implementation of parse_parameters which exploits a <b>local subscription mechanism</b> by storing in a local registry (<a class="el" href="class_parameter_acceptor.html#a232f65d19a056057bfd37c111a903ef1" title="A map of parameters that are initialized in this class with the function add_parameter. ">ParameterAcceptor::parameters</a>) a pointer to all variables that were declared through the <a class="el" href="class_parameter_acceptor.html#ad823f9aff71602773356405bc4566e55" title="Add a parameter the given parameter list. ">ParameterAcceptor::add_parameter</a> method. Such method has the same syntax of the ParameterHandler::add_entry method, with the addition of two arguments: a <a class="elRef" doxygen="/Users/heltai/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classParameterHandler.html">ParameterHandler</a> object on which ParameterHandler::add_entry will be called, and a reference to the variable that should hold the entry when a ParameterHandler::get_* methods are called. Such variable is stored in <a class="el" href="class_parameter_acceptor.html#a232f65d19a056057bfd37c111a903ef1" title="A map of parameters that are initialized in this class with the function add_parameter. ">ParameterAcceptor::parameters</a> (local to the class instantiation) which is traversed by the default implementation of <a class="el" href="class_parameter_acceptor.html#ab3ee6cabf1ff10be362ac65495183c52" title="Parse the parameter file. ">ParameterAcceptor::parse_parameters</a>. Specialized implementations are provided for the most commonly used variable types.</p>
-<p>The only function that derived classes should overload is <a class="el" href="class_parameter_acceptor.html#ace1609b41eeb6a5461a388061d23b1bd" title="Generate entries in the given parameter file. ">declare_parameters()</a>. Derived classes are required to use the <a class="el" href="class_parameter_acceptor.html#ad823f9aff71602773356405bc4566e55" title="Add a parameter the given parameter list. ">add_parameter()</a> function inside the declare_paramters() function. If they do so, then <a class="el" href="class_parameter_acceptor.html#ac4b7044a9e1d53c401a50565d8996022" title="Parse the given ParameterHandler. ">ParameterAcceptor::parse_all_parameters()</a> will automatically populate the variables with the parsed parameters. Failure to use the <a class="el" href="class_parameter_acceptor.html#ad823f9aff71602773356405bc4566e55" title="Add a parameter the given parameter list. ">add_parameter()</a> function will result in the user having to call <a class="elRef" doxygen="/Users/heltai/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classParameterHandler.html#a7589d0ed2a7e70532853e1e378130c88">ParameterHandler::get()</a> functions to populate the variables manually.</p>
+<p><a class="el" href="class_parameter_acceptor.html" title="A parameter acceptor base class. ">ParameterAcceptor</a> conforms to the standard advocated in the <a href="http://www.dealii.org"><code>deal.II</code></a> documentation, and it has a pure virtual method <a class="el" href="class_parameter_acceptor.html#ace1609b41eeb6a5461a388061d23b1bd" title="Generate entries in the given parameter file. ">ParameterAcceptor::declare_parameters</a> and a virtual method <a class="el" href="class_parameter_acceptor.html#ab3ee6cabf1ff10be362ac65495183c52" title="Parse the parameter file. ">ParameterAcceptor::parse_parameters</a> which can be overloaded as the user whishes. However, the base class also has a default implementation of parse_parameters which exploits a <b>local subscription mechanism</b> by storing in a local registry (<a class="el" href="class_parameter_acceptor.html#a232f65d19a056057bfd37c111a903ef1" title="A map of parameters that are initialized in this class with the function add_parameter. ">ParameterAcceptor::parameters</a>) a pointer to all variables that were declared through the <a class="el" href="class_parameter_acceptor.html#ad823f9aff71602773356405bc4566e55" title="Add a parameter the given parameter list. ">ParameterAcceptor::add_parameter</a> method. Such method has the same syntax of the ParameterHandler::add_entry method, with the addition of two arguments: a ParameterHandler object on which ParameterHandler::add_entry will be called, and a reference to the variable that should hold the entry when a ParameterHandler::get_* methods are called. Such variable is stored in <a class="el" href="class_parameter_acceptor.html#a232f65d19a056057bfd37c111a903ef1" title="A map of parameters that are initialized in this class with the function add_parameter. ">ParameterAcceptor::parameters</a> (local to the class instantiation) which is traversed by the default implementation of <a class="el" href="class_parameter_acceptor.html#ab3ee6cabf1ff10be362ac65495183c52" title="Parse the parameter file. ">ParameterAcceptor::parse_parameters</a>. Specialized implementations are provided for the most commonly used variable types.</p>
+<p>The only function that derived classes should overload is <a class="el" href="class_parameter_acceptor.html#ace1609b41eeb6a5461a388061d23b1bd" title="Generate entries in the given parameter file. ">declare_parameters()</a>. Derived classes are required to use the <a class="el" href="class_parameter_acceptor.html#ad823f9aff71602773356405bc4566e55" title="Add a parameter the given parameter list. ">add_parameter()</a> function inside the declare_paramters() function. If they do so, then <a class="el" href="class_parameter_acceptor.html#ac4b7044a9e1d53c401a50565d8996022" title="Parse the given ParameterHandler. ">ParameterAcceptor::parse_all_parameters()</a> will automatically populate the variables with the parsed parameters. Failure to use the <a class="el" href="class_parameter_acceptor.html#ad823f9aff71602773356405bc4566e55" title="Add a parameter the given parameter list. ">add_parameter()</a> function will result in the user having to call ParameterHandler::get() functions to populate the variables manually.</p>
 <p>The rationale behind this class, is that we want every class to be able to declare parameters only once, and then automatically populate variables with the values from the parameter file, without having to do so manually.</p>
 <p>A typical usage of this chain of classes is the following:</p>
 <div class="fragment"><div class="line"><span class="comment">// This is your own class, derived from ParameterAcceptor</span></div>
 <div class="line"><span class="keyword">class </span>MyClass : <span class="keyword">public</span> <a class="code" href="class_parameter_acceptor.html">ParameterAcceptor</a> {</div>
-<div class="line"><span class="keyword">virtual</span> <a class="code" href="class_parameter_acceptor.html#ace1609b41eeb6a5461a388061d23b1bd">declare_parameters</a>(<a class="codeRef" doxygen="/Users/heltai/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classParameterHandler.html">ParameterHandler</a> &amp;<a class="code" href="class_parameter_acceptor.html#a96081d4cc985b722c9841fcf0c0e54ec">prm</a>) {</div>
+<div class="line"><span class="keyword">virtual</span> <a class="code" href="class_parameter_acceptor.html#ace1609b41eeb6a5461a388061d23b1bd">declare_parameters</a>(ParameterHandler &amp;<a class="code" href="class_parameter_acceptor.html#a96081d4cc985b722c9841fcf0c0e54ec">prm</a>) {</div>
 <div class="line"> add_parameters(prm, &amp;member_var, <span class="stringliteral">&quot;A param&quot;</span>, <span class="stringliteral">&quot;Default value&quot;</span>);</div>
 <div class="line">}</div>
 <div class="line"></div>
 <div class="line">...</div>
 <div class="line"></div>
-<div class="line">int <a class="codeRef" doxygen="/Users/heltai/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/group__ParameterGui.html#ga0ddf1224851353fc92bfbff6f499fa97">main</a>() {</div>
+<div class="line">int main() {</div>
 <div class="line"> <span class="comment">// Make sure you build your class BEFORE calling</span></div>
 <div class="line"> <span class="comment">// ParameterAcceptor::initialize()</span></div>
 <div class="line"> MyClass <span class="keyword">class</span>;</div>
@@ -269,7 +247,7 @@ Static Private Attributes</h2></td></tr>
 <p>The constructor adds derived classes to the list of acceptors. </p>
 <p>If a section name is specified, then this is used to scope the parameters in the given section, otherwise a pretty printed version of the derived class is used. </p>
 
-<p>Definition at line <a class="el" href="parameter__acceptor_8cc_source.html#l00030">30</a> of file <a class="el" href="parameter__acceptor_8cc_source.html">parameter_acceptor.cc</a>.</p>
+<p>Definition at line <a class="el" href="parameter__acceptor_8cc_source.html#l00031">31</a> of file <a class="el" href="parameter__acceptor_8cc_source.html">parameter_acceptor.cc</a>.</p>
 
 </div>
 </div>
@@ -296,7 +274,7 @@ Static Private Attributes</h2></td></tr>
 
 <p>The destructor sets to zero the pointer relative to this index, so that it is safe to destroy the mother class. </p>
 
-<p>Definition at line <a class="el" href="parameter__acceptor_8cc_source.html#l00039">39</a> of file <a class="el" href="parameter__acceptor_8cc_source.html">parameter_acceptor.cc</a>.</p>
+<p>Definition at line <a class="el" href="parameter__acceptor_8cc_source.html#l00040">40</a> of file <a class="el" href="parameter__acceptor_8cc_source.html">parameter_acceptor.cc</a>.</p>
 
 </div>
 </div>
@@ -313,7 +291,7 @@ template&lt;class T &gt; </div>
         <tr>
           <td class="memname">void ParameterAcceptor::add_parameter </td>
           <td>(</td>
-          <td class="paramtype"><a class="elRef" doxygen="/Users/heltai/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classParameterHandler.html">ParameterHandler</a> &amp;&#160;</td>
+          <td class="paramtype">ParameterHandler &amp;&#160;</td>
           <td class="paramname"><em>prm</em>, </td>
         </tr>
         <tr>
@@ -337,8 +315,8 @@ template&lt;class T &gt; </div>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const <a class="elRef" doxygen="/Users/heltai/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classPatterns_1_1PatternBase.html">Patterns::PatternBase</a> &amp;&#160;</td>
-          <td class="paramname"><em>pattern</em> = <code><a class="elRef" doxygen="/Users/heltai/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classPatterns_1_1Anything.html">Patterns::Anything</a>()</code>, </td>
+          <td class="paramtype">const Patterns::PatternBase &amp;&#160;</td>
+          <td class="paramname"><em>pattern</em> = <code>Patterns::Anything()</code>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -387,7 +365,7 @@ template&lt;class T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="parameter__acceptor_8cc_source.html#l00095">95</a> of file <a class="el" href="parameter__acceptor_8cc_source.html">parameter_acceptor.cc</a>.</p>
+<p>Definition at line <a class="el" href="parameter__acceptor_8cc_source.html#l00096">96</a> of file <a class="el" href="parameter__acceptor_8cc_source.html">parameter_acceptor.cc</a>.</p>
 
 </div>
 </div>
@@ -401,7 +379,7 @@ template&lt;class T &gt; </div>
         <tr>
           <td class="memname">void ParameterAcceptor::declare_all_parameters </td>
           <td>(</td>
-          <td class="paramtype"><a class="elRef" doxygen="/Users/heltai/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classParameterHandler.html">ParameterHandler</a> &amp;&#160;</td>
+          <td class="paramtype">ParameterHandler &amp;&#160;</td>
           <td class="paramname"><em>prm</em> = <code><a class="el" href="class_parameter_acceptor.html#a96081d4cc985b722c9841fcf0c0e54ec">ParameterAcceptor::prm</a></code></td><td>)</td>
           <td></td>
         </tr>
@@ -413,9 +391,9 @@ template&lt;class T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Initialize the <a class="elRef" doxygen="/Users/heltai/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classParameterHandler.html">ParameterHandler</a> with all derived classes parameters.This function enters the subsection returned by <a class="el" href="class_parameter_acceptor.html#abe76713f66b7319ba25a7d272126461a" title="Return the section name of this class. ">get_section_name()</a> for each derived class, and declares all parameters that were added using <a class="el" href="class_parameter_acceptor.html#ad823f9aff71602773356405bc4566e55" title="Add a parameter the given parameter list. ">add_parameter()</a>. </p>
+<p>Initialize the ParameterHandler with all derived classes parameters.This function enters the subsection returned by <a class="el" href="class_parameter_acceptor.html#abe76713f66b7319ba25a7d272126461a" title="Return the section name of this class. ">get_section_name()</a> for each derived class, and declares all parameters that were added using <a class="el" href="class_parameter_acceptor.html#ad823f9aff71602773356405bc4566e55" title="Add a parameter the given parameter list. ">add_parameter()</a>. </p>
 
-<p>Definition at line <a class="el" href="parameter__acceptor_8cc_source.html#l00128">128</a> of file <a class="el" href="parameter__acceptor_8cc_source.html">parameter_acceptor.cc</a>.</p>
+<p>Definition at line <a class="el" href="parameter__acceptor_8cc_source.html#l00129">129</a> of file <a class="el" href="parameter__acceptor_8cc_source.html">parameter_acceptor.cc</a>.</p>
 
 </div>
 </div>
@@ -429,7 +407,7 @@ template&lt;class T &gt; </div>
         <tr>
           <td class="memname">virtual void ParameterAcceptor::declare_parameters </td>
           <td>(</td>
-          <td class="paramtype"><a class="elRef" doxygen="/Users/heltai/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classParameterHandler.html">ParameterHandler</a> &amp;&#160;</td>
+          <td class="paramtype">ParameterHandler &amp;&#160;</td>
           <td class="paramname"><em>prm</em></td><td>)</td>
           <td></td>
         </tr>
@@ -444,7 +422,7 @@ template&lt;class T &gt; </div>
 <p>Generate entries in the given parameter file. </p>
 <p>Derived classes need to overload this one. If you want to make sure the automatic assignement of variables work, you should fill this function only with calls to the <a class="el" href="class_parameter_acceptor.html#ad823f9aff71602773356405bc4566e55" title="Add a parameter the given parameter list. ">add_parameter()</a> method. </p>
 
-<p>Implemented in <a class="el" href="class_parsed_grid_generator.html#a2b3d8d1567cfb1735053d6129fe7a640">ParsedGridGenerator&lt; dim, spacedim &gt;</a>, <a class="el" href="class_parsed_finite_element.html#a740906fdf9fbda0f0fc421c73b9d522b">ParsedFiniteElement&lt; dim, spacedim &gt;</a>, <a class="el" href="class_parsed_mapped_functions.html#a747b21de730cd8ca12266411b24a650e">ParsedMappedFunctions&lt; spacedim, n_components &gt;</a>, <a class="el" href="class_i_d_a_interface.html#a535c35503f0e6a24dbbc5cca9978c2ec">IDAInterface&lt; VEC &gt;</a>, <a class="el" href="class_parsed_dirichlet_b_cs.html#a59a00c9bd1ff5a50f5fc39ee80fa4bc1">ParsedDirichletBCs&lt; dim, spacedim, n_components &gt;</a>, <a class="el" href="class_parsed_solver.html#a6b5c9855ddf192408701d4005c668c65">ParsedSolver&lt; VECTOR &gt;</a>, <a class="el" href="class_error_handler.html#a1b82f2b733264bd0f6dbc0b58fdc7a92">ErrorHandler&lt; ntables &gt;</a>, <a class="el" href="class_parsed_quadrature.html#a6708a859d0ac3797c0b13ef037d15e44">ParsedQuadrature&lt; dim &gt;</a>, <a class="el" href="class_parsed_grid_refinement.html#aa4e9fc4c369631339bae9e856a4606bc">ParsedGridRefinement</a>, <a class="el" href="class_parsed_data_out.html#aac8af955de45324d4d5cd8108e979499">ParsedDataOut&lt; dim, spacedim &gt;</a>, and <a class="el" href="class_parsed_function.html#a036684efc1b4e405448f83ad82a9a685">ParsedFunction&lt; dim, ncomponents &gt;</a>.</p>
+<p>Implemented in <a class="el" href="class_parsed_grid_generator.html#a2b3d8d1567cfb1735053d6129fe7a640">ParsedGridGenerator&lt; dim, spacedim &gt;</a>, <a class="el" href="class_parsed_mapped_functions.html#a74e8ad249c32c6588503539d9bd4b9a9">ParsedMappedFunctions&lt; spacedim &gt;</a>, <a class="el" href="class_parsed_finite_element.html#a740906fdf9fbda0f0fc421c73b9d522b">ParsedFiniteElement&lt; dim, spacedim &gt;</a>, <a class="el" href="class_i_d_a_interface.html#a535c35503f0e6a24dbbc5cca9978c2ec">IDAInterface&lt; VEC &gt;</a>, <a class="el" href="class_parsed_dirichlet_b_cs.html#acc02eb0abde65104db398f31242504fe">ParsedDirichletBCs&lt; dim, spacedim &gt;</a>, <a class="el" href="class_parsed_zero_average_constraints.html#a88f826f12f7427ca4b2ed33bf05384e7">ParsedZeroAverageConstraints&lt; dim, spacedim &gt;</a>, <a class="el" href="class_parsed_solver.html#a6b5c9855ddf192408701d4005c668c65">ParsedSolver&lt; VECTOR &gt;</a>, <a class="el" href="class_error_handler.html#a1b82f2b733264bd0f6dbc0b58fdc7a92">ErrorHandler&lt; ntables &gt;</a>, <a class="el" href="class_parsed_quadrature.html#a6708a859d0ac3797c0b13ef037d15e44">ParsedQuadrature&lt; dim &gt;</a>, <a class="el" href="class_i_m_e_x_stepper.html#a808a81c64ae0a83bd8f6cb7752703118">IMEXStepper&lt; VEC &gt;</a>, <a class="el" href="class_parsed_function.html#af0179703764fac5fe441175f09442890">ParsedFunction&lt; dim &gt;</a>, <a class="el" href="class_parsed_grid_refinement.html#aa4e9fc4c369631339bae9e856a4606bc">ParsedGridRefinement</a>, and <a class="el" href="class_parsed_data_out.html#aac8af955de45324d4d5cd8108e979499">ParsedDataOut&lt; dim, spacedim &gt;</a>.</p>
 
 </div>
 </div>
@@ -464,7 +442,7 @@ template&lt;class T &gt; </div>
 <p>Return the section name of this class. </p>
 <p>If a name was provided at construction time, then that name is returned, otherwise it returns the name of this class, pretty printed. </p>
 
-<p>Definition at line <a class="el" href="parameter__acceptor_8cc_source.html#l00044">44</a> of file <a class="el" href="parameter__acceptor_8cc_source.html">parameter_acceptor.cc</a>.</p>
+<p>Definition at line <a class="el" href="parameter__acceptor_8cc_source.html#l00045">45</a> of file <a class="el" href="parameter__acceptor_8cc_source.html">parameter_acceptor.cc</a>.</p>
 
 </div>
 </div>
@@ -503,7 +481,7 @@ template&lt;class T &gt; </div>
 <p>Call <a class="el" href="class_parameter_acceptor.html#a3775ed960cf63c9ae88613925d226b11" title="Initialize the ParameterHandler with all derived classes parameters.This function enters the subsecti...">declare_all_parameters()</a>, read filename (if it is present as input parameter) and <a class="el" href="class_parameter_acceptor.html#ac4b7044a9e1d53c401a50565d8996022" title="Parse the given ParameterHandler. ">parse_all_parameters()</a> on the static member prm. </p>
 <p>If outfilename is present, then write the content that was read in to the outfilename. This is useful to get all used parameters, and not only those that were set in the input file. </p>
 
-<p>Definition at line <a class="el" href="parameter__acceptor_8cc_source.html#l00051">51</a> of file <a class="el" href="parameter__acceptor_8cc_source.html">parameter_acceptor.cc</a>.</p>
+<p>Definition at line <a class="el" href="parameter__acceptor_8cc_source.html#l00052">52</a> of file <a class="el" href="parameter__acceptor_8cc_source.html">parameter_acceptor.cc</a>.</p>
 
 </div>
 </div>
@@ -530,7 +508,7 @@ template&lt;class T &gt; </div>
 
 <p>Print information about all stored classes. </p>
 
-<p>Definition at line <a class="el" href="parameter__acceptor_8cc_source.html#l00101">101</a> of file <a class="el" href="parameter__acceptor_8cc_source.html">parameter_acceptor.cc</a>.</p>
+<p>Definition at line <a class="el" href="parameter__acceptor_8cc_source.html#l00102">102</a> of file <a class="el" href="parameter__acceptor_8cc_source.html">parameter_acceptor.cc</a>.</p>
 
 </div>
 </div>
@@ -544,7 +522,7 @@ template&lt;class T &gt; </div>
         <tr>
           <td class="memname">void ParameterAcceptor::parse_all_parameters </td>
           <td>(</td>
-          <td class="paramtype"><a class="elRef" doxygen="/Users/heltai/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classParameterHandler.html">ParameterHandler</a> &amp;&#160;</td>
+          <td class="paramtype">ParameterHandler &amp;&#160;</td>
           <td class="paramname"><em>prm</em> = <code><a class="el" href="class_parameter_acceptor.html#a96081d4cc985b722c9841fcf0c0e54ec">ParameterAcceptor::prm</a></code></td><td>)</td>
           <td></td>
         </tr>
@@ -556,10 +534,10 @@ template&lt;class T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Parse the given <a class="elRef" doxygen="/Users/heltai/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classParameterHandler.html">ParameterHandler</a>. </p>
+<p>Parse the given ParameterHandler. </p>
 <p>This function enters the subsection returned by <a class="el" href="class_parameter_acceptor.html#abe76713f66b7319ba25a7d272126461a" title="Return the section name of this class. ">get_section_name()</a> for each derived class, and parses all parameters that were added using <a class="el" href="class_parameter_acceptor.html#ad823f9aff71602773356405bc4566e55" title="Add a parameter the given parameter list. ">add_parameter()</a>. </p>
 
-<p>Definition at line <a class="el" href="parameter__acceptor_8cc_source.html#l00116">116</a> of file <a class="el" href="parameter__acceptor_8cc_source.html">parameter_acceptor.cc</a>.</p>
+<p>Definition at line <a class="el" href="parameter__acceptor_8cc_source.html#l00117">117</a> of file <a class="el" href="parameter__acceptor_8cc_source.html">parameter_acceptor.cc</a>.</p>
 
 </div>
 </div>
@@ -573,7 +551,7 @@ template&lt;class T &gt; </div>
         <tr>
           <td class="memname">void ParameterAcceptor::parse_parameters </td>
           <td>(</td>
-          <td class="paramtype"><a class="elRef" doxygen="/Users/heltai/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classParameterHandler.html">ParameterHandler</a> &amp;&#160;</td>
+          <td class="paramtype">ParameterHandler &amp;&#160;</td>
           <td class="paramname"><em>prm</em></td><td>)</td>
           <td></td>
         </tr>
@@ -588,9 +566,9 @@ template&lt;class T &gt; </div>
 <p>Parse the parameter file. </p>
 <p>This function enters the subsection returned by <a class="el" href="class_parameter_acceptor.html#abe76713f66b7319ba25a7d272126461a" title="Return the section name of this class. ">get_section_name()</a> for each derived class, and parse all parameters that were added using <a class="el" href="class_parameter_acceptor.html#ad823f9aff71602773356405bc4566e55" title="Add a parameter the given parameter list. ">add_parameter()</a>. </p>
 
-<p>Reimplemented in <a class="el" href="class_parsed_solver.html#af5bc56c9952a93f25813f7355397fe9d">ParsedSolver&lt; VECTOR &gt;</a>, <a class="el" href="class_error_handler.html#a464f1ba3a697df8ffcb35b0edfe1fbd3">ErrorHandler&lt; ntables &gt;</a>, and <a class="el" href="class_parsed_function.html#a2faeb0a75157659cce56275ef3270b0e">ParsedFunction&lt; dim, ncomponents &gt;</a>.</p>
+<p>Reimplemented in <a class="el" href="class_parsed_solver.html#af5bc56c9952a93f25813f7355397fe9d">ParsedSolver&lt; VECTOR &gt;</a>, <a class="el" href="class_error_handler.html#a464f1ba3a697df8ffcb35b0edfe1fbd3">ErrorHandler&lt; ntables &gt;</a>, and <a class="el" href="class_parsed_function.html#aed6ea48267807b1ab73748d67b02a76b">ParsedFunction&lt; dim &gt;</a>.</p>
 
-<p>Definition at line <a class="el" href="parameter__acceptor_8cc_source.html#l00139">139</a> of file <a class="el" href="parameter__acceptor_8cc_source.html">parameter_acceptor.cc</a>.</p>
+<p>Definition at line <a class="el" href="parameter__acceptor_8cc_source.html#l00140">140</a> of file <a class="el" href="parameter__acceptor_8cc_source.html">parameter_acceptor.cc</a>.</p>
 
 </div>
 </div>
@@ -619,9 +597,9 @@ template&lt;class T &gt; </div>
 <p>This function is called at the end of parse_parameters, to allow users to process their parameters right after they have been parsed. The default implementation is empty.</p>
 <p>You can use this function, for example, to create a quadrature rule after you have read how many quadrature points you wanted to use from the parameter file. </p>
 
-<p>Reimplemented in <a class="el" href="class_parsed_finite_element.html#afd4536430fdc389f60d7d7ebb09fafb3">ParsedFiniteElement&lt; dim, spacedim &gt;</a>, <a class="el" href="class_parsed_mapped_functions.html#a328c5ab6be8c8f398a753a4fa6d76422">ParsedMappedFunctions&lt; spacedim, n_components &gt;</a>, <a class="el" href="class_parsed_dirichlet_b_cs.html#a7247dc996f555e8c2b320d70a6cab62d">ParsedDirichletBCs&lt; dim, spacedim, n_components &gt;</a>, <a class="el" href="class_parsed_solver.html#a8a11047efa43f3f171c14b3b127f225a">ParsedSolver&lt; VECTOR &gt;</a>, <a class="el" href="class_parsed_quadrature.html#a7be329a9d9c1991f9004a171e5e63100">ParsedQuadrature&lt; dim &gt;</a>, and <a class="el" href="class_parsed_data_out.html#adbcd00444d6b809ce0e86d0cbb4341da">ParsedDataOut&lt; dim, spacedim &gt;</a>.</p>
+<p>Reimplemented in <a class="el" href="class_parsed_finite_element.html#afd4536430fdc389f60d7d7ebb09fafb3">ParsedFiniteElement&lt; dim, spacedim &gt;</a>, <a class="el" href="class_parsed_mapped_functions.html#a6bd4a4c1571d566a32afa8a42205441a">ParsedMappedFunctions&lt; spacedim &gt;</a>, <a class="el" href="class_parsed_dirichlet_b_cs.html#a76970126e201e854d270c64280737504">ParsedDirichletBCs&lt; dim, spacedim &gt;</a>, <a class="el" href="class_parsed_zero_average_constraints.html#a367f037cd7872d54762b2e98757f8a60">ParsedZeroAverageConstraints&lt; dim, spacedim &gt;</a>, <a class="el" href="class_parsed_solver.html#a8a11047efa43f3f171c14b3b127f225a">ParsedSolver&lt; VECTOR &gt;</a>, <a class="el" href="class_parsed_quadrature.html#a7be329a9d9c1991f9004a171e5e63100">ParsedQuadrature&lt; dim &gt;</a>, and <a class="el" href="class_parsed_data_out.html#adbcd00444d6b809ce0e86d0cbb4341da">ParsedDataOut&lt; dim, spacedim &gt;</a>.</p>
 
-<p>Definition at line <a class="el" href="parameter__acceptor_8cc_source.html#l00242">242</a> of file <a class="el" href="parameter__acceptor_8cc_source.html">parameter_acceptor.cc</a>.</p>
+<p>Definition at line <a class="el" href="parameter__acceptor_8cc_source.html#l00243">243</a> of file <a class="el" href="parameter__acceptor_8cc_source.html">parameter_acceptor.cc</a>.</p>
 
 </div>
 </div>
@@ -646,7 +624,7 @@ template&lt;class T &gt; </div>
 
 <p>The index of this specific class within the class list. </p>
 
-<p>Definition at line <a class="el" href="parameter__acceptor_8h_source.html#l00246">246</a> of file <a class="el" href="parameter__acceptor_8h_source.html">parameter_acceptor.h</a>.</p>
+<p>Definition at line <a class="el" href="parameter__acceptor_8h_source.html#l00253">253</a> of file <a class="el" href="parameter__acceptor_8h_source.html">parameter_acceptor.h</a>.</p>
 
 </div>
 </div>
@@ -658,7 +636,7 @@ template&lt;class T &gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">std::vector&lt; <a class="elRef" doxygen="/Users/heltai/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classSmartPointer.html">SmartPointer</a>&lt; <a class="el" href="class_parameter_acceptor.html">ParameterAcceptor</a> &gt; &gt; ParameterAcceptor::class_list</td>
+          <td class="memname">std::vector&lt; SmartPointer&lt; <a class="el" href="class_parameter_acceptor.html">ParameterAcceptor</a> &gt; &gt; ParameterAcceptor::class_list</td>
         </tr>
       </table>
   </td>
@@ -670,7 +648,7 @@ template&lt;class T &gt; </div>
 
 <p>A list containing all constructed classes of type <a class="el" href="class_parameter_acceptor.html" title="A parameter acceptor base class. ">ParameterAcceptor</a>. </p>
 
-<p>Definition at line <a class="el" href="parameter__acceptor_8h_source.html#l00243">243</a> of file <a class="el" href="parameter__acceptor_8h_source.html">parameter_acceptor.h</a>.</p>
+<p>Definition at line <a class="el" href="parameter__acceptor_8h_source.html#l00250">250</a> of file <a class="el" href="parameter__acceptor_8h_source.html">parameter_acceptor.h</a>.</p>
 
 </div>
 </div>
@@ -694,7 +672,7 @@ template&lt;class T &gt; </div>
 
 <p>A map of parameters that are initialized in this class with the function add_parameter. </p>
 
-<p>Definition at line <a class="el" href="parameter__acceptor_8h_source.html#l00252">252</a> of file <a class="el" href="parameter__acceptor_8h_source.html">parameter_acceptor.h</a>.</p>
+<p>Definition at line <a class="el" href="parameter__acceptor_8h_source.html#l00259">259</a> of file <a class="el" href="parameter__acceptor_8h_source.html">parameter_acceptor.h</a>.</p>
 
 </div>
 </div>
@@ -706,7 +684,7 @@ template&lt;class T &gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="elRef" doxygen="/Users/heltai/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classParameterHandler.html">ParameterHandler</a> ParameterAcceptor::prm</td>
+          <td class="memname">ParameterHandler ParameterAcceptor::prm</td>
         </tr>
       </table>
   </td>
@@ -719,7 +697,7 @@ template&lt;class T &gt; </div>
 <p>Static parameter. </p>
 <p>This is used if the user does not provide one. </p>
 
-<p>Definition at line <a class="el" href="parameter__acceptor_8h_source.html#l00236">236</a> of file <a class="el" href="parameter__acceptor_8h_source.html">parameter_acceptor.h</a>.</p>
+<p>Definition at line <a class="el" href="parameter__acceptor_8h_source.html#l00243">243</a> of file <a class="el" href="parameter__acceptor_8h_source.html">parameter_acceptor.h</a>.</p>
 
 </div>
 </div>
@@ -743,7 +721,7 @@ template&lt;class T &gt; </div>
 
 <p>The subsection name for this class. </p>
 
-<p>Definition at line <a class="el" href="parameter__acceptor_8h_source.html#l00256">256</a> of file <a class="el" href="parameter__acceptor_8h_source.html">parameter_acceptor.h</a>.</p>
+<p>Definition at line <a class="el" href="parameter__acceptor_8h_source.html#l00263">263</a> of file <a class="el" href="parameter__acceptor_8h_source.html">parameter_acceptor.h</a>.</p>
 
 </div>
 </div>
@@ -757,7 +735,7 @@ template&lt;class T &gt; </div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="class_parameter_acceptor.html">ParameterAcceptor</a></li>
-    <li class="footer">Generated on Wed Nov 25 2015 00:15:58 for deal2lkit: A ToolKit library for Deal.II by
+    <li class="footer">Generated on Sat Feb 27 2016 18:34:33 for deal2lkit: A ToolKit library for Deal.II by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.10 </li>
   </ul>

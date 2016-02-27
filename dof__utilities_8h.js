@@ -5,6 +5,7 @@ var dof__utilities_8h =
     [ "get_divergences", "dof__utilities_8h.html#afe5cebb27b5c5cfb84caca25d0d29273", null ],
     [ "get_gradients", "dof__utilities_8h.html#a009d8d40dc146ca3647a4e80c3fce2e0", null ],
     [ "get_gradients", "dof__utilities_8h.html#ad12310bfa110ecd7825030ccfb284a5b", null ],
+    [ "get_laplacians", "dof__utilities_8h.html#a73ca3a112cf3cfb5cb53101c01ff869b", null ],
     [ "get_symmetric_gradients", "dof__utilities_8h.html#ab72b2ae17f2d92362214aa8ff79cf926", null ],
     [ "get_values", "dof__utilities_8h.html#adbcae57e9ebdfe46b245b988787e6491", null ],
     [ "get_values", "dof__utilities_8h.html#a9bb2d04df196874f5b694c4389e30946", null ],

@@ -22,6 +22,7 @@ var class_i_d_a_interface =
     [ "max_order", "class_i_d_a_interface.html#ad27347bf05bde1e1f86f6d1c78d6e328", null ],
     [ "min_step_size", "class_i_d_a_interface.html#a701c60a4a81a8e3983c6abf38a81fb73", null ],
     [ "outputs_period", "class_i_d_a_interface.html#a19faf31c6c5a8efd22adf625ac500118", null ],
+    [ "pout", "class_i_d_a_interface.html#ab7d8a9e9630b283ab1d0e376f5c6ba4e", null ],
     [ "rel_tol", "class_i_d_a_interface.html#a206ab56bda11522ddc99e4cdddeb156f", null ],
     [ "reset_type", "class_i_d_a_interface.html#a12c2c7c00f92a1a8fe6d8ef4687e5913", null ],
     [ "solver", "class_i_d_a_interface.html#a73397b244a5d3738a86a48502dbe457a", null ],

@@ -114,6 +114,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a420c541c45238e2d0f9b76812f13bbd6"><td class="memItemLeft" align="right" valign="top">virtual shared_ptr&lt; VEC &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sundials_interface.html#a420c541c45238e2d0f9b76812f13bbd6">create_new_vector</a> () const  =0</td></tr>
 <tr class="memdesc:a420c541c45238e2d0f9b76812f13bbd6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a compatible vector with the domain of \( F \).  <a href="#a420c541c45238e2d0f9b76812f13bbd6">More...</a><br /></td></tr>
 <tr class="separator:a420c541c45238e2d0f9b76812f13bbd6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7e8f3fc92be64c5f85ed17dd2e8034e1"><td class="memItemLeft" align="right" valign="top">virtual double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sundials_interface.html#a7e8f3fc92be64c5f85ed17dd2e8034e1">vector_norm</a> (const VEC &amp;vector) const </td></tr>
+<tr class="memdesc:a7e8f3fc92be64c5f85ed17dd2e8034e1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Norm used in the solver.  <a href="#a7e8f3fc92be64c5f85ed17dd2e8034e1">More...</a><br /></td></tr>
+<tr class="separator:a7e8f3fc92be64c5f85ed17dd2e8034e1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3f38522458306400423e56e4c25e2356"><td class="memItemLeft" align="right" valign="top">virtual unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sundials_interface.html#a3f38522458306400423e56e4c25e2356">n_dofs</a> () const  =0</td></tr>
 <tr class="memdesc:a3f38522458306400423e56e4c25e2356"><td class="mdescLeft">&#160;</td><td class="mdescRight">This is a pure virtual function used to get the number of degrees of freedom.  <a href="#a3f38522458306400423e56e4c25e2356">More...</a><br /></td></tr>
 <tr class="separator:a3f38522458306400423e56e4c25e2356"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -242,7 +245,7 @@ template&lt;typename VEC &gt; </div>
 <p>IDA package decomposes variables in differentials and algebraics. </p>
 <p>This function returns a vector that has 1 on the differential components and 0 on the algebraic ones. </p>
 
-<p>Definition at line <a class="el" href="sundials__interface_8cc_source.html#l00055">55</a> of file <a class="el" href="sundials__interface_8cc_source.html">sundials_interface.cc</a>.</p>
+<p>Definition at line <a class="el" href="sundials__interface_8cc_source.html#l00061">61</a> of file <a class="el" href="sundials__interface_8cc_source.html">sundials_interface.cc</a>.</p>
 
 </div>
 </div>
@@ -271,7 +274,7 @@ template&lt;typename VEC &gt; </div>
 
 <p>This function is used to set different tolerances accordingly to the solver. </p>
 
-<p>Definition at line <a class="el" href="sundials__interface_8cc_source.html#l00068">68</a> of file <a class="el" href="sundials__interface_8cc_source.html">sundials_interface.cc</a>.</p>
+<p>Definition at line <a class="el" href="sundials__interface_8cc_source.html#l00074">74</a> of file <a class="el" href="sundials__interface_8cc_source.html">sundials_interface.cc</a>.</p>
 
 </div>
 </div>
@@ -601,6 +604,36 @@ template&lt;typename VEC &gt; </div>
 <p>This implementation is smart enough to recognize whether the DAE solver should be reset or not. </p>
 <p>This function returns <code>true</code> when the <code>solution</code> or <code>solution_dot</code> need to be updated (e.g. the number of dofs increases) and <code>false</code> otherwise. In few words, this boolean tells to the DEA solver when it has to change its arguments. </p>
 
+<p>Definition at line <a class="el" href="sundials__interface_8cc_source.html#l00050">50</a> of file <a class="el" href="sundials__interface_8cc_source.html">sundials_interface.cc</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a7e8f3fc92be64c5f85ed17dd2e8034e1"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename VEC &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">double <a class="el" href="class_sundials_interface.html">SundialsInterface</a>&lt; VEC &gt;::vector_norm </td>
+          <td>(</td>
+          <td class="paramtype">const VEC &amp;&#160;</td>
+          <td class="paramname"><em>vector</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Norm used in the solver. </p>
+
 <p>Definition at line <a class="el" href="sundials__interface_8cc_source.html#l00044">44</a> of file <a class="el" href="sundials__interface_8cc_source.html">sundials_interface.cc</a>.</p>
 
 </div>
@@ -615,7 +648,7 @@ template&lt;typename VEC &gt; </div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="class_sundials_interface.html">SundialsInterface</a></li>
-    <li class="footer">Generated on Wed Nov 25 2015 00:15:58 for deal2lkit: A ToolKit library for Deal.II by
+    <li class="footer">Generated on Sat Feb 27 2016 18:34:33 for deal2lkit: A ToolKit library for Deal.II by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.10 </li>
   </ul>

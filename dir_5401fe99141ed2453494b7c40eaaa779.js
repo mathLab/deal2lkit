@@ -1,7 +1,7 @@
 var dir_5401fe99141ed2453494b7c40eaaa779 =
 [
     [ "any_data.h", "any__data_8h.html", [
-      [ "AnyData", "http://www.dealii.org/developer/doxygen/deal.II/classAnyData.html", "classAnyData" ]
+      [ "AnyData", "class_any_data.html", "class_any_data" ]
     ] ],
     [ "assimp_interface.h", "assimp__interface_8h.html", "assimp__interface_8h" ],
     [ "dof_utilities.h", "dof__utilities_8h.html", "dof__utilities_8h" ],
@@ -11,6 +11,9 @@ var dir_5401fe99141ed2453494b7c40eaaa779 =
     ] ],
     [ "ida_interface.h", "ida__interface_8h.html", [
       [ "IDAInterface", "class_i_d_a_interface.html", "class_i_d_a_interface" ]
+    ] ],
+    [ "imex_stepper.h", "imex__stepper_8h.html", [
+      [ "IMEXStepper", "class_i_m_e_x_stepper.html", "class_i_m_e_x_stepper" ]
     ] ],
     [ "parameter_acceptor.h", "parameter__acceptor_8h.html", [
       [ "ParameterAcceptor", "class_parameter_acceptor.html", "class_parameter_acceptor" ]
@@ -40,6 +43,9 @@ var dir_5401fe99141ed2453494b7c40eaaa779 =
       [ "ParsedQuadrature", "class_parsed_quadrature.html", "class_parsed_quadrature" ]
     ] ],
     [ "parsed_solver.h", "parsed__solver_8h.html", "parsed__solver_8h" ],
+    [ "parsed_zero_average_constraints.h", "parsed__zero__average__constraints_8h.html", [
+      [ "ParsedZeroAverageConstraints", "class_parsed_zero_average_constraints.html", "class_parsed_zero_average_constraints" ]
+    ] ],
     [ "sundials_interface.h", "sundials__interface_8h.html", [
       [ "SundialsInterface", "class_sundials_interface.html", "class_sundials_interface" ]
     ] ],

@@ -126,7 +126,7 @@ Modules overview</h1>
 <h2><a class="anchor" id="parameter_acceptor"></a>
 ParameterAcceptor: the base of all deal2lkit classes</h2>
 <p>In general, a <em>parameter file</em> is used to steer the execution of a program at run time, without the need to recompile the executable, with clear advantages in terms of <b>human-time</b>.</p>
-<p>In the <a href="http://www.dealii.org"><code>deal.II</code></a> library, reading and writing parameter files is done through the <a class="elRef" doxygen="/Users/heltai/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classParameterHandler.html">ParameterHandler</a> class, that provides a standard interface to an input file that can be used to feed run-time parameters to a program, such as time step sizes, geometries, right hand sides, etc.</p>
+<p>In the <a href="http://www.dealii.org"><code>deal.II</code></a> library, reading and writing parameter files is done through the ParameterHandler class, that provides a standard interface to an input file that can be used to feed run-time parameters to a program, such as time step sizes, geometries, right hand sides, etc.</p>
 <p><a href="http://www.dealii.org"><code>deal.II</code></a> supports the standard <code>xml</code> or <code>JSON</code> formats, or a custom text format which resemble bash files with support for sections, as in the following example: </p><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;subsection Nonlinear solver</div>
 <div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;  set Nonlinear method = Gradient</div>
 <div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;  # this is a comment</div>
@@ -142,35 +142,35 @@ ParameterAcceptor: the base of all deal2lkit classes</h2>
 <li>parse all entries of the file (possibly raising exceptions if the entries were not previously declared, or if the parsed entries contain illegal values);</li>
 <li>assign the parsed entries to local variables of the program.</li>
 </ul>
-<p>The <a class="elRef" doxygen="/Users/heltai/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classParameterHandler.html">ParameterHandler</a> class of the <a href="http://www.dealii.org"><code>deal.II</code></a> library provides facilities to perform the above four steps, through the following methods:</p>
+<p>The ParameterHandler class of the <a href="http://www.dealii.org"><code>deal.II</code></a> library provides facilities to perform the above four steps, through the following methods:</p>
 <ul>
-<li><a class="elRef" doxygen="/Users/heltai/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classParameterHandler.html#a5d5f6dff73abcca2b6abca8d8a18afa1">ParameterHandler::print_parameters()</a></li>
-<li><a class="elRef" doxygen="/Users/heltai/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classParameterHandler.html#a84937b206a8e4e0fed261a4fbe22809c">ParameterHandler::read_input()</a></li>
-<li><a class="elRef" doxygen="/Users/heltai/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classParameterHandler.html#afb951f101e0969416f7f47d24c03bcfa">ParameterHandler::declare_entry()</a></li>
-<li><a class="elRef" doxygen="/Users/heltai/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classParameterHandler.html#a7589d0ed2a7e70532853e1e378130c88">ParameterHandler::get()</a></li>
+<li>ParameterHandler::print_parameters()</li>
+<li>ParameterHandler::read_input()</li>
+<li>ParameterHandler::declare_entry()</li>
+<li>ParameterHandler::get()</li>
 </ul>
 <p>In large programs, where the number of parameters easily exceeds hundreds of entries, managing the above four actions for different classes is far from trivial. The <a href="http://www.dealii.org"><code>deal.II</code></a> documentation advocates the creation of a class that would store all parameters of the problem, with two methods:</p>
 <ul>
 <li><code>declare_parameters(prm)</code></li>
 <li><code>parse_parameters(prm)</code> or <code>get_parameters(prm)</code></li>
 </ul>
-<p>that should be called by the program before writing or reading a parameter file, and right after having read the parameter file into an object <code>prm</code> of type <a class="elRef" doxygen="/Users/heltai/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classParameterHandler.html">ParameterHandler</a></p>
+<p>that should be called by the program before writing or reading a parameter file, and right after having read the parameter file into an object <code>prm</code> of type ParameterHandler</p>
 <p>Such an approach has the advantage that bookkeeping is simple, if compared to a scattered approach where each class keeps track of its own parameters, but it suffers one big draw back: it is not reusable for problems of different type and it has still the defect that one has to separate declaration and recovery of each parameter, as in the following short example:</p>
-<div class="fragment"><div class="line"> <span class="keywordtype">void</span> NonLinEq::declare_parameters (<a class="codeRef" doxygen="/Users/heltai/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classParameterHandler.html">ParameterHandler</a> &amp;prm) {</div>
-<div class="line">  prm.<a class="codeRef" doxygen="/Users/heltai/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classParameterHandler.html#af29c20cde6d44186806d559beb468696">enter_subsection</a> (<span class="stringliteral">&quot;Nonlinear solver&quot;</span>);</div>
+<div class="fragment"><div class="line"> <span class="keywordtype">void</span> NonLinEq::declare_parameters (ParameterHandler &amp;prm) {</div>
+<div class="line">  prm.enter_subsection (<span class="stringliteral">&quot;Nonlinear solver&quot;</span>);</div>
 <div class="line">  {</div>
-<div class="line">    prm.<a class="codeRef" doxygen="/Users/heltai/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classParameterHandler.html#afb951f101e0969416f7f47d24c03bcfa">declare_entry</a> (<span class="stringliteral">&quot;Nonlinear method&quot;</span>,</div>
+<div class="line">    prm.declare_entry (<span class="stringliteral">&quot;Nonlinear method&quot;</span>,</div>
 <div class="line">                       <span class="stringliteral">&quot;Newton-Raphson&quot;</span>,</div>
 <div class="line">                       ParameterHandler::RegularExpressions::Anything());</div>
 <div class="line">    eq.declare_parameters (prm);</div>
 <div class="line">  }</div>
-<div class="line">  prm.<a class="codeRef" doxygen="/Users/heltai/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classParameterHandler.html#a599462cacd492e2f712bf7369507dcff">leave_subsection</a> ();</div>
+<div class="line">  prm.leave_subsection ();</div>
 <div class="line">}</div>
-</div><!-- fragment --><p>The complementary part of this code is contained in the <code>parse_parameters</code> method, which actually fills the values of the local variables. </p><div class="fragment"><div class="line"><span class="keywordtype">void</span> NonLinEq::parse_parameters (<a class="codeRef" doxygen="/Users/heltai/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classParameterHandler.html">ParameterHandler</a> &amp;prm) {</div>
-<div class="line">  prm.<a class="codeRef" doxygen="/Users/heltai/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classParameterHandler.html#af29c20cde6d44186806d559beb468696">enter_subsection</a> (<span class="stringliteral">&quot;Nonlinear solver&quot;</span>);</div>
-<div class="line">  std::string method = prm.<a class="codeRef" doxygen="/Users/heltai/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classParameterHandler.html#a7589d0ed2a7e70532853e1e378130c88">get</a> (<span class="stringliteral">&quot;Nonlinear method&quot;</span>);</div>
+</div><!-- fragment --><p>The complementary part of this code is contained in the <code>parse_parameters</code> method, which actually fills the values of the local variables. </p><div class="fragment"><div class="line"><span class="keywordtype">void</span> NonLinEq::parse_parameters (ParameterHandler &amp;prm) {</div>
+<div class="line">  prm.enter_subsection (<span class="stringliteral">&quot;Nonlinear solver&quot;</span>);</div>
+<div class="line">  std::string method = prm.get (<span class="stringliteral">&quot;Nonlinear method&quot;</span>);</div>
 <div class="line">  eq.parse_parameters (prm);</div>
-<div class="line">  prm.<a class="codeRef" doxygen="/Users/heltai/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classParameterHandler.html#a599462cacd492e2f712bf7369507dcff">leave_subsection</a> ();</div>
+<div class="line">  prm.leave_subsection ();</div>
 <div class="line">}</div>
 </div><!-- fragment --><p>According to the proposed design in the <a href="http://www.dealii.org"><code>deal.II</code></a> documentation, such separation is necessary (with a consequent proliferation of several places where one has to keep track of what variables have been declared and what variables have been assigned locally) since the declaration, reading and writing of a parameter file, and the assignment to local variables have to be done <em>exactly</em> in this sequence.</p>
 <p><code>deal2lkit</code> implements a <b>global subscription mechanism</b> and a <b>local subscription mechanism</b> through the base class <a class="el" href="class_parameter_acceptor.html" title="A parameter acceptor base class. ">ParameterAcceptor</a>, which maintains compatibility with all classes written following the <a href="http://www.dealii.org"><code>deal.II</code></a> suggested construction, and provides an additional method which removes the necessity to split the declaration and parsing of parameters.</p>
@@ -202,7 +202,7 @@ Postprocessing</h2>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Wed Nov 25 2015 00:15:58 for deal2lkit: A ToolKit library for Deal.II by
+    <li class="footer">Generated on Sat Feb 27 2016 18:34:33 for deal2lkit: A ToolKit library for Deal.II by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.10 </li>
   </ul>

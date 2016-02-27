@@ -147,6 +147,10 @@ Functions</h2></td></tr>
 <tr class="memitem:af26a2180c53520a7a51aafed511953f1"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="utilities_8cc.html#af26a2180c53520a7a51aafed511953f1">rename_file</a> (const std::string &amp;file, const std::string &amp;new_file)</td></tr>
 <tr class="memdesc:af26a2180c53520a7a51aafed511953f1"><td class="mdescLeft">&#160;</td><td class="mdescRight">A function to rename a <code>file</code> with a new name <code>new_file</code>.  <a href="#af26a2180c53520a7a51aafed511953f1">More...</a><br /></td></tr>
 <tr class="separator:af26a2180c53520a7a51aafed511953f1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8beb4fd3ca3444a84d2bab67512ba977"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="utilities_8cc.html#a8beb4fd3ca3444a84d2bab67512ba977">copy</a> (BlockVector&lt; double &gt; &amp;dst, const N_Vector &amp;src)</td></tr>
+<tr class="separator:a8beb4fd3ca3444a84d2bab67512ba977"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9f9a303531d23676970f08dec8fa62c8"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="utilities_8cc.html#a9f9a303531d23676970f08dec8fa62c8">copy</a> (N_Vector &amp;dst, const BlockVector&lt; double &gt; &amp;src)</td></tr>
+<tr class="separator:a9f9a303531d23676970f08dec8fa62c8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Function Documentation</h2>
 <a class="anchor" id="ae9d18b5ae9168b6597aa7955b32d45af"></a>
@@ -176,6 +180,62 @@ Functions</h2></td></tr>
 <p>This function copy the text contained in <code>in_file</code> to the file <code>out_file</code> . </p>
 
 <p>Definition at line <a class="el" href="utilities_8cc_source.html#l00076">76</a> of file <a class="el" href="utilities_8cc_source.html">utilities.cc</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a8beb4fd3ca3444a84d2bab67512ba977"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void copy </td>
+          <td>(</td>
+          <td class="paramtype">BlockVector&lt; double &gt; &amp;&#160;</td>
+          <td class="paramname"><em>dst</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const N_Vector &amp;&#160;</td>
+          <td class="paramname"><em>src</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="utilities_8cc_source.html#l00213">213</a> of file <a class="el" href="utilities_8cc_source.html">utilities.cc</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a9f9a303531d23676970f08dec8fa62c8"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void copy </td>
+          <td>(</td>
+          <td class="paramtype">N_Vector &amp;&#160;</td>
+          <td class="paramname"><em>dst</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const BlockVector&lt; double &gt; &amp;&#160;</td>
+          <td class="paramname"><em>src</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="utilities_8cc_source.html#l00230">230</a> of file <a class="el" href="utilities_8cc_source.html">utilities.cc</a>.</p>
 
 </div>
 </div>
@@ -442,7 +502,7 @@ Functions</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_b2f33c71d4aa5e7af42a1ca61ff5af1b.html">source</a></li><li class="navelem"><a class="el" href="utilities_8cc.html">utilities.cc</a></li>
-    <li class="footer">Generated on Wed Nov 25 2015 00:15:57 for deal2lkit: A ToolKit library for Deal.II by
+    <li class="footer">Generated on Sat Feb 27 2016 18:34:33 for deal2lkit: A ToolKit library for Deal.II by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.10 </li>
   </ul>

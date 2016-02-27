@@ -9,5 +9,6 @@ var class_sundials_interface =
     [ "residual", "class_sundials_interface.html#a0226a2d16dce1af1d6590f45a0dfa08f", null ],
     [ "setup_jacobian", "class_sundials_interface.html#aed6926f5f779928a4491189331a017ca", null ],
     [ "solve_jacobian_system", "class_sundials_interface.html#a87f46ceee2df7877047903088b5fde9b", null ],
-    [ "solver_should_restart", "class_sundials_interface.html#a310375f9cb92dc17a42512633db2b883", null ]
+    [ "solver_should_restart", "class_sundials_interface.html#a310375f9cb92dc17a42512633db2b883", null ],
+    [ "vector_norm", "class_sundials_interface.html#a7e8f3fc92be64c5f85ed17dd2e8034e1", null ]
 ];

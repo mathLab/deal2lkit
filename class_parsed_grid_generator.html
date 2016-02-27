@@ -96,8 +96,10 @@ $(document).ready(function(){initNavTree('class_parsed_grid_generator.html','');
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pub-static-methods">Static Public Member Functions</a> &#124;
 <a href="#pri-methods">Private Member Functions</a> &#124;
 <a href="#pri-attribs">Private Attributes</a> &#124;
+<a href="#friends">Friends</a> &#124;
 <a href="class_parsed_grid_generator-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">ParsedGridGenerator&lt; dim, spacedim &gt; Class Template Reference</div>  </div>
@@ -115,26 +117,25 @@ Inheritance diagram for ParsedGridGenerator&lt; dim, spacedim &gt;:</div>
   <img src="class_parsed_grid_generator.png" usemap="#ParsedGridGenerator&lt; dim, spacedim &gt;_map" alt=""/>
   <map id="ParsedGridGenerator&lt; dim, spacedim &gt;_map" name="ParsedGridGenerator&lt; dim, spacedim &gt;_map">
 <area href="class_parameter_acceptor.html" title="A parameter acceptor base class. " alt="ParameterAcceptor" shape="rect" coords="0,56,238,80"/>
-<area doxygen="/Users/heltai/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classSubscriptor.html" alt="Subscriptor" shape="rect" coords="0,0,238,24"/>
 </map>
  </div></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a4be3950e0fc91e52b473d96f59778f23"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_parsed_grid_generator.html#a4be3950e0fc91e52b473d96f59778f23">ParsedGridGenerator</a> (const std::string <a class="el" href="class_parameter_acceptor.html#a52134c59ec98830230c23e080c841705">section_name</a>=&quot;&quot;, const std::string grid_type=&quot;rectangle&quot;, const std::string input_grid_file=&quot;&quot;, const std::string opt_point_1=&quot;&quot;, const std::string opt_point_2=&quot;&quot;, const std::string opt_colorize=&quot;false&quot;, const std::string opt_double_1=&quot;1.0&quot;, const std::string opt_double_2=&quot;0.5&quot;, const std::string opt_double_3=&quot;1.5&quot;, const std::string opt_int_1=&quot;1&quot;, const std::string opt_int_2=&quot;2&quot;, const std::string opt_vec_of_int=&quot;&quot;, const std::string <a class="el" href="class_parsed_grid_generator.html#a25bef6722372595a12eafa3d2f0de86d">mesh_smoothing</a>=&quot;none&quot;, const std::string output_grid_file=&quot;&quot;)</td></tr>
-<tr class="memdesc:a4be3950e0fc91e52b473d96f59778f23"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor.  <a href="#a4be3950e0fc91e52b473d96f59778f23">More...</a><br /></td></tr>
-<tr class="separator:a4be3950e0fc91e52b473d96f59778f23"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2b3d8d1567cfb1735053d6129fe7a640"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_parsed_grid_generator.html#a2b3d8d1567cfb1735053d6129fe7a640">declare_parameters</a> (<a class="elRef" doxygen="/Users/heltai/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classParameterHandler.html">ParameterHandler</a> &amp;<a class="el" href="class_parameter_acceptor.html#a96081d4cc985b722c9841fcf0c0e54ec">prm</a>)</td></tr>
+<tr class="memitem:a5e9a3a52c6458e6556930bef8e3bc20a"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_parsed_grid_generator.html#a5e9a3a52c6458e6556930bef8e3bc20a">ParsedGridGenerator</a> (const std::string <a class="el" href="class_parameter_acceptor.html#a52134c59ec98830230c23e080c841705">section_name</a>=&quot;&quot;, const std::string grid_type=&quot;rectangle&quot;, const std::string input_grid_file=&quot;&quot;, const std::string opt_point_1=&quot;&quot;, const std::string opt_point_2=&quot;&quot;, const std::string opt_colorize=&quot;false&quot;, const std::string opt_double_1=&quot;1.0&quot;, const std::string opt_double_2=&quot;0.5&quot;, const std::string opt_double_3=&quot;1.5&quot;, const std::string opt_int_1=&quot;1&quot;, const std::string opt_int_2=&quot;2&quot;, const std::string opt_vec_of_int=&quot;&quot;, const std::string <a class="el" href="class_parsed_grid_generator.html#a25bef6722372595a12eafa3d2f0de86d">mesh_smoothing</a>=&quot;none&quot;, const std::string output_grid_file=&quot;&quot;, const std::string opt_manifold_descriptors=&quot;&quot;)</td></tr>
+<tr class="memdesc:a5e9a3a52c6458e6556930bef8e3bc20a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor.  <a href="#a5e9a3a52c6458e6556930bef8e3bc20a">More...</a><br /></td></tr>
+<tr class="separator:a5e9a3a52c6458e6556930bef8e3bc20a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2b3d8d1567cfb1735053d6129fe7a640"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_parsed_grid_generator.html#a2b3d8d1567cfb1735053d6129fe7a640">declare_parameters</a> (ParameterHandler &amp;<a class="el" href="class_parameter_acceptor.html#a96081d4cc985b722c9841fcf0c0e54ec">prm</a>)</td></tr>
 <tr class="memdesc:a2b3d8d1567cfb1735053d6129fe7a640"><td class="mdescLeft">&#160;</td><td class="mdescRight">Declare all parameters of this class.  <a href="#a2b3d8d1567cfb1735053d6129fe7a640">More...</a><br /></td></tr>
 <tr class="separator:a2b3d8d1567cfb1735053d6129fe7a640"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a55dea3a69b881ffee354890b771587d9"><td class="memItemLeft" align="right" valign="top"><a class="elRef" doxygen="/Users/heltai/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classTriangulation.html">Triangulation</a>&lt; dim, spacedim &gt; *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_parsed_grid_generator.html#a55dea3a69b881ffee354890b771587d9">serial</a> ()</td></tr>
-<tr class="memdesc:a55dea3a69b881ffee354890b771587d9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return a pointer to a newly created serial <a class="elRef" doxygen="/Users/heltai/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classTriangulation.html">Triangulation</a>.  <a href="#a55dea3a69b881ffee354890b771587d9">More...</a><br /></td></tr>
+<tr class="memitem:a55dea3a69b881ffee354890b771587d9"><td class="memItemLeft" align="right" valign="top">Triangulation&lt; dim, spacedim &gt; *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_parsed_grid_generator.html#a55dea3a69b881ffee354890b771587d9">serial</a> ()</td></tr>
+<tr class="memdesc:a55dea3a69b881ffee354890b771587d9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return a pointer to a newly created serial Triangulation.  <a href="#a55dea3a69b881ffee354890b771587d9">More...</a><br /></td></tr>
 <tr class="separator:a55dea3a69b881ffee354890b771587d9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a259f1ed4c34a384666d8b003260e3b44"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_parsed_grid_generator.html#a259f1ed4c34a384666d8b003260e3b44">create</a> (<a class="elRef" doxygen="/Users/heltai/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classTriangulation.html">Triangulation</a>&lt; dim, spacedim &gt; &amp;tria)</td></tr>
+<tr class="memitem:a259f1ed4c34a384666d8b003260e3b44"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_parsed_grid_generator.html#a259f1ed4c34a384666d8b003260e3b44">create</a> (Triangulation&lt; dim, spacedim &gt; &amp;tria)</td></tr>
 <tr class="memdesc:a259f1ed4c34a384666d8b003260e3b44"><td class="mdescLeft">&#160;</td><td class="mdescRight">Generate the grid.  <a href="#a259f1ed4c34a384666d8b003260e3b44">More...</a><br /></td></tr>
 <tr class="separator:a259f1ed4c34a384666d8b003260e3b44"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a51b277d75f0b29513e58607af35816dc"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_parsed_grid_generator.html#a51b277d75f0b29513e58607af35816dc">write</a> (const <a class="elRef" doxygen="/Users/heltai/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classTriangulation.html">Triangulation</a>&lt; dim, spacedim &gt; &amp;tria, const std::string &amp;filename=&quot;&quot;) const </td></tr>
-<tr class="memdesc:a51b277d75f0b29513e58607af35816dc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Write the given <a class="elRef" doxygen="/Users/heltai/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classTriangulation.html">Triangulation</a> to the output file specified in <code>Output file name</code>, or in the optional file name.  <a href="#a51b277d75f0b29513e58607af35816dc">More...</a><br /></td></tr>
+<tr class="memitem:a51b277d75f0b29513e58607af35816dc"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_parsed_grid_generator.html#a51b277d75f0b29513e58607af35816dc">write</a> (const Triangulation&lt; dim, spacedim &gt; &amp;tria, const std::string &amp;filename=&quot;&quot;) const </td></tr>
+<tr class="memdesc:a51b277d75f0b29513e58607af35816dc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Write the given Triangulation to the output file specified in <code>Output file name</code>, or in the optional file name.  <a href="#a51b277d75f0b29513e58607af35816dc">More...</a><br /></td></tr>
 <tr class="separator:a51b277d75f0b29513e58607af35816dc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_class_parameter_acceptor"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_class_parameter_acceptor')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="class_parameter_acceptor.html">ParameterAcceptor</a></td></tr>
 <tr class="memitem:a1a5052568d2c3e748e068b6c3d822893 inherit pub_methods_class_parameter_acceptor"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_parameter_acceptor.html#a1a5052568d2c3e748e068b6c3d822893">ParameterAcceptor</a> (const std::string <a class="el" href="class_parameter_acceptor.html#a52134c59ec98830230c23e080c841705">section_name</a>=&quot;&quot;)</td></tr>
@@ -143,7 +144,7 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:afadbc55490b174eb52d5b98fda2f6032 inherit pub_methods_class_parameter_acceptor"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_parameter_acceptor.html#afadbc55490b174eb52d5b98fda2f6032">~ParameterAcceptor</a> ()</td></tr>
 <tr class="memdesc:afadbc55490b174eb52d5b98fda2f6032 inherit pub_methods_class_parameter_acceptor"><td class="mdescLeft">&#160;</td><td class="mdescRight">The destructor sets to zero the pointer relative to this index, so that it is safe to destroy the mother class.  <a href="#afadbc55490b174eb52d5b98fda2f6032">More...</a><br /></td></tr>
 <tr class="separator:afadbc55490b174eb52d5b98fda2f6032 inherit pub_methods_class_parameter_acceptor"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab3ee6cabf1ff10be362ac65495183c52 inherit pub_methods_class_parameter_acceptor"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_parameter_acceptor.html#ab3ee6cabf1ff10be362ac65495183c52">parse_parameters</a> (<a class="elRef" doxygen="/Users/heltai/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classParameterHandler.html">ParameterHandler</a> &amp;<a class="el" href="class_parameter_acceptor.html#a96081d4cc985b722c9841fcf0c0e54ec">prm</a>)</td></tr>
+<tr class="memitem:ab3ee6cabf1ff10be362ac65495183c52 inherit pub_methods_class_parameter_acceptor"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_parameter_acceptor.html#ab3ee6cabf1ff10be362ac65495183c52">parse_parameters</a> (ParameterHandler &amp;<a class="el" href="class_parameter_acceptor.html#a96081d4cc985b722c9841fcf0c0e54ec">prm</a>)</td></tr>
 <tr class="memdesc:ab3ee6cabf1ff10be362ac65495183c52 inherit pub_methods_class_parameter_acceptor"><td class="mdescLeft">&#160;</td><td class="mdescRight">Parse the parameter file.  <a href="#ab3ee6cabf1ff10be362ac65495183c52">More...</a><br /></td></tr>
 <tr class="separator:ab3ee6cabf1ff10be362ac65495183c52 inherit pub_methods_class_parameter_acceptor"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5d6b8666b6b9b9898b0f584b1a602ea5 inherit pub_methods_class_parameter_acceptor"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_parameter_acceptor.html#a5d6b8666b6b9b9898b0f584b1a602ea5">parse_parameters_call_back</a> ()</td></tr>
@@ -153,47 +154,57 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:abe76713f66b7319ba25a7d272126461a inherit pub_methods_class_parameter_acceptor"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return the section name of this class.  <a href="#abe76713f66b7319ba25a7d272126461a">More...</a><br /></td></tr>
 <tr class="separator:abe76713f66b7319ba25a7d272126461a inherit pub_methods_class_parameter_acceptor"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad823f9aff71602773356405bc4566e55 inherit pub_methods_class_parameter_acceptor"><td class="memTemplParams" colspan="2">template&lt;class T &gt; </td></tr>
-<tr class="memitem:ad823f9aff71602773356405bc4566e55 inherit pub_methods_class_parameter_acceptor"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="class_parameter_acceptor.html#ad823f9aff71602773356405bc4566e55">add_parameter</a> (<a class="elRef" doxygen="/Users/heltai/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classParameterHandler.html">ParameterHandler</a> &amp;<a class="el" href="class_parameter_acceptor.html#a96081d4cc985b722c9841fcf0c0e54ec">prm</a>, T *parameter, const std::string &amp;entry, const std::string &amp;default_value, const <a class="elRef" doxygen="/Users/heltai/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classPatterns_1_1PatternBase.html">Patterns::PatternBase</a> &amp;pattern=<a class="elRef" doxygen="/Users/heltai/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classPatterns_1_1Anything.html">Patterns::Anything</a>(), const std::string &amp;documentation=std::string())</td></tr>
+<tr class="memitem:ad823f9aff71602773356405bc4566e55 inherit pub_methods_class_parameter_acceptor"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="class_parameter_acceptor.html#ad823f9aff71602773356405bc4566e55">add_parameter</a> (ParameterHandler &amp;<a class="el" href="class_parameter_acceptor.html#a96081d4cc985b722c9841fcf0c0e54ec">prm</a>, T *parameter, const std::string &amp;entry, const std::string &amp;default_value, const Patterns::PatternBase &amp;pattern=Patterns::Anything(), const std::string &amp;documentation=std::string())</td></tr>
 <tr class="memdesc:ad823f9aff71602773356405bc4566e55 inherit pub_methods_class_parameter_acceptor"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add a parameter the given parameter list.  <a href="#ad823f9aff71602773356405bc4566e55">More...</a><br /></td></tr>
 <tr class="separator:ad823f9aff71602773356405bc4566e55 inherit pub_methods_class_parameter_acceptor"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="inherit_header pub_methods_classSubscriptor"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classSubscriptor')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="http://www.dealii.org/developer/doxygen/deal.II/classSubscriptor.html">Subscriptor</a></td></tr>
-<tr class="memitem:ae5541017c0966b0af345db75895106f2 inherit pub_methods_classSubscriptor"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="elRef" doxygen="/Users/heltai/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classSubscriptor.html#ae5541017c0966b0af345db75895106f2">Subscriptor</a> ()</td></tr>
-<tr class="separator:ae5541017c0966b0af345db75895106f2 inherit pub_methods_classSubscriptor"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a367fce3122075f05f168d14f114b4c65 inherit pub_methods_classSubscriptor"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="elRef" doxygen="/Users/heltai/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classSubscriptor.html#a367fce3122075f05f168d14f114b4c65">Subscriptor</a> (const <a class="elRef" doxygen="/Users/heltai/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classSubscriptor.html">Subscriptor</a> &amp;)</td></tr>
-<tr class="separator:a367fce3122075f05f168d14f114b4c65 inherit pub_methods_classSubscriptor"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af70e597a147c532012a3115cf12ef53c inherit pub_methods_classSubscriptor"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="elRef" doxygen="/Users/heltai/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classSubscriptor.html#af70e597a147c532012a3115cf12ef53c">~Subscriptor</a> ()</td></tr>
-<tr class="separator:af70e597a147c532012a3115cf12ef53c inherit pub_methods_classSubscriptor"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5099175b75089cdc5cf4e7e64829f739 inherit pub_methods_classSubscriptor"><td class="memItemLeft" align="right" valign="top"><a class="elRef" doxygen="/Users/heltai/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classSubscriptor.html">Subscriptor</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="elRef" doxygen="/Users/heltai/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classSubscriptor.html#a5099175b75089cdc5cf4e7e64829f739">operator=</a> (const <a class="elRef" doxygen="/Users/heltai/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classSubscriptor.html">Subscriptor</a> &amp;)</td></tr>
-<tr class="separator:a5099175b75089cdc5cf4e7e64829f739 inherit pub_methods_classSubscriptor"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3422499827ecd52f1d12d65eb6cc3125 inherit pub_methods_classSubscriptor"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="elRef" doxygen="/Users/heltai/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classSubscriptor.html#a3422499827ecd52f1d12d65eb6cc3125">subscribe</a> (const char *identifier=0) const </td></tr>
-<tr class="separator:a3422499827ecd52f1d12d65eb6cc3125 inherit pub_methods_classSubscriptor"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2b4839b1cffc18781144ede1744b35ea inherit pub_methods_classSubscriptor"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="elRef" doxygen="/Users/heltai/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classSubscriptor.html#a2b4839b1cffc18781144ede1744b35ea">unsubscribe</a> (const char *identifier=0) const </td></tr>
-<tr class="separator:a2b4839b1cffc18781144ede1744b35ea inherit pub_methods_classSubscriptor"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7b45274c8e1936bff024df01d618e86f inherit pub_methods_classSubscriptor"><td class="memItemLeft" align="right" valign="top">unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="elRef" doxygen="/Users/heltai/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classSubscriptor.html#a7b45274c8e1936bff024df01d618e86f">n_subscriptions</a> () const </td></tr>
-<tr class="separator:a7b45274c8e1936bff024df01d618e86f inherit pub_methods_classSubscriptor"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:adbbc5f845063b1f23223b7ac96e89e13 inherit pub_methods_classSubscriptor"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="elRef" doxygen="/Users/heltai/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classSubscriptor.html#adbbc5f845063b1f23223b7ac96e89e13">list_subscribers</a> () const </td></tr>
-<tr class="separator:adbbc5f845063b1f23223b7ac96e89e13 inherit pub_methods_classSubscriptor"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gaa77207b86899b9eb2d9e06741426af06 inherit pub_methods_classSubscriptor"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="elRef" doxygen="/Users/heltai/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/group__Exceptions.html#gaa77207b86899b9eb2d9e06741426af06">DeclException3</a> (ExcInUse, int, char *, std::string &amp;,&lt;&lt; &quot;Object of class &quot;&lt;&lt; arg2&lt;&lt; &quot; is still used by &quot;&lt;&lt; arg1&lt;&lt; &quot; other objects.&quot;&lt;&lt; &quot;\n\n&quot;&lt;&lt; &quot;(Additional information: &quot;&lt;&lt; arg3&lt;&lt; &quot;)\n\n&quot;&lt;&lt; &quot;See the entry in the Frequently Asked Questions of &quot;&lt;&lt; &quot;deal.II (linked to from http://www.dealii.org/) for &quot;&lt;&lt; &quot;a lot more information on what this error means and &quot;&lt;&lt; &quot;how to fix programs in which it happens.&quot;)</td></tr>
-<tr class="separator:gaa77207b86899b9eb2d9e06741426af06 inherit pub_methods_classSubscriptor"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga9993dfc378830e66a92065887980e83b inherit pub_methods_classSubscriptor"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="elRef" doxygen="/Users/heltai/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/group__Exceptions.html#ga9993dfc378830e66a92065887980e83b">DeclException2</a> (ExcNoSubscriber, char *, char *,&lt;&lt; &quot;No subscriber with identifier &lt;&quot;&lt;&lt; arg2&lt;&lt; &quot;&gt; subscribes to this object of class &quot;&lt;&lt; arg1&lt;&lt; &quot;. Consequently, it cannot be unsubscribed.&quot;)</td></tr>
-<tr class="separator:ga9993dfc378830e66a92065887980e83b inherit pub_methods_classSubscriptor"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a68efd17a8330ab676d9cd711029b0f38 inherit pub_methods_classSubscriptor"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="elRef" doxygen="/Users/heltai/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classSubscriptor.html#a68efd17a8330ab676d9cd711029b0f38">serialize</a> (Archive &amp;ar, const unsigned int version)</td></tr>
-<tr class="separator:a68efd17a8330ab676d9cd711029b0f38 inherit pub_methods_classSubscriptor"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
+Static Public Member Functions</h2></td></tr>
+<tr class="memitem:a4fc22ae0609704563d57db09e7420ebe"><td class="memItemLeft" align="right" valign="top">static std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_parsed_grid_generator.html#a4fc22ae0609704563d57db09e7420ebe">get_grid_names</a> ()</td></tr>
+<tr class="memdesc:a4fc22ae0609704563d57db09e7420ebe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return a list of implemented grids.  <a href="#a4fc22ae0609704563d57db09e7420ebe">More...</a><br /></td></tr>
+<tr class="separator:a4fc22ae0609704563d57db09e7420ebe"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pub_static_methods_class_parameter_acceptor"><td colspan="2" onclick="javascript:toggleInherit('pub_static_methods_class_parameter_acceptor')"><img src="closed.png" alt="-"/>&#160;Static Public Member Functions inherited from <a class="el" href="class_parameter_acceptor.html">ParameterAcceptor</a></td></tr>
+<tr class="memitem:af04c215672e63f03a942ae4c55b57c27 inherit pub_static_methods_class_parameter_acceptor"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_parameter_acceptor.html#af04c215672e63f03a942ae4c55b57c27">initialize</a> (const std::string filename=&quot;&quot;, const std::string outfilename=&quot;&quot;)</td></tr>
+<tr class="memdesc:af04c215672e63f03a942ae4c55b57c27 inherit pub_static_methods_class_parameter_acceptor"><td class="mdescLeft">&#160;</td><td class="mdescRight">Call <a class="el" href="class_parameter_acceptor.html#a3775ed960cf63c9ae88613925d226b11" title="Initialize the ParameterHandler with all derived classes parameters.This function enters the subsecti...">declare_all_parameters()</a>, read filename (if it is present as input parameter) and <a class="el" href="class_parameter_acceptor.html#ac4b7044a9e1d53c401a50565d8996022" title="Parse the given ParameterHandler. ">parse_all_parameters()</a> on the static member prm.  <a href="#af04c215672e63f03a942ae4c55b57c27">More...</a><br /></td></tr>
+<tr class="separator:af04c215672e63f03a942ae4c55b57c27 inherit pub_static_methods_class_parameter_acceptor"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2e4f8347ae5f913939ebf81a23277880 inherit pub_static_methods_class_parameter_acceptor"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_parameter_acceptor.html#a2e4f8347ae5f913939ebf81a23277880">clear</a> ()</td></tr>
+<tr class="separator:a2e4f8347ae5f913939ebf81a23277880 inherit pub_static_methods_class_parameter_acceptor"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac4b7044a9e1d53c401a50565d8996022 inherit pub_static_methods_class_parameter_acceptor"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_parameter_acceptor.html#ac4b7044a9e1d53c401a50565d8996022">parse_all_parameters</a> (ParameterHandler &amp;<a class="el" href="class_parameter_acceptor.html#a96081d4cc985b722c9841fcf0c0e54ec">prm</a>=<a class="el" href="class_parameter_acceptor.html#a96081d4cc985b722c9841fcf0c0e54ec">ParameterAcceptor::prm</a>)</td></tr>
+<tr class="memdesc:ac4b7044a9e1d53c401a50565d8996022 inherit pub_static_methods_class_parameter_acceptor"><td class="mdescLeft">&#160;</td><td class="mdescRight">Parse the given ParameterHandler.  <a href="#ac4b7044a9e1d53c401a50565d8996022">More...</a><br /></td></tr>
+<tr class="separator:ac4b7044a9e1d53c401a50565d8996022 inherit pub_static_methods_class_parameter_acceptor"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0aebd314633cdb2e48b159f2b9349c73 inherit pub_static_methods_class_parameter_acceptor"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_parameter_acceptor.html#a0aebd314633cdb2e48b159f2b9349c73">log_info</a> ()</td></tr>
+<tr class="memdesc:a0aebd314633cdb2e48b159f2b9349c73 inherit pub_static_methods_class_parameter_acceptor"><td class="mdescLeft">&#160;</td><td class="mdescRight">Print information about all stored classes.  <a href="#a0aebd314633cdb2e48b159f2b9349c73">More...</a><br /></td></tr>
+<tr class="separator:a0aebd314633cdb2e48b159f2b9349c73 inherit pub_static_methods_class_parameter_acceptor"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3775ed960cf63c9ae88613925d226b11 inherit pub_static_methods_class_parameter_acceptor"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_parameter_acceptor.html#a3775ed960cf63c9ae88613925d226b11">declare_all_parameters</a> (ParameterHandler &amp;<a class="el" href="class_parameter_acceptor.html#a96081d4cc985b722c9841fcf0c0e54ec">prm</a>=<a class="el" href="class_parameter_acceptor.html#a96081d4cc985b722c9841fcf0c0e54ec">ParameterAcceptor::prm</a>)</td></tr>
+<tr class="memdesc:a3775ed960cf63c9ae88613925d226b11 inherit pub_static_methods_class_parameter_acceptor"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize the ParameterHandler with all derived classes parameters.This function enters the subsection returned by <a class="el" href="class_parameter_acceptor.html#abe76713f66b7319ba25a7d272126461a" title="Return the section name of this class. ">get_section_name()</a> for each derived class, and declares all parameters that were added using <a class="el" href="class_parameter_acceptor.html#ad823f9aff71602773356405bc4566e55" title="Add a parameter the given parameter list. ">add_parameter()</a>.  <a href="#a3775ed960cf63c9ae88613925d226b11">More...</a><br /></td></tr>
+<tr class="separator:a3775ed960cf63c9ae88613925d226b11 inherit pub_static_methods_class_parameter_acceptor"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-methods"></a>
 Private Member Functions</h2></td></tr>
-<tr class="memitem:aaaea6a60b4df3d16e3d8a7b6bcfe8635"><td class="memItemLeft" align="right" valign="top"><a class="elRef" doxygen="/Users/heltai/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classTriangulation.html">Triangulation</a>&lt; dim, spacedim &gt;::<a class="elRef" doxygen="/Users/heltai/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/group__grid.html#ga0633dd17e535a59162b79f338c6ff5ae">MeshSmoothing</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_parsed_grid_generator.html#aaaea6a60b4df3d16e3d8a7b6bcfe8635">get_smoothing</a> ()</td></tr>
+<tr class="memitem:aaaea6a60b4df3d16e3d8a7b6bcfe8635"><td class="memItemLeft" align="right" valign="top">Triangulation&lt; dim, spacedim &gt;::MeshSmoothing&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_parsed_grid_generator.html#aaaea6a60b4df3d16e3d8a7b6bcfe8635">get_smoothing</a> ()</td></tr>
 <tr class="memdesc:aaaea6a60b4df3d16e3d8a7b6bcfe8635"><td class="mdescLeft">&#160;</td><td class="mdescRight">Mesh smoothing.  <a href="#aaaea6a60b4df3d16e3d8a7b6bcfe8635">More...</a><br /></td></tr>
 <tr class="separator:aaaea6a60b4df3d16e3d8a7b6bcfe8635"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acd485adc1730ef529937ff2e966dadd2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_parsed_grid_generator.html#acd485adc1730ef529937ff2e966dadd2">parse_manifold_descriptors</a> (const std::string &amp;str_manifold_descriptors)</td></tr>
+<tr class="memdesc:acd485adc1730ef529937ff2e966dadd2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Take <code>str_manifold_descriptors</code> and fill <code>manifold_descriptors</code> with ids and manifolds.  <a href="#acd485adc1730ef529937ff2e966dadd2">More...</a><br /></td></tr>
+<tr class="separator:acd485adc1730ef529937ff2e966dadd2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-attribs"></a>
 Private Attributes</h2></td></tr>
 <tr class="memitem:a25bef6722372595a12eafa3d2f0de86d"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_parsed_grid_generator.html#a25bef6722372595a12eafa3d2f0de86d">mesh_smoothing</a></td></tr>
-<tr class="memdesc:a25bef6722372595a12eafa3d2f0de86d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Mesh smoothing to apply to the newly created <a class="elRef" doxygen="/Users/heltai/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classTriangulation.html">Triangulation</a>.  <a href="#a25bef6722372595a12eafa3d2f0de86d">More...</a><br /></td></tr>
+<tr class="memdesc:a25bef6722372595a12eafa3d2f0de86d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Mesh smoothing to apply to the newly created Triangulation.  <a href="#a25bef6722372595a12eafa3d2f0de86d">More...</a><br /></td></tr>
 <tr class="separator:a25bef6722372595a12eafa3d2f0de86d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0bbee30998c8634562d57aaabd8257a1"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_parsed_grid_generator.html#a0bbee30998c8634562d57aaabd8257a1">grid_name</a></td></tr>
 <tr class="memdesc:a0bbee30998c8634562d57aaabd8257a1"><td class="mdescLeft">&#160;</td><td class="mdescRight">The grid to generate.  <a href="#a0bbee30998c8634562d57aaabd8257a1">More...</a><br /></td></tr>
 <tr class="separator:a0bbee30998c8634562d57aaabd8257a1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adbdc1bf3d911f6b96450e97b59a0fcd1"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_parsed_grid_generator.html#adbdc1bf3d911f6b96450e97b59a0fcd1">optional_manifold_descriptors</a></td></tr>
+<tr class="memdesc:adbdc1bf3d911f6b96450e97b59a0fcd1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Optional Manifold descriptors.  <a href="#adbdc1bf3d911f6b96450e97b59a0fcd1">More...</a><br /></td></tr>
+<tr class="separator:adbdc1bf3d911f6b96450e97b59a0fcd1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad8268e5d07e66020e81aea813923ba09"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_parsed_grid_generator.html#ad8268e5d07e66020e81aea813923ba09">default_manifold_descriptors</a></td></tr>
+<tr class="memdesc:ad8268e5d07e66020e81aea813923ba09"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default Manifold descriptors.  <a href="#ad8268e5d07e66020e81aea813923ba09">More...</a><br /></td></tr>
+<tr class="separator:ad8268e5d07e66020e81aea813923ba09"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1461b2e5d0c40dec126162c79f304ef6"><td class="memItemLeft" align="right" valign="top">std::map&lt; types::manifold_id, shared_ptr&lt; Manifold&lt; dim, spacedim &gt; &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_parsed_grid_generator.html#a1461b2e5d0c40dec126162c79f304ef6">manifold_descriptors</a></td></tr>
+<tr class="memdesc:a1461b2e5d0c40dec126162c79f304ef6"><td class="mdescLeft">&#160;</td><td class="mdescRight">A map of Manifold associated to the given manifold_ids.  <a href="#a1461b2e5d0c40dec126162c79f304ef6">More...</a><br /></td></tr>
+<tr class="separator:a1461b2e5d0c40dec126162c79f304ef6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a77e3ebfa1ae722024e8e68e1655d2f6d"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_parsed_grid_generator.html#a77e3ebfa1ae722024e8e68e1655d2f6d">double_option_one</a></td></tr>
 <tr class="memdesc:a77e3ebfa1ae722024e8e68e1655d2f6d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Optional double argument.  <a href="#a77e3ebfa1ae722024e8e68e1655d2f6d">More...</a><br /></td></tr>
 <tr class="separator:a77e3ebfa1ae722024e8e68e1655d2f6d"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -203,11 +214,11 @@ Private Attributes</h2></td></tr>
 <tr class="memitem:ac6bc2e93f8e72a62782d2249b123f2aa"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_parsed_grid_generator.html#ac6bc2e93f8e72a62782d2249b123f2aa">double_option_three</a></td></tr>
 <tr class="memdesc:ac6bc2e93f8e72a62782d2249b123f2aa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Optional double argument.  <a href="#ac6bc2e93f8e72a62782d2249b123f2aa">More...</a><br /></td></tr>
 <tr class="separator:ac6bc2e93f8e72a62782d2249b123f2aa"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a228b6ddc815281facf7a5e3d64e03398"><td class="memItemLeft" align="right" valign="top"><a class="elRef" doxygen="/Users/heltai/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classPoint.html">Point</a>&lt; spacedim &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_parsed_grid_generator.html#a228b6ddc815281facf7a5e3d64e03398">point_option_one</a></td></tr>
-<tr class="memdesc:a228b6ddc815281facf7a5e3d64e03398"><td class="mdescLeft">&#160;</td><td class="mdescRight">Optional <a class="elRef" doxygen="/Users/heltai/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classPoint.html">Point</a> argument.  <a href="#a228b6ddc815281facf7a5e3d64e03398">More...</a><br /></td></tr>
+<tr class="memitem:a228b6ddc815281facf7a5e3d64e03398"><td class="memItemLeft" align="right" valign="top">Point&lt; spacedim &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_parsed_grid_generator.html#a228b6ddc815281facf7a5e3d64e03398">point_option_one</a></td></tr>
+<tr class="memdesc:a228b6ddc815281facf7a5e3d64e03398"><td class="mdescLeft">&#160;</td><td class="mdescRight">Optional Point argument.  <a href="#a228b6ddc815281facf7a5e3d64e03398">More...</a><br /></td></tr>
 <tr class="separator:a228b6ddc815281facf7a5e3d64e03398"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6d12008e79391fea9b6fd1ae9f2c7a26"><td class="memItemLeft" align="right" valign="top"><a class="elRef" doxygen="/Users/heltai/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classPoint.html">Point</a>&lt; spacedim &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_parsed_grid_generator.html#a6d12008e79391fea9b6fd1ae9f2c7a26">point_option_two</a></td></tr>
-<tr class="memdesc:a6d12008e79391fea9b6fd1ae9f2c7a26"><td class="mdescLeft">&#160;</td><td class="mdescRight">Optional <a class="elRef" doxygen="/Users/heltai/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classPoint.html">Point</a> argument.  <a href="#a6d12008e79391fea9b6fd1ae9f2c7a26">More...</a><br /></td></tr>
+<tr class="memitem:a6d12008e79391fea9b6fd1ae9f2c7a26"><td class="memItemLeft" align="right" valign="top">Point&lt; spacedim &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_parsed_grid_generator.html#a6d12008e79391fea9b6fd1ae9f2c7a26">point_option_two</a></td></tr>
+<tr class="memdesc:a6d12008e79391fea9b6fd1ae9f2c7a26"><td class="mdescLeft">&#160;</td><td class="mdescRight">Optional Point argument.  <a href="#a6d12008e79391fea9b6fd1ae9f2c7a26">More...</a><br /></td></tr>
 <tr class="separator:a6d12008e79391fea9b6fd1ae9f2c7a26"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a315ecb6f88b6aceb899cdbf7dc9337cd"><td class="memItemLeft" align="right" valign="top">unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_parsed_grid_generator.html#a315ecb6f88b6aceb899cdbf7dc9337cd">un_int_option_one</a></td></tr>
 <tr class="memdesc:a315ecb6f88b6aceb899cdbf7dc9337cd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Optional int argument.  <a href="#a315ecb6f88b6aceb899cdbf7dc9337cd">More...</a><br /></td></tr>
@@ -218,6 +229,15 @@ Private Attributes</h2></td></tr>
 <tr class="memitem:a1449cea1bbdca350085f13ea58914346"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_parsed_grid_generator.html#a1449cea1bbdca350085f13ea58914346">colorize</a></td></tr>
 <tr class="memdesc:a1449cea1bbdca350085f13ea58914346"><td class="mdescLeft">&#160;</td><td class="mdescRight">For all the internally generated meshes that support it, turn on colorizing.  <a href="#a1449cea1bbdca350085f13ea58914346">More...</a><br /></td></tr>
 <tr class="separator:a1449cea1bbdca350085f13ea58914346"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a33f3e015121a8937b6fb693fe2dd6526"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_parsed_grid_generator.html#a33f3e015121a8937b6fb693fe2dd6526">create_default_manifolds</a></td></tr>
+<tr class="memdesc:a33f3e015121a8937b6fb693fe2dd6526"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create default manifold descriptors.  <a href="#a33f3e015121a8937b6fb693fe2dd6526">More...</a><br /></td></tr>
+<tr class="separator:a33f3e015121a8937b6fb693fe2dd6526"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acd1da61d01df6b0cba53a773f4bfc446"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_parsed_grid_generator.html#acd1da61d01df6b0cba53a773f4bfc446">copy_boundary_to_manifold_ids</a></td></tr>
+<tr class="memdesc:acd1da61d01df6b0cba53a773f4bfc446"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copy boundary ids to manifold ids.  <a href="#acd1da61d01df6b0cba53a773f4bfc446">More...</a><br /></td></tr>
+<tr class="separator:acd1da61d01df6b0cba53a773f4bfc446"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad46fa53ccce27314dc57f3253628223d"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_parsed_grid_generator.html#ad46fa53ccce27314dc57f3253628223d">copy_material_to_manifold_ids</a></td></tr>
+<tr class="memdesc:ad46fa53ccce27314dc57f3253628223d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copy material ids to manifold ids.  <a href="#ad46fa53ccce27314dc57f3253628223d">More...</a><br /></td></tr>
+<tr class="separator:ad46fa53ccce27314dc57f3253628223d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a67fd691897521c4f68fbf9bd8355e38e"><td class="memItemLeft" align="right" valign="top">std::vector&lt; unsigned int &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_parsed_grid_generator.html#a67fd691897521c4f68fbf9bd8355e38e">un_int_vec_option_one</a></td></tr>
 <tr class="memdesc:a67fd691897521c4f68fbf9bd8355e38e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Optional vector of integers.  <a href="#a67fd691897521c4f68fbf9bd8355e38e">More...</a><br /></td></tr>
 <tr class="separator:a67fd691897521c4f68fbf9bd8355e38e"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -246,25 +266,16 @@ Private Attributes</h2></td></tr>
 <tr class="memitem:a36356825fafc40e59834e5a2da9fe310"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_parsed_grid_generator.html#a36356825fafc40e59834e5a2da9fe310">str_vec_int</a></td></tr>
 <tr class="separator:a36356825fafc40e59834e5a2da9fe310"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="friends"></a>
+Friends</h2></td></tr>
+<tr class="memitem:ad4f6b71019a69b2d0034475a69cc3791"><td class="memItemLeft" align="right" valign="top">struct&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_parsed_grid_generator.html#ad4f6b71019a69b2d0034475a69cc3791">PGGHelper</a></td></tr>
+<tr class="memdesc:ad4f6b71019a69b2d0034475a69cc3791"><td class="mdescLeft">&#160;</td><td class="mdescRight">Helper function to create grids.  <a href="#ad4f6b71019a69b2d0034475a69cc3791">More...</a><br /></td></tr>
+<tr class="separator:ad4f6b71019a69b2d0034475a69cc3791"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="inherited"></a>
 Additional Inherited Members</h2></td></tr>
-<tr class="inherit_header pub_static_methods_class_parameter_acceptor"><td colspan="2" onclick="javascript:toggleInherit('pub_static_methods_class_parameter_acceptor')"><img src="closed.png" alt="-"/>&#160;Static Public Member Functions inherited from <a class="el" href="class_parameter_acceptor.html">ParameterAcceptor</a></td></tr>
-<tr class="memitem:af04c215672e63f03a942ae4c55b57c27 inherit pub_static_methods_class_parameter_acceptor"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_parameter_acceptor.html#af04c215672e63f03a942ae4c55b57c27">initialize</a> (const std::string filename=&quot;&quot;, const std::string outfilename=&quot;&quot;)</td></tr>
-<tr class="memdesc:af04c215672e63f03a942ae4c55b57c27 inherit pub_static_methods_class_parameter_acceptor"><td class="mdescLeft">&#160;</td><td class="mdescRight">Call <a class="el" href="class_parameter_acceptor.html#a3775ed960cf63c9ae88613925d226b11" title="Initialize the ParameterHandler with all derived classes parameters.This function enters the subsecti...">declare_all_parameters()</a>, read filename (if it is present as input parameter) and <a class="el" href="class_parameter_acceptor.html#ac4b7044a9e1d53c401a50565d8996022" title="Parse the given ParameterHandler. ">parse_all_parameters()</a> on the static member prm.  <a href="#af04c215672e63f03a942ae4c55b57c27">More...</a><br /></td></tr>
-<tr class="separator:af04c215672e63f03a942ae4c55b57c27 inherit pub_static_methods_class_parameter_acceptor"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2e4f8347ae5f913939ebf81a23277880 inherit pub_static_methods_class_parameter_acceptor"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_parameter_acceptor.html#a2e4f8347ae5f913939ebf81a23277880">clear</a> ()</td></tr>
-<tr class="separator:a2e4f8347ae5f913939ebf81a23277880 inherit pub_static_methods_class_parameter_acceptor"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac4b7044a9e1d53c401a50565d8996022 inherit pub_static_methods_class_parameter_acceptor"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_parameter_acceptor.html#ac4b7044a9e1d53c401a50565d8996022">parse_all_parameters</a> (<a class="elRef" doxygen="/Users/heltai/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classParameterHandler.html">ParameterHandler</a> &amp;<a class="el" href="class_parameter_acceptor.html#a96081d4cc985b722c9841fcf0c0e54ec">prm</a>=<a class="el" href="class_parameter_acceptor.html#a96081d4cc985b722c9841fcf0c0e54ec">ParameterAcceptor::prm</a>)</td></tr>
-<tr class="memdesc:ac4b7044a9e1d53c401a50565d8996022 inherit pub_static_methods_class_parameter_acceptor"><td class="mdescLeft">&#160;</td><td class="mdescRight">Parse the given <a class="elRef" doxygen="/Users/heltai/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classParameterHandler.html">ParameterHandler</a>.  <a href="#ac4b7044a9e1d53c401a50565d8996022">More...</a><br /></td></tr>
-<tr class="separator:ac4b7044a9e1d53c401a50565d8996022 inherit pub_static_methods_class_parameter_acceptor"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0aebd314633cdb2e48b159f2b9349c73 inherit pub_static_methods_class_parameter_acceptor"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_parameter_acceptor.html#a0aebd314633cdb2e48b159f2b9349c73">log_info</a> ()</td></tr>
-<tr class="memdesc:a0aebd314633cdb2e48b159f2b9349c73 inherit pub_static_methods_class_parameter_acceptor"><td class="mdescLeft">&#160;</td><td class="mdescRight">Print information about all stored classes.  <a href="#a0aebd314633cdb2e48b159f2b9349c73">More...</a><br /></td></tr>
-<tr class="separator:a0aebd314633cdb2e48b159f2b9349c73 inherit pub_static_methods_class_parameter_acceptor"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3775ed960cf63c9ae88613925d226b11 inherit pub_static_methods_class_parameter_acceptor"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_parameter_acceptor.html#a3775ed960cf63c9ae88613925d226b11">declare_all_parameters</a> (<a class="elRef" doxygen="/Users/heltai/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classParameterHandler.html">ParameterHandler</a> &amp;<a class="el" href="class_parameter_acceptor.html#a96081d4cc985b722c9841fcf0c0e54ec">prm</a>=<a class="el" href="class_parameter_acceptor.html#a96081d4cc985b722c9841fcf0c0e54ec">ParameterAcceptor::prm</a>)</td></tr>
-<tr class="memdesc:a3775ed960cf63c9ae88613925d226b11 inherit pub_static_methods_class_parameter_acceptor"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize the <a class="elRef" doxygen="/Users/heltai/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classParameterHandler.html">ParameterHandler</a> with all derived classes parameters.This function enters the subsection returned by <a class="el" href="class_parameter_acceptor.html#abe76713f66b7319ba25a7d272126461a" title="Return the section name of this class. ">get_section_name()</a> for each derived class, and declares all parameters that were added using <a class="el" href="class_parameter_acceptor.html#ad823f9aff71602773356405bc4566e55" title="Add a parameter the given parameter list. ">add_parameter()</a>.  <a href="#a3775ed960cf63c9ae88613925d226b11">More...</a><br /></td></tr>
-<tr class="separator:a3775ed960cf63c9ae88613925d226b11 inherit pub_static_methods_class_parameter_acceptor"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_static_attribs_class_parameter_acceptor"><td colspan="2" onclick="javascript:toggleInherit('pub_static_attribs_class_parameter_acceptor')"><img src="closed.png" alt="-"/>&#160;Static Public Attributes inherited from <a class="el" href="class_parameter_acceptor.html">ParameterAcceptor</a></td></tr>
-<tr class="memitem:a96081d4cc985b722c9841fcf0c0e54ec inherit pub_static_attribs_class_parameter_acceptor"><td class="memItemLeft" align="right" valign="top">static <a class="elRef" doxygen="/Users/heltai/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classParameterHandler.html">ParameterHandler</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_parameter_acceptor.html#a96081d4cc985b722c9841fcf0c0e54ec">prm</a></td></tr>
+<tr class="memitem:a96081d4cc985b722c9841fcf0c0e54ec inherit pub_static_attribs_class_parameter_acceptor"><td class="memItemLeft" align="right" valign="top">static ParameterHandler&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_parameter_acceptor.html#a96081d4cc985b722c9841fcf0c0e54ec">prm</a></td></tr>
 <tr class="memdesc:a96081d4cc985b722c9841fcf0c0e54ec inherit pub_static_attribs_class_parameter_acceptor"><td class="mdescLeft">&#160;</td><td class="mdescRight">Static parameter.  <a href="#a96081d4cc985b722c9841fcf0c0e54ec">More...</a><br /></td></tr>
 <tr class="separator:a96081d4cc985b722c9841fcf0c0e54ec inherit pub_static_attribs_class_parameter_acceptor"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pro_attribs_class_parameter_acceptor"><td colspan="2" onclick="javascript:toggleInherit('pro_attribs_class_parameter_acceptor')"><img src="closed.png" alt="-"/>&#160;Protected Attributes inherited from <a class="el" href="class_parameter_acceptor.html">ParameterAcceptor</a></td></tr>
@@ -278,9 +289,9 @@ class ParsedGridGenerator&lt; dim, spacedim &gt;</h3>
 
 <p>Parsed grid generator. </p>
 <p>Create a grid by reading a parameter file, either using dealii::GridGenerator functions, or by reading it from a file in supported format.</p>
-<p>All Triangulations in the <a class="elRef" doxygen="/Users/heltai/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/namespaceGridGenerator.html">GridGenerator</a> Namespace are supported, as well as all file formats supported by <a class="elRef" doxygen="/Users/heltai/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classGridIn.html">GridIn</a>. This class is in all effects a wrapper around the <a class="elRef" doxygen="/Users/heltai/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/namespaceGridGenerator.html">GridGenerator</a> namespace functions, <a class="elRef" doxygen="/Users/heltai/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classGridIn.html">GridIn</a>, and <a class="elRef" doxygen="/Users/heltai/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classGridOut.html">GridOut</a> classes of the <a href="http://www.dealii.org"><code>deal.II</code></a> library</p>
+<p>All Triangulations in the GridGenerator Namespace are supported, as well as all file formats supported by GridIn. This class is in all effects a wrapper around the GridGenerator namespace functions, GridIn, GridOut and some Manifold classes of the <a href="http://www.dealii.org"><code>deal.II</code></a> library.</p>
 <p><a class="el" href="class_parsed_grid_generator.html" title="Parsed grid generator. ">ParsedGridGenerator</a> can be used both in serial and parallel settings, and a typical usage of this class is </p><div class="fragment"><div class="line"><span class="comment">// 2D square - serial mesh</span></div>
-<div class="line"><span class="comment">// by default it constructs the rectangle whos opposite corner points</span></div>
+<div class="line"><span class="comment">// by default it constructs the rectangle whose opposite corner points</span></div>
 <div class="line"><span class="comment">// are p1=(10.0,10.0) and p2=(20.0,20.0)</span></div>
 <div class="line"><a class="code" href="class_parsed_grid_generator.html">ParsedGridGenerator&lt;2,2&gt;</a> tria_builder_2d(<span class="stringliteral">&quot;2D mesh&quot;</span>,</div>
 <div class="line">                                         <span class="stringliteral">&quot;rectangle&quot;</span>,</div>
@@ -290,7 +301,7 @@ class ParsedGridGenerator&lt; dim, spacedim &gt;</h3>
 <div class="line">                                         <span class="stringliteral">&quot;true&quot;</span>);</div>
 <div class="line"></div>
 <div class="line"><span class="comment">// 3D parallelepiped - parallel distributed mesh</span></div>
-<div class="line"><span class="comment">// by default it constructs the parallelepiped whos opposite corner</span></div>
+<div class="line"><span class="comment">// by default it constructs the parallelepiped whose opposite corner</span></div>
 <div class="line"><span class="comment">// points are p1=(7.0,8.0,9.0) and p2=(15.0.16.0,16.7)</span></div>
 <div class="line"><a class="code" href="class_parsed_grid_generator.html">ParsedGridGenerator&lt;3,3&gt;</a> tria_builder_3d(<span class="stringliteral">&quot;3D mesh&quot;</span>,</div>
 <div class="line">                                          <span class="stringliteral">&quot;rectangle&quot;</span>,</div>
@@ -303,11 +314,11 @@ class ParsedGridGenerator&lt; dim, spacedim &gt;</h3>
 <div class="line"></div>
 <div class="line"><span class="comment">// Construct a serial mesh following the indications in &quot;file.prm&quot;</span></div>
 <div class="line"><span class="comment">// in the section &quot;2D mesh&quot;</span></div>
-<div class="line"><a class="codeRef" doxygen="/Users/heltai/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classTriangulation.html">Triangulation&lt;2,2&gt;</a> *tria_serial  = tria_builder_2d.serial();</div>
+<div class="line">Triangulation&lt;2,2&gt; *tria_serial  = tria_builder_2d.serial();</div>
 <div class="line"></div>
 <div class="line"><span class="comment">// Construct a parallel::distributed::Triangulation following the</span></div>
 <div class="line"><span class="comment">// indications in &quot;file.prm&#39;&#39;, in the section &quot;3D mesh&quot;</span></div>
-<div class="line"><a class="codeRef" doxygen="/Users/heltai/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classparallel_1_1distributed_1_1Triangulation.html">parallel::distributed::Triangulation&lt;3,3&gt;</a> *tria_mpi =</div>
+<div class="line">parallel::distributed::Triangulation&lt;3,3&gt; *tria_mpi =</div>
 <div class="line">      tria_builder_3d.distributed(MPI_COMM_WORLD);</div>
 </div><!-- fragment --><p>Once the function <a class="el" href="class_parameter_acceptor.html#af04c215672e63f03a942ae4c55b57c27" title="Call declare_all_parameters(), read filename (if it is present as input parameter) and parse_all_para...">ParameterAcceptor::initialize</a>("file.prm", "no_descriptions.prm") is called, the "no_descriptions.prm" is filled with the following entries:</p>
 <div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;subsection 3D mesh</div>
@@ -322,26 +333,36 @@ class ParsedGridGenerator&lt; dim, spacedim &gt;</h3>
 <div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;  set Optional int 1             = 1</div>
 <div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;  set Optional vector of dim int = 1,1,1</div>
 <div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;  set Output grid file name      =</div>
-<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;end</div>
-<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;subsection 2D mesh</div>
-<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;  set Colorize                   = true</div>
-<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;  set Grid to generate           = rectangle</div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;  set Input grid file name       =</div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;  set Mesh smoothing alogrithm   = none</div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;  set Optional Point&lt;spacedim&gt; 1 = 10.0,10.0</div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;  set Optional Point&lt;spacedim&gt; 2 = 20.0,20.0</div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;  set Optional double 1          = 1.0</div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;  set Optional double 2          = 0.5</div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;  set Optional int 1             = 1</div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;  set Optional vector of dim int = 1,1</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;  set Output grid file name      =</div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;end</div>
+<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;  set Copy boundary to manifold ids = false</div>
+<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;  set Copy material to manifold ids = false</div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;  set Create default manifolds      = false</div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;  set Manifold descriptors          =</div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;end</div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;subsection 2D mesh</div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;  set Colorize                   = true</div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;  set Grid to generate           = rectangle</div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;  set Input grid file name       =</div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;  set Mesh smoothing alogrithm   = none</div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;  set Optional Point&lt;spacedim&gt; 1 = 10.0,10.0</div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;  set Optional Point&lt;spacedim&gt; 2 = 20.0,20.0</div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;  set Optional double 1          = 1.0</div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;  set Optional double 2          = 0.5</div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;  set Optional int 1             = 1</div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;  set Optional vector of dim int = 1,1</div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;  set Output grid file name      =</div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;  set Copy boundary to manifold ids = false</div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;  set Copy material to manifold ids = false</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;  set Create default manifolds      = false</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;  set Manifold descriptors          =</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;end</div>
 </div><!-- fragment --><p>If the user would then change the parameter file to generate a sphere, or read a file, no change in the code would be necessary, as at run time the new parameters would be used.</p>
-<p>If the option <code>Output grid file name</code> is set to non-empty, when the user calls <a class="el" href="class_parsed_grid_generator.html#a51b277d75f0b29513e58607af35816dc" title="Write the given Triangulation to the output file specified in Output file name, or in the optional fi...">ParsedGridGenerator::write()</a>, an output grid would be generated using <a class="elRef" doxygen="/Users/heltai/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classGridOut.html">GridOut</a>, choosing the right format according to the extension of the file. </p>
+<p>Setting the option "Create default manifolds" to true, makes sure that default manifold descritpors for each Triangulation that requires non straigth boundary is also generated together with the Triangulation, and attached to it.</p>
+<p>If the option <code>Output grid file name</code> is set to non-empty, when the user calls <a class="el" href="class_parsed_grid_generator.html#a51b277d75f0b29513e58607af35816dc" title="Write the given Triangulation to the output file specified in Output file name, or in the optional fi...">ParsedGridGenerator::write()</a>, an output grid would be generated using GridOut, choosing the right format according to the extension of the file.</p>
+<p>Support for reading a single face of a NURBS surface into a Triangulationa&lt;2,3&gt; is also available, by specifying an input file name which is in the STEP or IGES format. In this case the OpenCASCADE::read_STEP() or OpenCASCADE::read_IGES() are called, and the resulting OpenCASCADE object is split into its faces. The face can be selected using the "Optional int 1" parameter. </p>
 
-<p>Definition at line <a class="el" href="parsed__grid__generator_8h_source.html#l00121">121</a> of file <a class="el" href="parsed__grid__generator_8h_source.html">parsed_grid_generator.h</a>.</p>
+<p>Definition at line <a class="el" href="parsed__grid__generator_8h_source.html#l00145">145</a> of file <a class="el" href="parsed__grid__generator_8h_source.html">parsed_grid_generator.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a class="anchor" id="a4be3950e0fc91e52b473d96f59778f23"></a>
+<a class="anchor" id="a5e9a3a52c6458e6556930bef8e3bc20a"></a>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
@@ -429,7 +450,13 @@ template&lt;int dim, int spacedim&gt; </div>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">const std::string&#160;</td>
-          <td class="paramname"><em>output_grid_file</em> = <code>&quot;&quot;</code>&#160;</td>
+          <td class="paramname"><em>output_grid_file</em> = <code>&quot;&quot;</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::string&#160;</td>
+          <td class="paramname"><em>opt_manifold_descriptors</em> = <code>&quot;&quot;</code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -441,11 +468,11 @@ template&lt;int dim, int spacedim&gt; </div>
 
 <p>Constructor. </p>
 <p>Takes a name for the section of the Parameter Handler to use.</p>
-<p>This class is derived from <a class="el" href="class_parameter_acceptor.html" title="A parameter acceptor base class. ">ParameterAcceptor</a>. Once you constructed an object of this class, if you call <a class="el" href="class_parameter_acceptor.html#ac4b7044a9e1d53c401a50565d8996022" title="Parse the given ParameterHandler. ">ParameterAcceptor::parse_all_parameters()</a>, also the parameters of this class will be filled with values from the argument <a class="elRef" doxygen="/Users/heltai/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classParameterHandler.html">ParameterHandler</a>.</p>
+<p>This class is derived from <a class="el" href="class_parameter_acceptor.html" title="A parameter acceptor base class. ">ParameterAcceptor</a>. Once you constructed an object of this class, if you call <a class="el" href="class_parameter_acceptor.html#ac4b7044a9e1d53c401a50565d8996022" title="Parse the given ParameterHandler. ">ParameterAcceptor::parse_all_parameters()</a>, also the parameters of this class will be filled with values from the argument ParameterHandler.</p>
 <p>This constructor takes optional strings which allow the user to decide what are the <b>default</b> values that will be written on the parameter file. The first optional argument specifies the section name within the parameter file. If the section name is empty, by default it is set to ParsedGridGenerator&lt;x,x&gt; where <code>x,x</code> is replaced with the actual <code>dim</code> and <code>spacedim</code> numbers with which the user instantiated the class.</p>
-<p>Since every <a class="elRef" doxygen="/Users/heltai/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/namespaceGridGenerator.html">GridGenerator</a> function takes a different set of arguments, we provide a list of optional arguments that will be used by the class itself. </p>
+<p>Since every GridGenerator function takes a different set of arguments, we provide a list of optional arguments that will be used by the class itself. </p>
 
-<p>Definition at line <a class="el" href="parsed__grid__generator_8cc_source.html#l00049">49</a> of file <a class="el" href="parsed__grid__generator_8cc_source.html">parsed_grid_generator.cc</a>.</p>
+<p>Definition at line <a class="el" href="parsed__grid__generator_8cc_source.html#l00057">57</a> of file <a class="el" href="parsed__grid__generator_8cc_source.html">parsed_grid_generator.cc</a>.</p>
 
 </div>
 </div>
@@ -459,7 +486,7 @@ template&lt;int dim, int spacedim&gt; </div>
         <tr>
           <td class="memname">void <a class="el" href="class_parsed_grid_generator.html">ParsedGridGenerator</a>&lt; dim, spacedim &gt;::create </td>
           <td>(</td>
-          <td class="paramtype"><a class="elRef" doxygen="/Users/heltai/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classTriangulation.html">Triangulation</a>&lt; dim, spacedim &gt; &amp;&#160;</td>
+          <td class="paramtype">Triangulation&lt; dim, spacedim &gt; &amp;&#160;</td>
           <td class="paramname"><em>tria</em></td><td>)</td>
           <td></td>
         </tr>
@@ -467,7 +494,7 @@ template&lt;int dim, int spacedim&gt; </div>
 </div><div class="memdoc">
 
 <p>Generate the grid. </p>
-<p>Fill a user supplied empty <a class="elRef" doxygen="/Users/heltai/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classTriangulation.html">Triangulation</a> using the parameter file. If the <a class="elRef" doxygen="/Users/heltai/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classTriangulation.html">Triangulation</a> is not empty, an exception is thrown.</p>
+<p>Fill a user supplied empty Triangulation using the parameter file. If the Triangulation is not empty, an exception is thrown.</p>
 <p>The following grids are implemented:</p>
 <ul>
 <li><b>file</b>-&gt; read grid from a file using:<ul>
@@ -475,52 +502,45 @@ template&lt;int dim, int spacedim&gt; </div>
 </li>
 </ul>
 </li>
-<li><b>rectangle</b>-&gt; create a subdivided hyperrectangle using:<ul>
-<li><em><a class="elRef" doxygen="/Users/heltai/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classPoint.html">Point&lt;spacedim&gt;</a></em>: lower-left corner</li>
-<li><em><a class="elRef" doxygen="/Users/heltai/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classPoint.html">Point&lt;spacedim&gt;</a></em>: upper-right corner</li>
-<li><em><a class="elRef" doxygen="/Users/heltai/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classVector.html">Vector</a> of dim int</em>: subdivisions on each direction</li>
+<li><b>rectangle</b>-&gt; calls GridGenerator::SubdividedHyperRectangle() using:<ul>
+<li><em>Point&lt;spacedim&gt;</em>: lower-left corner</li>
+<li><em>Point&lt;spacedim&gt;</em>: upper-right corner</li>
+<li><em>Vector of dim int</em>: subdivisions on each direction</li>
 <li><em>bool</em>: colorize grid</li>
 </ul>
 </li>
-<li><b>subdivided_hyper_rectangle</b>-&gt; create a subdivided hyperrectangle using:<ul>
-<li><em><a class="elRef" doxygen="/Users/heltai/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classPoint.html">Point&lt;spacedim&gt;</a></em>: lower-left corner</li>
-<li><em><a class="elRef" doxygen="/Users/heltai/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classPoint.html">Point&lt;spacedim&gt;</a></em>: upper-right corner</li>
-<li><em><a class="elRef" doxygen="/Users/heltai/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classVector.html">Vector</a> of dim int</em>: subdivisions on each direction</li>
-<li><em>bool</em>: colorize grid</li>
-</ul>
-</li>
-<li><b>hyper_sphere</b>-&gt; generate an hyper sphere with center and radius prescribed:<ul>
-<li><em><a class="elRef" doxygen="/Users/heltai/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classPoint.html">Point&lt;spacedim&gt;</a></em>: center</li>
+<li><b>hyper_sphere</b>-&gt; calls GridGenerator::HyperSphere() using:<ul>
+<li><em>Point&lt;spacedim&gt;</em>: center</li>
 <li><em>double</em>: radius</li>
 </ul>
 </li>
-<li><b>unit_hyperball</b>-&gt; initialize the given triangulation with a hyperball:<ul>
-<li><em><a class="elRef" doxygen="/Users/heltai/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classPoint.html">Point&lt;spacedim&gt;</a></em>: center</li>
+<li><b>hyper_ball</b>-&gt; calls GridGenerator::HyperBall() using:<ul>
+<li><em>Point&lt;spacedim&gt;</em>: center</li>
 <li><em>double</em>: radius</li>
 </ul>
 </li>
-<li><b>subdivided_hyper_rectangle</b>-&gt; create a coordinate-parallel parallelepiped:<ul>
+<li><b>parallelepiped</b>-&gt; ccalls GridGenerator::Parallelepiped() using:<ul>
 <li>std::vector&lt;unsigned int&gt; : number of subdivisions in each coordinate direction</li>
-<li><em><a class="elRef" doxygen="/Users/heltai/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classPoint.html">Point&lt;spacedim&gt;</a></em>: lower-left corner</li>
-<li><em><a class="elRef" doxygen="/Users/heltai/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classPoint.html">Point&lt;spacedim&gt;</a></em>: upper-right corner</li>
+<li><em>Point&lt;spacedim&gt;</em>: lower-left corner</li>
+<li><em>Point&lt;spacedim&gt;</em>: upper-right corner</li>
 <li><em>bool</em>: colorize grid</li>
 </ul>
 </li>
-<li><b>hyper_shell</b>-&gt; create a gird represented by the region between two spheres with fixed center:<ul>
-<li><em><a class="elRef" doxygen="/Users/heltai/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classPoint.html">Point&lt;spacedim&gt;</a></em>: center</li>
+<li><b>hyper_shell</b>-&gt; calls GridGenerator::HyperShell() using:<ul>
+<li><em>Point&lt;spacedim&gt;</em>: center</li>
 <li><em>double</em>: inner sphere radius</li>
 <li><em>double</em>: outer sphere radius</li>
 <li><em>unsigned int</em>: number of cells of the resulting triangulation (In 3D, only 6, 12, and 96 are allowed)</li>
 <li><em>bool</em>: colorize grid</li>
 </ul>
 </li>
-<li><b>hyper_L</b>-&gt; initialize the given triangulation with a hyper-L. It produces the hypercube with the interval [left,right] without the hypercube made out of the interval [(left+right)/2,right] for each coordinate.:<ul>
+<li><b>hyper_L</b>-&gt; GridGenerator::HyperL(). It produces the hypercube with the interval [left,right] without the hypercube made out of the interval [(left+right)/2,right] for each coordinate.:<ul>
 <li><em>double</em>: left</li>
 <li><em>double</em>: right</li>
 </ul>
 </li>
 <li><b>half_hyper_ball</b>-&gt; produce a half hyper-ball around center, which contains four elements in 2d and 6 in 3d. The cut plane is perpendicular to the x-axis:<ul>
-<li><em><a class="elRef" doxygen="/Users/heltai/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classPoint.html">Point&lt;spacedim&gt;</a></em>: center</li>
+<li><em>Point&lt;spacedim&gt;</em>: center</li>
 <li><em>double</em>: radius</li>
 </ul>
 </li>
@@ -536,18 +556,18 @@ template&lt;int dim, int spacedim&gt; </div>
 </ul>
 </li>
 <li><b>hyper_cross</b>-&gt; a center cell with stacks of cell protruding from each surface:<ul>
-<li><em><a class="elRef" doxygen="/Users/heltai/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classVector.html">Vector</a> of dim int</em>: sizes</li>
+<li><em>Vector of dim int</em>: sizes</li>
 <li><em>bool</em>: colorize grid</li>
 </ul>
 </li>
-<li><b>hyper_cube_slit</b>-&gt; initialize the given <a class="elRef" doxygen="/Users/heltai/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classTriangulation.html">Triangulation</a> with a hypercube with a slit. In each coordinate direction, the hypercube extends from left to right:<ul>
+<li><b>hyper_cube_slit</b>-&gt; initialize the given Triangulation with a hypercube with a slit. In each coordinate direction, the hypercube extends from left to right:<ul>
 <li><em>double</em>: left</li>
 <li><em>double</em>: right</li>
 <li><em>bool</em>: colorize grid</li>
 </ul>
 </li>
 <li><b>half_hyper_shell</b>-&gt; produce a half hyper-shell, i.e. the space between two circles in two space dimensions and the region between two spheres in 3D:<ul>
-<li><em><a class="elRef" doxygen="/Users/heltai/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classPoint.html">Point&lt;spacedim&gt;</a></em>: center</li>
+<li><em>Point&lt;spacedim&gt;</em>: center</li>
 <li><em>double</em>: inner radius</li>
 <li><em>double</em>: outer radius</li>
 <li><em>unsigned int</em>: number of cells</li>
@@ -555,7 +575,7 @@ template&lt;int dim, int spacedim&gt; </div>
 </ul>
 </li>
 <li><b>quarter_hyper_shell</b>-&gt; Produce a domain that is the intersection between a hyper-shell with given inner and outer radius, i.e. the space between two circles in two space dimensions and the region between two spheres in 3D, and the positive quadrant (in 2D) or octant (in 3D). In 2D, this is indeed a quarter of the full annulus, while the function is a misnomer in 3D because there the domain is not a quarter but one eighth of the full shell:<ul>
-<li><em><a class="elRef" doxygen="/Users/heltai/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classPoint.html">Point&lt;spacedim&gt;</a></em>: center</li>
+<li><em>Point&lt;spacedim&gt;</em>: center</li>
 <li><em>double</em>: inner radius</li>
 <li><em>double</em>: outer radius</li>
 <li><em>unsigned int</em>: number of cells</li>
@@ -594,7 +614,7 @@ template&lt;int dim, int spacedim&gt; </div>
   - *Vector of dim int*: number of holes on each direction" </li>
 </ul>
 
-<p>Definition at line <a class="el" href="parsed__grid__generator_8cc_source.html#l00623">623</a> of file <a class="el" href="parsed__grid__generator_8cc_source.html">parsed_grid_generator.cc</a>.</p>
+<p>Definition at line <a class="el" href="parsed__grid__generator_8cc_source.html#l00889">889</a> of file <a class="el" href="parsed__grid__generator_8cc_source.html">parsed_grid_generator.cc</a>.</p>
 
 </div>
 </div>
@@ -610,7 +630,7 @@ template&lt;int dim, int spacedim&gt; </div>
         <tr>
           <td class="memname">void <a class="el" href="class_parsed_grid_generator.html">ParsedGridGenerator</a>&lt; dim, spacedim &gt;::declare_parameters </td>
           <td>(</td>
-          <td class="paramtype"><a class="elRef" doxygen="/Users/heltai/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classParameterHandler.html">ParameterHandler</a> &amp;&#160;</td>
+          <td class="paramtype">ParameterHandler &amp;&#160;</td>
           <td class="paramname"><em>prm</em></td><td>)</td>
           <td></td>
         </tr>
@@ -626,7 +646,36 @@ template&lt;int dim, int spacedim&gt; </div>
 
 <p>Implements <a class="el" href="class_parameter_acceptor.html#ace1609b41eeb6a5461a388061d23b1bd">ParameterAcceptor</a>.</p>
 
-<p>Definition at line <a class="el" href="parsed__grid__generator_8cc_source.html#l00082">82</a> of file <a class="el" href="parsed__grid__generator_8cc_source.html">parsed_grid_generator.cc</a>.</p>
+<p>Definition at line <a class="el" href="parsed__grid__generator_8cc_source.html#l00102">102</a> of file <a class="el" href="parsed__grid__generator_8cc_source.html">parsed_grid_generator.cc</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a4fc22ae0609704563d57db09e7420ebe"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;int dim, int spacedim&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::string <a class="el" href="class_parsed_grid_generator.html">ParsedGridGenerator</a>&lt; dim, spacedim &gt;::get_grid_names </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Return a list of implemented grids. </p>
+
+<p>Definition at line <a class="el" href="parsed__grid__generator_8cc_source.html#l00096">96</a> of file <a class="el" href="parsed__grid__generator_8cc_source.html">parsed_grid_generator.cc</a>.</p>
 
 </div>
 </div>
@@ -640,7 +689,7 @@ template&lt;int dim, int spacedim&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="elRef" doxygen="/Users/heltai/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classTriangulation.html">Triangulation</a>&lt; dim, spacedim &gt;::<a class="elRef" doxygen="/Users/heltai/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/group__grid.html#ga0633dd17e535a59162b79f338c6ff5ae">MeshSmoothing</a> <a class="el" href="class_parsed_grid_generator.html">ParsedGridGenerator</a>&lt; dim, spacedim &gt;::get_smoothing </td>
+          <td class="memname">Triangulation&lt; dim, spacedim &gt;::MeshSmoothing <a class="el" href="class_parsed_grid_generator.html">ParsedGridGenerator</a>&lt; dim, spacedim &gt;::get_smoothing </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -654,9 +703,97 @@ template&lt;int dim, int spacedim&gt; </div>
 </div><div class="memdoc">
 
 <p>Mesh smoothing. </p>
-<p>Parse the type of MeshSmoothing for the generated <a class="elRef" doxygen="/Users/heltai/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classTriangulation.html">Triangulation</a>. </p>
+<p>Parse the type of MeshSmoothing for the generated Triangulation. </p>
 
-<p>Definition at line <a class="el" href="parsed__grid__generator_8cc_source.html#l00691">691</a> of file <a class="el" href="parsed__grid__generator_8cc_source.html">parsed_grid_generator.cc</a>.</p>
+<p>Definition at line <a class="el" href="parsed__grid__generator_8cc_source.html#l00986">986</a> of file <a class="el" href="parsed__grid__generator_8cc_source.html">parsed_grid_generator.cc</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="acd485adc1730ef529937ff2e966dadd2"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;int dim, int spacedim&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="class_parsed_grid_generator.html">ParsedGridGenerator</a>&lt; dim, spacedim &gt;::parse_manifold_descriptors </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>str_manifold_descriptors</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Take <code>str_manifold_descriptors</code> and fill <code>manifold_descriptors</code> with ids and manifolds. </p>
+<p>The format of the string is the following:</p>
+<ul>
+<li>id followed by '=' manifold descriptor string</li>
+</ul>
+<p>Each couple of id and manifold descriptor string should be separated by ''</p>
+<p>The manifold descriptor string can be taken among the following:</p>
+<ul>
+<li>HyperBallBoundary : boundary of a hyper_ball :<ul>
+<li>Optional double : radius</li>
+<li>Optional Point&lt;spacedim&gt; 1: center</li>
+</ul>
+</li>
+<li>CylinderBoundaryOnAxis : boundary of a cylinder, given radius and axis :<ul>
+<li>Optional double : radius</li>
+<li>Optional int 1 : axis (0=x, 1=y, 2=z)</li>
+</ul>
+</li>
+<li>GeneralCylinderBoundary : boundary of a cylinder, given radius, a point on the axis and a direction :<ul>
+<li>Optional double : radius</li>
+<li>Optional int 1 : axis (0=x, 1=y, 2=z)</li>
+<li>Optional Point&lt;spacedim&gt; 1: point on axis</li>
+<li>Optional Point&lt;spacedim&gt; 2: direction</li>
+</ul>
+</li>
+<li>ConeBoundary : boundary of a cone, given radii, and two points on the faces :<ul>
+<li>Optional double 1 : radius 1</li>
+<li>Optional double 2 : radius 2</li>
+<li>Optional Point&lt;spacedim&gt; 1: point on first face</li>
+<li>Optional Point&lt;spacedim&gt; 2: point on second face</li>
+</ul>
+</li>
+<li>TorusBoundary : boundary of a torus :<ul>
+<li>Optional double 1 : radius 1</li>
+<li>Optional double 2 : radius 2</li>
+</ul>
+</li>
+<li>ArclengthProjectionLineManifold:file.iges/step : interface to CAD file:<ul>
+<li>Optional double 1 : scale to apply to input CAD file</li>
+</ul>
+</li>
+<li>ArclengthProjectionLineManifold:file.iges/step : interface to CAD file:<ul>
+<li>Optional double 1 : scale to apply to input CAD file</li>
+</ul>
+</li>
+<li>DirectionalProjectionBoundary:file.iges/step : interface to CAD file:<ul>
+<li>Optional double 1 : scale to apply to input CAD file</li>
+<li>Optional Point&lt;spacedim&gt; 1: direction of projection</li>
+</ul>
+</li>
+<li>NormalProjectionBoundary:file.iges/step : interface to CAD file:<ul>
+<li>Optional double 1 : scale to apply to input CAD file</li>
+</ul>
+</li>
+<li>NormalToMeshProjectionBoundary:file.iges/step : interface to CAD file:<ul>
+<li>Optional double 1 : scale to apply to input CAD file </li>
+</ul>
+</li>
+</ul>
+
+<p>Definition at line <a class="el" href="parsed__grid__generator_8cc_source.html#l00916">916</a> of file <a class="el" href="parsed__grid__generator_8cc_source.html">parsed_grid_generator.cc</a>.</p>
 
 </div>
 </div>
@@ -667,7 +804,7 @@ template&lt;int dim, int spacedim&gt; </div>
 template&lt;int dim, int spacedim&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname"><a class="elRef" doxygen="/Users/heltai/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classTriangulation.html">Triangulation</a>&lt; dim, spacedim &gt; * <a class="el" href="class_parsed_grid_generator.html">ParsedGridGenerator</a>&lt; dim, spacedim &gt;::serial </td>
+          <td class="memname">Triangulation&lt; dim, spacedim &gt; * <a class="el" href="class_parsed_grid_generator.html">ParsedGridGenerator</a>&lt; dim, spacedim &gt;::serial </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -675,10 +812,10 @@ template&lt;int dim, int spacedim&gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p>Return a pointer to a newly created serial <a class="elRef" doxygen="/Users/heltai/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classTriangulation.html">Triangulation</a>. </p>
+<p>Return a pointer to a newly created serial Triangulation. </p>
 <p>It will throw an exception if called before any parsing has occured. It is the user's responsability to destroy the created grid once it is no longer needed. </p>
 
-<p>Definition at line <a class="el" href="parsed__grid__generator_8cc_source.html#l00293">293</a> of file <a class="el" href="parsed__grid__generator_8cc_source.html">parsed_grid_generator.cc</a>.</p>
+<p>Definition at line <a class="el" href="parsed__grid__generator_8cc_source.html#l00373">373</a> of file <a class="el" href="parsed__grid__generator_8cc_source.html">parsed_grid_generator.cc</a>.</p>
 
 </div>
 </div>
@@ -691,7 +828,7 @@ template&lt;int dim, int spacedim&gt; </div>
         <tr>
           <td class="memname">void <a class="el" href="class_parsed_grid_generator.html">ParsedGridGenerator</a>&lt; dim, spacedim &gt;::write </td>
           <td>(</td>
-          <td class="paramtype">const <a class="elRef" doxygen="/Users/heltai/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classTriangulation.html">Triangulation</a>&lt; dim, spacedim &gt; &amp;&#160;</td>
+          <td class="paramtype">const Triangulation&lt; dim, spacedim &gt; &amp;&#160;</td>
           <td class="paramname"><em>tria</em>, </td>
         </tr>
         <tr>
@@ -708,10 +845,37 @@ template&lt;int dim, int spacedim&gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p>Write the given <a class="elRef" doxygen="/Users/heltai/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classTriangulation.html">Triangulation</a> to the output file specified in <code>Output file name</code>, or in the optional file name. </p>
-<p>If no <code>Output file name</code> is given and filename is the empty string, this function does nothing. If an output file name is provided (either in the input file, or as an argument to this function), then this function will call the appropriate <a class="elRef" doxygen="/Users/heltai/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classGridOut.html">GridOut</a> method according to the extension of the file name. </p>
+<p>Write the given Triangulation to the output file specified in <code>Output file name</code>, or in the optional file name. </p>
+<p>If no <code>Output file name</code> is given and filename is the empty string, this function does nothing. If an output file name is provided (either in the input file, or as an argument to this function), then this function will call the appropriate GridOut method according to the extension of the file name. </p>
 
-<p>Definition at line <a class="el" href="parsed__grid__generator_8cc_source.html#l00643">643</a> of file <a class="el" href="parsed__grid__generator_8cc_source.html">parsed_grid_generator.cc</a>.</p>
+<p>Definition at line <a class="el" href="parsed__grid__generator_8cc_source.html#l00933">933</a> of file <a class="el" href="parsed__grid__generator_8cc_source.html">parsed_grid_generator.cc</a>.</p>
+
+</div>
+</div>
+<h2 class="groupheader">Friends And Related Function Documentation</h2>
+<a class="anchor" id="ad4f6b71019a69b2d0034475a69cc3791"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;int dim, int spacedim = dim&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">friend struct <a class="el" href="struct_p_g_g_helper.html">PGGHelper</a></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">friend</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Helper function to create grids. </p>
+
+<p>Definition at line <a class="el" href="parsed__grid__generator_8h_source.html#l00520">520</a> of file <a class="el" href="parsed__grid__generator_8h_source.html">parsed_grid_generator.h</a>.</p>
 
 </div>
 </div>
@@ -738,7 +902,116 @@ template&lt;int dim, int spacedim = dim&gt; </div>
 
 <p>For all the internally generated meshes that support it, turn on colorizing. </p>
 
-<p>Definition at line <a class="el" href="parsed__grid__generator_8h_source.html#l00372">372</a> of file <a class="el" href="parsed__grid__generator_8h_source.html">parsed_grid_generator.h</a>.</p>
+<p>Definition at line <a class="el" href="parsed__grid__generator_8h_source.html#l00461">461</a> of file <a class="el" href="parsed__grid__generator_8h_source.html">parsed_grid_generator.h</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="acd1da61d01df6b0cba53a773f4bfc446"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;int dim, int spacedim = dim&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool <a class="el" href="class_parsed_grid_generator.html">ParsedGridGenerator</a>&lt; dim, spacedim &gt;::copy_boundary_to_manifold_ids</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Copy boundary ids to manifold ids. </p>
+<p>If set to true, boundary ids will be copied over manifold ids on the newly created triangulation. </p>
+
+<p>Definition at line <a class="el" href="parsed__grid__generator_8h_source.html#l00482">482</a> of file <a class="el" href="parsed__grid__generator_8h_source.html">parsed_grid_generator.h</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ad46fa53ccce27314dc57f3253628223d"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;int dim, int spacedim = dim&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool <a class="el" href="class_parsed_grid_generator.html">ParsedGridGenerator</a>&lt; dim, spacedim &gt;::copy_material_to_manifold_ids</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Copy material ids to manifold ids. </p>
+<p>If set to true, material ids will be copied over manifold ids on the newly created triangulation. </p>
+
+<p>Definition at line <a class="el" href="parsed__grid__generator_8h_source.html#l00489">489</a> of file <a class="el" href="parsed__grid__generator_8h_source.html">parsed_grid_generator.h</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a33f3e015121a8937b6fb693fe2dd6526"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;int dim, int spacedim = dim&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool <a class="el" href="class_parsed_grid_generator.html">ParsedGridGenerator</a>&lt; dim, spacedim &gt;::create_default_manifolds</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Create default manifold descriptors. </p>
+<p>If set to true, boundary ids will be copied over manifold ids on the newly created triangulation (independently on the value of the variable copy_boundary_to_manifold_ids, and for each triangulation where we know how to create and associate their manifolds, we create them and associate them to the newly created triangulation.</p>
+<p>This option produces different associations depending on the colorize parameter. The created manifolds will be compatible with the triangulation and the colorize parameter used. </p>
+
+<p>Definition at line <a class="el" href="parsed__grid__generator_8h_source.html#l00475">475</a> of file <a class="el" href="parsed__grid__generator_8h_source.html">parsed_grid_generator.h</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ad8268e5d07e66020e81aea813923ba09"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;int dim, int spacedim = dim&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::string <a class="el" href="class_parsed_grid_generator.html">ParsedGridGenerator</a>&lt; dim, spacedim &gt;::default_manifold_descriptors</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Default Manifold descriptors. </p>
+<p>This is filled when creating the grid, and is later translated into actual manifolds. See the documentation of the method <a class="el" href="class_parsed_grid_generator.html#acd485adc1730ef529937ff2e966dadd2" title="Take str_manifold_descriptors and fill manifold_descriptors with ids and manifolds. ">parse_manifold_descriptors()</a> for an explanation of the format to be used in the parameter file. </p>
+
+<p>Definition at line <a class="el" href="parsed__grid__generator_8h_source.html#l00415">415</a> of file <a class="el" href="parsed__grid__generator_8h_source.html">parsed_grid_generator.h</a>.</p>
 
 </div>
 </div>
@@ -765,7 +1038,7 @@ template&lt;int dim, int spacedim = dim&gt; </div>
 <p>Optional double argument. </p>
 <p>First option. </p>
 
-<p>Definition at line <a class="el" href="parsed__grid__generator_8h_source.html#l00336">336</a> of file <a class="el" href="parsed__grid__generator_8h_source.html">parsed_grid_generator.h</a>.</p>
+<p>Definition at line <a class="el" href="parsed__grid__generator_8h_source.html#l00425">425</a> of file <a class="el" href="parsed__grid__generator_8h_source.html">parsed_grid_generator.h</a>.</p>
 
 </div>
 </div>
@@ -792,7 +1065,7 @@ template&lt;int dim, int spacedim = dim&gt; </div>
 <p>Optional double argument. </p>
 <p>Third option. </p>
 
-<p>Definition at line <a class="el" href="parsed__grid__generator_8h_source.html#l00346">346</a> of file <a class="el" href="parsed__grid__generator_8h_source.html">parsed_grid_generator.h</a>.</p>
+<p>Definition at line <a class="el" href="parsed__grid__generator_8h_source.html#l00435">435</a> of file <a class="el" href="parsed__grid__generator_8h_source.html">parsed_grid_generator.h</a>.</p>
 
 </div>
 </div>
@@ -819,7 +1092,7 @@ template&lt;int dim, int spacedim = dim&gt; </div>
 <p>Optional double argument. </p>
 <p>Second option. </p>
 
-<p>Definition at line <a class="el" href="parsed__grid__generator_8h_source.html#l00341">341</a> of file <a class="el" href="parsed__grid__generator_8h_source.html">parsed_grid_generator.h</a>.</p>
+<p>Definition at line <a class="el" href="parsed__grid__generator_8h_source.html#l00430">430</a> of file <a class="el" href="parsed__grid__generator_8h_source.html">parsed_grid_generator.h</a>.</p>
 
 </div>
 </div>
@@ -846,7 +1119,7 @@ template&lt;int dim, int spacedim = dim&gt; </div>
 <p>The grid to generate. </p>
 <p>Use the name "file" to read from a file. </p>
 
-<p>Definition at line <a class="el" href="parsed__grid__generator_8h_source.html#l00331">331</a> of file <a class="el" href="parsed__grid__generator_8h_source.html">parsed_grid_generator.h</a>.</p>
+<p>Definition at line <a class="el" href="parsed__grid__generator_8h_source.html#l00399">399</a> of file <a class="el" href="parsed__grid__generator_8h_source.html">parsed_grid_generator.h</a>.</p>
 
 </div>
 </div>
@@ -872,7 +1145,34 @@ template&lt;int dim, int spacedim = dim&gt; </div>
 
 <p>Input grid file name. </p>
 
-<p>Definition at line <a class="el" href="parsed__grid__generator_8h_source.html#l00382">382</a> of file <a class="el" href="parsed__grid__generator_8h_source.html">parsed_grid_generator.h</a>.</p>
+<p>Definition at line <a class="el" href="parsed__grid__generator_8h_source.html#l00499">499</a> of file <a class="el" href="parsed__grid__generator_8h_source.html">parsed_grid_generator.h</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a1461b2e5d0c40dec126162c79f304ef6"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;int dim, int spacedim = dim&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::map&lt;types::manifold_id, shared_ptr&lt;Manifold&lt;dim,spacedim&gt; &gt; &gt; <a class="el" href="class_parsed_grid_generator.html">ParsedGridGenerator</a>&lt; dim, spacedim &gt;::manifold_descriptors</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>A map of Manifold associated to the given manifold_ids. </p>
+<p> </p>
+
+<p>Definition at line <a class="el" href="parsed__grid__generator_8h_source.html#l00420">420</a> of file <a class="el" href="parsed__grid__generator_8h_source.html">parsed_grid_generator.h</a>.</p>
 
 </div>
 </div>
@@ -896,10 +1196,37 @@ template&lt;int dim, int spacedim = dim&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Mesh smoothing to apply to the newly created <a class="elRef" doxygen="/Users/heltai/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classTriangulation.html">Triangulation</a>. </p>
+<p>Mesh smoothing to apply to the newly created Triangulation. </p>
 <p>This variable is only used if the method <a class="el" href="class_parsed_grid_generator.html#a55dea3a69b881ffee354890b771587d9" title="Return a pointer to a newly created serial Triangulation. ">serial()</a> is called. For the method parallel(), mesh smoothing is not yet supported by <a href="http://www.dealii.org"><code>deal.II</code></a>. </p>
 
-<p>Definition at line <a class="el" href="parsed__grid__generator_8h_source.html#l00326">326</a> of file <a class="el" href="parsed__grid__generator_8h_source.html">parsed_grid_generator.h</a>.</p>
+<p>Definition at line <a class="el" href="parsed__grid__generator_8h_source.html#l00394">394</a> of file <a class="el" href="parsed__grid__generator_8h_source.html">parsed_grid_generator.h</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="adbdc1bf3d911f6b96450e97b59a0fcd1"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;int dim, int spacedim = dim&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::string <a class="el" href="class_parsed_grid_generator.html">ParsedGridGenerator</a>&lt; dim, spacedim &gt;::optional_manifold_descriptors</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Optional Manifold descriptors. </p>
+<p>These are the ones defined by the parameter option "Manifold descriptors". See the documentation of the method <a class="el" href="class_parsed_grid_generator.html#acd485adc1730ef529937ff2e966dadd2" title="Take str_manifold_descriptors and fill manifold_descriptors with ids and manifolds. ">parse_manifold_descriptors()</a> for an explanation of the format to be used in the parameter file. </p>
+
+<p>Definition at line <a class="el" href="parsed__grid__generator_8h_source.html#l00407">407</a> of file <a class="el" href="parsed__grid__generator_8h_source.html">parsed_grid_generator.h</a>.</p>
 
 </div>
 </div>
@@ -925,7 +1252,7 @@ template&lt;int dim, int spacedim = dim&gt; </div>
 
 <p>Output grid file name. </p>
 
-<p>Definition at line <a class="el" href="parsed__grid__generator_8h_source.html#l00387">387</a> of file <a class="el" href="parsed__grid__generator_8h_source.html">parsed_grid_generator.h</a>.</p>
+<p>Definition at line <a class="el" href="parsed__grid__generator_8h_source.html#l00504">504</a> of file <a class="el" href="parsed__grid__generator_8h_source.html">parsed_grid_generator.h</a>.</p>
 
 </div>
 </div>
@@ -939,7 +1266,7 @@ template&lt;int dim, int spacedim = dim&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="elRef" doxygen="/Users/heltai/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classPoint.html">Point</a>&lt;spacedim&gt; <a class="el" href="class_parsed_grid_generator.html">ParsedGridGenerator</a>&lt; dim, spacedim &gt;::point_option_one</td>
+          <td class="memname">Point&lt;spacedim&gt; <a class="el" href="class_parsed_grid_generator.html">ParsedGridGenerator</a>&lt; dim, spacedim &gt;::point_option_one</td>
         </tr>
       </table>
   </td>
@@ -949,10 +1276,10 @@ template&lt;int dim, int spacedim = dim&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Optional <a class="elRef" doxygen="/Users/heltai/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classPoint.html">Point</a> argument. </p>
+<p>Optional Point argument. </p>
 <p>First Option. </p>
 
-<p>Definition at line <a class="el" href="parsed__grid__generator_8h_source.html#l00351">351</a> of file <a class="el" href="parsed__grid__generator_8h_source.html">parsed_grid_generator.h</a>.</p>
+<p>Definition at line <a class="el" href="parsed__grid__generator_8h_source.html#l00440">440</a> of file <a class="el" href="parsed__grid__generator_8h_source.html">parsed_grid_generator.h</a>.</p>
 
 </div>
 </div>
@@ -966,7 +1293,7 @@ template&lt;int dim, int spacedim = dim&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="elRef" doxygen="/Users/heltai/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classPoint.html">Point</a>&lt;spacedim&gt; <a class="el" href="class_parsed_grid_generator.html">ParsedGridGenerator</a>&lt; dim, spacedim &gt;::point_option_two</td>
+          <td class="memname">Point&lt;spacedim&gt; <a class="el" href="class_parsed_grid_generator.html">ParsedGridGenerator</a>&lt; dim, spacedim &gt;::point_option_two</td>
         </tr>
       </table>
   </td>
@@ -976,10 +1303,10 @@ template&lt;int dim, int spacedim = dim&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Optional <a class="elRef" doxygen="/Users/heltai/deal2lkit/build/deal.tag:http://www.dealii.org/developer/doxygen/deal.II/" href="http://www.dealii.org/developer/doxygen/deal.II/classPoint.html">Point</a> argument. </p>
+<p>Optional Point argument. </p>
 <p>Second Option. </p>
 
-<p>Definition at line <a class="el" href="parsed__grid__generator_8h_source.html#l00356">356</a> of file <a class="el" href="parsed__grid__generator_8h_source.html">parsed_grid_generator.h</a>.</p>
+<p>Definition at line <a class="el" href="parsed__grid__generator_8h_source.html#l00445">445</a> of file <a class="el" href="parsed__grid__generator_8h_source.html">parsed_grid_generator.h</a>.</p>
 
 </div>
 </div>
@@ -1003,7 +1330,7 @@ template&lt;int dim, int spacedim = dim&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="parsed__grid__generator_8h_source.html#l00392">392</a> of file <a class="el" href="parsed__grid__generator_8h_source.html">parsed_grid_generator.h</a>.</p>
+<p>Definition at line <a class="el" href="parsed__grid__generator_8h_source.html#l00509">509</a> of file <a class="el" href="parsed__grid__generator_8h_source.html">parsed_grid_generator.h</a>.</p>
 
 </div>
 </div>
@@ -1027,7 +1354,7 @@ template&lt;int dim, int spacedim = dim&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="parsed__grid__generator_8h_source.html#l00393">393</a> of file <a class="el" href="parsed__grid__generator_8h_source.html">parsed_grid_generator.h</a>.</p>
+<p>Definition at line <a class="el" href="parsed__grid__generator_8h_source.html#l00510">510</a> of file <a class="el" href="parsed__grid__generator_8h_source.html">parsed_grid_generator.h</a>.</p>
 
 </div>
 </div>
@@ -1051,7 +1378,7 @@ template&lt;int dim, int spacedim = dim&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="parsed__grid__generator_8h_source.html#l00394">394</a> of file <a class="el" href="parsed__grid__generator_8h_source.html">parsed_grid_generator.h</a>.</p>
+<p>Definition at line <a class="el" href="parsed__grid__generator_8h_source.html#l00511">511</a> of file <a class="el" href="parsed__grid__generator_8h_source.html">parsed_grid_generator.h</a>.</p>
 
 </div>
 </div>
@@ -1075,7 +1402,7 @@ template&lt;int dim, int spacedim = dim&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="parsed__grid__generator_8h_source.html#l00395">395</a> of file <a class="el" href="parsed__grid__generator_8h_source.html">parsed_grid_generator.h</a>.</p>
+<p>Definition at line <a class="el" href="parsed__grid__generator_8h_source.html#l00512">512</a> of file <a class="el" href="parsed__grid__generator_8h_source.html">parsed_grid_generator.h</a>.</p>
 
 </div>
 </div>
@@ -1099,7 +1426,7 @@ template&lt;int dim, int spacedim = dim&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="parsed__grid__generator_8h_source.html#l00390">390</a> of file <a class="el" href="parsed__grid__generator_8h_source.html">parsed_grid_generator.h</a>.</p>
+<p>Definition at line <a class="el" href="parsed__grid__generator_8h_source.html#l00507">507</a> of file <a class="el" href="parsed__grid__generator_8h_source.html">parsed_grid_generator.h</a>.</p>
 
 </div>
 </div>
@@ -1123,7 +1450,7 @@ template&lt;int dim, int spacedim = dim&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="parsed__grid__generator_8h_source.html#l00391">391</a> of file <a class="el" href="parsed__grid__generator_8h_source.html">parsed_grid_generator.h</a>.</p>
+<p>Definition at line <a class="el" href="parsed__grid__generator_8h_source.html#l00508">508</a> of file <a class="el" href="parsed__grid__generator_8h_source.html">parsed_grid_generator.h</a>.</p>
 
 </div>
 </div>
@@ -1147,7 +1474,7 @@ template&lt;int dim, int spacedim = dim&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="parsed__grid__generator_8h_source.html#l00396">396</a> of file <a class="el" href="parsed__grid__generator_8h_source.html">parsed_grid_generator.h</a>.</p>
+<p>Definition at line <a class="el" href="parsed__grid__generator_8h_source.html#l00513">513</a> of file <a class="el" href="parsed__grid__generator_8h_source.html">parsed_grid_generator.h</a>.</p>
 
 </div>
 </div>
@@ -1171,7 +1498,7 @@ template&lt;int dim, int spacedim = dim&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="parsed__grid__generator_8h_source.html#l00397">397</a> of file <a class="el" href="parsed__grid__generator_8h_source.html">parsed_grid_generator.h</a>.</p>
+<p>Definition at line <a class="el" href="parsed__grid__generator_8h_source.html#l00514">514</a> of file <a class="el" href="parsed__grid__generator_8h_source.html">parsed_grid_generator.h</a>.</p>
 
 </div>
 </div>
@@ -1195,7 +1522,7 @@ template&lt;int dim, int spacedim = dim&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="parsed__grid__generator_8h_source.html#l00398">398</a> of file <a class="el" href="parsed__grid__generator_8h_source.html">parsed_grid_generator.h</a>.</p>
+<p>Definition at line <a class="el" href="parsed__grid__generator_8h_source.html#l00515">515</a> of file <a class="el" href="parsed__grid__generator_8h_source.html">parsed_grid_generator.h</a>.</p>
 
 </div>
 </div>
@@ -1222,7 +1549,7 @@ template&lt;int dim, int spacedim = dim&gt; </div>
 <p>Optional int argument. </p>
 <p>First Option. </p>
 
-<p>Definition at line <a class="el" href="parsed__grid__generator_8h_source.html#l00361">361</a> of file <a class="el" href="parsed__grid__generator_8h_source.html">parsed_grid_generator.h</a>.</p>
+<p>Definition at line <a class="el" href="parsed__grid__generator_8h_source.html#l00450">450</a> of file <a class="el" href="parsed__grid__generator_8h_source.html">parsed_grid_generator.h</a>.</p>
 
 </div>
 </div>
@@ -1249,7 +1576,7 @@ template&lt;int dim, int spacedim = dim&gt; </div>
 <p>Optional int argument. </p>
 <p>First Option. </p>
 
-<p>Definition at line <a class="el" href="parsed__grid__generator_8h_source.html#l00366">366</a> of file <a class="el" href="parsed__grid__generator_8h_source.html">parsed_grid_generator.h</a>.</p>
+<p>Definition at line <a class="el" href="parsed__grid__generator_8h_source.html#l00455">455</a> of file <a class="el" href="parsed__grid__generator_8h_source.html">parsed_grid_generator.h</a>.</p>
 
 </div>
 </div>
@@ -1275,7 +1602,7 @@ template&lt;int dim, int spacedim = dim&gt; </div>
 
 <p>Optional vector of integers. </p>
 
-<p>Definition at line <a class="el" href="parsed__grid__generator_8h_source.html#l00377">377</a> of file <a class="el" href="parsed__grid__generator_8h_source.html">parsed_grid_generator.h</a>.</p>
+<p>Definition at line <a class="el" href="parsed__grid__generator_8h_source.html#l00494">494</a> of file <a class="el" href="parsed__grid__generator_8h_source.html">parsed_grid_generator.h</a>.</p>
 
 </div>
 </div>
@@ -1289,7 +1616,7 @@ template&lt;int dim, int spacedim = dim&gt; </div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="class_parsed_grid_generator.html">ParsedGridGenerator</a></li>
-    <li class="footer">Generated on Wed Nov 25 2015 00:15:58 for deal2lkit: A ToolKit library for Deal.II by
+    <li class="footer">Generated on Sat Feb 27 2016 18:34:33 for deal2lkit: A ToolKit library for Deal.II by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.10 </li>
   </ul>
