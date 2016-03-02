@@ -108,12 +108,8 @@ IF(NOT D2K_COMPONENT_PACKAGE)
     )
 ENDIF()
 
-#
-# Provide an "info" target to print a help message:
-#
-IF(CMAKE_GENERATOR MATCHES "Ninja")
-  SET(_make_command "ninja")
-ELSE()
-  SET(_make_command "make")
-ENDIF()
 
+ADD_CUSTOM_TARGET(indent
+  WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+  COMMAND ./scripts/indent
+  )
