@@ -182,7 +182,7 @@ void ParsedSolver<VECTOR>::declare_parameters(ParameterHandler &prm)
 
   ReductionControl::declare_parameters(prm);
 
-  prm.set("Max steps", max_iterations);
+  prm.set("Max steps", std::to_string(max_iterations));
   prm.set("Reduction", reduction);
 }
 
