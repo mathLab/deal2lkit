@@ -81,7 +81,7 @@ public:
    */
   ParsedSolver(const std::string &name="",
                const std::string &default_solver="cg",
-               const long int iter=1000,
+               const unsigned int iter=1000,
                const double reduction=1e-8,
                const LinearOperator<VECTOR> &op=
                  identity_operator<VECTOR>(default_reinit<VECTOR>()),
@@ -138,7 +138,7 @@ private:
    * Default number of maximum iterations required to succesfully
    * complete a solution step.
    */
-  long int max_iterations;
+  unsigned int max_iterations;
 
   /**
    * Default reduction required to succesfully complete a solution
@@ -159,7 +159,7 @@ private:
 template<typename VECTOR>
 ParsedSolver<VECTOR>::ParsedSolver(const std::string &name,
                                    const std::string &default_solver,
-                                   const long int default_iter,
+                                   const unsigned int default_iter,
                                    const double default_reduction,
                                    const LinearOperator<VECTOR> &op,
                                    const LinearOperator<VECTOR> &prec) :
@@ -182,7 +182,7 @@ void ParsedSolver<VECTOR>::declare_parameters(ParameterHandler &prm)
 
   ReductionControl::declare_parameters(prm);
 
-  prm.set("Max steps", max_iterations);
+  prm.set("Max steps", std::to_string(max_iterations));
   prm.set("Reduction", reduction);
 }
 
