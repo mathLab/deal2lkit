@@ -17,6 +17,7 @@
 #include <deal2lkit/utilities.h>
 #include <deal.II/fe/fe_tools.h>
 
+#include <algorithm> // std::find
 
 D2K_NAMESPACE_OPEN
 
@@ -124,6 +125,23 @@ std::vector<unsigned int> ParsedFiniteElement<dim,spacedim>::get_component_block
   return component_blocks;
 }
 
+template<int dim, int spacedim>
+unsigned int ParsedFiniteElement<dim,spacedim>::get_component_position(const std::string &var) const
+{
+  unsigned int pos_counter = 0;
+  auto pos_it = std::find (component_names.begin(), component_names.end(), var);
+  Assert(pos_it != component_names.end(),
+         ExcInternalError("Component not found!"));
+  return pos_it - component_names.begin();
+}
+
+template<int dim, int spacedim>
+bool ParsedFiniteElement<dim,spacedim>::is_vectorial(const std::string &var) const
+{
+  auto pos_it = std::find (component_names.begin(), component_names.end(), var);
+  pos_it++;
+  return (*pos_it == var);
+}
 
 D2K_NAMESPACE_CLOSE
 

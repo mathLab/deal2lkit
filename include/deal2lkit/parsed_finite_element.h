@@ -175,6 +175,16 @@ public:
    */
   unsigned int n_blocks() const;
 
+  /**
+   * Return the first occurence of @p var in @p default_component_names.
+   * Remark: this is the value required by FEValuesExtractors.
+   */
+  unsigned int get_component_position(const std::string &var) const;
+
+  /**
+   * Return @var true if @p var is vectorial, @var false otherwise.
+   */
+  bool is_vectorial(const std::string &var) const;
 
 protected:
   /**
