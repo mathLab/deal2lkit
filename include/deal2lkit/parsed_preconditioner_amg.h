@@ -13,8 +13,8 @@
 //
 //-----------------------------------------------------------
 
-#ifndef _d2k_parsed_preconditioner_h
-#define _d2k_parsed_preconditioner_h
+#ifndef _d2k_parsed_preconditioner_amg_h
+#define _d2k_parsed_preconditioner_amg_h
 
 #include <deal2lkit/config.h>
 #include <deal.II/base/config.h>
@@ -40,7 +40,7 @@ public:
   /**
    * Constructor. Build the preconditioner of a matrix using AMG.
    */
-  ParsedAMGPreconditioner(const std::string &name = "",
+  ParsedAMGPreconditioner(const std::string &name = "AMG Preconditioner",
                           const bool &elliptic = true,
                           const bool &higher_order_elements = false,
                           const unsigned int &n_cycles = 1,
@@ -60,12 +60,19 @@ public:
   virtual void declare_parameters(ParameterHandler &prm);
 
   /**
-   * Initialize the preconditioner using @p matrix.
+   * Initialize the preconditioner using @p matrix. Constant modes are not computed.
+   */
+  template<typename Matrix>
+  void initialize_preconditioner(const Matrix &matrix);
+
+  /**
+   * Initialize the preconditioner using a @p matrix, a ParsedFiniteElement @p fe,
+   * and a DoFHandler @p dh. This is the variant for constant modes.
    */
   template<int dim, int spacedim=dim, typename Matrix>
-  void initialize_preconditioner(const ParsedFiniteElement<dim, spacedim > &fe,
-                                 const DoFHandler<dim, spacedim > &dh,
-                                 const Matrix &matrix);
+  void initialize_preconditioner(const Matrix &matrix,
+                                 const ParsedFiniteElement<dim, spacedim > &fe,
+                                 const DoFHandler<dim, spacedim > &dh);
 
   using TrilinosWrappers::PreconditionAMG::initialize;
 
@@ -160,65 +167,7 @@ private:
   std::string coarse_type;
 };
 
-/**
- * A parsed Jacobi preconditioner which uses parameter files to choose
- * between different options. This object is a
- * TrilinosWrappers::PreconditionJacobu which can be called in place
- * of the preconditioner.
- */
-class ParsedJacobiPreconditioner : public ParameterAcceptor, public TrilinosWrappers::PreconditionJacobi
-{
-public:
-  /**
-   * Constructor. Build the preconditioner of a matrix using Jacobi.
-   */
-  ParsedJacobiPreconditioner(const std::string &name = "",
-                             const double &omega = 1,
-                             const double &min_diagonal = 0,
-                             const unsigned int &n_sweeps = 1
-                            );
-
-  /**
-   * Declare preconditioner options.
-   */
-  virtual void declare_parameters(ParameterHandler &prm);
-
-  /**
-   * Initialize the preconditioner using @p matrix.
-   */
-  template<int dim, int spacedim=dim, typename Matrix>
-  void initialize_preconditioner(const ParsedFiniteElement<dim, spacedim > &fe,
-                                 const DoFHandler<dim, spacedim > &dh,
-                                 const Matrix &matrix);
-
-  using TrilinosWrappers::PreconditionJacobi::initialize;
-
-private:
-
-  /**
-   * This specifies the relaxation parameter in the Jacobi
-   * preconditioner.
-   */
-  double omega;
-
-  /**
-   * This specifies the minimum value the diagonal elements should
-   * have. This might be necessary when the Jacobi preconditioner is
-   * used on matrices with zero diagonal elements. In that case, a
-   * straight- forward application would not be possible since we
-   * would divide by zero.
-   */
-  double min_diagonal;
-
-  /**
-   * Sets how many times the given operation should be applied during
-   * the vmult() operation.
-   */
-  unsigned int n_sweeps;
-};
-
 D2K_NAMESPACE_CLOSE
-
 
 #endif
 

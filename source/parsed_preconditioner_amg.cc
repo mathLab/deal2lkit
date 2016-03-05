@@ -13,7 +13,7 @@
 //
 //-----------------------------------------------------------
 
-#include <deal2lkit/parsed_preconditioner.h>
+#include <deal2lkit/parsed_preconditioner_amg.h>
 
 #include <deal.II/dofs/dof_tools.h>
 
@@ -135,10 +135,29 @@ void ParsedAMGPreconditioner::declare_parameters(ParameterHandler &prm)
                 "settings as for the smoother type are possible.");
 }
 
+template<typename Matrix>
+void ParsedAMGPreconditioner::initialize_preconditioner( const Matrix &matrix)
+{
+  TrilinosWrappers::PreconditionAMG::AdditionalData data;
+
+  data.elliptic = elliptic;
+  data.higher_order_elements = higher_order_elements;
+  data.n_cycles = n_cycles;
+  data.w_cycle = w_cycle;
+  data.aggregation_threshold = aggregation_threshold;
+  data.constant_modes = std::vector<std::vector<bool> > (0);
+  data.smoother_sweeps = smoother_sweeps;
+  data.smoother_overlap = smoother_overlap;
+  data.output_details = output_details;
+  data.smoother_type = smoother_type.c_str();
+  data.coarse_type = coarse_type.c_str();
+  this->initialize(matrix, data);
+}
+
 template<int dim, int spacedim, typename Matrix>
-void ParsedAMGPreconditioner::initialize_preconditioner( const ParsedFiniteElement<dim, spacedim> &fe,
-                                                         const DoFHandler<dim, spacedim> &dh,
-                                                         const Matrix &matrix)
+void ParsedAMGPreconditioner::initialize_preconditioner( const Matrix &matrix,
+                                                         const ParsedFiniteElement<dim, spacedim> &fe,
+                                                         const DoFHandler<dim, spacedim> &dh)
 {
   TrilinosWrappers::PreconditionAMG::AdditionalData data;
 
@@ -154,8 +173,8 @@ void ParsedAMGPreconditioner::initialize_preconditioner( const ParsedFiniteEleme
   else
     {
       std::vector< std::vector< bool > >  constant_modes;
-      unsigned int pos = fe.get_component_position(var_const_modes);
-      bool is_vec = fe.is_vectorial(var_const_modes);
+      unsigned int pos = fe.get_first_occurence(var_const_modes);
+      bool is_vec = fe.is_vector(var_const_modes);
       if (is_vec)
         {
           FEValuesExtractors::Vector components(pos);
@@ -178,99 +197,20 @@ void ParsedAMGPreconditioner::initialize_preconditioner( const ParsedFiniteEleme
   this->initialize(matrix, data);
 }
 
-ParsedJacobiPreconditioner::ParsedJacobiPreconditioner(const std::string &name,
-                                                       const double &omega,
-                                                       const double &min_diagonal,
-                                                       const unsigned int &n_sweeps
-                                                      ):
-  ParameterAcceptor(name),
-  PreconditionJacobi(),
-  omega(omega),
-  min_diagonal(min_diagonal),
-  n_sweeps(n_sweeps)
-{}
-
-void ParsedJacobiPreconditioner::declare_parameters(ParameterHandler &prm)
-{
-  add_parameter(prm, &omega, "Omega", std::to_string(omega),
-                Patterns::Double(0.0),
-                "This specifies the relaxation parameter in the Jacobi preconditioner.");
-  add_parameter(prm, &min_diagonal, "Min Diagonal", std::to_string(min_diagonal),
-                Patterns::Double(0.0),
-                "This specifies the minimum value the diagonal elements should\n"
-                "have. This might be necessary when the Jacobi preconditioner is used\n"
-                "on matrices with zero diagonal elements. In that case, a straight-\n"
-                "forward application would not be possible since we would divide by\n"
-                "zero.");
-  add_parameter(prm, &n_sweeps, "Number of sweeps", std::to_string(n_sweeps),
-                Patterns::Integer(0),
-                "Sets how many times the given operation should be applied during the\n"
-                "vmult() operation.");
-}
-
-template<int dim, int spacedim, typename Matrix>
-void ParsedJacobiPreconditioner::initialize_preconditioner( const ParsedFiniteElement<dim, spacedim> &fe,
-                                                            const DoFHandler<dim, spacedim> &dh,
-                                                            const Matrix &matrix)
-{
-  TrilinosWrappers::PreconditionJacobi::AdditionalData data;
-
-  data.omega = omega;
-  data.min_diagonal = min_diagonal;
-  data.n_sweeps = n_sweeps;
-  this->initialize(matrix, data);
-}
 D2K_NAMESPACE_CLOSE
 
-// AMG
 template void deal2lkit::ParsedAMGPreconditioner::initialize_preconditioner<1,1,dealii::TrilinosWrappers::SparseMatrix>(
+  const dealii::TrilinosWrappers::SparseMatrix &,
   const ParsedFiniteElement<1,1> &,
-  const DoFHandler<1,1> &,
-  const dealii::TrilinosWrappers::SparseMatrix &);
-// template void deal2lkit::ParsedAMGPreconditioner::initialize_preconditioner<1,2,dealii::TrilinosWrappers::SparseMatrix>(
-//   const ParsedFiniteElement<1,2> &,
-//   const DoFHandler<1,2> &,
-//   const dealii::TrilinosWrappers::SparseMatrix &);
-// template void deal2lkit::ParsedAMGPreconditioner::initialize_preconditioner<1,3,dealii::TrilinosWrappers::SparseMatrix>(
-//   const ParsedFiniteElement<1,3> &,
-//   const DoFHandler<1,3> &,
-//   const dealii::TrilinosWrappers::SparseMatrix &);
+  const DoFHandler<1,1> &);
 template void deal2lkit::ParsedAMGPreconditioner::initialize_preconditioner<2,2,dealii::TrilinosWrappers::SparseMatrix>(
+  const dealii::TrilinosWrappers::SparseMatrix &,
   const ParsedFiniteElement<2,2> &,
-  const DoFHandler<2,2> &,
-  const dealii::TrilinosWrappers::SparseMatrix &);
-// template void deal2lkit::ParsedAMGPreconditioner::initialize_preconditioner<2,3,dealii::TrilinosWrappers::SparseMatrix>(
-//   const ParsedFiniteElement<2,3> &,
-//   const DoFHandler<2,3> &,
-//   const dealii::TrilinosWrappers::SparseMatrix &);
+  const DoFHandler<2,2> &);
 template void deal2lkit::ParsedAMGPreconditioner::initialize_preconditioner<3,3,dealii::TrilinosWrappers::SparseMatrix>(
+  const dealii::TrilinosWrappers::SparseMatrix &,
   const ParsedFiniteElement<3,3> &,
-  const DoFHandler<3,3> &,
-  const dealii::TrilinosWrappers::SparseMatrix &);
+  const DoFHandler<3,3> &);
 
-// Jacobi
-template void deal2lkit::ParsedJacobiPreconditioner::initialize_preconditioner<1,1,dealii::TrilinosWrappers::SparseMatrix>(
-  const ParsedFiniteElement<1,1> &,
-  const DoFHandler<1,1> &,
-  const dealii::TrilinosWrappers::SparseMatrix &);
-// template void deal2lkit::ParsedJacobiPreconditioner::initialize_preconditioner<1,2,dealii::TrilinosWrappers::SparseMatrix>(
-//   const ParsedFiniteElement<1,2> &,
-//   const DoFHandler<1,2> &,
-//   const dealii::TrilinosWrappers::SparseMatrix &);
-// template void deal2lkit::ParsedJacobiPreconditioner::initialize_preconditioner<1,3,dealii::TrilinosWrappers::SparseMatrix>(
-//   const ParsedFiniteElement<1,3> &,
-//   const DoFHandler<1,3> &,
-//   const dealii::TrilinosWrappers::SparseMatrix &);
-template void deal2lkit::ParsedJacobiPreconditioner::initialize_preconditioner<2,2,dealii::TrilinosWrappers::SparseMatrix>(
-  const ParsedFiniteElement<2,2> &,
-  const DoFHandler<2,2> &,
-  const dealii::TrilinosWrappers::SparseMatrix &);
-// template void deal2lkit::ParsedJacobiPreconditioner::initialize_preconditioner<2,3,dealii::TrilinosWrappers::SparseMatrix>(
-//   const ParsedFiniteElement<2,3> &,
-//   const DoFHandler<2,3> &,
-//   const dealii::TrilinosWrappers::SparseMatrix &);
-template void deal2lkit::ParsedJacobiPreconditioner::initialize_preconditioner<3,3,dealii::TrilinosWrappers::SparseMatrix>(
-  const ParsedFiniteElement<3,3> &,
-  const DoFHandler<3,3> &,
-  const dealii::TrilinosWrappers::SparseMatrix &);
-
+  template void deal2lkit::ParsedAMGPreconditioner::initialize_preconditioner<dealii::TrilinosWrappers::SparseMatrix>(
+    const dealii::TrilinosWrappers::SparseMatrix &);

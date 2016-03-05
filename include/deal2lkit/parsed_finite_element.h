@@ -179,12 +179,12 @@ public:
    * Return the first occurence of @p var in @p default_component_names.
    * Remark: this is the value required by FEValuesExtractors.
    */
-  unsigned int get_component_position(const std::string &var) const;
+  unsigned int get_first_occurence(const std::string &var) const;
 
   /**
-   * Return @var true if @p var is vectorial, @var false otherwise.
+   * Return @var true if @p var is vector, @var false otherwise.
    */
-  bool is_vectorial(const std::string &var) const;
+  bool is_vector(const std::string &var) const;
 
 protected:
   /**

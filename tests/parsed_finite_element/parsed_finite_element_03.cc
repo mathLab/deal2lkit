@@ -36,10 +36,10 @@ int main ()
           << ", N blocks: " << fe_builder.n_blocks() << std::endl
           << "Components: " << fe_builder.get_component_names()
           << ", Blocks: " << fe_builder.get_block_names() << std::endl
-          << " position of u: " << fe_builder.get_component_position("u") << std::endl
-          << " position of p: " << fe_builder.get_component_position("p") << std::endl
-          << " is u vectorial?: " << fe_builder.is_vectorial("u") << std::endl
-          << " is p vectorial?: " << fe_builder.is_vectorial("p") << std::endl;
+          << " position of u: " << fe_builder.get_first_occurence("u") << std::endl
+          << " position of p: " << fe_builder.get_first_occurence("p") << std::endl
+          << " is u vector?: " << fe_builder.is_vector("u") << std::endl
+          << " is p vector?: " << fe_builder.is_vector("p") << std::endl;
   std::vector<unsigned int> b = fe_builder.get_component_blocks();
   deallog << "Component blocks: " << b[0];
   for (unsigned int i=1; i<fe_builder.n_components(); ++i)
