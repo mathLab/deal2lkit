@@ -139,6 +139,8 @@ template<int dim, int spacedim>
 bool ParsedFiniteElement<dim,spacedim>::is_vectorial(const std::string &var) const
 {
   auto pos_it = std::find (component_names.begin(), component_names.end(), var);
+  Assert(pos_it != component_names.end(),
+         ExcInternalError("Component not found!"));
   pos_it++;
   return (*pos_it == var);
 }
