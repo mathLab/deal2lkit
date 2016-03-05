@@ -1,0 +1,257 @@
+//-----------------------------------------------------------
+//
+//    Copyright (C) 2015 by the deal2lkit authors
+//
+//    This file is part of the deal2lkit library.
+//
+//    The deal2lkit library is free software; you can use it, redistribute
+//    it, and/or modify it under the terms of the GNU Lesser General
+//    Public License as published by the Free Software Foundation; either
+//    version 2.1 of the License, or (at your option) any later version.
+//    The full text of the license can be found in the file LICENSE at
+//    the top level of the deal2lkit distribution.
+//
+//-----------------------------------------------------------
+
+#include <deal2lkit/parsed_preconditioner.h>
+
+#include <deal.II/dofs/dof_tools.h>
+
+
+D2K_NAMESPACE_OPEN
+
+ParsedAMGPreconditioner::ParsedAMGPreconditioner( const std::string &name,
+                                                  const bool &elliptic,
+                                                  const bool &higher_order_elements,
+                                                  const unsigned int &n_cycles,
+                                                  const bool &w_cycle,
+                                                  const double &aggregation_threshold,
+                                                  const std::string &var_const_modes,
+                                                  const unsigned int &smoother_sweeps,
+                                                  const unsigned int &smoother_overlap,
+                                                  const bool &output_details,
+                                                  const std::string &smoother_type,
+                                                  const std::string &coarse_type
+                                                ) :
+  ParameterAcceptor(name),
+  PreconditionAMG(),
+  elliptic(elliptic),
+  higher_order_elements(higher_order_elements),
+  n_cycles(n_cycles),
+  w_cycle(w_cycle),
+  aggregation_threshold(aggregation_threshold),
+  var_const_modes(var_const_modes),
+  smoother_sweeps(smoother_sweeps),
+  smoother_overlap(smoother_overlap),
+  output_details(output_details),
+  smoother_type(smoother_type),
+  coarse_type(coarse_type)
+{}
+
+void ParsedAMGPreconditioner::declare_parameters(ParameterHandler &prm)
+{
+  add_parameter(prm, &elliptic, "Elliptic", elliptic ? "true":"false",
+                Patterns::Bool(),
+                "Determines whether the AMG preconditioner should be optimized for elliptic problems (ML option smoothed aggregation SA, using a Chebyshev smoother) or for non-elliptic problems (ML option non-symmetric smoothed aggregation NSSA, smoother is SSOR with  underrelaxation");
+
+  add_parameter(prm, &higher_order_elements, "High Order Elements", higher_order_elements ? "true":"false",
+                Patterns::Bool(),
+                "Determines whether the matrix that the preconditioner is built upon is generated from linear or higher-order elements.");
+
+  add_parameter(prm, &n_cycles, "Number of cycles", std::to_string(n_cycles),
+                Patterns::Integer(0),
+                "Defines how many multigrid cycles should be performed by the preconditioner.");
+
+  add_parameter(prm, &w_cycle, "w-cycle", w_cycle ? "true":"false",
+                Patterns::Bool(),
+                "efines whether a w-cycle should be used instead of the standard setting of a v-cycle.");
+
+  add_parameter(prm, &aggregation_threshold, "Aggregation threshold", std::to_string(aggregation_threshold),
+                Patterns::Double(0.0),
+                "This threshold tells the AMG setup how the coarsening should be performed. In the AMG used by ML, all points that strongly couple with the tentative coarse-level point form one aggregate. The term strong coupling is controlled by the variable aggregation_threshold, meaning that all elements that are not smaller than aggregation_threshold times the diagonal element do couple strongly.");
+
+  add_parameter(prm, &var_const_modes,
+                "Variable related to constant modes", var_const_modes,
+                Patterns::Anything(),
+                "");
+
+  add_parameter(prm, &smoother_sweeps, "Smoother sweeps", std::to_string(smoother_sweeps),
+                Patterns::Integer(0),
+                "Determines how many sweeps of the smoother should be performed. When the flag elliptic is set to true, i.e., for elliptic or almost elliptic problems, the polynomial degree of the Chebyshev smoother is set to smoother_sweeps. The term sweeps refers to the number of matrix-vector products performed in the Chebyshev case. In the non-elliptic case, smoother_sweeps sets the number of SSOR relaxation sweeps for post-smoothing to be performed.");
+
+  add_parameter(prm, &smoother_overlap, "Smoother overlap", std::to_string(smoother_overlap),
+                Patterns::Integer(0),
+                "Determines the overlap in the SSOR/Chebyshev error smoother when run in parallel.");
+
+  add_parameter(prm, &output_details, "Output details", output_details ? "true":"false",
+                Patterns::Bool(),
+                "If this flag is set to true, then internal information from the ML preconditioner is printed to screen. This can be useful when debugging the preconditioner.");
+
+  add_parameter(prm, &smoother_type, "Smoother type", smoother_type,
+                Patterns::Selection("|Aztec|IFPACK|Jacobi"
+                                    "|ML symmetric Gauss-Seidel|symmetric Gauss-Seidel"
+                                    "|ML Gauss-Seidel|Gauss-Seidel|block Gauss-Seidel"
+                                    "|symmetric block Gauss-Seidel|Chebyshev|MLS|Hiptmair"
+                                    "|Amesos-KLU|Amesos-Superlu|Amesos-UMFPACK|Amesos-Superludist"
+                                    "|Amesos-MUMPS|user-defined|SuperLU|IFPACK-Chebyshev|self"
+                                    "|do-nothing|IC|ICT|ILU|ILUT|Block Chebyshev"
+                                    "|IFPACK-Block Chebyshev"),
+                "Determines which smoother to use for the AMG cycle.");
+
+  add_parameter(prm, &coarse_type, "Coarse type", coarse_type,
+                Patterns::Selection("|Aztec|IFPACK|Jacobi"
+                                    "|ML symmetric Gauss-Seidel|symmetric Gauss-Seidel"
+                                    "|ML Gauss-Seidel|Gauss-Seidel|block Gauss-Seidel"
+                                    "|symmetric block Gauss-Seidel|Chebyshev|MLS|Hiptmair"
+                                    "|Amesos-KLU|Amesos-Superlu|Amesos-UMFPACK|Amesos-Superludist"
+                                    "|Amesos-MUMPS|user-defined|SuperLU|IFPACK-Chebyshev|self"
+                                    "|do-nothing|IC|ICT|ILU|ILUT|Block Chebyshev"
+                                    "|IFPACK-Block Chebyshev"),
+                "Determines which solver to use on the coarsest level. The same settings as for the smoother type are possible.");
+}
+
+// void ParsedAMGPreconditioner::parse_parameters(ParameterHandler &prm)
+// {
+//   Functions::ParsedFunction<dim>::parse_parameters(prm);
+// }
+
+
+template<int dim, int spacedim, typename Matrix>
+void ParsedAMGPreconditioner::initialize_preconditioner( const ParsedFiniteElement<dim, spacedim> &fe,
+                                                         const DoFHandler<dim, spacedim> &dh,
+                                                         const Matrix &matrix)
+{
+  TrilinosWrappers::PreconditionAMG::AdditionalData data;
+
+  data.elliptic = elliptic;
+  data.higher_order_elements = higher_order_elements;
+  data.n_cycles = n_cycles;
+  data.w_cycle = w_cycle;
+  data.aggregation_threshold = aggregation_threshold;
+  if (var_const_modes == "none")
+    {
+      data.constant_modes = std::vector<std::vector<bool> > (0);
+    }
+  else
+    {
+      std::vector< std::vector< bool > >  constant_modes;
+      unsigned int pos = fe.get_component_position(var_const_modes);
+      bool is_vec = fe.is_vectorial(var_const_modes);
+      if (is_vec)
+        {
+          FEValuesExtractors::Vector components(pos);
+          DoFTools::extract_constant_modes<DoFHandler<dim, spacedim> > (dh, dh.get_fe().component_mask(components),
+              constant_modes);
+        }
+      else
+        {
+          FEValuesExtractors::Scalar components(pos);
+          DoFTools::extract_constant_modes<DoFHandler<dim, spacedim> > (dh, dh.get_fe().component_mask(components),
+              constant_modes);
+        }
+      data.constant_modes = constant_modes;
+    }
+  data.smoother_sweeps = smoother_sweeps;
+  data.smoother_overlap = smoother_overlap;
+  data.output_details = output_details;
+  data.smoother_type = smoother_type.c_str();
+  data.coarse_type = coarse_type.c_str();
+  this->initialize(matrix, data);
+}
+
+
+// void ParsedAMGPreconditioner::parse_parameters_call_back()
+// {}
+
+ParsedJacobiPreconditioner::ParsedJacobiPreconditioner(const std::string &name,
+                                                       const double &omega,
+                                                       const double &min_diagonal,
+                                                       const unsigned int &n_sweeps
+                                                      ):
+  ParameterAcceptor(name),
+  PreconditionJacobi(),
+  omega(omega),
+  min_diagonal(min_diagonal),
+  n_sweeps(n_sweeps)
+{}
+
+
+void ParsedJacobiPreconditioner::declare_parameters(ParameterHandler &prm)
+{
+  add_parameter(prm, &omega, "Omega", std::to_string(omega),
+                Patterns::Double(0.0),
+                "This specifies the relaxation parameter in the Jacobi preconditioner.");
+  add_parameter(prm, &min_diagonal, "Min Diagonal", std::to_string(min_diagonal),
+                Patterns::Double(0.0),
+                "This specifies the minimum value the diagonal elements should have. This might be necessary when the Jacobi preconditioner is used on matrices with zero diagonal elements. In that case, a straight- forward application would not be possible since we would divide by zero.");
+  add_parameter(prm, &n_sweeps, "Number of sweeps", std::to_string(n_sweeps),
+                Patterns::Integer(0),
+                "Sets how many times the given operation should be applied during the vmult() operation.");
+}
+
+template<int dim, int spacedim, typename Matrix>
+void ParsedJacobiPreconditioner::initialize_preconditioner( const ParsedFiniteElement<dim, spacedim> &fe,
+                                                            const DoFHandler<dim, spacedim> &dh,
+                                                            const Matrix &matrix)
+{
+  TrilinosWrappers::PreconditionJacobi::AdditionalData data;
+
+  data.omega = omega;
+  data.min_diagonal = min_diagonal;
+  data.n_sweeps = n_sweeps;
+  this->initialize(matrix, data);
+}
+D2K_NAMESPACE_CLOSE
+
+// AMG
+template void deal2lkit::ParsedAMGPreconditioner::initialize_preconditioner<1,1,dealii::TrilinosWrappers::SparseMatrix>(
+  const ParsedFiniteElement<1,1> &,
+  const DoFHandler<1,1> &,
+  const dealii::TrilinosWrappers::SparseMatrix &);
+// template void deal2lkit::ParsedAMGPreconditioner::initialize_preconditioner<1,2,dealii::TrilinosWrappers::SparseMatrix>(
+//   const ParsedFiniteElement<1,2> &,
+//   const DoFHandler<1,2> &,
+//   const dealii::TrilinosWrappers::SparseMatrix &);
+// template void deal2lkit::ParsedAMGPreconditioner::initialize_preconditioner<1,3,dealii::TrilinosWrappers::SparseMatrix>(
+//   const ParsedFiniteElement<1,3> &,
+//   const DoFHandler<1,3> &,
+//   const dealii::TrilinosWrappers::SparseMatrix &);
+template void deal2lkit::ParsedAMGPreconditioner::initialize_preconditioner<2,2,dealii::TrilinosWrappers::SparseMatrix>(
+  const ParsedFiniteElement<2,2> &,
+  const DoFHandler<2,2> &,
+  const dealii::TrilinosWrappers::SparseMatrix &);
+// template void deal2lkit::ParsedAMGPreconditioner::initialize_preconditioner<2,3,dealii::TrilinosWrappers::SparseMatrix>(
+//   const ParsedFiniteElement<2,3> &,
+//   const DoFHandler<2,3> &,
+//   const dealii::TrilinosWrappers::SparseMatrix &);
+template void deal2lkit::ParsedAMGPreconditioner::initialize_preconditioner<3,3,dealii::TrilinosWrappers::SparseMatrix>(
+  const ParsedFiniteElement<3,3> &,
+  const DoFHandler<3,3> &,
+  const dealii::TrilinosWrappers::SparseMatrix &);
+
+// Jacobi
+template void deal2lkit::ParsedJacobiPreconditioner::initialize_preconditioner<1,1,dealii::TrilinosWrappers::SparseMatrix>(
+  const ParsedFiniteElement<1,1> &,
+  const DoFHandler<1,1> &,
+  const dealii::TrilinosWrappers::SparseMatrix &);
+// template void deal2lkit::ParsedJacobiPreconditioner::initialize_preconditioner<1,2,dealii::TrilinosWrappers::SparseMatrix>(
+//   const ParsedFiniteElement<1,2> &,
+//   const DoFHandler<1,2> &,
+//   const dealii::TrilinosWrappers::SparseMatrix &);
+// template void deal2lkit::ParsedJacobiPreconditioner::initialize_preconditioner<1,3,dealii::TrilinosWrappers::SparseMatrix>(
+//   const ParsedFiniteElement<1,3> &,
+//   const DoFHandler<1,3> &,
+//   const dealii::TrilinosWrappers::SparseMatrix &);
+template void deal2lkit::ParsedJacobiPreconditioner::initialize_preconditioner<2,2,dealii::TrilinosWrappers::SparseMatrix>(
+  const ParsedFiniteElement<2,2> &,
+  const DoFHandler<2,2> &,
+  const dealii::TrilinosWrappers::SparseMatrix &);
+// template void deal2lkit::ParsedJacobiPreconditioner::initialize_preconditioner<2,3,dealii::TrilinosWrappers::SparseMatrix>(
+//   const ParsedFiniteElement<2,3> &,
+//   const DoFHandler<2,3> &,
+//   const dealii::TrilinosWrappers::SparseMatrix &);
+template void deal2lkit::ParsedJacobiPreconditioner::initialize_preconditioner<3,3,dealii::TrilinosWrappers::SparseMatrix>(
+  const ParsedFiniteElement<3,3> &,
+  const DoFHandler<3,3> &,
+  const dealii::TrilinosWrappers::SparseMatrix &);
+
