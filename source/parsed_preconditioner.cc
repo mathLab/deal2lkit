@@ -52,40 +52,64 @@ void ParsedAMGPreconditioner::declare_parameters(ParameterHandler &prm)
 {
   add_parameter(prm, &elliptic, "Elliptic", elliptic ? "true":"false",
                 Patterns::Bool(),
-                "Determines whether the AMG preconditioner should be optimized for elliptic problems (ML option smoothed aggregation SA, using a Chebyshev smoother) or for non-elliptic problems (ML option non-symmetric smoothed aggregation NSSA, smoother is SSOR with  underrelaxation");
+                "Determines whether the AMG preconditioner should be optimized for\n"
+                "elliptic problems (ML option smoothed aggregation SA, using a\n"
+                "Chebyshev smoother) or for non-elliptic problems (ML option\n"
+                "non-symmetric smoothed aggregation NSSA, smoother is SSOR with\n"
+                "underrelaxation");
 
   add_parameter(prm, &higher_order_elements, "High Order Elements", higher_order_elements ? "true":"false",
                 Patterns::Bool(),
-                "Determines whether the matrix that the preconditioner is built upon is generated from linear or higher-order elements.");
+                "Determines whether the matrix that the preconditioner is built upon is\n"
+                "generated from linear or higher-order elements.");
 
   add_parameter(prm, &n_cycles, "Number of cycles", std::to_string(n_cycles),
                 Patterns::Integer(0),
-                "Defines how many multigrid cycles should be performed by the preconditioner.");
+                "Defines how many multigrid cycles should be performed by the\n"
+                "preconditioner.");
 
   add_parameter(prm, &w_cycle, "w-cycle", w_cycle ? "true":"false",
                 Patterns::Bool(),
-                "efines whether a w-cycle should be used instead of the standard setting of a v-cycle.");
+                "efines whether a w-cycle should be used instead of the standard\n"
+                "setting of a v-cycle.");
 
   add_parameter(prm, &aggregation_threshold, "Aggregation threshold", std::to_string(aggregation_threshold),
                 Patterns::Double(0.0),
-                "This threshold tells the AMG setup how the coarsening should be performed. In the AMG used by ML, all points that strongly couple with the tentative coarse-level point form one aggregate. The term strong coupling is controlled by the variable aggregation_threshold, meaning that all elements that are not smaller than aggregation_threshold times the diagonal element do couple strongly.");
+                "This threshold tells the AMG setup how the coarsening should be\n"
+                "performed. In the AMG used by ML, all points that strongly couple with\n"
+                "the tentative coarse-level point form one aggregate. The term strong\n"
+                "coupling is controlled by the variable aggregation_threshold, meaning\n"
+                "that all elements that are not smaller than aggregation_threshold\n"
+                "times the diagonal element do couple strongly.");
 
   add_parameter(prm, &var_const_modes,
                 "Variable related to constant modes", var_const_modes,
                 Patterns::Anything(),
-                "");
+                "Specifies the variable associated to the constant modes (near null\n"
+                "space) of the matrix. In the case @p var_const_modes\n"
+                "is equal to \"none\", constant modes will not be\n"
+                "computed.");
 
   add_parameter(prm, &smoother_sweeps, "Smoother sweeps", std::to_string(smoother_sweeps),
                 Patterns::Integer(0),
-                "Determines how many sweeps of the smoother should be performed. When the flag elliptic is set to true, i.e., for elliptic or almost elliptic problems, the polynomial degree of the Chebyshev smoother is set to smoother_sweeps. The term sweeps refers to the number of matrix-vector products performed in the Chebyshev case. In the non-elliptic case, smoother_sweeps sets the number of SSOR relaxation sweeps for post-smoothing to be performed.");
+                "Determines how many sweeps of the smoother should be performed. When\n"
+                "the flag elliptic is set to true, i.e., for elliptic or almost\n"
+                "elliptic problems, the polynomial degree of the Chebyshev smoother is\n"
+                "set to smoother_sweeps. The term sweeps refers to the number of\n"
+                "matrix-vector products performed in the Chebyshev case. In the\n"
+                "non-elliptic case, smoother_sweeps sets the number of SSOR relaxation\n"
+                "sweeps for post-smoothing to be performed.");
 
   add_parameter(prm, &smoother_overlap, "Smoother overlap", std::to_string(smoother_overlap),
                 Patterns::Integer(0),
-                "Determines the overlap in the SSOR/Chebyshev error smoother when run in parallel.");
+                "Determines the overlap in the SSOR/Chebyshev error smoother when run\n"
+                "in parallel.");
 
   add_parameter(prm, &output_details, "Output details", output_details ? "true":"false",
                 Patterns::Bool(),
-                "If this flag is set to true, then internal information from the ML preconditioner is printed to screen. This can be useful when debugging the preconditioner.");
+                "If this flag is set to true, then internal information from the ML\n"
+                "preconditioner is printed to screen. This can be useful when debugging\n"
+                "the preconditioner.");
 
   add_parameter(prm, &smoother_type, "Smoother type", smoother_type,
                 Patterns::Selection("|Aztec|IFPACK|Jacobi"
@@ -107,14 +131,9 @@ void ParsedAMGPreconditioner::declare_parameters(ParameterHandler &prm)
                                     "|Amesos-MUMPS|user-defined|SuperLU|IFPACK-Chebyshev|self"
                                     "|do-nothing|IC|ICT|ILU|ILUT|Block Chebyshev"
                                     "|IFPACK-Block Chebyshev"),
-                "Determines which solver to use on the coarsest level. The same settings as for the smoother type are possible.");
+                "Determines which solver to use on the coarsest level. The same\n"
+                "settings as for the smoother type are possible.");
 }
-
-// void ParsedAMGPreconditioner::parse_parameters(ParameterHandler &prm)
-// {
-//   Functions::ParsedFunction<dim>::parse_parameters(prm);
-// }
-
 
 template<int dim, int spacedim, typename Matrix>
 void ParsedAMGPreconditioner::initialize_preconditioner( const ParsedFiniteElement<dim, spacedim> &fe,
@@ -159,10 +178,6 @@ void ParsedAMGPreconditioner::initialize_preconditioner( const ParsedFiniteEleme
   this->initialize(matrix, data);
 }
 
-
-// void ParsedAMGPreconditioner::parse_parameters_call_back()
-// {}
-
 ParsedJacobiPreconditioner::ParsedJacobiPreconditioner(const std::string &name,
                                                        const double &omega,
                                                        const double &min_diagonal,
@@ -175,7 +190,6 @@ ParsedJacobiPreconditioner::ParsedJacobiPreconditioner(const std::string &name,
   n_sweeps(n_sweeps)
 {}
 
-
 void ParsedJacobiPreconditioner::declare_parameters(ParameterHandler &prm)
 {
   add_parameter(prm, &omega, "Omega", std::to_string(omega),
@@ -183,10 +197,15 @@ void ParsedJacobiPreconditioner::declare_parameters(ParameterHandler &prm)
                 "This specifies the relaxation parameter in the Jacobi preconditioner.");
   add_parameter(prm, &min_diagonal, "Min Diagonal", std::to_string(min_diagonal),
                 Patterns::Double(0.0),
-                "This specifies the minimum value the diagonal elements should have. This might be necessary when the Jacobi preconditioner is used on matrices with zero diagonal elements. In that case, a straight- forward application would not be possible since we would divide by zero.");
+                "This specifies the minimum value the diagonal elements should\n"
+                "have. This might be necessary when the Jacobi preconditioner is used\n"
+                "on matrices with zero diagonal elements. In that case, a straight-\n"
+                "forward application would not be possible since we would divide by\n"
+                "zero.");
   add_parameter(prm, &n_sweeps, "Number of sweeps", std::to_string(n_sweeps),
                 Patterns::Integer(0),
-                "Sets how many times the given operation should be applied during the vmult() operation.");
+                "Sets how many times the given operation should be applied during the\n"
+                "vmult() operation.");
 }
 
 template<int dim, int spacedim, typename Matrix>
