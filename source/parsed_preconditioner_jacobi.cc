@@ -59,5 +59,6 @@ void ParsedJacobiPreconditioner::initialize_preconditioner( const Matrix &matrix
 }
 D2K_NAMESPACE_CLOSE
 
-template void deal2lkit::ParsedJacobiPreconditioner::initialize_preconditioner<dealii::TrilinosWrappers::SparseMatrix>(const dealii::TrilinosWrappers::SparseMatrix &);
+template void deal2lkit::ParsedJacobiPreconditioner::initialize_preconditioner<dealii::TrilinosWrappers::SparseMatrix>(
+  const dealii::TrilinosWrappers::SparseMatrix &);
 

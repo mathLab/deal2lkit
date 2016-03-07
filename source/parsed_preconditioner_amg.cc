@@ -212,5 +212,5 @@ template void deal2lkit::ParsedAMGPreconditioner::initialize_preconditioner<3,3,
   const ParsedFiniteElement<3,3> &,
   const DoFHandler<3,3> &);
 
-  template void deal2lkit::ParsedAMGPreconditioner::initialize_preconditioner<dealii::TrilinosWrappers::SparseMatrix>(
-    const dealii::TrilinosWrappers::SparseMatrix &);
+template void deal2lkit::ParsedAMGPreconditioner::initialize_preconditioner<dealii::TrilinosWrappers::SparseMatrix>(
+  const dealii::TrilinosWrappers::SparseMatrix &);
