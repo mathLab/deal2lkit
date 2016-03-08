@@ -1,21 +1,4 @@
-//-----------------------------------------------------------
-//
-//    Copyright (C) 2015 by the deal2lkit authors
-//
-//    This file is part of the deal2lkit library.
-//
-//    The deal2lkit library is free software; you can use it, redistribute
-//    it, and/or modify it under the terms of the GNU Lesser General
-//    Public License as published by the Free Software Foundation; either
-//    version 2.1 of the License, or (at your option) any later version.
-//    The full text of the license can be found in the file LICENSE at
-//    the top level of the deal2lkit distribution.
-//
-//-----------------------------------------------------------
-
 #include <deal2lkit/assimp_interface.h>
-
-#ifdef D2K_WITH_ASSIMP
 
 #include <assimp/Importer.hpp>      // C++ importer interface
 #include <assimp/scene.h>           // Output data structure
@@ -42,10 +25,7 @@ using namespace dealii;
 using namespace Assimp;
 
 using namespace std;
-
-
 D2K_NAMESPACE_OPEN
-
 namespace AssimpInterface
 {
 
@@ -84,10 +64,10 @@ namespace AssimpInterface
         return false;
       }
 
-    AssertThrow((mesh_index == -1) || (mesh_index < (int) scene->mNumMeshes),
+    AssertThrow((mesh_index == -1) || (mesh_index < scene->mNumMeshes),
                 ExcMessage("Too few meshes in the file."));
 
-    cout << "The given file contains "
+    cout << "Read file " << filename << ", it contains "
          << scene->mNumMeshes  << " meshes. ";
     if (mesh_index == -1)
       cout << "Importing all available meshes." << endl;
@@ -95,7 +75,7 @@ namespace AssimpInterface
       cout << "Trying to import mesh number " << mesh_index << endl;
 
     int start_mesh = (mesh_index == -1 ? 0 : mesh_index);
-    int end_mesh = (mesh_index == -1 ? (int) scene->mNumMeshes : mesh_index+1);
+    int end_mesh = (mesh_index == -1 ? scene->mNumMeshes : mesh_index+1);
 
 
 
@@ -116,18 +96,13 @@ namespace AssimpInterface
 
         // Check that we know what to do with this mesh, otherwise just
         // ignore it
-        if ( (dim == 2) && mesh->mPrimitiveTypes != aiPrimitiveType_POLYGON)
+        if (mesh->mPrimitiveTypes != aiPrimitiveType_POLYGON)
           {
             cout << "Skipping incompatible mesh " << m
                  << "/" << scene->mNumMeshes << "." << endl;
             continue;
           }
-        else if ( (dim == 1) && mesh->mPrimitiveTypes != aiPrimitiveType_LINE)
-          {
-            cout << "Skipping incompatible mesh " << m
-                 << "/" << scene->mNumMeshes << "." << endl;
-            continue;
-          }
+
         // Vertices
         const unsigned int n_vertices = mesh->mNumVertices;
         const aiVector3D *mVertices = mesh->mVertices;
@@ -144,21 +119,24 @@ namespace AssimpInterface
 
 
         for (unsigned int i=0; i<n_vertices; ++i)
-          for (unsigned int d=0; d<spacedim; ++d)
-            vertices[i+v_offset][d] = mVertices[i][d];
-
+          {
+            for (unsigned int d=0; d<spacedim; ++d)
+              vertices[i+v_offset][d] = mVertices[i][d];
+            // cout << "Vertex " << i+v_offset << ": "
+            //      <<  vertices[i+v_offset] << endl;
+          }
         unsigned int valid_cell = c_offset;
         for (unsigned int i=0; i<n_faces; ++i)
           {
             if (mFaces[i].mNumIndices == GeometryInfo<dim>::vertices_per_cell)
               {
-                cout << "Face: " << i << ": ";
+                // cout << "Face: " << i << ": ";
                 for (unsigned int f=0; f<GeometryInfo<dim>::vertices_per_cell; ++f)
                   {
                     cells[valid_cell].vertices[f] = mFaces[i].mIndices[f]+v_offset;
-                    cout << cells[valid_cell].vertices[f] << " ";
+                    // cout << cells[valid_cell].vertices[f] << " ";
                   }
-                cout << endl;
+                //    cout << endl;
                 cells[valid_cell].material_id = (types::material_id) m;
                 ++valid_cell;
               }
@@ -192,28 +170,14 @@ namespace AssimpInterface
         GridTools::delete_duplicated_vertices(vertices, cells, subcelldata,
                                               considered_vertices, tol);
 
-        GridTools::delete_duplicated_vertices(vertices, cells, subcelldata,
-                                              considered_vertices, tol);
-
-        GridTools::delete_duplicated_vertices(vertices, cells, subcelldata,
-                                              considered_vertices, tol);
-
-        GridTools::delete_duplicated_vertices(vertices, cells, subcelldata,
-                                              considered_vertices, tol);
       }
     GridTools::delete_unused_vertices(vertices, cells, subcelldata);
     if (dim == spacedim)
       GridReordering<dim, spacedim>::invert_all_cells_of_negative_grid(vertices,
           cells);
-
-    cout << "Creating tria with " << vertices.size() << " vertices, "
-         << cells.size() << "cells. " << std::endl;
-
     GridReordering<dim, spacedim>::reorder_cells(cells);
-    if (dim == 2)
-      tria.create_triangulation_compatibility(vertices, cells, subcelldata);
-    else
-      tria.create_triangulation(vertices, cells, subcelldata);
+    tria.create_triangulation_compatibility(vertices, cells, subcelldata);
+
 
     cout << "Generated mesh has " << tria.n_vertices() << " vertices and "
          << tria.n_active_cells() << " active cells. " << endl;
@@ -248,8 +212,4 @@ namespace AssimpInterface
                                        bool, double);
 
 }
-
 D2K_NAMESPACE_CLOSE
-#endif
-
-
