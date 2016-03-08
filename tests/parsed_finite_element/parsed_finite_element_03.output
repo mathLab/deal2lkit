@@ -1,4 +1,8 @@
 
 DEAL::N components: 3, N blocks: 2
 DEAL::Components: u,u,p, Blocks: u,p
+DEAL:: position of u: 0
+DEAL:: position of p: 2
+DEAL:: is u vector?: 1
+DEAL:: is p vector?: 0
 DEAL::Component blocks: 0, 0, 1
