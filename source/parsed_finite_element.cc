@@ -128,7 +128,6 @@ std::vector<unsigned int> ParsedFiniteElement<dim,spacedim>::get_component_block
 template<int dim, int spacedim>
 unsigned int ParsedFiniteElement<dim,spacedim>::get_first_occurence(const std::string &var) const
 {
-  unsigned int pos_counter = 0;
   auto pos_it = std::find (component_names.begin(), component_names.end(), var);
   Assert(pos_it != component_names.end(),
          ExcInternalError("Component not found!"));
