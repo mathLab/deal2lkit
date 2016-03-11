@@ -169,6 +169,9 @@ bool rename_file(const std::string &file, const std::string &new_file)
 #ifdef D2K_WITH_SUNDIALS
 
 #ifdef DEAL_II_WITH_MPI
+
+#ifdef DEAL_II_WITH_TRILINOS
+
 void copy(TrilinosWrappers::MPI::Vector &dst, const N_Vector &src)
 {
   IndexSet is = dst.locally_owned_elements();
@@ -208,6 +211,53 @@ void copy(N_Vector &dst, const TrilinosWrappers::MPI::BlockVector &src)
       NV_Ith_P(dst, i) = src[is.nth_index_in_set(i)];
     }
 }
+
+#endif //DEAL_II_WITH_TRILINOS
+
+#ifdef DEAL_II_WITH_PETSC
+
+void copy(PETScWrappers::MPI::Vector &dst, const N_Vector &src)
+{
+  IndexSet is = dst.locally_owned_elements();
+  AssertDimension(is.n_elements(), NV_LOCLENGTH_P(src));
+  for (unsigned int i=0; i<is.n_elements(); ++i)
+    {
+      dst[is.nth_index_in_set(i)] = NV_Ith_P(src, i);
+    }
+}
+
+void copy(N_Vector &dst, const PETScWrappers::MPI::Vector &src)
+{
+  IndexSet is = src.locally_owned_elements();
+  AssertDimension(is.n_elements(), NV_LOCLENGTH_P(dst));
+  for (unsigned int i=0; i<is.n_elements(); ++i)
+    {
+      NV_Ith_P(dst, i) = src[is.nth_index_in_set(i)];
+    }
+}
+
+void copy(PETScWrappers::MPI::BlockVector &dst, const N_Vector &src)
+{
+  IndexSet is = dst.locally_owned_elements();
+  AssertDimension(is.n_elements(), NV_LOCLENGTH_P(src));
+  for (unsigned int i=0; i<is.n_elements(); ++i)
+    {
+      dst[is.nth_index_in_set(i)] = NV_Ith_P(src, i);
+    }
+}
+
+void copy(N_Vector &dst, const PETScWrappers::MPI::BlockVector &src)
+{
+  IndexSet is = src.locally_owned_elements();
+  AssertDimension(is.n_elements(), NV_LOCLENGTH_P(dst));
+  for (unsigned int i=0; i<is.n_elements(); ++i)
+    {
+      NV_Ith_P(dst, i) = src[is.nth_index_in_set(i)];
+    }
+}
+
+#endif //DEAL_II_WITH_PETSC
+
 #endif //mpi
 
 void copy(BlockVector<double> &dst, const N_Vector &src)
