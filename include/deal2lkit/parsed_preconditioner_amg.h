@@ -16,9 +16,13 @@
 #ifndef _d2k_parsed_preconditioner_amg_h
 #define _d2k_parsed_preconditioner_amg_h
 
-#include <deal2lkit/config.h>
 #include <deal.II/base/config.h>
+
+#ifdef DEAL_II_WITH_TRILINOS
+
 #include <deal.II/lac/trilinos_precondition.h>
+
+#include <deal2lkit/config.h>
 #include <deal2lkit/parsed_finite_element.h>
 #include <deal2lkit/parameter_acceptor.h>
 #include <deal2lkit/utilities.h>
@@ -167,7 +171,10 @@ private:
   std::string coarse_type;
 };
 
+
 D2K_NAMESPACE_CLOSE
+
+#endif // DEAL_II_WITH_TRILINOS
 
 #endif
 

@@ -15,6 +15,8 @@
 
 #include <deal2lkit/parsed_preconditioner_jacobi.h>
 
+#ifdef DEAL_II_WITH_TRILINOS
+
 D2K_NAMESPACE_OPEN
 
 ParsedJacobiPreconditioner::ParsedJacobiPreconditioner(const std::string &name,
@@ -62,3 +64,4 @@ D2K_NAMESPACE_CLOSE
 template void deal2lkit::ParsedJacobiPreconditioner::initialize_preconditioner<dealii::TrilinosWrappers::SparseMatrix>(
   const dealii::TrilinosWrappers::SparseMatrix &);
 
+#endif
