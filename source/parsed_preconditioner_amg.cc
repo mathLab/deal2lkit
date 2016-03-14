@@ -1,3 +1,4 @@
+
 //-----------------------------------------------------------
 //
 //    Copyright (C) 2015 by the deal2lkit authors
@@ -14,6 +15,9 @@
 //-----------------------------------------------------------
 
 #include <deal2lkit/parsed_preconditioner_amg.h>
+
+#ifdef DEAL_II_WITH_TRILINOS
+
 
 #include <deal.II/dofs/dof_tools.h>
 
@@ -214,3 +218,5 @@ template void deal2lkit::ParsedAMGPreconditioner::initialize_preconditioner<3,3,
 
 template void deal2lkit::ParsedAMGPreconditioner::initialize_preconditioner<dealii::TrilinosWrappers::SparseMatrix>(
   const dealii::TrilinosWrappers::SparseMatrix &);
+
+#endif
