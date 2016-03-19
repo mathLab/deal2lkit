@@ -65,7 +65,7 @@ IF(POLICY CMP0037)
   CMAKE_POLICY(SET CMP0037 OLD)
 ENDIF()
 
-FIND_PACKAGE(deal.II 8.3 REQUIRED
+FIND_PACKAGE(deal.II 8.4.0 REQUIRED
   HINTS ${deal.II_DIR} ${DEAL_II_DIR} ../ ../../ $ENV{DEAL_II_DIR}
   )
 
@@ -75,7 +75,7 @@ DEAL_II_QUERY_GIT_INFORMATION()
 # deal2lkit requires c++11 support
 IF(NOT DEAL_II_WITH_CXX11)
   MESSAGE(FATAL_ERROR "
-  Error! The deal.II library found at ${DEAL_II_PATH} was not configured with
+  Error! The deal.II library found at ${DEAL_II_DIR} was not configured with
   DEAL_II_WITH_CXX11 = ON
   Please recompile deal.II enabling this feature."
   )
