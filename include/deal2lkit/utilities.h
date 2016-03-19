@@ -37,6 +37,11 @@
 #include <deal.II/lac/trilinos_vector.h>
 #include <Teuchos_TimeMonitor.hpp>
 #endif
+#ifdef DEAL_II_WITH_PETSC
+#include <deal.II/lac/petsc_block_vector.h>
+#include <deal.II/lac/petsc_parallel_block_vector.h>
+#include <deal.II/lac/petsc_vector.h>
+#endif
 #include <deal.II/base/utilities.h>
 
 #ifdef D2K_WITH_SUNDIALS
@@ -514,10 +519,21 @@ void vector_shift(VEC &in_vec, double a_scalar)
 #ifdef D2K_WITH_SUNDIALS
 
 #ifdef DEAL_II_WITH_MPI
+
+#ifdef DEAL_II_WITH_TRILINOS
 void copy(TrilinosWrappers::MPI::Vector &dst, const N_Vector &src);
 void copy(N_Vector &dst, const TrilinosWrappers::MPI::Vector &src);
 void copy(TrilinosWrappers::MPI::BlockVector &dst, const N_Vector &src);
 void copy(N_Vector &dst, const TrilinosWrappers::MPI::BlockVector &src);
+#endif // DEAL_II_WITH_TRILINOS
+
+#ifdef DEAL_II_WITH_PETSC
+void copy(PETScWrappers::MPI::Vector &dst, const N_Vector &src);
+void copy(N_Vector &dst, const PETScWrappers::MPI::Vector &src);
+void copy(PETScWrappers::MPI::BlockVector &dst, const N_Vector &src);
+void copy(N_Vector &dst, const PETScWrappers::MPI::BlockVector &src);
+#endif // DEAL_II_WITH_PETSC
+
 #endif
 
 void copy(BlockVector<double> &dst, const N_Vector &src);

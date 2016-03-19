@@ -25,6 +25,11 @@
 #include <deal.II/lac/trilinos_parallel_block_vector.h>
 #include <deal.II/lac/trilinos_vector.h>
 #endif
+#ifdef DEAL_II_WITH_PETSC
+#include <deal.II/lac/petsc_block_vector.h>
+#include <deal.II/lac/petsc_parallel_block_vector.h>
+#include <deal.II/lac/petsc_vector.h>
+#endif
 #include <deal.II/base/utilities.h>
 
 #include <iostream>
@@ -412,6 +417,11 @@ template class deal2lkit::IMEXStepper<BlockVector<double> >;
 #ifdef DEAL_II_WITH_TRILINOS
 template class deal2lkit::IMEXStepper<TrilinosWrappers::MPI::Vector>;
 template class deal2lkit::IMEXStepper<TrilinosWrappers::MPI::BlockVector>;
+#endif
+
+#ifdef DEAL_II_WITH_PETSC
+template class deal2lkit::IMEXStepper<PETScWrappers::MPI::Vector>;
+template class deal2lkit::IMEXStepper<PETScWrappers::MPI::BlockVector>;
 #endif
 
 #endif
