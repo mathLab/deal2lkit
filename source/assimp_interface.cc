@@ -185,21 +185,20 @@ namespace AssimpInterface
 
     if (remove_duplicates)
       {
-        vector<unsigned int> considered_vertices;
-        GridTools::delete_duplicated_vertices(vertices, cells, subcelldata,
-                                              considered_vertices, tol);
+        // The function delete_duplicated_vertices() needs to be called more
+        // than once if a vertex is duplicated more than once. So we keep
+        // calling it until the number of vertices does not change any more.
 
-        GridTools::delete_duplicated_vertices(vertices, cells, subcelldata,
-                                              considered_vertices, tol);
-
-        GridTools::delete_duplicated_vertices(vertices, cells, subcelldata,
-                                              considered_vertices, tol);
-
-        GridTools::delete_duplicated_vertices(vertices, cells, subcelldata,
-                                              considered_vertices, tol);
-
-        GridTools::delete_duplicated_vertices(vertices, cells, subcelldata,
-                                              considered_vertices, tol);
+        // TODO: this should really be done inside
+        // GridTools::delete_duplicated_vertices
+        unsigned int n_verts = 0;
+        while (n_verts != vertices.size())
+          {
+            n_verts = vertices.size();
+            vector<unsigned int> considered_vertices;
+            GridTools::delete_duplicated_vertices(vertices, cells, subcelldata,
+                                                  considered_vertices, tol);
+          }
       }
     GridTools::delete_unused_vertices(vertices, cells, subcelldata);
     if (dim == spacedim)
