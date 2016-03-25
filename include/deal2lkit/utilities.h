@@ -31,6 +31,7 @@
 #include <stdio.h>
 
 #include <deal.II/lac/block_vector.h>
+DEAL_II_DISABLE_EXTRA_DIAGNOSTICS
 #ifdef DEAL_II_WITH_TRILINOS
 #include <deal.II/lac/trilinos_block_vector.h>
 #include <deal.II/lac/trilinos_parallel_block_vector.h>
@@ -42,6 +43,7 @@
 #include <deal.II/lac/petsc_parallel_block_vector.h>
 #include <deal.II/lac/petsc_vector.h>
 #endif
+DEAL_II_ENABLE_EXTRA_DIAGNOSTICS
 #include <deal.II/base/utilities.h>
 
 #ifdef D2K_WITH_SUNDIALS
