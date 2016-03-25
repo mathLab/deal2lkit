@@ -35,7 +35,7 @@
 #include <fstream>
 
 #include <deal2lkit/dof_utilities.h>
-#include "Sacado.hpp"
+#include <deal2lkit/sacado_tools.h>
 
 
 using namespace deal2lkit;
@@ -108,7 +108,7 @@ void test (const Triangulation<dim> &tr,
   {
     deallog <<std::endl;
     deallog << "std::vector<double>" << std::endl;
-    const std::vector<double> div_double = DOFUtilities::Val(div_v);
+    const std::vector<double> div_double = SacadoTools::val(div_v);
     for (unsigned int q=0; q<quadrature.size(); ++q)
       {
         const double diff = std::abs(div_double[q] - div_v_double[q]);
@@ -122,7 +122,7 @@ void test (const Triangulation<dim> &tr,
   deallog << "Tensor<1,"<< dim <<">" << std::endl;
   for (unsigned int q=0; q<quadrature.size(); ++q)
     {
-      const Tensor<1,dim> t_double = DOFUtilities::Val(grad_s[q]);
+      const Tensor<1,dim> t_double = SacadoTools::val(grad_s[q]);
       for (unsigned int d=0; d<dim; ++d)
         {
           const double diff = std::abs(t_double[d] - grad_s_double[q][d]);
@@ -135,7 +135,7 @@ void test (const Triangulation<dim> &tr,
   deallog << "Tensor<2,"<< dim <<">" << std::endl;
   for (unsigned int q=0; q<quadrature.size(); ++q)
     {
-      const Tensor<2,dim> t_double = DOFUtilities::Val(grad_v[q]);
+      const Tensor<2,dim> t_double = SacadoTools::val(grad_v[q]);
       for (unsigned int d=0; d<dim; ++d)
         {
           for (unsigned int dd=0; dd<dim; ++dd)
@@ -151,7 +151,7 @@ void test (const Triangulation<dim> &tr,
   deallog << "SymmetricTensor<2,"<<dim <<">" << std::endl;
   for (unsigned int q=0; q<quadrature.size(); ++q)
     {
-      const Tensor<2,dim> t_double = DOFUtilities::Val(sym_grad_v[q]);
+      const Tensor<2,dim> t_double = SacadoTools::val(sym_grad_v[q]);
       for (unsigned int d=0; d<dim; ++d)
         {
           for (unsigned int dd=0; dd<dim; ++dd)

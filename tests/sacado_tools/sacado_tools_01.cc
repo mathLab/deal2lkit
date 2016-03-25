@@ -34,8 +34,7 @@
 #include <fstream>
 
 #include <deal2lkit/dof_utilities.h>
-#include "Sacado.hpp"
-
+#include <deal2lkit/sacado_tools.h>
 
 using namespace deal2lkit;
 
@@ -119,9 +118,9 @@ void test (const Triangulation<dim> &tr,
     {
       res_double[q] = grad_s_double[q]*grad_s_double[q];
       deallog << res_double[q] <<std::endl;
-      res_sdouble[q] = DOFUtilities::inner(grad_s_double[q],grad_s_sdouble[q]);
+      res_sdouble[q] = SacadoTools::scalar_product(grad_s_double[q],grad_s_sdouble[q]);
       deallog << res_sdouble[q] <<std::endl;
-      res_ssdouble[q] = DOFUtilities::inner(grad_s_ssdouble[q],grad_s_double[q]);
+      res_ssdouble[q] = SacadoTools::scalar_product(grad_s_ssdouble[q],grad_s_double[q]);
       deallog << res_ssdouble[q] <<std::endl;
       deallog << res_double[q] - res_sdouble[q].val() <<std::endl;
       deallog << res_double[q] - res_ssdouble[q].val().val() <<std::endl;
@@ -131,9 +130,9 @@ void test (const Triangulation<dim> &tr,
     {
       res_double[q] = vector_values_double[q]*vector_values_double[q];
       deallog << res_double[q] <<std::endl;
-      res_sdouble[q] = DOFUtilities::inner(vector_values_double[q],vector_values_sdouble[q]);
+      res_sdouble[q] = SacadoTools::scalar_product(vector_values_double[q],vector_values_sdouble[q]);
       deallog << res_sdouble[q] <<std::endl;
-      res_ssdouble[q] = DOFUtilities::inner(vector_values_ssdouble[q],vector_values_double[q]);
+      res_ssdouble[q] = SacadoTools::scalar_product(vector_values_ssdouble[q],vector_values_double[q]);
       deallog << res_ssdouble[q] <<std::endl;
       deallog << res_double[q] - res_sdouble[q].val() <<std::endl;
       deallog << res_double[q] - res_ssdouble[q].val().val() <<std::endl;
@@ -143,9 +142,9 @@ void test (const Triangulation<dim> &tr,
     {
       res_double[q] = scalar_product(grad_v_double[q],grad_v_double[q]);
       deallog << res_double[q] <<std::endl;
-      res_sdouble[q] = DOFUtilities::inner(grad_v_sdouble[q],grad_v_double[q]);
+      res_sdouble[q] = SacadoTools::scalar_product(grad_v_sdouble[q],grad_v_double[q]);
       deallog << res_sdouble[q] <<std::endl;
-      res_ssdouble[q] = DOFUtilities::inner(grad_v_double[q],grad_v_ssdouble[q]);
+      res_ssdouble[q] = SacadoTools::scalar_product(grad_v_double[q],grad_v_ssdouble[q]);
       deallog << res_ssdouble[q] <<std::endl;
       deallog << res_double[q] - res_sdouble[q].val() <<std::endl;
       deallog << res_double[q] - res_ssdouble[q].val().val() <<std::endl;
@@ -155,9 +154,9 @@ void test (const Triangulation<dim> &tr,
     {
       res_double[q] = scalar_product(sym_grad_v_double[q],sym_grad_v_double[q]);
       deallog << res_double[q] <<std::endl;
-      res_sdouble[q] = DOFUtilities::inner(sym_grad_v_sdouble[q],sym_grad_v_double[q]);
+      res_sdouble[q] = SacadoTools::scalar_product(sym_grad_v_sdouble[q],sym_grad_v_double[q]);
       deallog << res_sdouble[q] <<std::endl;
-      res_ssdouble[q] = DOFUtilities::inner(sym_grad_v_double[q],sym_grad_v_ssdouble[q]);
+      res_ssdouble[q] = SacadoTools::scalar_product(sym_grad_v_double[q],sym_grad_v_ssdouble[q]);
       deallog << res_ssdouble[q] <<std::endl;
       deallog << res_double[q] - res_sdouble[q].val() <<std::endl;
       deallog << res_double[q] - res_ssdouble[q].val().val() <<std::endl;
@@ -165,8 +164,8 @@ void test (const Triangulation<dim> &tr,
 
   for (unsigned int q=0; q<quadrature.size(); ++q)
     {
-      res_double[q] = DOFUtilities::inner(vector_values_double[q],vector_values_double[q]);
-      res_double[q] = DOFUtilities::inner(grad_v_double[q],grad_v_double[q]);
+      res_double[q] = SacadoTools::scalar_product(vector_values_double[q],vector_values_double[q]);
+      res_double[q] = SacadoTools::scalar_product(grad_v_double[q],grad_v_double[q]);
     }
 
 

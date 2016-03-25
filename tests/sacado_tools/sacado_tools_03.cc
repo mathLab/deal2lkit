@@ -13,7 +13,10 @@
 //
 //-----------------------------------------------------------
 
-// test the sacado_to_double() function
+// test the Val() function for SSdouble
+// the .output file has been generated printing
+// the variables computed directly with **Sdouble** type
+// i.e., without using the Val() function.
 
 
 #include "../tests.h"
@@ -35,7 +38,7 @@
 #include <fstream>
 
 #include <deal2lkit/dof_utilities.h>
-#include "Sacado.hpp"
+#include <deal2lkit/sacado_tools.h>
 
 
 using namespace deal2lkit;
@@ -59,7 +62,7 @@ void test (const Triangulation<dim> &tr,
                            update_values | update_gradients);
 
   std::vector<types::global_dof_index>    local_dof_indices (fe_values.dofs_per_cell);
-  std::vector<Sdouble> independent_local_dof_values (fe_values.dofs_per_cell);
+  std::vector<SSdouble> independent_local_dof_values (fe_values.dofs_per_cell);
 
   fe_values.reinit (dof.begin_active());
   dof.begin_active()->get_dof_indices (local_dof_indices);
@@ -74,95 +77,67 @@ void test (const Triangulation<dim> &tr,
   FEValuesExtractors::Vector vector (0);
 
   //compute divergences with sacado
-  std::vector<Sdouble> div_v(quadrature.size());
+  std::vector<SSdouble> div_v(quadrature.size());
   DOFUtilities::get_divergences(fe_values, independent_local_dof_values, vector, div_v);
 
-  // compute divergences with dealii
-  std::vector <double> div_v_double(quadrature.size());
-  fe_values[vector].get_function_divergences(global_vector,div_v_double);
-
   // compute gradient with sacado
-  std::vector <Tensor <1, dim, Sdouble> > grad_s(quadrature.size());
+  std::vector <Tensor <1, dim, SSdouble> > grad_s(quadrature.size());
   DOFUtilities::get_gradients(fe_values, independent_local_dof_values, scalar, grad_s);
 
-  // compute gradient with dealii
-  std::vector <Tensor <1, dim, double> > grad_s_double(quadrature.size());
-  fe_values[scalar].get_function_gradients(global_vector,grad_s_double);
-
   // compute gradient with sacado
-  std::vector <Tensor <2, dim, Sdouble> > grad_v(quadrature.size());
+  std::vector <Tensor <2, dim, SSdouble> > grad_v(quadrature.size());
   DOFUtilities::get_gradients(fe_values, independent_local_dof_values, vector, grad_v);
 
-  // compute gradient with dealii
-  std::vector <Tensor <2, dim, double> > grad_v_double(quadrature.size());
-  fe_values[vector].get_function_gradients(global_vector,grad_v_double);
-
   // compute symmetric gradient with sacado
-  std::vector <Tensor <2, dim, Sdouble> > sym_grad_v(quadrature.size());
+  std::vector <Tensor <2, dim, SSdouble> > sym_grad_v(quadrature.size());
   DOFUtilities::get_symmetric_gradients(fe_values, independent_local_dof_values, vector, sym_grad_v);
 
-  // compute symmetric gradient with dealii
-  std::vector <SymmetricTensor <2, dim, double> > sym_grad_v_double(quadrature.size());
-  fe_values[vector].get_function_symmetric_gradients(global_vector,sym_grad_v_double);
 
   {
     deallog <<std::endl;
-    deallog << "std::vector<double>" << std::endl;
-    const std::vector<double> div_double = DOFUtilities::sacado_to_double(div_v);
+    deallog << "std::vector<Sdouble>" << std::endl;
+    const std::vector<Sdouble> div_double = SacadoTools::val(div_v);
     for (unsigned int q=0; q<quadrature.size(); ++q)
-      {
-        const double diff = std::abs(div_double[q] - div_v_double[q]);
-        if (diff > 1e-10)
-          deallog << "Expected 0, got: " << diff <<std::endl;
-      }
+      deallog << div_double[q] << std::endl;
   }
 
 
-  deallog <<std::endl;
-  deallog << "Tensor<1,"<< dim <<">" << std::endl;
-  for (unsigned int q=0; q<quadrature.size(); ++q)
-    {
-      const Tensor<1,dim> t_double = DOFUtilities::sacado_to_double(grad_s[q]);
-      for (unsigned int d=0; d<dim; ++d)
-        {
-          const double diff = std::abs(t_double[d] - grad_s_double[q][d]);
-          if (diff > 1e-10)
-            deallog << "Expected 0, got: " << diff <<std::endl;
-        }
-    }
+  {
+    deallog <<std::endl;
+    deallog << "Tensor<1,"<< dim <<",Sdouble>" << std::endl;
+    const std::vector<Tensor<1,dim,Sdouble> > t_double = SacadoTools::val(grad_s);
+    for (unsigned int q=0; q<quadrature.size(); ++q)
+      {
+        for (unsigned int d=0; d<dim; ++d)
+          deallog << t_double[q][d] << std::endl;
+      }
+  }
 
-  deallog <<std::endl;
-  deallog << "Tensor<2,"<< dim <<">" << std::endl;
-  for (unsigned int q=0; q<quadrature.size(); ++q)
-    {
-      const Tensor<2,dim> t_double = DOFUtilities::sacado_to_double(grad_v[q]);
-      for (unsigned int d=0; d<dim; ++d)
-        {
+  {
+    deallog <<std::endl;
+    deallog << "Tensor<2,"<< dim <<",Sdouble>" << std::endl;
+    const std::vector<Tensor<2,dim,Sdouble> > t_double = SacadoTools::val(grad_v);
+    for (unsigned int q=0; q<quadrature.size(); ++q)
+      {
+        for (unsigned int d=0; d<dim; ++d)
           for (unsigned int dd=0; dd<dim; ++dd)
-            {
-              const double diff = std::abs(t_double[d][dd]-grad_v_double[q][d][dd]);
-              if (diff > 1e-10)
-                deallog << "Expected 0, got: " << diff <<std::endl;
-            }
-        }
-    }
+            deallog << t_double[q][d][dd] << std::endl;
+      }
+  }
 
-  deallog <<std::endl;
-  deallog << "SymmetricTensor<2,"<<dim <<">" << std::endl;
-  for (unsigned int q=0; q<quadrature.size(); ++q)
-    {
-      const Tensor<2,dim> t_double = DOFUtilities::sacado_to_double(sym_grad_v[q]);
-      for (unsigned int d=0; d<dim; ++d)
-        {
+  {
+    deallog <<std::endl;
+    deallog << "SymmetricTensor<2,"<<dim <<",Sdouble>" << std::endl;
+    for (unsigned int q=0; q<quadrature.size(); ++q)
+      {
+        const Tensor<2,dim,Sdouble> t_double = SacadoTools::val(sym_grad_v[q]);
+        for (unsigned int d=0; d<dim; ++d)
           for (unsigned int dd=0; dd<dim; ++dd)
-            {
-              const double diff = std::abs(t_double[d][dd] - sym_grad_v_double[q][d][dd]);
-              if (diff > 1e-10)
-                deallog << "Expected 0, got: " << diff << std::endl;
-            }
-        }
-    }
+            deallog << t_double[d][dd] << std::endl;
+      }
+  }
   deallog <<std::endl;
+
 }
 
 
