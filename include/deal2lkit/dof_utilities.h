@@ -439,7 +439,116 @@ namespace DOFUtilities
     return scalar_product(T1,T2);
   }
 
+
+
+// Helper functions Val() which recursively calls val() function of Sacado
+
+
+  /**
+    * Downgrade from Tensor<1,dim,Sdouble> to Tensor<1,dim,double>
+    */
+  template <int dim>
+  Tensor<1,dim,double> Val(const Tensor<1,dim,Sdouble> &T)
+  {
+    Tensor<1,dim> ret;
+    for (unsigned int i=0; i<dim; ++i)
+      ret[i] = T[i].val();
+    return ret;
+  }
+
+
+  /**
+    * Downgrade from Tensor<1,dim,SSdouble> to Tensor<1,dim,Sdouble>
+    */
+  template <int dim>
+  Tensor<1,dim,Sdouble> Val(const Tensor<1,dim,SSdouble> &T)
+  {
+    Tensor<1,dim,Sdouble> ret;
+    for (unsigned int i=0; i<dim; ++i)
+      ret[i] = T[i].val();
+    return ret;
+  }
+
+
+
+  /**
+    * Downgrade from Tensor<2,dim,Sdouble> to Tensor<2,dim,double>
+    */
+  template <int dim>
+  Tensor<2,dim,double> Val(const Tensor<2,dim,Sdouble> &T)
+  {
+    Tensor<2,dim> ret;
+    for (unsigned int i=0; i<dim; ++i)
+      ret[i] = Val(T[i]);
+    return ret;
+  }
+
+
+  /**
+    * Downgrade from Tensor<2,dim,SSdouble> to Tensor<2,dim,Sdouble>
+    */
+  template <int dim>
+  Tensor<2,dim,Sdouble> Val(const Tensor<2,dim,SSdouble> &T)
+  {
+    Tensor<2,dim,Sdouble> ret;
+    for (unsigned int i=0; i<dim; ++i)
+      ret[i] = Val(T[i]);
+    return ret;
+  }
+
+  /**
+   * Downgrade a std::vector<Tensor<index,dim,Sdouble> > to
+   * std::vector<Tensor<index,dim> >
+   */
+  template <int index, int dim>
+  std::vector<Tensor<index,dim> > Val(const std::vector<Tensor<index,dim,Sdouble> > &T)
+  {
+    std::vector<Tensor<index,dim> > ret(T.size());
+    for (unsigned int q=0; q<T.size(); ++q)
+      ret[q] = Val(T[q]);
+    return ret;
+  }
+
+
+  /**
+   * Downgrade a std::vector<Tensor<index,dim,SSdouble> > to
+   * std::vector<Tensor<index,dim,Sdouble> >
+   */
+  template <int index, int dim>
+  std::vector<Tensor<index,dim,Sdouble> > Val(const std::vector<Tensor<index,dim,SSdouble> > &T)
+  {
+    std::vector<Tensor<index,dim,Sdouble> > ret(T.size());
+    for (unsigned int q=0; q<T.size(); ++q)
+      ret[q] = Val(T[q]);
+    return ret;
+  }
+
+
+  /**
+   * Downgrade a std::vector<Sdouble> to std::vector<double>
+   */
+  std::vector<double> Val(const std::vector<Sdouble> v)
+  {
+    std::vector<double> ret(v.size());
+    for (unsigned int i=0; i<v.size(); ++i)
+      ret[i] = v[i].val();
+    return ret;
+  }
+
+  /**
+   * Downgrade a std::vector<SSdouble> to std::vector<Sdouble>
+   */
+  std::vector<Sdouble> Val(const std::vector<SSdouble> v)
+  {
+    std::vector<Sdouble> ret(v.size());
+    for (unsigned int i=0; i<v.size(); ++i)
+      ret[i] = v[i].val();
+    return ret;
+  }
+
+
 }// end namespace
+
 
 D2K_NAMESPACE_CLOSE
 
