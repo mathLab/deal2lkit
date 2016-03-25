@@ -546,6 +546,102 @@ namespace DOFUtilities
     return ret;
   }
 
+  // helper functions to_double wich downgrade Sacado type to double
+
+  /**
+   * Do nothing, required for compatibility.
+   */
+  double sacado_to_double(const double &s)
+  {
+    return s;
+  }
+
+  /**
+   * Return a double given a Sdouble
+   */
+  double sacado_to_double(const Sdouble &s)
+  {
+    return s.val();
+  }
+
+
+  /**
+   * Return a double given a SSdouble
+   */
+  double sacado_to_double(const SSdouble &s)
+  {
+    return s.val().val();
+  }
+
+
+
+  /**
+   * Do nothing, required for compatibility.
+   */
+  template <int index, int dim>
+  Tensor <index,dim> sacado_to_double(const Tensor<index,dim> &t)
+  {
+    return t;
+  }
+
+
+  /**
+   * Return a Tensor<1,dim,double> given a Tensor<1,dim,Sdouble<T> >
+   * where T can be double, Sdouble, etc.
+   */
+  template <int dim, typename T>
+  Tensor <1,dim> sacado_to_double(const Tensor<1,dim, Sacado::Fad::DFad<T> > &t)
+  {
+    Tensor<1,dim> ret;
+    for (unsigned int i=0; i<dim; ++i)
+      ret[i] = sacado_to_double(t[i]);
+    return ret;
+  }
+
+
+  /**
+   * Return a Tensor<2,dim,double> given a Tensor<2,dim,Sdouble<T> >
+   * where T can be double, Sdouble, etc.
+   */
+  template <int dim, typename T>
+  Tensor <2,dim> sacado_to_double(const Tensor<2,dim, Sacado::Fad::DFad<T> > &t)
+  {
+    Tensor<2,dim> ret;
+    for (unsigned int i=0; i<dim; ++i)
+      ret[i] = sacado_to_double(t[i]);
+    return ret;
+  }
+
+
+  /**
+   * Return a std::vector<Tensor<index,dim,double> > given a
+   * std::vector<Tensor<index,dim,Sdouble<T> > > where T can be
+   * double, Sdouble etc.
+   */
+  template <int index, int dim, typename T>
+  std::vector<Tensor<index,dim> > sacado_to_double(const std::vector<Tensor<index,dim,Sacado::Fad::DFad<T> > > &v)
+  {
+    std::vector<Tensor<index,dim> > ret(v.size());
+    for (unsigned int q=0; q<v.size(); ++q)
+      ret[q] = sacado_to_double(v[q]);
+    return ret;
+  }
+
+
+  /**
+   * Return a std::vector<double> > given a
+   * std::vector<number> > > where number can be
+   * double, Sdouble etc.
+   */
+  template <typename number>
+  std::vector<double> sacado_to_double(const std::vector<number> &v)
+  {
+    std::vector<double> ret(v.size());
+    for (unsigned int q=0; q<v.size(); ++q)
+      ret[q] = sacado_to_double(v[q]);
+    return ret;
+  }
+
 
 }// end namespace
 
