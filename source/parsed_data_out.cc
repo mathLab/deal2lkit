@@ -21,8 +21,10 @@
 
 #include <deal.II/grid/grid_tools.h>
 
+DEAL_II_DISABLE_EXTRA_DIAGNOSTICS
 #include <deal.II/numerics/vector_tools.h>
 #include <deal.II/numerics/matrix_tools.h>
+DEAL_II_ENABLE_EXTRA_DIAGNOSTICS
 #include <deal.II/numerics/data_out.h>
 #include <deal.II/fe/mapping_q.h>
 #include <deal.II/fe/fe.h>
