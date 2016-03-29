@@ -108,7 +108,7 @@ private:
   bool update_jacobian_continuously;
 
   /** Output stream */
-  ConditionalOStream pout;
+  ConditionalOStream pcout;
 
   /** print useful informations */
   bool verbose;

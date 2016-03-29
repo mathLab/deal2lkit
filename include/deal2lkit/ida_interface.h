@@ -213,7 +213,7 @@ private:
   N_Vector diff_id;
 
   /** Output stream */
-  ConditionalOStream pout;
+  ConditionalOStream pcout;
 };
 
 D2K_NAMESPACE_CLOSE
