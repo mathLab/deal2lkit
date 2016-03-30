@@ -136,7 +136,7 @@ IDAInterface<VEC>::IDAInterface(SundialsInterface<VEC> &bubble) :
   ParameterAcceptor("IDA Solver Parameters"),
   solver(bubble),
   is_initialized(false),
-  pout(std::cout, Utilities::MPI::this_mpi_process(MPI_COMM_WORLD)==0)
+  pcout(std::cout, Utilities::MPI::this_mpi_process(MPI_COMM_WORLD)==0)
 {
   initial_step_size = 1e-4;
   min_step_size = 1e-6;
@@ -282,10 +282,10 @@ unsigned int IDAInterface<VEC>::start_ode(VEC &solution,
       next_time += outputs_period;
       if (verbose)
         {
-          pout << " "//"\r"
-               << std::setw(5) << t << " ----> "
-               << std::setw(5) << next_time
-               << std::endl;
+          pcout << " "//"\r"
+                << std::setw(5) << t << " ----> "
+                << std::setw(5) << next_time
+                << std::endl;
         }
       status = IDASolve(ida_mem, next_time, &t, yy, yp, IDA_NORMAL);
 
@@ -318,7 +318,7 @@ unsigned int IDAInterface<VEC>::start_ode(VEC &solution,
 
     }
 
-  pout << std::endl;
+  pcout << std::endl;
   // Free the vectors which are no longer used.
 #ifdef DEAL_II_WITH_MPI
   N_VDestroy_Parallel(yy);

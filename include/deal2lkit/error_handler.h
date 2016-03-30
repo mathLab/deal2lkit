@@ -147,8 +147,8 @@ public:
   void output_table(std::ostream &out=std::cout, const unsigned int table_no=0);
 
   /** By default output first table. The output is according to
-      to the condition of ConditionalOStream &pout */
-  void output_table(ConditionalOStream &pout, const unsigned int table_no=0);
+      to the condition of ConditionalOStream &pcout */
+  void output_table(ConditionalOStream &pcout, const unsigned int table_no=0);
 
 private:
   /** Value of solution names. */
