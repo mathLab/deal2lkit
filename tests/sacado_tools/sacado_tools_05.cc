@@ -1,6 +1,6 @@
 //-----------------------------------------------------------
 //
-//    Copyright (C) 2015 by the deal2lkit authors
+//    Copyright (C) 2016 by the deal2lkit authors
 //
 //    This file is part of the deal2lkit library.
 //
@@ -13,8 +13,8 @@
 //
 //-----------------------------------------------------------
 
-// test the DOFUtilities functions
-// for Number=double
+// test the to_double() function
+
 
 #include "../tests.h"
 #include <deal.II/base/logstream.h>
@@ -35,12 +35,13 @@
 #include <fstream>
 
 #include <deal2lkit/dof_utilities.h>
-#include "Sacado.hpp"
+#include <deal2lkit/sacado_tools.h>
 
 
 using namespace deal2lkit;
 
-typedef Sacado::Fad::DFad<double> Sdouble;
+typedef Sacado::Fad::DFad<double>  Sdouble;
+typedef Sacado::Fad::DFad<Sdouble> SSdouble;
 
 
 template<int dim>
@@ -59,7 +60,7 @@ void test (const Triangulation<dim> &tr,
                            update_values | update_gradients);
 
   std::vector<types::global_dof_index>    local_dof_indices (fe_values.dofs_per_cell);
-  std::vector<Sdouble> independent_local_dof_values (fe_values.dofs_per_cell);
+  std::vector<SSdouble> independent_local_dof_values (fe_values.dofs_per_cell);
 
   fe_values.reinit (dof.begin_active());
   dof.begin_active()->get_dof_indices (local_dof_indices);
@@ -70,93 +71,99 @@ void test (const Triangulation<dim> &tr,
 
   DOFUtilities::extract_local_dofs(global_vector, local_dof_indices, independent_local_dof_values);
 
-  for (unsigned int i=0; i<dof.n_dofs(); ++i)
-    deallog << independent_local_dof_values[i] << std::endl;
-
-
-
-  const unsigned int n_components = dim+1;
-  std::vector< std::vector<Sdouble> > all_vars(quadrature.size(), std::vector<Sdouble>(n_components));
-  std::vector <Sdouble> scalar_values(quadrature.size());
-  std::vector <Tensor <1, dim, Sdouble> > grad_s(quadrature.size());
-
-  std::vector <Sdouble> div_values(quadrature.size());
-  std::vector <Tensor <1, dim, Sdouble> > vector_values(quadrature.size());
-  std::vector <Tensor <2, dim, Sdouble> > grad_v(quadrature.size());
-  std::vector <Tensor <2, dim, Sdouble> > sym_grad_v(quadrature.size());
   FEValuesExtractors::Scalar scalar (dim);
   FEValuesExtractors::Vector vector (0);
 
-  DOFUtilities::get_values(fe_values, independent_local_dof_values, all_vars);
-  DOFUtilities::get_values(fe_values, independent_local_dof_values, scalar, scalar_values);
+  //compute divergences with sacado
+  std::vector<SSdouble> div_v(quadrature.size());
+  DOFUtilities::get_divergences(fe_values, independent_local_dof_values, vector, div_v);
+
+  // compute divergences with dealii
+  std::vector <double> div_v_double(quadrature.size());
+  fe_values[vector].get_function_divergences(global_vector,div_v_double);
+
+  // compute gradient with sacado
+  std::vector <Tensor <1, dim, SSdouble> > grad_s(quadrature.size());
   DOFUtilities::get_gradients(fe_values, independent_local_dof_values, scalar, grad_s);
 
-  DOFUtilities::get_values(fe_values, independent_local_dof_values, vector, vector_values);
-  DOFUtilities::get_divergences(fe_values, independent_local_dof_values, vector, div_values);
+  // compute gradient with dealii
+  std::vector <Tensor <1, dim, double> > grad_s_double(quadrature.size());
+  fe_values[scalar].get_function_gradients(global_vector,grad_s_double);
+
+  // compute gradient with sacado
+  std::vector <Tensor <2, dim, SSdouble> > grad_v(quadrature.size());
   DOFUtilities::get_gradients(fe_values, independent_local_dof_values, vector, grad_v);
+
+  // compute gradient with dealii
+  std::vector <Tensor <2, dim, double> > grad_v_double(quadrature.size());
+  fe_values[vector].get_function_gradients(global_vector,grad_v_double);
+
+  // compute symmetric gradient with sacado
+  std::vector <Tensor <2, dim, SSdouble> > sym_grad_v(quadrature.size());
   DOFUtilities::get_symmetric_gradients(fe_values, independent_local_dof_values, vector, sym_grad_v);
 
-  deallog << "all_vars" << std::endl;
-  for (unsigned int q=0; q<quadrature.size(); ++q)
-    {
-      for (unsigned int i=0; i<n_components; ++i)
-        deallog << all_vars[q][i] << " ";
-      deallog << std::endl;
-    }
+  // compute symmetric gradient with dealii
+  std::vector <SymmetricTensor <2, dim, double> > sym_grad_v_double(quadrature.size());
+  fe_values[vector].get_function_symmetric_gradients(global_vector,sym_grad_v_double);
 
-  deallog << "scalar_values" << std::endl;
-  for (unsigned int q=0; q<quadrature.size(); ++q)
-    deallog << scalar_values[q] << std::endl;
+  {
+    deallog <<std::endl;
+    deallog << "std::vector<double>" << std::endl;
+    const std::vector<double> div_double = SacadoTools::to_double(div_v);
+    for (unsigned int q=0; q<quadrature.size(); ++q)
+      {
+        const double diff = std::abs(div_double[q] - div_v_double[q]);
+        if (diff > 1e-10)
+          deallog << "Expected 0, got: " << diff <<std::endl;
+      }
+  }
+
 
   deallog <<std::endl;
-  deallog << "div_values" << std::endl;
-  for (unsigned int q=0; q<quadrature.size(); ++q)
-    deallog << div_values[q] << std::endl;
-
-  deallog <<std::endl;
-  deallog << "grad of a scalar field" << std::endl;
+  deallog << "Tensor<1,"<< dim <<">" << std::endl;
   for (unsigned int q=0; q<quadrature.size(); ++q)
     {
+      const Tensor<1,dim> t_double = SacadoTools::to_double(grad_s[q]);
       for (unsigned int d=0; d<dim; ++d)
-        deallog << grad_s[q][d] << " ";
-      deallog <<std::endl;
+        {
+          const double diff = std::abs(t_double[d] - grad_s_double[q][d]);
+          if (diff > 1e-10)
+            deallog << "Expected 0, got: " << diff <<std::endl;
+        }
     }
 
   deallog <<std::endl;
-  deallog << "vector_values" << std::endl;
+  deallog << "Tensor<2,"<< dim <<">" << std::endl;
   for (unsigned int q=0; q<quadrature.size(); ++q)
     {
-      for (unsigned int d=0; d<dim; ++d)
-        deallog << vector_values[q][d] << " ";
-      deallog <<std::endl;
-    }
-
-  deallog <<std::endl;
-  deallog << "grad of a vector field" << std::endl;
-  for (unsigned int q=0; q<quadrature.size(); ++q)
-    {
+      const Tensor<2,dim> t_double = SacadoTools::to_double(grad_v[q]);
       for (unsigned int d=0; d<dim; ++d)
         {
           for (unsigned int dd=0; dd<dim; ++dd)
-            deallog << grad_v[q][d][dd] << " ";
-          deallog <<std::endl;
+            {
+              const double diff = std::abs(t_double[d][dd]-grad_v_double[q][d][dd]);
+              if (diff > 1e-10)
+                deallog << "Expected 0, got: " << diff <<std::endl;
+            }
         }
-      deallog <<std::endl;
     }
 
   deallog <<std::endl;
-  deallog << "sym grad of a vector field" << std::endl;
+  deallog << "SymmetricTensor<2,"<<dim <<">" << std::endl;
   for (unsigned int q=0; q<quadrature.size(); ++q)
     {
+      const Tensor<2,dim> t_double = SacadoTools::to_double(sym_grad_v[q]);
       for (unsigned int d=0; d<dim; ++d)
         {
           for (unsigned int dd=0; dd<dim; ++dd)
-            deallog << sym_grad_v[q][d][dd] << " ";
-          deallog <<std::endl;
+            {
+              const double diff = std::abs(t_double[d][dd] - sym_grad_v_double[q][d][dd]);
+              if (diff > 1e-10)
+                deallog << "Expected 0, got: " << diff << std::endl;
+            }
         }
-      deallog <<std::endl;
     }
-
+  deallog <<std::endl;
 }
 
 

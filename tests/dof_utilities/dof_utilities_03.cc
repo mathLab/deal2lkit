@@ -139,7 +139,7 @@ void test (const Triangulation<dim> &tr,
       for (unsigned int d=0; d<dim; ++d)
         {
           for (unsigned int dd=0; dd<dim; ++dd)
-            deallog << grad_v[q][d][d] << " ";
+            deallog << grad_v[q][d][dd] << " ";
           deallog <<std::endl;
         }
       deallog <<std::endl;
@@ -152,7 +152,7 @@ void test (const Triangulation<dim> &tr,
       for (unsigned int d=0; d<dim; ++d)
         {
           for (unsigned int dd=0; dd<dim; ++dd)
-            deallog << sym_grad_v[q][d][d] << " ";
+            deallog << sym_grad_v[q][d][dd] << " ";
           deallog <<std::endl;
         }
       deallog <<std::endl;
