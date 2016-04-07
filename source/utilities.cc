@@ -180,6 +180,7 @@ void copy(TrilinosWrappers::MPI::Vector &dst, const N_Vector &src)
     {
       dst[is.nth_index_in_set(i)] = NV_Ith_P(src, i);
     }
+  dst.compress(VectorOperation::insert);
 }
 
 void copy(N_Vector &dst, const TrilinosWrappers::MPI::Vector &src)
@@ -200,6 +201,7 @@ void copy(TrilinosWrappers::MPI::BlockVector &dst, const N_Vector &src)
     {
       dst[is.nth_index_in_set(i)] = NV_Ith_P(src, i);
     }
+  dst.compress(VectorOperation::insert);
 }
 
 void copy(N_Vector &dst, const TrilinosWrappers::MPI::BlockVector &src)
@@ -224,6 +226,7 @@ void copy(PETScWrappers::MPI::Vector &dst, const N_Vector &src)
     {
       dst[is.nth_index_in_set(i)] = NV_Ith_P(src, i);
     }
+  dst.compress(VectorOperation::insert);
 }
 
 void copy(N_Vector &dst, const PETScWrappers::MPI::Vector &src)
@@ -244,6 +247,7 @@ void copy(PETScWrappers::MPI::BlockVector &dst, const N_Vector &src)
     {
       dst[is.nth_index_in_set(i)] = NV_Ith_P(src, i);
     }
+  dst.compress(VectorOperation::insert);
 }
 
 void copy(N_Vector &dst, const PETScWrappers::MPI::BlockVector &src)
