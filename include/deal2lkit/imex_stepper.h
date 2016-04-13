@@ -24,20 +24,9 @@
 #include <deal.II/base/conditional_ostream.h>
 
 #ifdef D2K_WITH_SUNDIALS
-// For time integration.
-#include <ida/ida.h>
-#include <ida/ida_spils.h>
-#include <ida/ida_spgmr.h>
-#include <ida/ida_spbcgs.h>
-#include <ida/ida_sptfqmr.h>
-#include <nvector/nvector_serial.h>
-#include <sundials/sundials_math.h>
-#include <sundials/sundials_types.h>
-
-
 #include <deal2lkit/sundials_interface.h>
 #include <deal2lkit/parameter_acceptor.h>
-
+#include <deal2lkit/kinsol_interface.h>
 
 D2K_NAMESPACE_OPEN
 
@@ -72,11 +61,18 @@ public:
   void reset_ode(const double t, VEC &y,
                  double h, unsigned int max_steps,
                  bool first_step);
+  double get_alpha() const;
 
 private:
   /** The solver interface. */
   SundialsInterface<VEC> &interface;
 
+  /**
+    * kinsol solver
+    */
+  KINSOLInterface<VEC> kinsol;
+
+  void compute_y_dot(const VEC &y, const VEC &prev, const double alpha, VEC &y_dot);
   /** Step size. */
   double step_size;
 
@@ -95,7 +91,7 @@ private:
   /** Seconds between each output. */
   unsigned int output_period;
 
-  /** Alpha to use in Newton method for IC calculation. */
+  /** Alpha to use in Newton method for the update of the solution. */
   double newton_alpha;
 
   /** Maximum number of outer iterations for Newton method. */
@@ -106,6 +102,11 @@ private:
 
   /** Jacobian is updated at each outer iteration and time step */
   bool update_jacobian_continuously;
+
+  /**
+   * use kinsol solver true or false
+   */
+  bool use_kinsol;
 
   /** Output stream */
   ConditionalOStream pcout;
@@ -132,6 +133,37 @@ private:
                                        VEC &sol,
                                        VEC &sol_dot,
                                        VEC &residual);
+
+
+  /**
+     * find solution applying the newton method with given
+     * @param t
+     * @param alpha
+     * @param update_Jacobian
+     * @param previous_solution
+     * @param solution_dot
+     * at the end of the computation, the @p solution_dot is updated as well.
+     *
+     * this function is called when KINSOL is NOT used
+     */
+  void  do_newton (const double t,
+                   const double alpha,
+                   const bool update_Jacobian,
+                   const VEC &previous_solution,
+                   VEC &solution,
+                   VEC &solution_dot);
+
+
+  /**
+   * compute previous solution from given
+   * @param sol
+   * @param sol_dot
+   * @param alpha
+   */
+  void compute_previous_solution(const VEC &sol,
+                                 const VEC &sol_dot,
+                                 const double &alpha,
+                                 VEC &prev);
 
 };
 

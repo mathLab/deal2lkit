@@ -26,7 +26,7 @@
 #endif
 
 #ifdef D2K_WITH_SUNDIALS
-#include <ida/ida_impl.h>
+
 
 using namespace dealii;
 
@@ -68,16 +68,21 @@ public :
   SundialsInterface(const MPI_Comm &communicator=MPI_COMM_WORLD) :
     communicator(communicator) {};
 
+#else
+  SundialsInterface() {};
+#endif
+
   /**
    * @brief return the comunicator
    */
   const MPI_Comm &get_comm() const
   {
+#ifdef DEAL_II_WITH_MPI
     return communicator;
-  }
 #else
-  SundialsInterface() {};
+    return MPI_COMM_WORLD;
 #endif
+  }
 
 
   /**
@@ -182,6 +187,12 @@ public :
                              const double alpha) = 0;
 
   /**
+      * compute Jacobian times @p v, and the result is stored in @p dst
+      *
+      */
+  virtual int jacobian_vmult(const VEC &v, VEC &dst) const;
+
+  /**
    * IDA package decomposes variables in differentials and algebraics.
    *
    * This function returns a vector that has 1 on the differential components
@@ -195,6 +206,16 @@ public :
    */
   virtual VEC &get_local_tolerances() const;
 
+  /**
+      * Get the diagonal of the lumped mass matrix and store it in @param diag.
+      * @p diag is used as scaling vector for the computation of an approximate
+      * L2 norm.
+      *
+      * By default, @p diag is set to 1.
+      */
+  virtual void get_lumped_mass_matrix(VEC &diag) const;
+
+
 #ifdef DEAL_II_WITH_MPI
 private:
   /**
@@ -202,6 +223,7 @@ private:
    */
   const MPI_Comm &communicator;
 #endif
+
 
 };
 

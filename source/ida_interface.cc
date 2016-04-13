@@ -36,6 +36,7 @@
 
 #include <iostream>
 #include <iomanip>
+#include <ida/ida_impl.h>
 
 
 using namespace dealii;
@@ -135,7 +136,7 @@ template <typename VEC>
 IDAInterface<VEC>::IDAInterface(SundialsInterface<VEC> &bubble) :
   ParameterAcceptor("IDA Solver Parameters"),
   solver(bubble),
-  is_initialized(false),
+  ida_mem(nullptr),
   pcout(std::cout, Utilities::MPI::this_mpi_process(MPI_COMM_WORLD)==0)
 {
   initial_step_size = 1e-4;
@@ -143,10 +144,6 @@ IDAInterface<VEC>::IDAInterface(SundialsInterface<VEC> &bubble) :
 
   abs_tol = 1e-6;
   rel_tol = 1e-8;
-
-  ida_mem = IDACreate();
-  is_initialized = true;
-
 }
 
 template <typename VEC>
@@ -244,8 +241,6 @@ unsigned int IDAInterface<VEC>::start_ode(VEC &solution,
   AssertThrow(solution.size() == solver.n_dofs(),
               ExcDimensionMismatch(solution.size(), solver.n_dofs()));
 
-  AssertThrow(is_initialized, ExcMessage("Not Initialized!"));
-
   double t = initial_time;
   double h = initial_step_size;
   unsigned int step_number = 0;
@@ -299,7 +294,7 @@ unsigned int IDAInterface<VEC>::start_ode(VEC &solution,
       bool reset = solver.solver_should_restart(t, step_number, h, solution, solution_dot);
 
 
-      while ( reset == true )
+      while (reset)
         {
           // double frac = 0;
           int k = 0;
@@ -437,6 +432,14 @@ void IDAInterface<VEC>::reset_ode(double current_time,
   else
     type = reset_type;
 
+  if (verbose)
+    {
+      pcout << "computing consistent initial conditions with the option "
+            << type
+            << " please be patient."
+            << std::endl;
+    }
+
   if (type == "use_y_dot")
     {
       // (re)initialization of the vectors
@@ -454,8 +457,13 @@ void IDAInterface<VEC>::reset_ode(double current_time,
       copy(solution, yy);
       copy(solution_dot, yp);
     }
-}
 
+  if (verbose)
+    {
+      pcout << "compute initial conditions: done."
+            << std::endl;
+    }
+}
 
 D2K_NAMESPACE_CLOSE
 
@@ -474,5 +482,6 @@ template class deal2lkit::IDAInterface<PETScWrappers::MPI::BlockVector>;
 #endif
 
 #endif
+
 
 #endif
