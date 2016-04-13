@@ -83,8 +83,22 @@ VEC &SundialsInterface<VEC>::get_local_tolerances() const
   return *tmp;
 }
 
-D2K_NAMESPACE_CLOSE
+template<typename VEC>
+int SundialsInterface<VEC>::jacobian_vmult(const VEC &, VEC &) const
+{
+  Assert(false, ExcPureFunctionCalled());
+  int i=0;
+  return i;
+}
 
+
+template<typename VEC>
+void SundialsInterface<VEC>::get_lumped_mass_matrix(VEC &diag) const
+{
+  diag=1;
+}
+
+D2K_NAMESPACE_CLOSE
 
 template class deal2lkit::SundialsInterface<Vector<double> >;
 template class deal2lkit::SundialsInterface<BlockVector<double> >;

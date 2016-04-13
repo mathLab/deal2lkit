@@ -24,6 +24,13 @@
 #include <deal.II/base/conditional_ostream.h>
 
 #ifdef D2K_WITH_SUNDIALS
+
+
+#include <deal2lkit/sundials_interface.h>
+#include <deal2lkit/parameter_acceptor.h>
+
+
+
 // For time integration.
 #include <ida/ida.h>
 #include <ida/ida_spils.h>
@@ -33,11 +40,6 @@
 #include <nvector/nvector_serial.h>
 #include <sundials/sundials_math.h>
 #include <sundials/sundials_types.h>
-
-
-#include <deal2lkit/sundials_interface.h>
-#include <deal2lkit/parameter_acceptor.h>
-
 
 D2K_NAMESPACE_OPEN
 
@@ -216,8 +218,8 @@ private:
   ConditionalOStream pcout;
 };
 
-D2K_NAMESPACE_CLOSE
 
+D2K_NAMESPACE_CLOSE
 #endif
 
 

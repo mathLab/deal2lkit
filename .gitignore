@@ -8,3 +8,4 @@ Makefile
 *.pvtu
 *.vtk
 *.gnuplot
+CMakeLists.txt.user
