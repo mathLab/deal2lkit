@@ -19,6 +19,7 @@
 #ifdef D2K_WITH_SUNDIALS
 
 #include <deal.II/base/utilities.h>
+#include <deal.II/base/function_parser.h>
 #include <deal.II/lac/block_vector.h>
 #ifdef DEAL_II_WITH_TRILINOS
 #include <deal.II/lac/trilinos_block_vector.h>
@@ -91,8 +92,10 @@ double IMEXStepper<VEC>::get_alpha() const
 template <typename VEC>
 void IMEXStepper<VEC>::declare_parameters(ParameterHandler &prm)
 {
-  add_parameter(prm, &step_size,
-                "Step size", std::to_string(step_size), Patterns::Double());
+  add_parameter(prm, &_step_size,
+                "Step size", "1e-2", Patterns::Anything(),
+                "Conditional statement can be used as well:\n"
+                "(t<0.5?1e-2:1e-3)");
 
   add_parameter(prm, &abs_tol,
                 "Absolute error tolerance", std::to_string(abs_tol),
@@ -176,7 +179,7 @@ unsigned int IMEXStepper<VEC>::start_ode(VEC &solution, VEC &solution_dot)
 
   double t = initial_time;
   double alpha;
-
+  step_size = evaluate_step_size(initial_time);
   // check if it is a stationary problem
   if (initial_time == final_time)
     alpha = 0.0;
@@ -250,7 +253,9 @@ unsigned int IMEXStepper<VEC>::start_ode(VEC &solution, VEC &solution_dot)
   // The overall cycle over time begins here.
   while (t<=final_time+1e-15)
     {
-      pcout << "Solving for t = " << t << std::endl;
+      pcout << "Solving for t = " << t
+            << " (step size = "<< step_size<<")"
+            << std::endl;
 
       if (use_kinsol)
         {
@@ -296,10 +301,13 @@ unsigned int IMEXStepper<VEC>::start_ode(VEC &solution, VEC &solution_dot)
 
       if ((step_number % output_period) == 0)
         interface.output_step(t, solution, solution_dot,  step_number, step_size);
-
+      step_size = evaluate_step_size(t);
       t += step_size;
 
-
+      if (initial_time == final_time)
+        alpha = 0.0;
+      else
+        alpha = 1./step_size;
 
       *previous_solution = solution;
       update_Jacobian = update_jacobian_continuously;
@@ -552,6 +560,24 @@ compute_previous_solution(const VEC &sol,
       (void)alpha;
     }
 }
+
+template <typename VEC>
+double IMEXStepper<VEC>::evaluate_step_size(const double &t)
+{
+  std::string variables = "t";
+  std::map<std::string,double> constants;
+  // FunctionParser with 1 variables and 1 component:
+  FunctionParser<1> fp(1);
+  fp.initialize(variables,
+                _step_size,
+                constants);
+  // Point at which we want to evaluate the function
+  Point<1> time(t);
+  // evaluate the expression at 'time':
+  double result = fp.value(time);
+  return result;
+}
+
 
 D2K_NAMESPACE_CLOSE
 

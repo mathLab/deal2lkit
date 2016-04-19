@@ -1,6 +1,6 @@
 //-----------------------------------------------------------
 //
-//    Copyright (C) 2015 by the deal2lkit authors
+//    Copyright (C) 2015-2016 by the deal2lkit authors
 //
 //    This file is part of the deal2lkit library.
 //
@@ -73,8 +73,20 @@ private:
   KINSOLInterface<VEC> kinsol;
 
   void compute_y_dot(const VEC &y, const VEC &prev, const double alpha, VEC &y_dot);
+
   /** Step size. */
   double step_size;
+
+  /**
+     * user defined step_size
+     */
+  std::string _step_size;
+
+  /**
+    * @brief evaluate step size at time @p t according to the
+    * expression stored in _step_size
+    */
+  double evaluate_step_size(const double &t);
 
   /** Initial time for the ode.*/
   double initial_time;
