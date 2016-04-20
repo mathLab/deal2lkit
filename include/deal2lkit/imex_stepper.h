@@ -53,14 +53,15 @@ public:
   /** Evolve. This function returns the final number of steps. */
   unsigned int start_ode(VEC &solution, VEC &solution_dot);
 
-  /** Clear internal memory, and
-   start with clean
-   objects. This is useful if
-   you need to refine your
-   mesh between stesp. */
-  void reset_ode(const double t, VEC &y,
-                 double h, unsigned int max_steps,
-                 bool first_step);
+
+  /**
+     * @brief compute_consistent_initial_conditions
+     * @param t
+     */
+  void compute_consistent_initial_conditions(const double &t,
+                                             VEC &y,
+                                             VEC &y_dot);
+
   double get_alpha() const;
 
 private:
