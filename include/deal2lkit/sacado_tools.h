@@ -16,6 +16,9 @@
 #ifndef _d2k_sacado_tools_h
 #define _d2k_sacado_tools_h
 
+#include <deal2lkit/config.h>
+#include <deal.II/base/config.h>
+
 
 /**
  *  Define namespace "SacadoTools" some functions for working with
@@ -23,7 +26,6 @@
  *
  */
 
-#include <deal.II/base/config.h>
 
 #ifdef DEAL_II_WITH_TRILINOS
 
@@ -32,7 +34,6 @@
 typedef Sacado::Fad::DFad<double> Sdouble;
 typedef Sacado::Fad::DFad<Sdouble> SSdouble;
 
-#include <deal2lkit/config.h>
 #include <deal.II/base/tensor.h>
 
 using namespace dealii;

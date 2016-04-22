@@ -19,6 +19,7 @@
 #ifdef D2K_WITH_SUNDIALS
 
 #include <deal.II/base/utilities.h>
+#include <deal.II/base/function_parser.h>
 #include <deal.II/lac/block_vector.h>
 #ifdef DEAL_II_WITH_TRILINOS
 #include <deal.II/lac/trilinos_block_vector.h>
@@ -79,7 +80,7 @@ template <typename VEC>
 double IMEXStepper<VEC>::get_alpha() const
 {
   double alpha;
-  if (initial_time == final_time)
+  if (initial_time == final_time || step_size == 0.0)
     alpha = 0.0;
   else
     alpha = 1./step_size;
@@ -91,8 +92,10 @@ double IMEXStepper<VEC>::get_alpha() const
 template <typename VEC>
 void IMEXStepper<VEC>::declare_parameters(ParameterHandler &prm)
 {
-  add_parameter(prm, &step_size,
-                "Step size", std::to_string(step_size), Patterns::Double());
+  add_parameter(prm, &_step_size,
+                "Step size", "1e-2", Patterns::Anything(),
+                "Conditional statement can be used as well:\n"
+                "(t<0.5?1e-2:1e-3)");
 
   add_parameter(prm, &abs_tol,
                 "Absolute error tolerance", std::to_string(abs_tol),
@@ -176,7 +179,8 @@ unsigned int IMEXStepper<VEC>::start_ode(VEC &solution, VEC &solution_dot)
 
   double t = initial_time;
   double alpha;
-
+  step_size = evaluate_step_size(initial_time);
+  alpha = get_alpha();
   // check if it is a stationary problem
   if (initial_time == final_time)
     alpha = 0.0;
@@ -194,7 +198,8 @@ unsigned int IMEXStepper<VEC>::start_ode(VEC &solution, VEC &solution_dot)
 
   std::function<int(const VEC &, VEC &)> my_residual = [&] (const VEC &y, VEC &res)
   {
-    compute_y_dot(y,*previous_solution,alpha,solution_dot);
+    double a = this->get_alpha();
+    compute_y_dot(y,*previous_solution,a,solution_dot);
     int ret = this->interface.residual(t,y,solution_dot,res);
     *residual = res;
     return ret;
@@ -202,15 +207,17 @@ unsigned int IMEXStepper<VEC>::start_ode(VEC &solution, VEC &solution_dot)
 
   std::function<int(const VEC &)> my_jac = [&] (const VEC &y)
   {
-    compute_y_dot(y,*previous_solution,alpha,solution_dot);
-    return this->interface.setup_jacobian(t,y,solution_dot,*residual,alpha);
+    double a = this->get_alpha();
+    compute_y_dot(y,*previous_solution,a,solution_dot);
+    return this->interface.setup_jacobian(t,y,solution_dot,*residual,a);
   };
 
   std::function<int(const VEC &, VEC &)> my_solve = [&] (const VEC &res, VEC &dst)
   {
+    double a = this->get_alpha();
     *rhs = *residual;
     *rhs *= -1.0;
-    return this->interface.solve_jacobian_system(t,solution,solution_dot,res,alpha,*rhs,dst);
+    return this->interface.solve_jacobian_system(t,solution,solution_dot,res,a,*rhs,dst);
   };
 
   std::function<int(const VEC &, VEC &)> my_jacobian_vmult = [&] (const VEC &v, VEC &dst )
@@ -247,10 +254,15 @@ unsigned int IMEXStepper<VEC>::start_ode(VEC &solution, VEC &solution_dot)
       kinsol.set_scaling_vectors(*L2, *L2);
     }
 
+  compute_consistent_initial_conditions(initial_time,
+                                        solution,
+                                        solution_dot);
   // The overall cycle over time begins here.
   while (t<=final_time+1e-15)
     {
-      pcout << "Solving for t = " << t << std::endl;
+      pcout << "Solving for t = " << t
+            << " (step size = "<< step_size<<")"
+            << std::endl;
 
       if (use_kinsol)
         {
@@ -270,7 +282,6 @@ unsigned int IMEXStepper<VEC>::start_ode(VEC &solution, VEC &solution_dot)
           rhs = interface.create_new_vector();
           L2 = interface.create_new_vector();
 
-          compute_previous_solution(solution,solution_dot,alpha,*previous_solution);
 
           if (use_kinsol)
             {
@@ -279,13 +290,12 @@ unsigned int IMEXStepper<VEC>::start_ode(VEC &solution, VEC &solution_dot)
               kinsol.initialize_solver(solution);
               interface.get_lumped_mass_matrix(*L2);
               kinsol.set_scaling_vectors(*L2, *L2);
-              kinsol.solve(solution);
-              compute_y_dot(solution,*previous_solution,alpha,solution_dot);
             }
-          else
-            {
-              do_newton(t,alpha,update_Jacobian,*previous_solution,solution,solution_dot);
-            }
+          compute_consistent_initial_conditions(t,
+                                                solution,
+                                                solution_dot);
+
+          compute_previous_solution(solution,solution_dot,alpha,*previous_solution);
 
           restart = interface.solver_should_restart(t,step_number,step_size,solution,solution_dot);
 
@@ -296,10 +306,13 @@ unsigned int IMEXStepper<VEC>::start_ode(VEC &solution, VEC &solution_dot)
 
       if ((step_number % output_period) == 0)
         interface.output_step(t, solution, solution_dot,  step_number, step_size);
-
+      step_size = evaluate_step_size(t);
       t += step_size;
 
-
+      if (initial_time == final_time)
+        alpha = 0.0;
+      else
+        alpha = 1./step_size;
 
       *previous_solution = solution;
       update_Jacobian = update_jacobian_continuously;
@@ -552,6 +565,57 @@ compute_previous_solution(const VEC &sol,
       (void)alpha;
     }
 }
+
+template <typename VEC>
+double IMEXStepper<VEC>::evaluate_step_size(const double &t)
+{
+  std::string variables = "t";
+  std::map<std::string,double> constants;
+  // FunctionParser with 1 variables and 1 component:
+  FunctionParser<1> fp(1);
+  fp.initialize(variables,
+                _step_size,
+                constants);
+  // Point at which we want to evaluate the function
+  Point<1> time(t);
+  // evaluate the expression at 'time':
+  double result = fp.value(time);
+  return result;
+}
+
+template <typename VEC>
+void IMEXStepper<VEC>::compute_consistent_initial_conditions(const double &t,
+    VEC &y,
+    VEC &y_dot)
+{
+  auto previous_solution = interface.create_new_vector();
+  auto first_guess = interface.create_new_vector();
+  auto first_guess_dot = interface.create_new_vector();
+  auto update = interface.create_new_vector();
+
+  *first_guess     = y;
+  *first_guess_dot = y_dot;
+
+
+
+  step_size = 0;
+  if (use_kinsol)
+    {
+      kinsol.solve(y);
+    }
+  else
+    do_newton(t,0.0,true,*previous_solution,y,y_dot);
+
+  *update = y;
+  *update -= *first_guess;
+  step_size = evaluate_step_size(t);
+  *update /= step_size;
+  *first_guess_dot += *update;
+  y_dot = *first_guess_dot;
+
+
+}
+
 
 D2K_NAMESPACE_CLOSE
 

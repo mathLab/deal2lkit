@@ -1,6 +1,6 @@
 //-----------------------------------------------------------
 //
-//    Copyright (C) 2015 by the deal2lkit authors
+//    Copyright (C) 2015-2016 by the deal2lkit authors
 //
 //    This file is part of the deal2lkit library.
 //
@@ -53,14 +53,15 @@ public:
   /** Evolve. This function returns the final number of steps. */
   unsigned int start_ode(VEC &solution, VEC &solution_dot);
 
-  /** Clear internal memory, and
-   start with clean
-   objects. This is useful if
-   you need to refine your
-   mesh between stesp. */
-  void reset_ode(const double t, VEC &y,
-                 double h, unsigned int max_steps,
-                 bool first_step);
+
+  /**
+     * @brief compute_consistent_initial_conditions
+     * @param t
+     */
+  void compute_consistent_initial_conditions(const double &t,
+                                             VEC &y,
+                                             VEC &y_dot);
+
   double get_alpha() const;
 
 private:
@@ -73,8 +74,20 @@ private:
   KINSOLInterface<VEC> kinsol;
 
   void compute_y_dot(const VEC &y, const VEC &prev, const double alpha, VEC &y_dot);
+
   /** Step size. */
   double step_size;
+
+  /**
+     * user defined step_size
+     */
+  std::string _step_size;
+
+  /**
+    * @brief evaluate step size at time @p t according to the
+    * expression stored in _step_size
+    */
+  double evaluate_step_size(const double &t);
 
   /** Initial time for the ode.*/
   double initial_time;
