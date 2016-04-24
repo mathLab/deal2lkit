@@ -202,6 +202,7 @@ unsigned int IMEXStepper<VEC>::start_ode(VEC &solution, VEC &solution_dot)
     compute_y_dot(y,*previous_solution,a,solution_dot);
     int ret = this->interface.residual(t,y,solution_dot,res);
     *residual = res;
+    AssertThrow(!std::isnan(residual->l2_norm()),ExcMessage("Residual contains one or more NaNs."));
     return ret;
   };
 
@@ -474,6 +475,8 @@ do_newton (const double t,
           compute_y_dot(solution,previous_solution,alpha, solution_dot);
 
           res_norm = interface.vector_norm(*solution_update);
+
+          AssertThrow(!std::isnan(residual->l2_norm()),ExcMessage("Residual contains one or more NaNs."));
 
           if (rel_tol>0.0)
             {
