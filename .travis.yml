@@ -9,53 +9,59 @@ cache:
 notifications:
   email: false
 
-addons:
+addons: &gcc5
   apt:
     sources:
-      - ubuntu-toolchain-r-test
-      - llvm-toolchain-precise-3.6
-      - george-edison55-precise-backports
+    - ubuntu-toolchain-r-test
     packages:
-      - ninja-build
-      - cmake
-      - cmake-data
-      - build-essential
-      - libblas-dev
-      - liblapack-dev
-      - libboost-dev
-      - clang-3.6
-      - gfortran
-      - doxygen
-      - graphviz
+    - build-essential
+    - libblas-dev
+    - liblapack-dev
+    - libboost-dev
+    - doxygen
+#    - graphviz
+    - g++-5
+    - gcc-5
+    - gfortran
 
+compiler: gcc-5
 language: cpp
-compiler: clang
 
 before_install:
+  - export PRG=$PWD/programs
+  - export CASA=$PWD
+  - export CXX=g++-5
+  - export CC=gcc-5
   - ./scripts/setup_astyle.sh
   - export PATH=$PWD/programs/astyle/build/gcc/bin:$PATH
   - ./scripts/check_indentation.sh
-
-install:
-  - export PRG=$PWD/programs
-  - export CASA=$PWD
-  - export CXX=clang++-3.6
-  - export PATH=$PWD/programs/cmake/bin:$PATH
-  - export PATH=$PWD/programs/ninja:$PATH
   - export TRILINOS_DIR=$PWD/programs/trilinos
   - export DEAL_II_DIR=$PWD/programs/dealii
-  - export SUNDIALS_DIR=$PWD/programs/sundials
+  - export DEAL2LKIT_DIR=$CASA/deal2lkit-$BUILD_TYPE
+  - export P4EST_DIR=$PWD/programs/p4est
   - export PATH=$PWD/programs/astyle/build/gcc/bin:$PATH
   - export PATH=$PRG/numdiff/bin:$PATH
-  - ./scripts/set_cache.sh
-  - mkdir build
-  - cd build
-  - cmake -GNinja -DCMAKE_INSTALL_PREFIX=/home/travis/deal2lkit-$BUILD_TYPE -DD2K_ENABLE_TESTING=ON -DCMAKE_BUILD_TYPE=$BUILD_TYPE ..
+  - ./scripts/travis/install_mpi.sh
+  - export PATH=$PRG/mpich/bin:$PATH
+  - ./scripts/travis/install_cmake.sh
+  - export PATH=$PRG/cmake/bin:$PATH
+  - ./scripts/travis/install_ninja.sh
+  - export PATH=$PRG/ninja:$PATH
+  - ./scripts/travis/install_numdiff.sh
+  - export CXX=$PRG/mpich/bin/mpicxx
+  - export CC=$PRG/mpich/bin/mpicc
+  - ./scripts/travis/install_p4est.sh
+  - ./scripts/travis/install_sundials.sh
+  - export SUNDIALS_DIR=$PRG/sundials
+
+install: true
+  
+script:
+  - ./scripts/travis/install_trilinos_OR_dealii.sh
+  - cmake -GNinja -DCMAKE_INSTALL_PREFIX=/home/travis/deal2lkit-$BUILD_TYPE -DD2K_ENABLE_TESTING=ON -DCMAKE_BUILD_TYPE=$BUILD_TYPE
   - ninja -j4 install
   - tar cfz /home/travis/deal2lkit-CI-$BUILD_TYPE.tgz /home/travis/deal2lkit-$BUILD_TYPE
   - tar cfz /home/travis/dealii-CI-environment.tgz $PRG
-  
-script:
   - ninja setup_tests
   - ctest -j4 -V -R "${BUILD_TYPE,,}"
     

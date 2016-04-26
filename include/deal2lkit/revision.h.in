@@ -17,6 +17,8 @@
 #ifndef _d2k_revision_h
 #define _d2k_revision_h
 
+#include <deal2lkit/config.h>
+
 /**
  * Name of the local git branch of the source directory.
  */
