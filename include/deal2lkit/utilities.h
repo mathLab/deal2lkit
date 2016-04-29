@@ -20,6 +20,7 @@
 #include <deal.II/base/utilities.h>
 #include <deal.II/base/smartpointer.h>
 #include <deal.II/base/exceptions.h>
+#include <deal.II/base/timer.h>
 #include <deal.II/fe/fe.h>
 #include <deal.II/base/std_cxx11/shared_ptr.h>
 
@@ -545,33 +546,98 @@ void copy(N_Vector &dst, const BlockVector<double> &src);
 
 #ifdef DEAL_II_WITH_TRILINOS
 /**
- * A scoped version of Teuchos::TimeMonitor. You can instantiate one object
+ * A mixed deal.II - Trilinos monitor.. You can instantiate one object
  * of this type, and then call, in each function you want to monitor, the
  * method `auto t = timer.scoped_timer("Section");` which will automatically
- * start the timer "Section", and stops it when the object `t` is destroyed.
- *
- * The static function Teuchos::TimeMonitor::summarize() can be used to print
- * summaries of the various timers.
+ * start the timer "Section", and stops it when the object `t` is destroyed,
+ * using both a dealii::TimerOutput and a Teuchos::TimeMonitor.
  */
 class TimeMonitor
 {
 public:
+  /**
+   * A mixed deal.II - Trilinos monitor.
+   */
+  TimeMonitor(const MPI_Comm &comm=MPI_COMM_WORLD,
+              std::ostream  &stream=std::cout) :
+    outstream(stream),
+    out(outstream, Utilities::MPI::this_mpi_process(comm) == 0),
+    dealii_timer(comm, out, TimerOutput::never, TimerOutput::cpu_and_wall_times)
+  {};
+
+  /**
+   * Print both deal.II and Trilinos Summaries.
+   */
+  ~TimeMonitor()
+  {
+    dealii_timer.print_summary();
+    Teuchos::TimeMonitor::summarize(outstream);
+  }
+
+  /**
+   * Helper class to enter/exit sections. The only role of this class is to
+   * create an object that upon construction will start the given timers,
+   * and upon destruction will stop them.
+   */
+  class Scope
+  {
+  public:
+    /**
+     * Start Trilinos and deal.II scoped monitors.
+     */
+    Scope(Teuchos::Time &trilinos_time,
+          TimerOutput &dealii_timer_output,
+          const std::string &section) :
+      trilinos_scoped_monitor(trilinos_time),
+      dealii_scoped_monitor(dealii_timer_output, section)
+    {};
+
+  private:
+    /**
+     * Trilinos version of scoped monitor.
+     */
+    Teuchos::TimeMonitor trilinos_scoped_monitor;
+
+    /**
+     * Deal.II version of scoped monitor.
+     */
+    TimerOutput::Scope dealii_scoped_monitor;
+  };
 
   /**
    * Create and start a timer named after the parameter @p section. When the
    * created object is destroyed, the timer is stopped. Repeated calls with
    * the same timer are accumulated, together with some statistics.
    */
-  Teuchos::TimeMonitor
+  Scope
   scoped_timer(const std::string &section) const
   {
     if (timers.find(section) == timers.end())
       timers[section] = Teuchos::TimeMonitor::getNewCounter(section);
-    return Teuchos::TimeMonitor(*(timers[section]));
+
+    return Scope(*(timers[section]), dealii_timer, section);
   }
 
 private:
+  /**
+   * Output stream.
+   */
+  std::ostream &outstream;
+
+  /**
+   * Conditional output stream. Output is only generated on processor 0.
+   */
+  ConditionalOStream out;
+
+  /**
+   * A list of Trilinos timers.
+   */
   mutable std::map<std::string, Teuchos::RCP<Teuchos::Time> > timers;
+
+  /**
+   * The deal.II TimeMonitor object.
+   */
+  mutable TimerOutput dealii_timer;
 };
 #endif
 
