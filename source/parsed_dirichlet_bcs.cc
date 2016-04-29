@@ -222,7 +222,7 @@ void
 ParsedDirichletBCs<1,2>::project_boundary_values(Mapping<1, 2> const &,
                                                  DoFHandler<1, 2> const &,
                                                  Quadrature<0> const &,
-                                                 std::map<unsigned int, double> &) const
+                                                 std::map<types::global_dof_index, double> &) const
 {
   Assert(false, ExcImpossibleInDim(1));
 }
@@ -232,7 +232,7 @@ void
 ParsedDirichletBCs<1,3>::project_boundary_values(Mapping<1, 3> const &,
                                                  DoFHandler<1, 3> const &,
                                                  Quadrature<0> const &,
-                                                 std::map<unsigned int, double> &) const
+                                                 std::map<types::global_dof_index, double> &) const
 {
   Assert(false,ExcImpossibleInDim(1));
 }
@@ -244,7 +244,7 @@ void
 ParsedDirichletBCs<2,3>::project_boundary_values(Mapping<2, 3> const &,
                                                  DoFHandler<2, 3> const &,
                                                  Quadrature<1> const &,
-                                                 std::map<unsigned int, double> &) const
+                                                 std::map<types::global_dof_index, double> &) const
 {
   Assert(false,ExcImpossibleInDim(2));
 }
