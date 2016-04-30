@@ -19,7 +19,7 @@
 
 ## ---------------------------------------------------------------------
 ##
-## Copyright (C) 2012 - 2015 by the deal.II authors
+## Copyright (C) 2012 - 2016 by the deal.II authors
 ##
 ## This file is part of the deal.II library.
 ##
@@ -161,7 +161,8 @@ INCLUDE_DIRECTORIES(
   ${CMAKE_SOURCE_DIR}/include
   ${D2K_INCLUDE_DIRS}
   )
-file(GLOB _library_source_files source/*.cc include/deal2lkit/*h)
+file(GLOB _library_source_files source/*.cc source/*/*.cc 
+  include/deal2lkit/*h include/deal2lkit/*/*h)
 
 FOREACH(_BUILD_TYPE ${D2K_BUILD_TYPES})
   SET(_lib ${D2K_BASE_NAME}${D2K_${_BUILD_TYPE}_SUFFIX})
