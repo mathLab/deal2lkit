@@ -35,7 +35,7 @@ D2K_NAMESPACE_OPEN
 /**
  * A parsed Jacobi preconditioner which uses parameter files to choose
  * between different options. This object is a
- * TrilinosWrappers::PreconditionJacobu which can be called in place
+ * TrilinosWrappers::PreconditionJacobi which can be called in place
  * of the preconditioner.
  */
 class ParsedJacobiPreconditioner : public ParameterAcceptor, public TrilinosWrappers::PreconditionJacobi
