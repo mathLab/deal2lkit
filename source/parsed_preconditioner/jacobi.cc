@@ -13,7 +13,7 @@
 //
 //-----------------------------------------------------------
 
-#include <deal2lkit/parsed_preconditioner_jacobi.h>
+#include <deal2lkit/parsed_preconditioner/jacobi.h>
 
 #ifdef DEAL_II_WITH_TRILINOS
 

@@ -13,8 +13,8 @@
 //
 //-----------------------------------------------------------
 
-#ifndef _d2k_parsed_preconditioner_jacobi_h
-#define _d2k_parsed_preconditioner_jacobi_h
+#ifndef _d2k_parsed_jacobi_preconditioner_h
+#define _d2k_parsed_jacobi_preconditioner_h
 
 #include <deal2lkit/config.h>
 #include <deal.II/base/config.h>

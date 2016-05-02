@@ -1,0 +1,4 @@
+
+DEAL:parameters:Jacobi prec::Min Diagonal: 0.000000
+DEAL:parameters:Jacobi prec::Number of sweeps: 1
+DEAL:parameters:Jacobi prec::Omega: 1.000000

@@ -19,7 +19,7 @@
 
 D2K_NAMESPACE_OPEN
 
-ParsedPreconditionerILU::ParsedPreconditionerILU(const std::string &name,
+ParsedILUPreconditioner::ParsedILUPreconditioner(const std::string &name,
                                                  const unsigned int &ilu_fill,
                                                  const double &ilu_atol,
                                                  const double &ilu_rtol,
@@ -33,7 +33,7 @@ ParsedPreconditionerILU::ParsedPreconditionerILU(const std::string &name,
   overlap(overlap)
 {}
 
-void ParsedPreconditionerILU::declare_parameters(ParameterHandler &prm)
+void ParsedILUPreconditioner::declare_parameters(ParameterHandler &prm)
 {
   add_parameter(prm, &ilu_fill, "Fill-in", std::to_string(ilu_fill),
                 Patterns::Integer(0),
@@ -50,7 +50,7 @@ void ParsedPreconditionerILU::declare_parameters(ParameterHandler &prm)
 }
 
 template<typename Matrix>
-void ParsedPreconditionerILU::initialize_preconditioner( const Matrix &matrix)
+void ParsedILUPreconditioner::initialize_preconditioner( const Matrix &matrix)
 {
   TrilinosWrappers::PreconditionILU::AdditionalData data;
 
@@ -62,7 +62,7 @@ void ParsedPreconditionerILU::initialize_preconditioner( const Matrix &matrix)
 }
 D2K_NAMESPACE_CLOSE
 
-template void deal2lkit::ParsedPreconditionerILU::initialize_preconditioner<dealii::TrilinosWrappers::SparseMatrix>(
+template void deal2lkit::ParsedILUPreconditioner::initialize_preconditioner<dealii::TrilinosWrappers::SparseMatrix>(
   const dealii::TrilinosWrappers::SparseMatrix &);
 
 #endif
