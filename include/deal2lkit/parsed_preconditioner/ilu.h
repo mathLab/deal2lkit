@@ -38,13 +38,13 @@ D2K_NAMESPACE_OPEN
  * TrilinosWrappers::PreconditionILU which can be called in place
  * of the preconditioner.
  */
-class ParsedPreconditionerILU : public ParameterAcceptor, public TrilinosWrappers::PreconditionILU
+class ParsedILUPreconditioner : public ParameterAcceptor, public TrilinosWrappers::PreconditionILU
 {
 public:
   /**
    * Constructor. Build the preconditioner of a matrix using ILU.
    */
-  ParsedPreconditionerILU(const std::string &name = "ILU Preconditioner",
+  ParsedILUPreconditioner(const std::string &name = "ILU Preconditioner",
                           const unsigned int &ilu_fill = 0,
                           const double &ilu_atol = 0.0,
                           const double &ilu_rtol = 1.0,

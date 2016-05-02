@@ -14,7 +14,7 @@
 //
 //-----------------------------------------------------------
 
-#include <deal2lkit/parsed_preconditioner_amg.h>
+#include <deal2lkit/parsed_preconditioner/amg.h>
 
 #ifdef DEAL_II_WITH_TRILINOS
 

@@ -1,0 +1,12 @@
+
+DEAL:parameters:AMG prec::Aggregation threshold: 0.000100
+DEAL:parameters:AMG prec::Coarse type: Amesos-KLU
+DEAL:parameters:AMG prec::Elliptic: true
+DEAL:parameters:AMG prec::High Order Elements: false
+DEAL:parameters:AMG prec::Number of cycles: 1
+DEAL:parameters:AMG prec::Output details: false
+DEAL:parameters:AMG prec::Smoother overlap: 0
+DEAL:parameters:AMG prec::Smoother sweeps: 2
+DEAL:parameters:AMG prec::Smoother type: Chebyshev
+DEAL:parameters:AMG prec::Variable related to constant modes: none
+DEAL:parameters:AMG prec::w-cycle: false

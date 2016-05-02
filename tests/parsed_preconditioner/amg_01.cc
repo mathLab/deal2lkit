@@ -15,7 +15,7 @@
 
 
 #include "../tests.h"
-#include <deal2lkit/parsed_preconditioner/ilu.h>
+#include <deal2lkit/parsed_preconditioner/amg.h>
 
 
 using namespace deal2lkit;
@@ -26,7 +26,7 @@ int main (int argc, char *argv[])
 
   initlog();
 
-  ParsedILUPreconditioner ILU("ILU prec");
+  ParsedAMGPreconditioner AMG("AMG prec");
 
   ParameterAcceptor::initialize();
   ParameterAcceptor::prm.log_parameters(deallog);

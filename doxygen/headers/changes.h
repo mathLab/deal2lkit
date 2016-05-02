@@ -62,7 +62,13 @@ preconditioner couplings and related variables and methods.
 
 <ol>
   <li> 
-  New: The class ParsedPreconditionerILU has been implemented.
+  New: Add tests and clean for ParsedAMGPreconditioner and 
+  ParsedJacobiPreconditioner.
+  <br>
+  (Mauro Bardelloni 2016/05/02)
+  </li>
+  <li> 
+  New: The class ParsedILUPreconditioner has been implemented.
   <br>
   (Mauro Bardelloni 2016/05/02)
   </li>
