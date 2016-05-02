@@ -62,7 +62,7 @@ preconditioner couplings and related variables and methods.
 
 <ol>
   <li> 
-  New: The class ParsedPreconditioner has been enriched with AMG, ILU, and jacobi.
+  New: The class ParsedPreconditionerILU has been implemented.
   <br>
   (Mauro Bardelloni 2016/05/02)
   </li>
