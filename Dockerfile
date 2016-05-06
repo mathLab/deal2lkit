@@ -18,3 +18,6 @@ RUN \
 
 ENV D2K_DIR $HOME/libs/deal2lkit-master
 ENV DEAL2LKIT_DIR $HOME/libs/deal2lkit-master
+
+# Need this for Travis!
+USER root
