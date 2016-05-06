@@ -2,21 +2,19 @@ FROM heltai/dealii
 
 MAINTAINER luca.heltai@gmail.com
 
-# deal2lkit repo
+# deal2lkit master image
 ENV D2K_START 9762009
-RUN git clone https://github.com/mathLab/deal2lkit.git
-
-ENV D2K_START 9762009
-#build
-RUN cd deal2lkit && \
-    mkdir build && cd build && \
-    cmake -DCMAKE_INSTALL_PREFIX=$HOME/deal2lkit-inst \
+RUN \
+    wget https://github.com/mathLab/deal2lkit/archive/master.zip && \
+    unzip master.zip && rm master.zip && \
+    cd deal2lkit-master && mkdir build && cd build && \
+    cmake -DCMAKE_INSTALL_PREFIX=$HOME/libs/deal2lkit-master \
           -DCMAKE_BUILD_TYPE=Debug \
 	  -DD2K_COMPONENT_DOCUMENTATION=OFF \
 	  -GNinja \
           ../ && \
     ninja -j4 && ninja install && \
-    cd .. && rm -rf build
+    cd $HOME && rm -rf deal2lkit-master
 
-ENV D2K_DIR $HOME/deal2lkit-inst
-ENV DEAL2LKIT_DIR $HOME/deal2lkit-inst
+ENV D2K_DIR $HOME/libs/deal2lkit-master
+ENV DEAL2LKIT_DIR $HOME/libs/deal2lkit-master
