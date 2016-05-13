@@ -31,6 +31,10 @@
 
 
 #include <Sacado.hpp>
+
+// Overload of std::sqrt, sts::log, std::sin, etc..
+#include <Sacado_ELRCacheFad_Ops.hpp>
+
 typedef Sacado::Fad::DFad<double> Sdouble;
 typedef Sacado::Fad::DFad<Sdouble> SSdouble;
 
