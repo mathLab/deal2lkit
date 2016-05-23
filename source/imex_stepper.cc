@@ -88,6 +88,11 @@ double IMEXStepper<VEC>::get_alpha() const
   return alpha;
 
 }
+template <typename VEC>
+void IMEXStepper<VEC>::set_initial_time(const double &t)
+{
+  initial_time = t;
+}
 
 template <typename VEC>
 void IMEXStepper<VEC>::declare_parameters(ParameterHandler &prm)
@@ -179,7 +184,7 @@ unsigned int IMEXStepper<VEC>::start_ode(VEC &solution, VEC &solution_dot)
 
   double t = initial_time;
   double alpha;
-  step_size = evaluate_step_size(initial_time);
+  step_size = evaluate_step_size(t);
   alpha = get_alpha();
   // check if it is a stationary problem
   if (initial_time == final_time)
@@ -189,7 +194,6 @@ unsigned int IMEXStepper<VEC>::start_ode(VEC &solution, VEC &solution_dot)
 
   compute_previous_solution(solution,solution_dot,alpha, *previous_solution);
 
-  interface.output_step( 0, solution, solution_dot, 0, step_size);
 
   std::function<shared_ptr<VEC>()> my_new_vector = [this] ()
   {
@@ -241,7 +245,7 @@ unsigned int IMEXStepper<VEC>::start_ode(VEC &solution, VEC &solution_dot)
   (void) update_Jacobian;
 
 
-  // store initial conditions
+//   store initial conditions
   interface.output_step(t, solution, solution_dot,  step_number, step_size);
 
   bool restart=false;
