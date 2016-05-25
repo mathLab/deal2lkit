@@ -267,7 +267,7 @@ unsigned int IDAInterface<VEC>::start_ode(VEC &solution,
 
   reset_ode(initial_time, solution, solution_dot, initial_step_size, max_steps, true);
 
-  double next_time = 0;
+  double next_time = initial_time;
 
   solver.output_step( 0, solution, solution_dot, 0, initial_step_size);
 
@@ -463,6 +463,12 @@ void IDAInterface<VEC>::reset_ode(double current_time,
       pcout << "compute initial conditions: done."
             << std::endl;
     }
+}
+
+template<typename VEC>
+void IDAInterface<VEC>::set_initial_time(const double &t)
+{
+  initial_time = t;
 }
 
 D2K_NAMESPACE_CLOSE

@@ -61,8 +61,20 @@ public:
   void compute_consistent_initial_conditions(const double &t,
                                              VEC &y,
                                              VEC &y_dot);
-
+  /**
+     * if initial time is different from final time (i.e.,
+     * we are solving a time-dep problem and not a stationay
+     * one, return the inverse of dt. If the problem is
+     * stationary, returns 0.
+     * @return
+     */
   double get_alpha() const;
+
+  /**
+       * Set initial time equal to @p t disregarding what
+       * is written in the parameter file.
+       */
+  void set_initial_time(const double &t);
 
 private:
   /** The solver interface. */

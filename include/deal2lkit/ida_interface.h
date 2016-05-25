@@ -150,6 +150,12 @@ public:
   /** Initial time for the ode.*/
   double initial_time;
 
+  /**
+       * Set initial time equal to @p t disregarding what
+       * is written in the parameter file.
+       */
+  void set_initial_time(const double &t);
+
 private:
   /** The bubble membrane poperties. */
   SundialsInterface<VEC> &solver;
