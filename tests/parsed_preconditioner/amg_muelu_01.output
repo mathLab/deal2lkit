@@ -1,0 +1,11 @@
+
+DEAL:parameters:AMGMueLu prec::Aggregation threshold: 0.000100
+DEAL:parameters:AMGMueLu prec::Coarse type: Amesos-KLU
+DEAL:parameters:AMGMueLu prec::Elliptic: true
+DEAL:parameters:AMGMueLu prec::Number of cycles: 1
+DEAL:parameters:AMGMueLu prec::Output details: false
+DEAL:parameters:AMGMueLu prec::Smoother overlap: 0
+DEAL:parameters:AMGMueLu prec::Smoother sweeps: 2
+DEAL:parameters:AMGMueLu prec::Smoother type: Chebyshev
+DEAL:parameters:AMGMueLu prec::Variable related to constant modes: none
+DEAL:parameters:AMGMueLu prec::w-cycle: false

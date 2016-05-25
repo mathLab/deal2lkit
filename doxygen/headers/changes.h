@@ -62,6 +62,11 @@ preconditioner couplings and related variables and methods.
 
 <ol>
   <li> 
+  New: Add ParsedAMGMueLuPreconditioner.
+  <br>
+  (Mauro Bardelloni 2016/05/06)
+  </li>
+  <li> 
   New: Add tests and clean for ParsedAMGPreconditioner and 
   ParsedJacobiPreconditioner.
   <br>
