@@ -90,9 +90,10 @@ preconditioner couplings and related variables and methods.
 
 <ol>
   <li> 
-  Empty.
+  New: The function set_initial_time() has been implemented for
+ IMEXStepper and IDAInterface.
   <br>
-  (Empty XXXX/XX/XX)
+  (Alberto Sartori 2016/05/25)
   </li>
 
 
