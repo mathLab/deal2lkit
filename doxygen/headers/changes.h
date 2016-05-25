@@ -73,6 +73,11 @@ preconditioner couplings and related variables and methods.
   (Mauro Bardelloni 2016/05/02)
   </li>
   <li> 
+  New: The class KinsolInterface has been implemented.
+  <br>
+  (Marco Raveri, Alberto Sartori 2016/04/13)
+  </li>
+  <li> 
   New: The class ParsedZeroAverageConstraints has been implemented.
   <br>
   (Alberto Sartori 2016/01/13)
@@ -94,7 +99,37 @@ preconditioner couplings and related variables and methods.
   <br>
   (Empty XXXX/XX/XX)
   </li>
-
+  <li> 
+  New: A conditional time step can be specified in the parameter
+  file of IMEXStepper at the entry set time step.
+  <br>
+  (Alberto Sartori 2016/04/19)
+  </li>
+  <li> 
+  New: The class IMEXStepper now can use the Kinsol solver
+  of Sundials.
+  <br>
+  (Alberto Sartori 2016/04/13)
+  </li>
+  <li> 
+  Fix: Call compress after the vector is copied within the copy()
+  functions implemented in deal2lkit::Utilities.
+  <br>
+  (Mauro Bardelloni 2016/04/07)
+  </li>  
+  <li> 
+  New: Some functions previously included in the DOFUtilities
+  namespace have been moved to the new SacadoTools namespace. Functions
+  val() and to_double() have been included which can be used also on
+  dealii::Tensor.
+  <br>
+  (Alberto Sartori 2016/03/30)
+  </li>
+  New: The functions copy() have been implemented in 
+  deal2lkit::Utilities for the dealii::PETScWrappers::MPI vectors.
+  <br>
+  (Mauro Bardelloni 2016/03/19)
+  </li>  
 
 </ol>
 
