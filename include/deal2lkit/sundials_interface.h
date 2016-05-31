@@ -65,8 +65,8 @@ public :
   /**
    * @brief Constructor
    */
-  SundialsInterface(const MPI_Comm &communicator=MPI_COMM_WORLD) :
-    communicator(communicator) {};
+  SundialsInterface(const MPI_Comm ext_comm=MPI_COMM_WORLD) :
+    communicator(Utilities::MPI::duplicate_communicator(ext_comm)) {}
 
 #else
   SundialsInterface() {};
@@ -75,7 +75,7 @@ public :
   /**
    * @brief return the comunicator
    */
-  const MPI_Comm &get_comm() const
+  MPI_Comm get_comm() const
   {
 #ifdef DEAL_II_WITH_MPI
     return communicator;
@@ -221,7 +221,7 @@ private:
   /**
    * MPI communicator needed for parallel solver.
    */
-  const MPI_Comm &communicator;
+  MPI_Comm communicator;
 #endif
 
 
