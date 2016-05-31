@@ -70,12 +70,12 @@ public:
    * ParameterAcceptor
    */
   KINSOLInterface(const std::string name="",
-                  const MPI_Comm &mpi_comm = MPI_COMM_WORLD);
+                  const MPI_Comm mpi_comm = MPI_COMM_WORLD);
 
   /**
    * Return the comunicator
    */
-  const MPI_Comm &get_comm() const ;
+  MPI_Comm get_comm() const ;
 
 #else
   /**
@@ -234,7 +234,7 @@ private:
   /**
    * MPI communicator needed for parallel solver.
    */
-  const MPI_Comm &communicator;
+  MPI_Comm communicator;
 #endif
 
   /**

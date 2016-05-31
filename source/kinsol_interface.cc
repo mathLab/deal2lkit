@@ -157,11 +157,11 @@ void KINSOLInterface<VEC>::set_functions_to_trigger_an_assert()
 
 template <typename VEC>
 KINSOLInterface<VEC>::KINSOLInterface(const std::string name,
-                                      const MPI_Comm &mpi_comm):
+                                      const MPI_Comm mpi_comm):
   ParameterAcceptor(name),
   is_initialized(false),
   scaling_is_set(false),
-  communicator(mpi_comm),
+  communicator(Utilities::MPI::duplicate_communicator(mpi_comm)),
   pcout(std::cout, Utilities::MPI::this_mpi_process(mpi_comm)==0),
   kin_mem(nullptr)
 {
