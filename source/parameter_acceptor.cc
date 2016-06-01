@@ -1,6 +1,6 @@
 //-----------------------------------------------------------
 //
-//    Copyright (C) 2015 by the deal2lkit authors
+//    Copyright (C) 2015 - 2016 by the deal2lkit authors
 //
 //    This file is part of the deal2lkit library.
 //
@@ -46,6 +46,8 @@ std::string ParameterAcceptor::get_section_name() const
 {
   return (section_name != "" ? section_name : type(*this));
 }
+
+
 
 
 void
@@ -113,27 +115,188 @@ ParameterAcceptor::log_info()
   deallog.pop();
 }
 
-
 void ParameterAcceptor::parse_all_parameters(ParameterHandler &prm)
 {
+  std::vector<std::string> old_secs;
   for (unsigned int i=0; i< class_list.size(); ++i)
     if (class_list[i] != NULL)
       {
-        prm.enter_subsection(class_list[i]->get_section_name());
-        class_list[i]->parse_parameters(prm);
-        class_list[i]->parse_parameters_call_back();
-        prm.leave_subsection();
+        std::vector<std::string> secs;
+        secs = Utilities::split_string_list(class_list[i]->get_section_name(), sep);
+        std::cout << "secs" << secs[0] << std::endl;
+        const unsigned int secs_size = secs.size();
+
+        if (secs_size == 1) // add a subsection with relative path
+          {
+            // enter the old path
+            for (unsigned int s=0; s<old_secs.size(); ++s)
+              prm.enter_subsection(old_secs[s]);
+
+            // enter current subsection
+            prm.enter_subsection(secs[0]);
+
+            class_list[i]->parse_parameters(prm);
+            class_list[i]->parse_parameters_call_back();
+
+            // leave current subsection
+            prm.leave_subsection();
+
+            // leave the old path
+            for (unsigned int s=0; s<old_secs.size(); ++s)
+              prm.leave_subsection();
+
+            // the old path is unchanged
+          }
+
+        else // we have at least one separator "/"
+          {
+            if (secs[0]=="") // the section name begins with "/"
+              {
+                // first of all remove the "empty" section
+                secs.erase(secs.begin());
+
+                // this means absolute path so we do not enter
+                // the old path
+                for (unsigned int s=0; s<secs.size(); ++s)
+                  prm.enter_subsection(secs[s]);
+
+                class_list[i]->parse_parameters(prm);
+                class_list[i]->parse_parameters_call_back();
+
+                // leave all the current sections
+                for (unsigned int s=0; s<secs.size(); ++s)
+                  prm.leave_subsection();
+
+                // since we have started from the root section i.e. "/"
+                // we need to set the old path to the current one
+                // without the last subsection
+
+                // remove the last subsection
+                secs.pop_back();
+
+                // update the old path
+                old_secs.swap(secs);
+
+              }
+            else // append the path to the old path
+              {
+                // enter the old path
+                for (unsigned int s=0; s<old_secs.size(); ++s)
+                  prm.enter_subsection(old_secs[s]);
+
+                // new path
+                for (unsigned int s=0; s<secs.size(); ++s)
+                  prm.enter_subsection(secs[s]);
+
+                class_list[i]->parse_parameters(prm);
+                class_list[i]->parse_parameters_call_back();
+
+                // leave all subsections
+                for (unsigned int s=0; s<(secs.size()+old_secs.size()); ++s)
+                  prm.leave_subsection();
+
+                // we need now to append the secs path (without the last subsection)
+                // to the old path
+
+                // remove last subsection
+                secs.pop_back();
+
+                // append secs to old_secs
+                old_secs.insert(old_secs.begin(), secs.begin(), secs.end());
+
+              }
+          }
       }
 }
 
 void ParameterAcceptor::declare_all_parameters(ParameterHandler &prm)
 {
+  std::vector<std::string> old_secs;
   for (unsigned int i=0; i< class_list.size(); ++i)
     if (class_list[i] != NULL)
       {
-        prm.enter_subsection(class_list[i]->get_section_name());
-        class_list[i]->declare_parameters(prm);
-        prm.leave_subsection();
+        std::vector<std::string> secs;
+        secs = Utilities::split_string_list(class_list[i]->get_section_name(), sep);
+        const unsigned int secs_size = secs.size();
+
+        if (secs_size == 1) // add a subsection with relative path
+          {
+            // enter the old path
+            for (unsigned int s=0; s<old_secs.size(); ++s)
+              prm.enter_subsection(old_secs[s]);
+
+            // enter current subsection
+            prm.enter_subsection(secs[0]);
+
+            class_list[i]->declare_parameters(prm);
+
+            // leave current subsection
+            prm.leave_subsection();
+
+            // leave the old path
+            for (unsigned int s=0; s<old_secs.size(); ++s)
+              prm.leave_subsection();
+
+            // the old path is unchanged
+          }
+
+        else // we have at least one separator "/"
+          {
+            for (unsigned int s=0; s <secs.size(); ++s)
+              if (secs[0]=="") // the section name begins with "/"
+                {
+                  // first of all remove the "empty" section
+                  secs.erase(secs.begin());
+
+                  // this means absolute path so we do not enter
+                  // the old path
+                  for (unsigned int s=0; s<secs.size(); ++s)
+                    prm.enter_subsection(secs[s]);
+
+                  class_list[i]->declare_parameters(prm);
+
+                  // leave all the current sections
+                  for (unsigned int s=0; s<secs.size(); ++s)
+                    prm.leave_subsection();
+
+                  // since we have started from the root section i.e. "/"
+                  // we need to set the old path to the current one
+                  // without the last subsection
+
+                  // remove the last subsection
+                  secs.pop_back();
+
+                  // update the old path
+                  old_secs.swap(secs);
+
+                }
+              else // append the path to the old path
+                {
+                  // enter the old path
+                  for (unsigned int s=0; s<old_secs.size(); ++s)
+                    prm.enter_subsection(old_secs[s]);
+
+                  // new path
+                  for (unsigned int s=0; s<secs.size(); ++s)
+                    prm.enter_subsection(secs[s]);
+
+                  class_list[i]->declare_parameters(prm);
+
+                  // leave all subsections
+                  for (unsigned int s=0; s<(secs.size()+old_secs.size()); ++s)
+                    prm.leave_subsection();
+
+                  // we need now to append the secs path (without the last subsection)
+                  // to the old path
+
+                  // remove last subsection
+                  secs.pop_back();
+
+                  // append secs to old_secs
+                  old_secs.insert(old_secs.begin(), secs.begin(), secs.end());
+
+                }
+          }
       }
 }
 

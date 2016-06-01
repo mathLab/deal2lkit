@@ -1,6 +1,6 @@
 //-----------------------------------------------------------
 //
-//    Copyright (C) 2014 - 2015 by the deal2lkit authors
+//    Copyright (C) 2014 - 2016 by the deal2lkit authors
 //
 //    This file is part of the deal2lkit library.
 //
@@ -44,7 +44,7 @@ D2K_NAMESPACE_OPEN
  * traversed upon invocation of the single function
  * ParameterAcceptor::initialize(file.prm) which in turn calls the
  * method ParameterAcceptor::declare_parameters() for each of the
- * registered classes, reads the file `file.prm`, (creating it first
+ * registered classes, reads the file `file.prm` (creating it first
  * with default values if it does not exist) and subsequently calls
  * the method ParameterAcceptor::parse_parameters(), again for each of
  * the registered classes. The method log_info() can be used to
@@ -73,7 +73,7 @@ D2K_NAMESPACE_OPEN
  * implementations are provided for the most commonly used variable
  * types.
  *
- * The only function that derived classes should overload is
+ * The function that derived classes should overload is
  * declare_parameters(). Derived classes are required to use the
  * add_parameter() function inside the declare_paramters()
  * function. If they do so, then
@@ -81,7 +81,10 @@ D2K_NAMESPACE_OPEN
  * populate the variables with the parsed parameters. Failure to use
  * the add_parameter() function will result in the user having to call
  * ParameterHandler::get() functions to populate the variables
- * manually.
+ * manually. If some post processing is required on the parsed values,
+ * the virtual function ParameterAcceptor::parse_parameters_call_back()
+ * can be overridden, which is called just after the parse_parameters()
+ * function of each class.
  *
  * The rationale behind this class, is that we want every class to be
  * able to declare parameters only once, and then automatically
@@ -93,11 +96,21 @@ D2K_NAMESPACE_OPEN
  * @code
  * // This is your own class, derived from ParameterAcceptor
  * class MyClass : public ParameterAcceptor {
+ *
+ * // The constructor of ParameterAcceptor requires a std::string,
+ * // which defines the section name where the parameters of MyClass
+ * // will be stored.
+ *
+ * MyClass(std::string name) :
+ *   ParameterAcceptor(name)
+ * {}
+ *
  * virtual declare_parameters(ParameterHandler &prm) {
  *  add_parameters(prm, &member_var, "A param", "Default value");
  * }
  *
  * ...
+ * };
  *
  * int main() {
  *  // Make sure you build your class BEFORE calling
@@ -109,6 +122,178 @@ D2K_NAMESPACE_OPEN
  *  ParameterAcceptor::initialize("file.prm");
  * }
  * @endcode
+ *
+ * Parameter files can be organised into section/subsection/subsubsection.
+ * To do so, the std::string passed to ParameterAcceptor within the
+ * constructor of the derived class needs to contain the separator "/".
+ * In fact, "first/second/third/My Class" will organize the parameters
+ * as follows
+ *
+ * @code
+ * subsection first
+ *   subsection second
+ *     subsection third
+ *       subsection My Class
+ *        ... # all the parameters
+ *       end
+ *     end
+ *   end
+ * end
+ * @endcode
+ *
+ * Let's now discuss some cases with increasing complexities in order
+ * to understand the best way to manage them with ParameterAcceptor.
+ *
+ * MyClass is derived from ParameterAcceptor and has a
+ * member object that is derived itself from ParameterAcceptor.
+ * @code
+ * class MyClass : public ParameterAcceptor
+ * {
+ *   MyClass (std::string name);
+ *   virtual void declare_parameters(ParameterHandler &prm);
+ * private:
+ *   ParsedFunction<dim> function;
+ *  ...
+ * };
+ *
+ * MyClass::MyClass(std::string name)
+ *  :
+ * ParameterAcceptor(name),
+ * function("Forcing term")
+ * {}
+ *
+ * void MyClass::declare_parmeters(ParameterHandler &prm)
+ * {
+ *  // many add_parameter(...);
+ * }
+ *
+ * ...
+ *
+ * int main()
+ * {
+ * MyClass mc("My Class");
+ *
+ * ParameterAcceptor::initialize("file.prm");
+ * }
+ * @endcode
+ *
+ * In this case, the structure of the parameters will be
+ * @code
+ * subsection Forcing term
+ * ... #parameters of ParsedFunction
+ * end
+ * subsection My class
+ * ... #all the parameters of MyClass defined in declare_parameters
+ * end
+ * @endcode
+ * Note that the sections are alphabetically sorted.
+ *
+ * Now suppose that in the main file we need two or more objects of MyClass
+ * @code
+ * int main()
+ * {
+ *  MyClass ca("Class A");
+ *  MyClass cb("Class B");
+ *  ParameterAcceptor::initialize("file.prm");
+ * }
+ * @endcode
+ *
+ * What we will read in the parameter file looks like
+ * @code
+ * subsection Class A
+ * ...
+ * end
+ * subsection Class B
+ * ...
+ * end
+ * subsection Forcing term
+ * ...
+ * end
+ * @endcode
+ * Note that there is only one section "Forcing term", this is because
+ * both objects have defined the same name for the section of their
+ * ParsedFunction. There are two strategies to manage this issue. The
+ * first one (not recommended) would be to change the name of the section
+ * of the ParsedFunction such that it contains also the string passed to
+ * the constructor of MyClass:
+ * @code
+ * MyClass::MyClass(std::string name)
+ *  :
+ * ParameterAcceptor(name),
+ * function(name+" --- forcing term")
+ * {}
+ * @endcode
+ *
+ * The other way to proceed (recommended) is to use exploit the /section/subsection
+ * approach **in the main function**.
+ * @code
+ * int main()
+ * {
+ *  MyClass ca("/Class A/Class");
+ *  MyClass cb("/Class B/Class");
+ *  ParameterAcceptor::initialize("file.prm");
+ * }
+ * @endcode
+ * Now, in the parameter file we can find
+ * @code
+ * subsection Class A
+ *   subsection Class
+ *   ...
+ *   end
+ *   subsection Forcing term
+ *   ...
+ *   end
+ * end
+ * subsection Class B
+ *   subsection Class
+ *   ...
+ *   end
+ *   subsection Forcing term
+ *   ...
+ *   end
+ * end
+ * @endcode
+ * Note the "/" at the begin of the string name. This is interpreted by
+ * ParameterAcceptor like the root folder in Unix systems. This means
+ * that the sections "Class A" and "Class B" will not be nested under any
+ * section. On the other hand, if the string does not begin with a "/"
+ * as in the previous cases (and for the ParsedFunction also in this last
+ * example) the section will be created **under the current path**, which
+ * depends on the previously defined sections/subsections/subsubsections.
+ * Indeed, the section "Forcing term" is nested under "Class A" or "Class B".
+ * To make things more clear. let's consider the following example
+ * @code
+ * int main()
+ * {
+ *  MyClass ca("/Class A/Class");
+ *  MyClass cb("Class B/Class");
+ *  ParameterAcceptor::initialize("file.prm");
+ * }
+ * @endcode
+ * The parameter file will have the following structure
+ * @code
+ * subsection Class A
+ *   subsection Class
+ *   ...
+ *   end
+ *   subsection Forcing term
+ *   ...
+ *   end
+ *   subsection Class B
+ *     subsection Class
+ *     ...
+ *     end
+ *     subsection Forcing term
+ *     ...
+ *     end
+ *   end
+ * end
+ * @endcode
+ *
+ * As a final remark, in order to allow a proper management of all the
+ * sections/subsections, the instantiation of objects and the call to
+ * ParameterAcceptor::initialize() **cannot be done in multithread**.
+ *
  *
  * As a convention, in \dk all modules derived from ParameterAcceptor
  * implement a default constructor which takes one or more optional
@@ -206,6 +391,7 @@ public:
    */
   static void declare_all_parameters(ParameterHandler &prm=ParameterAcceptor::prm);
 
+
   /**
    * Return the section name of this class. If a name was provided
    * at construction time, then that name is returned, otherwise it
@@ -257,6 +443,11 @@ private:
    * function add_parameter.
    */
   std::map<std::string, boost::any> parameters;
+
+  /**
+   * Separator between section and subsection.
+   */
+  static const char sep = '/';
 
 protected:
   /** The subsection name for this class. */
