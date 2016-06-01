@@ -123,7 +123,6 @@ void ParameterAcceptor::parse_all_parameters(ParameterHandler &prm)
       {
         std::vector<std::string> secs;
         secs = Utilities::split_string_list(class_list[i]->get_section_name(), sep);
-        std::cout << "secs" << secs[0] << std::endl;
         const unsigned int secs_size = secs.size();
 
         if (secs_size == 1) // add a subsection with relative path
