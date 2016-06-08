@@ -49,7 +49,7 @@ int main ()
   ParsedGridGenerator<2,2> i("Truncated Cone", "truncated_cone");
   // ParsedGridGenerator<2,2> l("Hyper Cross", "hyper_cross");
   ParsedGridGenerator<2,2> m("Hyper Cube Slit", "hyper_cube_slit");
-  ParsedGridGenerator<2,2> n("Half Hyper Shell", "half_hyper_shell");
+  ParsedGridGenerator<2,2> n("Half Hyper Shell", "half_hyper_shell", "", "", "", "false", "1.0", "0.5", "1.5", "2");
   ParsedGridGenerator<2,2> o("Quarter Hyper Shell", "quarter_hyper_shell");
   ParsedGridGenerator<3,3> p("Cylinder Shell", "cylinder_shell", "", "", "", "false", "1.0", "0.5", "1.5",
                              "0", "0","","none","");

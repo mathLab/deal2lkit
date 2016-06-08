@@ -80,7 +80,7 @@ DEAL:parameters:Half Hyper Shell::Optional Point<spacedim> 2: 1,1
 DEAL:parameters:Half Hyper Shell::Optional double 1: 1.0
 DEAL:parameters:Half Hyper Shell::Optional double 2: 0.5
 DEAL:parameters:Half Hyper Shell::Optional double 3: 1.5
-DEAL:parameters:Half Hyper Shell::Optional int 1: 1
+DEAL:parameters:Half Hyper Shell::Optional int 1: 2
 DEAL:parameters:Half Hyper Shell::Optional int 2: 2
 DEAL:parameters:Half Hyper Shell::Optional vector of dim int: 1,1
 DEAL:parameters:Half Hyper Shell::Output grid file name: 
@@ -454,15 +454,18 @@ $ELM
 $ENDELM
 DEAL::Half Hyper Shell
 $NOD
-4
+6
 1  0.00000 -1.00000 0
-2  0.00000 1.00000 0
-3  0.00000 -0.500000 0
-4  0.00000 0.500000 0
+2  1.00000 0.00000 0
+3  0.00000 1.00000 0
+4  0.00000 -0.500000 0
+5  0.500000 0.00000 0
+6  0.00000 0.500000 0
 $ENDNOD
 $ELM
-1
-1 3 0 0 4 1 2 4 3 
+2
+1 3 0 0 4 1 2 5 4 
+2 3 0 0 4 2 3 6 5 
 $ENDELM
 DEAL::Quarter Hyper Shell
 $NOD
