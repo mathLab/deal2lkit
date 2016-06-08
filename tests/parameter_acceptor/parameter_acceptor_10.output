@@ -42,7 +42,7 @@ DEAL::
 DEAL::{\it Default:} 7.7
 DEAL::
 DEAL::
-DEAL::{\it Possible values:} [Double 0...1.79769e+308 (inclusive)]
+DEAL::{\it Possible values:} [Double 0...MAX_DOUBLE (inclusive)]
 DEAL::\item {\it Parameter name:} {\tt First int}
 DEAL::\phantomsection\label{parameters:First Class/First int}
 DEAL::
@@ -100,7 +100,7 @@ DEAL::
 DEAL::{\it Default:} 9.9
 DEAL::
 DEAL::
-DEAL::{\it Possible values:} [Double 0...1.79769e+308 (inclusive)]
+DEAL::{\it Possible values:} [Double 0...MAX_DOUBLE (inclusive)]
 DEAL::\item {\it Parameter name:} {\tt Second int}
 DEAL::\phantomsection\label{parameters:Second Class/Second int}
 DEAL::
