@@ -100,6 +100,11 @@ preconditioner couplings and related variables and methods.
 
 <ol>
   <li> 
+  New: ParameterAcceptor can handle section and subsection.
+  <br>
+  (Alberto Sartori 2016/06/01)
+  </li>
+  <li> 
   New: The function set_initial_time() has been implemented for
  IMEXStepper and IDAInterface.
   <br>
