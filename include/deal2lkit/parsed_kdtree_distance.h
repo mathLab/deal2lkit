@@ -1,6 +1,6 @@
 //-----------------------------------------------------------
 //
-//    Copyright (C) 2015 by the deal2lkit authors
+//    Copyright (C) 2016 by the deal2lkit authors
 //
 //    This file is part of the deal2lkit library.
 //
@@ -22,7 +22,7 @@
 #include <deal2lkit/parameter_acceptor.h>
 
 DEAL_II_DISABLE_EXTRA_DIAGNOSTICS
-#include <deal2lkit/nanoflann.h>
+#include <external/nanoflann.h>
 DEAL_II_ENABLE_EXTRA_DIAGNOSTICS
 
 using namespace dealii;
