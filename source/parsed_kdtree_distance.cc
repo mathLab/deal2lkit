@@ -58,8 +58,8 @@ double ParsedKDTreeDistance<dim>::value(const Point<dim> &p, const unsigned int 
 
 template<int dim>
 unsigned int ParsedKDTreeDistance<dim>::get_points_within_ball(const Point<dim> &center, const double &radius,
-                                                               std::vector<std::pair<unsigned int, double> > &matches,
-                                                               bool sorted) const
+    std::vector<std::pair<unsigned int, double> > &matches,
+    bool sorted) const
 {
   Assert(adaptor, ExcNotInitialized());
   Assert(kdtree, ExcInternalError());
@@ -75,12 +75,13 @@ unsigned int ParsedKDTreeDistance<dim>::get_points_within_ball(const Point<dim> 
 template<int dim>
 void ParsedKDTreeDistance<dim>::get_closest_points(const Point<dim> &target,
                                                    std::vector<unsigned int> &indices,
-                                                   std::vector<double> &distances) const {
-    Assert(adaptor, ExcNotInitialized());
-    Assert(kdtree, ExcInternalError());
-    AssertDimension(indices.size(), distances.size());
+                                                   std::vector<double> &distances) const
+{
+  Assert(adaptor, ExcNotInitialized());
+  Assert(kdtree, ExcInternalError());
+  AssertDimension(indices.size(), distances.size());
 
-    kdtree->knnSearch(&target[0], indices.size(), &indices[0], &distances[0]);
+  kdtree->knnSearch(&target[0], indices.size(), &indices[0], &distances[0]);
 }
 
 template<int dim>

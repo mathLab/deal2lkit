@@ -43,20 +43,23 @@ int main ()
 
   std::vector<unsigned int> indices;
   std::vector<double> distances;
-  
-  // Get closest points. Do a few rounds
-  for(auto &p : test_points) {
-    for(unsigned int i=1; i<points.size()+1; ++i) {
-      indices.resize(i);
-      distances.resize(i);
-      
-      kdtree.get_closest_points(p, indices, distances);
 
-      deallog << std::endl << "The first " << i << " closest points to " << p << " are:" << std::endl;
-      for(unsigned int j=0; j<i; ++j) {
-	deallog << "points[" << indices[j] << "] = " << points[indices[j]] << ", distance: "
-		<< distances[j] << std::endl;
-      }
+  // Get closest points. Do a few rounds
+  for (auto &p : test_points)
+    {
+      for (unsigned int i=1; i<points.size()+1; ++i)
+        {
+          indices.resize(i);
+          distances.resize(i);
+
+          kdtree.get_closest_points(p, indices, distances);
+
+          deallog << std::endl << "The first " << i << " closest points to " << p << " are:" << std::endl;
+          for (unsigned int j=0; j<i; ++j)
+            {
+              deallog << "points[" << indices[j] << "] = " << points[indices[j]] << ", distance: "
+                      << distances[j] << std::endl;
+            }
+        }
     }
-  }
 }
