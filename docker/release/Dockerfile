@@ -1,4 +1,4 @@
-FROM heltai/dealii-release
+FROM heltai/dealii:full-release
 
 MAINTAINER luca.heltai@gmail.com
 

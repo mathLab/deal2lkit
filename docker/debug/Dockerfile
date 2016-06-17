@@ -1,4 +1,4 @@
-FROM heltai/dealii-debug
+FROM heltai/dealii:full-debug
 
 MAINTAINER luca.heltai@gmail.com
 
