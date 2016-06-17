@@ -9,7 +9,7 @@ services:
 notifications:
   email: false
 
-language: C++
+language: cpp 
 
 before_install:
 - docker pull heltai/dealii:full-$BUILD_TYPE
