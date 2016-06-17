@@ -36,6 +36,12 @@ INSTALL(DIRECTORY deal2lkit
   FILES_MATCHING PATTERN "*.h"
   )
 
+INSTALL(DIRECTORY external
+  DESTINATION ${D2K_INCLUDE_RELDIR}
+  COMPONENT library
+  FILES_MATCHING PATTERN "*.h"
+  )
+    
 #
 # and don't forget to install all generated header files, too:
 #
@@ -45,3 +51,8 @@ INSTALL(DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/deal2lkit
   FILES_MATCHING PATTERN "*.h"
   )
 
+INSTALL(DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/external
+  DESTINATION ${D2K_INCLUDE_RELDIR}
+  COMPONENT library
+  FILES_MATCHING PATTERN "*.h"
+  )
