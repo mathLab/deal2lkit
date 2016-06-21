@@ -29,7 +29,7 @@ void ParsedKDTreeDistance<dim>::declare_parameters(ParameterHandler &prm)
                 "tree algorithm ends by selecting leaf nodes, then performing linear search "
                 "(one-by-one) for the closest point to the query within all those in the leaf.");
 
-};
+}
 
 
 
@@ -51,8 +51,11 @@ double ParsedKDTreeDistance<dim>::value(const Point<dim> &p, const unsigned int 
   kdtree->findNeighbors(resultSet, &p[0], nanoflann::SearchParams());
   //index.knnSearch(query, indices, dists, num_results, mrpt_flann::SearchParams(10));
 
+  // silence a warning about unused variable
+  // when compiling in release mode
+  (void)component;
   return dist;
-};
+}
 
 
 
