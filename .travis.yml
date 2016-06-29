@@ -1,79 +1,21 @@
 env:
-  - BUILD_TYPE=Release
-  - BUILD_TYPE=Debug
-sudo: false
-cache:
-  apt: true
-  directories:
-    - programs
+  - BUILD_TYPE=release
+  - BUILD_TYPE=debug
+sudo: true
+
+services:
+  - docker
+
 notifications:
   email: false
 
-addons: &gcc5
-  apt:
-    sources:
-    - ubuntu-toolchain-r-test
-    packages:
-    - build-essential
-    - libblas-dev
-    - liblapack-dev
-    - libboost-dev
-    - doxygen
-#    - graphviz
-    - g++-5
-    - gcc-5
-    - gfortran
-
-compiler: gcc-5
-language: cpp
+language: cpp 
 
 before_install:
-  - export PRG=$PWD/programs
-  - export CASA=$PWD
-  - export CXX=g++-5
-  - export CC=gcc-5
-  - ./scripts/setup_astyle.sh
-  - export PATH=$PWD/programs/astyle/build/gcc/bin:$PATH
-  - ./scripts/check_indentation.sh
-  - export TRILINOS_DIR=$PWD/programs/trilinos
-  - export DEAL_II_DIR=$PWD/programs/dealii
-  - export DEAL2LKIT_DIR=$CASA/deal2lkit-$BUILD_TYPE
-  - export P4EST_DIR=$PWD/programs/p4est
-  - export PATH=$PWD/programs/astyle/build/gcc/bin:$PATH
-  - export PATH=$PRG/numdiff/bin:$PATH
-  - ./scripts/travis/install_mpi.sh
-  - export PATH=$PRG/mpich/bin:$PATH
-  - ./scripts/travis/install_cmake.sh
-  - export PATH=$PRG/cmake/bin:$PATH
-  - ./scripts/travis/install_ninja.sh
-  - export PATH=$PRG/ninja:$PATH
-  - ./scripts/travis/install_numdiff.sh
-  - export CXX=$PRG/mpich/bin/mpicxx
-  - export CC=$PRG/mpich/bin/mpicc
-  - ./scripts/travis/install_p4est.sh
-  - ./scripts/travis/install_sundials.sh
-  - export SUNDIALS_DIR=$PRG/sundials
+- docker pull heltai/dealii:full-$BUILD_TYPE
+- docker run -P -v `pwd`:/home/dealii/deal2lkit:rw heltai/dealii:full-$BUILD_TYPE /bin/sh -c "cd deal2lkit; ./scripts/check_indentation.sh"
 
-install: true
-  
 script:
-  - ./scripts/travis/install_trilinos_OR_dealii.sh
-  - cmake -GNinja -DCMAKE_INSTALL_PREFIX=/home/travis/deal2lkit-$BUILD_TYPE -DD2K_ENABLE_TESTING=ON -DCMAKE_BUILD_TYPE=$BUILD_TYPE
-  - ninja -j4 install
-  - tar cfz /home/travis/deal2lkit-CI-$BUILD_TYPE.tgz /home/travis/deal2lkit-$BUILD_TYPE
-  - tar cfz /home/travis/dealii-CI-environment.tgz $PRG
-  - ninja setup_tests
-  - ctest -j4 -V -R "${BUILD_TYPE,,}"
-    
-deploy:
-  provider: releases
-  api_key:
-    secure: JBIOZ2GRmxWduUKtM6E623y4lju4P7nKsa+DYh2qwrlSqQDrDoRPwGt9LW8T8l9CiMhvKbXTdzEsmQMdtHGzRW2GV9VU/lsugMTEGJMtjd/ly0dwTyscBhnBudLnk/z1lZB/wKgxi2r+fmsthRctvtzkIK8uRBqA0ivkAD9wFRU=
-  file:
-    - /home/travis/deal2lkit-CI-$BUILD_TYPE.tgz
-    - /home/travis/dealii-CI-environment.tgz
-  skip_cleanup: true
-  on:
-    repo: mathLab/deal2lkit
-    tags: true
-    all_branches: true
+  - docker run -P -v `pwd`:/home/dealii/deal2lkit:rw heltai/dealii:full-$BUILD_TYPE /bin/sh -c "mkdir deal2lkit/build; cd deal2lkit/build; cmake -GNinja -DD2K_ENABLE_TESTING=ON -DD2K_COMPONENT_DOCUMENTATION=OFF ..; ninja"
+
+  - docker run -P -v `pwd`:/home/dealii/deal2lkit:rw heltai/dealii:full-$BUILD_TYPE /bin/sh -c "cd deal2lkit/build; ninja setup_tests; ctest -j4 -V"
