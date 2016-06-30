@@ -33,28 +33,6 @@ using namespace dealii;
 
 D2K_NAMESPACE_OPEN
 
-/**
- * IDA (Implicit Differential-Algebraic solver) is a package contaied in the
- * suite SUNDIALS (SUite of Nonlinear and DIfferential/ALgebraic equation
- * Solvers).  We use this package to provide an interface for problems in the
- * form:
- *
- * @f[ F(t,y,\dot{y})=0, \\ y(t_0)  = y_0 ,   \\ \dot{y}(t_0) = \dot{y}_0.  @f]
- *
- * @remark The integration method used in IDA is the variable-order,
- * variable-coefficient BFD (Backward Differentiation Formula), in
- * fixed-leading-coefficient form.
- *
- * @f[ \sum_{i=0}^{q} \alpha_{n,i}y_{n-1} = h_n \dot{y}_n @f]
- *
- * where @f$ h_n = t_n - t_{n-1}@f$.
- *
- * @remark IDA decompose each vector @f$ y @f$ in a differential and an
- * algebraic part.
- *
- * [see https://computation.llnl.gov/casc/sundials/documentation/ida_guide.pdf
- * for more information about IDA]
- */
 
 template<typename VEC=Vector<double> > class SundialsInterface
 {

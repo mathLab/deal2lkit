@@ -121,7 +121,8 @@ public:
    * required to have a Solver.solve(VEC &dst, const VEC &src) method
    * that will be called by the time integrator to find out about the
    * solution to a given src. */
-  IDAInterface(SundialsInterface<VEC> &solver);
+  IDAInterface(const std::string name="",
+               const MPI_Comm mpi_comm = MPI_COMM_WORLD);
 
   /** House cleaning. */
   ~IDAInterface();
@@ -130,25 +131,57 @@ public:
   virtual void declare_parameters(ParameterHandler &prm);
 
   /** Evolve. This function returns the final number of steps. */
-  unsigned int start_ode(VEC &solution,
-                         VEC &solution_dot,
-                         const unsigned int max_steps);
+  unsigned int solve_dae(VEC &solution,
+                         VEC &solution_dot);
 
   /** Clear internal memory, and
   start with clean
   objects. This is useful if
   you need to refine your
-  mesh between stesp. */
-  void reset_ode(const double t, VEC &y, VEC &yp,
-                 double h, unsigned int max_steps,
+  mesh between steps. */
+  void reset_dae(const double t,
+                 VEC &y,
+                 VEC &yp,
+                 double h,
                  bool first_step);
 
+  /**
+   * this function has to be implemented by the user
+   * and it must return a shared pointer to a VEC vector.
+   */
+  std::function<shared_ptr<VEC>()> create_new_vector;
 
-  /** Final time. */
-  double final_time;
+  /** standard function computing residuals */
+  std::function<int(const double t,
+                    const VEC &y,
+                    const VEC &y_dot,
+                    VEC &res)> residual;
 
-  /** Initial time for the ode.*/
-  double initial_time;
+  /** standard function computing the Jacobian */
+  std::function<int(const double t,
+                    const VEC &y,
+                    const VEC &y_dot,
+                    const double alpha)> setup_jacobian;
+
+  /** standard function solving linear system */
+  std::function<int(const VEC &rhs, VEC &dst)> solve_jacobian_system;
+
+  std::function<void (const double t,
+                      const VEC &sol,
+                      const VEC &sol_dot,
+                      const unsigned int step_number)> output_step;
+
+
+  std::function<bool (const double t,
+                      VEC &sol,
+                      VEC &sol_dot)> solver_should_restart;
+
+  std::function<VEC&()> differential_components();
+
+//  std::function<VEC&()> get_local_tolerances;
+//  std::function<VEC&()> get_lumped_mass_matrix;
+
+
 
   /**
        * Set initial time equal to @p t disregarding what
@@ -157,8 +190,18 @@ public:
   void set_initial_time(const double &t);
 
 private:
-  /** The bubble membrane poperties. */
-  SundialsInterface<VEC> &solver;
+
+  /**
+   * This function is executed at construction time to set the std::function above to trigger an assert if they are not implemented.
+   */
+  void set_functions_to_trigger_an_assert();
+
+
+  /** Final time. */
+  double final_time;
+
+  /** Initial time for the ode.*/
+  double initial_time;
 
   /** Initial step size. */
   double initial_step_size;
@@ -171,9 +214,6 @@ private:
 
   /** Relative error tolerance for adaptive time stepping. */
   double rel_tol;
-
-  /** Maximum number of time steps. */
-  unsigned int max_n_steps;
 
   /** Maximum order of BDF. */
   unsigned int max_order;
@@ -220,8 +260,11 @@ private:
   /** Ida differential components vector. */
   N_Vector diff_id;
 
+  MPI_Comm communicator;
+
   /** Output stream */
   ConditionalOStream pcout;
+
 };
 
 

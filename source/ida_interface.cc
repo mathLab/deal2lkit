@@ -133,9 +133,10 @@ int t_dae_solve(IDAMem IDA_mem,
 
 
 template <typename VEC>
-IDAInterface<VEC>::IDAInterface(SundialsInterface<VEC> &bubble) :
-  ParameterAcceptor("IDA Solver Parameters"),
-  solver(bubble),
+IDAInterface<VEC>::IDAInterface(const std::string name,
+                                const MPI_Comm mpi_comm) :
+  ParameterAcceptor("name"),
+  solver(name),
   ida_mem(nullptr),
   pcout(std::cout, Utilities::MPI::this_mpi_process(MPI_COMM_WORLD)==0)
 {
@@ -469,6 +470,72 @@ template<typename VEC>
 void IDAInterface<VEC>::set_initial_time(const double &t)
 {
   initial_time = t;
+}
+
+template<typename VEC>
+void IDAInterface::set_functions_to_trigger_an_assert()
+{
+
+  create_new_vector = []() ->shared_ptr<VEC>
+  {
+    shared_ptr<VEC> p;
+    AssertThrow(false, ExcPureFunctionCalled());
+    return p;
+  };
+
+  residual = [](const double,
+                const VEC &,
+                const VEC &,
+                VEC &) ->int
+  {
+    int ret=0;
+    AssertThrow(false, ExcPureFunctionCalled());
+    return ret;
+  };
+
+  setup_jacobian = [](const double,
+                      const VEC &,
+                      const VEC &,
+                      const double) ->int
+  {
+    int ret=0;
+    AssertThrow(false, ExcPureFunctionCalled());
+    return ret;
+  };
+
+  solve_jacobian_system = [](const VEC &,
+                             VEC &) ->int
+  {
+    int ret=0;
+    AssertThrow(false, ExcPureFunctionCalled());
+    return ret;
+  };
+
+  output_step = [](const double,
+                   const VEC &,
+                   const VEC &,
+                   const unsigned int)
+  {
+    AssertThrow(false, ExcPureFunctionCalled());
+  };
+
+  solver_should_restart = [](const double,
+                             VEC &,
+                             VEC &) ->bool
+  {
+    bool ret=false;
+    AssertThrow(false, ExcPureFunctionCalled());
+    return ret;
+  };
+
+  differential_components = []() ->VEC &
+  {
+    VEC y;
+    AssertThrow(false, ExcPureFunctionCalled());
+    return y;
+  };
+}
+
 }
 
 D2K_NAMESPACE_CLOSE
