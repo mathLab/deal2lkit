@@ -178,7 +178,7 @@ public:
 
   std::function<VEC&()> differential_components();
 
-//  std::function<VEC&()> get_local_tolerances;
+  std::function<VEC&()> get_local_tolerances;
 //  std::function<VEC&()> get_lumped_mass_matrix;
 
 
@@ -264,6 +264,10 @@ private:
 
   /** Output stream */
   ConditionalOStream pcout;
+
+  unsigned int system_size;
+
+  unsigned int local_system_size;
 
 };
 

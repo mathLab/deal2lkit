@@ -44,107 +44,98 @@ using namespace dealii;
 
 D2K_NAMESPACE_OPEN
 
-
-template<typename VEC>
-int t_dae_residual(realtype tt, N_Vector yy, N_Vector yp,
-                   N_Vector rr, void *user_data)
+namespace
 {
-  SundialsInterface<VEC> &solver = *static_cast<SundialsInterface<VEC> *>(user_data);
 
-  shared_ptr<VEC> src_yy = solver.create_new_vector();
-  shared_ptr<VEC> src_yp = solver.create_new_vector();
-  shared_ptr<VEC> residual = solver.create_new_vector();
 
-  copy(*src_yy, yy);
-  copy(*src_yp, yp);
+  template<typename VEC>
+  int t_dae_residual(realtype tt, N_Vector yy, N_Vector yp,
+                     N_Vector rr, void *user_data)
+  {
+    IDAInterface<VEC> &solver = *static_cast<IDAInterface<VEC> *>(user_data);
 
-  int err = solver.residual(tt, *src_yy, *src_yp, *residual);
+    shared_ptr<VEC> src_yy = solver.create_new_vector();
+    shared_ptr<VEC> src_yp = solver.create_new_vector();
+    shared_ptr<VEC> residual = solver.create_new_vector();
 
-  copy(rr, *residual);
+    copy(*src_yy, yy);
+    copy(*src_yp, yp);
 
-  return err;
+    int err = solver.residual(tt, *src_yy, *src_yp, *residual);
+
+    copy(rr, *residual);
+
+    return err;
+  }
+
+
+
+  template<typename VEC>
+  int t_dae_lsetup(IDAMem IDA_mem,
+                   N_Vector yy,
+                   N_Vector yp,
+                   N_Vector resp,
+                   N_Vector tmp1,
+                   N_Vector tmp2,
+                   N_Vector tmp3)
+  {
+    (void) tmp1;
+    (void) tmp2;
+    (void) tmp3;
+    (void) resp;
+    IDAInterface<VEC> &solver = *static_cast<IDAInterface<VEC> *>(IDA_mem->ida_user_data);
+
+    shared_ptr<VEC> src_yy = solver.create_new_vector();
+    shared_ptr<VEC> src_yp = solver.create_new_vector();
+
+    copy(*src_yy, yy);
+    copy(*src_yp, yp);
+
+    int err = solver.setup_jacobian(IDA_mem->ida_tn,
+                                    *src_yy,
+                                    *src_yp,
+                                    IDA_mem->ida_cj);
+    return err;
+  }
+
+
+  template<typename VEC>
+  int t_dae_solve(IDAMem IDA_mem,
+                  N_Vector b,
+                  N_Vector weight,
+                  N_Vector yy,
+                  N_Vector yp,
+                  N_Vector resp)
+  {
+    (void) weight;
+    (void) yy;
+    (void) yp;
+    (void) resp;
+    IDAInterface<VEC> &solver = *static_cast<IDAInterface<VEC> *>(IDA_mem->ida_user_data);
+
+    shared_ptr<VEC> dst = solver.create_new_vector();
+    shared_ptr<VEC> src = solver.create_new_vector();
+
+    copy(*src, b);
+
+    int err = solver.solve_jacobian_system(*src,
+                                           *dst);
+    copy(b, *dst);
+    return err;
+  }
+
 }
-
-
-
-template<typename VEC>
-int t_dae_lsetup(IDAMem IDA_mem,
-                 N_Vector yy,
-                 N_Vector yp,
-                 N_Vector resp,
-                 N_Vector tmp1,
-                 N_Vector tmp2,
-                 N_Vector tmp3)
-{
-  (void) tmp1;
-  (void) tmp2;
-  (void) tmp3;
-  SundialsInterface<VEC> &solver = *static_cast<SundialsInterface<VEC> *>(IDA_mem->ida_user_data);
-
-  shared_ptr<VEC> src_yy = solver.create_new_vector();
-  shared_ptr<VEC> src_yp = solver.create_new_vector();
-  shared_ptr<VEC> residual = solver.create_new_vector();
-
-  copy(*src_yy, yy);
-  copy(*src_yp, yp);
-  copy(*residual, resp);
-
-  int err = solver.setup_jacobian(IDA_mem->ida_tn,
-                                  *src_yy,
-                                  *src_yp,
-                                  *residual,
-                                  IDA_mem->ida_cj);
-  return err;
-}
-
-
-template<typename VEC>
-int t_dae_solve(IDAMem IDA_mem,
-                N_Vector b,
-                N_Vector weight,
-                N_Vector yy,
-                N_Vector yp,
-                N_Vector resp)
-{
-  (void) weight;
-  SundialsInterface<VEC> &solver = *static_cast<SundialsInterface<VEC> *>(IDA_mem->ida_user_data);
-
-  shared_ptr<VEC> src_yy = solver.create_new_vector();
-  shared_ptr<VEC> src_yp = solver.create_new_vector();
-  shared_ptr<VEC> residual = solver.create_new_vector();
-  shared_ptr<VEC> dst = solver.create_new_vector();
-  shared_ptr<VEC> src = solver.create_new_vector();
-
-  copy(*src_yy, yy);
-  copy(*src_yp, yp);
-  copy(*residual, resp);
-  copy(*src, b);
-
-  int err = solver.solve_jacobian_system(IDA_mem->ida_tn,
-                                         *src_yy,
-                                         *src_yp,
-                                         *residual,
-                                         IDA_mem->ida_cj,
-                                         *src,
-                                         *dst);
-  copy(b, *dst);
-  return err;
-}
-
 
 template <typename VEC>
 IDAInterface<VEC>::IDAInterface(const std::string name,
                                 const MPI_Comm mpi_comm) :
-  ParameterAcceptor("name"),
+  ParameterAcceptor(name),
   solver(name),
   ida_mem(nullptr),
-  pcout(std::cout, Utilities::MPI::this_mpi_process(MPI_COMM_WORLD)==0)
+  communicator(Utilities::MPI::duplicate_communicator(mpi_comm)),
+  pcout(std::cout, Utilities::MPI::this_mpi_process(mpi_comm)==0)
 {
-  initial_step_size = 1e-4;
-  min_step_size = 1e-6;
-
-  abs_tol = 1e-6;
-  rel_tol = 1e-8;
+  set_functions_to_trigger_an_assert();
 }
 
 template <typename VEC>
@@ -233,14 +224,11 @@ void IDAInterface<VEC>::declare_parameters(ParameterHandler &prm)
 
 
 template <typename VEC>
-unsigned int IDAInterface<VEC>::start_ode(VEC &solution,
-                                          VEC &solution_dot,
-                                          const unsigned int max_steps)
+unsigned int IDAInterface<VEC>::solve_dae(VEC &solution,
+                                          VEC &solution_dot)
 {
 
-
-  AssertThrow(solution.size() == solver.n_dofs(),
-              ExcDimensionMismatch(solution.size(), solver.n_dofs()));
+  system_size = solution.size();
 
   double t = initial_time;
   double h = initial_step_size;
@@ -254,19 +242,36 @@ unsigned int IDAInterface<VEC>::start_ode(VEC &solution,
 
 #ifdef DEAL_II_WITH_MPI
   IndexSet is = solution.locally_owned_elements();
+  local_system_size = is.n_elements();
 
-  yy        = N_VNew_Parallel(solver.get_comm(), is.n_elements(), solver.n_dofs());
-  yp        = N_VNew_Parallel(solver.get_comm(), is.n_elements(), solver.n_dofs());
-  diff_id   = N_VNew_Parallel(solver.get_comm(), is.n_elements(), solver.n_dofs());
-  abs_tolls = N_VNew_Parallel(solver.get_comm(), is.n_elements(), solver.n_dofs());
+  yy        = N_VNew_Parallel(communicator,
+                              local_system_size,
+                              system_size);
+
+  yp        = N_VNew_Parallel(communicator,
+                              local_system_size,
+                              system_size);
+
+  diff_id   = N_VNew_Parallel(communicator,
+                              local_system_size,
+                              system_size);
+
+  abs_tolls = N_VNew_Parallel(communicator,
+                              local_system_size,
+                              system_size);
+
 #else
-  yy        = N_VNew_Serial(solver.n_dofs());
-  yp        = N_VNew_Serial(solver.n_dofs());
-  diff_id   = N_VNew_Serial(solver.n_dofs());
-  abs_tolls = N_VNew_Serial(solver.n_dofs());
+  yy        = N_VNew_Serial(system_size);
+  yp        = N_VNew_Serial(system_size);
+  diff_id   = N_VNew_Serial(system_size);
+  abs_tolls = N_VNew_Serial(system_size);
 #endif
 
-  reset_ode(initial_time, solution, solution_dot, initial_step_size, max_steps, true);
+  reset_dae(initial_time,
+            solution,
+            solution_dot,
+            initial_step_size,
+            true);
 
   double next_time = initial_time;
 
@@ -332,11 +337,10 @@ unsigned int IDAInterface<VEC>::start_ode(VEC &solution,
 }
 
 template <typename VEC>
-void IDAInterface<VEC>::reset_ode(double current_time,
+void IDAInterface<VEC>::reset_dae(double current_time,
                                   VEC &solution,
                                   VEC &solution_dot,
                                   double current_time_step,
-                                  unsigned int max_steps,
                                   bool first_step)
 {
   if (ida_mem)
@@ -362,40 +366,47 @@ void IDAInterface<VEC>::reset_ode(double current_time,
     }
 
   int status;
-  Assert(solution.size() == solver.n_dofs(),
-         ExcDimensionMismatch(solution.size(), solver.n_dofs()));
-
-  Assert(solution_dot.size() == solver.n_dofs(),
-         ExcDimensionMismatch(solution_dot.size(), solver.n_dofs()));
-
-
+  system_size = solution.size();
 #ifdef DEAL_II_WITH_MPI
   IndexSet is = solution.locally_owned_elements();
+  local_system_size = is.n_elements();
 
-  yy        = N_VNew_Parallel(solver.get_comm(), is.n_elements(), solver.n_dofs());
-  yp        = N_VNew_Parallel(solver.get_comm(), is.n_elements(), solver.n_dofs());
-  diff_id   = N_VNew_Parallel(solver.get_comm(), is.n_elements(), solver.n_dofs());
-  abs_tolls = N_VNew_Parallel(solver.get_comm(), is.n_elements(), solver.n_dofs());
+  yy        = N_VNew_Parallel(communicator,
+                              local_system_size,
+                              system_size);
+
+  yp        = N_VNew_Parallel(communicator,
+                              local_system_size,
+                              system_size);
+
+  diff_id   = N_VNew_Parallel(communicator,
+                              local_system_size,
+                              system_size);
+
+  abs_tolls = N_VNew_Parallel(communicator,
+                              local_system_size,
+                              system_size);
+
 #else
-  yy        = N_VNew_Serial(solver.n_dofs());
-  yp        = N_VNew_Serial(solver.n_dofs());
-  diff_id   = N_VNew_Serial(solver.n_dofs());
-  abs_tolls = N_VNew_Serial(solver.n_dofs());
+  yy        = N_VNew_Serial(system_size);
+  yp        = N_VNew_Serial(system_size);
+  diff_id   = N_VNew_Serial(system_size);
+  abs_tolls = N_VNew_Serial(system_size);
 #endif
 
   copy(yy, solution);
   copy(yp, solution_dot);
-  copy(diff_id, solver.differential_components());
+  copy(diff_id, differential_components());
 
   status = IDAInit(ida_mem, t_dae_residual<VEC>, current_time, yy, yp);
 
   if (use_local_tolerances)
     {
-      VEC &tolerances = solver.get_local_tolerances();
-      VEC abs_tolerances(tolerances);
-      abs_tolerances /= tolerances.linfty_norm();
-      abs_tolerances *= abs_tol;
-      copy(abs_tolls, abs_tolerances);
+      VEC tolerances = get_local_tolerances();
+//      VEC abs_tolerances(tolerances);
+//      abs_tolerances /= tolerances.linfty_norm();
+//      abs_tolerances *= abs_tol;
+      copy(abs_tolls, tolerances);
       status += IDASVtolerances(ida_mem, rel_tol, abs_tolls);
     }
   else
@@ -529,6 +540,13 @@ void IDAInterface::set_functions_to_trigger_an_assert()
   };
 
   differential_components = []() ->VEC &
+  {
+    VEC y;
+    AssertThrow(false, ExcPureFunctionCalled());
+    return y;
+  };
+
+  get_local_tolerances = []() ->VEC &
   {
     VEC y;
     AssertThrow(false, ExcPureFunctionCalled());
