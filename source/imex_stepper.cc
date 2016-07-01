@@ -172,7 +172,7 @@ void IMEXStepper<VEC>::compute_y_dot(const VEC &y, const VEC &prev, const double
 }
 
 template <typename VEC>
-unsigned int IMEXStepper<VEC>::start_ode(VEC &solution, VEC &solution_dot)
+unsigned int IMEXStepper<VEC>::solve_dae(VEC &solution, VEC &solution_dot)
 {
   AssertDimension(solution.size(), interface.n_dofs());
 

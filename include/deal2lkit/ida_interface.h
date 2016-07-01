@@ -176,10 +176,10 @@ public:
                       VEC &sol,
                       VEC &sol_dot)> solver_should_restart;
 
-  std::function<VEC&()> differential_components();
+  std::function<VEC&()> differential_components;
 
   std::function<VEC&()> get_local_tolerances;
-//  std::function<VEC&()> get_lumped_mass_matrix;
+  std::function<VEC&()> get_lumped_mass_matrix;
 
 
 

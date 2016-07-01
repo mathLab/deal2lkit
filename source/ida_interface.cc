@@ -130,7 +130,7 @@ template <typename VEC>
 IDAInterface<VEC>::IDAInterface(const std::string name,
                                 const MPI_Comm mpi_comm) :
   ParameterAcceptor(name),
-  solver(name),
+//  solver(name),
   ida_mem(nullptr),
   communicator(Utilities::MPI::duplicate_communicator(mpi_comm)),
   pcout(std::cout, Utilities::MPI::this_mpi_process(mpi_comm)==0)
@@ -275,9 +275,9 @@ unsigned int IDAInterface<VEC>::solve_dae(VEC &solution,
 
   double next_time = initial_time;
 
-  solver.output_step( 0, solution, solution_dot, 0, initial_step_size);
+  output_step( 0, solution, solution_dot, 0);
 
-  while ((t<final_time) && (step_number < max_steps))
+  while (t<final_time)
     {
 
       next_time += outputs_period;
@@ -297,7 +297,9 @@ unsigned int IDAInterface<VEC>::solve_dae(VEC &solution,
       copy(solution_dot, yp);
 
       // Check the solution
-      bool reset = solver.solver_should_restart(t, step_number, h, solution, solution_dot);
+      bool reset = solver_should_restart(t,
+                                         solution,
+                                         solution_dot);
 
 
       while (reset)
@@ -306,14 +308,16 @@ unsigned int IDAInterface<VEC>::solve_dae(VEC &solution,
           int k = 0;
           IDAGetLastOrder(ida_mem, &k);
           // frac = std::pow((double)k,2.);
-          reset_ode(t, solution, solution_dot,
-                    h/2.0, max_steps, false);
-          reset = solver.solver_should_restart(t, step_number, h, solution, solution_dot);
+          reset_dae(t, solution, solution_dot,
+                    h/2.0, false);
+          reset = solver_should_restart(t,
+                                        solution,
+                                        solution_dot);
         }
 
       step_number++;
 
-      solver.output_step(t, solution, solution_dot,  step_number, h);
+      output_step(t, solution, solution_dot,  step_number);
 
 
 
@@ -402,11 +406,11 @@ void IDAInterface<VEC>::reset_dae(double current_time,
 
   if (use_local_tolerances)
     {
-      VEC tolerances = get_local_tolerances();
+//      VEC tolerances = get_local_tolerances();
 //      VEC abs_tolerances(tolerances);
 //      abs_tolerances /= tolerances.linfty_norm();
 //      abs_tolerances *= abs_tol;
-      copy(abs_tolls, tolerances);
+      copy(abs_tolls, get_local_tolerances());
       status += IDASVtolerances(ida_mem, rel_tol, abs_tolls);
     }
   else
@@ -415,12 +419,12 @@ void IDAInterface<VEC>::reset_dae(double current_time,
     }
 
   status += IDASetInitStep(ida_mem, current_time_step);
-  status += IDASetUserData(ida_mem, (void *) &solver);
+  status += IDASetUserData(ida_mem, (void *) this);
 
   status += IDASetId(ida_mem, diff_id);
   status += IDASetSuppressAlg(ida_mem, ignore_algebraic_terms_for_errors);
 
-  status += IDASetMaxNumSteps(ida_mem, max_steps);
+//  status += IDASetMaxNumSteps(ida_mem, max_steps);
   status += IDASetStopTime(ida_mem, final_time);
 
   status += IDASetMaxNonlinIters(ida_mem, max_non_linear_iterations);
@@ -484,7 +488,7 @@ void IDAInterface<VEC>::set_initial_time(const double &t)
 }
 
 template<typename VEC>
-void IDAInterface::set_functions_to_trigger_an_assert()
+void IDAInterface<VEC>::set_functions_to_trigger_an_assert()
 {
 
   create_new_vector = []() ->shared_ptr<VEC>
@@ -541,20 +545,20 @@ void IDAInterface::set_functions_to_trigger_an_assert()
 
   differential_components = []() ->VEC &
   {
-    VEC y;
+    shared_ptr<VEC> y;
     AssertThrow(false, ExcPureFunctionCalled());
-    return y;
+    return *y;
   };
 
   get_local_tolerances = []() ->VEC &
   {
-    VEC y;
+    shared_ptr<VEC> y;
     AssertThrow(false, ExcPureFunctionCalled());
-    return y;
+    return *y;
   };
 }
 
-}
+
 
 D2K_NAMESPACE_CLOSE
 
