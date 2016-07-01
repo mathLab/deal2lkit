@@ -37,15 +37,21 @@ template<typename VEC=Vector<double> >
 class IMEXStepper : public ParameterAcceptor
 {
 public:
-  /** Constructor for the IDAInterface class. The Solver class is
-   * required to have a Solver.solve(VEC &dst, const VEC &src) method
-   * that will be called by the time integrator to find out about the
-   * solution to a given src. */
-  IMEXStepper(SundialsInterface<VEC> &solver,
-              const double &step_size=1e-3,
-              const double &initial_time=0.0,
-              const double &final_time=1.0
-             );
+
+#ifdef DEAL_II_WITH_MPI
+  /** Constructor for the IMEXStepper class.
+    * Takes a @p name for the section in parameter file
+    * and a mpi communicator.
+    */
+  IMEXStepper(std::string &name="",
+              MPI_Comm comm = MPI_COMM_WORLD);
+#else
+  /** Constructor for the IMEXStepper class.
+    * Takes a @p name for the section in parameter file.
+    */
+  IMEXStepper(std::string &name="");
+
+#endif
 
   /** Declare parameters for this class to function properly. */
   virtual void declare_parameters(ParameterHandler &prm);
@@ -77,9 +83,10 @@ public:
   void set_initial_time(const double &t);
 
 private:
-  /** The solver interface. */
-  SundialsInterface<VEC> &interface;
 
+#ifdef DEAL_II_WITH_MPI
+  MPI_Comm communicator;
+#endif
   /**
     * kinsol solver
     */
@@ -189,6 +196,53 @@ private:
                                  const VEC &sol_dot,
                                  const double &alpha,
                                  VEC &prev);
+
+public:
+
+  /**
+   * this function has to be implemented by the user
+   * and it must return a shared pointer to a VEC vector.
+   */
+  std::function<shared_ptr<VEC>()> create_new_vector;
+
+  /** standard function computing residuals */
+  std::function<int(const double t,
+                    const VEC &y,
+                    const VEC &y_dot,
+                    VEC &res)> residual;
+
+  /** standard function computing the Jacobian */
+  std::function<int(const double t,
+                    const VEC &y,
+                    const VEC &y_dot,
+                    const double alpha)> setup_jacobian;
+
+  /** standard function solving linear system */
+  std::function<int(const VEC &rhs, VEC &dst)> solve_jacobian_system;
+
+  std::function<void (const double t,
+                      const VEC &sol,
+                      const VEC &sol_dot,
+                      const unsigned int step_number)> output_step;
+
+
+  std::function<bool (const double t,
+                      VEC &sol,
+                      VEC &sol_dot)> solver_should_restart;
+
+  std::function<VEC&()> get_lumped_mass_matrix;
+
+  std::function<int(const VEC &src,
+                    VEC &dst)> jacobian_vmult;
+
+  std::function<double(const VEC &vector)> vector_norm;
+
+private:
+
+  /**
+   * Set the std::functions above to trigger an assert if they are not implemented.
+   */
+  void set_functions_to_trigger_an_assert();
 
 };
 
