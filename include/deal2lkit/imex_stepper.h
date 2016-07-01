@@ -43,7 +43,7 @@ public:
     * Takes a @p name for the section in parameter file
     * and a mpi communicator.
     */
-  IMEXStepper(std::string &name="",
+  IMEXStepper(std::string name="",
               MPI_Comm comm = MPI_COMM_WORLD);
 #else
   /** Constructor for the IMEXStepper class.

@@ -49,14 +49,16 @@ D2K_NAMESPACE_OPEN
 
 #ifdef DEAL_II_WITH_MPI
 template <typename VEC>
-IMEXStepper<VEC>::IMEXStepper(std::string &name,
+IMEXStepper<VEC>::IMEXStepper(std::string name,
                               MPI_Comm comm) :
   ParameterAcceptor(name),
   communicator(Utilities::MPI::duplicate_communicator(comm)),
   kinsol("KINSOL for IMEX",communicator),
   pcout(std::cout,
         Utilities::MPI::this_mpi_process(communicator)==0)
-{}
+{
+  set_functions_to_trigger_an_assert();
+}
 #else
 template <typename VEC>
 IMEXStepper<VEC>::IMEXStepper(std::string &name) :
@@ -64,7 +66,9 @@ IMEXStepper<VEC>::IMEXStepper(std::string &name) :
   kinsol("KINSOL for IMEX",communicator),
   pcout(std::cout,
         Utilities::MPI::this_mpi_process(MPI_COMM_WORLD)==0)
-{}
+{
+  set_functions_to_trigger_an_assert();
+}
 #endif
 
 template <typename VEC>
@@ -168,7 +172,7 @@ unsigned int IMEXStepper<VEC>::solve_dae(VEC &solution, VEC &solution_dot)
   unsigned int step_number = 0;
 
   auto previous_solution = create_new_vector();
-  auto residual = create_new_vector();
+  auto residual_ = create_new_vector();
   auto rhs = create_new_vector();
 
   double t = initial_time;
@@ -190,8 +194,8 @@ unsigned int IMEXStepper<VEC>::solve_dae(VEC &solution, VEC &solution_dot)
     double a = this->get_alpha();
     compute_y_dot(y,*previous_solution,a,solution_dot);
     int ret = this->residual(t,y,solution_dot,res);
-    *residual = res;
-    AssertThrow(!std::isnan(residual->l2_norm()),ExcMessage("Residual contains one or more NaNs."));
+    *residual_ = res;
+    AssertThrow(!std::isnan(residual_->l2_norm()),ExcMessage("Residual contains one or more NaNs."));
     return ret;
   };
 
@@ -204,7 +208,7 @@ unsigned int IMEXStepper<VEC>::solve_dae(VEC &solution, VEC &solution_dot)
 
   std::function<int(const VEC &, VEC &)> my_solve = [&] (const VEC &, VEC &dst)
   {
-    *rhs = *residual;
+    *rhs = *residual_;
     *rhs *= -1.0;
     return this->solve_jacobian_system(*rhs,dst);
   };
@@ -263,7 +267,7 @@ unsigned int IMEXStepper<VEC>::solve_dae(VEC &solution, VEC &solution_dot)
         {
 
           previous_solution = create_new_vector();
-          residual = create_new_vector();
+          residual_ = create_new_vector();
           rhs = create_new_vector();
           L2 = create_new_vector();
 
@@ -406,7 +410,7 @@ do_newton (const double t,
   double solution_norm = 0.0;
 
   if (abs_tol>0.0||rel_tol>0.0)
-    res_norm = vector_norm(*res);
+    res_norm = this->vector_norm(*res);
   // if (rel_tol>0.0)
   //   solution_norm = interface.vector_norm(solution);
 
