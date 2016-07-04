@@ -51,6 +51,14 @@ preconditioner couplings and related variables and methods.
 (Alberto Sartori, 2015/12/01) 
 </li>
 
+<li> Removed: The SundialsInterface class has been removed and the
+classes that relied on it have been updated. Specifically, IMEXStepper
+and IDAInterface now features public std::functions that must be
+implemented by the user in order to make these class to properly work,
+allowing greater flexibility.
+(Alberto Sartori, 2016/07/04) 
+</li>
+
 
 </ol>
 

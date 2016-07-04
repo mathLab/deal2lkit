@@ -14,7 +14,6 @@
 //-----------------------------------------------------------
 
 
-#include <deal2lkit/sundials_interface.h>
 #include <deal2lkit/imex_stepper.h>
 #ifdef D2K_WITH_SUNDIALS
 
@@ -47,34 +46,28 @@ using namespace dealii;
 
 D2K_NAMESPACE_OPEN
 
-
-template <typename VEC>
-IMEXStepper<VEC>::IMEXStepper(SundialsInterface<VEC> &interface,
-                              const double &step_size,
-                              const double &initial_time,
-                              const double &final_time) :
-  ParameterAcceptor("IMEX Parameters"),
-  interface(interface),
 #ifdef DEAL_II_WITH_MPI
-  kinsol("KINSOL for IMEX",interface.get_comm()),
-#else
-  kinsol("KINSOL for IMEX"),
-#endif
-  step_size(step_size),
-  initial_time(initial_time),
-  final_time(final_time),
-  pcout(std::cout, Utilities::MPI::this_mpi_process(interface.get_comm())==0)
+template <typename VEC>
+IMEXStepper<VEC>::IMEXStepper(std::string name,
+                              MPI_Comm comm) :
+  ParameterAcceptor(name),
+  communicator(Utilities::MPI::duplicate_communicator(comm)),
+  kinsol("KINSOL for IMEX",comm),
+  pcout(std::cout,
+        Utilities::MPI::this_mpi_process(communicator)==0)
 {
-  abs_tol = 1e-6;
-  rel_tol = 1e-8;
-  output_period = 1;
-  newton_alpha = 1.0;
-  max_outer_non_linear_iterations = 5;
-  max_inner_non_linear_iterations = 3;
-  verbose = false;
-  n_max_backtracking = 5;
-  method = "fixed alpha";
+  set_functions_to_trigger_an_assert();
 }
+#else
+template <typename VEC>
+IMEXStepper<VEC>::IMEXStepper(std::string &name) :
+  ParameterAcceptor(name),
+  kinsol("KINSOL for IMEX",communicator),
+  pcout(std::cout)
+{
+  set_functions_to_trigger_an_assert();
+}
+#endif
 
 template <typename VEC>
 double IMEXStepper<VEC>::get_alpha() const
@@ -103,39 +96,39 @@ void IMEXStepper<VEC>::declare_parameters(ParameterHandler &prm)
                 "(t<0.5?1e-2:1e-3)");
 
   add_parameter(prm, &abs_tol,
-                "Absolute error tolerance", std::to_string(abs_tol),
+                "Absolute error tolerance", "1e-6",
                 Patterns::Double());
 
   add_parameter(prm, &rel_tol,
-                "Relative error tolerance", std::to_string(rel_tol),
+                "Relative error tolerance", "1e-5",
                 Patterns::Double());
 
   add_parameter(prm, &initial_time,
-                "Initial time", std::to_string(initial_time),
+                "Initial time", "0.0",
                 Patterns::Double());
 
   add_parameter(prm, &final_time,
-                "Final time", std::to_string(final_time),
+                "Final time", "1.0",
                 Patterns::Double());
 
   add_parameter(prm, &output_period,
-                "Intervals between outputs", std::to_string(output_period),
+                "Intervals between outputs", "1",
                 Patterns::Integer());
 
   add_parameter(prm, &max_outer_non_linear_iterations,
-                "Maximum number of outer nonlinear iterations", std::to_string(max_outer_non_linear_iterations),
+                "Maximum number of outer nonlinear iterations", "5",
                 Patterns::Integer(),
                 "At each outer iteration the Jacobian is updated if it is set that the \n"
                 "Jacobian is continuously updated and a cycle of inner iterations is \n"
                 "perfomed.");
 
   add_parameter(prm, &max_inner_non_linear_iterations,
-                "Maximum number of inner nonlinear iterations", std::to_string(max_inner_non_linear_iterations),
+                "Maximum number of inner nonlinear iterations", "3",
                 Patterns::Integer(),
                 "At each inner iteration the Jacobian is NOT updated.");
 
   add_parameter(prm, &newton_alpha,
-                "Newton relaxation parameter", std::to_string(newton_alpha),
+                "Newton relaxation parameter", "1",
                 Patterns::Double());
 
   add_parameter(prm, &update_jacobian_continuously,
@@ -143,7 +136,7 @@ void IMEXStepper<VEC>::declare_parameters(ParameterHandler &prm)
                 Patterns::Bool());
 
   add_parameter(prm, &n_max_backtracking,
-                "Number of elements in backtracking sequence", std::to_string(n_max_backtracking),
+                "Number of elements in backtracking sequence", "5",
                 Patterns::Integer(1),
                 "In the line seach method with backtracking the following alphas are\n"
                 "tested: 1, 1/2, 1/4,..., 2^-i. This parameter sets the maximum i.");
@@ -172,15 +165,13 @@ void IMEXStepper<VEC>::compute_y_dot(const VEC &y, const VEC &prev, const double
 }
 
 template <typename VEC>
-unsigned int IMEXStepper<VEC>::start_ode(VEC &solution, VEC &solution_dot)
+unsigned int IMEXStepper<VEC>::solve_dae(VEC &solution, VEC &solution_dot)
 {
-  AssertDimension(solution.size(), interface.n_dofs());
-
   unsigned int step_number = 0;
 
-  auto previous_solution = interface.create_new_vector();
-  auto residual = interface.create_new_vector();
-  auto rhs = interface.create_new_vector();
+  auto previous_solution = create_new_vector();
+  auto residual_ = create_new_vector();
+  auto rhs = create_new_vector();
 
   double t = initial_time;
   double alpha;
@@ -195,18 +186,14 @@ unsigned int IMEXStepper<VEC>::start_ode(VEC &solution, VEC &solution_dot)
   compute_previous_solution(solution,solution_dot,alpha, *previous_solution);
 
 
-  std::function<shared_ptr<VEC>()> my_new_vector = [this] ()
-  {
-    return this->interface.create_new_vector();
-  };
 
   std::function<int(const VEC &, VEC &)> my_residual = [&] (const VEC &y, VEC &res)
   {
     double a = this->get_alpha();
     compute_y_dot(y,*previous_solution,a,solution_dot);
-    int ret = this->interface.residual(t,y,solution_dot,res);
-    *residual = res;
-    AssertThrow(!std::isnan(residual->l2_norm()),ExcMessage("Residual contains one or more NaNs."));
+    int ret = this->residual(t,y,solution_dot,res);
+    *residual_ = res;
+    AssertThrow(!std::isnan(residual_->l2_norm()),ExcMessage("Residual contains one or more NaNs."));
     return ret;
   };
 
@@ -214,27 +201,22 @@ unsigned int IMEXStepper<VEC>::start_ode(VEC &solution, VEC &solution_dot)
   {
     double a = this->get_alpha();
     compute_y_dot(y,*previous_solution,a,solution_dot);
-    return this->interface.setup_jacobian(t,y,solution_dot,*residual,a);
+    return this->setup_jacobian(t,y,solution_dot,a);
   };
 
-  std::function<int(const VEC &, VEC &)> my_solve = [&] (const VEC &res, VEC &dst)
+  std::function<int(const VEC &, VEC &)> my_solve = [&] (const VEC &, VEC &dst)
   {
-    double a = this->get_alpha();
-    *rhs = *residual;
+    *rhs = *residual_;
     *rhs *= -1.0;
-    return this->interface.solve_jacobian_system(t,solution,solution_dot,res,a,*rhs,dst);
+    return this->solve_jacobian_system(*rhs,dst);
   };
 
-  std::function<int(const VEC &, VEC &)> my_jacobian_vmult = [&] (const VEC &v, VEC &dst )
-  {
-    return this->interface.jacobian_vmult(v,dst);
-  };
 
-  kinsol.create_new_vector = my_new_vector;
+  kinsol.create_new_vector = create_new_vector;
   kinsol.residual = my_residual;
   kinsol.setup_jacobian = my_jac;
   kinsol.solve_linear_system = my_solve;
-  kinsol.jacobian_vmult = my_jacobian_vmult;
+  kinsol.jacobian_vmult = jacobian_vmult;
 
   // Initialization of the state of the boolean variable
   // responsible to keep track of the requirement that the
@@ -246,16 +228,16 @@ unsigned int IMEXStepper<VEC>::start_ode(VEC &solution, VEC &solution_dot)
 
 
 //   store initial conditions
-  interface.output_step(t, solution, solution_dot,  step_number, step_size);
+  output_step(t, solution, solution_dot,  step_number);
 
   bool restart=false;
 
-  auto L2 = interface.create_new_vector();
+  auto L2 = create_new_vector();
   if (use_kinsol)
     {
       // call kinsol initialization. this is mandatory if I am doing multiple cycle in pi-DoMUS
       kinsol.initialize_solver(solution);
-      interface.get_lumped_mass_matrix(*L2);
+      *L2 = get_lumped_mass_matrix();
       kinsol.set_scaling_vectors(*L2, *L2);
     }
 
@@ -277,15 +259,15 @@ unsigned int IMEXStepper<VEC>::start_ode(VEC &solution, VEC &solution_dot)
       else
         do_newton(t,alpha,update_Jacobian,*previous_solution,solution,solution_dot);
 
-      restart = interface.solver_should_restart(t,step_number,step_size,solution,solution_dot);
+      restart = solver_should_restart(t,solution,solution_dot);
 
       while (restart)
         {
 
-          previous_solution = interface.create_new_vector();
-          residual = interface.create_new_vector();
-          rhs = interface.create_new_vector();
-          L2 = interface.create_new_vector();
+          previous_solution = create_new_vector();
+          residual_ = create_new_vector();
+          rhs = create_new_vector();
+          L2 = create_new_vector();
 
 
           if (use_kinsol)
@@ -293,7 +275,7 @@ unsigned int IMEXStepper<VEC>::start_ode(VEC &solution, VEC &solution_dot)
 
 
               kinsol.initialize_solver(solution);
-              interface.get_lumped_mass_matrix(*L2);
+              *L2 = get_lumped_mass_matrix();
               kinsol.set_scaling_vectors(*L2, *L2);
             }
           compute_consistent_initial_conditions(t,
@@ -302,7 +284,7 @@ unsigned int IMEXStepper<VEC>::start_ode(VEC &solution, VEC &solution_dot)
 
           compute_previous_solution(solution,solution_dot,alpha,*previous_solution);
 
-          restart = interface.solver_should_restart(t,step_number,step_size,solution,solution_dot);
+          restart = solver_should_restart(t,solution,solution_dot);
 
         }
 
@@ -310,7 +292,7 @@ unsigned int IMEXStepper<VEC>::start_ode(VEC &solution, VEC &solution_dot)
       step_number += 1;
 
       if ((step_number % output_period) == 0)
-        interface.output_step(t, solution, solution_dot,  step_number, step_size);
+        output_step(t, solution, solution_dot,  step_number);
       step_size = evaluate_step_size(t);
       t += step_size;
 
@@ -338,8 +320,8 @@ line_search_with_backtracking(const VEC &update,
                               VEC &solution_dot,
                               VEC &residual)
 {
-  auto first_trial = interface.create_new_vector();
-  auto first_residual = interface.create_new_vector();
+  auto first_trial = create_new_vector();
+  auto first_residual = create_new_vector();
 
   *first_trial = solution;
   double n_alpha = 1.0;
@@ -350,12 +332,12 @@ line_search_with_backtracking(const VEC &update,
   solution_dot -= previous_solution;
   solution_dot *= alpha;
 
-  interface.residual(t, *first_trial, solution_dot, *first_residual);
+  this->residual(t, *first_trial, solution_dot, *first_residual);
 
-  double first_res_norm = interface.vector_norm(*first_residual);
+  double first_res_norm = vector_norm(*first_residual);
 
-  auto second_trial = interface.create_new_vector();
-  auto second_residual = interface.create_new_vector();
+  auto second_trial = create_new_vector();
+  auto second_residual = create_new_vector();
 
   for (unsigned int i=1; i<=n_max_backtracking; ++i)
     {
@@ -369,8 +351,8 @@ line_search_with_backtracking(const VEC &update,
       solution_dot -= previous_solution;
       solution_dot *= alpha;
 
-      interface.residual(t, *second_trial, solution_dot, *second_residual);
-      double second_res_norm = interface.vector_norm(*second_residual);
+      this->residual(t, *second_trial, solution_dot, *second_residual);
+      double second_res_norm = vector_norm(*second_residual);
       if (first_res_norm < second_res_norm)
         {
           solution = *first_trial;
@@ -410,9 +392,9 @@ do_newton (const double t,
            VEC &solution,
            VEC &solution_dot)
 {
-  auto solution_update = interface.create_new_vector();
-  auto residual = interface.create_new_vector();
-  auto rhs = interface.create_new_vector();
+  auto solution_update = create_new_vector();
+  auto res = create_new_vector();
+  auto rhs = create_new_vector();
 
 
 
@@ -421,12 +403,12 @@ do_newton (const double t,
   unsigned int inner_iter = 0;
   unsigned int outer_iter = 0;
   unsigned int nonlin_iter = 0;
-  interface.residual(t, solution, solution_dot, *residual);
+  this->residual(t, solution, solution_dot, *res);
   double res_norm = 0.0;
   double solution_norm = 0.0;
 
   if (abs_tol>0.0||rel_tol>0.0)
-    res_norm = interface.vector_norm(*residual);
+    res_norm = this->vector_norm(*res);
   // if (rel_tol>0.0)
   //   solution_norm = interface.vector_norm(solution);
 
@@ -438,8 +420,10 @@ do_newton (const double t,
       outer_iter += 1;
       if (update_Jacobian == true)
         {
-          interface.setup_jacobian(t, solution, solution_dot,
-                                   *residual, alpha);
+          setup_jacobian(t,
+                         solution,
+                         solution_dot,
+                         alpha);
         }
 
       inner_iter = 0;
@@ -451,12 +435,10 @@ do_newton (const double t,
 
           inner_iter += 1;
 
-          *rhs = *residual;
+          *rhs = *res;
           *rhs *= -1.0;
 
-          interface.solve_jacobian_system(t, solution, solution_dot,
-                                          *residual, alpha,
-                                          *rhs, *solution_update);
+          solve_jacobian_system(*rhs, *solution_update);
 
 
           if (method == "LS_backtracking")
@@ -467,7 +449,7 @@ do_newton (const double t,
                                                            t,
                                                            solution,
                                                            solution_dot,
-                                                           *residual);
+                                                           *res);
             }
           else if (method == "fixed_alpha")
             {
@@ -478,13 +460,13 @@ do_newton (const double t,
 
           compute_y_dot(solution,previous_solution,alpha, solution_dot);
 
-          res_norm = interface.vector_norm(*solution_update);
+          res_norm = vector_norm(*solution_update);
 
-          AssertThrow(!std::isnan(residual->l2_norm()),ExcMessage("Residual contains one or more NaNs."));
+          AssertThrow(!std::isnan(res->l2_norm()),ExcMessage("Residual contains one or more NaNs."));
 
           if (rel_tol>0.0)
             {
-              solution_norm = interface.vector_norm(solution);
+              solution_norm = vector_norm(solution);
 
               if (verbose)
                 {
@@ -516,7 +498,7 @@ do_newton (const double t,
                     << std::endl;
             }
 
-          interface.residual(t,solution,solution_dot,*residual);
+          this->residual(t,solution,solution_dot,*res);
         }
 
       nonlin_iter += inner_iter;
@@ -595,10 +577,10 @@ void IMEXStepper<VEC>::compute_consistent_initial_conditions(const double &t,
     VEC &y,
     VEC &y_dot)
 {
-  auto previous_solution = interface.create_new_vector();
-  auto first_guess = interface.create_new_vector();
-  auto first_guess_dot = interface.create_new_vector();
-  auto update = interface.create_new_vector();
+  auto previous_solution = create_new_vector();
+  auto first_guess = create_new_vector();
+  auto first_guess_dot = create_new_vector();
+  auto update = create_new_vector();
 
   *first_guess     = y;
   *first_guess_dot = y_dot;
@@ -623,6 +605,83 @@ void IMEXStepper<VEC>::compute_consistent_initial_conditions(const double &t,
 
 }
 
+
+template<typename VEC>
+void IMEXStepper<VEC>::set_functions_to_trigger_an_assert()
+{
+
+  create_new_vector = []() ->shared_ptr<VEC>
+  {
+    shared_ptr<VEC> p;
+    AssertThrow(false, ExcPureFunctionCalled("Please implement create_new_vector function."));
+    return p;
+  };
+
+  residual = [](const double,
+                const VEC &,
+                const VEC &,
+                VEC &) ->int
+  {
+    int ret=0;
+    AssertThrow(false, ExcPureFunctionCalled("Please implement residual function."));
+    return ret;
+  };
+
+  setup_jacobian = [](const double,
+                      const VEC &,
+                      const VEC &,
+                      const double) ->int
+  {
+    int ret=0;
+    AssertThrow(false, ExcPureFunctionCalled("Please implement setup_jacobian function."));
+    return ret;
+  };
+
+  solve_jacobian_system = [](const VEC &,
+                             VEC &) ->int
+  {
+    int ret=0;
+    AssertThrow(false, ExcPureFunctionCalled("Please implement solve_jacobian_system function."));
+    return ret;
+  };
+
+  output_step = [](const double,
+                   const VEC &,
+                   const VEC &,
+                   const unsigned int)
+  {
+    AssertThrow(false, ExcPureFunctionCalled("Please implement output_step function."));
+  };
+
+  solver_should_restart = [](const double,
+                             VEC &,
+                             VEC &) ->bool
+  {
+    bool ret=false;
+    AssertThrow(false, ExcPureFunctionCalled("Please implement solver_should_restart function."));
+    return ret;
+  };
+
+  get_lumped_mass_matrix = []() ->VEC &
+  {
+    shared_ptr<VEC> y;
+    AssertThrow(false, ExcPureFunctionCalled("Please implement get_lumped_mass_matrix function."));
+    return *y;
+  };
+
+  jacobian_vmult = [](const VEC &,
+                      VEC &) ->int
+  {
+    int ret=0;
+    AssertThrow(false, ExcPureFunctionCalled("Please implement jacobian_vmult function."));
+    return ret;
+  };
+
+  vector_norm = [](const VEC &vector) ->double
+  {
+    return vector.l2_norm();
+  };
+}
 
 D2K_NAMESPACE_CLOSE
 

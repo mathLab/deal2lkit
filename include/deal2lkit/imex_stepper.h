@@ -24,34 +24,58 @@
 #include <deal.II/base/conditional_ostream.h>
 
 #ifdef D2K_WITH_SUNDIALS
-#include <deal2lkit/sundials_interface.h>
 #include <deal2lkit/parameter_acceptor.h>
 #include <deal2lkit/kinsol_interface.h>
+
+#ifdef DEAL_II_WITH_MPI
+#include "mpi.h"
+#endif
 
 D2K_NAMESPACE_OPEN
 
 /**
+ * IMEXStepper solves non-linear time dependent problems with
+ * user-defined size of the time step and using Newthon's
+ * method for the solution of the non-linear problem.
+ * It allows to use the Kinsol solver of \sundials.
+ *
+ * The user has to provide the following std::functions:
+ *  - create_new_vector;
+ *  - residual;
+ *  - setup_jacobian;
+ *  - solve_jacobian_system;
+ *  - output_step;
+ *  - solver_should_restart;
+ *  - get_lumped_mass_matrix (only for kinsol);
+ *  - jacobian_vmult (only for kinsol);
+ *  - vector_norm (if kinsol is not used).
  *
  */
 template<typename VEC=Vector<double> >
 class IMEXStepper : public ParameterAcceptor
 {
 public:
-  /** Constructor for the IDAInterface class. The Solver class is
-   * required to have a Solver.solve(VEC &dst, const VEC &src) method
-   * that will be called by the time integrator to find out about the
-   * solution to a given src. */
-  IMEXStepper(SundialsInterface<VEC> &solver,
-              const double &step_size=1e-3,
-              const double &initial_time=0.0,
-              const double &final_time=1.0
-             );
+
+#ifdef DEAL_II_WITH_MPI
+  /** Constructor for the IMEXStepper class.
+    * Takes a @p name for the section in parameter file
+    * and a mpi communicator.
+    */
+  IMEXStepper(std::string name="",
+              MPI_Comm comm = MPI_COMM_WORLD);
+#else
+  /** Constructor for the IMEXStepper class.
+    * Takes a @p name for the section in parameter file.
+    */
+  IMEXStepper(std::string &name="");
+
+#endif
 
   /** Declare parameters for this class to function properly. */
   virtual void declare_parameters(ParameterHandler &prm);
 
   /** Evolve. This function returns the final number of steps. */
-  unsigned int start_ode(VEC &solution, VEC &solution_dot);
+  unsigned int solve_dae(VEC &solution, VEC &solution_dot);
 
 
   /**
@@ -77,9 +101,10 @@ public:
   void set_initial_time(const double &t);
 
 private:
-  /** The solver interface. */
-  SundialsInterface<VEC> &interface;
 
+#ifdef DEAL_II_WITH_MPI
+  MPI_Comm communicator;
+#endif
   /**
     * kinsol solver
     */
@@ -189,6 +214,80 @@ private:
                                  const VEC &sol_dot,
                                  const double &alpha,
                                  VEC &prev);
+
+public:
+
+  /**
+   * Return a shared_ptr<VEC>. A shared_ptr is needed in order
+   * to keep the pointed vector alive, without the need to use a
+   * static variable.
+   */
+  std::function<shared_ptr<VEC>()> create_new_vector;
+
+  /**
+   * Compute residual.
+   */
+  std::function<int(const double t,
+                    const VEC &y,
+                    const VEC &y_dot,
+                    VEC &res)> residual;
+
+  /**
+   * Compute Jacobian.
+   */
+  std::function<int(const double t,
+                    const VEC &y,
+                    const VEC &y_dot,
+                    const double alpha)> setup_jacobian;
+
+  /**
+   * Solve linear system.
+   */
+  std::function<int(const VEC &rhs, VEC &dst)> solve_jacobian_system;
+
+  /**
+   * Store solutions to file.
+   */
+  std::function<void (const double t,
+                      const VEC &sol,
+                      const VEC &sol_dot,
+                      const unsigned int step_number)> output_step;
+
+  /**
+   * Evaluate wether the mesh should be refined or not. If so, it
+   * refines and interpolate the solutions from the old to the new
+   * mesh.
+   */
+  std::function<bool (const double t,
+                      VEC &sol,
+                      VEC &sol_dot)> solver_should_restart;
+
+  /**
+   * Return the lumped mass matrix vector. It is used
+   * by kinsol as scaling factor for the computations of
+   * vector's norms.
+   */
+  std::function<VEC&()> get_lumped_mass_matrix;
+
+  /**
+   * Compute the matrix-vector product Jacobian times @p src,
+   * and the result is put in @p dst.
+   */
+  std::function<int(const VEC &src,
+                    VEC &dst)> jacobian_vmult;
+
+  /**
+   * Return the norm of @p vector. Note that Kinsol uses different
+   * norms. By default it returns the l2 norm.
+   */
+  std::function<double(const VEC &vector)> vector_norm;
+
+private:
+
+  /**
+   * Set the std::functions above to trigger an assert if they are not implemented.
+   */
+  void set_functions_to_trigger_an_assert();
 
 };
 

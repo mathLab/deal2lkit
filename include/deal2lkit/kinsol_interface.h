@@ -29,7 +29,6 @@
 #include <deal.II/base/exceptions.h>
 #include <deal.II/base/conditional_ostream.h>
 
-#include <deal2lkit/sundials_interface.h>
 #include <deal2lkit/parameter_acceptor.h>
 #include <deal2lkit/utilities.h>
 
