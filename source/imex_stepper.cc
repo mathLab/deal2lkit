@@ -53,7 +53,7 @@ IMEXStepper<VEC>::IMEXStepper(std::string name,
                               MPI_Comm comm) :
   ParameterAcceptor(name),
   communicator(Utilities::MPI::duplicate_communicator(comm)),
-  kinsol("KINSOL for IMEX",communicator),
+  kinsol("KINSOL for IMEX",comm),
   pcout(std::cout,
         Utilities::MPI::this_mpi_process(communicator)==0)
 {
@@ -220,6 +220,7 @@ unsigned int IMEXStepper<VEC>::solve_dae(VEC &solution, VEC &solution_dot)
   kinsol.solve_linear_system = my_solve;
   kinsol.jacobian_vmult = jacobian_vmult;
 
+  std::cout << "aaaaaaaaaaaaaaaaaa"<<std::endl << std::flush;
   // Initialization of the state of the boolean variable
   // responsible to keep track of the requirement that the
   // system's Jacobian be updated.
@@ -239,8 +240,11 @@ unsigned int IMEXStepper<VEC>::solve_dae(VEC &solution, VEC &solution_dot)
     {
       // call kinsol initialization. this is mandatory if I am doing multiple cycle in pi-DoMUS
       kinsol.initialize_solver(solution);
+      std::cout << "bbbbbbbbbbbbbbbbbb"<<std::endl << std::flush;
       *L2 = get_lumped_mass_matrix();
+      std::cout << "cccccccccccccccccccc"<<std::endl << std::flush;
       kinsol.set_scaling_vectors(*L2, *L2);
+      std::cout << "ddddddddddddddd"<<std::endl << std::flush;
     }
 
   compute_consistent_initial_conditions(initial_time,
@@ -615,7 +619,7 @@ void IMEXStepper<VEC>::set_functions_to_trigger_an_assert()
   create_new_vector = []() ->shared_ptr<VEC>
   {
     shared_ptr<VEC> p;
-    AssertThrow(false, ExcPureFunctionCalled());
+    AssertThrow(false, ExcPureFunctionCalled("Please implement create_new_vector function."));
     return p;
   };
 
@@ -625,7 +629,7 @@ void IMEXStepper<VEC>::set_functions_to_trigger_an_assert()
                 VEC &) ->int
   {
     int ret=0;
-    AssertThrow(false, ExcPureFunctionCalled());
+    AssertThrow(false, ExcPureFunctionCalled("Please implement residual function."));
     return ret;
   };
 
@@ -635,7 +639,7 @@ void IMEXStepper<VEC>::set_functions_to_trigger_an_assert()
                       const double) ->int
   {
     int ret=0;
-    AssertThrow(false, ExcPureFunctionCalled());
+    AssertThrow(false, ExcPureFunctionCalled("Please implement setup_jacobian function."));
     return ret;
   };
 
@@ -643,7 +647,7 @@ void IMEXStepper<VEC>::set_functions_to_trigger_an_assert()
                              VEC &) ->int
   {
     int ret=0;
-    AssertThrow(false, ExcPureFunctionCalled());
+    AssertThrow(false, ExcPureFunctionCalled("Please implement solve_jacobian_system function."));
     return ret;
   };
 
@@ -652,7 +656,7 @@ void IMEXStepper<VEC>::set_functions_to_trigger_an_assert()
                    const VEC &,
                    const unsigned int)
   {
-    AssertThrow(false, ExcPureFunctionCalled());
+    AssertThrow(false, ExcPureFunctionCalled("Please implement output_step function."));
   };
 
   solver_should_restart = [](const double,
@@ -660,14 +664,14 @@ void IMEXStepper<VEC>::set_functions_to_trigger_an_assert()
                              VEC &) ->bool
   {
     bool ret=false;
-    AssertThrow(false, ExcPureFunctionCalled());
+    AssertThrow(false, ExcPureFunctionCalled("Please implement solver_should_restart function."));
     return ret;
   };
 
   get_lumped_mass_matrix = []() ->VEC &
   {
     shared_ptr<VEC> y;
-    AssertThrow(false, ExcPureFunctionCalled());
+    AssertThrow(false, ExcPureFunctionCalled("Please implement get_lumped_mass_matrix function."));
     return *y;
   };
 
@@ -675,7 +679,7 @@ void IMEXStepper<VEC>::set_functions_to_trigger_an_assert()
                       VEC &) ->int
   {
     int ret=0;
-    AssertThrow(false, ExcPureFunctionCalled());
+    AssertThrow(false, ExcPureFunctionCalled("Please implement jacobian_vmult function."));
     return ret;
   };
 
