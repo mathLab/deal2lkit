@@ -17,21 +17,20 @@
 #define _d2k_ida_interface_h
 
 #include <deal2lkit/config.h>
+#include <deal2lkit/utilities.h>
 #include <deal.II/base/config.h>
 #include <deal.II/base/logstream.h>
 #include <deal.II/base/exceptions.h>
 #include <deal.II/base/parameter_handler.h>
 #include <deal.II/base/conditional_ostream.h>
+#include <deal.II/lac/vector.h>
+#include <deal.II/lac/vector_view.h>
 
 #ifdef D2K_WITH_SUNDIALS
 
 
-#include <deal2lkit/sundials_interface.h>
 #include <deal2lkit/parameter_acceptor.h>
 
-
-
-// For time integration.
 #include <ida/ida.h>
 #include <ida/ida_spils.h>
 #include <ida/ida_spgmr.h>
@@ -41,15 +40,16 @@
 #include <sundials/sundials_math.h>
 #include <sundials/sundials_types.h>
 
+#ifdef DEAL_II_WITH_MPI
+#include "mpi.h"
+#endif
+
 D2K_NAMESPACE_OPEN
 
 /** Interface to \sundials IDA library.
 
 \dk features an interface for the SUite of Nonlinear and
-DIfferential/ALgebraic equation Solvers (\sundials). Each of the
-\sundials solvers require the user to derive its class from the base
-class SundialsInterface, providing function evaluation, jacobian
-evaluation, etc. to the underlying \sundials solver.
+DIfferential/ALgebraic equation Solvers (\sundials).
 
 The class IDAInterface is a wrapper to the Implicit
 Differential-Algebraic solver which is a general purpose solver for

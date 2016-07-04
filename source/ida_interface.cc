@@ -15,7 +15,6 @@
 
 
 #include <deal2lkit/ida_interface.h>
-#include <deal2lkit/sundials_interface.h>
 #include <deal2lkit/utilities.h>
 
 #ifdef D2K_WITH_SUNDIALS

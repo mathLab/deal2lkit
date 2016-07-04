@@ -24,9 +24,12 @@
 #include <deal.II/base/conditional_ostream.h>
 
 #ifdef D2K_WITH_SUNDIALS
-#include <deal2lkit/sundials_interface.h>
 #include <deal2lkit/parameter_acceptor.h>
 #include <deal2lkit/kinsol_interface.h>
+
+#ifdef DEAL_II_WITH_MPI
+#include "mpi.h"
+#endif
 
 D2K_NAMESPACE_OPEN
 
