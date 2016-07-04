@@ -218,7 +218,6 @@ unsigned int IMEXStepper<VEC>::solve_dae(VEC &solution, VEC &solution_dot)
   kinsol.solve_linear_system = my_solve;
   kinsol.jacobian_vmult = jacobian_vmult;
 
-  std::cout << "aaaaaaaaaaaaaaaaaa"<<std::endl << std::flush;
   // Initialization of the state of the boolean variable
   // responsible to keep track of the requirement that the
   // system's Jacobian be updated.
@@ -238,11 +237,8 @@ unsigned int IMEXStepper<VEC>::solve_dae(VEC &solution, VEC &solution_dot)
     {
       // call kinsol initialization. this is mandatory if I am doing multiple cycle in pi-DoMUS
       kinsol.initialize_solver(solution);
-      std::cout << "bbbbbbbbbbbbbbbbbb"<<std::endl << std::flush;
       *L2 = get_lumped_mass_matrix();
-      std::cout << "cccccccccccccccccccc"<<std::endl << std::flush;
       kinsol.set_scaling_vectors(*L2, *L2);
-      std::cout << "ddddddddddddddd"<<std::endl << std::flush;
     }
 
   compute_consistent_initial_conditions(initial_time,
