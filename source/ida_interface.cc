@@ -125,17 +125,27 @@ namespace
 
 }
 
+#ifdef DEAL_II_WITH_MPI
 template <typename VEC>
 IDAInterface<VEC>::IDAInterface(const std::string name,
                                 const MPI_Comm mpi_comm) :
   ParameterAcceptor(name),
-//  solver(name),
   ida_mem(nullptr),
   communicator(Utilities::MPI::duplicate_communicator(mpi_comm)),
   pcout(std::cout, Utilities::MPI::this_mpi_process(mpi_comm)==0)
 {
   set_functions_to_trigger_an_assert();
 }
+#else
+template <typename VEC>
+IDAInterface<VEC>::IDAInterface(const std::string name) :
+  ParameterAcceptor(name),
+  ida_mem(nullptr),
+  pcout(std::cout)
+{
+  set_functions_to_trigger_an_assert();
+}
+#endif
 
 template <typename VEC>
 IDAInterface<VEC>::~IDAInterface()

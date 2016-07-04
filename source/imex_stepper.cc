@@ -63,8 +63,7 @@ template <typename VEC>
 IMEXStepper<VEC>::IMEXStepper(std::string &name) :
   ParameterAcceptor(name),
   kinsol("KINSOL for IMEX",communicator),
-  pcout(std::cout,
-        Utilities::MPI::this_mpi_process(MPI_COMM_WORLD)==0)
+  pcout(std::cout)
 {
   set_functions_to_trigger_an_assert();
 }

@@ -34,6 +34,21 @@
 D2K_NAMESPACE_OPEN
 
 /**
+ * IMEXStepper solves non-linear time dependent problems with
+ * user-defined size of the time step and using Newthon's
+ * method for the solution of the non-linear problem.
+ * It allows to use the Kinsol solver of \sundials.
+ *
+ * The user has to provide the following std::functions:
+ *  - create_new_vector;
+ *  - residual;
+ *  - setup_jacobian;
+ *  - solve_jacobian_system;
+ *  - output_step;
+ *  - solver_should_restart;
+ *  - get_lumped_mass_matrix (only for kinsol);
+ *  - jacobian_vmult (only for kinsol);
+ *  - vector_norm (if kinsol is not used).
  *
  */
 template<typename VEC=Vector<double> >
@@ -203,41 +218,68 @@ private:
 public:
 
   /**
-   * this function has to be implemented by the user
-   * and it must return a shared pointer to a VEC vector.
+   * Return a shared_ptr<VEC>. A shared_ptr is needed in order
+   * to keep the pointed vector alive, without the need to use a
+   * static variable.
    */
   std::function<shared_ptr<VEC>()> create_new_vector;
 
-  /** standard function computing residuals */
+  /**
+   * Compute residual.
+   */
   std::function<int(const double t,
                     const VEC &y,
                     const VEC &y_dot,
                     VEC &res)> residual;
 
-  /** standard function computing the Jacobian */
+  /**
+   * Compute Jacobian.
+   */
   std::function<int(const double t,
                     const VEC &y,
                     const VEC &y_dot,
                     const double alpha)> setup_jacobian;
 
-  /** standard function solving linear system */
+  /**
+   * Solve linear system.
+   */
   std::function<int(const VEC &rhs, VEC &dst)> solve_jacobian_system;
 
+  /**
+   * Store solutions to file.
+   */
   std::function<void (const double t,
                       const VEC &sol,
                       const VEC &sol_dot,
                       const unsigned int step_number)> output_step;
 
-
+  /**
+   * Evaluate wether the mesh should be refined or not. If so, it
+   * refines and interpolate the solutions from the old to the new
+   * mesh.
+   */
   std::function<bool (const double t,
                       VEC &sol,
                       VEC &sol_dot)> solver_should_restart;
 
+  /**
+   * Return the lumped mass matrix vector. It is used
+   * by kinsol as scaling factor for the computations of
+   * vector's norms.
+   */
   std::function<VEC&()> get_lumped_mass_matrix;
 
+  /**
+   * Compute the matrix-vector product Jacobian times @p src,
+   * and the result is put in @p dst.
+   */
   std::function<int(const VEC &src,
                     VEC &dst)> jacobian_vmult;
 
+  /**
+   * Return the norm of @p vector. Note that Kinsol uses different
+   * norms. By default it returns the l2 norm.
+   */
   std::function<double(const VEC &vector)> vector_norm;
 
 private:

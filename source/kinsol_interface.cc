@@ -174,7 +174,7 @@ template <typename VEC>
 KINSOLInterface<VEC>::KINSOLInterface(const std::string name):
   ParameterAcceptor(name),
   is_initialized(false),
-  pcout(std::cout, Utilities::MPI::this_mpi_process(MPI_COMM_WORLD)==0),
+  pcout(std::cout),
   kin_mem(nullptr)
 {
   set_functions_to_trigger_an_assert();

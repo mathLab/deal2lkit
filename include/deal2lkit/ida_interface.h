@@ -1,6 +1,6 @@
 //-----------------------------------------------------------
 //
-//    Copyright (C) 2015 by the deal2lkit authors
+//    Copyright (C) 2015 - 2016 by the deal2lkit authors
 //
 //    This file is part of the deal2lkit library.
 //
@@ -55,6 +55,15 @@ The class IDAInterface is a wrapper to the Implicit
 Differential-Algebraic solver which is a general purpose solver for
 systems of Differential-Algebraic Equations (DAEs).
 
+The user has to provide the implmentation of the following std::functions:
+ - create_new_vector;
+ - residual;
+ - setup_jacobian;
+ - solve_jacobian_system;
+ - output_step;
+ - solver_should_restart;
+ - differential_components.
+
 Citing from the \sundials documentation:
 
   Consider a system of Differential-Algebraic Equations written in the
@@ -82,7 +91,13 @@ the BDF of order $q$ given by the multistep formula
   \label{eq:bdf}
 \f]
 
-where $y_n$ and $\dot y_n$ are the computed approximations of $y(t_n)$ and $\dot y(t_n)$, respectively, and the step size is $h_n=t_n-t_{n-1}$. The coefficients $\alpha_{n,i}$ are uniquely determined by the order $q$, and the history of the step sizes. The application of the BDF method \eqref{eq:bdf} to the DAE system \eqref{eq:dae_system} results in a nonlinear algebraic system to be solved at each time step:
+where $y_n$ and $\dot y_n$ are the computed approximations of $y(t_n)$
+and $\dot y(t_n)$, respectively, and the step size is
+$h_n=t_n-t_{n-1}$. The coefficients $\alpha_{n,i}$ are uniquely
+determined by the order $q$, and the history of the step sizes. The
+application of the BDF method \eqref{eq:bdf} to the DAE system
+\eqref{eq:dae_system} results in a nonlinear algebraic system to be
+solved at each time step:
 
 \f[
   G(y_n)\equiv F\left(t_n,y_n,\dfrac{1}{h_n}\sum\limits_{i=0}^q \alpha_{n,i}\,y_{n-i}\right)=0\, .
@@ -101,7 +116,9 @@ where $y_{n(m)}$ is the $m$-th approximation to $y_n$, $J$ is the approximation 
   \label{eq:jacobian}
 \f]
 
-and $\alpha = \alpha_{n,0}/h_n$. It is worthing metioning that the scalar $\alpha$ changes whenever the step size or method order changes.
+and $\alpha = \alpha_{n,0}/h_n$. It is worthing metioning that the
+scalar $\alpha$ changes whenever the step size or method order
+changes.
 
 
 As far as the solution of the linear system is concerned, the \dk
@@ -117,12 +134,19 @@ template<typename VEC=Vector<double> >
 class IDAInterface : public ParameterAcceptor
 {
 public:
-  /** Constructor for the IDAInterface class. The Solver class is
-   * required to have a Solver.solve(VEC &dst, const VEC &src) method
-   * that will be called by the time integrator to find out about the
-   * solution to a given src. */
+
+#ifdef DEAL_II_WITH_MPI
+  /**
+   * Constructor for the IDAInterface class.
+   */
   IDAInterface(const std::string name="",
                const MPI_Comm mpi_comm = MPI_COMM_WORLD);
+#else
+  /**
+   * Constructor for the IDAInterface class.
+   */
+  IDAInterface(const std::string name="");
+#endif
 
   /** House cleaning. */
   ~IDAInterface();
@@ -134,11 +158,11 @@ public:
   unsigned int solve_dae(VEC &solution,
                          VEC &solution_dot);
 
-  /** Clear internal memory, and
-  start with clean
-  objects. This is useful if
-  you need to refine your
-  mesh between steps. */
+  /**
+   * Clear internal memory, and start with clean objects. This
+   * function is called when the simulation start and when the mesh is
+   * refined.
+   */
   void reset_dae(const double t,
                  VEC &y,
                  VEC &yp,
@@ -146,53 +170,77 @@ public:
                  bool first_step);
 
   /**
-   * this function has to be implemented by the user
-   * and it must return a shared pointer to a VEC vector.
+   * Return a shared_ptr<VEC>. A shared_ptr is needed in order
+   * to keep the pointed vector alive, without the need to use a
+   * static variable.
    */
   std::function<shared_ptr<VEC>()> create_new_vector;
 
-  /** standard function computing residuals */
+  /**
+   * Compute residual.
+   */
   std::function<int(const double t,
                     const VEC &y,
                     const VEC &y_dot,
                     VEC &res)> residual;
 
-  /** standard function computing the Jacobian */
+  /**
+   * Compute Jacobian.
+   */
   std::function<int(const double t,
                     const VEC &y,
                     const VEC &y_dot,
                     const double alpha)> setup_jacobian;
 
-  /** standard function solving linear system */
+  /**
+   * Solve linear system.
+   */
   std::function<int(const VEC &rhs, VEC &dst)> solve_jacobian_system;
 
+  /**
+   * Store solutions to file.
+   */
   std::function<void (const double t,
                       const VEC &sol,
                       const VEC &sol_dot,
                       const unsigned int step_number)> output_step;
 
-
+  /**
+   * Evaluate wether the mesh should be refined or not. If so, it
+   * refines and interpolate the solutions from the old to the new
+   * mesh.
+   */
   std::function<bool (const double t,
                       VEC &sol,
                       VEC &sol_dot)> solver_should_restart;
 
+  /**
+   * Return a vector whose component are 1 if the corresponding
+   * dof is differential, 0 if algebraic.
+   */
   std::function<VEC&()> differential_components;
 
+  /**
+   * Return a vector whose components are the weights used by IDA to
+   * compute the vector norm. The implementation of this function
+   * is optional.
+   */
   std::function<VEC&()> get_local_tolerances;
-  std::function<VEC&()> get_lumped_mass_matrix;
 
 
 
   /**
-       * Set initial time equal to @p t disregarding what
-       * is written in the parameter file.
-       */
+   * Set initial time equal to @p t disregarding what is written
+   * in the parameter file.
+   */
   void set_initial_time(const double &t);
 
 private:
 
   /**
-   * This function is executed at construction time to set the std::function above to trigger an assert if they are not implemented.
+   * This function is executed at construction time to set the
+   * std::function above to trigger an assert if they are not
+   * implemented.
    */
   void set_functions_to_trigger_an_assert();
 
@@ -260,7 +308,9 @@ private:
   /** Ida differential components vector. */
   N_Vector diff_id;
 
+#ifdef DEAL_II_WITH_MPI
   MPI_Comm communicator;
+#endif
 
   /** Output stream */
   ConditionalOStream pcout;
