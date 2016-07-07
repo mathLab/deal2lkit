@@ -82,6 +82,14 @@ public:
   std::function<int(const VEC &src,
                     VEC &dst)> mass_matrix_vmult;
 
+
+  std::function<int(const double &gamma,
+                    const VEC &src,
+                    VEC &dst)> solve_linear_system;
+
+
+  std::function<int(const double &t, const VEC &y)> setup_jacobian;
+
   /**
    * This function is called by ARKode to resize
    * internal vectors.
@@ -127,7 +135,7 @@ private:
   /**
    * ARKode memory object.
    */
-  void *arkode_mem;
+  void *ark_mem;
 
   /**
    * relative tolerance

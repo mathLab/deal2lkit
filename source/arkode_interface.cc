@@ -34,8 +34,6 @@
 #endif
 #endif
 
-#include <arkode/arkode_dense.h>
-#include <arkode/arkode_direct.h>
 
 D2K_NAMESPACE_OPEN
 
@@ -83,10 +81,99 @@ namespace
 
     int ret = solver.implicit_rhs(t,*loc_y,*loc_ydot);
 
-    copy(ydot,loc_ydot);
+    copy(ydot,*loc_ydot);
 
     return ret;
   }
+
+  template <typename VEC>
+  int arkode_lsetup(ARKodeMem arkode_mem,
+                    int /*convfail*/,
+                    N_Vector ypred,
+                    N_Vector /*fpred*/,
+                    bool *jcurPtr,
+                    N_Vector /*vtemp1*/,
+                    N_Vector /*vtemp2*/,
+                    N_Vector /*vtemp3*/)
+  {
+    ARKodeInterface<VEC> &solver =
+      *static_cast<ARKodeInterface<VEC> >(arkode_mem->ark_user_data);
+
+    shared_ptr<VEC> loc_y = solver.create_new_vector();
+
+    copy(*loc_y,ypred);
+
+    const double time = arkode_mem->ark_tn;
+
+    int ret = solver.setup_jacobian(time,*loc_y);
+
+    *jcurPtr = true;
+
+    return ret;
+  }
+
+  template <typename VEC>
+  int arkode_msetup(ARKodeMem arkode_mem,
+                    N_Vector /*vtemp1*/,
+                    N_Vector /*vtemp2*/,
+                    N_Vector /*vtemp3*/)
+  {
+    ARKodeInterface<VEC> &solver =
+      *static_cast<ARKodeInterface<VEC> >(arkode_mem->ark_user_data);
+
+    const double time = arkode_mem->ark_tn;
+
+    int ret = solver.mass_matrix(time);
+
+    return ret;
+  }
+
+  // solve (M-gamma*J)=b
+  template <typename VEC>
+  int arkode_lsolve (ARKodeMem arkode_mem,
+                     N_Vector b,
+                     N_Vector /*weight*/,
+                     N_Vector /*ycur*/,
+                     N_Vector fcur)
+  {
+    ARKodeInterface<VEC> &solver =
+      *static_cast<ARKodeInterface<VEC> >(arkode_mem->ark_user_data);
+
+    shared_ptr<VEC> src = solver.create_new_vector();
+    shared_ptr<VEC> dst = solver.create_new_vector();
+
+    copy(*src,fcur);
+
+    const double gamma = arkode_mem->ark_gamma;
+
+    int ret = solver.solve_linear_system(gamma,*src,dst);
+
+    copy(b,*dst);
+
+    return ret;
+  }
+
+  // solve Mx=b, where M is the mass matrix
+  template <typename VEC>
+  int arkode_msolve (ARKodeMem arkode_mem,
+                     N_Vector b,
+                     N_Vector /*weight*/)
+  {
+    ARKodeInterface<VEC> &solver =
+      *static_cast<ARKodeInterface<VEC> >(arkode_mem->ark_user_data);
+
+    shared_ptr<VEC> src = solver.create_new_vector();
+    shared_ptr<VEC> dst = solver.create_new_vector();
+
+    copy(*src,b);
+
+    int ret = solver.solve_mass_system(*src,dst);
+
+    copy(b,*dst);
+
+    return ret;
+  }
+
 } // close anonymous namespace
 
 
@@ -97,7 +184,7 @@ ARKodeInterface<VEC>::ARKodeInterface(const std::string name,
   ParameterAcceptor(name),
   communicator(Utilities::MPI::duplicate_communicator(mpi_comm)),
   pcout(std::cout, Utilities::MPI::this_mpi_process(mpi_comm)==0),
-  arkode_mem(nullptr)
+  ark_mem(nullptr)
 {
   set_functions_to_trigger_an_assert();
 }
@@ -122,11 +209,11 @@ ARKodeInterface<VEC>::initialize(const double &t0,
                                  const VEC &y0)
 {
   int status;
-  if (arkode_mem)
+  if (ark_mem)
     {
-      ARKodeFree(&arkode_mem);
+      ARKodeFree(&ark_mem);
     }
-  arkode_mem = ARKodeCreate();
+  ark_mem = ARKodeCreate();
   system_size = y0.size();
 
 #ifdef DEAL_II_WITH_MPI
@@ -141,9 +228,28 @@ ARKodeInterface<VEC>::initialize(const double &t0,
 
   copy(internal_solution,y0);
 
-  status = ARKodeSetUserData(arkode_mem, (void *) this);
+  status = ARKodeSetUserData(ark_mem, (void *) this);
 
-  status = ARKodeSStolerances(arkode_mem, rtol, atol);
+  status = ARKodeInit(ark_mem,
+                      arkode_explicit_rhs,
+                      arkode_implicit_rhs,
+                      t0,
+                      y0);
+
+  status = ARKodeSStolerances(ark_mem, rtol, atol);
+
+  ARKodeMem ARK_mem;
+  ARK_mem = (ARKodeMem)ark_mem;
+
+  ARK_mem->ark_lsetup = arkode_lsetup<VEC>;
+  ARK_mem->ark_msetup = arkode_msetup<VEC>;
+
+  ARK_mem->ark_lsolve = arkode_lsolve<VEC>;
+  ARK_mem->ark_msolve = arkode_msolve<VEC>;
+
+  ARK_mem->ark_setupNonNull = true;
+  ARK_mem->ark_MassSetupNonNull = true;
+
 }
 
 template <typename VEC>
@@ -156,8 +262,8 @@ ARKodeInterface<VEC>::solve(VEC &solution)
 template <typename VEC>
 ARKodeInterface<VEC>::~ARKodeInterface()
 {
-  if (arkode_mem)
-    ARKodeFree(&arkode_mem);
+  if (ark_mem)
+    ARKodeFree(&ark_mem);
 }
 
 template <typename VEC>
