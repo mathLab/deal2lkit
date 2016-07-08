@@ -67,7 +67,7 @@ public:
 
   void solve(VEC &solution);
 
-  std::function<shared_ptr<VEC> > create_new_vector;
+  std::function<shared_ptr<VEC>() > create_new_vector;
 
   std::function<int(const double &t,
                     const VEC &y,
@@ -86,6 +86,9 @@ public:
   std::function<int(const double &gamma,
                     const VEC &src,
                     VEC &dst)> solve_linear_system;
+
+  std::function<int(const VEC &src,
+                    VEC &dst)> solve_mass_system;
 
 
   std::function<int(const double &t, const VEC &y)> setup_jacobian;
@@ -147,6 +150,15 @@ private:
    */
   double atol;
 
+  /**
+   * initial time
+   */
+  double itime;
+
+  /**
+   * final time
+   */
+  double ftime;
 
 };
 
