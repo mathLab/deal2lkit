@@ -281,6 +281,94 @@ ARKodeInterface<VEC>::declare_parameters(ParameterHandler &prm)
 
 }
 
+template <typename VEC>
+void
+ARKodeInterface<VEC>::set_functions_to_trigger_an_assert()
+{
+  create_new_vector = []() ->shared_ptr<VEC>
+  {
+    AssertThrow(false,
+    ExcPureFunctionCalled("Please implement create_new_vector."));
+    shared_ptr<VEC> p;
+    return p;
+  };
+
+  explicit_rhs = [](const double &,
+                    const VEC &,
+                    VEC &) ->int
+  {
+    AssertThrow(false,
+    ExcPureFunctionCalled("Please implement explicit_rhs."));
+    int ret = 0;
+    return ret;
+  };
+
+  implicit_rhs = [](const double &,
+                    const VEC &,
+                    VEC &) ->int
+  {
+    AssertThrow(false,
+    ExcPureFunctionCalled("Please implement implicit_rhs."));
+    int ret = 0;
+    return ret;
+  };
+
+  mass_matrix = [](const double &) ->int
+  {
+    AssertThrow(false,
+    ExcPureFunctionCalled("Please implement mass_matrix."));
+    int ret = 0;
+    return ret;
+  };
+
+  mass_matrix_vmult = [] (const VEC &,
+                          VEC &) ->int
+  {
+    AssertThrow(false,
+    ExcPureFunctionCalled("Please implement mass_matrix_vmult."));
+    int ret = 0;
+    return ret;
+  };
+
+  solve_linear_system = [] (const double &,
+                            const VEC &,
+                            VEC &) ->int
+  {
+    AssertThrow(false,
+    ExcPureFunctionCalled("Please implement solve_linear_system."));
+    int ret = 0;
+    return ret;
+  };
+
+  solve_mass_system = [] (const VEC &,
+                          VEC &) ->int
+  {
+    AssertThrow(false,
+    ExcPureFunctionCalled("Please implement solve_linear_system."));
+    int ret = 0;
+    return ret;
+  };
+
+  setup_jacobian = [] (const double &,
+                       const VEC &) ->int
+  {
+    AssertThrow(false,
+    ExcPureFunctionCalled("Please implement setup_jacobian."));
+    int ret = 0;
+    return ret;
+  };
+
+  resize_vector = [] (const VEC &,
+                      VEC &) ->int
+  {
+    AssertThrow(false,
+    ExcPureFunctionCalled("Please implement resize_vector."));
+    int ret = 0;
+    return ret;
+  };
+
+}
+
 D2K_NAMESPACE_CLOSE
 
 template class deal2lkit::ARKodeInterface<BlockVector<double> >;
