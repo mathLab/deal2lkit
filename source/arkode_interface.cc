@@ -49,17 +49,17 @@ namespace
                            void *user_data)
   {
     ARKodeInterface<VEC> &solver =
-      *static_cast<ARKodeInterface<VEC> >(user_data);
+      *static_cast<ARKodeInterface<VEC> *>(user_data);
 
     shared_ptr<VEC> loc_y = solver.create_new_vector();
     shared_ptr<VEC> loc_ydot = solver.create_new_vector();
 
     copy(*loc_y,y);
-    copy(*loc_ydoy,ydot);
+    copy(*loc_ydot,ydot);
 
     int ret = solver.explicit_rhs(t,*loc_y,*loc_ydot);
 
-    copy(ydot,loc_ydot);
+    copy(ydot,*loc_ydot);
 
     return ret;
   }
@@ -71,13 +71,13 @@ namespace
                            void *user_data)
   {
     ARKodeInterface<VEC> &solver =
-      *static_cast<ARKodeInterface<VEC> >(user_data);
+      *static_cast<ARKodeInterface<VEC> *>(user_data);
 
     shared_ptr<VEC> loc_y = solver.create_new_vector();
     shared_ptr<VEC> loc_ydot = solver.create_new_vector();
 
     copy(*loc_y,y);
-    copy(*loc_ydoy,ydot);
+    copy(*loc_ydot,ydot);
 
     int ret = solver.implicit_rhs(t,*loc_y,*loc_ydot);
 
@@ -91,13 +91,13 @@ namespace
                     int /*convfail*/,
                     N_Vector ypred,
                     N_Vector /*fpred*/,
-                    bool *jcurPtr,
+                    int *jcurPtr,
                     N_Vector /*vtemp1*/,
                     N_Vector /*vtemp2*/,
                     N_Vector /*vtemp3*/)
   {
     ARKodeInterface<VEC> &solver =
-      *static_cast<ARKodeInterface<VEC> >(arkode_mem->ark_user_data);
+      *static_cast<ARKodeInterface<VEC> *>(arkode_mem->ark_user_data);
 
     shared_ptr<VEC> loc_y = solver.create_new_vector();
 
@@ -119,7 +119,7 @@ namespace
                     N_Vector /*vtemp3*/)
   {
     ARKodeInterface<VEC> &solver =
-      *static_cast<ARKodeInterface<VEC> >(arkode_mem->ark_user_data);
+      *static_cast<ARKodeInterface<VEC> *>(arkode_mem->ark_user_data);
 
     const double time = arkode_mem->ark_tn;
 
@@ -137,7 +137,7 @@ namespace
                      N_Vector fcur)
   {
     ARKodeInterface<VEC> &solver =
-      *static_cast<ARKodeInterface<VEC> >(arkode_mem->ark_user_data);
+      *static_cast<ARKodeInterface<VEC> *>(arkode_mem->ark_user_data);
 
     shared_ptr<VEC> src = solver.create_new_vector();
     shared_ptr<VEC> dst = solver.create_new_vector();
@@ -146,7 +146,7 @@ namespace
 
     const double gamma = arkode_mem->ark_gamma;
 
-    int ret = solver.solve_linear_system(gamma,*src,dst);
+    int ret = solver.solve_linear_system(gamma,*src,*dst);
 
     copy(b,*dst);
 
@@ -160,14 +160,14 @@ namespace
                      N_Vector /*weight*/)
   {
     ARKodeInterface<VEC> &solver =
-      *static_cast<ARKodeInterface<VEC> >(arkode_mem->ark_user_data);
+      *static_cast<ARKodeInterface<VEC> *>(arkode_mem->ark_user_data);
 
     shared_ptr<VEC> src = solver.create_new_vector();
     shared_ptr<VEC> dst = solver.create_new_vector();
 
     copy(*src,b);
 
-    int ret = solver.solve_mass_system(*src,dst);
+    int ret = solver.solve_mass_system(*src,*dst);
 
     copy(b,*dst);
 
@@ -177,7 +177,7 @@ namespace
 } // close anonymous namespace
 
 
-
+#ifdef DEAL_II_WITH_MPI
 template <typename VEC>
 ARKodeInterface<VEC>::ARKodeInterface(const std::string name,
                                       const MPI_Comm mpi_comm):
@@ -231,10 +231,10 @@ ARKodeInterface<VEC>::initialize(const double &t0,
   status = ARKodeSetUserData(ark_mem, (void *) this);
 
   status = ARKodeInit(ark_mem,
-                      arkode_explicit_rhs,
-                      arkode_implicit_rhs,
+                      arkode_explicit_rhs<VEC>,
+                      arkode_implicit_rhs<VEC>,
                       t0,
-                      y0);
+                      internal_solution);
 
   status = ARKodeSStolerances(ark_mem, rtol, atol);
 
@@ -250,13 +250,14 @@ ARKodeInterface<VEC>::initialize(const double &t0,
   ARK_mem->ark_setupNonNull = true;
   ARK_mem->ark_MassSetupNonNull = true;
 
+  (void)status;
 }
 
 template <typename VEC>
 void
 ARKodeInterface<VEC>::solve(VEC &solution)
 {
-
+  initialize(itime,solution);
 }
 
 template <typename VEC>
@@ -273,6 +274,10 @@ ARKodeInterface<VEC>::declare_parameters(ParameterHandler &prm)
   add_parameter(prm,&rtol,"Relative tolerance", "1e-3",Patterns::Double(0));
 
   add_parameter(prm,&atol,"Absolute tolerance", "1e-4",Patterns::Double(0));
+
+  add_parameter(prm,&itime,"Initial time", "0.0",Patterns::Double(0));
+
+  add_parameter(prm,&ftime,"Final time", "1.0",Patterns::Double(0));
 
 }
 
