@@ -101,7 +101,9 @@ public:
                     VEC &v)> resize_vector;
 
 
-
+  std::function<void (const double t,
+                      const VEC &sol,
+                      const unsigned int step_number)> output_step;
 
 
   /**
