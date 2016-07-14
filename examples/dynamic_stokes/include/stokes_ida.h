@@ -36,7 +36,6 @@
 #include <deal.II/lac/linear_operator.h>
 #include <deal.II/lac/block_linear_operator.h>
 
-#include <deal2lkit/sundials_interface.h>
 #include <deal2lkit/ida_interface.h>
 #include <deal2lkit/parameter_acceptor.h>
 #include <deal2lkit/parsed_grid_generator.h>
@@ -60,69 +59,57 @@ using namespace deal2lkit;
 
 typedef TrilinosWrappers::MPI::BlockVector VEC;
 template<int dim>
-class Stokes : public SundialsInterface<VEC>, public ParameterAcceptor
+class Stokes : public ParameterAcceptor
 {
 public:
 
-  Stokes (const MPI_Comm &comm);
+  Stokes (const MPI_Comm comm);
 
   virtual void declare_parameters (ParameterHandler &prm);
 
   void run ();
 
-  /*********************************************************
-   * Public interface from SundialsInterface
-   *********************************************************/
-  virtual shared_ptr<VEC>
+  shared_ptr<VEC>
   create_new_vector() const;
 
-  /** Returns the number of degrees of freedom. Pure virtual function. */
-  virtual unsigned int n_dofs() const;
+  /** Returns the number of degrees of freedom.*/
+  unsigned int n_dofs() const;
 
   /** This function is called at the end of each iteration step for
    * the ode solver. Once again, the conversion between pointers and
    * other forms of vectors need to be done inside the inheriting
    * class. */
-  virtual void output_step(const double t,
-                           const VEC &solution,
-                           const VEC &solution_dot,
-                           const unsigned int step_number,
-                           const double h);
+  void output_step(const double t,
+                   const VEC &solution,
+                   const VEC &solution_dot,
+                   const unsigned int step_number);
 
   /** This function will check the behaviour of the solution. If it
    * is converged or if it is becoming unstable the time integrator
    * will be stopped. If the convergence is not achived the
    * calculation will be continued. If necessary, it can also reset
    * the time stepper. */
-  virtual bool solver_should_restart(const double t,
-                                     const unsigned int step_number,
-                                     const double h,
-                                     VEC &solution,
-                                     VEC &solution_dot);
+  bool solver_should_restart(const double t,
+                             VEC &solution,
+                             VEC &solution_dot);
 
   /** For dae problems, we need a
    residual function. */
-  virtual int residual(const double t,
-                       const VEC &src_yy,
-                       const VEC &src_yp,
-                       VEC &dst);
+  int residual(const double t,
+               const VEC &src_yy,
+               const VEC &src_yp,
+               VEC &dst);
 
   /** Setup Jacobian system and preconditioner. */
-  virtual int setup_jacobian(const double t,
-                             const VEC &src_yy,
-                             const VEC &src_yp,
-                             const VEC &residual,
-                             const double alpha);
+  int setup_jacobian(const double t,
+                     const VEC &src_yy,
+                     const VEC &src_yp,
+                     const double alpha);
 
 
   /** Inverse of the Jacobian vector product. */
-  virtual int solve_jacobian_system(const double t,
-                                    const VEC &y,
-                                    const VEC &y_dot,
-                                    const VEC &residual,
-                                    const double alpha,
-                                    const VEC &src,
-                                    VEC &dst) const;
+  int solve_jacobian_system(const VEC &src,
+                            VEC &dst) const;
 
 
 
@@ -132,7 +119,7 @@ public:
    corresponding variable is a
    differential component, zero
    otherwise.  */
-  virtual VEC &differential_components() const;
+  VEC &differential_components() const;
 
 private:
   void refine_mesh ();
@@ -150,7 +137,7 @@ private:
 
   void update_constraints(const double &t);
 
-  const MPI_Comm &comm;
+  const MPI_Comm comm;
 
   unsigned int initial_global_refinement;
   unsigned int max_time_iterations;
@@ -205,7 +192,7 @@ private:
 
   ParsedDataOut<dim, dim>                  data_out;
 
-  IDAInterface<VEC>  dae;
+  IDAInterface<VEC>  ida;
 
   IndexSet global_partitioning;
   std::vector<IndexSet> partitioning;

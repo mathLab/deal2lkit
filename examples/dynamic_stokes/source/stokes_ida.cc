@@ -40,6 +40,7 @@
 #include <deal.II/grid/grid_refinement.h>
 #include <deal.II/grid/tria_boundary_lib.h>
 #include <deal.II/numerics/solution_transfer.h>
+#include <deal.II/fe/mapping_q.h>
 
 #include <sundials/sundials_types.h>
 #include <nvector/nvector_parallel.h>
@@ -47,10 +48,9 @@
 
 #include <deal.II/lac/solver_gmres.h>
 template <int dim>
-Stokes<dim>::Stokes (const MPI_Comm &communicator)
+Stokes<dim>::Stokes (const MPI_Comm communicator)
   :
-  SundialsInterface<VEC> (communicator),
-  comm(communicator),
+  comm(Utilities::MPI::duplicate_communicator(communicator)),
   pcout (std::cout,
          (Utilities::MPI::this_mpi_process(comm)
           == 0)),
@@ -77,7 +77,7 @@ Stokes<dim>::Stokes (const MPI_Comm &communicator)
   dirichlet_dot("Dirichlet dot", 3, "u,u,p", "0=u"),
 
   data_out("Output Parameters", "vtu"),
-  dae(*this)
+  ida("IDA Solver Parameters", comm)
 {}
 
 template <int dim>
@@ -152,7 +152,7 @@ void Stokes<dim>::setup_dofs (const bool &first_run)
   dof_handler->distribute_dofs (*fe);
   DoFRenumbering::component_wise (*dof_handler, sub_blocks);
 
-  mapping = SP(new MappingQ<dim>(2));
+  mapping = SP(new MappingQ<dim,dim>(2));
 
   dofs_per_block.clear();
   dofs_per_block.resize(fe_builder.n_blocks());
@@ -200,7 +200,7 @@ void Stokes<dim>::setup_dofs (const bool &first_run)
   DoFTools::make_hanging_node_constraints (*dof_handler,
                                            constraints);
 
-  dirichlet_bcs.interpolate_boundary_values(*dof_handler, constraints);
+  dirichlet_bcs.interpolate_boundary_values(*mapping,*dof_handler, constraints);
   constraints.close ();
 
   constraints_dot.clear ();
@@ -209,7 +209,7 @@ void Stokes<dim>::setup_dofs (const bool &first_run)
   DoFTools::make_hanging_node_constraints (*dof_handler,
                                            constraints_dot);
 
-  dirichlet_dot.interpolate_boundary_values(*dof_handler, constraints_dot);
+  dirichlet_dot.interpolate_boundary_values(*mapping,*dof_handler, constraints_dot);
   constraints_dot.close ();
 
   jacobian_matrix.clear();
@@ -219,10 +219,9 @@ void Stokes<dim>::setup_dofs (const bool &first_run)
   Table<2,DoFTools::Coupling> coupling (dim+1, dim+1);
   for (unsigned int c=0; c<dim+1; ++c)
     for (unsigned int d=0; d<dim+1; ++d)
-      if (! ((c==dim) && (d==dim)))
-        coupling[c][d] = DoFTools::always;
-      else
-        coupling[c][d] = DoFTools::none;
+      coupling[c][d] = DoFTools::always;
+
+  coupling[dim][dim] = DoFTools::none;
 
   DoFTools::make_sparsity_pattern (*dof_handler,
                                    coupling,
@@ -244,8 +243,11 @@ void Stokes<dim>::setup_dofs (const bool &first_run)
     for (unsigned int d=0; d<dim+1; ++d)
       if (c==d)
         prec_coupling[c][d] = DoFTools::always;
+      else if (c<dim && d<dim)
+        prec_coupling[c][d] = DoFTools::always;
       else
         prec_coupling[c][d] = DoFTools::none;
+
 
   DoFTools::make_sparsity_pattern (*dof_handler,
                                    prec_coupling,
@@ -266,8 +268,8 @@ void Stokes<dim>::setup_dofs (const bool &first_run)
 
   if (first_run)
     {
-      VectorTools::interpolate(*dof_handler, initial_solution, solution);
-      VectorTools::interpolate(*dof_handler, initial_solution_dot, solution_dot);
+      VectorTools::interpolate(*mapping,*dof_handler, initial_solution, solution);
+      VectorTools::interpolate(*mapping,*dof_handler, initial_solution_dot, solution_dot);
     }
 
   computing_timer.exit_section();
@@ -284,7 +286,7 @@ void Stokes<dim>::update_constraints (const double &t)
   DoFTools::make_hanging_node_constraints (*dof_handler,
                                            constraints);
 
-  dirichlet_bcs.interpolate_boundary_values(*dof_handler, constraints);
+  dirichlet_bcs.interpolate_boundary_values(*mapping,*dof_handler, constraints);
 
   constraints.close ();
   constraints_dot.clear();
@@ -292,7 +294,7 @@ void Stokes<dim>::update_constraints (const double &t)
   DoFTools::make_hanging_node_constraints (*dof_handler,
                                            constraints_dot);
 
-  dirichlet_dot.interpolate_boundary_values(*dof_handler, constraints_dot);
+  dirichlet_dot.interpolate_boundary_values(*mapping,*dof_handler, constraints_dot);
   constraints_dot.close ();
 }
 
@@ -327,7 +329,6 @@ void Stokes<dim>::assemble_jacobian_matrix(const double t,
 
   FullMatrix<double>   cell_matrix (dofs_per_cell, dofs_per_cell);
   FullMatrix<double>   cell_prec (dofs_per_cell, dofs_per_cell);
-  Vector<double>       cell_rhs (dofs_per_cell);
 
   const FEValuesExtractors::Vector velocities (0);
   const FEValuesExtractors::Scalar pressure (dim);
@@ -501,10 +502,6 @@ int Stokes<dim>::residual (const double t,
   const FEValuesExtractors::Vector u (0);
   const FEValuesExtractors::Scalar p (dim);
 
-  std::vector<Tensor<1,dim> >          phi_u(dofs_per_cell);
-  std::vector<SymmetricTensor<2,dim> > grads_phi_u(dofs_per_cell);
-  std::vector<double>                  div_phi_u(dofs_per_cell);
-
   typename DoFHandler<dim>::active_cell_iterator
   cell = dof_handler->begin_active(),
   endc = dof_handler->end();
@@ -603,8 +600,7 @@ template <int dim>
 void Stokes<dim>::output_step(const double t,
                               const VEC &solution,
                               const VEC &solution_dot,
-                              const unsigned int step_number,
-                              const double /* h */ )
+                              const unsigned int step_number)
 {
   computing_timer.enter_section ("Postprocessing");
 
@@ -638,8 +634,6 @@ void Stokes<dim>::output_step(const double t,
 
 template <int dim>
 bool Stokes<dim>::solver_should_restart (const double t,
-                                         const unsigned int ,
-                                         const double ,
                                          VEC &solution,
                                          VEC &solution_dot)
 {
@@ -737,7 +731,6 @@ template <int dim>
 int Stokes<dim>::setup_jacobian (const double t,
                                  const VEC &src_yy,
                                  const VEC &src_yp,
-                                 const VEC &,
                                  const double alpha)
 {
   computing_timer.enter_section ("   Setup Jacobian");
@@ -750,12 +743,7 @@ int Stokes<dim>::setup_jacobian (const double t,
 }
 
 template <int dim>
-int Stokes<dim>::solve_jacobian_system (const double ,
-                                        const VEC &,
-                                        const VEC &,
-                                        const VEC &,
-                                        const double ,
-                                        const VEC &src,
+int Stokes<dim>::solve_jacobian_system (const VEC &src,
                                         VEC &dst) const
 {
   computing_timer.enter_section ("   Solve system");
@@ -848,7 +836,53 @@ void Stokes<dim>::run ()
   constraints.distribute(solution);
   constraints_dot.distribute(solution_dot);
 
-  dae.start_ode(solution, solution_dot, max_time_iterations);
+  ida.create_new_vector = [this]() ->shared_ptr<VEC>
+  {
+    return this->create_new_vector();
+  };
+  ida.residual = [this](const double t,
+                        const VEC &y,
+                        const VEC &y_dot,
+                        VEC &residual) ->int
+  {
+    return this->residual(t,y,y_dot,residual);
+  };
+
+  ida.setup_jacobian = [this](const double t,
+                              const VEC &y,
+                              const VEC &y_dot,
+                              const double alpha) ->int
+  {
+    return this->setup_jacobian(t,y,y_dot,alpha);
+  };
+
+  ida.solver_should_restart = [this](const double t,
+                                     VEC &y,
+                                     VEC &y_dot) ->bool
+  {
+    return this->solver_should_restart(t,y,y_dot);
+  };
+
+  ida.solve_jacobian_system = [this](const VEC &rhs,
+                                     VEC &dst) ->int
+  {
+    return this->solve_jacobian_system(rhs,dst);
+  };
+
+  ida.output_step = [this](const double t,
+                           const VEC &y,
+                           const VEC &y_dot,
+                           const unsigned int step_number)
+  {
+    this->output_step(t,y,y_dot,step_number);
+  };
+
+  ida.differential_components = [this]() ->VEC &
+  {
+    return this->differential_components();
+  };
+
+  ida.solve_dae(solution, solution_dot);
 
   computing_timer.print_summary();
   timer_outfile.close();
