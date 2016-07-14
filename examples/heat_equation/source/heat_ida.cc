@@ -42,10 +42,9 @@
 #include <sundials/sundials_math.h>
 
 template <int dim>
-Heat<dim>::Heat (const MPI_Comm &communicator)
+Heat<dim>::Heat (const MPI_Comm communicator)
   :
-  SundialsInterface<VEC> (communicator),
-  comm(communicator),
+  comm(Utilities::MPI::duplicate_communicator(communicator)),
   pcout (std::cout,
          (Utilities::MPI::this_mpi_process(comm)
           == 0)),
@@ -76,7 +75,7 @@ Heat<dim>::Heat (const MPI_Comm &communicator)
       /* iter= */ 1000,
       /* reduction= */1e-8,
         linear_operator<VEC>(jacobian_matrix) ),
-  dae(*this)
+  ida("IDA Solver Parameters", comm)
 {}
 
 template <int dim>
@@ -424,8 +423,7 @@ template <int dim>
 void Heat<dim>::output_step(const double t,
                             const VEC &solution,
                             const VEC &solution_dot,
-                            const unsigned int step_number,
-                            const double /* h */ )
+                            const unsigned int step_number)
 {
   computing_timer.enter_section ("Postprocessing");
   dirichlet_bcs.set_time(t);
@@ -464,8 +462,6 @@ void Heat<dim>::output_step(const double t,
 
 template <int dim>
 bool Heat<dim>::solver_should_restart (const double ,
-                                       const unsigned int ,
-                                       const double ,
                                        VEC &solution,
                                        VEC &solution_dot)
 {
@@ -554,7 +550,6 @@ template <int dim>
 int Heat<dim>::setup_jacobian (const double t,
                                const VEC &src_yy,
                                const VEC &src_yp,
-                               const VEC &,
                                const double alpha)
 {
   computing_timer.enter_section ("   Setup Jacobian");
@@ -570,12 +565,7 @@ int Heat<dim>::setup_jacobian (const double t,
 }
 
 template <int dim>
-int Heat<dim>::solve_jacobian_system (const double ,
-                                      const VEC &,
-                                      const VEC &,
-                                      const VEC &,
-                                      const double ,
-                                      const VEC &src,
+int Heat<dim>::solve_jacobian_system (const VEC &src,
                                       VEC &dst) const
 {
   computing_timer.enter_section ("   Solve system");
@@ -619,7 +609,52 @@ void Heat<dim>::run ()
 
   constraints.distribute(solution);
 
-  dae.start_ode(solution, solution_dot, max_time_iterations);
+  ida.create_new_vector = [this]() ->shared_ptr<VEC>
+  {
+    return this->create_new_vector();
+  };
+  ida.residual = [this](const double t,
+                        const VEC &y,
+                        const VEC &y_dot,
+                        VEC &residual) ->int
+  {
+    return this->residual(t,y,y_dot,residual);
+  };
+
+  ida.setup_jacobian = [this](const double t,
+                              const VEC &y,
+                              const VEC &y_dot,
+                              const double alpha) ->int
+  {
+    return this->setup_jacobian(t,y,y_dot,alpha);
+  };
+
+  ida.solver_should_restart = [this](const double t,
+                                     VEC &y,
+                                     VEC &y_dot) ->bool
+  {
+    return this->solver_should_restart(t,y,y_dot);
+  };
+
+  ida.solve_jacobian_system = [this](const VEC &rhs,
+                                     VEC &dst) ->int
+  {
+    return this->solve_jacobian_system(rhs,dst);
+  };
+
+  ida.output_step = [this](const double t,
+                           const VEC &y,
+                           const VEC &y_dot,
+                           const unsigned int step_number)
+  {
+    this->output_step(t,y,y_dot,step_number);
+  };
+  ida.differential_components = [this]() ->VEC &
+  {
+    return this->differential_components();
+  };
+
+  ida.solve_dae(solution, solution_dot);
   eh.error_from_exact(*mapping, *dof_handler, distributed_solution, exact_solution);
 
   eh.output_table(pcout);
