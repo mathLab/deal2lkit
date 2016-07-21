@@ -566,8 +566,8 @@ struct PGGHelper
     else if (p->grid_name == "hyper_cube_with_cylindrical_hole")
       {
         GridGenerator::hyper_cube_with_cylindrical_hole ( tria,
-                                                          p->double_option_two,
                                                           p->double_option_one,
+                                                          p->double_option_two,
                                                           p->double_option_three,
                                                           p->un_int_option_one,
                                                           p->colorize);
