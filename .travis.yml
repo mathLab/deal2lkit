@@ -12,10 +12,10 @@ notifications:
 language: cpp 
 
 before_install:
-- docker pull heltai/dealii:full-$BUILD_TYPE
-- docker run -P -v `pwd`:/home/dealii/deal2lkit:rw heltai/dealii:full-$BUILD_TYPE /bin/sh -c "cd deal2lkit; ./scripts/check_indentation.sh"
+- docker pull dealii/dealii:manual-$BUILD_TYPE
+- docker run -u root -P -v `pwd`:/home/dealii/deal2lkit:rw dealii/dealii:manual-$BUILD_TYPE /bin/sh -c "cd deal2lkit; ./scripts/check_indentation.sh"
 
 script:
-  - docker run -P -v `pwd`:/home/dealii/deal2lkit:rw heltai/dealii:full-$BUILD_TYPE /bin/sh -c "mkdir deal2lkit/build; cd deal2lkit/build; cmake -GNinja -DD2K_ENABLE_TESTING=ON -DD2K_COMPONENT_DOCUMENTATION=OFF ..; ninja"
+  - docker run -u root -P -v `pwd`:/home/dealii/deal2lkit:rw dealii/dealii:manual-$BUILD_TYPE /bin/sh -c "mkdir deal2lkit/build; cd deal2lkit/build; cmake -GNinja -DD2K_ENABLE_TESTING=ON -DD2K_COMPONENT_DOCUMENTATION=OFF ..; ninja"
 
-  - docker run -P -v `pwd`:/home/dealii/deal2lkit:rw heltai/dealii:full-$BUILD_TYPE /bin/sh -c "cd deal2lkit/build; ninja setup_tests; ctest -j4 -V"
+  - docker run -u root -P -v `pwd`:/home/dealii/deal2lkit:rw dealii/dealii:manual-$BUILD_TYPE /bin/sh -c "cd deal2lkit/build; ninja setup_tests; ctest -j4 -V"
