@@ -431,6 +431,41 @@ public:
   }
 
   /**
+   * Return the curl of the named cached solution vector.
+   *
+   * Before you call this function, you have to make sure you have previously
+   * called the function cache_local_solution_vector with the same @p prefix you give here
+   * and with the same dummy type you use here.
+   */
+  template<typename Number>
+  const std::vector <Tensor<1, (spacedim > 2 ? spacedim : 1), Number> > &
+  get_curls(const std::string &prefix,
+            const std::string &additional_prefix,
+            const FEValuesExtractors::Vector &variable,
+            const Number dummy)
+  {
+    const std::vector<Number> &independent_local_dofs =
+      get_current_independent_local_dofs(prefix, dummy);
+
+    const FEValuesBase<dim,spacedim> &fev = get_current_fe_values();
+
+    const unsigned int           n_q_points    = fev.n_quadrature_points;
+
+    std::string name = prefix+"_"+additional_prefix+"_curl_values_q"+
+                       Utilities::int_to_string(n_q_points)+"_"+type(dummy);
+
+    // Now build the return type
+    typedef typename std::vector <Tensor<1, (spacedim > 2 ? spacedim : 1), Number> > RetType;
+
+    if (!cache.have(name))
+      cache.add_copy(RetType(n_q_points), name);
+
+    RetType &ret = cache.template get<RetType>(name);
+    DOFUtilities::get_curls(fev, independent_local_dofs, variable, ret);
+    return ret;
+  }
+
+  /**
    * Return the laplacian of the named cached solution vector.
    *
    * Before you call this function, you have to make sure you have previously
@@ -465,6 +500,41 @@ public:
     return ret;
   }
 
+
+  /**
+   * Return the laplacian of the named cached solution vector. Vector value case.
+   *
+   * Before you call this function, you have to make sure you have previously
+   * called the function cache_local_solution_vector with the same @p prefix you give here
+   * and with the same dummy type you use here.
+   */
+  template<typename Number>
+  const std::vector <Tensor<1,spacedim,Number> > &
+  get_laplacians(const std::string &prefix,
+                 const std::string &additional_prefix,
+                 const FEValuesExtractors::Vector &variable,
+                 const Number dummy)
+  {
+    const std::vector<Number> &independent_local_dofs =
+      get_current_independent_local_dofs(prefix, dummy);
+
+    const FEValuesBase<dim,spacedim> &fev = get_current_fe_values();
+
+    const unsigned int           n_q_points    = fev.n_quadrature_points;
+
+    std::string name = prefix+"_"+additional_prefix+"_laplacian2_values_q"+
+                       Utilities::int_to_string(n_q_points)+"_"+type(dummy);
+
+    // Now build the return type
+    typedef typename std::vector <Tensor<1,spacedim,Number> > RetType;
+
+    if (!cache.have(name))
+      cache.add_copy(RetType(n_q_points), name);
+
+    RetType &ret = cache.template get<RetType>(name);
+    DOFUtilities::get_laplacians(fev, independent_local_dofs, variable, ret);
+    return ret;
+  }
 
   /**
    * Return the deformation gradient of the named cached solution vector.
@@ -538,6 +608,75 @@ public:
     return ret;
   }
 
+  /**
+   * Return the hessian of the named cached solution vector.
+   *
+   * Before you call this function, you have to make sure you have previously
+   * called the function cache_local_solution_vector with the same @p prefix you give here
+   * and with the same dummy type you use here.
+   */
+  template<typename Number>
+  const std::vector <Tensor<2,spacedim,Number> > &
+  get_hessians(const std::string &prefix,
+               const std::string &additional_prefix,
+               const FEValuesExtractors::Scalar &variable,
+               const Number dummy)
+  {
+    const std::vector<Number> &independent_local_dofs =
+      get_current_independent_local_dofs(prefix, dummy);
+
+    const FEValuesBase<dim,spacedim> &fev = get_current_fe_values();
+
+    const unsigned int           n_q_points    = fev.n_quadrature_points;
+
+    std::string name = prefix+"_"+additional_prefix+"_hessians_values_q"+
+                       Utilities::int_to_string(n_q_points)+"_"+type(dummy);
+
+    // Now build the return type
+    typedef typename std::vector <Tensor<2,spacedim,Number> > RetType;
+
+    if (!cache.have(name))
+      cache.add_copy(RetType(n_q_points), name);
+
+    RetType &ret = cache.template get<RetType>(name);
+    DOFUtilities::get_hessians(fev, independent_local_dofs, variable, ret);
+    return ret;
+  }
+
+  /**
+   * Return the hessian of the named cached solution vector. Vector value case.
+   *
+   * Before you call this function, you have to make sure you have previously
+   * called the function cache_local_solution_vector with the same @p prefix you give here
+   * and with the same dummy type you use here.
+   */
+  template<typename Number>
+  const std::vector <Tensor<3,spacedim,Number> > &
+  get_hessians(const std::string &prefix,
+               const std::string &additional_prefix,
+               const FEValuesExtractors::Vector &variable,
+               const Number dummy)
+  {
+    const std::vector<Number> &independent_local_dofs =
+      get_current_independent_local_dofs(prefix, dummy);
+
+    const FEValuesBase<dim,spacedim> &fev = get_current_fe_values();
+
+    const unsigned int           n_q_points    = fev.n_quadrature_points;
+
+    std::string name = prefix+"_"+additional_prefix+"_hessians2_values_q"+
+                       Utilities::int_to_string(n_q_points)+"_"+type(dummy);
+
+    // Now build the return type
+    typedef typename std::vector <Tensor<3,spacedim,Number> > RetType;
+
+    if (!cache.have(name))
+      cache.add_copy(RetType(n_q_points), name);
+
+    RetType &ret = cache.template get<RetType>(name);
+    DOFUtilities::get_hessians(fev, independent_local_dofs, variable, ret);
+    return ret;
+  }
 
 private:
 

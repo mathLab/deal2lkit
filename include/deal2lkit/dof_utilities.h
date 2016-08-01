@@ -248,6 +248,42 @@ namespace DOFUtilities
 
   }
 
+
+  /**
+   *  Extract curl values of a vector_variable
+   *  on face or cell and store them in
+   *  std::vector <Tensor <1, spacedim, Number> > curl_us
+   *  whose size is number of quadrature points in the cell.
+   *
+   */
+  template <int dim, int spacedim, typename Number>
+  void
+  get_curls (const FEValuesBase<dim, spacedim> &fe_values,
+             const std::vector<Number> &independent_local_dof_values,
+             const FEValuesExtractors::Vector &vector_variable,
+             std::vector <Tensor <1, (spacedim > 2 ? spacedim : 1), Number> > &curl_us)
+  {
+    const unsigned int           dofs_per_cell = fe_values.dofs_per_cell;
+    const unsigned int           n_q_points    = fe_values.n_quadrature_points;
+
+    AssertDimension(curl_us.size(), n_q_points);
+    AssertDimension(independent_local_dof_values.size(), dofs_per_cell);
+
+
+    for (unsigned int q=0; q<n_q_points; ++q)
+      {
+        curl_us[q] = 0;
+        for (unsigned int i=0; i<dofs_per_cell; ++i)
+          {
+            auto c = fe_values[vector_variable].curl(i,q);
+            for (unsigned int d=0; d<(spacedim > 2 ? spacedim : 1); ++d)
+              curl_us[q][d] += independent_local_dof_values[i]*c[d];
+          }
+      }
+
+  }
+
+
   /**
    *  Extract gradient values of a scalar_variable
    *  on face of a cell and store them in
@@ -362,6 +398,103 @@ namespace DOFUtilities
           us[q] += independent_local_dof_values[i]*trace(fe_values[variable].hessian(i,q));
       }
   }
+
+
+  /**
+   *  Extract laplacians local dofs values of a vector variable
+   *  in a cell and store them in
+   *  std::vector <Tensor<1,Number > > us
+   *  whose size is number of quadrature points in the cell.
+   *
+   */
+  template <int dim, int spacedim, typename Number>
+
+  void
+  get_laplacians (const FEValuesBase<dim, spacedim> &fe_values,
+                  const std::vector<Number> &independent_local_dof_values,
+                  const FEValuesExtractors::Vector &variable,
+                  std::vector <Tensor<1,spacedim,Number> > &us)
+
+  {
+    const unsigned int           dofs_per_cell = fe_values.dofs_per_cell;
+    const unsigned int           n_q_points    = fe_values.n_quadrature_points;
+
+    AssertDimension(us.size(), n_q_points);
+    AssertDimension(independent_local_dof_values.size(), dofs_per_cell);
+
+    for (unsigned int d=0; d<spacedim; ++d)
+      for (unsigned int q=0; q<n_q_points; ++q)
+        {
+          us[q][d] = 0;
+          for (unsigned int i=0; i<dofs_per_cell; ++i)
+            us[q][d] += independent_local_dof_values[i]*trace(fe_values[variable].hessian(i,q)[d]);
+        }
+  }
+
+  /**
+   *  Extract hessians local dofs values of a scalar variable
+   *  in a cell and store them in
+   *  std::vector <Tensor<2,Number > > us
+   *  whose size is number of quadrature points in the cell.
+   *
+   */
+  template <int dim, int spacedim, typename Number>
+
+  void
+  get_hessians (const FEValuesBase<dim, spacedim> &fe_values,
+                const std::vector<Number> &independent_local_dof_values,
+                const FEValuesExtractors::Scalar &variable,
+                std::vector <Tensor<2,spacedim,Number> > &us)
+
+  {
+    const unsigned int           dofs_per_cell = fe_values.dofs_per_cell;
+    const unsigned int           n_q_points    = fe_values.n_quadrature_points;
+
+    AssertDimension(us.size(), n_q_points);
+    AssertDimension(independent_local_dof_values.size(), dofs_per_cell);
+
+    for (unsigned int d=0; d<spacedim; ++d)
+      for (unsigned int q=0; q<n_q_points; ++q)
+        {
+          us[q]= 0;
+          for (unsigned int i=0; i<dofs_per_cell; ++i)
+            us[q] += independent_local_dof_values[i]*fe_values[variable].hessian(i,q);
+        }
+  }
+
+
+  /**
+   *  Extract hessians local dofs values of a vector variable
+   *  in a cell and store them in
+   *  std::vector <Tensor<3,Number > > us
+   *  whose size is number of quadrature points in the cell.
+   *
+   */
+  template <int dim, int spacedim, typename Number>
+
+  void
+  get_hessians (const FEValuesBase<dim, spacedim> &fe_values,
+                const std::vector<Number> &independent_local_dof_values,
+                const FEValuesExtractors::Vector &variable,
+                std::vector <Tensor<3,spacedim,Number> > &us)
+
+  {
+    const unsigned int           dofs_per_cell = fe_values.dofs_per_cell;
+    const unsigned int           n_q_points    = fe_values.n_quadrature_points;
+
+    AssertDimension(us.size(), n_q_points);
+    AssertDimension(independent_local_dof_values.size(), dofs_per_cell);
+
+    for (unsigned int d=0; d<spacedim; ++d)
+      for (unsigned int q=0; q<n_q_points; ++q)
+        {
+          us[q]= 0;
+          for (unsigned int i=0; i<dofs_per_cell; ++i)
+            us[q] += independent_local_dof_values[i]*fe_values[variable].hessian(i,q);
+        }
+  }
+
+
 
 }// end namespace
 
