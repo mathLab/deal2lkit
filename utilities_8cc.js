@@ -1,6 +1,5 @@
 var utilities_8cc =
 [
-    [ "handle", "structhandle.html", "structhandle" ],
     [ "append_to_file", "utilities_8cc.html#ae9d18b5ae9168b6597aa7955b32d45af", null ],
     [ "copy", "utilities_8cc.html#a8beb4fd3ca3444a84d2bab67512ba977", null ],
     [ "copy", "utilities_8cc.html#a9f9a303531d23676970f08dec8fa62c8", null ],

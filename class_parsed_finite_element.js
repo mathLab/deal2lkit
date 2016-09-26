@@ -5,6 +5,8 @@ var class_parsed_finite_element =
     [ "get_block_names", "class_parsed_finite_element.html#a8822683db10141cdf164837973764dc1", null ],
     [ "get_component_blocks", "class_parsed_finite_element.html#a61bfbf3e99aaa8858c0cf8b0baa77dec", null ],
     [ "get_component_names", "class_parsed_finite_element.html#a84b1febe20b26cdf7ccf1457e3fb0004", null ],
+    [ "get_first_occurence", "class_parsed_finite_element.html#a0c4147b031d2d30fdd68a4a1c60bbf4e", null ],
+    [ "is_vector", "class_parsed_finite_element.html#a0709952bff9f5df46d4d5a8da882e5e0", null ],
     [ "n_blocks", "class_parsed_finite_element.html#a867a0f4000a5700bae7bf4dd829e51c5", null ],
     [ "n_components", "class_parsed_finite_element.html#a432814fb23a7db937442afdd70e400d1", null ],
     [ "operator()", "class_parsed_finite_element.html#a3056215d90ae2284d22e2abce20d22d7", null ],

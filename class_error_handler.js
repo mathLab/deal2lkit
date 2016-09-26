@@ -11,7 +11,7 @@ var class_error_handler =
     [ "error_from_exact", "class_error_handler.html#ac586dfe38f7f41d806a9e80f3e99de63", null ],
     [ "error_from_exact", "class_error_handler.html#a462d3aa63171254b2f7c8b399d6a9380", null ],
     [ "output_table", "class_error_handler.html#a55ad14f7cbf37250984cdb8c2c58b627", null ],
-    [ "output_table", "class_error_handler.html#acb1346193951e2af47642b6f99b32f94", null ],
+    [ "output_table", "class_error_handler.html#a40f90377065a1bb7b8625b46e9b370de", null ],
     [ "parse_parameters", "class_error_handler.html#a464f1ba3a697df8ffcb35b0edfe1fbd3", null ],
     [ "add_rates", "class_error_handler.html#aa2cdcc95811a03d99fab988fd12caa63", null ],
     [ "compute_error", "class_error_handler.html#aca5abf562cb96e8848fab0d2c27d7dd7", null ],

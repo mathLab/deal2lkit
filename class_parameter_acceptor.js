@@ -16,5 +16,6 @@ var class_parameter_acceptor =
     [ "class_list", "class_parameter_acceptor.html#a969df055b31e4f3152b659838133e0a1", null ],
     [ "parameters", "class_parameter_acceptor.html#a232f65d19a056057bfd37c111a903ef1", null ],
     [ "prm", "class_parameter_acceptor.html#a96081d4cc985b722c9841fcf0c0e54ec", null ],
-    [ "section_name", "class_parameter_acceptor.html#a52134c59ec98830230c23e080c841705", null ]
+    [ "section_name", "class_parameter_acceptor.html#a52134c59ec98830230c23e080c841705", null ],
+    [ "sep", "class_parameter_acceptor.html#a2159893ff6724cfa7059f44e52ca96dc", null ]
 ];
