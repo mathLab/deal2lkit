@@ -62,7 +62,7 @@ int main ()
 
   string3 = ""
             "subsection Rectangle with points\n"
-            "  set Grid to generate = hyperrectangle \n"
+            "  set Grid to generate = rectangle \n"
             "  set Optional Point<spacedim> 1 = "+ string1 +"\n"
             "  set Optional Point<spacedim> 2 = "+ string2 +"\n"
             "end\n";
