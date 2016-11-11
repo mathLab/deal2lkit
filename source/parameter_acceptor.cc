@@ -60,11 +60,11 @@ ParameterAcceptor::initialize(const std::string filename,
     {
       // check the extension of input file
       if (filename.substr(filename.find_last_of(".") + 1) == "prm")
-        prm.read_input(filename);
+        prm.parse_input(filename);
       else if (filename.substr(filename.find_last_of(".") + 1) == "xml")
         {
           std::ifstream is(filename);
-          prm.read_input_from_xml(is);
+          prm.parse_input_from_xml(is);
         }
       else
         AssertThrow(false, ExcMessage("Invalid extension of parameter file. Please use .prm or .xml"));
