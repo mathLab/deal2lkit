@@ -14,9 +14,9 @@ language: cpp
 before_install:
 - export BASE=mathlab/deal2lkit-base
 - docker pull $BASE
-- docker run -u root -P -v `pwd`:/home/dealii/deal2lkit:rw $BASE /bin/sh -c "cd deal2lkit; ./scripts/check_indentation.sh"
+- docker run -P -v `pwd`:/home/dealii/deal2lkit:rw $BASE /bin/sh -c "cd deal2lkit; ./scripts/check_indentation.sh"
 
 script:
-  - docker run -u root -P -v `pwd`:/home/dealii/deal2lkit:rw $BASE /bin/sh -c "mkdir deal2lkit/build; cd deal2lkit/build; cmake -GNinja -DD2K_ENABLE_TESTING=ON -DD2K_COMPONENT_DOCUMENTATION=OFF -DCMAKE_BUILD_TYPE=$BUILD_TYPE ..; ninja"
+  - docker run -P -v `pwd`:/home/dealii/deal2lkit:rw $BASE /bin/sh -c "mkdir deal2lkit/build; cd deal2lkit/build; cmake -GNinja -DD2K_ENABLE_TESTING=ON -DD2K_COMPONENT_DOCUMENTATION=OFF -DCMAKE_BUILD_TYPE=$BUILD_TYPE ..; ninja"
 
-  - docker run -u root -P -v `pwd`:/home/dealii/deal2lkit:rw $BASE /bin/sh -c "cd deal2lkit/build; ninja setup_tests; ctest -j4 -V"
+  - docker run -P -v `pwd`:/home/dealii/deal2lkit:rw $BASE /bin/sh -c "cd deal2lkit/build; ninja setup_tests; ctest -j4 -V"
