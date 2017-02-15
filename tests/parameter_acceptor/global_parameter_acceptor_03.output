@@ -1,0 +1,32 @@
+
+DEAL::2
+DEAL::
+DEAL::AbsoluteTrailing
+DEAL:ParameterAcceptor::Class 0:/
+DEAL:ParameterAcceptor::Class 1:Slave0
+DEAL:ParameterAcceptor::Class 2:Relative
+DEAL:ParameterAcceptor::Class 3:Slave1
+DEAL:ParameterAcceptor::Class 4:RelativeTraling/
+DEAL:ParameterAcceptor::Class 5:Slave2
+DEAL:ParameterAcceptor::Class 6:/Absolute
+DEAL:ParameterAcceptor::Class 7:Slave3
+DEAL:ParameterAcceptor::Class 8:/AbsoluteTrailing/
+DEAL:ParameterAcceptor::Class 9:Slave4
+DEAL:ParameterAcceptor::Class 10:/AbsoluteNested/Class
+DEAL:ParameterAcceptor::Class 11:Slave5
+DEAL:ParameterAcceptor::Class 12:/AbsoluteNested/ClassTrailing/
+DEAL:ParameterAcceptor::Class 13:Slave6
+DEAL:parameters::A double: 0.000000
+DEAL:parameters:Absolute::A double: 0.000000
+DEAL:parameters:AbsoluteNested:Class::A double: 0.000000
+DEAL:parameters:AbsoluteNested:ClassTrailing::A double: 0.000000
+DEAL:parameters:AbsoluteNested:ClassTrailing:Slave6::An integer: 1
+DEAL:parameters:AbsoluteNested:Slave5::An integer: 1
+DEAL:parameters:AbsoluteTrailing::A double: 0.000000
+DEAL:parameters:AbsoluteTrailing:Slave4::An integer: 1
+DEAL:parameters:Relative::A double: 0.000000
+DEAL:parameters:RelativeTraling::A double: 0.000000
+DEAL:parameters:Slave0::An integer: 1
+DEAL:parameters:Slave1::An integer: 1
+DEAL:parameters:Slave2::An integer: 1
+DEAL:parameters:Slave3::An integer: 1

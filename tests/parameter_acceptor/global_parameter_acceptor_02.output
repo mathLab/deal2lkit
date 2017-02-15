@@ -1,0 +1,8 @@
+
+DEAL:parameters:TemplateClass<bool>::bool: false
+DEAL:parameters:TemplateClass<dealii::Point<1, double> >::dealii::Point<1, double>: 0
+DEAL:parameters:TemplateClass<dealii::Point<2, double> >::dealii::Point<2, double>: 0,1
+DEAL:parameters:TemplateClass<dealii::Point<3, double> >::dealii::Point<3, double>: 0,1,2
+DEAL:parameters:TemplateClass<double>::double: 0.000100
+DEAL:parameters:TemplateClass<int>::int: -1
+DEAL:parameters:TemplateClass<unsigned int>::unsigned int: 1

@@ -17,6 +17,7 @@
 #define _d2k_parameter_acceptor_h
 
 #include <deal2lkit/config.h>
+#include <deal2lkit/utilities.h>
 #include <deal.II/base/parameter_handler.h>
 #include <deal.II/base/smartpointer.h>
 #include <deal.II/base/logstream.h>
@@ -53,7 +54,7 @@ D2K_NAMESPACE_OPEN
  * ParameterAcceptor::initialize().
  *
  * ParameterAcceptor conforms to the standard advocated in the \dealii
- * documentation, and it has a pure virtual method
+ * documentation, and it has a virtual method
  * ParameterAcceptor::declare_parameters and a virtual method
  * ParameterAcceptor::parse_parameters which can be overloaded as the
  * user whishes. However, the base class also has a default
@@ -61,23 +62,28 @@ D2K_NAMESPACE_OPEN
  * subscription mechanism** by storing in a local registry
  * (ParameterAcceptor::parameters) a pointer to all variables that
  * were declared through the ParameterAcceptor::add_parameter
- * method. Such method has the same syntax of the
+ * method. Such method has two flavours. In the first we use
+ * the same syntax of the
  * ParameterHandler::add_entry method, with the addition of two
  * arguments: a ParameterHandler object on which
  * ParameterHandler::add_entry will be called, and a reference to the
  * variable that should hold the entry when a ParameterHandler::get_*
- * methods are called. Such variable is stored in
+ * methods are called. The second method instead only takes a reference
+ * to the variable and to the text entry in the parameter file (with
+ * optional documentation).
+ *
+ * The variable is stored internally in the
  * ParameterAcceptor::parameters (local to the class instantiation)
  * which is traversed by the default implementation of
  * ParameterAcceptor::parse_parameters. Specialized
  * implementations are provided for the most commonly used variable
  * types.
  *
- * The function that derived classes should overload is
- * declare_parameters(). Derived classes are required to use the
- * add_parameter() function inside the declare_paramters()
- * function. If they do so, then
- * ParameterAcceptor::parse_all_parameters() will automatically
+ * Derived classes are required to use one of the
+ * add_parameter() functions, either inside a declare_paramters()
+ * function, or in the constructor of the class.
+ *
+ * In either way, ParameterAcceptor::parse_all_parameters() will automatically
  * populate the variables with the parsed parameters. Failure to use
  * the add_parameter() function will result in the user having to call
  * ParameterHandler::get() functions to populate the variables
@@ -122,6 +128,34 @@ D2K_NAMESPACE_OPEN
  *  ParameterAcceptor::initialize("file.prm");
  * }
  * @endcode
+ *
+ * An even simpler implementation (not conforming to \dealii advocated
+ * standards) is given by the following example:
+ *
+ * @code
+ * // Again your own class, derived from ParameterAcceptor
+ * class MyClass : public ParameterAcceptor {
+ *
+ * // We now fill the parameters inside the constructor
+ *
+ * MyClass(std::string name) :
+ *   ParameterAcceptor(name)
+ * {
+ *  add_parameter(&member_var, "A param", "Documentation");
+ *  add_parameter(&another_member_var, "Another param");
+ * }
+ * ...
+ * };
+ *
+ * int main() {
+ *  // Make sure you build your class BEFORE calling
+ *  // ParameterAcceptor::initialize()
+ *  MyClass class;
+ *  ParameterAcceptor::initialize("file.prm");
+ *  class.run();
+ * }
+ * @endcode
+ *
  *
  * Parameter files can be organised into section/subsection/subsubsection.
  * To do so, the std::string passed to ParameterAcceptor within the
@@ -225,7 +259,7 @@ D2K_NAMESPACE_OPEN
  * @endcode
  *
  * The other way to proceed (recommended) is to use exploit the /section/subsection
- * approach **in the main function**.
+ * approach **in the main class**.
  * @code
  * int main()
  * {
@@ -261,7 +295,7 @@ D2K_NAMESPACE_OPEN
  * example) the section will be created **under the current path**, which
  * depends on the previously defined sections/subsections/subsubsections.
  * Indeed, the section "Forcing term" is nested under "Class A" or "Class B".
- * To make things more clear. let's consider the following example
+ * To make things more clear. let's consider the following two examples
  * @code
  * int main()
  * {
@@ -286,6 +320,38 @@ D2K_NAMESPACE_OPEN
  *     subsection Forcing term
  *     ...
  *     end
+ *   end
+ * end
+ * @endcode
+ *
+ * If instead one of the paths ends with "/" instead of just
+ * a name of the class, subsequen classes will be declared
+ * under the full path, as if the class name should be interpreted
+ * as a directory:
+ * @code
+ * int main()
+ * {
+ *  MyClass ca("/Class A/Class/");
+ *  MyClass cb("Class B/Class");
+ *  ParameterAcceptor::initialize("file.prm");
+ * }
+ * @endcode
+ * The parameter file will have the following structure
+ * @code
+ * subsection Class A
+ *   subsection Class
+ *   ...
+ *      subsection Forcing term
+ *      ...
+ *      end
+ *      subsection Class B
+ *          subsection Class
+ *          ...
+ *          end
+ *          subsection Forcing term
+ *          ...
+ *          end
+ *      end
  *   end
  * end
  * @endcode
@@ -328,7 +394,6 @@ public:
    */
   virtual ~ParameterAcceptor();
 
-
   /**
    * Call declare_all_parameters(), read filename (if it is present as
    * input parameter) and parse_all_parameters() on the static member
@@ -339,7 +404,11 @@ public:
   static void initialize(const std::string filename="",
                          const std::string outfilename="");
 
+  /**
+   * Clear class list and global parameter file.
+   */
   static void clear();
+
   /**
    * Parse the parameter file. This function enters the subsection
    * returned by get_section_name() for each derived class, and parse
@@ -362,11 +431,11 @@ public:
 
   /**
    * Generate entries in the given parameter file. Derived classes
-   * need to overload this one. If you want to make sure the
+   * may want to overload this function. If you want to make sure the
    * automatic assignement of variables work, you should fill this
    * function only with calls to the add_parameter() method.
    */
-  virtual void declare_parameters(ParameterHandler &prm) = 0;
+  virtual void declare_parameters(ParameterHandler &prm) {};
 
 
   /**
@@ -399,6 +468,11 @@ public:
    */
   std::string get_section_name() const;
 
+  /**
+   * Travers all registered classes, and figure out what
+   * subsections we need to enter.
+   */
+  std::vector<std::string> get_section_path() const;
 
   /**
    * Add a parameter the given parameter list. A pointer to the
@@ -423,6 +497,74 @@ public:
     parameters[entry] = boost::any(parameter);
   }
 
+
+  /**
+   * Add a parameter to the global parameter handler ParameterAcceptor::prm.
+   * A pointer to the parameter is stored, so that every time the default
+   * parse_parameters() function is called, this parameter is
+   * updated with the value contained in prm. The default value of the
+   * parameter is taken by the current content of the parameter, and the
+   * default Pattern is constructed using the method to_pattern().
+   *
+   * Notice that this function has a slightly different behaviour with respect
+   * to the other add_parameter() method, since it assumes that the global
+   * parameter is always in its root section, and therefore before calling
+   * prm.add_entry() it will enter in the sections specified by this class,
+   * and leave all entered sections after having declared the variable, leaving
+   * the parameter in the same state as before, but having inserted the entry
+   * in the nested sections returned by get_section_path().
+   */
+  template <class T>
+  void add_parameter(T &parameter,
+                     const std::string &entry,
+                     const std::string &documentation=std::string(),
+                     ParameterHandler &prm=ParameterAcceptor::prm)
+  {
+    AssertThrow(std::is_const<T>::value == false,
+                ExcMessage("You tried to add a parameter using a const "
+                           "variable. This is not allowed, since these "
+                           "variables will be filled later on when "
+                           "parsing the parameter."));
+
+    enter_my_subsection(prm);
+    prm.declare_entry(entry, to_string(parameter),
+                      *to_pattern(parameter),
+                      documentation);
+    leave_my_subsection(prm);
+    parameters[entry] = boost::any(&parameter);
+  }
+
+  /**
+   * Make sure we enter the right subsection of the global parameter file.
+   * This function should be called when prm is in its root subsection.
+   */
+  void enter_my_subsection(ParameterHandler &prm);
+
+  /**
+   * This function undoes what the enter_my_subsection() function did. It only
+   * makes sense if enter_my_subsection() is called before this one.
+   */
+  void leave_my_subsection(ParameterHandler &prm);
+
+  /**
+   * Given a class T, construct its default pattern to be used when declaring
+   * parameters.
+   */
+  template <class T>
+  static std_cxx11::shared_ptr<Patterns::PatternBase> to_pattern(const T &);
+
+  /**
+   * Given a string, fill the value of the given parameter.
+   */
+  template <class T>
+  static T to_type(const std::string &);
+
+  /**
+   * Given a parameter, return a string containing the given parameter.
+   */
+  template <class T>
+  static std::string to_string(const T &);
+
   /**
    * Static parameter. This is used if the user does not provide one.
    */
@@ -440,9 +582,9 @@ private:
 
   /**
    * A map of parameters that are initialized in this class with the
-   * function add_parameter.
+   * functions add_parameters.
    */
-  std::map<std::string, boost::any> parameters;
+  mutable std::map<std::string, boost::any> parameters;
 
   /**
    * Separator between section and subsection.
