@@ -434,8 +434,19 @@ public:
    * may want to overload this function. If you want to make sure the
    * automatic assignement of variables work, you should fill this
    * function only with calls to the add_parameter() method.
+   *
+   * Alternatively, you could insert your calls to the add_parameter()
+   * function that takes three arguments directly in the constructor.
+   *
+   * In this case, the ParameterAcceptor::prm parameter handler is used
+   * by default, and you don't need to overload this function. The default
+   * implementation in fact does nothing.
+   *
+   * In general this approach is here to guarantee backward compatibility
+   * with the strategy advocated by the \dealii library of splitting declaration
+   * and parsing of parameters into two functions.
    */
-  virtual void declare_parameters(ParameterHandler &prm) {};
+  virtual void declare_parameters(ParameterHandler &) {};
 
 
   /**
