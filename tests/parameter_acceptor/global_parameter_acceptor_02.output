@@ -1,8 +1,20 @@
 
-DEAL:parameters:TemplateClass<bool>::bool: false
-DEAL:parameters:TemplateClass<dealii::Point<1, double> >::dealii::Point<1, double>: 0
-DEAL:parameters:TemplateClass<dealii::Point<2, double> >::dealii::Point<2, double>: 0,1
-DEAL:parameters:TemplateClass<dealii::Point<3, double> >::dealii::Point<3, double>: 0,1,2
-DEAL:parameters:TemplateClass<double>::double: 0.000100
-DEAL:parameters:TemplateClass<int>::int: -1
-DEAL:parameters:TemplateClass<unsigned int>::unsigned int: 1
+DEAL:parameters:Class<Point<1>>::Point<1>: 0
+DEAL:parameters:Class<Point<2>>::Point<2>: 0,1
+DEAL:parameters:Class<Point<3>>::Point<3>: 0,1,2
+DEAL:parameters:Class<bool>::bool: false
+DEAL:parameters:Class<double>::double: 0.000100
+DEAL:parameters:Class<int>::int: -1
+DEAL:parameters:Class<std::string>::std::string: ciao
+DEAL:parameters:Class<std::vector<Point<1>>>::std::vector<Point<1>>: 0; 0; 0
+DEAL:parameters:Class<std::vector<Point<2>>>::std::vector<Point<2>>: 0,1; 0,1; 0,1
+DEAL:parameters:Class<std::vector<Point<3>>>::std::vector<Point<3>>: 0,1,2; 0,1,2; 0,1,2
+DEAL:parameters:Class<std::vector<double>>::std::vector<double>: 0.000100, 0.000100, 0.000100
+DEAL:parameters:Class<std::vector<int>>::std::vector<int>: -1, -1, -1
+DEAL:parameters:Class<std::vector<std::string>>::std::vector<std::string>: ciao, ciao, ciao
+DEAL:parameters:Class<std::vector<std::vector<double>>>::std::vector<std::vector<double>>: 0.000100, 0.000100, 0.000100; 0.000100, 0.000100, 0.000100
+DEAL:parameters:Class<std::vector<std::vector<int>>>::std::vector<std::vector<int>>: -1, -1, -1; -1, -1, -1
+DEAL:parameters:Class<std::vector<std::vector<std::string>>>::std::vector<std::vector<std::string>>: ciao, ciao, ciao; ciao, ciao, ciao
+DEAL:parameters:Class<std::vector<std::vector<unsigned int>>>::std::vector<std::vector<unsigned int>>: 1, 1, 1; 1, 1, 1
+DEAL:parameters:Class<std::vector<unsigned int>>::std::vector<unsigned int>: 1, 1, 1
+DEAL:parameters:Class<unsigned int>::unsigned int: 1
