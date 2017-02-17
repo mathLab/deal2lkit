@@ -48,13 +48,11 @@ std::string ParameterAcceptor::get_section_name() const
 }
 
 
-
-
 void
 ParameterAcceptor::initialize(const std::string filename,
                               const std::string out_filename)
 {
-  prm.clear();
+  // prm.clear();
   declare_all_parameters(prm);
   if (filename != "")
     {
@@ -100,7 +98,12 @@ ParameterAcceptor::initialize(const std::string filename,
 void
 ParameterAcceptor::clear()
 {
+  for (unsigned int i=0; i<class_list.size(); ++i)
+    if (class_list[i] != NULL)
+      class_list[i]->parameters.clear();
+
   class_list.clear();
+  prm.clear();
 }
 
 void
@@ -120,290 +123,312 @@ ParameterAcceptor::log_info()
 
 void ParameterAcceptor::parse_all_parameters(ParameterHandler &prm)
 {
-  std::vector<std::string> old_secs;
   for (unsigned int i=0; i< class_list.size(); ++i)
     if (class_list[i] != NULL)
       {
-        std::vector<std::string> secs;
-        secs = Utilities::split_string_list(class_list[i]->get_section_name(), sep);
-        const unsigned int secs_size = secs.size();
-
-        if (secs_size == 1) // add a subsection with relative path
-          {
-            // enter the old path
-            for (unsigned int s=0; s<old_secs.size(); ++s)
-              prm.enter_subsection(old_secs[s]);
-
-            // enter current subsection
-            prm.enter_subsection(secs[0]);
-
-            class_list[i]->parse_parameters(prm);
-            class_list[i]->parse_parameters_call_back();
-
-            // leave current subsection
-            prm.leave_subsection();
-
-            // leave the old path
-            for (unsigned int s=0; s<old_secs.size(); ++s)
-              prm.leave_subsection();
-
-            // the old path is unchanged
-          }
-
-        else // we have at least one separator "/"
-          {
-            if (secs[0]=="") // the section name begins with "/"
-              {
-                // first of all remove the "empty" section
-                secs.erase(secs.begin());
-
-                // this means absolute path so we do not enter
-                // the old path
-                for (unsigned int s=0; s<secs.size(); ++s)
-                  prm.enter_subsection(secs[s]);
-
-                class_list[i]->parse_parameters(prm);
-                class_list[i]->parse_parameters_call_back();
-
-                // leave all the current sections
-                for (unsigned int s=0; s<secs.size(); ++s)
-                  prm.leave_subsection();
-
-                // since we have started from the root section i.e. "/"
-                // we need to set the old path to the current one
-                // without the last subsection
-
-                // remove the last subsection
-                secs.pop_back();
-
-                // update the old path
-                old_secs.swap(secs);
-
-              }
-            else // append the path to the old path
-              {
-                // enter the old path
-                for (unsigned int s=0; s<old_secs.size(); ++s)
-                  prm.enter_subsection(old_secs[s]);
-
-                // new path
-                for (unsigned int s=0; s<secs.size(); ++s)
-                  prm.enter_subsection(secs[s]);
-
-                class_list[i]->parse_parameters(prm);
-                class_list[i]->parse_parameters_call_back();
-
-                // leave all subsections
-                for (unsigned int s=0; s<(secs.size()+old_secs.size()); ++s)
-                  prm.leave_subsection();
-
-                // we need now to append the secs path (without the last subsection)
-                // to the old path
-
-                // remove last subsection
-                secs.pop_back();
-
-                // append secs to old_secs
-                old_secs.insert(old_secs.begin(), secs.begin(), secs.end());
-
-              }
-          }
+        class_list[i]->enter_my_subsection(prm);
+        class_list[i]->parse_parameters(prm);
+        class_list[i]->parse_parameters_call_back();
+        class_list[i]->leave_my_subsection(prm);
       }
 }
 
 void ParameterAcceptor::declare_all_parameters(ParameterHandler &prm)
 {
-  std::vector<std::string> old_secs;
   for (unsigned int i=0; i< class_list.size(); ++i)
     if (class_list[i] != NULL)
       {
-        std::vector<std::string> secs;
-        secs = Utilities::split_string_list(class_list[i]->get_section_name(), sep);
-        const unsigned int secs_size = secs.size();
-
-        if (secs_size == 1) // add a subsection with relative path
-          {
-            // enter the old path
-            for (unsigned int s=0; s<old_secs.size(); ++s)
-              prm.enter_subsection(old_secs[s]);
-
-            // enter current subsection
-            prm.enter_subsection(secs[0]);
-
-            class_list[i]->declare_parameters(prm);
-
-            // leave current subsection
-            prm.leave_subsection();
-
-            // leave the old path
-            for (unsigned int s=0; s<old_secs.size(); ++s)
-              prm.leave_subsection();
-
-            // the old path is unchanged
-          }
-
-        else // we have at least one separator "/"
-          {
-            for (unsigned int s=0; s <secs.size(); ++s)
-              if (secs[0]=="") // the section name begins with "/"
-                {
-                  // first of all remove the "empty" section
-                  secs.erase(secs.begin());
-
-                  // this means absolute path so we do not enter
-                  // the old path
-                  for (unsigned int s=0; s<secs.size(); ++s)
-                    prm.enter_subsection(secs[s]);
-
-                  class_list[i]->declare_parameters(prm);
-
-                  // leave all the current sections
-                  for (unsigned int s=0; s<secs.size(); ++s)
-                    prm.leave_subsection();
-
-                  // since we have started from the root section i.e. "/"
-                  // we need to set the old path to the current one
-                  // without the last subsection
-
-                  // remove the last subsection
-                  secs.pop_back();
-
-                  // update the old path
-                  old_secs.swap(secs);
-
-                }
-              else // append the path to the old path
-                {
-                  // enter the old path
-                  for (unsigned int s=0; s<old_secs.size(); ++s)
-                    prm.enter_subsection(old_secs[s]);
-
-                  // new path
-                  for (unsigned int s=0; s<secs.size(); ++s)
-                    prm.enter_subsection(secs[s]);
-
-                  class_list[i]->declare_parameters(prm);
-
-                  // leave all subsections
-                  for (unsigned int s=0; s<(secs.size()+old_secs.size()); ++s)
-                    prm.leave_subsection();
-
-                  // we need now to append the secs path (without the last subsection)
-                  // to the old path
-
-                  // remove last subsection
-                  secs.pop_back();
-
-                  // append secs to old_secs
-                  old_secs.insert(old_secs.begin(), secs.begin(), secs.end());
-
-                }
-          }
+        class_list[i]->enter_my_subsection(prm);
+        class_list[i]->declare_parameters(prm);
+        class_list[i]->leave_my_subsection(prm);
       }
+}
+
+
+std::vector<std::string>
+ParameterAcceptor::get_section_path() const
+{
+  Assert(acceptor_id < class_list.size(), ExcInternalError());
+  std::vector<std::string> sections =
+    Utilities::split_string_list(class_list[acceptor_id]->get_section_name(), sep);
+  bool is_absolute = false;
+  if (sections.size() > 1)
+    {
+      // Handle the cases of a leading "/"
+      if (sections[0] == "")
+        {
+          is_absolute = true;
+          sections.erase(sections.begin());
+        }
+    }
+  if (is_absolute == false)
+    {
+      // In all other cases, we scan for earlier classes, and prepend the
+      // first absolute path (in reverse order) we find to ours
+      for (int i=acceptor_id-1; i>=0; --i)
+        if (class_list[i] != NULL)
+          if (class_list[i]->get_section_name().front() == sep)
+            {
+              bool has_trailing = class_list[i]->get_section_name().back() == sep;
+              // Absolute path found
+              auto secs = Utilities::split_string_list(class_list[i]->get_section_name(), sep);
+              Assert(secs[0] == "", ExcInternalError());
+              // Insert all sections except first and last
+              sections.insert(sections.begin(), secs.begin()+1, secs.end()-(has_trailing ? 0 : 1));
+              // exit from for cycle
+              break;
+            }
+    }
+  return sections;
+}
+
+void ParameterAcceptor::enter_my_subsection(ParameterHandler &prm)
+{
+  std::vector<std::string> sections = get_section_path();
+  for (auto sec : sections)
+    {
+      prm.enter_subsection(sec);
+    }
+}
+
+void ParameterAcceptor::leave_my_subsection(ParameterHandler &prm)
+{
+  std::vector<std::string> sections = get_section_path();
+  for (auto sec : sections)
+    {
+      prm.leave_subsection();
+    }
+}
+
+
+
+/// Conversion specializations.
+/// string
+template<>
+std_cxx11::shared_ptr<Patterns::PatternBase>  ParameterAcceptor::to_pattern<std::string>(const std::string &)
+{
+  return SP(new Patterns::Anything());
+}
+
+template<>
+std::string ParameterAcceptor::to_string<std::string>(const std::string &entry)
+{
+  return entry;
+}
+
+template<>
+std::string ParameterAcceptor::to_type<std::string>(const std::string &parameter)
+{
+  return parameter;
+}
+
+/// double
+template<>
+std_cxx11::shared_ptr<Patterns::PatternBase>  ParameterAcceptor::to_pattern<double>(const double &)
+{
+  return SP(new Patterns::Double());
+}
+
+template<>
+std::string ParameterAcceptor::to_string<double>(const double &entry)
+{
+  return std::to_string(entry);
+}
+
+template<>
+double ParameterAcceptor::to_type<double>(const std::string &parameter)
+{
+  return std::stod(parameter);
+}
+
+
+/// int
+template<>
+std_cxx11::shared_ptr<Patterns::PatternBase>  ParameterAcceptor::to_pattern<int>(const int &)
+{
+  return SP(new Patterns::Integer());
+}
+
+template<>
+std::string ParameterAcceptor::to_string<int>(const int &entry)
+{
+  return std::to_string(entry);
+}
+
+template<>
+int ParameterAcceptor::to_type<int>(const std::string &parameter)
+{
+  return std::stoi(parameter);
+}
+
+
+/// unsigned int
+template<>
+std_cxx11::shared_ptr<Patterns::PatternBase>  ParameterAcceptor::to_pattern<unsigned int>(const unsigned int &)
+{
+  return SP(new Patterns::Integer(0));
+}
+
+template<>
+std::string ParameterAcceptor::to_string<unsigned int>(const unsigned int &entry)
+{
+  return std::to_string(entry);
+}
+
+template<>
+unsigned int ParameterAcceptor::to_type<unsigned int>(const std::string &parameter)
+{
+  return (unsigned int)std::stoi(parameter);
+}
+
+
+/// bool
+template<>
+std_cxx11::shared_ptr<Patterns::PatternBase>  ParameterAcceptor::to_pattern<bool>(const bool &)
+{
+  return SP(new Patterns::Bool());
+}
+
+template<>
+std::string ParameterAcceptor::to_string<bool>(const bool &entry)
+{
+  return std::string((entry ? "true" : "false"));
+}
+
+template<>
+bool ParameterAcceptor::to_type<bool>(const std::string &parameter)
+{
+  return (parameter == "true" || parameter == "1");
+}
+
+
+/// point
+#define MYP(dim) \
+  template<>\
+  std_cxx11::shared_ptr<Patterns::PatternBase>  ParameterAcceptor::to_pattern<Point<dim> >(const Point<dim> &) {\
+    return SP(new Patterns::List(Patterns::Double(),dim,dim));\
+  }\
+  \
+  template<>\
+  std::string ParameterAcceptor::to_string<Point<dim> >(const Point<dim> &entry) {\
+    return print(entry);\
+  }\
+  \
+  template<>\
+  Point<dim> ParameterAcceptor::to_type<Point<dim> >(const std::string &parameter) {\
+    Point<dim> p;\
+    auto ps = Utilities::split_string_list(parameter);\
+    AssertDimension(ps.size(), dim);\
+    for(unsigned int i=0; i<dim; ++i)\
+      p[i] = std::stod(ps[i]);\
+    return p;\
+  }
+
+MYP(1)
+MYP(2)
+MYP(3)
+#undef MYP
+
+
+/// vector
+#define MYV(type, sep) \
+  template<>\
+  std_cxx11::shared_ptr<Patterns::PatternBase>  ParameterAcceptor::to_pattern<std::vector<type> >(const std::vector<type> &) {\
+    type p;\
+    return SP(new Patterns::List(*to_pattern(p),0,Patterns::List::max_int_value,sep));\
+  }\
+  \
+  template<>\
+  std::string ParameterAcceptor::to_string<std::vector<type> >(const std::vector<type> &entry) {\
+    std::ostringstream s; \
+    if(entry.size() > 0) \
+      s << to_string(entry[0]); \
+    for(unsigned int i=1; i<entry.size(); ++i) \
+      s << std::string(sep) << " " << to_string(entry[i]); \
+    return s.str();\
+  }\
+  \
+  template<>\
+  std::vector<type> ParameterAcceptor::to_type<std::vector<type> >(const std::string &parameter) {\
+    auto ps = Utilities::split_string_list(parameter,sep[0]);\
+    std::vector<type> p(ps.size());\
+    for(unsigned int i=0; i<ps.size(); ++i)\
+      p[i] = to_type<type>(ps[i]);\
+    return p;\
+  }
+
+MYV(std::string, ",")
+MYV(double, ",")
+MYV(int, ",")
+MYV(unsigned int, ",")
+// MYV(bool, ",")
+MYV(Point<1>, ";")
+MYV(Point<2>, ";")
+MYV(Point<3>, ";")
+
+
+MYV(std::vector<std::string>, ";")
+MYV(std::vector<double>, ";")
+MYV(std::vector<int>, ";")
+MYV(std::vector<unsigned int>, ";")
+// MYV(std::vector<std::vector<bool> >, ";")
+// MYV(std::vector<Point<1> >, ";")
+// MYV(std::vector<Point<2> >, ";")
+// MYV(std::vector<Point<3> >, ";")
+#undef MYV
+
+namespace
+{
+  template<class T>
+  inline bool to_boost_any(const std::string &entry, boost::any &boost_parameter)
+  {
+    if (boost_parameter.type() == typeid(T *))
+      {
+        T &parameter = *(boost::any_cast<T *>(boost_parameter));
+        parameter = ParameterAcceptor::to_type<T>(entry);
+        return true;
+      }
+    else
+      {
+        return false;
+      }
+  }
 }
 
 void ParameterAcceptor::parse_parameters(ParameterHandler &prm)
 {
-  for (auto it = parameters.begin(); it != parameters.end(); ++it)
+  for (auto &it : parameters)
     {
-      if (it->second.type() == typeid(std::string *))
-        {
-          *(boost::any_cast<std::string *>(it->second)) = prm.get(it->first);
-        }
-      else if (it->second.type() == typeid(double *))
-        {
-          *(boost::any_cast<double *>(it->second)) = prm.get_double(it->first);
-        }
-      else if (it->second.type() == typeid(int *))
-        {
-          *(boost::any_cast<int *>(it->second)) = prm.get_integer(it->first);
-        }
-      else if (it->second.type() == typeid(unsigned int *))
-        {
-          *(boost::any_cast<unsigned int *>(it->second)) = prm.get_integer(it->first);
-        }
-      else if (it->second.type() == typeid(bool *))
-        {
-          *(boost::any_cast<bool *>(it->second)) = prm.get_bool(it->first);
-        }
-      // Here we have the difficult types...
-      // First all point types.
-      else if (it->second.type() == typeid(Point<1> *))
-        {
-          std::vector<double> p =
-            Utilities::string_to_double(Utilities::split_string_list(prm.get(it->first)));
-          AssertDimension(p.size(), 1);
+      const std::string &entry= prm.get(it.first);
+      boost::any &boost_parameter = it.second;
 
-          Point<1> &pp = *(boost::any_cast<Point<1>*>(it->second));
-          pp[0] = p[0];
-        }
-      else if (it->second.type() == typeid(Point<2> *))
-        {
-          std::vector<double> p =
-            Utilities::string_to_double(Utilities::split_string_list(prm.get(it->first)));
-          AssertDimension(p.size(), 2);
-
-          Point<2> &pp = *(boost::any_cast<Point<2>*>(it->second));
-          pp[0] = p[0];
-          pp[1] = p[1];
-        }
-      else if (it->second.type() == typeid(Point<3> *))
-        {
-          std::vector<double> p =
-            Utilities::string_to_double(Utilities::split_string_list(prm.get(it->first)));
-          AssertDimension(p.size(), 3);
-
-          Point<3> &pp = *(boost::any_cast<Point<3>*>(it->second));
-          pp[0] = p[0];
-          pp[1] = p[1];
-          pp[2] = p[2];
-        }
-      else if (it->second.type() == typeid(std::vector<std::string> *))
-        {
-          std::vector<std::string> &string_list = *(boost::any_cast<std::vector<std::string>*>(it->second));
-          string_list = Utilities::split_string_list(prm.get(it->first));
-        }
-      else if (it->second.type() == typeid(std::vector<unsigned int> *))
-        {
-          std::vector<unsigned int> &int_list = *(boost::any_cast<std::vector<unsigned int>*>(it->second));
-          std::vector<std::string> string_list = Utilities::split_string_list(prm.get(it->first));
-          int_list.resize(string_list.size());
-          for (unsigned int i=0; i<string_list.size(); ++i)
-            {
-              std::istringstream reader(string_list[i]);
-              reader >> int_list[i];// = std::stoul(string_list[i]);
-            }
-        }
-      else if (it->second.type() == typeid(std::vector<double> *))
-        {
-          std::vector<double> &double_list = *(boost::any_cast<std::vector<double>*>(it->second));
-          double_list = Utilities::string_to_double(Utilities::split_string_list(prm.get(it->first)));
-        }
-      else if (it->second.type() == typeid(std::vector<std::vector<unsigned int> > *))
-        {
-          std::vector<std::vector<unsigned int> > &int_table =
-            *(boost::any_cast<std::vector<std::vector<unsigned int> >*>(it->second));
-
-          std::vector<std::string> string_list_of_lists = Utilities::split_string_list(prm.get(it->first), ';');
-          int_table.resize(string_list_of_lists.size());
-          for (unsigned int i=0; i<int_table.size(); ++i)
-            {
-              std::vector<std::string> string_list = Utilities::split_string_list(string_list_of_lists[i], ',');
-              int_table[i].resize(string_list.size());
-              for (unsigned int j=0; j<int_table[i].size(); ++j)
-                {
-                  std::istringstream reader(string_list[j]);
-                  reader >> int_table[i][j];
-                }
-            }
-        }
+      if (to_boost_any<std::string>(entry, boost_parameter)) {}
+      else if (to_boost_any<double>(entry, boost_parameter)) {}
+      else if (to_boost_any<int>(entry, boost_parameter)) {}
+      else if (to_boost_any<unsigned int>(entry, boost_parameter)) {}
+      else if (to_boost_any<bool>(entry, boost_parameter)) {}
+      else if (to_boost_any<Point<1> >(entry, boost_parameter)) {}
+      else if (to_boost_any<Point<2> >(entry, boost_parameter)) {}
+      else if (to_boost_any<Point<3> >(entry, boost_parameter)) {}
+      else if (to_boost_any<std::vector<std::string> >(entry, boost_parameter)) {}
+      else if (to_boost_any<std::vector<double> >(entry, boost_parameter)) {}
+      else if (to_boost_any<std::vector<int> >(entry, boost_parameter)) {}
+      else if (to_boost_any<std::vector<unsigned int> >(entry, boost_parameter)) {}
+//      else if (to_boost_any<std::vector<bool> >(entry, boost_parameter)) {}
+      else if (to_boost_any<std::vector<Point<1> > >(entry, boost_parameter)) {}
+      else if (to_boost_any<std::vector<Point<2> > >(entry, boost_parameter)) {}
+      else if (to_boost_any<std::vector<Point<3> > >(entry, boost_parameter)) {}
+      else if (to_boost_any<std::vector<std::vector<std::string> > >(entry, boost_parameter)) {}
+      else if (to_boost_any<std::vector<std::vector<double> > >(entry, boost_parameter)) {}
+      else if (to_boost_any<std::vector<std::vector<int> > >(entry, boost_parameter)) {}
+      else if (to_boost_any<std::vector<std::vector<unsigned int> > >(entry, boost_parameter)) {}
+//      else if (to_boost_any<std::vector<std::vector<bool> > >(entry, boost_parameter)) {}
       else
         {
           AssertThrow(false, ExcNotImplemented());
         }
     }
 }
-
 
 void ParameterAcceptor::parse_parameters_call_back() {}
 
