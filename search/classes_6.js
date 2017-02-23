@@ -10,7 +10,6 @@ var searchData=
   ['gradient',['Gradient',['http://www.dealii.org/developer/doxygen/deal.II/classDerivativeApproximation_1_1internal_1_1Gradient.html',1,'DerivativeApproximation::internal']]],
   ['gridin',['GridIn',['http://www.dealii.org/developer/doxygen/deal.II/classGridIn.html',1,'']]],
   ['gridout',['GridOut',['http://www.dealii.org/developer/doxygen/deal.II/classGridOut.html',1,'']]],
-  ['gridreordering',['GridReordering',['http://www.dealii.org/developer/doxygen/deal.II/classinternal_1_1GridReordering2d_1_1GridReordering.html',1,'internal::GridReordering2d']]],
   ['gridreordering',['GridReordering',['http://www.dealii.org/developer/doxygen/deal.II/classGridReordering.html',1,'']]],
   ['growingvectormemory',['GrowingVectorMemory',['http://www.dealii.org/developer/doxygen/deal.II/classGrowingVectorMemory.html',1,'']]],
   ['growingvectormemory_3c_20blockvector_3c_20number_20_3e_20_3e',['GrowingVectorMemory&lt; BlockVector&lt; number &gt; &gt;',['http://www.dealii.org/developer/doxygen/deal.II/classGrowingVectorMemory.html',1,'']]]

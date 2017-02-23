@@ -7,7 +7,7 @@ var class_i_m_e_x_stepper =
     [ "declare_parameters", "class_i_m_e_x_stepper.html#a808a81c64ae0a83bd8f6cb7752703118", null ],
     [ "do_newton", "class_i_m_e_x_stepper.html#a0c5bb786522ef414e68ae1142a807631", null ],
     [ "evaluate_step_size", "class_i_m_e_x_stepper.html#a69d2b4656648db53dd5a2b4bc231bffa", null ],
-    [ "get_alpha", "class_i_m_e_x_stepper.html#a78a44d62ec1d41bfd26b7d5e6b124837", null ],
+    [ "get_alpha", "class_i_m_e_x_stepper.html#afdff5336b50159ffedf22b7c249dfa8c", null ],
     [ "line_search_with_backtracking", "class_i_m_e_x_stepper.html#a067b2eaa516e7510bc7d7ca5401d6b8d", null ],
     [ "set_functions_to_trigger_an_assert", "class_i_m_e_x_stepper.html#a57ec6e65863046347694e6b1b949eae4", null ],
     [ "set_initial_time", "class_i_m_e_x_stepper.html#a107b19865bda8799cfb561a230ed5842", null ],

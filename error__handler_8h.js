@@ -10,8 +10,8 @@ var error__handler_8h =
       [ "AddUp", "error__handler_8h.html#afdb1b3484ed14e30fcdbfdbdd004922ba84ac6c844af8594e7d35f18196f07296", null ],
       [ "Custom", "error__handler_8h.html#afdb1b3484ed14e30fcdbfdbdd004922ba26b367bcdd210f7345b551b921c5551f", null ]
     ] ],
-    [ "operator&", "error__handler_8h.html#a371a3671620aa58c894c0ab813f82e67", null ],
-    [ "operator&=", "error__handler_8h.html#a28019e2b66ebdb4bb7ef9ce3a2194343", null ],
+    [ "operator&", "error__handler_8h.html#a59f90499380b71b1fd42e3770c873e56", null ],
+    [ "operator&=", "error__handler_8h.html#ada612ded5486178f5a5939011073d8ee", null ],
     [ "operator|", "error__handler_8h.html#a819210d197509417a45dd1d7979f632e", null ],
     [ "operator|=", "error__handler_8h.html#a214c9e65fcafa2c4e5bfc3af9d7b1c6d", null ]
 ];

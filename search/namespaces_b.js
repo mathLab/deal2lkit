@@ -1,6 +1,7 @@
 var searchData=
 [
-  ['_40649',['@649',['http://www.dealii.org/developer/doxygen/deal.II/namespaceMatrixTools_1_1@649.html',1,'MatrixTools']]],
+  ['_40375',['@375',['http://www.dealii.org/developer/doxygen/deal.II/namespaceMatrixFreeOperators_1_1@375.html',1,'MatrixFreeOperators']]],
+  ['_40668',['@668',['http://www.dealii.org/developer/doxygen/deal.II/namespaceMatrixTools_1_1@668.html',1,'MatrixTools']]],
   ['assembler',['Assembler',['http://www.dealii.org/developer/doxygen/deal.II/namespaceMeshWorker_1_1Assembler.html',1,'MeshWorker']]],
   ['internal',['internal',['http://www.dealii.org/developer/doxygen/deal.II/namespaceMatrixTools_1_1internal.html',1,'MatrixTools']]],
   ['manifolds',['Manifolds',['http://www.dealii.org/developer/doxygen/deal.II/namespaceManifolds.html',1,'']]],

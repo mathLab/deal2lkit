@@ -1,7 +1,7 @@
 var dof__utilities_8h =
 [
     [ "extract_local_dofs", "dof__utilities_8h.html#aa519352faa949c54bcc0938d3220df61", null ],
-    [ "get_curls", "dof__utilities_8h.html#a2820084e8eb07a850d2e794628387018", null ],
+    [ "get_curls", "dof__utilities_8h.html#a3a1d622bd209ec607e5cea75704dd6c2", null ],
     [ "get_deformation_gradients", "dof__utilities_8h.html#aa8f99e4940133aa923964f6d780be747", null ],
     [ "get_divergences", "dof__utilities_8h.html#afe5cebb27b5c5cfb84caca25d0d29273", null ],
     [ "get_gradients", "dof__utilities_8h.html#a009d8d40dc146ca3647a4e80c3fce2e0", null ],

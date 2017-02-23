@@ -1,4 +1,6 @@
 var searchData=
 [
-  ['whicheigenvalues',['WhichEigenvalues',['http://www.dealii.org/developer/doxygen/deal.II/classArpackSolver.html#ad8d0a4392fc4cd6f45eaa8a16bf18a7c',1,'ArpackSolver::WhichEigenvalues()'],['http://www.dealii.org/developer/doxygen/deal.II/classPArpackSolver.html#a61e6ecc371924100bc132fba84bc9b67',1,'PArpackSolver::WhichEigenvalues()']]]
+  ['values',['values',['http://www.dealii.org/developer/doxygen/deal.II/group__Vectors.html#ga40c50779cd14ba89bbf0bd9b4561964c',1,'VectorOperation::values()'],['http://www.dealii.org/developer/doxygen/deal.II/group__Vectors.html#ga40c50779cd14ba89bbf0bd9b4561964c',1,'values()(Global Namespace)']]],
+  ['vectortype',['VectorType',['http://www.dealii.org/developer/doxygen/deal.II/group__output.html#gaf6742de875351b15832c89eaafd6bbff',1,'DataOutStack::VectorType()'],['http://www.dealii.org/developer/doxygen/deal.II/group__output.html#gaf6742de875351b15832c89eaafd6bbff',1,'VectorType()(Global Namespace)']]],
+  ['vertexkind',['VertexKind',['http://www.dealii.org/developer/doxygen/deal.II/group__Accessors.html#gaf9a139ec66689faa8d919b29d4364a30',1,'TriaAccessor&lt; 0, 1, spacedim &gt;::VertexKind()'],['http://www.dealii.org/developer/doxygen/deal.II/group__Accessors.html#gaf9a139ec66689faa8d919b29d4364a30',1,'VertexKind()(Global Namespace)']]]
 ];

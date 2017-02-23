@@ -27,6 +27,5 @@ var searchData=
   ['quadrature_3c_201_20_3e',['Quadrature&lt; 1 &gt;',['http://www.dealii.org/developer/doxygen/deal.II/classQuadrature.html',1,'']]],
   ['quadrature_3c_20dim_2d1_20_3e',['Quadrature&lt; dim-1 &gt;',['http://www.dealii.org/developer/doxygen/deal.II/classQuadrature.html',1,'']]],
   ['quadratureselector',['QuadratureSelector',['http://www.dealii.org/developer/doxygen/deal.II/classQuadratureSelector.html',1,'']]],
-  ['quadside',['QuadSide',['http://www.dealii.org/developer/doxygen/deal.II/structinternal_1_1GridReordering2d_1_1QuadSide.html',1,'internal::GridReordering2d']]],
   ['qweddle',['QWeddle',['http://www.dealii.org/developer/doxygen/deal.II/classQWeddle.html',1,'']]]
 ];
