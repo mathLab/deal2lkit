@@ -1,4 +1,4 @@
-FROM mathlab/deal2lkit-base
+FROM mathlab/deal2lkit-base:8.4.2
 
 MAINTAINER luca.heltai@gmail.com
 
