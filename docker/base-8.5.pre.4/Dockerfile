@@ -11,7 +11,7 @@ RUN apt-get update && apt-get -yq install \
 USER $USER
 
 #sundials
-SUNDIALS_VERSION 2.6.2
+ENV SUNDIALS_VERSION 2.6.2
 RUN wget https://github.com/luca-heltai/sundials/archive/v$SUNDIALS_VERSION.tar.gz &&\
     tar xf v$SUNDIALS_VERSION.tar.gz && rm -f v$SUNDIALS_VERSION.tar.gz && \
     cd sundials-$SUNDIALS_VERSION && \
