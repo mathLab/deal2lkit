@@ -188,6 +188,9 @@ KINSOLInterface<VEC>::~KINSOLInterface()
 {
   if (kin_mem)
     KINFree(&kin_mem);
+#ifdef DEAL_II_WITH_MPI
+  MPI_Comm_free(&communicator);
+#endif
 }
 
 // Parameters parsing and initialization of the parameters:

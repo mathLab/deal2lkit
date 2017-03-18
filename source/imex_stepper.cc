@@ -58,6 +58,7 @@ IMEXStepper<VEC>::IMEXStepper(std::string name,
 {
   set_functions_to_trigger_an_assert();
 }
+
 #else
 template <typename VEC>
 IMEXStepper<VEC>::IMEXStepper(std::string &name) :
@@ -70,6 +71,14 @@ IMEXStepper<VEC>::IMEXStepper(std::string &name) :
 #endif
 
 template <typename VEC>
+IMEXStepper<VEC>::~IMEXStepper()
+{
+#ifdef DEAL_II_WITH_MPI
+  MPI_Comm_free(&communicator);
+#endif
+}
+
+template <typename VEC>
 double IMEXStepper<VEC>::get_alpha() const
 {
   double alpha;
@@ -79,8 +88,8 @@ double IMEXStepper<VEC>::get_alpha() const
     alpha = 1./step_size;
 
   return alpha;
-
 }
+
 template <typename VEC>
 void IMEXStepper<VEC>::set_initial_time(const double &t)
 {
