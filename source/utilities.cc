@@ -28,7 +28,10 @@ D2K_NAMESPACE_OPEN
 std::string demangle(const char *name)
 {
   int status = -4; // some arbitrary value to eliminate the compiler warning
-  std::string result( abi::__cxa_demangle(name, NULL, NULL, &status) );
+  char *demangled;
+  demangled = abi::__cxa_demangle(name, 0, 0, &status);
+  std::string result( demangled );
+  free(demangled);
   return (status==0) ? result.c_str() : name ;
 }
 
