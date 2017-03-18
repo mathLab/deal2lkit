@@ -71,6 +71,8 @@ public:
 
 #endif
 
+  ~IMEXStepper();
+
   /** Declare parameters for this class to function properly. */
   virtual void declare_parameters(ParameterHandler &prm);
 

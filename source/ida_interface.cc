@@ -152,6 +152,9 @@ IDAInterface<VEC>::~IDAInterface()
 {
   if (ida_mem)
     IDAFree(&ida_mem);
+#ifdef DEAL_II_WITH_MPI
+  MPI_Comm_free(&communicator);
+#endif
 }
 
 template <typename VEC>

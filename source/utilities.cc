@@ -28,8 +28,17 @@ D2K_NAMESPACE_OPEN
 std::string demangle(const char *name)
 {
   int status = -4; // some arbitrary value to eliminate the compiler warning
-  std::string result( abi::__cxa_demangle(name, NULL, NULL, &status) );
-  return (status==0) ? result.c_str() : name ;
+  char *demangled;
+
+  demangled = abi::__cxa_demangle(name, 0, 0, &status);
+
+  std::string result( demangled );
+
+  // the above function mallocated a space for the name and returned a
+  // pointer to it
+  free(demangled);
+
+  return (status==0) ? result : name ;
 }
 
 void TimeUtilities::sleep(unsigned int t)

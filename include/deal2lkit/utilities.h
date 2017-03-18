@@ -212,7 +212,7 @@ public:
     rows_shell = w.ws_row;
     cols_shell = w.ws_col;
     stream_out.width(width);
-  };
+  }
 
   /**
    * Flush output at the end so that we don't make a mess with the
@@ -222,7 +222,7 @@ public:
   {
     for (; current_line<n_lines; ++current_line)
       stream_out << std::endl;
-  };
+  }
 
   template<typename OBJ>
   OverWriteStream<Stream> &operator<<(OBJ &o)
@@ -287,7 +287,7 @@ public:
     stream_out << p;
 
     return *this;
-  };
+  }
 
   template <typename S, typename T> friend OverWriteStream<S>
   &operator << (OverWriteStream<S> &, const T &);
@@ -295,7 +295,7 @@ public:
   Stream &get_stream()
   {
     return stream_out;
-  };
+  }
 
   /**
    * Move the cursor at the end of the output. It is needed to avoid to rewrite
@@ -309,7 +309,7 @@ public:
         stream_out << std::endl;
         current_line++;
       };
-  };
+  }
 
   /**
    * Clear the next n lines, return back to the original point, and
@@ -350,7 +350,7 @@ public:
         stream_out << "\033[A" << std::endl;
         clear_next = false;
       }
-  };
+  }
 
   /**
    * It returns the number of rows of the current shell.
@@ -563,7 +563,7 @@ public:
     outstream(stream),
     out(outstream, Utilities::MPI::this_mpi_process(comm) == 0),
     dealii_timer(comm, out, TimerOutput::never, TimerOutput::cpu_and_wall_times)
-  {};
+  {}
 
   /**
    * Print both deal.II and Trilinos Summaries.
@@ -590,7 +590,7 @@ public:
           const std::string &section) :
       trilinos_scoped_monitor(trilinos_time),
       dealii_scoped_monitor(dealii_timer_output, section)
-    {};
+    {}
 
   private:
     /**
