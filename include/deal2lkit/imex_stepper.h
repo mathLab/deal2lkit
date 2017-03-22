@@ -67,7 +67,7 @@ public:
   /** Constructor for the IMEXStepper class.
     * Takes a @p name for the section in parameter file.
     */
-  IMEXStepper(std::string &name="");
+  IMEXStepper(std::string name="");
 
 #endif
 
