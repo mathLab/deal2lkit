@@ -190,13 +190,17 @@ KINSOLInterface<VEC>::~KINSOLInterface()
     KINFree(&kin_mem);
 #ifdef DEAL_II_WITH_MPI
   MPI_Comm_free(&communicator);
-  if (solution) N_VDestroy_Parallel(solution);
-  if (u_scale) N_VDestroy_Parallel(u_scale);
-  if (f_scale) N_VDestroy_Parallel(f_scale);
+  if(is_initialized) {
+      if (solution) N_VDestroy_Parallel(solution);
+      if (u_scale) N_VDestroy_Parallel(u_scale);
+      if (f_scale) N_VDestroy_Parallel(f_scale);
+  }
 #else
-  if (solution) N_VDestroy_Serial(solution);
-  if (u_scale) N_VDestroy_Serial(u_scale);
-  if (f_scale) N_VDestroy_Serial(f_scale);
+  if(is_initialized){
+      if (solution) N_VDestroy_Serial(solution);
+      if (u_scale) N_VDestroy_Serial(u_scale);
+      if (f_scale) N_VDestroy_Serial(f_scale);
+  }
 #endif
 }
 
