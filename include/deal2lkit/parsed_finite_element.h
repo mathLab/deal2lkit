@@ -182,7 +182,7 @@ public:
   unsigned int get_first_occurence(const std::string &var) const;
 
   /**
-   * Return @var true if @p var is vector, @var false otherwise.
+   * Return @p true if @p var is vector, @p false otherwise.
    */
   bool is_vector(const std::string &var) const;
 

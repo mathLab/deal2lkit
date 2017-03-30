@@ -77,7 +77,7 @@ public:
 
 
   /**
-   * Initialize the internal FEFaceValues to use the given @face_no on the given
+   * Initialize the internal FEFaceValues to use the given @p face_no on the given
    * @p cell.
    */
   void reinit(const typename DoFHandler<dim,spacedim>::active_cell_iterator &cell,
@@ -90,8 +90,8 @@ public:
 
 
   /**
-  * Initialize the internal FESubFaceValues to use the given @subface_no, on @face_no, on the given
-  * @p cell.
+  * Initialize the internal FESubFaceValues to use the given @p subface_no, on @p face_no,
+  * on the given @p cell.
   */
   void reinit(const typename DoFHandler<dim,spacedim>::active_cell_iterator &cell,
               const unsigned int face_no, const unsigned int subface_no)
@@ -684,7 +684,7 @@ private:
   FEValues<dim, spacedim>                           fe_values;
   FEFaceValues<dim, spacedim>                       fe_face_values;
   FESubfaceValues<dim, spacedim>                    fe_subface_values;
-  std::vector<types::global_dof_index>  local_dof_indices;
+  std::vector<types::global_dof_index>              local_dof_indices;
 };
 
 D2K_NAMESPACE_CLOSE

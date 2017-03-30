@@ -127,7 +127,7 @@ namespace DOFUtilities
   /**
    *  Extract independent local dofs values of a vector_variable
    *  in a cell and store them in
-   *  std::vector <Tensor <1, spacedim, Number> > us
+   *  std::vector<Tensor<1,spacedim,Number>> us
    *  whose size is number of quadrature points in the cell.
    *
    */
@@ -159,7 +159,7 @@ namespace DOFUtilities
   /**
    *  Extract independent local dofs values of a scalar_variable
    *  in a cell and store them in
-   *  std::vector <Number>  us
+   *  std::vector<Number>  us
    *  whose size is number of quadrature points in the cell.
    *
    */
@@ -189,7 +189,7 @@ namespace DOFUtilities
   /**
    *  Extract divergence values of a vector_variable
    *  on face of a cell and store them in
-   *  std::vector <Number>  us
+   *  std::vector<Number> us
    *  whose size is number of quadrature points in the cell.
    *
    */
@@ -372,7 +372,7 @@ namespace DOFUtilities
   /**
    *  Extract laplacians local dofs values of a scalar variable
    *  in a cell and store them in
-   *  std::vector <Number > us
+   *  std::vector<Number> us
    *  whose size is number of quadrature points in the cell.
    *
    */
