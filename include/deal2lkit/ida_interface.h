@@ -11,7 +11,7 @@
 //    The full text of the license can be found in the file LICENSE at
 //    the top level of the deal2lkit distribution.
 //
-//-----------------------------------------------------------
+//---------------------------------------------------------------
 
 #ifndef _d2k_ida_interface_h
 #define _d2k_ida_interface_h
@@ -47,89 +47,88 @@
 D2K_NAMESPACE_OPEN
 
 /** Interface to \sundials IDA library.
-
-\dk features an interface for the SUite of Nonlinear and
-DIfferential/ALgebraic equation Solvers (\sundials).
-
-The class IDAInterface is a wrapper to the Implicit
-Differential-Algebraic solver which is a general purpose solver for
-systems of Differential-Algebraic Equations (DAEs).
-
-The user has to provide the implmentation of the following std::functions:
- - create_new_vector;
- - residual;
- - setup_jacobian;
- - solve_jacobian_system;
- - output_step;
- - solver_should_restart;
- - differential_components.
-
-Citing from the \sundials documentation:
-
-  Consider a system of Differential-Algebraic Equations written in the
-  general form
-
-\f[
-  \begin{cases}
-      F(t,y,\dot y) = 0\, , \\
-      y(t_0) = y_0\, , \\
-      \dot y (t_0) = \dot y_0\, .
-  \end{cases}
-\f]
-
-where $y,\dot y$ are vectors in $\R^n$, $t$ is often the time (but can
-also be a parametric quantity), and
-$F:\R\times\R^n\times\R^n\rightarrow\R^n$. Such problem is solved
-using Newton iteration augmented with a line search global
-strategy. The integration method used in \ida is the variable-order,
-variable-coefficient BDF (Backward Differentiation Formula), in
-fixed-leading-coefficient. The method order ranges from 1 to 5, with
-the BDF of order $q$ given by the multistep formula
-
-\f[
-  \sum\limits_{i=0}^q \alpha_{n,i}\,y_{n-i}=h_n\,\dot y_n\, ,
-  \label{eq:bdf}
-\f]
-
-where $y_n$ and $\dot y_n$ are the computed approximations of $y(t_n)$
-and $\dot y(t_n)$, respectively, and the step size is
-$h_n=t_n-t_{n-1}$. The coefficients $\alpha_{n,i}$ are uniquely
-determined by the order $q$, and the history of the step sizes. The
-application of the BDF method \eqref{eq:bdf} to the DAE system
-\eqref{eq:dae_system} results in a nonlinear algebraic system to be
-solved at each time step:
-
-\f[
-  G(y_n)\equiv F\left(t_n,y_n,\dfrac{1}{h_n}\sum\limits_{i=0}^q \alpha_{n,i}\,y_{n-i}\right)=0\, .
-  \label{eq:nonlinear}
-\end{equation}
-The Newton method leads to a linear system of the form
-\begin{equation}
-  J[y_{n(m+1)}-y_{n(m)}]=-G(y_{n(m)})\, ,
-  \label{eq:linear}
-\f]
-
-where $y_{n(m)}$ is the $m$-th approximation to $y_n$, $J$ is the approximation of the system Jacobian
-
-\f[
-  J=\dfrac{\partial G}{\partial y} = \dfrac{\partial F}{\partial y} + \alpha \dfrac{\partial F}{\partial \dot y}\, ,
-  \label{eq:jacobian}
-\f]
-
-and $\alpha = \alpha_{n,0}/h_n$. It is worthing metioning that the
-scalar $\alpha$ changes whenever the step size or method order
-changes.
-
-
-As far as the solution of the linear system is concerned, the \dk
-class SundialsInterface exploits the linear algebra classes included
-in the \dealii library (e.g., solvers, preconditioners,
-LinearOperator, etc.).
-
-A user that would want to use the \sundials interface, should derive
-its problem class from the SundialsInterface class, and
-implement all pure virtual methods.
-**/
+ *
+ * \dk features an interface for the SUite of Nonlinear and
+ * DIfferential/ALgebraic equation Solvers (\sundials).
+ *
+ * The class IDAInterface is a wrapper to the Implicit
+ * Differential-Algebraic solver which is a general purpose solver for
+ * systems of Differential-Algebraic Equations (DAEs).
+ *
+ * The user has to provide the implmentation of the following std::functions:
+ *  - create_new_vector;
+ *  - residual;
+ *  - setup_jacobian;
+ *  - solve_jacobian_system;
+ *  - output_step;
+ *  - solver_should_restart;
+ *  - differential_components.
+ *
+ * Citing from the \sundials documentation:
+ *
+ *   Consider a system of Differential-Algebraic Equations written in the
+ *   general form
+ *
+ * \f[
+ *   \begin{cases}
+ *       F(t,y,\dot y) = 0\, , \\
+ *       y(t_0) = y_0\, , \\
+ *       \dot y (t_0) = \dot y_0\, .
+ *   \end{cases}
+ * \f]
+ *
+ * where \f$y,\dot y\f$ are vectors in \f$\R^n\f$, \f$t\f$ is often the time (but can
+ * also be a parametric quantity), and
+ * \f$F:\R\times\R^n\times\R^n\rightarrow\R^n\f$. Such problem is solved
+ * using Newton iteration augmented with a line search global
+ * strategy. The integration method used in ida is the variable-order,
+ * variable-coefficient BDF (Backward Differentiation Formula), in
+ * fixed-leading-coefficient. The method order ranges from 1 to 5, with
+ * the BDF of order \f$q\f$ given by the multistep formula
+ *
+ * \f[
+ *   \sum\limits_{i=0}^q \alpha_{n,i}\,y_{n-i}=h_n\,\dot y_n\, ,
+ *   \label{eq:bdf}
+ * \f]
+ *
+ * where \f$y_n\f$ and \f$\dot y_n\f$ are the computed approximations of \f$y(t_n)\f$
+ * and \f$\dot y(t_n)\f$, respectively, and the step size is
+ * \f$h_n=t_n-t_{n-1}\f$. The coefficients \f$\alpha_{n,i}\f$ are uniquely
+ * determined by the order \f$q\f$, and the history of the step sizes. The
+ * application of the BDF method to the DAE system results in a nonlinear algebraic
+ * system to be solved at each time step:
+ *
+ * \f[
+ *   G(y_n)\equiv F\left(t_n,y_n,\dfrac{1}{h_n}\sum\limits_{i=0}^q \alpha_{n,i}\,y_{n-i}\right)=0\, .
+ *   \label{eq:nonlinear}
+ * \end{equation}
+ * The Newton method leads to a linear system of the form
+ * \begin{equation}
+ *   J[y_{n(m+1)}-y_{n(m)}]=-G(y_{n(m)})\, ,
+ *   \label{eq:linear}
+ * \f]
+ *
+ * where \f$y_{n(m)}\f$ is the \f$m\f$-th approximation to \f$y_n\f$, \f$J\f$ is the approximation of the system Jacobian
+ *
+ * \f[
+ *   J=\dfrac{\partial G}{\partial y} = \dfrac{\partial F}{\partial y} + \alpha \dfrac{\partial F}{\partial \dot y}\, ,
+ *   \label{eq:jacobian}
+ * \f]
+ *
+ * and \f$\alpha = \alpha_{n,0}/h_n\f$. It is worthing metioning that the
+ * scalar \f$\alpha\f$ changes whenever the step size or method order
+ * changes.
+ *
+ *
+ * As far as the solution of the linear system is concerned, the \dk
+ * class SundialsInterface exploits the linear algebra classes included
+ * in the \dealii library (e.g., solvers, preconditioners,
+ * LinearOperator, etc.).
+ *
+ * A user that would want to use the \sundials interface, should derive
+ * its problem class from the SundialsInterface class, and
+ * implement all pure virtual methods.
+ */
 template<typename VEC=Vector<double> >
 class IDAInterface : public ParameterAcceptor
 {

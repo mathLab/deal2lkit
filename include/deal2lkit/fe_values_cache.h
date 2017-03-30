@@ -23,7 +23,74 @@
 #include <deal2lkit/utilities.h>
 
 D2K_NAMESPACE_OPEN
-
+/**
+ * Helper class to simplify the assembly of non-linear problems, and the
+ * evaluation of finite element fields. This class will allow you to loop
+ * over cells, and access to temporary std::vectors of objects (of the same
+ * size of your quadrature formulas, and compatible with the type you specify
+ * in the getter functions) without having to declare each of them beforehand,
+ * and without having to reinitialize them as Sacado types if the type you
+ * require is actually derived by a Sacado type.
+ *
+ * This is very convenient, for example, if you plan to use Sacado to assemble
+ * Jacobian matrices. The following example shows you how to use this class:
+ *
+ * @code
+ * FEValuesCache fev(mapping, fe, quad, flags, face_quad, face_flags);
+ *
+ * // A couple of extractors, to simplify things.
+ * FEValuesExtractors::Vector velocity(0);
+ * FEValuesExtractors::Vector pressure(dim);
+ *
+ * for(auto cell : dh.active_cell_iterators()) {
+ *   fev.reinit(cell);
+ *
+ *   double dummy=0;
+ *   fev.cache_local_solution_vector("solution", solution, dummy);
+ *   // From now on, you can access to all values/derivatives/divergence of
+ *   // the solution finite element field, at the quadrature points
+ *
+ *
+ *   // get the values of the velocity and pressure
+ *   // at the quadrature points
+ *   std::vector<Tensor<1,dim> > &velocities
+ *      = fev.get_values("solution", "v", velocities, dummy);
+ *
+ *   std::vector<double> &divergences
+ *      = fev.get_divergences("solution", "div_v", velocities, dummy);
+ *
+ *   std::vector<double> &pressures
+ *      = fev.get_values("solution", "p", pressure, dummy);
+ *
+ *   // do something with them
+ *   ...
+ * }
+ * @endcode
+ *
+ * Internally, FEValuesCache creates unique objects of the right size and type,
+ * whenever on of the get_* function is called. These objects are identified by
+ * four things: the type of FEValues (either FEValues, or FEFaceValues),
+ * the finite element vector identifier ("solution", in the example
+ * above), the field type identifier ("v", "div_v", and "p" in the example above),
+ * and the type of the dummy variable (used only to determine its type. The value
+ * of the variable is ignored).
+ *
+ * These objects are created the first time these functions are called with a unique
+ * identifier, and reused by reference all subsequent times, saving you the necessity
+ * to instantiate and initialize new vectors of the right type and size everytime
+ * you need to access finite element solutions.
+ *
+ * Before anything sensible can be extracted by this class, you have to call first
+ * the cache_local_solution_vector() function, and then one of the reinit() functions.
+ *
+ * If you try to access the values before a cache_local_solution_vector is called, an
+ * exception will be thrown.
+ *
+ * This function handles correctly also Sacado types (both first order and second order
+ * derivatives), and automatically initializes their derivative. This allows you to
+ * access derivatives w.r.t. to
+ *
+ */
 template <int dim, int spacedim=dim>
 class FEValuesCache
 {
