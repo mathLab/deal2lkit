@@ -25,8 +25,8 @@
 D2K_NAMESPACE_OPEN
 /**
  * Helper class to simplify the assembly of non-linear problems, and the
- * evaluation of finite element fields. This class will allow you to loop
- * over cells, and access to temporary std::vectors of objects (of the same
+ * evaluation of finite element fields. This class allows you, while looping
+ * over cells, to access temporary std::vectors of objects (of the same
  * size of your quadrature formulas, and compatible with the type you specify
  * in the getter functions) without having to declare each of them beforehand,
  * and without having to reinitialize them as Sacado types if the type you
@@ -88,7 +88,7 @@ D2K_NAMESPACE_OPEN
  *
  * This function handles correctly also Sacado types (both first order and second order
  * derivatives), and automatically initializes their derivative. This allows you to
- * access derivatives w.r.t. to
+ * access derivatives w.r.t. to local degrees of freedom?
  *
  */
 template <int dim, int spacedim=dim>
