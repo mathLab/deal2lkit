@@ -81,25 +81,23 @@ public:
 
 
   /**
-     * @brief compute_consistent_initial_conditions
-     * @param t
-     */
+   * Compute initial conditions that satisfy \f$ F(y, \dot y, t)=0 \f$.
+   */
   void compute_consistent_initial_conditions(const double &t,
                                              VEC &y,
                                              VEC &y_dot);
   /**
-     * if initial time is different from final time (i.e.,
-     * we are solving a time-dep problem and not a stationay
-     * one, return the inverse of dt. If the problem is
-     * stationary, returns 0.
-     * @return
-     */
+   * if initial time is different from final time (i.e.,
+   * we are solving a time-dep problem and not a stationay
+   * one, return the inverse of dt. If the problem is
+   * stationary, returns 0.
+   */
   double get_alpha() const;
 
   /**
-       * Set initial time equal to @p t disregarding what
-       * is written in the parameter file.
-       */
+   * Set initial time equal to @p t disregarding what
+   * is written in the parameter file.
+   */
   void set_initial_time(const double &t);
 
 private:
@@ -108,8 +106,8 @@ private:
   MPI_Comm communicator;
 #endif
   /**
-    * kinsol solver
-    */
+   * kinsol solver
+   */
   KINSOLInterface<VEC> kinsol;
 
   void compute_y_dot(const VEC &y, const VEC &prev, const double alpha, VEC &y_dot);
@@ -118,14 +116,14 @@ private:
   double step_size;
 
   /**
-     * user defined step_size
-     */
+   * user defined step_size
+   */
   std::string _step_size;
 
   /**
-    * @brief evaluate step size at time @p t according to the
-    * expression stored in _step_size
-    */
+   * Evaluate step size at time @p t according to the
+   * expression stored in _step_size
+   */
   double evaluate_step_size(const double &t);
 
   /** Initial time for the ode.*/
@@ -173,7 +171,7 @@ private:
   std::string method;
 
   /**
-   *  line search algorithm with backtracking.The following sequence
+   *  Line search algorithm with backtracking. The following sequence
    *  of Newton relaxation parameters is tested: 1, 1/2, 1/4,...,2^-i.
    *  it returns the selected alpha and solution, solution_dot and
    *  residual are accordingly updated.
@@ -188,16 +186,16 @@ private:
 
 
   /**
-     * find solution applying the newton method with given
-     * @param t
-     * @param alpha
-     * @param update_Jacobian
-     * @param previous_solution
-     * @param solution_dot
-     * at the end of the computation, the @p solution_dot is updated as well.
-     *
-     * this function is called when KINSOL is NOT used
-     */
+   * find solution applying the newton method with given
+   * @param t
+   * @param alpha
+   * @param update_Jacobian
+   * @param previous_solution
+   * @param solution_dot
+   * at the end of the computation, the @p solution_dot is updated as well.
+   *
+   * this function is called when KINSOL is NOT used
+   */
   void  do_newton (const double t,
                    const double alpha,
                    const bool update_Jacobian,
@@ -207,7 +205,7 @@ private:
 
 
   /**
-   * compute previous solution from given
+   * Compute previous solution from given
    * @param sol
    * @param sol_dot
    * @param alpha

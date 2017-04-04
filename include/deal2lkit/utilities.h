@@ -468,7 +468,7 @@ std::string type(const T &t)
  *  convenience function to simplify the construction of shared
  *  pointers (which should replace dealii::SmartPointers):
  *
- *  @begin code
+ *  @code
  *
  *  std_cxx11::shared_ptr<MyClass> my_ptr;
  *
@@ -476,7 +476,7 @@ std::string type(const T &t)
  *
  *  my_ptr = SP(new MyClass);
  *
- *  @end
+ *  @endcode
  */
 template <class T>
 inline shared_ptr<T>
@@ -490,7 +490,7 @@ SP(T *t)
  *  convenience function to simplify the construction of shared
  *  pointers (which should replace dealii::SmartPointers):
  *
- *  @begin code
+ *  @code
  *
  *  std_cxx11::shared_ptr<const MyClass> my_ptr;
  *
@@ -498,7 +498,7 @@ SP(T *t)
  *  const MyClass * p = new MyClass;
  *  my_ptr = SP(p);
  *
- *  @end
+ *  @endcode
  */
 template <class T>
 inline shared_ptr<const T>
