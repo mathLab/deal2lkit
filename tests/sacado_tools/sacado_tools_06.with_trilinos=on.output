@@ -1,0 +1,11 @@
+
+DEAL:: TEST : 
+DEAL:: double 
+DEAL::  Square root of 4.00 is 2.00
+DEAL::  sqrt(x)^2  = 4.00
+DEAL:: Sdouble 
+DEAL::  Square root of 4.00 [ 0.00 1.00 ] is 2.00 [ 0.00 0.250 ]
+DEAL::  sqrt(x)^2  = 4.00 [ 0.00 1.00 ]
+DEAL:: SSdouble 
+DEAL::  Square root of 4.00 [ 0.00 1.00 ] [ 0.00 [ ] 1.00 [ ] ] is 2.00 [ 0.00 0.250 ] [ 0.00 [ 0.00 0.00 ] 0.250 [ 0.00 -0.0312 ] ]
+DEAL::  sqrt(x)^2  = 4.00 [ 0.00 1.00 ] [ 0.00 [ 0.00 0.00 ] 1.00 [ 0.00 0.00 ] ]
