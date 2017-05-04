@@ -1,4 +1,4 @@
-FROM dealii/dealii:v8.5.pre.4-gcc-mpi-fulldepsmanual-debugrelease
+FROM dealii/dealii:xxx-gcc-mpi-fulldepscandi-debugrelease
 
 MAINTAINER luca.heltai@gmail.com
 
