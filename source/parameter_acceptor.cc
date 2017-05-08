@@ -56,16 +56,13 @@ ParameterAcceptor::initialize(const std::string filename,
   declare_all_parameters(prm);
   if (filename != "")
     {
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
       // check the extension of input file
       if (filename.substr(filename.find_last_of(".") + 1) == "prm")
-        prm.read_input(filename);
+        prm.parse_input(filename);
       else if (filename.substr(filename.find_last_of(".") + 1) == "xml")
         {
           std::ifstream is(filename);
-          prm.read_input_from_xml(is);
-#pragma GCC diagnostic pop
+          prm.parse_input_from_xml(is);
         }
       else
         AssertThrow(false, ExcMessage("Invalid extension of parameter file. Please use .prm or .xml"));
