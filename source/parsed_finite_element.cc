@@ -155,4 +155,3 @@ template class deal2lkit::ParsedFiniteElement<1,3>;
 template class deal2lkit::ParsedFiniteElement<2,2>;
 template class deal2lkit::ParsedFiniteElement<2,3>;
 template class deal2lkit::ParsedFiniteElement<3,3>;
-
