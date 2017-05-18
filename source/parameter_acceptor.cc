@@ -60,11 +60,11 @@ ParameterAcceptor::initialize(const std::string filename,
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
       // check the extension of input file
       if (filename.substr(filename.find_last_of(".") + 1) == "prm")
-        prm.read_input(filename);
+        prm.parse_input(filename);
       else if (filename.substr(filename.find_last_of(".") + 1) == "xml")
         {
           std::ifstream is(filename);
-          prm.read_input_from_xml(is);
+          prm.parse_input_from_xml(is);
 #pragma GCC diagnostic pop
         }
       else
@@ -433,4 +433,3 @@ void ParameterAcceptor::parse_parameters(ParameterHandler &prm)
 void ParameterAcceptor::parse_parameters_call_back() {}
 
 D2K_NAMESPACE_CLOSE
-
