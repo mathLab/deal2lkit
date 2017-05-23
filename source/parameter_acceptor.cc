@@ -17,6 +17,7 @@
 #include <deal2lkit/utilities.h>
 #include <deal.II/base/point.h>
 #include <deal.II/base/revision.h>
+#include <deal.II/base/path_search.h>
 #include <deal2lkit/revision.h>
 #include <fstream>
 
@@ -58,10 +59,33 @@ ParameterAcceptor::initialize(const std::string filename,
     {
       // check the extension of input file
       if (filename.substr(filename.find_last_of(".") + 1) == "prm")
-        prm.parse_input(filename);
+        {
+          try
+            {
+              prm.parse_input(filename);
+            }
+          catch (dealii::PathSearch::ExcFileNotFound)
+            {
+              std::ofstream out(filename);
+              Assert(out, ExcIO());
+              prm.print_parameters(out, ParameterHandler::Text);
+              out.close();
+              prm.parse_input(filename);
+            }
+        }
       else if (filename.substr(filename.find_last_of(".") + 1) == "xml")
         {
           std::ifstream is(filename);
+          if (!is)
+            {
+              std::ofstream out(filename);
+              Assert(out, ExcIO());
+              prm.print_parameters(out, ParameterHandler::Text);
+              out.close();
+              is.clear();
+              is.open(filename);
+              Assert(is, ExcIO());
+            }
           prm.parse_input_from_xml(is);
         }
       else
