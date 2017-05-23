@@ -141,5 +141,22 @@ FOREACH(_category ${_categories})
     )
 ENDFOREACH()
 
+IF(DEFINED D2K_HAVE_TESTS_DIRECTORY)
+  #
+  # Add a dummy target to make files known to IDEs like qtcreator
+  #
+
+  FILE(GLOB _misc
+    ${CMAKE_CURRENT_SOURCE_DIR}/*.cc
+    ${CMAKE_CURRENT_SOURCE_DIR}/*.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/*/*.cc
+    ${CMAKE_CURRENT_SOURCE_DIR}/*/*.h
+  )
+
+  ADD_CUSTOM_TARGET(dummy_tests_files
+    SOURCES ${_misc}
+  )
+ENDIF()
+
 
 MESSAGE(STATUS "Setting up testsuite - Done")
