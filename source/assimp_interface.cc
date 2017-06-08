@@ -18,9 +18,12 @@
 #ifdef D2K_WITH_ASSIMP
 
 DEAL_II_DISABLE_EXTRA_DIAGNOSTICS
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Waddress-of-packed-member"
 #include <assimp/Importer.hpp>      // C++ importer interface
 #include <assimp/scene.h>           // Output data structure
 #include <assimp/postprocess.h>     // Post processing flags
+#pragma GCC diagnostic pop
 DEAL_II_ENABLE_EXTRA_DIAGNOSTICS
 #include <deal.II/grid/grid_in.h>
 #include <deal.II/grid/grid_reordering.h>
