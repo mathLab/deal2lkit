@@ -1,20 +1,19 @@
+.SECONDARY: 
+	
+Dockerfile.base.%: base-template
+	sed "s/xxx/$*/" base-template > Dockerfile.base.$*
 
-.PHONY: base
+Dockerfile.deal2lkit.%: Dockerfile.base.% deal2lkit-template
+	sed "s/xxx/$*/" deal2lkit-template > Dockerfile.deal2lkit.$*
 
-all: base deal2lkit
+locks/base.%: Dockerfile.base.%
+	docker build -t mathlab/deal2lkit-base:$* -f Dockerfile.base.$* .
+	touch locks/base.$*
 
-base: base-8.4.2/Dockerfile base-8.5.pre.4/Dockerfile base-serial-8.5.pre.4/Dockerfile
-	docker build -t mathlab/deal2lkit-base:8.4.2 base-8.4.2
-	docker push mathlab/deal2lkit-base:8.4.2
-	docker build -t mathlab/deal2lkit-base:8.5.pre.4 base-8.5.pre.4
-	docker push mathlab/deal2lkit-base:8.5.pre.4
-	docker build -t mathlab/deal2lkit-base:8.5.pre.4-serial base-serial-8.5.pre.4
-	docker push mathlab/deal2lkit-base:8.5.pre.4-serial
+locks/deal2lkit.%: Dockerfile.deal2lkit.%
+	docker build -t mathlab/deal2lkit:$*-debugrelease -f Dockerfile.deal2lkit.$* .
+	touch locks/deal2lkit.$*
 
-deal2lkit: base deal2lkit-8.4.2/Dockerfile deal2lkit-8.5.pre.4/Dockerfile deal2lkit-serial-8.5.pre.4/Dockerfile
-	docker build -t mathlab/deal2lkit:8.4.2-debugrelease deal2lkit-8.4.2
-	docker push mathlab/deal2lkit:8.4.2-debugrelease
-	docker build -t mathlab/deal2lkit:8.5.pre.4-debugrelease deal2lkit-8.5.pre.4
-	docker push mathlab/deal2lkit:8.5.pre.4-debugrelease
-	docker build -t mathlab/deal2lkit:8.5.pre.4-serial-debugrelease deal2lkit-serial-8.5.pre.4
-	docker push mathlab/deal2lkit:8.5.pre.4-serial-debugrelease
+push-%: locks/base.% locks/deal2lkit.%
+	docker push mathlab/deal2lkit-base:$*
+	docker push mathlab/deal2lkit:$*-debugrelease

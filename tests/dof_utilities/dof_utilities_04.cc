@@ -55,7 +55,7 @@ void test (const Triangulation<dim> &tr,
 
   const QGauss<dim> quadrature(3);
   FEValues<dim> fe_values (fe, quadrature,
-                           update_values | update_gradients);
+                           update_values | update_gradients | update_JxW_values);
 
   std::vector<types::global_dof_index>    local_dof_indices (fe_values.dofs_per_cell);
   std::vector<SSdouble> independent_local_dof_values (fe_values.dofs_per_cell);
