@@ -132,6 +132,10 @@ MACRO(D2K_SETUP_TARGET _target)
       )
   ENDIF()
 
-  DEAL_II_SETUP_TARGET(${_target} ${ARGN})
+  get_property(_linked_libraries TARGET ${_target}
+    PROPERTY LINK_LIBRARIES)
+  if(NOT "${_linked_libraries}" MATCHES "${DEAL_II_TARGET_${_build}}")
+    DEAL_II_SETUP_TARGET(${_target} ${ARGN})
+  endif()
 
 ENDMACRO()
