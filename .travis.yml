@@ -12,6 +12,7 @@ notifications:
 language: cpp 
 
 before_install:
+  - sudo chown -R 1000:1000 .
   - ./scripts/dr.sh "cd deal2lkit; ./scripts/check_indentation.sh"
 
 script:
