@@ -121,8 +121,10 @@ ParameterAcceptor::clear()
 {
   for (unsigned int i=0; i<class_list.size(); ++i)
     if (class_list[i] != NULL)
-      class_list[i]->parameters.clear();
-
+      {
+        class_list[i]->parameters.clear();
+        class_list[i]->patterns.clear();
+      }
   class_list.clear();
   prm.clear();
 }
@@ -226,7 +228,7 @@ void ParameterAcceptor::leave_my_subsection(ParameterHandler &prm)
 /// Conversion specializations.
 /// string
 template<>
-std_cxx11::shared_ptr<Patterns::PatternBase>  ParameterAcceptor::to_pattern<std::string>(const std::string &)
+std::shared_ptr<Patterns::PatternBase>  ParameterAcceptor::to_pattern<std::string>(const std::string &)
 {
   return SP(new Patterns::Anything());
 }
@@ -245,7 +247,7 @@ std::string ParameterAcceptor::to_type<std::string>(const std::string &parameter
 
 /// double
 template<>
-std_cxx11::shared_ptr<Patterns::PatternBase>  ParameterAcceptor::to_pattern<double>(const double &)
+std::shared_ptr<Patterns::PatternBase>  ParameterAcceptor::to_pattern<double>(const double &)
 {
   return SP(new Patterns::Double());
 }
@@ -265,7 +267,7 @@ double ParameterAcceptor::to_type<double>(const std::string &parameter)
 
 /// int
 template<>
-std_cxx11::shared_ptr<Patterns::PatternBase>  ParameterAcceptor::to_pattern<int>(const int &)
+std::shared_ptr<Patterns::PatternBase>  ParameterAcceptor::to_pattern<int>(const int &)
 {
   return SP(new Patterns::Integer());
 }
@@ -285,7 +287,7 @@ int ParameterAcceptor::to_type<int>(const std::string &parameter)
 
 /// unsigned int
 template<>
-std_cxx11::shared_ptr<Patterns::PatternBase>  ParameterAcceptor::to_pattern<unsigned int>(const unsigned int &)
+std::shared_ptr<Patterns::PatternBase>  ParameterAcceptor::to_pattern<unsigned int>(const unsigned int &)
 {
   return SP(new Patterns::Integer(0));
 }
@@ -305,7 +307,7 @@ unsigned int ParameterAcceptor::to_type<unsigned int>(const std::string &paramet
 
 /// bool
 template<>
-std_cxx11::shared_ptr<Patterns::PatternBase>  ParameterAcceptor::to_pattern<bool>(const bool &)
+std::shared_ptr<Patterns::PatternBase>  ParameterAcceptor::to_pattern<bool>(const bool &)
 {
   return SP(new Patterns::Bool());
 }
@@ -326,7 +328,7 @@ bool ParameterAcceptor::to_type<bool>(const std::string &parameter)
 /// point
 #define MYP(dim) \
   template<>\
-  std_cxx11::shared_ptr<Patterns::PatternBase>  ParameterAcceptor::to_pattern<Point<dim> >(const Point<dim> &) {\
+  std::shared_ptr<Patterns::PatternBase>  ParameterAcceptor::to_pattern<Point<dim> >(const Point<dim> &) {\
     return SP(new Patterns::List(Patterns::Double(),dim,dim));\
   }\
   \
@@ -354,7 +356,7 @@ MYP(3)
 /// vector
 #define MYV(type, sep) \
   template<>\
-  std_cxx11::shared_ptr<Patterns::PatternBase>  ParameterAcceptor::to_pattern<std::vector<type> >(const std::vector<type> &) {\
+  std::shared_ptr<Patterns::PatternBase>  ParameterAcceptor::to_pattern<std::vector<type> >(const std::vector<type> &) {\
     type p;\
     return SP(new Patterns::List(*to_pattern(p),0,Patterns::List::max_int_value,sep));\
   }\
@@ -401,12 +403,17 @@ MYV(std::vector<unsigned int>, ";")
 namespace
 {
   template<class T>
-  inline bool to_boost_any(const std::string &entry, boost::any &boost_parameter)
+  inline bool to_boost_any(const std::string &entry,
+                           const Patterns::PatternBase &pattern,
+                           boost::any &boost_parameter)
   {
     if (boost_parameter.type() == typeid(T *))
       {
         T &parameter = *(boost::any_cast<T *>(boost_parameter));
         parameter = ParameterAcceptor::to_type<T>(entry);
+        AssertThrow(pattern.match(entry),
+                    ExcMessage("The entry '"+entry+"' does not match"
+                               " the pattern you specified: "+ pattern.description()));
         return true;
       }
     else
@@ -422,28 +429,29 @@ void ParameterAcceptor::parse_parameters(ParameterHandler &prm)
     {
       const std::string &entry= prm.get(it.first);
       boost::any &boost_parameter = it.second;
+      const Patterns::PatternBase &pattern = *patterns[it.first];
 
-      if (to_boost_any<std::string>(entry, boost_parameter)) {}
-      else if (to_boost_any<double>(entry, boost_parameter)) {}
-      else if (to_boost_any<int>(entry, boost_parameter)) {}
-      else if (to_boost_any<unsigned int>(entry, boost_parameter)) {}
-      else if (to_boost_any<bool>(entry, boost_parameter)) {}
-      else if (to_boost_any<Point<1> >(entry, boost_parameter)) {}
-      else if (to_boost_any<Point<2> >(entry, boost_parameter)) {}
-      else if (to_boost_any<Point<3> >(entry, boost_parameter)) {}
-      else if (to_boost_any<std::vector<std::string> >(entry, boost_parameter)) {}
-      else if (to_boost_any<std::vector<double> >(entry, boost_parameter)) {}
-      else if (to_boost_any<std::vector<int> >(entry, boost_parameter)) {}
-      else if (to_boost_any<std::vector<unsigned int> >(entry, boost_parameter)) {}
-//      else if (to_boost_any<std::vector<bool> >(entry, boost_parameter)) {}
-      else if (to_boost_any<std::vector<Point<1> > >(entry, boost_parameter)) {}
-      else if (to_boost_any<std::vector<Point<2> > >(entry, boost_parameter)) {}
-      else if (to_boost_any<std::vector<Point<3> > >(entry, boost_parameter)) {}
-      else if (to_boost_any<std::vector<std::vector<std::string> > >(entry, boost_parameter)) {}
-      else if (to_boost_any<std::vector<std::vector<double> > >(entry, boost_parameter)) {}
-      else if (to_boost_any<std::vector<std::vector<int> > >(entry, boost_parameter)) {}
-      else if (to_boost_any<std::vector<std::vector<unsigned int> > >(entry, boost_parameter)) {}
-//      else if (to_boost_any<std::vector<std::vector<bool> > >(entry, boost_parameter)) {}
+      if (to_boost_any<std::string>(entry, pattern, boost_parameter)) {}
+      else if (to_boost_any<double>(entry, pattern, boost_parameter)) {}
+      else if (to_boost_any<int>(entry, pattern, boost_parameter)) {}
+      else if (to_boost_any<unsigned int>(entry, pattern, boost_parameter)) {}
+      else if (to_boost_any<bool>(entry, pattern, boost_parameter)) {}
+      else if (to_boost_any<Point<1> >(entry, pattern, boost_parameter)) {}
+      else if (to_boost_any<Point<2> >(entry, pattern, boost_parameter)) {}
+      else if (to_boost_any<Point<3> >(entry, pattern, boost_parameter)) {}
+      else if (to_boost_any<std::vector<std::string> >(entry, pattern, boost_parameter)) {}
+      else if (to_boost_any<std::vector<double> >(entry, pattern, boost_parameter)) {}
+      else if (to_boost_any<std::vector<int> >(entry, pattern, boost_parameter)) {}
+      else if (to_boost_any<std::vector<unsigned int> >(entry, pattern, boost_parameter)) {}
+//      else if (to_boost_any<std::vector<bool> >(entry, pattern, boost_parameter)) {}
+      else if (to_boost_any<std::vector<Point<1> > >(entry, pattern, boost_parameter)) {}
+      else if (to_boost_any<std::vector<Point<2> > >(entry, pattern, boost_parameter)) {}
+      else if (to_boost_any<std::vector<Point<3> > >(entry, pattern, boost_parameter)) {}
+      else if (to_boost_any<std::vector<std::vector<std::string> > >(entry, pattern, boost_parameter)) {}
+      else if (to_boost_any<std::vector<std::vector<double> > >(entry, pattern, boost_parameter)) {}
+      else if (to_boost_any<std::vector<std::vector<int> > >(entry, pattern, boost_parameter)) {}
+      else if (to_boost_any<std::vector<std::vector<unsigned int> > >(entry, pattern, boost_parameter)) {}
+//      else if (to_boost_any<std::vector<std::vector<bool> > >(entry, pattern, boost_parameter)) {}
       else
         {
           AssertThrow(false, ExcNotImplemented());

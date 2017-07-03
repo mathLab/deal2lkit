@@ -506,6 +506,7 @@ public:
 
     prm.declare_entry(entry, default_value, pattern, documentation);
     parameters[entry] = boost::any(parameter);
+    patterns[entry] = SP(pattern.clone());
   }
 
 
@@ -529,6 +530,7 @@ public:
   void add_parameter(T &parameter,
                      const std::string &entry,
                      const std::string &documentation=std::string(),
+                     const Patterns::PatternBase &pattern=*to_pattern(T()),
                      ParameterHandler &prm=ParameterAcceptor::prm)
   {
     AssertThrow(std::is_const<T>::value == false,
@@ -539,10 +541,11 @@ public:
 
     enter_my_subsection(prm);
     prm.declare_entry(entry, to_string(parameter),
-                      *to_pattern(parameter),
+                      pattern,
                       documentation);
     leave_my_subsection(prm);
     parameters[entry] = boost::any(&parameter);
+    patterns[entry] = SP(pattern.clone());
   }
 
   /**
@@ -562,7 +565,7 @@ public:
    * parameters.
    */
   template <class T>
-  static std_cxx11::shared_ptr<Patterns::PatternBase> to_pattern(const T &);
+  static std::shared_ptr<Patterns::PatternBase> to_pattern(const T &);
 
   /**
    * Given a string, fill the value of the given parameter.
@@ -596,6 +599,13 @@ private:
    * functions add_parameters.
    */
   mutable std::map<std::string, boost::any> parameters;
+
+  /**
+   * A map of patterns that are initialized in this class with the
+   * functions add_parameters.
+   */
+  mutable std::map<std::string, std::shared_ptr<Patterns::PatternBase> > patterns;
+
 
   /**
    * Separator between section and subsection.
