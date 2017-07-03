@@ -12,9 +12,9 @@ notifications:
 language: cpp 
 
 before_install:
-  - sudo chown -R 1000:1000 .
+  - test -d build-travis || mkdir build-travis; sudo chown -R 1000:1000 build-travis
   - ./scripts/dr.sh "cd deal2lkit; ./scripts/check_indentation.sh"
 
 script:
-  - ./scripts/dr.sh "test -d deal2lkit/build-travis || mkdir deal2lkit/build-travis; cd deal2lkit/build-travis; cmake -GNinja -DD2K_ENABLE_TESTING=ON -DD2K_COMPONENT_DOCUMENTATION=OFF -DCMAKE_BUILD_TYPE=$BUILD_TYPE ..; ninja"
+  - ./scripts/dr.sh "cd deal2lkit/build-travis; cmake -GNinja -DD2K_ENABLE_TESTING=ON -DD2K_COMPONENT_DOCUMENTATION=OFF -DCMAKE_BUILD_TYPE=$BUILD_TYPE ..; ninja"
   - ./scripts/dr.sh "cd deal2lkit/build-travis; ninja setup_tests; ctest -j4 -V"
