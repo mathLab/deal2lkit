@@ -411,9 +411,9 @@ namespace
       {
         T &parameter = *(boost::any_cast<T *>(boost_parameter));
         parameter = ParameterAcceptor::to_type<T>(entry);
-//        Assert(pattern.match(entry),
-//               ExcMessage("The entry '"+entry+"' does not match"
-//                          " the pattern you specified: "+pattern.description()));
+        AssertThrow(pattern.match(entry),
+                    ExcMessage("The entry '"+entry+"' does not match"
+                               " the pattern you specified: "+ pattern.description()));
         return true;
       }
     else
@@ -429,7 +429,7 @@ void ParameterAcceptor::parse_parameters(ParameterHandler &prm)
     {
       const std::string &entry= prm.get(it.first);
       boost::any &boost_parameter = it.second;
-      const Patterns::PatternBase &pattern = *patterns[entry];
+      const Patterns::PatternBase &pattern = *patterns[it.first];
 
       if (to_boost_any<std::string>(entry, pattern, boost_parameter)) {}
       else if (to_boost_any<double>(entry, pattern, boost_parameter)) {}
