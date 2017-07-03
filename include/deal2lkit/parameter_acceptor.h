@@ -529,8 +529,8 @@ public:
   template <class T>
   void add_parameter(T &parameter,
                      const std::string &entry,
-                     const Patterns::PatternBase &pattern=*to_pattern(T()),
                      const std::string &documentation=std::string(),
+                     const Patterns::PatternBase &pattern=*to_pattern(T()),
                      ParameterHandler &prm=ParameterAcceptor::prm)
   {
     AssertThrow(std::is_const<T>::value == false,
