@@ -1,0 +1,28 @@
+
+DEAL:parameters:Flagellum::Colorize: false
+DEAL:parameters:Flagellum::Copy boundary to manifold ids: false
+DEAL:parameters:Flagellum::Copy material to manifold ids: false
+DEAL:parameters:Flagellum::Create default manifolds: true
+DEAL:parameters:Flagellum::Grid to generate: rectangle
+DEAL:parameters:Flagellum::Input grid file name: 
+DEAL:parameters:Flagellum::Manifold descriptors: 
+DEAL:parameters:Flagellum::Mesh smoothing alogrithm: none
+DEAL:parameters:Flagellum::Optional Point<spacedim> 1: 0,0,0
+DEAL:parameters:Flagellum::Optional Point<spacedim> 2: 1,0,0
+DEAL:parameters:Flagellum::Optional double 1: 1.0
+DEAL:parameters:Flagellum::Optional double 2: 0.5
+DEAL:parameters:Flagellum::Optional double 3: 1.5
+DEAL:parameters:Flagellum::Optional int 1: 1
+DEAL:parameters:Flagellum::Optional int 2: 2
+DEAL:parameters:Flagellum::Optional vector of dim int: 1
+DEAL:parameters:Flagellum::Output grid file name: 
+DEAL::flagellum
+$NOD
+2
+1  0.00000 0.00000 0.00000
+2  1.00000 0.00000 0.00000
+$ENDNOD
+$ELM
+1
+1 1 0 0 2 1 2 
+$ENDELM
