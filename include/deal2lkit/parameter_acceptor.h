@@ -506,7 +506,7 @@ public:
 
     prm.declare_entry(entry, default_value, pattern, documentation);
     parameters[entry] = boost::any(parameter);
-    patterns[entry] = SP(pattern.clone());
+    patterns[entry] = std::unique_ptr<Patterns::PatternBase> (pattern.clone());
   }
 
 
@@ -545,7 +545,7 @@ public:
                       documentation);
     leave_my_subsection(prm);
     parameters[entry] = boost::any(&parameter);
-    patterns[entry] = SP(pattern.clone());
+    patterns[entry] = std::unique_ptr<Patterns::PatternBase>(pattern.clone());
   }
 
   /**
@@ -604,7 +604,7 @@ private:
    * A map of patterns that are initialized in this class with the
    * functions add_parameters.
    */
-  mutable std::map<std::string, std::shared_ptr<Patterns::PatternBase> > patterns;
+  mutable std::map<std::string, std::unique_ptr<Patterns::PatternBase> > patterns;
 
 
   /**

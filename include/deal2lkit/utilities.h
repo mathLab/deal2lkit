@@ -34,7 +34,6 @@
 #include <deal.II/lac/block_vector.h>
 DEAL_II_DISABLE_EXTRA_DIAGNOSTICS
 #ifdef DEAL_II_WITH_TRILINOS
-#include <deal.II/lac/trilinos_block_vector.h>
 #include <deal.II/lac/trilinos_parallel_block_vector.h>
 #include <deal.II/lac/trilinos_vector.h>
 #include <Teuchos_TimeMonitor.hpp>
