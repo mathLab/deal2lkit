@@ -53,7 +53,7 @@ int main ()
   string2 = print(p2);
   ParameterAcceptor::declare_all_parameters(prm);
 
-  prm.read_input_from_string(""
+  prm.parse_input_from_string(""
                              "subsection Rectangle\n"
                              "  set Grid to generate = rectangle \n"
                              "  set Optional Point<spacedim> 1 = 0, 0 \n"
@@ -66,7 +66,7 @@ int main ()
             "  set Optional Point<spacedim> 1 = "+ string1 +"\n"
             "  set Optional Point<spacedim> 2 = "+ string2 +"\n"
             "end\n";
-  prm.read_input_from_string(string3.c_str());
+  prm.parse_input_from_string(string3.c_str());
 
   ParameterAcceptor::parse_all_parameters(prm);
 

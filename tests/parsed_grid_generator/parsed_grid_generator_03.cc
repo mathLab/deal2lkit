@@ -42,14 +42,14 @@ int main ()
   ParameterHandler prm;
   ParameterAcceptor::declare_all_parameters(prm);
 
-  prm.read_input_from_string(""
+  prm.parse_input_from_string(""
                              "subsection Rectangle\n"
                              "  set Grid to generate = rectangle \n"
                              "  set Optional Point<spacedim> 1 = -1., -2. \n"
                              "  set Optional Point<spacedim> 2 =  1.,  2. \n"
                              "end\n");
 
-  prm.read_input_from_string(""
+  prm.parse_input_from_string(""
                              "subsection Cube\n"
                              "  set Grid to generate = rectangle \n"
                              "  set Optional Point<spacedim> 1 = -1., -1. \n"

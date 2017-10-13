@@ -47,7 +47,7 @@ int main ()
   ParameterHandler prm;
   ParameterAcceptor::declare_all_parameters(prm);
 
-  prm.read_input_from_string(""
+  prm.parse_input_from_string(""
                              "subsection Grid\n"
                              "  set Output grid file name = grid.ar\n"
                              "end\n");
@@ -66,7 +66,7 @@ int main ()
   deallog << str;
   is.close();
 
-  prm.read_input_from_string(""
+  prm.parse_input_from_string(""
                              "subsection Grid\n"
                              "  set Grid to generate = file\n"
                              "  set Input grid file name = grid.ar\n"

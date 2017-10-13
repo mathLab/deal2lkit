@@ -64,7 +64,7 @@ int main ()
   a.log_info();
   b.log_info();
 
-  prm.read_input_from_string(""
+  prm.parse_input_from_string(""
                              "subsection Test<1>\n"
                              "  set A double = 3.0\n"
                              "end\n"

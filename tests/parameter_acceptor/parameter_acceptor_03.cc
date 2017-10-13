@@ -55,7 +55,7 @@ int main ()
 
   ParameterHandler prm;
   ParameterAcceptor::declare_all_parameters(prm);
-  prm.read_input_from_string(""
+  prm.parse_input_from_string(""
                              "subsection Test<1>\n"
                              "  set A point = 1.0\n"
                              "end\n"

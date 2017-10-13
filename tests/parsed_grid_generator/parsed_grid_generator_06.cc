@@ -73,8 +73,8 @@ int main ()
             "  set Optional vector of dim int = "+ int_string_2 + "\n"
             "end\n";
 
-  prm.read_input_from_string(string3.c_str());
-  prm.read_input_from_string(string2.c_str());
+  prm.parse_input_from_string(string3.c_str());
+  prm.parse_input_from_string(string2.c_str());
 
   ParameterAcceptor::parse_all_parameters(prm);
 

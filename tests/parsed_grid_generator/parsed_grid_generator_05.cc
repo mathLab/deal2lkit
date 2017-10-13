@@ -40,7 +40,7 @@ int main ()
   ParameterHandler prm;
   ParameterAcceptor::declare_all_parameters(prm);
 
-  prm.read_input_from_string(""
+  prm.parse_input_from_string(""
                              "subsection Cube\n"
                              "  set Grid to generate = file \n"
                              "  set Input grid file name = " SOURCE_DIR "/grids/mesh_22.msh\n"
