@@ -31,7 +31,7 @@
 #include <deal.II/opencascade/utilities.h>
 
 #include <fstream>
-
+#include <type_traits>
 
 namespace
 {
@@ -895,7 +895,42 @@ struct PGGHelper
   template<int dim, int spacedim>
   static
   shared_ptr<Manifold<dim,spacedim> > default_create_manifold(ParsedGridGenerator<dim,spacedim> *p,
-                                                              const std::string &name)
+                                                              const std::string &name, typename std::enable_if<(spacedim<3),void*>::type = 0)
+  {
+    if (name=="HyperBallBoundary")
+      {
+        return SP(new HyperBallBoundary<dim,spacedim>(p->point_option_one,
+                                                      p->double_option_one));
+      }
+    else if (name=="SphericalManifold")
+      {
+        return SP(new SphericalManifold<dim,spacedim>(p->point_option_one));
+      }
+    else
+      {
+        // Try splitting the name at ":" and see if this is a more complicated
+        // object
+        auto subnames = Utilities::split_string_list(name,':');
+        if (subnames[0] == "FunctionManifold0")
+          {
+            AssertDimension(subnames.size(), 3);
+            return SP(new FunctionManifold<dim,spacedim,dim>(subnames[1], subnames[2]));
+          }
+        else if (subnames[0] == "FunctionManifold1")
+          {
+            AssertDimension(subnames.size(), 3);
+            return SP(new FunctionManifold<dim,spacedim,(dim > 1 ? dim-1: dim)>
+                      (subnames[1], subnames[2]));
+          }
+        AssertThrow(false, ExcInternalError(name+" is not a valid manifold descriptor."))
+      }
+    return shared_ptr<Manifold<dim,spacedim> >();
+  }
+
+  template<int dim, int spacedim>
+  static
+  shared_ptr<Manifold<dim,spacedim> > default_create_manifold(ParsedGridGenerator<dim,spacedim> *p,
+                                                              const std::string &name, typename std::enable_if<(spacedim==3),void*>::type = 0)
   {
     if (name=="HyperBallBoundary")
       {
@@ -936,6 +971,8 @@ struct PGGHelper
     return shared_ptr<Manifold<dim,spacedim> >();
   }
 };
+
+
 
 template <int dim, int spacedim>
 void ParsedGridGenerator<dim, spacedim>::create(Triangulation<dim,spacedim> &tria)
