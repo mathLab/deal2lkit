@@ -42,5 +42,6 @@ int main (int argc, char *argv[])
     v1[index1.nth_index_in_set(i)] = 1.;
 
   vector_shift(v1,1.);
+  v1.compress(VectorOperation::add);
   v1.print(std::cout);
 }

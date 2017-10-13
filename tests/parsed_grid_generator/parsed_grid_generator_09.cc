@@ -45,7 +45,7 @@ int main ()
   ParsedGridGenerator<3,3> e("Hyper Cube with Cylindrical Hole", "hyper_cube_with_cylindrical_hole");
   ParsedGridGenerator<3,3> f("Hyper L", "hyper_L");
   ParsedGridGenerator<3,3> g("Half Hyper Ball", "half_hyper_ball");
-  ParsedGridGenerator<2,2> h("Cylinder", "cylinder");
+  //  ParsedGridGenerator<2,2> h("Cylinder", "cylinder");
   ParsedGridGenerator<2,2> i("Truncated Cone", "truncated_cone");
   // ParsedGridGenerator<2,2> l("Hyper Cross", "hyper_cross");
   ParsedGridGenerator<2,2> m("Hyper Cube Slit", "hyper_cube_slit");
@@ -73,8 +73,8 @@ int main ()
   test(f);
   deallog <<"Half Hyper Ball"<<std::endl;
   test(g);
-  deallog <<"Cylinder"<<std::endl;
-  test(h);
+  // deallog <<"Cylinder"<<std::endl;
+  // test(h);
   deallog <<"Truncated Cone"<<std::endl;
   test(i);
   // deallog <<"Hyper Cross"<<std::endl;
