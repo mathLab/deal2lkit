@@ -65,12 +65,12 @@ int main ()
   b.log_info();
 
   prm.parse_input_from_string(""
-                             "subsection Test<1>\n"
-                             "  set A double = 3.0\n"
-                             "end\n"
-                             "subsection Test<2>\n"
-                             "  set A double = 5.0\n"
-                             "end\n");
+                              "subsection Test<1>\n"
+                              "  set A double = 3.0\n"
+                              "end\n"
+                              "subsection Test<2>\n"
+                              "  set A double = 5.0\n"
+                              "end\n");
 
   prm.log_parameters(deallog);
   ParameterAcceptor::parse_all_parameters(prm);

@@ -48,9 +48,9 @@ int main ()
   ParameterAcceptor::declare_all_parameters(prm);
 
   prm.parse_input_from_string(""
-                             "subsection Grid\n"
-                             "  set Output grid file name = grid.ar\n"
-                             "end\n");
+                              "subsection Grid\n"
+                              "  set Output grid file name = grid.ar\n"
+                              "end\n");
 
   ParameterAcceptor::parse_all_parameters(prm);
 
@@ -67,11 +67,11 @@ int main ()
   is.close();
 
   prm.parse_input_from_string(""
-                             "subsection Grid\n"
-                             "  set Grid to generate = file\n"
-                             "  set Input grid file name = grid.ar\n"
-                             "  set Output grid file name = grid2.ar\n"
-                             "end\n");
+                              "subsection Grid\n"
+                              "  set Grid to generate = file\n"
+                              "  set Input grid file name = grid.ar\n"
+                              "  set Output grid file name = grid2.ar\n"
+                              "end\n");
 
   ParameterAcceptor::parse_all_parameters(prm);
   auto t2 = SP(a.serial());

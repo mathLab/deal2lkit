@@ -895,7 +895,7 @@ struct PGGHelper
   template<int dim, int spacedim>
   static
   shared_ptr<Manifold<dim,spacedim> > default_create_manifold(ParsedGridGenerator<dim,spacedim> *p,
-                                                              const std::string &name, typename std::enable_if<(spacedim<3),void*>::type = 0)
+                                                              const std::string &name, typename std::enable_if<(spacedim<3),void *>::type = 0)
   {
     if (name=="HyperBallBoundary")
       {
@@ -930,7 +930,7 @@ struct PGGHelper
   template<int dim, int spacedim>
   static
   shared_ptr<Manifold<dim,spacedim> > default_create_manifold(ParsedGridGenerator<dim,spacedim> *p,
-                                                              const std::string &name, typename std::enable_if<(spacedim==3),void*>::type = 0)
+                                                              const std::string &name, typename std::enable_if<(spacedim==3),void *>::type = 0)
   {
     if (name=="HyperBallBoundary")
       {

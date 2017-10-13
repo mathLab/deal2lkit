@@ -40,11 +40,11 @@ int main ()
   ParameterHandler prm;
   ParameterAcceptor::declare_all_parameters(prm);
   prm.parse_input_from_string(""
-                             "subsection Read\n"
-                             "  set Grid to generate = file \n"
-                             "  set Input grid file name = "
-                             SOURCE_DIR"/grids/mesh_22.msh\n"
-                             "end\n");
+                              "subsection Read\n"
+                              "  set Grid to generate = file \n"
+                              "  set Input grid file name = "
+                              SOURCE_DIR"/grids/mesh_22.msh\n"
+                              "end\n");
 
   ParameterAcceptor::parse_all_parameters(prm);
 

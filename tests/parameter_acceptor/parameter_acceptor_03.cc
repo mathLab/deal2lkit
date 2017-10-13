@@ -56,15 +56,15 @@ int main ()
   ParameterHandler prm;
   ParameterAcceptor::declare_all_parameters(prm);
   prm.parse_input_from_string(""
-                             "subsection Test<1>\n"
-                             "  set A point = 1.0\n"
-                             "end\n"
-                             "subsection Test<2>\n"
-                             "  set A point = 1.0, 2.0\n"
-                             "end\n"
-                             "subsection Test<3>\n"
-                             "  set A point = 1.0, 2.0, 3.0\n"
-                             "end\n");
+                              "subsection Test<1>\n"
+                              "  set A point = 1.0\n"
+                              "end\n"
+                              "subsection Test<2>\n"
+                              "  set A point = 1.0, 2.0\n"
+                              "end\n"
+                              "subsection Test<3>\n"
+                              "  set A point = 1.0, 2.0, 3.0\n"
+                              "end\n");
 
   prm.log_parameters(deallog);
   ParameterAcceptor::parse_all_parameters(prm);

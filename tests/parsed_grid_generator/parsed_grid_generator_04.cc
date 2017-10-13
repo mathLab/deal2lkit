@@ -54,11 +54,11 @@ int main ()
   ParameterAcceptor::declare_all_parameters(prm);
 
   prm.parse_input_from_string(""
-                             "subsection Rectangle\n"
-                             "  set Grid to generate = rectangle \n"
-                             "  set Optional Point<spacedim> 1 = 0, 0 \n"
-                             "  set Optional Point<spacedim> 2 = -1., -2. \n"
-                             "end\n");
+                              "subsection Rectangle\n"
+                              "  set Grid to generate = rectangle \n"
+                              "  set Optional Point<spacedim> 1 = 0, 0 \n"
+                              "  set Optional Point<spacedim> 2 = -1., -2. \n"
+                              "end\n");
 
   string3 = ""
             "subsection Rectangle with points\n"
