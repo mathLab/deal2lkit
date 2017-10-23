@@ -595,6 +595,63 @@ struct PGGHelper
       }
   }
 
+  static void
+  create_grid(ParsedGridGenerator<1, 3> *p,
+              Triangulation<1,3> &tria)
+  {
+    if (p->grid_name == "rectangle")
+      {
+        Tensor<1,1> initializer1;
+        Tensor<1,1> initializer2;
+        for (unsigned int i=0; i<1; ++i)
+          {
+            initializer1[i]=p->point_option_one(i);
+            initializer2[i]=p->point_option_two(i);
+          }
+        Point<1> p1(initializer1);
+        Point<1> p2(initializer2);
+
+        GridGenerator::subdivided_hyper_rectangle (tria,
+                                                   p->un_int_vec_option_one,
+                                                   p2,
+                                                   p1,
+                                                   p->colorize);
+      }
+    else if (p->grid_name == "file")
+      {
+        GridIn<1, 3> gi;
+        gi.attach_triangulation(tria);
+
+        std::ifstream in(p->input_grid_file_name.c_str());
+        AssertThrow(in, ExcIO());
+
+        std::string ext = extension(p->input_grid_file_name);
+        if (ext == "vtk")
+          gi.read_vtk(in);
+        else if (ext == "msh")
+          gi.read_msh(in);
+        else if (ext == "ucd" || ext == "inp")
+          gi.read_ucd(in);
+        else if (ext == "unv")
+          gi.read_unv(in);
+        else if (ext == "ar")
+          {
+            boost::archive::text_iarchive ia(in);
+            tria.load(ia, 0);
+          }
+        else if (ext == "bin")
+          {
+            boost::archive::binary_iarchive ia(in);
+            tria.load(ia, 0);
+          }
+        else
+          Assert(false, ExcNotImplemented());
+      }
+    else
+      AssertThrow(false, ExcMessage("Not implemented: " + p->grid_name));
+
+  }
+
   /**
    * This function is used to generate grids when spacedim = dim = 3.
    */
@@ -886,25 +943,34 @@ void ParsedGridGenerator<dim, spacedim>::create(Triangulation<dim,spacedim> &tri
   Assert(grid_name != "", ExcNotInitialized());
   PGGHelper::create_grid( this, tria);
 
-  parse_manifold_descriptors(optional_manifold_descriptors);
-
-  if (copy_boundary_to_manifold_ids || create_default_manifolds)
-    GridTools::copy_boundary_to_manifold_id(tria);
-
-  if (copy_material_to_manifold_ids)
-    GridTools::copy_material_to_manifold_id(tria);
-
-  if (create_default_manifolds)
-    parse_manifold_descriptors(default_manifold_descriptors);
-
-  // Now attach the manifold descriptors
-  for (auto m: manifold_descriptors)
+  if (!(dim==1 && spacedim==3))
     {
-      tria.set_manifold(m.first, *m.second);
+      parse_manifold_descriptors(optional_manifold_descriptors);
+
+      if (copy_boundary_to_manifold_ids || create_default_manifolds)
+        GridTools::copy_boundary_to_manifold_id(tria);
+
+      if (copy_material_to_manifold_ids)
+        GridTools::copy_material_to_manifold_id(tria);
+
+      if (create_default_manifolds)
+        parse_manifold_descriptors(default_manifold_descriptors);
+
+      // Now attach the manifold descriptors
+      for (auto m: manifold_descriptors)
+        {
+          tria.set_manifold(m.first, *m.second);
+        }
     }
 
 }
 
+template<>
+void
+ParsedGridGenerator<1, 3>::parse_manifold_descriptors(const std::string &)
+{
+  Assert(false,ExcNotImplemented());
+}
 
 template <int dim, int spacedim>
 void
@@ -921,7 +987,6 @@ ParsedGridGenerator<dim, spacedim>::parse_manifold_descriptors(const std::string
         PGGHelper::create_manifold(this, comp[1]);
     }
 }
-
 
 
 template <int dim, int spacedim>
@@ -1019,7 +1084,7 @@ D2K_NAMESPACE_CLOSE
 
 template class deal2lkit::ParsedGridGenerator<1,1>;
 template class deal2lkit::ParsedGridGenerator<1,2>;
-//template class deal2lkit::ParsedGridGenerator<1,3>;
+template class deal2lkit::ParsedGridGenerator<1,3>;
 template class deal2lkit::ParsedGridGenerator<2,2>;
 template class deal2lkit::ParsedGridGenerator<2,3>;
 template class deal2lkit::ParsedGridGenerator<3,3>;
