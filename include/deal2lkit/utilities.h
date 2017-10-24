@@ -39,7 +39,6 @@ DEAL_II_DISABLE_EXTRA_DIAGNOSTICS
 #include <Teuchos_TimeMonitor.hpp>
 #endif
 #ifdef DEAL_II_WITH_PETSC
-#include <deal.II/lac/petsc_block_vector.h>
 #include <deal.II/lac/petsc_parallel_block_vector.h>
 #include <deal.II/lac/petsc_vector.h>
 #endif
