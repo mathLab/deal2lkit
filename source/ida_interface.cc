@@ -27,7 +27,7 @@
 #endif
 #ifdef DEAL_II_WITH_PETSC
 #include <deal.II/lac/petsc_parallel_block_vector.h>
-#include <deal.II/lac/petsc_vector.h>
+#include <deal.II/lac/petsc_vector_base.h>
 #endif
 #include <deal.II/base/utilities.h>
 
