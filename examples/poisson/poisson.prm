@@ -68,7 +68,7 @@ subsection deal2lkit::ParsedGridGenerator<2, 2>
   set Colorize                   = false
   set Grid to generate           = rectangle
   set Input grid file name       = 
-  set Mesh smoothing alogrithm   = none
+  set Mesh smoothing algorithm   = none
   set Optional Point<spacedim> 1 = 0,0
   set Optional Point<spacedim> 2 = 1,1
   set Optional double 1          = 1.0

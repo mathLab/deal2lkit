@@ -6,7 +6,7 @@ DEAL:parameters:Flagellum::Create default manifolds: true
 DEAL:parameters:Flagellum::Grid to generate: rectangle
 DEAL:parameters:Flagellum::Input grid file name: 
 DEAL:parameters:Flagellum::Manifold descriptors: 
-DEAL:parameters:Flagellum::Mesh smoothing alogrithm: none
+DEAL:parameters:Flagellum::Mesh smoothing algorithm: none
 DEAL:parameters:Flagellum::Optional Point<spacedim> 1: 0,0,0
 DEAL:parameters:Flagellum::Optional Point<spacedim> 2: 1,0,0
 DEAL:parameters:Flagellum::Optional double 1: 1.0

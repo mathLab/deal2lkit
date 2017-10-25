@@ -23,7 +23,7 @@ subsection Domain
   set Grid to generate              = file
   set Input grid file name          = ../source/grid-2.2.ucd
   set Manifold descriptors          = 
-  set Mesh smoothing alogrithm      = none
+  set Mesh smoothing algorithm      = none
   set Optional Point<spacedim> 1    = 0,0
   set Optional Point<spacedim> 2    = 1,1
   set Optional double 1             = 1.0

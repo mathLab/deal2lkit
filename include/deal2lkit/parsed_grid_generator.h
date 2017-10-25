@@ -88,7 +88,7 @@ struct PGGHelper;
  *   set Colorize                   = false
  *   set Grid to generate           = rectangle
  *   set Input grid file name       =
- *   set Mesh smoothing alogrithm   = none
+ *   set Mesh smoothing algorithm   = none
  *   set Optional Point<spacedim> 1 = 7.0,8.0,9.0
  *   set Optional Point<spacedim> 2 = 15.0,16.0,16.7
  *   set Optional double 1          = 1.0
@@ -105,7 +105,7 @@ struct PGGHelper;
  *   set Colorize                   = true
  *   set Grid to generate           = rectangle
  *   set Input grid file name       =
- *   set Mesh smoothing alogrithm   = none
+ *   set Mesh smoothing algorithm   = none
  *   set Optional Point<spacedim> 1 = 10.0,10.0
  *   set Optional Point<spacedim> 2 = 20.0,20.0
  *   set Optional double 1          = 1.0
