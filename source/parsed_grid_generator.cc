@@ -195,7 +195,7 @@ void ParsedGridGenerator<dim, spacedim>::declare_parameters(ParameterHandler &pr
                );
 
   add_parameter(prm, &mesh_smoothing,
-                "Mesh smoothing alogrithm", mesh_smoothing,
+                "Mesh smoothing algorithm", mesh_smoothing,
                 Patterns::MultipleSelection("none|"
                                             "limit_level_difference_at_vertices|"
                                             "eliminate_unrefined_islands|"

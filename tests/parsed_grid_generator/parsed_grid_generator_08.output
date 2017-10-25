@@ -6,7 +6,7 @@ DEAL:parameters:Cube::Create default manifolds: true
 DEAL:parameters:Cube::Grid to generate: rectangle
 DEAL:parameters:Cube::Input grid file name: 
 DEAL:parameters:Cube::Manifold descriptors: 
-DEAL:parameters:Cube::Mesh smoothing alogrithm: none
+DEAL:parameters:Cube::Mesh smoothing algorithm: none
 DEAL:parameters:Cube::Optional Point<spacedim> 1: 7,8,9
 DEAL:parameters:Cube::Optional Point<spacedim> 2: 15,16,16
 DEAL:parameters:Cube::Optional double 1: 1.0
@@ -23,7 +23,7 @@ DEAL:parameters:Rectangle::Create default manifolds: true
 DEAL:parameters:Rectangle::Grid to generate: rectangle
 DEAL:parameters:Rectangle::Input grid file name: 
 DEAL:parameters:Rectangle::Manifold descriptors: 
-DEAL:parameters:Rectangle::Mesh smoothing alogrithm: none
+DEAL:parameters:Rectangle::Mesh smoothing algorithm: none
 DEAL:parameters:Rectangle::Optional Point<spacedim> 1: 10,10
 DEAL:parameters:Rectangle::Optional Point<spacedim> 2: 20,20
 DEAL:parameters:Rectangle::Optional double 1: 1.0
