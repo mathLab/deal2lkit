@@ -16,23 +16,6 @@ DEAL:parameters:Cheese::Optional int 1: 0
 DEAL:parameters:Cheese::Optional int 2: 0
 DEAL:parameters:Cheese::Optional vector of dim int: 1,2
 DEAL:parameters:Cheese::Output grid file name: 
-DEAL:parameters:Cylinder::Colorize: false
-DEAL:parameters:Cylinder::Copy boundary to manifold ids: false
-DEAL:parameters:Cylinder::Copy material to manifold ids: false
-DEAL:parameters:Cylinder::Create default manifolds: true
-DEAL:parameters:Cylinder::Grid to generate: cylinder
-DEAL:parameters:Cylinder::Input grid file name: 
-DEAL:parameters:Cylinder::Manifold descriptors: 
-DEAL:parameters:Cylinder::Mesh smoothing algorithm: none
-DEAL:parameters:Cylinder::Optional Point<spacedim> 1: 0,0
-DEAL:parameters:Cylinder::Optional Point<spacedim> 2: 1,1
-DEAL:parameters:Cylinder::Optional double 1: 1.0
-DEAL:parameters:Cylinder::Optional double 2: 0.5
-DEAL:parameters:Cylinder::Optional double 3: 1.5
-DEAL:parameters:Cylinder::Optional int 1: 1
-DEAL:parameters:Cylinder::Optional int 2: 2
-DEAL:parameters:Cylinder::Optional vector of dim int: 1,1
-DEAL:parameters:Cylinder::Output grid file name: 
 DEAL:parameters:Cylinder Shell::Colorize: false
 DEAL:parameters:Cylinder Shell::Copy boundary to manifold ids: false
 DEAL:parameters:Cylinder Shell::Copy material to manifold ids: false
