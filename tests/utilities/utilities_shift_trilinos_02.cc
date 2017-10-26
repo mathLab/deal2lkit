@@ -17,7 +17,8 @@
 #include <deal2lkit/utilities.h>
 #include <deal.II/base/utilities.h>
 #include <deal.II/base/mpi.h>
-#include <deal.II/lac/trilinos_block_vector.h>
+#include <deal.II/lac/trilinos_parallel_block_vector.h>
+#include <deal.II/lac/trilinos_vector.h>
 
 
 using namespace deal2lkit;

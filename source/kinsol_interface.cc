@@ -27,7 +27,6 @@
 #endif
 
 #ifdef DEAL_II_WITH_TRILINOS
-#include <deal.II/lac/trilinos_block_vector.h>
 #ifdef DEAL_II_WITH_MPI
 #include <deal.II/lac/trilinos_parallel_block_vector.h>
 #endif

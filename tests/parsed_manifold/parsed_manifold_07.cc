@@ -81,7 +81,7 @@ int main ()
         << SOURCE_DIR "/iges_files/sphere.iges" << std::endl
         <<  "end" << std::endl;
 
-  prm.read_input_from_string(input.str().c_str());
+  prm.parse_input_from_string(input.str().c_str());
   ParameterAcceptor::parse_all_parameters(prm);
 
   shared_ptr<Triangulation<3, 3> > tria = SP(pgg.serial());

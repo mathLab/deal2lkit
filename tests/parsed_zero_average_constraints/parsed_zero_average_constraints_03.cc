@@ -80,7 +80,6 @@ int main()
   initlog();
   deallog << std::setprecision (2);
   deallog << std::fixed;
-  deallog.threshold_double(1.e-12);
   //ParameterAcceptor::prm.log_parameters(deallog);
 
   test_hyper_cube<2>();

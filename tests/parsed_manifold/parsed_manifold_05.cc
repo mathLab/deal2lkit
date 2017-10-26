@@ -57,7 +57,7 @@ void test(const std::string &name)
         <<  "  set Optional Point<spacedim> 1= -1,0,0" << std::endl
         <<  "  set Optional Point<spacedim> 2=  1,0,0" << std::endl
         <<  "end" << std::endl;
-  prm.read_input_from_string(input.str().c_str());
+  prm.parse_input_from_string(input.str().c_str());
   ParameterAcceptor::parse_all_parameters(prm);
 
   shared_ptr<Triangulation<dim, spacedim> > tria = SP(pgg.serial());

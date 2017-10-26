@@ -92,7 +92,6 @@ int main ()
 {
   initlog();
   deallog.depth_console(0);
-  deallog.threshold_double(1.e-10);
   ParameterAcceptor::prm.log_parameters(deallog);
 
   test<1>();
