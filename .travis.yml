@@ -16,5 +16,5 @@ before_install:
   - ./scripts/dr.sh "cd deal2lkit; ./scripts/check_indentation.sh"
 
 script:
-  - ./scripts/dr.sh "cd deal2lkit/build-travis; cmake -GNinja -DD2K_ENABLE_TESTING=ON -DD2K_COMPONENT_DOCUMENTATION=OFF -DCMAKE_BUILD_TYPE=$BUILD_TYPE ..; ninja"
+  - ./scripts/dr.sh "cd deal2lkit/build-travis; cmake -GNinja -DD2K_ENABLE_TESTING=ON -DD2K_COMPONENT_DOCUMENTATION=OFF -DCMAKE_BUILD_TYPE=$BUILD_TYPE ..; ninja -j4"
   - ./scripts/dr.sh "cd deal2lkit/build-travis; ninja setup_tests; ctest -j4 -V"
