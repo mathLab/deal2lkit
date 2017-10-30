@@ -80,7 +80,7 @@ template <typename VEC>
 double IMEXStepper<VEC>::get_alpha() const
 {
   double alpha;
-  if (initial_time == final_time || step_size == 0.0)
+  if (std::fabs(initial_time - final_time) < 1e-14 || step_size < 1e-14)
     alpha = 0.0;
   else
     alpha = 1./step_size;
