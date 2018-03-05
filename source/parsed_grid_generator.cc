@@ -455,9 +455,11 @@ struct PGGHelper
   {
     if (p->grid_name == "hyper_sphere")
       {
-        GridGenerator::hyper_sphere<dim,dim+1> ( tria,
-                                                 p->point_option_one,
-                                                 p->double_option_one);
+        // deal.II hyper_sphere dev requires only spacedim as template
+        // argument, but it can use "tria" to find the templated values
+        GridGenerator::hyper_sphere ( tria,
+                                      p->point_option_one,
+                                      p->double_option_one);
         if (p->create_default_manifolds)
           tria.set_all_manifold_ids(0);
         p->default_manifold_descriptors = "0=SphericalManifold";

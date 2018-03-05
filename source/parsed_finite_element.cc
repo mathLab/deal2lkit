@@ -62,7 +62,7 @@ void ParsedFiniteElement<dim, spacedim>::declare_parameters(ParameterHandler &pr
 }
 
 template <int dim, int spacedim>
-FiniteElement<dim,spacedim> *
+std::unique_ptr< FiniteElement<dim,spacedim> >
 ParsedFiniteElement<dim, spacedim>::operator()() const
 {
   return FETools::get_fe_by_name<dim,spacedim>(fe_name);
@@ -83,9 +83,9 @@ void ParsedFiniteElement<dim,spacedim>::parse_parameters_call_back()
       block_names[j] = component_names[i];
     }
   block_names.resize(j+1);
-  FiniteElement<dim,spacedim> *fe = (*this)();
+  std::unique_ptr< FiniteElement<dim,spacedim> > fe = (*this)();
   const unsigned int nc = fe->n_components();
-  delete fe;
+  fe.reset();
   AssertThrow(component_names.size() == nc,
               ExcInternalError("Generated FE has the wrong number of components."));
 }
