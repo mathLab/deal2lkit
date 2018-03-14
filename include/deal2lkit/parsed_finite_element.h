@@ -136,7 +136,7 @@ public:
    * different from the number of components given at construction
    * time.
    */
-  FiniteElement<dim, spacedim> *operator() () const;
+  std::unique_ptr< FiniteElement<dim,spacedim> > operator() () const;
 
   /**
    * Fill information about blocks after parsing the parameters.
