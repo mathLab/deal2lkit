@@ -455,7 +455,7 @@ struct PGGHelper
   {
     if (p->grid_name == "hyper_sphere")
       {
-        GridGenerator::hyper_sphere<dim,dim+1> ( tria,
+        GridGenerator::hyper_sphere<dim+1> ( tria,
                                                  p->point_option_one,
                                                  p->double_option_one);
         if (p->create_default_manifolds)
@@ -1125,4 +1125,3 @@ template class deal2lkit::ParsedGridGenerator<1,3>;
 template class deal2lkit::ParsedGridGenerator<2,2>;
 template class deal2lkit::ParsedGridGenerator<2,3>;
 template class deal2lkit::ParsedGridGenerator<3,3>;
-
