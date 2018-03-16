@@ -58,7 +58,9 @@ namespace DOFUtilities
   void
   extract_local_dofs (const VEC &global_vector,
                       const std::vector<types::global_dof_index> &local_dof_indices,
-                      std::vector<Number> &independent_local_dofs)
+                      std::vector<Number> &independent_local_dofs,
+                      const unsigned int n_vectors=1,
+                      const unsigned int my_index=0)
   {
     AssertDimension(local_dof_indices.size(),independent_local_dofs.size());
 
@@ -73,13 +75,16 @@ namespace DOFUtilities
 #ifdef DEAL_II_WITH_TRILINOS
         else if (typeid(Number) == typeid(Sdouble))
           {
-            Sdouble ildv(dofs_per_cell, i, global_vector (local_dof_indices[i]));
+            Sdouble ildv(n_vectors*dofs_per_cell, i+my_index*dofs_per_cell,
+                         global_vector (local_dof_indices[i]));
             ((Sdouble &)independent_local_dofs[i]) = ildv;
           }
         else if (typeid(Number) == typeid(SSdouble))
           {
-            SSdouble ildv(dofs_per_cell, i, global_vector(local_dof_indices[i]));
-            ildv.val() = Sdouble(dofs_per_cell, i, global_vector(local_dof_indices[i]));
+            SSdouble ildv(n_vectors*dofs_per_cell, i+my_index*dofs_per_cell,
+                          global_vector(local_dof_indices[i]));
+            ildv.val() = Sdouble(n_vectors*dofs_per_cell, i+my_index*dofs_per_cell,
+                                 global_vector(local_dof_indices[i]));
             ((SSdouble &)independent_local_dofs[i]) = ildv;
           }
 #endif

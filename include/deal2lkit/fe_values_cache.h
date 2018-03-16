@@ -277,6 +277,31 @@ public:
 
 
 
+  template<typename VEC, typename Number>
+  void cache_local_solution_vectors(const std::vector<std::string> &prefixes,
+                                    const std::vector<VEC *> &input_vectors,
+                                    const Number dummy)
+  {
+    AssertDimension(prefixes.size(), input_vectors.size());
+    const unsigned int n_dofs = get_current_fe_values().get_fe().dofs_per_cell;
+    const auto n_vecs = input_vectors.size();
+
+    for (unsigned int i=0; i<n_vecs; ++i)
+      {
+        std::string name = prefixes[i]+"_independent_local_dofs_"+type(dummy);
+
+        if (!cache.have(name))
+          cache.add_copy(std::vector<Number>(n_dofs), name);
+
+        std::vector<Number> &independent_local_dofs
+          = cache.template get<std::vector<Number> >(name);
+        DOFUtilities::extract_local_dofs(*input_vectors[i], local_dof_indices,
+                                         independent_local_dofs, n_vecs, i);
+      }
+  }
+
+
+
 
   /**
    * Return the values of the named cached solution vector.
