@@ -10,7 +10,7 @@ ParameterAcceptor::ParameterAcceptor(const std::string &section_name) :
     parse_parameters_call_back();
   };
   dealii::ParameterAcceptor::parse_parameters_call_back.connect(sig);
-};
+}
 
 
 

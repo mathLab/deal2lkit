@@ -169,8 +169,8 @@ public:
    * used by the class itself.
    */
   ParsedGridGenerator (const std::string &section_name="",
-                       const std::string &grid_type="rectangle",
-                       const std::string &grid_arguments="",
+                       const std::string &grid_type="hyper_cube",
+                       const std::string &grid_arguments="0 1",
                        const std::string &mesh_smoothing="none",
                        const std::string &output_grid_file="",
                        const std::string &manifold_descriptors="",

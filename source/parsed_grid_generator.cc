@@ -133,7 +133,7 @@ ParsedGridGenerator<dim, spacedim>::ParsedGridGenerator(const std::string &_sect
 template <int dim, int spacedim>
 std::string ParsedGridGenerator<dim, spacedim>::get_grid_names()
 {
-  return "file|rectangle|hyper_ball|hyper_shell|hyper_sphere|hyper_L|half_hyper_ball|cylinder|truncated_cone|hyper_cross|hyper_cube_slit|half_hyper_shell|quarter_hyper_shell|cylinder_shell|torus|hyper_cube_with_cylindrical_hole|moebius|cheese";
+  return "file|hyper_cube|rectangle|hyper_ball|hyper_shell|hyper_sphere|hyper_L|half_hyper_ball|cylinder|truncated_cone|hyper_cross|hyper_cube_slit|half_hyper_shell|quarter_hyper_shell|cylinder_shell|torus|hyper_cube_with_cylindrical_hole|moebius|cheese";
 }
 
 template <int dim, int spacedim>
@@ -144,21 +144,21 @@ void ParsedGridGenerator<dim, spacedim>::declare_parameters(ParameterHandler &pr
                 Patterns::Selection(get_grid_names()),
                 "The grid to generate. You can choose among:\n"
                 "- file:\n"
-                "	- Grid parameters   = input filename\n\n"
+                "	- Grid arguments   = input filename\n\n"
                 "- rectangle:\n"
-                "	- Grid parameters   = subdivisions : lower-left corner : upper-right corner\n"
+                "	- Grid arguments   = subdivisions : lower-left corner : upper-right corner\n"
                 "- hyper_sphere\n"
-                "	- Grid parameters   =  center : radius\n"
+                "	- Grid arguments   =  center : radius\n"
                 "- hyper_ball \n"
-                "	- Grid parameters   =  center : radius\n"
+                "	- Grid arguments   =  center : radius\n"
                 "- hyper_shell \n"
-                "	- Grid parameters   =  center : inner radius : outer radius : number of cells\n"
+                "	- Grid arguments   =  center : inner radius : outer radius : number of cells\n"
                 "- hyper_L :\n"
-                "	- Grid parameters   =  left : right\n"
+                "	- Grid arguments   =  left : right\n"
                 "- half_hyper_ball :\n"
-                "	- Grid parameters   =  center : radius\n"
+                "	- Grid arguments   =  center : radius\n"
                 "- cylinder:\n"
-                "	- Grid parameters   =  radius : half length\n"
+                "	- Grid arguments   =  radius : half length\n"
                 "- truncated_cone : create a cut cone around the x-axis. The cone extends from x=-half_length to x=half_length and its projection into the yz-plane is a circle of radius radius1 at x=-half_length and a circle of radius radius2 at x=+half_length :\n"
                 "	- Optional double : radius 1\n"
                 "	- Optional double : radius 2\n"
@@ -205,6 +205,8 @@ void ParsedGridGenerator<dim, spacedim>::declare_parameters(ParameterHandler &pr
                 "- cheese : domain itself is rectangular. The argument holes specifies how many square holes the domain should have in each coordinate direction :\n"
                 "	- Optional Vector of dim int: number of holes on each direction\n"
                );
+  add_parameter(prm, &grid_arguments,
+                "Grid arguments", grid_arguments, Patterns::Anything());
 
   add_parameter(prm, &mesh_smoothing,
                 "Mesh smoothing algorithm", mesh_smoothing,
@@ -271,6 +273,10 @@ void ParsedGridGenerator<dim, spacedim>::declare_parameters(ParameterHandler &pr
                 "- NormalProjectionBoundary:file.iges/step : interface to CAD file:\n"
                 "- NormalToMeshProjectionBoundary:file.iges/step : interface to CAD file:\n"
                );
+
+  add_parameter(prm, &manifold_arguments,
+                "Manifold arguments", manifold_arguments,
+                Patterns::Anything());
 
   add_parameter(prm, &output_grid_file_name,
                 "Output grid file name", output_grid_file_name,
@@ -342,7 +348,14 @@ struct PGGHelper
   default_create_grid(ParsedGridGenerator<dim, spacedim> *p,
                       Triangulation<dim,spacedim> &tria)
   {
-    if (p->grid_name == "rectangle")
+    if (p->grid_name == "hyper_cube")
+      {
+        std::tuple<double, double> t;
+        to_value(p->grid_arguments, t);
+        forward_as_args(GridGenerator::hyper_cube<dim,spacedim>,
+                        std::tuple_cat(std::tie(tria), t, std::tie(p->colorize)));
+      }
+    else if (p->grid_name == "rectangle")
       {
         std::tuple<std::vector<unsigned int>, Point<dim>, Point<dim> > t;
         to_value(p->grid_arguments, t);
