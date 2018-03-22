@@ -23,7 +23,7 @@
 using namespace deal2lkit;
 
 template<int dim>
-class Test : public ParameterAcceptor
+class Test : public deal2lkit::ParameterAcceptor
 {
 public:
   virtual void declare_parameters(ParameterHandler &prm)

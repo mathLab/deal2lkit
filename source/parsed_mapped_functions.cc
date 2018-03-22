@@ -25,7 +25,7 @@ ParsedMappedFunctions<spacedim>::ParsedMappedFunctions(const std::string &parsed
                                                        const std::string &parsed_id_components,
                                                        const std::string &parsed_id_functions,
                                                        const std::string &parsed_constants):
-  ParameterAcceptor(parsed_name),
+  ParameterAcceptor(parsed_name +(parsed_component_names != "" ? " (" +parsed_component_names+")" : "")),
   name (parsed_name),
   str_id_components (parsed_id_components),
   str_id_functions (parsed_id_functions),
@@ -256,13 +256,7 @@ std::vector<unsigned int> ParsedMappedFunctions<spacedim>::get_mapped_normal_ids
 template <int spacedim>
 void ParsedMappedFunctions<spacedim>::declare_parameters(ParameterHandler &prm)
 {
-  if (str_component_names != "")
-    add_parameter(prm, &_component_names, "Known component names", str_component_names,
-                  Patterns::List(Patterns::Anything(),1,n_components,","),
-                  "These variables can be used to set the corrisponding component mask, "
-                  "instead of specifying each component number");
-
-  else
+  if (str_component_names == "")
     {
       std::vector<std::string> cn(n_components, "u");
       add_parameter(prm, &_component_names, "Known component names", print(cn),

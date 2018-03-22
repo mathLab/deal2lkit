@@ -51,11 +51,11 @@ D2K_NAMESPACE_OPEN
  *
  * ParsedMappedFunctions<spacedim>
  *    parsed_mapped_functions("Forcing terms", // name for the section of the Parameter Handler to use
- *                     n_components, // The number of components of the function
- *                     "u,u,p",         // names of known components that can be used instead of component numbers
- *                     "0=u % 1=2 % 6=ALL", // boundary_id = component;other_component % other_id = comp; other_comp
- *                     "0=x;y;0 % 1=0;0;0 % 6=y*k;0;k", // boundary_id = expression % other_id = other_expression
- *                     "k=1"); // list of constants that can be used in the above epressions
+ *                             n_components, // The number of components of the function
+ *                             "u,u,p",         // names of known components that can be used instead of component numbers
+ *                             "0=u % 1=2 % 6=ALL", // boundary_id = component;other_component % other_id = comp; other_comp
+ *                             "0=x;y;0 % 1=0;0;0 % 6=y*k;0;k", // boundary_id = expression % other_id = other_expression
+ *                             "k=1"); // list of constants that can be used in the above epressions
  * ...
  *
  * unsigned int id = cell->material_id();

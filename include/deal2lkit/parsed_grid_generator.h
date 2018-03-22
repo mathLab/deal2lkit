@@ -13,8 +13,8 @@
 //
 //-----------------------------------------------------------
 
-#ifndef _d2k_parsed_grid_generator_h
-#define _d2k_parsed_grid_generator_h
+#ifndef d2k_parsed_grid_generator_h
+#define d2k_parsed_grid_generator_h
 
 #include <deal2lkit/config.h>
 #include <deal2lkit/utilities.h>
@@ -23,6 +23,7 @@
 #include <deal.II/base/parameter_handler.h>
 #include <deal.II/grid/tria.h>
 #include <deal.II/distributed/tria.h>
+#include <deal.II/distributed/shared_tria.h>
 #include <deal.II/grid/manifold_lib.h>
 #include <deal.II/grid/grid_generator.h>
 
@@ -167,21 +168,13 @@ public:
    * arguments, we provide a list of optional arguments that will be
    * used by the class itself.
    */
-  ParsedGridGenerator (const std::string section_name="",
-                       const std::string grid_type="rectangle",
-                       const std::string input_grid_file="",
-                       const std::string opt_point_1="",
-                       const std::string opt_point_2="",
-                       const std::string opt_colorize="false",
-                       const std::string opt_double_1="1.0",
-                       const std::string opt_double_2="0.5",
-                       const std::string opt_double_3="1.5",
-                       const std::string opt_int_1="1",
-                       const std::string opt_int_2="2",
-                       const std::string opt_vec_of_int="",
-                       const std::string mesh_smoothing="none",
-                       const std::string output_grid_file="",
-                       const std::string opt_manifold_descriptors="");
+  ParsedGridGenerator (const std::string &section_name="",
+                       const std::string &grid_type="rectangle",
+                       const std::string &grid_arguments="",
+                       const std::string &mesh_smoothing="none",
+                       const std::string &output_grid_file="",
+                       const std::string &manifold_descriptors="",
+                       const std::string &manifold_arguments="");
 
 
   /**
@@ -195,12 +188,12 @@ public:
   virtual void declare_parameters(ParameterHandler &prm);
 
   /**
-   * Return a pointer to a newly created serial Triangulation. It will
-   * throw an exception if called before any parsing has occured. It
-   * is the user's responsability to destroy the created grid once it
-   * is no longer needed.
+   * Return a unique pointer to a newly created serial Triangulation. It will
+   * throw an exception if called before any parsing has occured. It is the
+   * user's responsability to destroy the created grid once it is no longer
+   * needed.
    */
-  Triangulation<dim, spacedim> *serial();
+  std::unique_ptr<Triangulation<dim, spacedim> > serial();
 
   /**
    * Generate the grid. Fill a user supplied empty Triangulation using
@@ -308,27 +301,31 @@ public:
    */
   void create(Triangulation<dim, spacedim> &tria);
 
-#ifdef DEAL_II_WITH_MPI
-#ifdef DEAL_II_WITH_P4EST
   /**
-   * Return a pointer to a newly created parallel Triangulation. It
+   * Return a pointer to a newly created parallel::distributed::Triangulation.
+   * It will throw an exception if called before any parsing has occured. It is
+   * the user's responsability to destroy the created grid once it is no longer
+   * needed.
+   */
+  std::unique_ptr<Triangulation<dim, spacedim> > distributed(const MPI_Comm &mpi_communicator);
+
+  /**
+   * Return a pointer to a newly created parallel::shared::Triangulation. It
    * will throw an exception if called before any parsing has
    * occured. It is the user's responsability to destroy the created
    * grid once it is no longer needed.
    */
-  parallel::distributed::Triangulation<dim, spacedim> *distributed(MPI_Comm mpi_communicator);
-#endif
-#endif
+  std::unique_ptr<Triangulation<dim, spacedim> > shared(const MPI_Comm &mpi_communicator);
+
 
   /**
    * Write the given Triangulation to the output file specified in
    * `Output file name`, or in the optional file name.
    *
-   * If no `Output file name` is given and filename is the empty string,
-   * this function does nothing. If
-   * an output file name is provided (either in the input file, or as an argument
-   * to this function), then this function will call the
-   * appropriate GridOut method according to the extension of the file
+   * If no `Output file name` is given and filename is the empty string, this
+   * function does nothing. If an output file name is provided (either in the
+   * input file, or as an argument to this function), then this function will
+   * call the appropriate GridOut method according to the extension of the file
    * name.
    */
   void write(const Triangulation<dim, spacedim> &tria,
@@ -353,37 +350,18 @@ private:
    * The manifold descriptor string can be taken among the following:
    *
    * - HyperBallBoundary : boundary of a hyper_ball :
-   *  - Optional double     : radius
-   *  - Optional Point<spacedim> 1: center
    * - CylinderBoundaryOnAxis : boundary of a cylinder, given radius and axis :
-   *  - Optional double     : radius
-   *  - Optional int 1      : axis (0=x, 1=y, 2=z)
    * - GeneralCylinderBoundary : boundary of a cylinder, given radius, a point on the axis and a  direction :
-   *  - Optional double     : radius
-   *  - Optional int 1      : axis (0=x, 1=y, 2=z)
-   *  - Optional Point<spacedim> 1: point on axis
-   *  - Optional Point<spacedim> 2: direction
    * - ConeBoundary :  boundary of a cone, given radii, and two points on the faces :
-   *  - Optional double 1     : radius 1
-   *  - Optional double 2     : radius 2
-   *  - Optional Point<spacedim> 1: point on first face
-   *  - Optional Point<spacedim> 2: point on second face
    * - TorusBoundary : boundary of a torus :
-   *  - Optional double 1     : radius 1
-   *  - Optional double 2     : radius 2
    * - ArclengthProjectionLineManifold:file.iges/step : interface to CAD file:
-   *  - Optional double 1     : scale to apply to input CAD file
    * - ArclengthProjectionLineManifold:file.iges/step : interface to CAD file:
-   *  - Optional double 1     : scale to apply to input CAD file
    * - DirectionalProjectionBoundary:file.iges/step : interface to CAD file:
-   *  - Optional double 1     : scale to apply to input CAD file
-   *  - Optional Point<spacedim> 1: direction of projection
    * - NormalProjectionBoundary:file.iges/step : interface to CAD file:
-   *  - Optional double 1     : scale to apply to input CAD file
    * - NormalToMeshProjectionBoundary:file.iges/step : interface to CAD file:
-   *  - Optional double 1     : scale to apply to input CAD file
    */
-  void parse_manifold_descriptors(const std::string &str_manifold_descriptors);
+  void parse_manifold_descriptors(const std::string &manifold_descriptors,
+                                  const std::string &manifold_arguments);
 
   /**
    * Mesh smoothing to apply to the newly created Triangulation. This
@@ -399,12 +377,24 @@ private:
   std::string grid_name;
 
   /**
+   * The arguments to pass to the grid constructor. These optional arguments
+   * are parsed as a std::tuple, and forwarded to the corresponding function
+   * in the GridGenerator namespace.
+   */
+  std::string grid_arguments;
+
+  /**
    * Optional Manifold descriptors. These are the ones defined by the
    * parameter option "Manifold descriptors". See the documentation of
    * the method parse_manifold_descriptors() for an explanation of the
    * format to be used in the parameter file.
    */
   std::string optional_manifold_descriptors;
+
+  /**
+   * Arguments to pass to manifold constructors.
+   */
+  std::string manifold_arguments;
 
   /**
    * Default Manifold descriptors. This is filled when creating the grid,
@@ -415,24 +405,14 @@ private:
   std::string default_manifold_descriptors;
 
   /**
+   * Arguments to pass to default manifolds.
+   */
+  std::string default_manifold_arguments;
+
+  /**
    * A map of Manifold associated to the given manifold_ids.
    */
   std::map<types::manifold_id, shared_ptr<Manifold<dim,spacedim> > > manifold_descriptors;
-
-  /**
-   * Optional double argument. First option.
-   */
-  double double_option_one;
-
-  /**
-   * Optional double argument. Second option.
-   */
-  double double_option_two;
-
-  /**
-   * Optional double argument. Third option.
-   */
-  double double_option_three;
 
   /**
    * Optional Point argument. First Option.

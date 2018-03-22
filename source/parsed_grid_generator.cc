@@ -32,6 +32,7 @@
 
 #include <fstream>
 #include <type_traits>
+#include <tuple>
 
 namespace
 {
@@ -48,46 +49,84 @@ namespace
         return "";
       }
   }
+
+  template <class Object, class Tuple, size_t... Is>
+  std::unique_ptr<Object> build_unique_from_tuple(Tuple t,
+                                                  std_cxx14::index_sequence<Is...>)
+  {
+    return std_cxx14::make_unique<Object>(std::get<Is>(t)...);
+  }
+
+  template <class Object, class Tuple>
+  auto make_unique(Tuple t)
+  {
+    return build_unique_from_tuple<Object>(
+             t, std_cxx14::make_index_sequence<std::tuple_size<Tuple> {}> {});
+  }
+
+
+  template <class Object, class Tuple, size_t... Is>
+  std::shared_ptr<Object> build_shared_from_tuple(Tuple t,
+                                                  std_cxx14::index_sequence<Is...>)
+  {
+    return deal2lkit::SP(new Object(std::get<Is>(t)...));
+  }
+
+  template <class Object, class Tuple>
+  auto make_shared(Tuple t)
+  {
+    return build_shared_from_tuple<Object>(
+             t, std_cxx14::make_index_sequence<std::tuple_size<Tuple> {}> {});
+  }
+
+  template <class Tuple, typename Function, size_t... Is>
+  auto forward_as_args_impl(Function f, Tuple t, std_cxx14::index_sequence<Is...>)
+  {
+    return f(std::get<Is>(t)...);
+  }
+
+  template <class Tuple, typename Function>
+  auto forward_as_args(Function f, Tuple t)
+  {
+    return forward_as_args_impl(f, t, std_cxx14::make_index_sequence<std::tuple_size<Tuple> {}> {});
+  }
+
+  template<typename T>
+  auto to_string(const T &t)
+  {
+    return Patterns::Tools::Convert<T>::to_string(t);
+  }
+
+  template<typename T>
+  void to_value(const std::string &name, T &t)
+  {
+    t = Patterns::Tools::Convert<T>::to_value(name);
+  }
 }
 
 D2K_NAMESPACE_OPEN
 
 
 template <int dim, int spacedim>
-ParsedGridGenerator<dim, spacedim>::ParsedGridGenerator(const std::string _section_name,
-                                                        const std::string _grid_type,
-                                                        const std::string _input_grid_file,
-                                                        const std::string _point_1,
-                                                        const std::string _point_2,
-                                                        const std::string _colorize,
-                                                        const std::string _double_1,
-                                                        const std::string _double_2,
-                                                        const std::string _double_3,
-                                                        const std::string _int_1,
-                                                        const std::string _int_2,
-                                                        const std::string _vec_of_int,
-                                                        const std::string _mesh_smoothing,
-                                                        const std::string _output_grid_file,
-                                                        const std::string _manifold_descriptors)
+ParsedGridGenerator<dim, spacedim>::ParsedGridGenerator(const std::string &_section_name,
+                                                        const std::string &_grid_type,
+                                                        const std::string &grid_arguments,
+                                                        const std::string &_mesh_smoothing,
+                                                        const std::string &_output_grid_file,
+                                                        const std::string &manifold_descriptors,
+                                                        const std::string &manifold_arguments)
   :
   ParameterAcceptor(_section_name),
   mesh_smoothing(_mesh_smoothing),
   grid_name(_grid_type),
-  optional_manifold_descriptors(_manifold_descriptors),
+  grid_arguments(grid_arguments),
+  optional_manifold_descriptors(manifold_descriptors),
+  manifold_arguments(manifold_arguments),
   create_default_manifolds(true),
   copy_boundary_to_manifold_ids(false),
   copy_material_to_manifold_ids(false),
-  input_grid_file_name(_input_grid_file),
-  output_grid_file_name(_output_grid_file),
-  str_point_1(_point_1),
-  str_point_2(_point_2),
-  str_colorize(_colorize),
-  str_double_1(_double_1),
-  str_double_2(_double_2),
-  str_double_3(_double_3),
-  str_un_int_1(_int_1),
-  str_un_int_2(_int_2),
-  str_vec_int(_vec_of_int)
+  input_grid_file_name(grid_arguments),
+  output_grid_file_name(_output_grid_file)
 {}
 
 
@@ -216,55 +255,6 @@ void ParsedGridGenerator<dim, spacedim>::declare_parameters(ParameterHandler &pr
                 "The extestion will be used to decide what "
                 "grid format to use.");
 
-  add_parameter(prm, &double_option_one,
-                "Optional double 1", str_double_1,
-                Patterns::Double(),
-                "First additional double to be used in the generation of the grid. "
-                "The use of it will depend on the specific grid.");
-
-  add_parameter(prm, &double_option_two,
-                "Optional double 2", str_double_2,
-                Patterns::Double(),
-                "Second additional double to be used in the generation of the grid. "
-                "The use of it will depend on the specific grid.");
-
-  add_parameter(prm, &double_option_three,
-                "Optional double 3", str_double_3,
-                Patterns::Double(),
-                "Second additional double to be used in the generation of the grid. "
-                "The use of it will depend on the specific grid.");
-
-  add_parameter(prm, &point_option_one,
-                "Optional Point<spacedim> 1", (str_point_1==""?def_point:str_point_1),
-                Patterns::List(Patterns::Double(), spacedim, spacedim),
-                "First additional Point<spacedim> to be used in the generation of the grid. "
-                "The use of it will depend on the specific grid.");
-
-  add_parameter(prm, &point_option_two,
-                "Optional Point<spacedim> 2", (str_point_2==""?def_point_2:str_point_2),
-                Patterns::List(Patterns::Double(), spacedim, spacedim),
-                "Second additional Point<spacedim> to be used in the generation of the grid. "
-                "The use of it will depend on the specific grid.");
-
-
-  add_parameter(prm, &un_int_option_one,
-                "Optional int 1",str_un_int_1,
-                Patterns::Integer(),
-                "Unsigned int to be used in the generation of the grid. "
-                "The use of it will depend on the specific grid.");
-
-  add_parameter(prm, &un_int_option_two,
-                "Optional int 2",str_un_int_2,
-                Patterns::Integer(),
-                "Unsigned int to be used in the generation of the grid. "
-                "The use of it will depend on the specific grid.");
-
-  add_parameter(prm, &un_int_vec_option_one,
-                "Optional vector of dim int", (str_vec_int==""?def_int:str_vec_int),
-                Patterns::List(Patterns::Integer(1), dim, dim),
-                "Vector of positive unsigned int to be used in the generation of the grid. "
-                "The use of it will depend on the specific grid.");
-
   add_parameter(prm, &colorize,
                 "Colorize",str_colorize,
                 Patterns::Bool(),
@@ -307,35 +297,15 @@ void ParsedGridGenerator<dim, spacedim>::declare_parameters(ParameterHandler &pr
                 "use the ones defined in this class.\n"
                 "Available manifold descriptor: \n"
                 "- HyperBallBoundary : boundary of a hyper_ball :\n"
-                "	- Optional double	    : radius\n"
-                "	- Optional Point<spacedim> 1: center\n"
                 "- CylinderBoundaryOnAxis : boundary of a cylinder, given radius and axis :\n"
-                "	- Optional double	    : radius\n"
-                "	- Optional int 1	    : axis (0=x, 1=y, 2=z)\n"
                 "- GeneralCylinderBoundary : boundary of a cylinder, given radius, a point on the axis and a  direction :\n"
-                "	- Optional double	    : radius\n"
-                "	- Optional int 1	    : axis (0=x, 1=y, 2=z)\n"
-                "	- Optional Point<spacedim> 1: point on axis\n"
-                "	- Optional Point<spacedim> 2: direction\n"
                 "- ConeBoundary : boundary of a cone, given radii, and two points on the faces:\n"
-                "	- Optional double 1	    : radius 1\n"
-                "	- Optional double 2	    : radius 2\n"
-                "	- Optional Point<spacedim> 1: point on first face\n"
-                "	- Optional Point<spacedim> 2: point on second face\n"
                 "- TorusBoundary : boundary of a torus :\n"
-                "	- Optional double 1	    : radius 1\n"
-                "	- Optional double 2	    : radius 2\n"
                 "- ArclengthProjectionLineManifold:file.iges/step : interface to CAD file:\n"
-                "	- Optional double 1	    : scale to apply to input CAD file\n"
                 "- ArclengthProjectionLineManifold:file.iges/step : interface to CAD file:\n"
-                "	- Optional double 1	    : scale to apply to input CAD file\n"
                 "- DirectionalProjectionBoundary:file.iges/step : interface to CAD file:\n"
-                "	- Optional double 1	    : scale to apply to input CAD file\n"
-                "	- Optional Point<spacedim> 1: direction of projection\n"
                 "- NormalProjectionBoundary:file.iges/step : interface to CAD file:\n"
-                "	- Optional double 1	    : scale to apply to input CAD file\n"
                 "- NormalToMeshProjectionBoundary:file.iges/step : interface to CAD file:\n"
-                "	- Optional double 1	    : scale to apply to input CAD file\n"
                );
 
   add_parameter(prm, &output_grid_file_name,
@@ -346,29 +316,46 @@ void ParsedGridGenerator<dim, spacedim>::declare_parameters(ParameterHandler &pr
                 "grid format to use. If empty, no grid will be written.");
 }
 
-#ifdef DEAL_II_WITH_MPI
-#ifdef DEAL_II_WITH_P4EST
+
 template <int dim, int spacedim>
-parallel::distributed::Triangulation<dim, spacedim> *
-ParsedGridGenerator<dim, spacedim>::distributed(MPI_Comm comm)
+std::unique_ptr<Triangulation<dim, spacedim> > ParsedGridGenerator<dim, spacedim>::distributed(const MPI_Comm &comm)
 {
   Assert(grid_name != "", ExcNotInitialized());
-  parallel::distributed::Triangulation<dim,spacedim> *tria = new parallel::distributed::Triangulation<dim,spacedim>
-  (comm);//, get_smoothing());
-
+#ifdef DEAL_II_WITH_MPI
+#ifdef DEAL_II_WITH_P4EST
+  auto tria = UP(new parallel::distributed::Triangulation<dim,spacedim>(comm));
+#endif
+#endif
+#ifndef DEAL_II_WITH_MPI
+#ifndef DEAL_II_WITH_P4EST
+  auto tria = UP(new Triangulation<dim,spacedim>());
+#endif
+#endif
   create(*tria);
   return tria;
 }
-#endif
-#endif
 
 
 template <int dim, int spacedim>
-Triangulation<dim, spacedim> *
-ParsedGridGenerator<dim, spacedim>::serial()
+std::unique_ptr<Triangulation<dim, spacedim> > ParsedGridGenerator<dim, spacedim>::shared(const MPI_Comm &comm)
 {
   Assert(grid_name != "", ExcNotInitialized());
-  Triangulation<dim,spacedim> *tria = new Triangulation<dim,spacedim>(get_smoothing());
+#ifdef DEAL_II_WITH_MPI
+  auto tria = UP(new parallel::shared::Triangulation<dim,spacedim>(comm));
+#endif
+#ifndef DEAL_II_WITH_MPI
+  auto tria = UP(new Triangulation<dim,spacedim>());
+#endif
+  create(*tria);
+  return tria;
+}
+
+
+template <int dim, int spacedim>
+std::unique_ptr<Triangulation<dim, spacedim> > ParsedGridGenerator<dim, spacedim>::serial()
+{
+  Assert(grid_name != "", ExcNotInitialized());
+  auto tria = UP(new Triangulation<dim,spacedim>(get_smoothing()));
   create(*tria);
   return tria;
 }
@@ -393,21 +380,10 @@ struct PGGHelper
   {
     if (p->grid_name == "rectangle")
       {
-        Tensor<1,dim> initializer1;
-        Tensor<1,dim> initializer2;
-        for (unsigned int i=0; i<dim; ++i)
-          {
-            initializer1[i]=p->point_option_one(i);
-            initializer2[i]=p->point_option_two(i);
-          }
-        Point<dim> p1(initializer1);
-        Point<dim> p2(initializer2);
-
-        GridGenerator::subdivided_hyper_rectangle (tria,
-                                                   p->un_int_vec_option_one,
-                                                   p2,
-                                                   p1,
-                                                   p->colorize);
+        std::tuple<std::vector<unsigned int>, Point<dim>, Point<dim> > t;
+        to_value(p->grid_arguments, t);
+        forward_as_args(GridGenerator::subdivided_hyper_rectangle<dim,spacedim>,
+                        std::tuple_cat(std::tie(tria), t, std::tie(p->colorize)));
       }
     else if (p->grid_name == "file")
       {
@@ -417,7 +393,7 @@ struct PGGHelper
         std::ifstream in(p->input_grid_file_name.c_str());
         AssertThrow(in, ExcIO());
 
-        std::string ext = extension(p->input_grid_file_name);
+        std::string ext = extension(p->grid_arguments);
         if (ext == "vtk")
           gi.read_vtk(in);
         else if (ext == "msh")
@@ -457,12 +433,15 @@ struct PGGHelper
       {
         // deal.II hyper_sphere dev requires only spacedim as template
         // argument, but it can use "tria" to find the templated values
-        GridGenerator::hyper_sphere ( tria,
-                                      p->point_option_one,
-                                      p->double_option_one);
+        auto t = std::tuple<Point<dim+1>, double>();
+        to_value(p->grid_arguments, t);
+        forward_as_args(GridGenerator::hyper_sphere<dim+1>,
+                        std::tuple_cat(std::tie(tria), t));
+
         if (p->create_default_manifolds)
           tria.set_all_manifold_ids(0);
         p->default_manifold_descriptors = "0=SphericalManifold";
+        p->default_manifold_arguments = to_string(std::get<0>(t));
       }
     else
       {
@@ -480,61 +459,70 @@ struct PGGHelper
   {
     if (p->grid_name == "hyper_ball")
       {
+        auto t = std::tuple<Point<dim>, double>();
+        to_value(p->grid_arguments, t);
 
-        GridGenerator::hyper_ball( tria,
-                                   p->point_option_one,
-                                   p->double_option_one);
-        p->default_manifold_descriptors = "0=HyperBallBoundary";
+        forward_as_args(GridGenerator::hyper_ball<dim>,
+                        std::tuple_cat(std::tie(tria), t));
+
+        p->default_manifold_descriptors = "0=SphericalManifold";
+        p->default_manifold_arguments = to_string(std::get<0>(t));
       }
     else if (p->grid_name == "hyper_L")
       {
-        GridGenerator::hyper_L  ( tria,
-                                  p->double_option_two,
-                                  p->double_option_one );
+        auto t = std::tuple<double, double>();
+        to_value(p->grid_arguments, t);
+        forward_as_args(GridGenerator::hyper_L<dim>,
+                        std::tuple_cat(std::tie(tria), t, std::tie(p->colorize)));
       }
     else if (p->grid_name == "half_hyper_ball")
       {
-        GridGenerator::half_hyper_ball (tria,
-                                        p->point_option_one,
-                                        p->double_option_one);
-        p->default_manifold_descriptors = "0=HalfHyperBallBoundary";
+        auto t = std::tuple<Point<dim>, double>();
+        to_value(p->grid_arguments, t);
+        forward_as_args(GridGenerator::half_hyper_ball<dim>,
+                        std::tuple_cat(std::tie(tria), t));
+        p->default_manifold_descriptors = "0=SphericalManifold";
+        p->default_manifold_arguments = to_string(std::get<0>(t));
       }
     else if (p->grid_name == "cylinder")
       {
-        GridGenerator::cylinder ( tria,
-                                  p->double_option_one,
-                                  p->double_option_two);
+        auto t = std::tuple<double, double>();
+        to_value(p->grid_arguments, t);
+        forward_as_args(GridGenerator::cylinder<dim>,
+                        std::tuple_cat(std::tie(tria), t));
+
         p->default_manifold_descriptors = "0=CylindricalManifoldOnAxis";
       }
     else if (p->grid_name == "truncated_cone")
       {
-        GridGenerator::truncated_cone  ( tria,
-                                         p->double_option_one,
-                                         p->double_option_two,
-                                         p->double_option_three);
+        auto t = std::tuple<double, double, double>();
+        to_value(p->grid_arguments, t);
+        forward_as_args(GridGenerator::truncated_cone<dim>,
+                        std::tuple_cat(std::tie(tria), t));
+
         p->default_manifold_descriptors = dim == 3 ? "0=ConeBoundary" : "";
       }
     else if (p->grid_name == "hyper_cross")
       {
-        GridGenerator::hyper_cross  (tria,
-                                     p->un_int_vec_option_one,
-                                     p->colorize);
+        auto t = std::vector<unsigned int>();
+        to_value(p->grid_arguments, t);
+        forward_as_args(GridGenerator::hyper_cross<dim,dim>,
+                        std::tuple_cat(std::tie(tria), std::tie(t), std::tie(p->colorize)));
       }
     else if (p->grid_name == "hyper_cube_slit")
       {
-        GridGenerator::hyper_cube_slit  (tria,
-                                         p->double_option_two,
-                                         p->double_option_one,
-                                         p->colorize);
+        auto t = std::tuple<double, double>();
+        to_value(p->grid_arguments, t);
+        forward_as_args(GridGenerator::hyper_cube_slit<dim>,
+                        std::tuple_cat(std::tie(tria), t, std::tie(p->colorize)));
       }
     else if (p->grid_name == "half_hyper_shell")
       {
-        GridGenerator::half_hyper_shell ( tria,
-                                          p->point_option_one,
-                                          p->double_option_two,
-                                          p->double_option_one,
-                                          p->un_int_option_one,
-                                          p->colorize);
+        auto t = std::tuple<Point<dim>, double, double, unsigned int>();
+        to_value(p->grid_arguments, t);
+        forward_as_args(GridGenerator::half_hyper_shell<dim>,
+                        std::tuple_cat(std::tie(tria), t, std::tie(p->colorize)));
+
         p->default_manifold_descriptors = p->colorize ?
                                           "0=SphericalManifold % 1=SphericalManifold" :
                                           "0=SphericalManifold";
@@ -542,24 +530,23 @@ struct PGGHelper
       }
     else if (p->grid_name == "quarter_hyper_shell")
       {
-        GridGenerator::quarter_hyper_shell  ( tria,
-                                              p->point_option_one,
-                                              p->double_option_two,
-                                              p->double_option_one,
-                                              p->un_int_option_one,
-                                              p->colorize);
+        auto t = std::tuple<Point<dim>, double, double, unsigned int>();
+        to_value(p->grid_arguments, t);
+        forward_as_args(GridGenerator::quarter_hyper_shell<dim>,
+                        std::tuple_cat(std::tie(tria), t, std::tie(p->colorize)));
+
         p->default_manifold_descriptors = p->colorize ?
                                           "0=SphericalManifold % 1=SphericalManifold" :
                                           "0=SphericalManifold";
       }
     else if (p->grid_name == "cylinder_shell")
       {
-        GridGenerator::cylinder_shell ( tria,
-                                        p->double_option_three,
-                                        p->double_option_two,
-                                        p->double_option_one,
-                                        p->un_int_option_one,
-                                        p->un_int_option_two);
+        auto t = std::tuple<double, double, double, unsigned int, unsigned int>();
+        to_value(p->grid_arguments, t);
+
+        forward_as_args(GridGenerator::cylinder_shell<dim>,
+                        std::tuple_cat(std::tie(tria), t));
+
         // This won't work, because of the differen meaning of the various
         // options...
 
@@ -567,29 +554,31 @@ struct PGGHelper
       }
     else if (p->grid_name == "hyper_cube_with_cylindrical_hole")
       {
-        GridGenerator::hyper_cube_with_cylindrical_hole ( tria,
-                                                          p->double_option_one,
-                                                          p->double_option_two,
-                                                          p->double_option_three,
-                                                          p->un_int_option_one,
-                                                          p->colorize);
+        auto t = std::tuple<double, double, double, unsigned int>();
+        to_value(p->grid_arguments, t);
+
+        forward_as_args(GridGenerator::hyper_cube_with_cylindrical_hole<dim>,
+                        std::tuple_cat(std::tie(tria), t, std::tie(p->colorize)));
       }
     else if (p->grid_name == "hyper_shell")
       {
-        GridGenerator::hyper_shell( tria,
-                                    p->point_option_one,
-                                    p->double_option_two,
-                                    p->double_option_one,
-                                    p->un_int_option_one,
-                                    p->colorize);
+        auto t = std::tuple<Point<dim>, double, double, unsigned int>();
+        to_value(p->grid_arguments, t);
+
+        forward_as_args(GridGenerator::hyper_shell<dim>,
+                        std::tuple_cat(std::tie(tria), t, std::tie(p->colorize)));
+
         p->default_manifold_descriptors =  p->colorize ?
                                            "0=SphericalManifold % 1=SphericalManifold" :
                                            "0=SphericalManifold";
       }
     else if (p->grid_name == "cheese")
       {
-        GridGenerator::cheese(tria,
-                              p->un_int_vec_option_one);
+        auto t = std::tuple<std::vector<unsigned int> >();
+        to_value(p->grid_arguments, t);
+
+        forward_as_args(GridGenerator::cheese<dim,dim>,
+                        std::tuple_cat(std::tie(tria), t));
       }
     else
       {
@@ -603,21 +592,11 @@ struct PGGHelper
   {
     if (p->grid_name == "rectangle")
       {
-        Tensor<1,1> initializer1;
-        Tensor<1,1> initializer2;
-        for (unsigned int i=0; i<1; ++i)
-          {
-            initializer1[i]=p->point_option_one(i);
-            initializer2[i]=p->point_option_two(i);
-          }
-        Point<1> p1(initializer1);
-        Point<1> p2(initializer2);
+        auto t = std::tuple<std::vector<unsigned int>, Point<1>, Point<1> >();
+        to_value(p->grid_arguments, t);
 
-        GridGenerator::subdivided_hyper_rectangle (tria,
-                                                   p->un_int_vec_option_one,
-                                                   p2,
-                                                   p1,
-                                                   p->colorize);
+        forward_as_args(GridGenerator::subdivided_hyper_rectangle<1,3>,
+                        std::tuple_cat(std::tie(tria), t, std::tie(p->colorize)));
       }
     else if (p->grid_name == "file")
       {
@@ -663,11 +642,10 @@ struct PGGHelper
   {
     if (p->grid_name == "moebius")
       {
-        GridGenerator::moebius  ( tria,
-                                  p->un_int_option_one,
-                                  p->un_int_option_two,
-                                  p->double_option_two,
-                                  p->double_option_one );
+        auto t = std::tuple<unsigned int, unsigned int, double, double>();
+        to_value(p->grid_arguments, t);
+        forward_as_args(GridGenerator::moebius,
+                        std::tuple_cat(std::tie(tria), t));
       }
     else
       {
@@ -684,22 +662,25 @@ struct PGGHelper
   {
     if (p->grid_name == "torus")
       {
-        GridGenerator::torus  (tria,
-                               p->double_option_one,
-                               p->double_option_two);
+        auto t = std::tuple<double, double>();
+        to_value(p->grid_arguments, t);
+        forward_as_args(GridGenerator::torus<2,3>,
+                        std::tuple_cat(std::tie(tria), t));
 
         p->default_manifold_descriptors = "0=TorusBoundary";
+        p->default_manifold_arguments = Patterns::Tools::Convert<double>::to_string(std::get<0>(t));
       }
 #ifdef DEAL_II_WITH_OPENCASCADE
     else if (p->grid_name == "file")
       {
-        std::string ext = extension(p->input_grid_file_name);
+        std::tuple<std::string, double, unsigned int> t;
+        to_value(p->grid_arguments, t);
+        std::string ext = extension(std::get<0>(t));
         if (ext == "step" || ext == "stp" ||
             ext == "iges" || ext == "igs")
           {
-            TopoDS_Shape sh = PGGHelper::readOCC(p->input_grid_file_name,
-                                                 p->double_option_one);
-
+            TopoDS_Shape sh = PGGHelper::readOCC(std::get<0>(t),
+                                                 std::get<1>(t));
 
             std::vector<TopoDS_Face> faces;
             std::vector<TopoDS_Edge> edges;
@@ -707,12 +688,12 @@ struct PGGHelper
 
             OpenCASCADE::extract_geometrical_shapes(sh, faces, edges, vertices);
 
-            AssertThrow(p->un_int_option_one < faces.size(),
+            AssertThrow(std::get<2>(t) < faces.size(),
                         ExcMessage("The optional unsigned int you specified ("
-                                   +std::to_string(p->un_int_option_one) + ") does not " +
-                                   "correspond to a valid face in the CAD file " + p->input_grid_file_name));
+                                   +to_string(std::get<2>(t)) + ") does not " +
+                                   "correspond to a valid face in the CAD file " + std::get<0>(t)));
 
-            OpenCASCADE::create_triangulation(faces[p->un_int_option_one], tria);
+            OpenCASCADE::create_triangulation(faces[std::get<2>(t)], tria);
           }
         else
           {
@@ -731,25 +712,20 @@ struct PGGHelper
    */
   static
   shared_ptr<Manifold<3> > create_manifold(ParsedGridGenerator<3> *p,
-                                           const std::string &name)
+                                           const std::string &name,
+                                           const std::string &argument)
   {
     if (name=="CylinderBoundaryOnAxis")
       {
-        return SP(new CylinderBoundary<3>(p->double_option_one,
-                                          p->un_int_option_one));
+        unsigned int axis;
+        to_value(argument, axis);
+        return make_shared<CylindricalManifold<3> >(std::tie(axis));
       }
     else if (name=="GeneralCylinderBoundary")
       {
-        return SP(new CylinderBoundary<3>(p->double_option_one,
-                                          p->point_option_one,
-                                          p->point_option_two));
-      }
-    else if (name=="ConeBoundary")
-      {
-        return SP(new ConeBoundary<3>(p->double_option_one,
-                                      p->double_option_two,
-                                      p->point_option_one,
-                                      p->point_option_two));
+        std::tuple<Point<3>, Point<3> > t;
+        to_value(argument, t);
+        return make_shared<CylindricalManifold<3> >(t);
       }
     else
       {
@@ -760,43 +736,53 @@ struct PGGHelper
 
         if (subnames[0] == "ArclengthProjectionLineManifold")
           {
+            double t;
+            to_value(argument, t);
             AssertDimension(subnames.size(), 2);
             return SP(new OpenCASCADE::ArclengthProjectionLineManifold<dim,spacedim>
-                      (PGGHelper::readOCC(subnames[1],p->double_option_one)));
+                      (PGGHelper::readOCC(subnames[1],t)));
           }
         else if (subnames[0] == "DirectionalProjectionBoundary")
           {
             AssertDimension(subnames.size(), 2);
+            std::tuple<double, Tensor<1,spacedim> > t;
+            to_value(argument, t);
             return SP(new OpenCASCADE::DirectionalProjectionBoundary<dim,spacedim>
-                      (PGGHelper::readOCC(subnames[1],p->double_option_one),
-                       (Tensor<1,spacedim>)p->point_option_one));
+                      (PGGHelper::readOCC(subnames[1],std::get<0>(t)),
+                       std::get<1>(t)));
           }
         else if (subnames[0] == "NormalProjectionBoundary")
           {
             AssertDimension(subnames.size(), 2);
+            double t;
+            to_value(argument, t);
             return SP(new OpenCASCADE::NormalProjectionBoundary<dim,spacedim>
-                      (PGGHelper::readOCC(subnames[1],p->double_option_one)));
+                      (PGGHelper::readOCC(subnames[1],t)));
           }
         else if (subnames[0] == "NormalToMeshProjectionBoundary")
           {
             AssertDimension(subnames.size(), 2);
+            double t;
+            to_value(argument, t);
             return SP(new OpenCASCADE::NormalToMeshProjectionBoundary<dim,spacedim>
-                      (PGGHelper::readOCC(subnames[1],p->double_option_one)));
+                      (PGGHelper::readOCC(subnames[1],t)));
           }
 #endif
 
-        return create_manifold<3>(p, name);
+        return create_manifold<3>(p, name, argument);
       }
   }
 
   static
   shared_ptr<Manifold<2,3> > create_manifold(ParsedGridGenerator<2,3> *p,
-                                             const std::string &name)
+                                             const std::string &name,
+                                             const std::string &argument)
   {
-    if (name=="TorusBoundary")
+    if (name=="TorusManifold")
       {
-        return SP(new TorusBoundary<2,3>(p->double_option_one,
-                                         p->double_option_two));
+        std::tuple<double, double> t;
+        to_value(argument, t);
+        return make_shared<TorusManifold<2> >(t);
       }
     else
       {
@@ -808,30 +794,38 @@ struct PGGHelper
         if (subnames[0] == "ArclengthProjectionLineManifold")
           {
             AssertDimension(subnames.size(), 2);
+            double t;
+            to_value(argument, t);
             return SP(new OpenCASCADE::ArclengthProjectionLineManifold<dim,spacedim>
-                      (PGGHelper::readOCC(subnames[1], p->double_option_one)));
+                      (PGGHelper::readOCC(subnames[1], t)));
           }
         else if (subnames[0] == "DirectionalProjectionBoundary")
           {
             AssertDimension(subnames.size(), 2);
+            std::tuple<double, Tensor<1,spacedim> > t;
+            to_value(argument, t);
             return SP(new OpenCASCADE::DirectionalProjectionBoundary<dim,spacedim>
-                      (PGGHelper::readOCC(subnames[1],p->double_option_one),
-                       (Tensor<1,spacedim>)p->point_option_one));
+                      (PGGHelper::readOCC(subnames[1],std::get<0>(t)),
+                       std::get<1>(t)));
           }
         else if (subnames[0] == "NormalProjectionBoundary")
           {
             AssertDimension(subnames.size(), 2);
+            double t;
+            to_value(argument, t);
             return SP(new OpenCASCADE::NormalProjectionBoundary<dim,spacedim>
-                      (PGGHelper::readOCC(subnames[1],p->double_option_one)));
+                      (PGGHelper::readOCC(subnames[1], t)));
           }
         else if (subnames[0] == "NormalToMeshProjectionBoundary")
           {
             AssertDimension(subnames.size(), 2);
+            double t;
+            to_value(argument, t);
             return SP(new OpenCASCADE::NormalToMeshProjectionBoundary<dim,spacedim>
-                      (PGGHelper::readOCC(subnames[1],p->double_option_one)));
+                      (PGGHelper::readOCC(subnames[1],t)));
           }
 #endif
-        return default_create_manifold(p, name);
+        return default_create_manifold(p, name, argument);
       }
   }
 
@@ -842,25 +836,10 @@ struct PGGHelper
   template<int dim>
   static
   shared_ptr<Manifold<dim> > create_manifold(ParsedGridGenerator<dim> *p,
-                                             const std::string &name)
+                                             const std::string &name,
+                                             const std::string &argument)
   {
-    if (name=="HalfHyperBallBoundary")
-      {
-        return SP(new HalfHyperBallBoundary<dim>(p->point_option_one,
-                                                 p->double_option_one));
-      }
-    else if (name == "HyperShellBoundary")
-      {
-        return SP(new HyperShellBoundary<dim>(p->point_option_one));
-      }
-    else if (name == "HalfHyperShellBoundary")
-      {
-        return SP(new HalfHyperShellBoundary<dim>(p->point_option_one,
-                                                  p->double_option_two,
-                                                  p->double_option_one));
-      }
-    else
-      return default_create_manifold(p, name);
+    return default_create_manifold(p, name, argument);
   }
 
   /**
@@ -871,9 +850,10 @@ struct PGGHelper
   static
   shared_ptr<Manifold<dim,dim+1> > create_manifold(ParsedGridGenerator<dim, dim+1> *p,
                                                    const std::string &name,
+                                                   const std::string &argument,
                                                    typename std::enable_if<(dim<3), void **>::type=0)
   {
-    return default_create_manifold(p, name);
+    return default_create_manifold(p, name, argument);
   }
 
 #ifdef DEAL_II_WITH_OPENCASCADE
@@ -896,17 +876,16 @@ struct PGGHelper
    */
   template<int dim, int spacedim>
   static
-  shared_ptr<Manifold<dim,spacedim> > default_create_manifold(ParsedGridGenerator<dim,spacedim> *p,
-                                                              const std::string &name, typename std::enable_if<(spacedim<3),void *>::type = 0)
+  shared_ptr<Manifold<dim,spacedim> > default_create_manifold(ParsedGridGenerator<dim,spacedim> *,
+                                                              const std::string &name,
+                                                              const std::string &argument,
+                                                              typename std::enable_if<(spacedim<3),void *>::type = 0)
   {
-    if (name=="HyperBallBoundary")
+    if (name=="SphericalManifold")
       {
-        return SP(new HyperBallBoundary<dim,spacedim>(p->point_option_one,
-                                                      p->double_option_one));
-      }
-    else if (name=="SphericalManifold")
-      {
-        return SP(new SphericalManifold<dim,spacedim>(p->point_option_one));
+        auto t = std::tuple<Point<spacedim> >();
+        to_value(argument, t);
+        return make_shared<SphericalManifold<dim,spacedim>>(t);
       }
     else
       {
@@ -931,26 +910,29 @@ struct PGGHelper
 
   template<int dim, int spacedim>
   static
-  shared_ptr<Manifold<dim,spacedim> > default_create_manifold(ParsedGridGenerator<dim,spacedim> *p,
-                                                              const std::string &name, typename std::enable_if<(spacedim==3),void *>::type = 0)
+  shared_ptr<Manifold<dim,spacedim> > default_create_manifold(ParsedGridGenerator<dim,spacedim> *,
+                                                              const std::string &name,
+                                                              const std::string &argument,
+                                                              typename std::enable_if<(spacedim==3),void *>::type = 0)
   {
-    if (name=="HyperBallBoundary")
+    if (name=="SphericalManifold")
       {
-        return SP(new HyperBallBoundary<dim,spacedim>(p->point_option_one,
-                                                      p->double_option_one));
-      }
-    else if (name=="SphericalManifold")
-      {
-        return SP(new SphericalManifold<dim,spacedim>(p->point_option_one));
+        auto t = std::tuple<Point<spacedim> >();
+        to_value(argument, t);
+        return make_shared<SphericalManifold<dim,spacedim>>(t);
+
       }
     else if (name=="CylindricalManifoldOnAxis")
       {
-        return SP(new CylindricalManifold<dim,spacedim>(p->un_int_option_one));
+        auto t = std::tuple<unsigned int>();
+        to_value(argument, t);
+        return make_shared<CylindricalManifold<dim,spacedim>>(t);
       }
     else if (name=="GeneralCylindricalManifold")
       {
-        return SP(new CylindricalManifold<dim,spacedim>(p->point_option_one,
-                                                        p->point_option_two));
+        auto t = std::tuple<Point<spacedim>, Point<spacedim> >();
+        to_value(argument, t);
+        return make_shared<CylindricalManifold<dim,spacedim>>(t);
       }
     else
       {
@@ -984,7 +966,7 @@ void ParsedGridGenerator<dim, spacedim>::create(Triangulation<dim,spacedim> &tri
 
   if (!(dim==1 && spacedim==3))
     {
-      parse_manifold_descriptors(optional_manifold_descriptors);
+      parse_manifold_descriptors(optional_manifold_descriptors, manifold_arguments);
 
       if (copy_boundary_to_manifold_ids || create_default_manifolds)
         GridTools::copy_boundary_to_manifold_id(tria);
@@ -993,7 +975,7 @@ void ParsedGridGenerator<dim, spacedim>::create(Triangulation<dim,spacedim> &tri
         GridTools::copy_material_to_manifold_id(tria);
 
       if (create_default_manifolds)
-        parse_manifold_descriptors(default_manifold_descriptors);
+        parse_manifold_descriptors(default_manifold_descriptors, default_manifold_arguments);
 
       // Now attach the manifold descriptors
       for (auto m: manifold_descriptors)
@@ -1006,16 +988,20 @@ void ParsedGridGenerator<dim, spacedim>::create(Triangulation<dim,spacedim> &tri
 
 template<>
 void
-ParsedGridGenerator<1, 3>::parse_manifold_descriptors(const std::string &)
+ParsedGridGenerator<1, 3>::parse_manifold_descriptors(const std::string &, const std::string &)
 {
   Assert(false,ExcNotImplemented());
 }
 
 template <int dim, int spacedim>
 void
-ParsedGridGenerator<dim, spacedim>::parse_manifold_descriptors(const std::string &str_manifold_descriptors)
+ParsedGridGenerator<dim, spacedim>::parse_manifold_descriptors(const std::string &str_manifold_descriptors,
+    const std::string &manifold_arguments)
 {
   std::vector<std::string> idcomponents = Utilities::split_string_list(str_manifold_descriptors, '%');
+  std::vector<std::string> arguments = Utilities::split_string_list(manifold_arguments, '%');
+
+  AssertDimension(idcomponents.size(), arguments.size());
 
   for (unsigned int i=0; i<idcomponents.size(); ++i)
     {
@@ -1023,7 +1009,7 @@ ParsedGridGenerator<dim, spacedim>::parse_manifold_descriptors(const std::string
       AssertDimension(comp.size(), 2);
 
       manifold_descriptors[static_cast<types::manifold_id>(Utilities::string_to_int(comp[0]))] =
-        PGGHelper::create_manifold(this, comp[1]);
+        PGGHelper::create_manifold(this, comp[1], arguments[i]);
     }
 }
 

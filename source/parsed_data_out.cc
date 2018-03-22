@@ -44,19 +44,19 @@ template <int dim, int spacedim>
 ParsedDataOut<dim,spacedim>::ParsedDataOut (const std::string &name,
                                             const std::string &output_format,
                                             const unsigned int &subdivisions,
-                                            const std::string &incremental_run_prefix,
+                                            const std::string &solution_names,
                                             const std::string &base_name_input,
                                             const std::string &files_to_save,
                                             const MPI_Comm &comm) :
-  ParameterAcceptor(name),
+  ParameterAcceptor(name + (solution_names != "" ? " ("+solution_names+")":"")),
   comm(comm),
   n_mpi_processes(Utilities::MPI::n_mpi_processes(comm)),
   this_mpi_process(Utilities::MPI::this_mpi_process(comm)),
   output_format(output_format),
   subdivisions(subdivisions),
   base_name(base_name_input),
-  incremental_run_prefix(incremental_run_prefix),
-  files_to_save(files_to_save)
+  files_to_save(files_to_save),
+  solution_names(solution_names)
 {
   initialized = false;
 }
@@ -66,15 +66,15 @@ void ParsedDataOut<dim,spacedim>::declare_parameters (ParameterHandler &prm)
 {
   add_parameter(prm, &base_name, "Problem base name", base_name, Patterns::Anything());
 
-  add_parameter(prm, &incremental_run_prefix, "Incremental run prefix", incremental_run_prefix, Patterns::Anything());
-
   add_parameter(prm, &files_to_save, "Files to save in run directory", files_to_save, Patterns::Anything());
 
   add_parameter(prm, &output_partitioning, "Output partitioning", "false", Patterns::Bool());
-  add_parameter(prm, &solution_names, "Solution names", "u", Patterns::Anything(),
-                "Comma separated list of names for the components. If a "
-                "name is repeated, then the repeated names are grouped into "
-                "vectors.");
+
+  if (solution_names == "")
+    add_parameter(prm, &solution_names, "Solution names", "u", Patterns::Anything(),
+                  "Comma separated list of names for the components. If a "
+                  "name is repeated, then the repeated names are grouped into "
+                  "vectors.");
 
   add_parameter(prm, &output_format, "Output format", output_format,
                 Patterns::Selection(DataOutBase::get_output_format_names()));
@@ -84,29 +84,7 @@ void ParsedDataOut<dim,spacedim>::declare_parameters (ParameterHandler &prm)
 
 }
 
-template <int dim, int spacedim>
-void ParsedDataOut<dim,spacedim>::parse_parameters_call_back()
-{
-  if ( incremental_run_prefix != "" )
-    {
-      path_solution_dir = get_next_available_directory_name(incremental_run_prefix);
-      // The use of the barrier is
-      //  to avoid the case of a processor below the master node.
-#ifdef DEAL_II_WITH_MPI
-      MPI_Barrier(comm);
-#endif
-      if ( Utilities::MPI::this_mpi_process(MPI_COMM_WORLD) == 0)
-        create_directory(path_solution_dir);
-#ifdef DEAL_II_WITH_MPI
-      MPI_Barrier(comm);
-#endif
-      path_solution_dir += "/";
-    }
-  else
-    {
-      path_solution_dir = "./";
-    }
-}
+
 
 template <int dim, int spacedim>
 void ParsedDataOut<dim,spacedim>::prepare_data_output(const DoFHandler<dim,spacedim> &dh,

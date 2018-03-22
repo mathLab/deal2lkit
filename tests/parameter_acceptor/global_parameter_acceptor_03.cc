@@ -23,12 +23,12 @@
 
 using namespace deal2lkit;
 
-class MyClass : public ParameterAcceptor
+class MyClass : public deal2lkit::ParameterAcceptor
 {
 public:
   MyClass(const std::string &name = "My Class",
           const unsigned int &i=0):
-    ParameterAcceptor(name+std::to_string(c++)),
+    deal2lkit::ParameterAcceptor(name+std::to_string(c++)),
     i(i)
   {
     add_parameter(this->i, "An integer");
@@ -41,12 +41,12 @@ private:
 
 unsigned int MyClass::c=0;
 
-class MyMasterClass : public ParameterAcceptor
+class MyMasterClass : public deal2lkit::ParameterAcceptor
 {
 public:
   MyMasterClass(const std::string &name = "MyMasterClass",
                 const double &d=0):
-    ParameterAcceptor(name),
+    deal2lkit::ParameterAcceptor(name),
     d(d),
     mc("Slave", 1)
   {
@@ -77,6 +77,6 @@ int main ()
   for (auto s: l)
     deallog << s << std::endl;
 
-  ParameterAcceptor::log_info();
-  ParameterAcceptor::prm.log_parameters(deallog);
+  deal2lkit::ParameterAcceptor::log_info();
+  deal2lkit::ParameterAcceptor::prm.log_parameters(deallog);
 }

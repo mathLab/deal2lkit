@@ -13,8 +13,8 @@
 //
 //-----------------------------------------------------------
 
-#ifndef _d2k_utilities_h
-#define _d2k_utilities_h
+#ifndef d2k_utilities_h
+#define d2k_utilities_h
 
 #include <deal2lkit/config.h>
 #include <deal.II/base/utilities.h>
@@ -22,7 +22,6 @@
 #include <deal.II/base/exceptions.h>
 #include <deal.II/base/timer.h>
 #include <deal.II/fe/fe.h>
-#include <deal.II/base/std_cxx11/shared_ptr.h>
 
 #include <typeinfo>
 #include <cxxabi.h>
@@ -55,7 +54,8 @@ DEAL_II_ENABLE_EXTRA_DIAGNOSTICS
 
 #include <deal.II/base/index_set.h>
 using namespace dealii;
-using std_cxx11::shared_ptr;
+using std::shared_ptr;
+using std::unique_ptr;
 
 
 D2K_NAMESPACE_OPEN
@@ -468,7 +468,7 @@ std::string type(const T &t)
  *
  *  @code
  *
- *  std_cxx11::shared_ptr<MyClass> my_ptr;
+ *  std::shared_ptr<MyClass> my_ptr;
  *
  *  ...
  *
@@ -490,7 +490,7 @@ SP(T *t)
  *
  *  @code
  *
- *  std_cxx11::shared_ptr<const MyClass> my_ptr;
+ *  std::shared_ptr<const MyClass> my_ptr;
  *
  *  ...
  *  const MyClass * p = new MyClass;
@@ -504,6 +504,52 @@ SP(const T *t)
 {
   return shared_ptr<const T>(t);
 }
+
+
+/**
+ *  Construct a unique pointer to a non const class T. This is a
+ *  convenience function to simplify the construction of unique
+ *  pointers (which should replace dealii::SmartPointers):
+ *
+ *  @code
+ *
+ *  std::unique_ptr<MyClass> my_ptr;
+ *
+ *  ...
+ *
+ *  my_ptr = UP(new MyClass);
+ *
+ *  @endcode
+ */
+template <class T>
+inline unique_ptr<T>
+UP(T *t)
+{
+  return unique_ptr<T>(t);
+}
+
+/**
+ *  Construct a unique pointer to a const class T. This is a
+ *  convenience function to simplify the construction of unique
+ *  pointers (which should replace dealii::SmartPointers):
+ *
+ *  @code
+ *
+ *  std::unique_ptr<const MyClass> my_ptr;
+ *
+ *  ...
+ *  const MyClass * p = new MyClass;
+ *  my_ptr = UP(p);
+ *
+ *  @endcode
+ */
+template <class T>
+inline unique_ptr<const T>
+UP(const T *t)
+{
+  return unique_ptr<const T>(t);
+}
+
 
 /**
  *  A simple class to shift a vector by a scalar.

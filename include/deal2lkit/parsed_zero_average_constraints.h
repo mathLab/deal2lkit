@@ -13,8 +13,8 @@
 //
 //-----------------------------------------------------------
 
-#ifndef _d2k_parsed_zero_average_constraints_h
-#define _d2k_parsed_zero_average_constraints_h
+#ifndef d2k_parsed_zero_average_constraints_h
+#define d2k_parsed_zero_average_constraints_h
 
 #include <deal2lkit/config.h>
 #include <deal.II/base/exceptions.h>

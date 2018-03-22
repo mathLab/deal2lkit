@@ -346,7 +346,6 @@ public:
   template<typename Number>
   const std::vector <Number> &
   get_values(const std::string &prefix,
-             const std::string &additional_prefix,
              const FEValuesExtractors::Scalar &variable,
              const Number dummy)
   {
@@ -357,7 +356,8 @@ public:
 
     const unsigned int           n_q_points    = fev.n_quadrature_points;
 
-    std::string name = prefix+"_"+additional_prefix+"_scalar_values_q"+
+    std::string name = prefix+"_component_"+Utilities::int_to_string(variable.component)
+                       +"_scalar_values_q"+
                        Utilities::int_to_string(n_q_points)+"_"+type(dummy);
 
     // Now build the return type
@@ -384,7 +384,6 @@ public:
   template<typename Number>
   const std::vector <Tensor <1, spacedim, Number> > &
   get_values(const std::string &prefix,
-             const std::string &additional_prefix,
              const FEValuesExtractors::Vector &vector_variable,
              const Number dummy)
   {
@@ -395,7 +394,12 @@ public:
 
     const unsigned int           n_q_points    = fev.n_quadrature_points;
 
-    std::string name = prefix+"_"+additional_prefix+"_vector_values_q"+
+    const std::string additional_prefix=
+      "vector_values_"+ Utilities::int_to_string(vector_variable.first_vector_component);
+
+    std::string name = prefix+"_component_" +
+                       Utilities::int_to_string(vector_variable.first_vector_component)+
+                       "_vector_values_q"+
                        Utilities::int_to_string(n_q_points)+"_"+type(dummy);
 
 
@@ -422,7 +426,6 @@ public:
   template<typename Number>
   const std::vector <Number> &
   get_divergences(const std::string &prefix,
-                  const std::string &additional_prefix,
                   const FEValuesExtractors::Vector &vector_variable,
                   const Number dummy)
   {
@@ -433,7 +436,8 @@ public:
 
     const unsigned int           n_q_points    = fev.n_quadrature_points;
 
-    std::string name = prefix+"_"+additional_prefix+"_div_values_q"+
+    std::string name = prefix+"_component_" +
+                       Utilities::int_to_string(vector_variable.first_vector_component)+"_div_values_q"+
                        Utilities::int_to_string(n_q_points)+"_"+type(dummy);
 
 
@@ -460,7 +464,6 @@ public:
   template<typename Number>
   const std::vector <Tensor<1, spacedim, Number> > &
   get_gradients(const std::string &prefix,
-                const std::string &additional_prefix,
                 const FEValuesExtractors::Scalar &variable,
                 const Number dummy)
   {
@@ -471,8 +474,8 @@ public:
 
     const unsigned int           n_q_points    = fev.n_quadrature_points;
 
-    std::string name = prefix+"_"+additional_prefix+"_grad_values_q"+
-                       Utilities::int_to_string(n_q_points)+"_"+type(dummy);
+    std::string name = prefix+"_component_"+Utilities::int_to_string(variable.component)+
+                       "_grad_values_q"+Utilities::int_to_string(n_q_points)+"_"+type(dummy);
 
     // Now build the return type
     typedef typename std::vector <Tensor<1, spacedim, Number> > RetType;
@@ -497,7 +500,6 @@ public:
   template<typename Number>
   const std::vector <Tensor<2, spacedim, Number> > &
   get_gradients(const std::string &prefix,
-                const std::string &additional_prefix,
                 const FEValuesExtractors::Vector &variable,
                 const Number dummy)
   {
@@ -508,8 +510,8 @@ public:
 
     const unsigned int           n_q_points    = fev.n_quadrature_points;
 
-    std::string name = prefix+"_"+additional_prefix+"_grad2_values_q"+
-                       Utilities::int_to_string(n_q_points)+"_"+type(dummy);
+    std::string name = prefix+"_component_"+Utilities::int_to_string(variable.first_vector_component)
+                       +"_grad2_values_q"+Utilities::int_to_string(n_q_points)+"_"+type(dummy);
 
     // Now build the return type
     typedef typename std::vector <Tensor<2, spacedim, Number> > RetType;
@@ -532,7 +534,6 @@ public:
   template<typename Number>
   const std::vector <Tensor<1, (spacedim > 2 ? spacedim : 1), Number> > &
   get_curls(const std::string &prefix,
-            const std::string &additional_prefix,
             const FEValuesExtractors::Vector &variable,
             const Number dummy)
   {
@@ -543,8 +544,8 @@ public:
 
     const unsigned int           n_q_points    = fev.n_quadrature_points;
 
-    std::string name = prefix+"_"+additional_prefix+"_curl_values_q"+
-                       Utilities::int_to_string(n_q_points)+"_"+type(dummy);
+    std::string name = prefix+"_component_"+Utilities::int_to_string(variable.first_vector_component)
+                       +"_curl_values_q"+ Utilities::int_to_string(n_q_points)+"_"+type(dummy);
 
     // Now build the return type
     typedef typename std::vector <Tensor<1, (spacedim > 2 ? spacedim : 1), Number> > RetType;
@@ -567,7 +568,6 @@ public:
   template<typename Number>
   const std::vector <Number> &
   get_laplacians(const std::string &prefix,
-                 const std::string &additional_prefix,
                  const FEValuesExtractors::Scalar &variable,
                  const Number dummy)
   {
@@ -578,7 +578,7 @@ public:
 
     const unsigned int           n_q_points    = fev.n_quadrature_points;
 
-    std::string name = prefix+"_"+additional_prefix+"_laplacian_values_q"+
+    std::string name = prefix+"_component_"+Utilities::int_to_string(variable.component)+"_laplacian_values_q"+
                        Utilities::int_to_string(n_q_points)+"_"+type(dummy);
 
     // Now build the return type
@@ -603,7 +603,6 @@ public:
   template<typename Number>
   const std::vector <Tensor<1,spacedim,Number> > &
   get_laplacians(const std::string &prefix,
-                 const std::string &additional_prefix,
                  const FEValuesExtractors::Vector &variable,
                  const Number dummy)
   {
@@ -614,7 +613,7 @@ public:
 
     const unsigned int           n_q_points    = fev.n_quadrature_points;
 
-    std::string name = prefix+"_"+additional_prefix+"_laplacian2_values_q"+
+    std::string name = prefix+"_component_"+Utilities::int_to_string(variable.first_vector_component)+"_laplacian2_values_q"+
                        Utilities::int_to_string(n_q_points)+"_"+type(dummy);
 
     // Now build the return type
@@ -638,7 +637,6 @@ public:
   template<typename Number>
   const std::vector <Tensor<2, spacedim, Number> > &
   get_deformation_gradients(const std::string &prefix,
-                            const std::string &additional_prefix,
                             const FEValuesExtractors::Vector &variable,
                             const Number dummy)
   {
@@ -649,7 +647,7 @@ public:
 
     const unsigned int           n_q_points    = fev.n_quadrature_points;
 
-    std::string name = prefix+"_"+additional_prefix+"_F_values_q"+
+    std::string name = prefix+"_component_"+Utilities::int_to_string(variable.first_vector_component)+"_F_values_q"+
                        Utilities::int_to_string(n_q_points)+"_"+type(dummy);
 
     // Now build the return type
@@ -675,7 +673,6 @@ public:
   template<typename Number>
   const std::vector <Tensor<2, spacedim, Number> > &
   get_symmetric_gradients(const std::string &prefix,
-                          const std::string &additional_prefix,
                           const FEValuesExtractors::Vector &variable,
                           const Number dummy)
   {
@@ -686,7 +683,7 @@ public:
 
     const unsigned int           n_q_points    = fev.n_quadrature_points;
 
-    std::string name = prefix+"_"+additional_prefix+"_sym_grad_values_q"+
+    std::string name = prefix+"_component_"+Utilities::int_to_string(variable.first_vector_component)+"_sym_grad_values_q"+
                        Utilities::int_to_string(n_q_points)+"_"+type(dummy);
 
     // Now build the return type
@@ -710,7 +707,6 @@ public:
   template<typename Number>
   const std::vector <Tensor<2,spacedim,Number> > &
   get_hessians(const std::string &prefix,
-               const std::string &additional_prefix,
                const FEValuesExtractors::Scalar &variable,
                const Number dummy)
   {
@@ -721,7 +717,7 @@ public:
 
     const unsigned int           n_q_points    = fev.n_quadrature_points;
 
-    std::string name = prefix+"_"+additional_prefix+"_hessians_values_q"+
+    std::string name = prefix+"_component_"+Utilities::int_to_string(variable.component)+"_hessians_values_q"+
                        Utilities::int_to_string(n_q_points)+"_"+type(dummy);
 
     // Now build the return type
@@ -745,7 +741,6 @@ public:
   template<typename Number>
   const std::vector <Tensor<3,spacedim,Number> > &
   get_hessians(const std::string &prefix,
-               const std::string &additional_prefix,
                const FEValuesExtractors::Vector &variable,
                const Number dummy)
   {
@@ -756,7 +751,7 @@ public:
 
     const unsigned int           n_q_points    = fev.n_quadrature_points;
 
-    std::string name = prefix+"_"+additional_prefix+"_hessians2_values_q"+
+    std::string name = prefix+"_component_"+Utilities::int_to_string(variable.first_vector_component)+"_hessians2_values_q"+
                        Utilities::int_to_string(n_q_points)+"_"+type(dummy);
 
     // Now build the return type

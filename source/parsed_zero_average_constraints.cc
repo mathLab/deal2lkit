@@ -27,7 +27,7 @@ ParsedZeroAverageConstraints(const std::string &parsed_name,
                              const std::string &parsed_component_names,
                              const std::string &parsed_components,
                              const std::string &parsed_boundary_components):
-  ParameterAcceptor(parsed_name),
+  ParameterAcceptor(parsed_name + (parsed_component_names != "" ? " (" +parsed_component_names+")":"")),
   name (parsed_name),
   str_components (parsed_components),
   str_boundary_components (parsed_boundary_components),
@@ -102,13 +102,7 @@ ComponentMask ParsedZeroAverageConstraints<dim,spacedim>::get_boundary_mask() co
 template <int dim, int spacedim>
 void ParsedZeroAverageConstraints<dim,spacedim>::declare_parameters(ParameterHandler &prm)
 {
-  if (str_component_names != "")
-    add_parameter(prm, &_component_names, "Known component names", str_component_names,
-                  Patterns::List(Patterns::Anything(),1,n_components,","),
-                  "These variables can be used to set the corrisponding component mask, "
-                  "instead of specifying each component number");
-
-  else
+  if (str_component_names == "")
     {
       std::vector<std::string> cn(n_components, "u");
       add_parameter(prm, &_component_names, "Known component names", print(cn),

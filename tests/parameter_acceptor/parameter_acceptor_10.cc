@@ -23,11 +23,11 @@
 
 using namespace deal2lkit;
 
-class FirstClass : public ParameterAcceptor
+class FirstClass : public deal2lkit::ParameterAcceptor
 {
 public:
   FirstClass(const std::string &name = "First Class"):
-    ParameterAcceptor(name)
+    deal2lkit::ParameterAcceptor(name)
   {};
 
   virtual void declare_parameters(ParameterHandler &prm)
@@ -45,11 +45,11 @@ private:
   std::string f_s;
 };
 
-class SecondClass : public ParameterAcceptor
+class SecondClass : public deal2lkit::ParameterAcceptor
 {
 public:
   SecondClass(const std::string &name = "Second Class"):
-    ParameterAcceptor(name)
+    deal2lkit::ParameterAcceptor(name)
   {};
 
   virtual void declare_parameters(ParameterHandler &prm)
@@ -74,8 +74,8 @@ int main ()
   FirstClass  f;
   SecondClass s;
   std::string output_name = "used_parameter_acceptor_10.tex";
-  ParameterAcceptor::initialize(SOURCE_DIR "/parameters/parameter_acceptor_10.prm", output_name);
-  ParameterAcceptor::prm.log_parameters(deallog);
+  deal2lkit::ParameterAcceptor::initialize(SOURCE_DIR "/parameters/parameter_acceptor_10.prm", output_name);
+  deal2lkit::ParameterAcceptor::prm.log_parameters(deallog);
   std::ifstream file (output_name.c_str());
 
   std::string str;

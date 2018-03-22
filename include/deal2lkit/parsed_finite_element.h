@@ -13,8 +13,8 @@
 //
 //-----------------------------------------------------------
 
-#ifndef _d2k_parsed_finite_element_h
-#define _d2k_parsed_finite_element_h
+#ifndef d2k_parsed_finite_element_h
+#define d2k_parsed_finite_element_h
 
 #include <deal2lkit/config.h>
 #include <deal.II/base/parameter_handler.h>
@@ -79,6 +79,10 @@ public:
    * does not match this number of components. If n_components is left
    * to 0 (the default value), then any FiniteElement can be
    * generated, with arbitrary numbers of components.
+   *
+   * If n_components is different from zero, then the component names will be
+   * constant, and not inserted in the parameters to be parsed, but appended
+   * to the name of the section.
    */
   ParsedFiniteElement (const std::string &name="",
                        const std::string &default_fe="FE_Q(1)",

@@ -29,15 +29,14 @@ using namespace dealii;
 D2K_NAMESPACE_OPEN
 
 /**
- * Parsed DirichletBCs.
- * This class allows to set dirichlet boundary conditions,
+ * Parsed DirichletBCs. This class allows to set dirichlet boundary conditions,
  * in the strong formulation, from a parameter file.
  *
  * This class is derived from ParsedMappedFunctions.
  *
  * The VectorTools::interpolate_boundary_values and
- * VectorTools::project_boundary_values functions of
- * the deal.II library have been wrapped.
+ * VectorTools::project_boundary_values functions of the deal.II library have
+ * been wrapped.
  *
  *
  * A typical usage of this class is the following
@@ -219,6 +218,7 @@ public:
    */
   void compute_no_normal_flux_constraints (const DoFHandler<dim,spacedim> &dof_handler,
                                            ConstraintMatrix &constraints) const;
+
   /**
    * This function must be called in order to apply the homogeneous Dirichlet
    * boundary conditions to the normal components of the variables specified.

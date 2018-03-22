@@ -24,11 +24,11 @@
 using namespace deal2lkit;
 
 template<class T>
-class TemplateClass : public ParameterAcceptor
+class TemplateClass : public deal2lkit::ParameterAcceptor
 {
 public:
   TemplateClass(const T &i, const std::string &var):
-    ParameterAcceptor("Class<"+var+" >"),
+    deal2lkit::ParameterAcceptor("Class<"+var+" >"),
     t(i)
   {
     add_parameter(t, var);
@@ -66,8 +66,8 @@ int main ()
 
   std::system("rm -f parameters.prm");
   // The first round is here to create the file parameters.prm with default values
-  ParameterAcceptor::initialize("parameters.prm");
+  deal2lkit::ParameterAcceptor::initialize("parameters.prm");
   // This is here to read the default values just created.
-  ParameterAcceptor::initialize("parameters.prm");
-  ParameterAcceptor::prm.log_parameters(deallog);
+  deal2lkit::ParameterAcceptor::initialize("parameters.prm");
+  deal2lkit::ParameterAcceptor::prm.log_parameters(deallog);
 }

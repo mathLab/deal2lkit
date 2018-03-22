@@ -13,8 +13,8 @@
 //
 //-----------------------------------------------------------
 
-#ifndef _d2k_parsed_data_out_h
-#define _d2k_parsed_data_out_h
+#ifndef d2k_parsed_data_out_h
+#define d2k_parsed_data_out_h
 
 #include <deal2lkit/config.h>
 #include <fstream>
@@ -37,24 +37,19 @@ template <int dim, int spacedim=dim>
 class ParsedDataOut : public ParameterAcceptor
 {
 public:
-  /** Optional name for parameter section.
-      @p incremental_run_prefix creates a progressive directories/subdirectories
-      for every run. For istance if @p incremental_run_prefix = "sol/run"
-      the function will create sol/run001 the first time the code is runned,
-      sol/run002 the second time, and so on.*/
+  /**
+   *
+   */
   ParsedDataOut (const std::string &name="",
                  const std::string &output_format="vtu",
                  const unsigned int &subdivisions=1,
-                 const std::string &incremental_run_prefix="",
+                 const std::string &solution_names="",
                  const std::string &base_name_input="solution",
                  const std::string &files_to_save="",
                  const MPI_Comm &comm=MPI_COMM_WORLD);
 
   /** Initialize the given values for the paramter file. */
   virtual void declare_parameters(ParameterHandler &prm);
-
-  /** Prepare names for output directories. */
-  virtual void parse_parameters_call_back();
 
   /** Prepare to output data on the given file. This will initialize
       the data_out object and a file with a filename that is the
@@ -83,10 +78,7 @@ public:
       vectors have been added, the data can be written to a file. This
       is done in this class. At the end of this function call,
       data_out and output_file are in a pristine situation, and the
-      process can be started again.
-      @p used_files is an optional variable that takes a list of useful files
-      (ex. "parameter.prm time.dat") and copies these files
-      in the @p incremental_run_prefix of the costructor function.*/
+      process can be started again.*/
   void write_data_and_clear(const Mapping<dim,spacedim> &mapping=StaticMappingQ1<dim,spacedim>::mapping);
 
 private:

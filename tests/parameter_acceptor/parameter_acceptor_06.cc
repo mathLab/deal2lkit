@@ -22,7 +22,7 @@
 using namespace deal2lkit;
 
 template<int dim>
-class Test : public ParameterAcceptor
+class Test : public deal2lkit::ParameterAcceptor
 {
 public:
   virtual void declare_parameters(ParameterHandler &prm)
@@ -51,10 +51,10 @@ int main ()
     b.my_int = 0;
   }
 
-  ParameterAcceptor::initialize();
-  ParameterAcceptor::prm.log_parameters(deallog);
+  deal2lkit::ParameterAcceptor::initialize();
+  deal2lkit::ParameterAcceptor::prm.log_parameters(deallog);
 
   a.log_info();
 
-  ParameterAcceptor::log_info();
+  deal2lkit::ParameterAcceptor::log_info();
 }

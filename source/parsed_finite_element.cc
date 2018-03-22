@@ -26,7 +26,7 @@ ParsedFiniteElement<dim, spacedim>::ParsedFiniteElement(const std::string &name,
                                                         const std::string &default_name,
                                                         const std::string &default_component_names,
                                                         const unsigned int n_components) :
-  ParameterAcceptor(name),
+  ParameterAcceptor(name + (n_components > 0 ? " ("+default_component_names+")" : "")),
   _n_components(n_components),
   fe_name(default_name),
   default_component_names(default_component_names)
@@ -45,20 +45,19 @@ void ParsedFiniteElement<dim, spacedim>::declare_parameters(ParameterHandler &pr
                 "finite elements use the notation "
                 "FESystem[FE_Q(2)^2-FE_DGP(1)] (e.g. Navier-Stokes). ");
 
-  add_parameter(prm, &component_names,
-                "Blocking of the finite element", default_component_names,
-                // This ensures that an assert is thrown if you try to
-                // read something with the wrong number of components
-                Patterns::List(Patterns::Anything(),
-                               (_n_components ? _n_components: 1),
-                               (_n_components ? _n_components: numbers::invalid_unsigned_int)),
-                "How to partition the finite element. This information can be used "
-                "to construct block matrices and vectors, as well as to create "
-                "names for solution vectors, or error tables. A repeated component "
-                "is interpreted as a vector field, with dimension equal to the "
-                "number of repetitions (up to 3). This is used in conjunction "
-                "with a ParsedFiniteElement class, to generate arbitrary "
-                "finite dimensional spaces.");
+  if (_n_components == 0)
+    add_parameter(prm, &component_names,
+                  "Blocking of the finite element", default_component_names,
+                  // This ensures that an assert is thrown if you try to
+                  // read something with the wrong number of components
+                  Patterns::List(Patterns::Anything(),1, numbers::invalid_unsigned_int),
+                  "How to partition the finite element. This information can be used "
+                  "to construct block matrices and vectors, as well as to create "
+                  "names for solution vectors, or error tables. A repeated component "
+                  "is interpreted as a vector field, with dimension equal to the "
+                  "number of repetitions (up to 3). This is used in conjunction "
+                  "with a ParsedFiniteElement class, to generate arbitrary "
+                  "finite dimensional spaces.");
 }
 
 template <int dim, int spacedim>

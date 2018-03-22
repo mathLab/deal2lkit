@@ -23,12 +23,12 @@
 
 using namespace deal2lkit;
 
-class MyClass : public ParameterAcceptor
+class MyClass : public deal2lkit::ParameterAcceptor
 {
 public:
   MyClass(const std::string &name = "My Class",
           const unsigned int &i=0):
-    ParameterAcceptor(name),
+    deal2lkit::ParameterAcceptor(name),
     i(i)
   {
     add_parameter(this->i, "An integer");
@@ -46,5 +46,5 @@ int main ()
   MyClass  f1("Two", 2);
   MyClass  f2("Three", 3);
 
-  ParameterAcceptor::prm.log_parameters(deallog);
+  deal2lkit::ParameterAcceptor::prm.log_parameters(deallog);
 }
