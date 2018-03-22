@@ -415,26 +415,6 @@ private:
   std::map<types::manifold_id, shared_ptr<Manifold<dim,spacedim> > > manifold_descriptors;
 
   /**
-   * Optional Point argument. First Option.
-   */
-  Point<spacedim> point_option_one;
-
-  /**
-   * Optional Point argument. Second Option.
-   */
-  Point<spacedim> point_option_two;
-
-  /**
-   * Optional int argument. First Option.
-   */
-  unsigned int un_int_option_one;
-
-  /**
-   * Optional int argument. First Option.
-   */
-  unsigned int un_int_option_two;
-
-  /**
    * For all the internally generated meshes that support it, turn on
    * colorizing.
    */
@@ -467,16 +447,6 @@ private:
    * triangulation.
    */
   bool copy_material_to_manifold_ids;
-
-  /**
-   * Optional vector of integers.
-   */
-  std::vector<unsigned int> un_int_vec_option_one;
-
-  /**
-   * Input grid file name.
-   */
-  std::string input_grid_file_name;
 
   /**
    * Output grid file name.

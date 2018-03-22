@@ -125,7 +125,6 @@ ParsedGridGenerator<dim, spacedim>::ParsedGridGenerator(const std::string &_sect
   create_default_manifolds(true),
   copy_boundary_to_manifold_ids(false),
   copy_material_to_manifold_ids(false),
-  input_grid_file_name(grid_arguments),
   output_grid_file_name(_output_grid_file)
 {}
 
@@ -140,52 +139,26 @@ std::string ParsedGridGenerator<dim, spacedim>::get_grid_names()
 template <int dim, int spacedim>
 void ParsedGridGenerator<dim, spacedim>::declare_parameters(ParameterHandler &prm)
 {
-
-  std::vector<unsigned int> dummy_vec_int(dim, 1);
-  std::vector<double> dummy_vec_double(spacedim);
-  Point<spacedim> dummy_point;
-  Point<spacedim> dummy_point_2;
-  for (unsigned int d=0; d<dim; ++d)
-    dummy_point_2[d]=1.0;
-
-  std::string def_point, def_point_2, def_int, def_double;
-  def_point = print(dummy_point);
-  def_point_2 = print(dummy_point_2);
-  def_int = print(dummy_vec_int);
-  def_double = print(dummy_vec_double);
-
   add_parameter(prm, &grid_name,
                 "Grid to generate", grid_name,
                 Patterns::Selection(get_grid_names()),
                 "The grid to generate. You can choose among:\n"
-                "- file: read grid from a file using:\n"
-                "	- Input grid filename	    : input filename\n\n"
-                "- rectangle: create a subdivided hyperrectangle using:\n"
-                "	- Optional Point<spacedim> 1: lower-left corner\n"
-                "	- Optional Point<spacedim> 2: upper-right corner\n"
-                "	- Optional Vector of dim int: subdivisions on each direction\n"
-                "	- Optional bool 1	    : colorize grid\n"
-                "- hyper_sphere  : generate an hyper sphere with center and radius prescribed:\n"
-                "	- Optional Point<spacedim> : center\n"
-                "	- Optional double : radius\n"
-                "- hyper_ball  : initialize the given triangulation with a hyper_ball:\n\n"
-                "	- Optional Point<spacedim> : center\n"
-                "	- Optional double : radius\n"
-                "- hyper_shell   : create a gird represented by the region between two spheres with fixed center:\n\n"
-                "	- Optional Point<spacedim> : center\n"
-                "	- Optional double : inner sphere radius\n"
-                "	- Optional double : outer sphere radius\n"
-                "	- Optional unsigned int : number of cells of the resulting triangulation (In 3d, only 6, 12, and 96 are allowed)\n"
-                "	- Optional bool : colorize grid\n"
-                "- hyper_L : initialize the given triangulation with a hyper-L. It produces the hypercube with the interval [left,right] without the hypercube made out of the interval [(left+right)/2,right] for each coordinate."
-                "	- Optional double : left\n"
-                "	- Optional double : right\n"
-                "- half_hyper_ball : produce a half hyper-ball around center, which contains four elements in 2d and 6 in 3d. The cut plane is perpendicular to the x-axis: \n"
-                "	- Optional Point<spacedim> : center\n"
-                "	- Optional double : radius\n"
-                "- cylinder: create a cylinder around the x-axis. The cylinder extends from x=-half_length to x=+half_length and its projection into the yz-plane is a circle of radius radius: \n"
-                "	- Optional double : radius\n"
-                "	- Optional double : half length of the cylinder\n"
+                "- file:\n"
+                "	- Grid parameters   = input filename\n\n"
+                "- rectangle:\n"
+                "	- Grid parameters   = subdivisions : lower-left corner : upper-right corner\n"
+                "- hyper_sphere\n"
+                "	- Grid parameters   =  center : radius\n"
+                "- hyper_ball \n"
+                "	- Grid parameters   =  center : radius\n"
+                "- hyper_shell \n"
+                "	- Grid parameters   =  center : inner radius : outer radius : number of cells\n"
+                "- hyper_L :\n"
+                "	- Grid parameters   =  left : right\n"
+                "- half_hyper_ball :\n"
+                "	- Grid parameters   =  center : radius\n"
+                "- cylinder:\n"
+                "	- Grid parameters   =  radius : half length\n"
                 "- truncated_cone : create a cut cone around the x-axis. The cone extends from x=-half_length to x=half_length and its projection into the yz-plane is a circle of radius radius1 at x=-half_length and a circle of radius radius2 at x=+half_length :\n"
                 "	- Optional double : radius 1\n"
                 "	- Optional double : radius 2\n"
@@ -248,22 +221,15 @@ void ParsedGridGenerator<dim, spacedim>::declare_parameters(ParameterHandler &pr
                                             "smoothing_on_coarsening|"
                                             "maximum_smoothing"));
 
-  add_parameter(prm, &input_grid_file_name,
-                "Input grid file name", input_grid_file_name,
-                Patterns::FileName(),
-                "Name of the input grid. All supported deal.II formats. "
-                "The extestion will be used to decide what "
-                "grid format to use.");
-
+  std::string colorize_string = "true";
   add_parameter(prm, &colorize,
-                "Colorize",str_colorize,
+                "Colorize", colorize_string,
                 Patterns::Bool(),
                 "Bool be used in the generation of the grid to set colorize. "
                 "The use of it will depend on the specific grid.");
 
   add_parameter(prm, &create_default_manifolds,
-                "Create default manifolds",
-                create_default_manifolds ? "true" : "false",
+                "Create default manifolds", "true",
                 Patterns::Bool(),
                 "If set to true, boundary ids "
                 "will be copied over the manifold ids, and the "
@@ -272,15 +238,13 @@ void ParsedGridGenerator<dim, spacedim>::declare_parameters(ParameterHandler &pr
 
 
   add_parameter(prm, &copy_boundary_to_manifold_ids,
-                "Copy boundary to manifold ids",
-                copy_boundary_to_manifold_ids ? "true" : "false",
+                "Copy boundary to manifold ids", "true",
                 Patterns::Bool(),
                 "If set to true, boundary ids will be copied over "
                 "the manifold ids.");
 
   add_parameter(prm, &copy_material_to_manifold_ids,
-                "Copy material to manifold ids",
-                copy_material_to_manifold_ids ? "true" : "false",
+                "Copy material to manifold ids", "false",
                 Patterns::Bool(),
                 "If set to true, material ids "
                 "will be copied over the manifold ids.");
@@ -390,7 +354,7 @@ struct PGGHelper
         GridIn<dim, spacedim> gi;
         gi.attach_triangulation(tria);
 
-        std::ifstream in(p->input_grid_file_name.c_str());
+        std::ifstream in(p->grid_arguments.c_str());
         AssertThrow(in, ExcIO());
 
         std::string ext = extension(p->grid_arguments);
@@ -603,10 +567,10 @@ struct PGGHelper
         GridIn<1, 3> gi;
         gi.attach_triangulation(tria);
 
-        std::ifstream in(p->input_grid_file_name.c_str());
+        std::ifstream in(p->grid_arguments.c_str());
         AssertThrow(in, ExcIO());
 
-        std::string ext = extension(p->input_grid_file_name);
+        std::string ext = extension(p->grid_arguments);
         if (ext == "vtk")
           gi.read_vtk(in);
         else if (ext == "msh")
