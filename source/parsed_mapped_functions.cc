@@ -265,6 +265,9 @@ void ParsedMappedFunctions<spacedim>::declare_parameters(ParameterHandler &prm)
                     "instead of specifying each component number");
 
     }
+  else
+    _component_names = Utilities::split_string_list(str_component_names);
+
   add_parameter(prm, &str_id_components, "IDs and component masks", str_id_components,
                 Patterns::Anything(),
                 "Pattern to be used "

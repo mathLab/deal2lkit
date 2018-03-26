@@ -262,7 +262,7 @@ void ParsedGridGenerator<dim, spacedim>::declare_parameters(ParameterHandler &pr
                 "and those Manifold descriptors which require additional parameters "
                 "use the ones defined in this class.\n"
                 "Available manifold descriptor: \n"
-                "- HyperBallBoundary : boundary of a hyper_ball :\n"
+                "- SphericalManifold : boundary of a hyper_ball :\n"
                 "- CylinderBoundaryOnAxis : boundary of a cylinder, given radius and axis :\n"
                 "- GeneralCylinderBoundary : boundary of a cylinder, given radius, a point on the axis and a  direction :\n"
                 "- ConeBoundary : boundary of a cone, given radii, and two points on the faces:\n"
