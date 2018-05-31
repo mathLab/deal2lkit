@@ -16,7 +16,7 @@
 #include <deal.II/base/config.h>
 #include <deal2lkit/parsed_grid_generator.h>
 #include <deal2lkit/utilities.h>
-#include <deal.II/grid/tria_boundary_lib.h>
+// #include <deal.II/grid/tria_manifold_lib.h>
 #include <deal.II/grid/manifold_lib.h>
 #include <deal.II/grid/grid_generator.h>
 #include <deal.II/grid/grid_in.h>
@@ -735,14 +735,14 @@ struct PGGHelper
   {
     if (name=="CylinderBoundaryOnAxis")
       {
-        return SP(new CylinderBoundary<3>(p->double_option_one,
-                                          p->un_int_option_one));
+        return SP(new CylindricalManifold<3>(p->un_int_option_one,
+                                          p->double_option_one));
       }
     else if (name=="GeneralCylinderBoundary")
       {
-        return SP(new CylinderBoundary<3>(p->double_option_one,
-                                          p->point_option_one,
-                                          p->point_option_two));
+        return SP(new CylindricalManifold<3>(p->point_option_one,
+                                          p->point_option_two,
+                                        p->double_option_one));
       }
     else if (name=="ConeBoundary")
       {
@@ -795,7 +795,7 @@ struct PGGHelper
   {
     if (name=="TorusBoundary")
       {
-        return SP(new TorusBoundary<2,3>(p->double_option_one,
+        return SP(new TorusManifold<2>(p->double_option_one,
                                          p->double_option_two));
       }
     else
@@ -846,12 +846,11 @@ struct PGGHelper
   {
     if (name=="HalfHyperBallBoundary")
       {
-        return SP(new HalfHyperBallBoundary<dim>(p->point_option_one,
-                                                 p->double_option_one));
+        return SP(new SphericalManifold<dim>(p->point_option_one));
       }
     else if (name == "HyperShellBoundary")
       {
-        return SP(new HyperShellBoundary<dim>(p->point_option_one));
+        return SP(new SphericalManifold<dim>(p->point_option_one));
       }
     else if (name == "HalfHyperShellBoundary")
       {
@@ -1127,4 +1126,3 @@ template class deal2lkit::ParsedGridGenerator<1,3>;
 template class deal2lkit::ParsedGridGenerator<2,2>;
 template class deal2lkit::ParsedGridGenerator<2,3>;
 template class deal2lkit::ParsedGridGenerator<3,3>;
-
