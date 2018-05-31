@@ -348,8 +348,7 @@ ParsedGridGenerator<dim, spacedim>::declare_parameters(ParameterHandler &prm)
     "and those Manifold descriptors which require additional parameters "
     "use the ones defined in this class.\n"
     "Available manifold descriptor: \n"
-    "- HyperBallBoundary : boundary of a hyper_ball :\n"
-    "	- Optional double	    : radius\n"
+    "- SphericalManifold : boundary of a hyper_ball :\n"
     "	- Optional Point<spacedim> 1: center\n"
     "- CylinderBoundaryOnAxis : boundary of a cylinder, given radius and axis :\n"
     "	- Optional double	    : radius\n"
@@ -359,11 +358,10 @@ ParsedGridGenerator<dim, spacedim>::declare_parameters(ParameterHandler &prm)
     "	- Optional int 1	    : axis (0=x, 1=y, 2=z)\n"
     "	- Optional Point<spacedim> 1: point on axis\n"
     "	- Optional Point<spacedim> 2: direction\n"
-    "- ConeBoundary : boundary of a cone, given radii, and two points on the faces:\n"
-    "	- Optional double 1	    : radius 1\n"
-    "	- Optional double 2	    : radius 2\n"
-    "	- Optional Point<spacedim> 1: point on first face\n"
-    "	- Optional Point<spacedim> 2: point on second face\n"
+    // "- ConeBoundary : boundary of a cone, given radii, and two points on the
+    // faces:\n" "  - Optional double 1     : radius 1\n" "  - Optional double 2
+    // : radius 2\n" "  - Optional Point<spacedim> 1: point on first face\n" "
+    // - Optional Point<spacedim> 2: point on second face\n"
     "- TorusBoundary : boundary of a torus :\n"
     "	- Optional double 1	    : radius 1\n"
     "	- Optional double 2	    : radius 2\n"
@@ -758,35 +756,24 @@ struct PGGHelper
   static shared_ptr<Manifold<3>> create_manifold(ParsedGridGenerator<3> *p,
                                                  const std::string &     name)
   {
-    if (name == "CylinderBoundaryOnAxis")
+    if (name == "CylinderManifoldOnAxis")
       {
-<<<<<<< HEAD
-        return SP(
-          new CylinderBoundary<3>(p->double_option_one, p->un_int_option_one));
-=======
         return SP(new CylindricalManifold<3>(p->un_int_option_one,
                                              p->double_option_one));
->>>>>>> start working for compatibility
       }
-    else if (name == "GeneralCylinderBoundary")
+    else if (name == "GeneralCylinderManifold")
       {
-<<<<<<< HEAD
-        return SP(new CylinderBoundary<3>(p->double_option_one,
-                                          p->point_option_one,
-                                          p->point_option_two));
-=======
         return SP(new CylindricalManifold<3>(p->point_option_one,
                                              p->point_option_two,
                                              p->double_option_one));
->>>>>>> start working for compatibility
       }
-    else if (name == "ConeBoundary")
-      {
-        return SP(new ConeBoundary<3>(p->double_option_one,
-                                      p->double_option_two,
-                                      p->point_option_one,
-                                      p->point_option_two));
-      }
+    // else if (name=="ConeBoundary")
+    //   {
+    //     return SP(new ConeBoundary<3>(p->double_option_one,
+    //                                   p->double_option_two,
+    //                                   p->point_option_one,
+    //                                   p->point_option_two));
+    //   }
     else
       {
 #ifdef DEAL_II_WITH_OPENCASCADE
@@ -833,13 +820,8 @@ struct PGGHelper
   {
     if (name == "TorusBoundary")
       {
-<<<<<<< HEAD
-        return SP(
-          new TorusBoundary<2, 3>(p->double_option_one, p->double_option_two));
-=======
         return SP(
           new TorusManifold<2>(p->double_option_one, p->double_option_two));
->>>>>>> start working for compatibility
       }
     else
       {
@@ -889,20 +871,20 @@ struct PGGHelper
   static shared_ptr<Manifold<dim>>
   create_manifold(ParsedGridGenerator<dim> *p, const std::string &name)
   {
-    if (name == "HalfHyperBallBoundary")
+    if (name == "SphericalManifold")
       {
         return SP(new SphericalManifold<dim>(p->point_option_one));
       }
-    else if (name == "HyperShellBoundary")
-      {
-        return SP(new SphericalManifold<dim>(p->point_option_one));
-      }
-    else if (name == "HalfHyperShellBoundary")
-      {
-        return SP(new HalfHyperShellBoundary<dim>(p->point_option_one,
-                                                  p->double_option_two,
-                                                  p->double_option_one));
-      }
+    // else if (name == "HyperShellBoundary")
+    //   {
+    //     return SP(new SphericalManifold<dim>(p->point_option_one));
+    //   }
+    // else if (name == "HalfHyperShellBoundary")
+    //   {
+    //     return SP(new HalfHyperShellBoundary<dim>(p->point_option_one,
+    //                                               p->double_option_two,
+    //                                               p->double_option_one));
+    //   }
     else
       return default_create_manifold(p, name);
   }
@@ -946,15 +928,15 @@ struct PGGHelper
     const std::string &                 name,
     typename std::enable_if<(spacedim < 3), void *>::type = 0)
   {
-    if (name == "HyperBallBoundary")
-      {
-        return SP(new HyperBallBoundary<dim, spacedim>(p->point_option_one,
-                                                       p->double_option_one));
-      }
-    else if (name == "SphericalManifold")
+    if (name == "SphericalManifold")
       {
         return SP(new SphericalManifold<dim, spacedim>(p->point_option_one));
       }
+    // else if (name=="SphericalManifold")
+    //   {
+    //     return SP(new
+    //     SphericalManifold<dim,spacedim>(p->point_option_one));
+    //   }
     else
       {
         // Try splitting the name at ":" and see if this is a more complicated
@@ -987,16 +969,8 @@ struct PGGHelper
     const std::string &                 name,
     typename std::enable_if<(spacedim == 3), void *>::type = 0)
   {
-    if (name == "HyperBallBoundary")
-      {
-        return SP(new HyperBallBoundary<dim, spacedim>(p->point_option_one,
-                                                       p->double_option_one));
-      }
-    else if (name == "SphericalManifold")
-      {
-        return SP(new SphericalManifold<dim, spacedim>(p->point_option_one));
-      }
-    else if (name == "CylindricalManifoldOnAxis")
+    if (name == "SphericalManifold")
+      else if (name == "CylindricalManifoldOnAxis")
       {
         return SP(new CylindricalManifold<dim, spacedim>(p->un_int_option_one));
       }
@@ -1204,18 +1178,9 @@ ParsedGridGenerator<dim, spacedim>::get_smoothing()
 
 D2K_NAMESPACE_CLOSE
 
-<<<<<<< HEAD
 template class deal2lkit::ParsedGridGenerator<1, 1>;
 template class deal2lkit::ParsedGridGenerator<1, 2>;
 template class deal2lkit::ParsedGridGenerator<1, 3>;
 template class deal2lkit::ParsedGridGenerator<2, 2>;
 template class deal2lkit::ParsedGridGenerator<2, 3>;
 template class deal2lkit::ParsedGridGenerator<3, 3>;
-=======
-template class deal2lkit::ParsedGridGenerator<1, 1>;
-template class deal2lkit::ParsedGridGenerator<1, 2>;
-template class deal2lkit::ParsedGridGenerator<1, 3>;
-template class deal2lkit::ParsedGridGenerator<2, 2>;
-template class deal2lkit::ParsedGridGenerator<2, 3>;
-template class deal2lkit::ParsedGridGenerator<3, 3>;
->>>>>>> start working for compatibility
