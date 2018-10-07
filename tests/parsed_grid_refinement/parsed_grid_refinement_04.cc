@@ -34,7 +34,8 @@
 using namespace deal2lkit;
 
 template <int dim, int spacedim>
-void test()
+void
+test()
 {
   ParsedGridGenerator<dim, spacedim> pgg;
   ParsedGridRefinement               pgr("", "number");
@@ -67,7 +68,8 @@ void test()
   delete tria;
 }
 
-int main(int argc, char *argv[])
+int
+main(int argc, char *argv[])
 {
   Utilities::MPI::MPI_InitFinalize mpi_initialization(argc, argv, 1);
   MPILogInitAll                    log;

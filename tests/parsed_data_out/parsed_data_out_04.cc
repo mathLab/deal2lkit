@@ -42,13 +42,18 @@ class Test : public ParameterAcceptor
 {
 public:
   Test();
-  virtual void declare_parameters(ParameterHandler &prm);
-  void         run();
+  virtual void
+  declare_parameters(ParameterHandler &prm);
+  void
+  run();
 
 private:
-  void make_grid_fe();
-  void setup_dofs();
-  void output_results();
+  void
+  make_grid_fe();
+  void
+  setup_dofs();
+  void
+  output_results();
 
   ParsedGridGenerator<spacedim, spacedim> tria_builder;
 
@@ -63,15 +68,16 @@ private:
 };
 
 template <int dim, int spacedim>
-Test<dim, spacedim>::Test() :
-  ParameterAcceptor("Global parameters"),
-  tria_builder("Triangulation"),
-  fe_builder("FE_Q", "FESystem[FE_Q(2)^2-FE_Q(1)]", "u,u,p"),
-  data_out("Data out", "vtk", 1, "", "output")
+Test<dim, spacedim>::Test()
+  : ParameterAcceptor("Global parameters")
+  , tria_builder("Triangulation")
+  , fe_builder("FE_Q", "FESystem[FE_Q(2)^2-FE_Q(1)]", "u,u,p")
+  , data_out("Data out", "vtk", 1, "", "output")
 {}
 
 template <int dim, int spacedim>
-void Test<dim, spacedim>::declare_parameters(ParameterHandler &prm)
+void
+Test<dim, spacedim>::declare_parameters(ParameterHandler &prm)
 {
   add_parameter(prm,
                 &initial_refinement,
@@ -81,7 +87,8 @@ void Test<dim, spacedim>::declare_parameters(ParameterHandler &prm)
 }
 
 template <int dim, int spacedim>
-void Test<dim, spacedim>::make_grid_fe()
+void
+Test<dim, spacedim>::make_grid_fe()
 {
   ParameterAcceptor::initialize("parameters_new.prm",
                                 "used_parameters_new.prm");
@@ -98,7 +105,8 @@ void Test<dim, spacedim>::make_grid_fe()
 }
 
 template <int dim, int spacedim>
-void Test<dim, spacedim>::setup_dofs()
+void
+Test<dim, spacedim>::setup_dofs()
 {
   std::vector<unsigned int> sub_blocks(spacedim + 1, 0);
   sub_blocks[spacedim] = 1;
@@ -122,7 +130,8 @@ void Test<dim, spacedim>::setup_dofs()
 }
 
 template <int dim, int spacedim>
-void Test<dim, spacedim>::output_results()
+void
+Test<dim, spacedim>::output_results()
 {
   data_out.prepare_data_output(*dof_handler);
   data_out.add_data_vector(solution, fe_builder.get_component_names());
@@ -131,14 +140,16 @@ void Test<dim, spacedim>::output_results()
 }
 
 template <int dim, int spacedim>
-void Test<dim, spacedim>::run()
+void
+Test<dim, spacedim>::run()
 {
   make_grid_fe();
   setup_dofs();
   output_results();
 }
 
-int main(int argc, char *argv[])
+int
+main(int argc, char *argv[])
 {
 #ifdef DEAL_II_WITH_MPI
   Utilities::MPI::MPI_InitFinalize mpi_initialization(

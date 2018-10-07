@@ -25,7 +25,8 @@ template <int dim>
 class Test : public ParameterAcceptor
 {
 public:
-  virtual void declare_parameters(ParameterHandler &prm)
+  virtual void
+  declare_parameters(ParameterHandler &prm)
   {
     add_parameter(prm, &a, "A double", "1.0", Patterns::Double());
   };
@@ -34,7 +35,8 @@ private:
   const double a = 0;
 };
 
-int main()
+int
+main()
 {
   initlog();
   Test<1> a;

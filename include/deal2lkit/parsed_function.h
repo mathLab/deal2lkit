@@ -56,12 +56,14 @@ public:
   /**
    * Calls the underlying function of ParsedFunction.
    */
-  virtual void declare_parameters(ParameterHandler &prm);
+  virtual void
+  declare_parameters(ParameterHandler &prm);
 
   /**
    * Calls the underlying function of ParsedFunction.
    */
-  virtual void parse_parameters(ParameterHandler &prm);
+  virtual void
+  parse_parameters(ParameterHandler &prm);
 
 
 private:

@@ -27,19 +27,19 @@ ParsedFiniteElement<dim, spacedim>::ParsedFiniteElement(
   const std::string &name,
   const std::string &default_name,
   const std::string &default_component_names,
-  const unsigned int n_components) :
-  ParameterAcceptor(name),
-  _n_components(n_components),
-  fe_name(default_name),
-  default_component_names(default_component_names)
+  const unsigned int n_components)
+  : ParameterAcceptor(name)
+  , _n_components(n_components)
+  , fe_name(default_name)
+  , default_component_names(default_component_names)
 {
   component_names = Utilities::split_string_list(default_component_names);
   parse_parameters_call_back();
 }
 
 template <int dim, int spacedim>
-void ParsedFiniteElement<dim, spacedim>::declare_parameters(
-  ParameterHandler &prm)
+void
+ParsedFiniteElement<dim, spacedim>::declare_parameters(ParameterHandler &prm)
 {
   add_parameter(prm,
                 &fe_name,
@@ -57,10 +57,10 @@ void ParsedFiniteElement<dim, spacedim>::declare_parameters(
     default_component_names,
     // This ensures that an assert is thrown if you try to
     // read something with the wrong number of components
-    Patterns::List(
-      Patterns::Anything(),
-      (_n_components ? _n_components : 1),
-      (_n_components ? _n_components : numbers::invalid_unsigned_int)),
+    Patterns::List(Patterns::Anything(),
+                   (_n_components ? _n_components : 1),
+                   (_n_components ? _n_components :
+                                    numbers::invalid_unsigned_int)),
     "How to partition the finite element. This information can be used "
     "to construct block matrices and vectors, as well as to create "
     "names for solution vectors, or error tables. A repeated component "
@@ -79,7 +79,8 @@ ParsedFiniteElement<dim, spacedim>::operator()() const
 
 
 template <int dim, int spacedim>
-void ParsedFiniteElement<dim, spacedim>::parse_parameters_call_back()
+void
+ParsedFiniteElement<dim, spacedim>::parse_parameters_call_back()
 {
   component_blocks.resize(component_names.size());
   block_names.resize(component_names.size());
@@ -95,35 +96,39 @@ void ParsedFiniteElement<dim, spacedim>::parse_parameters_call_back()
   std::unique_ptr<FiniteElement<dim, spacedim>> fe = (*this)();
   const unsigned int                            nc = fe->n_components();
   fe.reset();
-  AssertThrow(
-    component_names.size() == nc,
-    ExcInternalError("Generated FE has the wrong number of components."));
+  AssertThrow(component_names.size() == nc,
+              ExcInternalError(
+                "Generated FE has the wrong number of components."));
 }
 
 
 template <int dim, int spacedim>
-unsigned int ParsedFiniteElement<dim, spacedim>::n_components() const
+unsigned int
+ParsedFiniteElement<dim, spacedim>::n_components() const
 {
   return component_names.size();
 }
 
 
 template <int dim, int spacedim>
-unsigned int ParsedFiniteElement<dim, spacedim>::n_blocks() const
+unsigned int
+ParsedFiniteElement<dim, spacedim>::n_blocks() const
 {
   return block_names.size();
 }
 
 
 template <int dim, int spacedim>
-std::string ParsedFiniteElement<dim, spacedim>::get_component_names() const
+std::string
+ParsedFiniteElement<dim, spacedim>::get_component_names() const
 {
   return print(component_names);
 }
 
 
 template <int dim, int spacedim>
-std::string ParsedFiniteElement<dim, spacedim>::get_block_names() const
+std::string
+ParsedFiniteElement<dim, spacedim>::get_block_names() const
 {
   return print(block_names);
 }
@@ -137,7 +142,8 @@ ParsedFiniteElement<dim, spacedim>::get_component_blocks() const
 }
 
 template <int dim, int spacedim>
-unsigned int ParsedFiniteElement<dim, spacedim>::get_first_occurence(
+unsigned int
+ParsedFiniteElement<dim, spacedim>::get_first_occurence(
   const std::string &var) const
 {
   auto pos_it = std::find(component_names.begin(), component_names.end(), var);
@@ -147,7 +153,8 @@ unsigned int ParsedFiniteElement<dim, spacedim>::get_first_occurence(
 }
 
 template <int dim, int spacedim>
-bool ParsedFiniteElement<dim, spacedim>::is_vector(const std::string &var) const
+bool
+ParsedFiniteElement<dim, spacedim>::is_vector(const std::string &var) const
 {
   auto pos_it = std::find(component_names.begin(), component_names.end(), var);
   Assert(pos_it != component_names.end(),

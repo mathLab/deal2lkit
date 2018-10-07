@@ -53,7 +53,8 @@ public:
   /**
    * Declare local parameters.
    */
-  virtual void declare_parameters(ParameterHandler &prm);
+  virtual void
+  declare_parameters(ParameterHandler &prm);
 
 
   /**
@@ -66,8 +67,8 @@ public:
    * Triangulation::execute_coarsening_and_refinement() yourself.
    */
   template <int dim, class Vector, int spacedim>
-  void mark_cells(const Vector &                criteria,
-                  Triangulation<dim, spacedim> &tria) const;
+  void
+  mark_cells(const Vector &criteria, Triangulation<dim, spacedim> &tria) const;
 
 #ifdef DEAL_II_WITH_MPI
 #  ifdef DEAL_II_WITH_P4EST
@@ -105,7 +106,8 @@ private:
 #ifdef DEAL_II_WITH_MPI
 #  ifdef DEAL_II_WITH_P4EST
 template <int dim, class Vector, int spacedim>
-void ParsedGridRefinement::mark_cells(
+void
+ParsedGridRefinement::mark_cells(
   const Vector &                                       criteria,
   parallel::distributed::Triangulation<dim, spacedim> &tria) const
 {
@@ -126,8 +128,9 @@ void ParsedGridRefinement::mark_cells(
 #endif
 
 template <int dim, class Vector, int spacedim>
-void ParsedGridRefinement::mark_cells(const Vector &                criteria,
-                                      Triangulation<dim, spacedim> &tria) const
+void
+ParsedGridRefinement::mark_cells(const Vector &                criteria,
+                                 Triangulation<dim, spacedim> &tria) const
 {
   if (strategy == "number")
     GridRefinement::refine_and_coarsen_fixed_number(

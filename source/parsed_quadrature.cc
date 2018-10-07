@@ -23,26 +23,27 @@ template <int dim>
 ParsedQuadrature<dim>::ParsedQuadrature(const std::string &name,
                                         const std::string &quadrature_type,
                                         const unsigned int order,
-                                        const unsigned int repetitions) :
-  ParameterAcceptor(name),
-  quadrature_type(quadrature_type),
-  repetitions(repetitions),
-  order(order)
+                                        const unsigned int repetitions)
+  : ParameterAcceptor(name)
+  , quadrature_type(quadrature_type)
+  , repetitions(repetitions)
+  , order(order)
 {}
 
 template <int dim>
-void ParsedQuadrature<dim>::declare_parameters(ParameterHandler &prm)
+void
+ParsedQuadrature<dim>::declare_parameters(ParameterHandler &prm)
 {
   std::string doc_quadrature_type =
     QuadratureSelector<dim>::get_quadrature_names();
 
-  add_parameter(
-    prm,
-    &quadrature_type,
-    "Quadrature to generate",
-    quadrature_type,
-    Patterns::Selection(QuadratureSelector<dim>::get_quadrature_names()),
-    "Quadrature rule:" + doc_quadrature_type);
+  add_parameter(prm,
+                &quadrature_type,
+                "Quadrature to generate",
+                quadrature_type,
+                Patterns::Selection(
+                  QuadratureSelector<dim>::get_quadrature_names()),
+                "Quadrature rule:" + doc_quadrature_type);
 
   add_parameter(
     prm,
@@ -62,7 +63,8 @@ void ParsedQuadrature<dim>::declare_parameters(ParameterHandler &prm)
 }
 
 template <int dim>
-void ParsedQuadrature<dim>::parse_parameters_call_back()
+void
+ParsedQuadrature<dim>::parse_parameters_call_back()
 {
   (Quadrature<dim> &)(*this) =
     QIterated<dim>(QuadratureSelector<1>(quadrature_type, order), repetitions);

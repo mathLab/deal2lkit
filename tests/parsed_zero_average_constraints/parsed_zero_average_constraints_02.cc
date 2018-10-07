@@ -24,7 +24,8 @@
 using namespace deal2lkit;
 
 
-int main()
+int
+main()
 {
   initlog();
   ParsedZeroAverageConstraints<1> pnac1("");

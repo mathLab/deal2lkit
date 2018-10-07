@@ -47,21 +47,21 @@ D2K_NAMESPACE_OPEN
 
 #  ifdef DEAL_II_WITH_MPI
 template <typename VEC>
-IMEXStepper<VEC>::IMEXStepper(std::string name, MPI_Comm comm) :
-  ParameterAcceptor(name),
-  communicator(Utilities::MPI::duplicate_communicator(comm)),
-  kinsol("KINSOL for IMEX", comm),
-  pcout(std::cout, Utilities::MPI::this_mpi_process(communicator) == 0)
+IMEXStepper<VEC>::IMEXStepper(std::string name, MPI_Comm comm)
+  : ParameterAcceptor(name)
+  , communicator(Utilities::MPI::duplicate_communicator(comm))
+  , kinsol("KINSOL for IMEX", comm)
+  , pcout(std::cout, Utilities::MPI::this_mpi_process(communicator) == 0)
 {
   set_functions_to_trigger_an_assert();
 }
 
 #  else
 template <typename VEC>
-IMEXStepper<VEC>::IMEXStepper(std::string name) :
-  ParameterAcceptor(name),
-  kinsol("KINSOL for IMEX"),
-  pcout(std::cout)
+IMEXStepper<VEC>::IMEXStepper(std::string name)
+  : ParameterAcceptor(name)
+  , kinsol("KINSOL for IMEX")
+  , pcout(std::cout)
 {
   set_functions_to_trigger_an_assert();
 }
@@ -76,7 +76,8 @@ IMEXStepper<VEC>::~IMEXStepper()
 }
 
 template <typename VEC>
-double IMEXStepper<VEC>::get_alpha() const
+double
+IMEXStepper<VEC>::get_alpha() const
 {
   double alpha;
   if (std::fabs(initial_time - final_time) < 1e-14 || step_size < 1e-14)
@@ -88,13 +89,15 @@ double IMEXStepper<VEC>::get_alpha() const
 }
 
 template <typename VEC>
-void IMEXStepper<VEC>::set_initial_time(const double &t)
+void
+IMEXStepper<VEC>::set_initial_time(const double &t)
 {
   initial_time = t;
 }
 
 template <typename VEC>
-void IMEXStepper<VEC>::declare_parameters(ParameterHandler &prm)
+void
+IMEXStepper<VEC>::declare_parameters(ParameterHandler &prm)
 {
   add_parameter(prm,
                 &_step_size,
@@ -168,10 +171,11 @@ void IMEXStepper<VEC>::declare_parameters(ParameterHandler &prm)
 }
 
 template <typename VEC>
-void IMEXStepper<VEC>::compute_y_dot(const VEC &  y,
-                                     const VEC &  prev,
-                                     const double alpha,
-                                     VEC &        y_dot)
+void
+IMEXStepper<VEC>::compute_y_dot(const VEC &  y,
+                                const VEC &  prev,
+                                const double alpha,
+                                VEC &        y_dot)
 {
   y_dot = y;
   y_dot -= prev;
@@ -179,7 +183,8 @@ void IMEXStepper<VEC>::compute_y_dot(const VEC &  y,
 }
 
 template <typename VEC>
-unsigned int IMEXStepper<VEC>::solve_dae(VEC &solution, VEC &solution_dot)
+unsigned int
+IMEXStepper<VEC>::solve_dae(VEC &solution, VEC &solution_dot)
 {
   unsigned int step_number = 0;
 
@@ -293,8 +298,10 @@ unsigned int IMEXStepper<VEC>::solve_dae(VEC &solution, VEC &solution_dot)
             }
           compute_consistent_initial_conditions(t, solution, solution_dot);
 
-          compute_previous_solution(
-            solution, solution_dot, alpha, *previous_solution);
+          compute_previous_solution(solution,
+                                    solution_dot,
+                                    alpha,
+                                    *previous_solution);
 
           restart = solver_should_restart(t, solution, solution_dot);
         }
@@ -394,12 +401,13 @@ IMEXStepper<VEC>::line_search_with_backtracking(const VEC &   update,
 
 
 template <typename VEC>
-void IMEXStepper<VEC>::do_newton(const double t,
-                                 const double alpha,
-                                 const bool   update_Jacobian,
-                                 const VEC &  previous_solution,
-                                 VEC &        solution,
-                                 VEC &        solution_dot)
+void
+IMEXStepper<VEC>::do_newton(const double t,
+                            const double alpha,
+                            const bool   update_Jacobian,
+                            const VEC &  previous_solution,
+                            VEC &        solution,
+                            VEC &        solution_dot)
 {
   auto solution_update = create_new_vector();
   auto res             = create_new_vector();
@@ -525,10 +533,11 @@ void IMEXStepper<VEC>::do_newton(const double t,
 }
 
 template <typename VEC>
-void IMEXStepper<VEC>::compute_previous_solution(const VEC &   sol,
-                                                 const VEC &   sol_dot,
-                                                 const double &alpha,
-                                                 VEC &         prev)
+void
+IMEXStepper<VEC>::compute_previous_solution(const VEC &   sol,
+                                            const VEC &   sol_dot,
+                                            const double &alpha,
+                                            VEC &         prev)
 {
   if (alpha > 0.0)
     {
@@ -545,7 +554,8 @@ void IMEXStepper<VEC>::compute_previous_solution(const VEC &   sol,
 }
 
 template <typename VEC>
-double IMEXStepper<VEC>::evaluate_step_size(const double &t)
+double
+IMEXStepper<VEC>::evaluate_step_size(const double &t)
 {
   std::string                   variables = "t";
   std::map<std::string, double> constants;
@@ -560,9 +570,10 @@ double IMEXStepper<VEC>::evaluate_step_size(const double &t)
 }
 
 template <typename VEC>
-void IMEXStepper<VEC>::compute_consistent_initial_conditions(const double &t,
-                                                             VEC &         y,
-                                                             VEC &y_dot)
+void
+IMEXStepper<VEC>::compute_consistent_initial_conditions(const double &t,
+                                                        VEC &         y,
+                                                        VEC &         y_dot)
 {
   auto previous_solution = create_new_vector();
   auto first_guess       = create_new_vector();
@@ -592,13 +603,14 @@ void IMEXStepper<VEC>::compute_consistent_initial_conditions(const double &t,
 
 
 template <typename VEC>
-void IMEXStepper<VEC>::set_functions_to_trigger_an_assert()
+void
+IMEXStepper<VEC>::set_functions_to_trigger_an_assert()
 {
   create_new_vector = []() -> shared_ptr<VEC> {
     shared_ptr<VEC> p;
-    AssertThrow(
-      false,
-      ExcPureFunctionCalled("Please implement create_new_vector function."));
+    AssertThrow(false,
+                ExcPureFunctionCalled(
+                  "Please implement create_new_vector function."));
     return p;
   };
 
@@ -612,9 +624,9 @@ void IMEXStepper<VEC>::set_functions_to_trigger_an_assert()
   setup_jacobian =
     [](const double, const VEC &, const VEC &, const double) -> int {
     int ret = 0;
-    AssertThrow(
-      false,
-      ExcPureFunctionCalled("Please implement setup_jacobian function."));
+    AssertThrow(false,
+                ExcPureFunctionCalled(
+                  "Please implement setup_jacobian function."));
     return ret;
   };
 
@@ -649,9 +661,9 @@ void IMEXStepper<VEC>::set_functions_to_trigger_an_assert()
 
   jacobian_vmult = [](const VEC &, VEC &) -> int {
     int ret = 0;
-    AssertThrow(
-      false,
-      ExcPureFunctionCalled("Please implement jacobian_vmult function."));
+    AssertThrow(false,
+                ExcPureFunctionCalled(
+                  "Please implement jacobian_vmult function."));
     return ret;
   };
 

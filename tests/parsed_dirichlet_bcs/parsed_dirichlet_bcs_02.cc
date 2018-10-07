@@ -61,11 +61,14 @@ class FindBug
 {
 public:
   FindBug();
-  void run();
+  void
+  run();
 
 private:
-  void make_grid_and_dofs();
-  void dirichlet_conditions();
+  void
+  make_grid_and_dofs();
+  void
+  dirichlet_conditions();
 
   Triangulation<dim> triangulation;
   FESystem<dim>      fe;
@@ -78,14 +81,15 @@ private:
 // first component: Q1-Element,
 // second component: lowest order DG_Element
 template <int dim>
-FindBug<dim>::FindBug() :
-  fe(FE_RaviartThomas<dim>(0), 1, FE_Q<dim>(1), 1),
-  dof_handler(triangulation)
+FindBug<dim>::FindBug()
+  : fe(FE_RaviartThomas<dim>(0), 1, FE_Q<dim>(1), 1)
+  , dof_handler(triangulation)
 {}
 
 
 template <int dim>
-void FindBug<dim>::make_grid_and_dofs()
+void
+FindBug<dim>::make_grid_and_dofs()
 {
   GridGenerator::hyper_cube(triangulation);
   triangulation.refine_global(1);
@@ -107,7 +111,8 @@ void FindBug<dim>::make_grid_and_dofs()
 
 
 template <int dim>
-void FindBug<dim>::dirichlet_conditions()
+void
+FindBug<dim>::dirichlet_conditions()
 {
   std::map<types::global_dof_index, double> dirichlet_dofs;
   std::vector<bool>                         component_mask(dim + 1, false);
@@ -118,12 +123,12 @@ void FindBug<dim>::dirichlet_conditions()
   for (unsigned int i = 0; i < dof_handler.n_dofs(); ++i)
     dirichlet_dofs[i] = 1.;
 
-  ParsedDirichletBCs<dim, dim> parsed_dirichlet(
-    "ParsedDirichletBCs",
-    dim + 1,
-    "",
-    (dim == 2 ? "0=2" : "0=3"),
-    (dim == 2 ? "0=13;13;13" : "0=13;13;13;13"));
+  ParsedDirichletBCs<dim, dim> parsed_dirichlet("ParsedDirichletBCs",
+                                                dim + 1,
+                                                "",
+                                                (dim == 2 ? "0=2" : "0=3"),
+                                                (dim == 2 ? "0=13;13;13" :
+                                                            "0=13;13;13;13"));
   //  if (dim ==2)
   //    ParameterAcceptor::initialize(SOURCE_DIR
   //    "/parameters/parsed_dirichlet_bcs_02_2D.prm", "used_parameters.prm");
@@ -141,8 +146,10 @@ void FindBug<dim>::dirichlet_conditions()
 
   // get a list of those boundary DoFs which
   // we want to be fixed:
-  DoFTools::extract_boundary_dofs(
-    dof_handler, component_mask, fixed_dofs, boundary_ids);
+  DoFTools::extract_boundary_dofs(dof_handler,
+                                  component_mask,
+                                  fixed_dofs,
+                                  boundary_ids);
 
   // (Primitive) Check if the DoFs
   // where adjusted correctly (note
@@ -176,7 +183,8 @@ void FindBug<dim>::dirichlet_conditions()
 
 
 template <int dim>
-void FindBug<dim>::run()
+void
+FindBug<dim>::run()
 {
   make_grid_and_dofs();
   dirichlet_conditions();
@@ -184,7 +192,8 @@ void FindBug<dim>::run()
 
 
 
-int main()
+int
+main()
 {
   initlog();
   ParameterAcceptor::prm.log_parameters(deallog);

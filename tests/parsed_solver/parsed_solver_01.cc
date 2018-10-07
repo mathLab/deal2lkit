@@ -22,12 +22,14 @@
 
 using namespace deal2lkit;
 
-std::function<void(Vector<double> &, bool)> default_reinit()
+std::function<void(Vector<double> &, bool)>
+default_reinit()
 {
   return [](Vector<double> &, bool) {};
 }
 
-int main()
+int
+main()
 {
   initlog();
 

@@ -23,7 +23,8 @@
 using namespace deal2lkit;
 
 
-int main()
+int
+main()
 {
   initlog();
   std::system("rm -rf ./tmp_dir*");

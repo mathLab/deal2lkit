@@ -74,10 +74,12 @@ public:
   ~IMEXStepper();
 
   /** Declare parameters for this class to function properly. */
-  virtual void declare_parameters(ParameterHandler &prm);
+  virtual void
+  declare_parameters(ParameterHandler &prm);
 
   /** Evolve. This function returns the final number of steps. */
-  unsigned int solve_dae(VEC &solution, VEC &solution_dot);
+  unsigned int
+  solve_dae(VEC &solution, VEC &solution_dot);
 
 
   /**
@@ -91,13 +93,15 @@ public:
    * one, return the inverse of dt. If the problem is
    * stationary, returns 0.
    */
-  double get_alpha() const;
+  double
+  get_alpha() const;
 
   /**
    * Set initial time equal to @p t disregarding what
    * is written in the parameter file.
    */
-  void set_initial_time(const double &t);
+  void
+  set_initial_time(const double &t);
 
 private:
 #  ifdef DEAL_II_WITH_MPI
@@ -123,7 +127,8 @@ private:
    * Evaluate step size at time @p t according to the
    * expression stored in _step_size
    */
-  double evaluate_step_size(const double &t);
+  double
+  evaluate_step_size(const double &t);
 
   /** Initial time for the ode.*/
   double initial_time;
@@ -175,13 +180,14 @@ private:
    *  it returns the selected alpha and solution, solution_dot and
    *  residual are accordingly updated.
    */
-  double line_search_with_backtracking(const VEC &   update,
-                                       const VEC &   prev_sol,
-                                       const double &alpha,
-                                       const double &t,
-                                       VEC &         sol,
-                                       VEC &         sol_dot,
-                                       VEC &         residual);
+  double
+  line_search_with_backtracking(const VEC &   update,
+                                const VEC &   prev_sol,
+                                const double &alpha,
+                                const double &t,
+                                VEC &         sol,
+                                VEC &         sol_dot,
+                                VEC &         residual);
 
 
   /**
@@ -195,12 +201,13 @@ private:
    *
    * this function is called when KINSOL is NOT used
    */
-  void do_newton(const double t,
-                 const double alpha,
-                 const bool   update_Jacobian,
-                 const VEC &  previous_solution,
-                 VEC &        solution,
-                 VEC &        solution_dot);
+  void
+  do_newton(const double t,
+            const double alpha,
+            const bool   update_Jacobian,
+            const VEC &  previous_solution,
+            VEC &        solution,
+            VEC &        solution_dot);
 
 
   /**
@@ -209,10 +216,11 @@ private:
    * @param sol_dot
    * @param alpha
    */
-  void compute_previous_solution(const VEC &   sol,
-                                 const VEC &   sol_dot,
-                                 const double &alpha,
-                                 VEC &         prev);
+  void
+  compute_previous_solution(const VEC &   sol,
+                            const VEC &   sol_dot,
+                            const double &alpha,
+                            VEC &         prev);
 
 public:
   /**
@@ -281,7 +289,8 @@ private:
    * Set the std::functions above to trigger an assert if they are not
    * implemented.
    */
-  void set_functions_to_trigger_an_assert();
+  void
+  set_functions_to_trigger_an_assert();
 };
 
 D2K_NAMESPACE_CLOSE

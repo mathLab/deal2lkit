@@ -404,20 +404,23 @@ public:
    * read in to the outfilename. This is useful to get all used
    * parameters, and not only those that were set in the input file.
    */
-  static void initialize(const std::string filename    = "",
-                         const std::string outfilename = "");
+  static void
+  initialize(const std::string filename    = "",
+             const std::string outfilename = "");
 
   /**
    * Clear class list and global parameter file.
    */
-  static void clear();
+  static void
+  clear();
 
   /**
    * Parse the parameter file. This function enters the subsection
    * returned by get_section_name() for each derived class, and parse
    * all parameters that were added using add_parameter().
    */
-  virtual void parse_parameters(ParameterHandler &prm);
+  virtual void
+  parse_parameters(ParameterHandler &prm);
 
   /**
    * Parse parameter call back. This function is called at the end
@@ -429,7 +432,8 @@ public:
    * rule after you have read how many quadrature points you wanted
    * to use from the parameter file.
    */
-  virtual void parse_parameters_call_back();
+  virtual void
+  parse_parameters_call_back();
 
 
   /**
@@ -449,7 +453,8 @@ public:
    * with the strategy advocated by the \dealii library of splitting declaration
    * and parsing of parameters into two functions.
    */
-  virtual void declare_parameters(ParameterHandler &){};
+  virtual void
+  declare_parameters(ParameterHandler &){};
 
 
   /**
@@ -464,7 +469,8 @@ public:
   /**
    * Print information about all stored classes.
    */
-  static void log_info();
+  static void
+  log_info();
 
 
   /**
@@ -482,13 +488,15 @@ public:
    * at construction time, then that name is returned, otherwise it
    * returns the name of this class, pretty printed.
    */
-  std::string get_section_name() const;
+  std::string
+  get_section_name() const;
 
   /**
    * Travers all registered classes, and figure out what
    * subsections we need to enter.
    */
-  std::vector<std::string> get_section_path() const;
+  std::vector<std::string>
+  get_section_path() const;
 
   /**
    * Add a parameter the given parameter list. A pointer to the
@@ -534,11 +542,12 @@ public:
    * in the nested sections returned by get_section_path().
    */
   template <class T>
-  void add_parameter(T &                          parameter,
-                     const std::string &          entry,
-                     const std::string &          documentation = std::string(),
-                     const Patterns::PatternBase &pattern = *to_pattern(T()),
-                     ParameterHandler &           prm = ParameterAcceptor::prm)
+  void
+  add_parameter(T &                          parameter,
+                const std::string &          entry,
+                const std::string &          documentation = std::string(),
+                const Patterns::PatternBase &pattern       = *to_pattern(T()),
+                ParameterHandler &           prm = ParameterAcceptor::prm)
   {
     AssertThrow(std::is_const<T>::value == false,
                 ExcMessage("You tried to add a parameter using a const "
@@ -557,32 +566,37 @@ public:
    * Make sure we enter the right subsection of the global parameter file.
    * This function should be called when prm is in its root subsection.
    */
-  void enter_my_subsection(ParameterHandler &prm);
+  void
+  enter_my_subsection(ParameterHandler &prm);
 
   /**
    * This function undoes what the enter_my_subsection() function did. It only
    * makes sense if enter_my_subsection() is called before this one.
    */
-  void leave_my_subsection(ParameterHandler &prm);
+  void
+  leave_my_subsection(ParameterHandler &prm);
 
   /**
    * Given a class T, construct its default pattern to be used when declaring
    * parameters.
    */
   template <class T>
-  static std::shared_ptr<Patterns::PatternBase> to_pattern(const T &);
+  static std::shared_ptr<Patterns::PatternBase>
+  to_pattern(const T &);
 
   /**
    * Given a string, fill the value of the given parameter.
    */
   template <class T>
-  static T to_type(const std::string &);
+  static T
+  to_type(const std::string &);
 
   /**
    * Given a parameter, return a string containing the given parameter.
    */
   template <class T>
-  static std::string to_string(const T &);
+  static std::string
+  to_string(const T &);
 
   /**
    * Static parameter. This is used if the user does not provide one.

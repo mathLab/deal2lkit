@@ -30,7 +30,8 @@ class Energy
 {
 public:
   template <typename Number>
-  void fill_data(AnyData &d)
+  void
+  fill_data(AnyData &d)
   {
     Tensor<1, spacedim, Number> p;
     p[0]               = 1.0;
@@ -39,7 +40,8 @@ public:
   }
 
   template <typename Number>
-  Number energy(const AnyData &d) const
+  Number
+  energy(const AnyData &d) const
   {
     std::string suffix = demangle(typeid(Number).name());
     auto &      p      = d.get<Tensor<1, spacedim, Number>>("u" + suffix);
@@ -53,7 +55,8 @@ class Problem
 public:
   EnergyClass e;
 
-  void run()
+  void
+  run()
   {
     AnyData d;
     e.template fill_data<double>(d);
@@ -65,7 +68,8 @@ public:
 };
 
 
-int main()
+int
+main()
 {
   initlog();
 

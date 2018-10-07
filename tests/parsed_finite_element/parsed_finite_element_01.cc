@@ -22,7 +22,8 @@
 
 using namespace deal2lkit;
 
-int main()
+int
+main()
 {
   initlog();
   ParsedFiniteElement<1, 1> fe_builder11;

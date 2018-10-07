@@ -25,16 +25,17 @@ ParsedGridRefinement::ParsedGridRefinement(const std::string & name,
                                            const double &      top_parameter,
                                            const double &      bottom_parameter,
                                            const unsigned int &max_cells,
-                                           const unsigned int &order) :
-  ParameterAcceptor(name),
-  strategy(strategy),
-  top_parameter(top_parameter),
-  bottom_parameter(bottom_parameter),
-  max_cells(max_cells),
-  order(order)
+                                           const unsigned int &order)
+  : ParameterAcceptor(name)
+  , strategy(strategy)
+  , top_parameter(top_parameter)
+  , bottom_parameter(bottom_parameter)
+  , max_cells(max_cells)
+  , order(order)
 {}
 
-void ParsedGridRefinement::declare_parameters(ParameterHandler &prm)
+void
+ParsedGridRefinement::declare_parameters(ParameterHandler &prm)
 {
   add_parameter(prm,
                 &strategy,

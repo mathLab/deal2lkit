@@ -89,19 +89,22 @@ public:
                const std::string list_of_error_norms = "Linfty, L2, H1");
 
   /** Initialize the given values for the paramter file. */
-  virtual void declare_parameters(ParameterHandler &prm);
+  virtual void
+  declare_parameters(ParameterHandler &prm);
 
   /** Parse the given parameter handler. */
-  virtual void parse_parameters(ParameterHandler &prm);
+  virtual void
+  parse_parameters(ParameterHandler &prm);
 
   /** Calculate the error of the numeric solution in variuous norms. Store
       the result in the given table. */
   template <typename DH, typename VEC>
-  void error_from_exact(const DH &                           vspace,
-                        const VEC &                          solution,
-                        const Function<DH::space_dimension> &exact,
-                        unsigned int                         table_no = 0,
-                        double                               dt       = 0.);
+  void
+  error_from_exact(const DH &                           vspace,
+                   const VEC &                          solution,
+                   const Function<DH::space_dimension> &exact,
+                   unsigned int                         table_no = 0,
+                   double                               dt       = 0.);
 
 
   /** Same as above, with different mapping. */
@@ -126,38 +129,42 @@ public:
    * that you only add dofs and cells informations once.
    */
   template <typename DH>
-  void custom_error(const std::function<double(const unsigned int component)>
-                      &                custom_error_function,
-                    const DH &         dh,
-                    const std::string &error_name       = "custom",
-                    const bool         add_table_extras = false,
-                    const unsigned int table_no         = 0,
-                    const double       dt               = 0.);
+  void
+  custom_error(const std::function<double(const unsigned int component)>
+                 &                custom_error_function,
+               const DH &         dh,
+               const std::string &error_name       = "custom",
+               const bool         add_table_extras = false,
+               const unsigned int table_no         = 0,
+               const double       dt               = 0.);
 
   /** Difference between two solutions in two different vector spaces. */
   template <typename DH, typename VEC>
-  void difference(const DH &,
-                  const VEC &,
-                  const DH &,
-                  const VEC &,
-                  unsigned int table_no = 0,
-                  double       dt       = 0.);
+  void
+  difference(const DH &,
+             const VEC &,
+             const DH &,
+             const VEC &,
+             unsigned int table_no = 0,
+             double       dt       = 0.);
 
   /** Difference between two solutions in the same vector space. */
   template <typename DH, typename VEC>
-  void difference(const DH &,
-                  const VEC &,
-                  const VEC &,
-                  unsigned int table_no = 0,
-                  double       dt       = 0.);
+  void
+  difference(const DH &,
+             const VEC &,
+             const VEC &,
+             unsigned int table_no = 0,
+             double       dt       = 0.);
 
   /** By default output first table. */
-  void output_table(std::ostream &     out      = std::cout,
-                    const unsigned int table_no = 0);
+  void
+  output_table(std::ostream &out = std::cout, const unsigned int table_no = 0);
 
   /** By default output first table. The output is according to
       to the condition of ConditionalOStream &pcout */
-  void output_table(ConditionalOStream &pcout, const unsigned int table_no = 0);
+  void
+  output_table(ConditionalOStream &pcout, const unsigned int table_no = 0);
 
 private:
   /** Value of solution names. */
@@ -223,7 +230,8 @@ private:
  * a compiler warning when we tried to assign it to an object of type
  * NormFlags.
  */
-inline NormFlags operator|(NormFlags f1, NormFlags f2)
+inline NormFlags
+operator|(NormFlags f1, NormFlags f2)
 {
   return static_cast<NormFlags>(static_cast<unsigned int>(f1) |
                                 static_cast<unsigned int>(f2));
@@ -233,7 +241,8 @@ inline NormFlags operator|(NormFlags f1, NormFlags f2)
  * Global operator which sets the bits from the second argument also
  * in the first one.
  */
-inline NormFlags &operator|=(NormFlags &f1, NormFlags f2)
+inline NormFlags &
+operator|=(NormFlags &f1, NormFlags f2)
 {
   f1 = f1 | f2;
   return f1;
@@ -259,7 +268,8 @@ inline NormFlags operator&(NormFlags f1, NormFlags f2)
  * Global operator which clears all the bits in the first argument if
  * they are not also set in the second argument.
  */
-inline NormFlags &operator&=(NormFlags &f1, NormFlags f2)
+inline NormFlags &
+operator&=(NormFlags &f1, NormFlags f2)
 {
   f1 = f1 & f2;
   return f1;
@@ -272,11 +282,12 @@ inline NormFlags &operator&=(NormFlags &f1, NormFlags f2)
 
 template <int ntables>
 template <typename DH, typename VECTOR>
-void ErrorHandler<ntables>::difference(const DH &    dh,
-                                       const VECTOR &solution1,
-                                       const VECTOR &solution2,
-                                       unsigned int  table_no,
-                                       double        dt)
+void
+ErrorHandler<ntables>::difference(const DH &    dh,
+                                  const VECTOR &solution1,
+                                  const VECTOR &solution2,
+                                  unsigned int  table_no,
+                                  double        dt)
 {
   AssertThrow(solution1.size() == solution2.size(),
               ExcDimensionMismatch(solution1.size(), solution2.size()));
@@ -293,7 +304,8 @@ void ErrorHandler<ntables>::difference(const DH &    dh,
 
 template <int ntables>
 template <typename DH, typename VECTOR>
-void ErrorHandler<ntables>::error_from_exact(
+void
+ErrorHandler<ntables>::error_from_exact(
   const DH &                           dh,
   const VECTOR &                       solution,
   const Function<DH::space_dimension> &exact,
@@ -310,7 +322,8 @@ void ErrorHandler<ntables>::error_from_exact(
 
 template <int ntables>
 template <typename DH, typename VECTOR>
-void ErrorHandler<ntables>::error_from_exact(
+void
+ErrorHandler<ntables>::error_from_exact(
   const Mapping<DH::dimension, DH::space_dimension> &mapping,
   const DH &                                         dh,
   const VECTOR &                                     solution,
@@ -325,9 +338,9 @@ void ErrorHandler<ntables>::error_from_exact(
       AssertThrow(initialized, ExcNotInitialized());
       AssertThrow(table_no < types.size(),
                   ExcIndexRange(table_no, 0, names.size()));
-      AssertThrow(
-        exact.n_components == types[table_no].size(),
-        ExcDimensionMismatch(exact.n_components, types[table_no].size()));
+      AssertThrow(exact.n_components == types[table_no].size(),
+                  ExcDimensionMismatch(exact.n_components,
+                                       types[table_no].size()));
 
       std::vector<std::vector<double>> error(exact.n_components,
                                              std::vector<double>(4));
@@ -533,7 +546,8 @@ void ErrorHandler<ntables>::error_from_exact(
 
 template <int ntables>
 template <typename DH>
-void ErrorHandler<ntables>::custom_error(
+void
+ErrorHandler<ntables>::custom_error(
   const std::function<double(const unsigned int component)>
     &                custom_error_function,
   const DH &         dh,

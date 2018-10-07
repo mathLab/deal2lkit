@@ -33,7 +33,8 @@ using namespace deal2lkit;
 // Create a grid, refine it locally, write it out in ar format, read it
 // back in, and check that everything is fine.
 
-int main()
+int
+main()
 {
   initlog();
   ParsedGridGenerator<2, 2> a("Grid");

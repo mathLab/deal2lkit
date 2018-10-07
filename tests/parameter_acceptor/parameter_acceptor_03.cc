@@ -28,7 +28,8 @@ template <int dim>
 class Test : public ParameterAcceptor
 {
 public:
-  virtual void declare_parameters(ParameterHandler &prm)
+  virtual void
+  declare_parameters(ParameterHandler &prm)
   {
     std::string def = "0.";
     for (int i = 1; i < dim; ++i)
@@ -37,7 +38,8 @@ public:
       prm, &p, "A point", def, Patterns::List(Patterns::Double(), dim, dim));
   };
 
-  void log_info()
+  void
+  log_info()
   {
     deallog << "My type: " << type(*this) << std::endl
             << "p: " << p << std::endl;
@@ -48,7 +50,8 @@ private:
 };
 
 
-int main()
+int
+main()
 {
   initlog();
   Test<1> a;

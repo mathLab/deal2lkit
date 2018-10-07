@@ -49,7 +49,8 @@ typedef Sacado::Fad::DFad<double> Sdouble;
 
 
 template <int dim>
-void test(const Triangulation<dim> &tr, const FiniteElement<dim> &fe)
+void
+test(const Triangulation<dim> &tr, const FiniteElement<dim> &fe)
 {
   deallog << "FE=" << fe.get_name() << std::endl;
 
@@ -71,8 +72,9 @@ void test(const Triangulation<dim> &tr, const FiniteElement<dim> &fe)
   for (unsigned int i = 0; i < dof.n_dofs(); ++i)
     global_vector[i] += i * i;
 
-  DOFUtilities::extract_local_dofs(
-    global_vector, local_dof_indices, independent_local_dof_values);
+  DOFUtilities::extract_local_dofs(global_vector,
+                                   local_dof_indices,
+                                   independent_local_dof_values);
 
   for (unsigned int i = 0; i < dof.n_dofs(); ++i)
     deallog << independent_local_dof_values[i] << std::endl;
@@ -93,19 +95,31 @@ void test(const Triangulation<dim> &tr, const FiniteElement<dim> &fe)
   FEValuesExtractors::Vector           vector(0);
 
   DOFUtilities::get_values(fe_values, independent_local_dof_values, all_vars);
-  DOFUtilities::get_values(
-    fe_values, independent_local_dof_values, scalar, scalar_values);
-  DOFUtilities::get_gradients(
-    fe_values, independent_local_dof_values, scalar, grad_s);
+  DOFUtilities::get_values(fe_values,
+                           independent_local_dof_values,
+                           scalar,
+                           scalar_values);
+  DOFUtilities::get_gradients(fe_values,
+                              independent_local_dof_values,
+                              scalar,
+                              grad_s);
 
-  DOFUtilities::get_values(
-    fe_values, independent_local_dof_values, vector, vector_values);
-  DOFUtilities::get_divergences(
-    fe_values, independent_local_dof_values, vector, div_values);
-  DOFUtilities::get_gradients(
-    fe_values, independent_local_dof_values, vector, grad_v);
-  DOFUtilities::get_symmetric_gradients(
-    fe_values, independent_local_dof_values, vector, sym_grad_v);
+  DOFUtilities::get_values(fe_values,
+                           independent_local_dof_values,
+                           vector,
+                           vector_values);
+  DOFUtilities::get_divergences(fe_values,
+                                independent_local_dof_values,
+                                vector,
+                                div_values);
+  DOFUtilities::get_gradients(fe_values,
+                              independent_local_dof_values,
+                              vector,
+                              grad_v);
+  DOFUtilities::get_symmetric_gradients(fe_values,
+                                        independent_local_dof_values,
+                                        vector,
+                                        sym_grad_v);
 
   deallog << "all_vars" << std::endl;
   for (unsigned int q = 0; q < quadrature.size(); ++q)
@@ -172,7 +186,8 @@ void test(const Triangulation<dim> &tr, const FiniteElement<dim> &fe)
 
 
 template <int dim>
-void test_hyper_cube()
+void
+test_hyper_cube()
 {
   Triangulation<dim> tr;
   GridGenerator::hyper_cube(tr);
@@ -183,7 +198,8 @@ void test_hyper_cube()
 }
 
 
-int main()
+int
+main()
 {
   std::ofstream logfile("output");
   deallog << std::setprecision(3);

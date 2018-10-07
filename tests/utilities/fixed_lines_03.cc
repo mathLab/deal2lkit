@@ -18,7 +18,8 @@
 
 
 
-int main()
+int
+main()
 {
   fputs("output1\n", stdout);
   fputs("output2\n", stdout);

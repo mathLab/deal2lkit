@@ -51,15 +51,17 @@ typedef Sacado::Fad::DFad<Sdouble> SSdouble;
 
 
 template <int dim>
-void test(const Triangulation<dim> &tr, const FiniteElement<dim> &fe)
+void
+test(const Triangulation<dim> &tr, const FiniteElement<dim> &fe)
 {
   DoFHandler<dim> dof(tr);
   dof.distribute_dofs(fe);
 
 
   const QGauss<dim> quadrature(3);
-  FEValues<dim>     fe_values(
-    fe, quadrature, update_values | update_gradients | update_JxW_values);
+  FEValues<dim>     fe_values(fe,
+                          quadrature,
+                          update_values | update_gradients | update_JxW_values);
 
   std::vector<types::global_dof_index> local_dof_indices(
     fe_values.dofs_per_cell);
@@ -74,8 +76,9 @@ void test(const Triangulation<dim> &tr, const FiniteElement<dim> &fe)
   for (unsigned int i = 0; i < dof.n_dofs(); ++i)
     global_vector[i] += i * i;
 
-  DOFUtilities::extract_local_dofs(
-    global_vector, local_dof_indices, independent_local_dof_values);
+  DOFUtilities::extract_local_dofs(global_vector,
+                                   local_dof_indices,
+                                   independent_local_dof_values);
 
 
 
@@ -91,8 +94,10 @@ void test(const Triangulation<dim> &tr, const FiniteElement<dim> &fe)
   FEValuesExtractors::Scalar scalar(dim);
   FEValuesExtractors::Vector vector(0);
 
-  DOFUtilities::get_gradients(
-    fe_values, independent_local_dof_values, vector, grad_v);
+  DOFUtilities::get_gradients(fe_values,
+                              independent_local_dof_values,
+                              vector,
+                              grad_v);
   DOFUtilities::get_values(fe_values, independent_local_dof_values, scalar, p);
 
   SSdouble en;
@@ -145,7 +150,8 @@ void test(const Triangulation<dim> &tr, const FiniteElement<dim> &fe)
 
 
 template <int dim>
-void test_hyper_cube()
+void
+test_hyper_cube()
 {
   Triangulation<dim> tr;
   GridGenerator::hyper_cube(tr);
@@ -156,7 +162,8 @@ void test_hyper_cube()
 }
 
 
-int main()
+int
+main()
 {
   std::ofstream logfile("output");
 

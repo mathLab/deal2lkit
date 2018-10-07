@@ -74,7 +74,8 @@ public:
    *
    */
   template <typename type>
-  void add_copy(const type &entry, const std::string &name);
+  void
+  add_copy(const type &entry, const std::string &name);
 
   /**
    * @brief Add a reference to an already existing object.
@@ -83,7 +84,8 @@ public:
    *
    */
   template <typename type>
-  void add_ref(type &entry, const std::string &name);
+  void
+  add_ref(type &entry, const std::string &name);
 
   /**
    * @brief Access to stored data object by name.
@@ -94,7 +96,8 @@ public:
    *
    */
   template <typename type>
-  type &get(const std::string &name);
+  type &
+  get(const std::string &name);
 
   /**
    * @brief Read-only access to stored data object by name.
@@ -105,7 +108,8 @@ public:
    *
    */
   template <typename type>
-  const type &get(const std::string &name) const;
+  const type &
+  get(const std::string &name) const;
 
   /**
    * @brief Query if we store the given object.
@@ -113,7 +117,8 @@ public:
    * Find out if we store an object with given name.
    *
    */
-  inline bool have(const std::string &name) const;
+  inline bool
+  have(const std::string &name) const;
 
   /**
    * @brief Print the name and type of the stored objects
@@ -122,7 +127,8 @@ public:
    *
    */
   template <class STREAM>
-  void print_info(STREAM &os);
+  void
+  print_info(STREAM &os);
 
   /// An entry with this name does not exist in the AnyData object.
   DeclException1(ExcNameNotFound,
@@ -142,20 +148,23 @@ private:
 }; // end class
 
 template <typename type>
-void AnyData::add_copy(const type &entry, const std::string &name)
+void
+AnyData::add_copy(const type &entry, const std::string &name)
 {
   mydata[name] = entry;
 }
 
 template <typename type>
-void AnyData::add_ref(type &entry, const std::string &name)
+void
+AnyData::add_ref(type &entry, const std::string &name)
 {
   type *ptr    = &entry;
   mydata[name] = ptr;
 }
 
 template <typename type>
-type &AnyData::get(const std::string &name)
+type &
+AnyData::get(const std::string &name)
 {
   Assert(mydata.find(name) != mydata.end(), ExcNameNotFound(name));
 
@@ -179,7 +188,8 @@ type &AnyData::get(const std::string &name)
 }
 
 template <typename type>
-const type &AnyData::get(const std::string &name) const
+const type &
+AnyData::get(const std::string &name) const
 {
   Assert(mydata.find(name) != mydata.end(), ExcNameNotFound(name));
 
@@ -207,13 +217,15 @@ const type &AnyData::get(const std::string &name) const
 }
 
 
-bool AnyData::have(const std::string &name) const
+bool
+AnyData::have(const std::string &name) const
 {
   return mydata.find(name) != mydata.end();
 }
 
 template <class STREAM>
-inline void AnyData::print_info(STREAM &os)
+inline void
+AnyData::print_info(STREAM &os)
 {
   for (std::map<std::string, boost::any>::iterator it = mydata.begin();
        it != mydata.end();

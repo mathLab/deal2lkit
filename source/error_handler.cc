@@ -41,16 +41,17 @@ D2K_NAMESPACE_OPEN
 template <int ntables>
 ErrorHandler<ntables>::ErrorHandler(const std::string name,
                                     const std::string solution_names,
-                                    const std::string list_of_error_norms) :
-  ParameterAcceptor(name),
-  solution_names(solution_names),
-  list_of_error_norms(list_of_error_norms)
+                                    const std::string list_of_error_norms)
+  : ParameterAcceptor(name)
+  , solution_names(solution_names)
+  , list_of_error_norms(list_of_error_norms)
 {
   initialized = false;
 }
 
 template <int ntables>
-void ErrorHandler<ntables>::declare_parameters(ParameterHandler &prm)
+void
+ErrorHandler<ntables>::declare_parameters(ParameterHandler &prm)
 {
   std::string dummy_names;
   if (ntables > 1)
@@ -66,8 +67,9 @@ void ErrorHandler<ntables>::declare_parameters(ParameterHandler &prm)
     dummy_names = dummy_names + "error";
   prm.declare_entry("Write error files", "false", Patterns::Bool());
   prm.declare_entry("Output error tables", "true", Patterns::Bool());
-  prm.declare_entry(
-    "Error file format", "tex", Patterns::Selection("tex|txt|gpl|org"));
+  prm.declare_entry("Error file format",
+                    "tex",
+                    Patterns::Selection("tex|txt|gpl|org"));
   prm.declare_entry("Compute error", "true", Patterns::Bool());
   prm.declare_entry("Table names",
                     dummy_names,
@@ -132,7 +134,8 @@ void ErrorHandler<ntables>::declare_parameters(ParameterHandler &prm)
 }
 
 template <int ntables>
-void ErrorHandler<ntables>::parse_parameters(ParameterHandler &prm)
+void
+ErrorHandler<ntables>::parse_parameters(ParameterHandler &prm)
 {
   write_error  = prm.get_bool("Write error files");
   output_error = prm.get_bool("Output error tables");
@@ -237,8 +240,9 @@ void ErrorHandler<ntables>::parse_parameters(ParameterHandler &prm)
 }
 
 template <int ntables>
-void ErrorHandler<ntables>::output_table(std::ostream &     out,
-                                         const unsigned int table_no)
+void
+ErrorHandler<ntables>::output_table(std::ostream &     out,
+                                    const unsigned int table_no)
 {
   if (compute_error)
     {
@@ -290,8 +294,9 @@ void ErrorHandler<ntables>::output_table(std::ostream &     out,
 }
 
 template <int ntables>
-void ErrorHandler<ntables>::output_table(ConditionalOStream &pcout,
-                                         const unsigned int  table_no)
+void
+ErrorHandler<ntables>::output_table(ConditionalOStream &pcout,
+                                    const unsigned int  table_no)
 {
   if (pcout.is_active())
     output_table(pcout.get_stream(), table_no);

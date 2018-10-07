@@ -105,32 +105,32 @@ public:
                 const Quadrature<dim> &             quadrature,
                 const UpdateFlags &                 update_flags,
                 const Quadrature<dim - 1> &         face_quadrature,
-                const UpdateFlags &                 face_update_flags) :
-    fe_values(mapping, fe, quadrature, update_flags),
-    fe_face_values(mapping, fe, face_quadrature, face_update_flags),
-    fe_subface_values(mapping, fe, face_quadrature, face_update_flags),
-    local_dof_indices(fe.dofs_per_cell)
+                const UpdateFlags &                 face_update_flags)
+    : fe_values(mapping, fe, quadrature, update_flags)
+    , fe_face_values(mapping, fe, face_quadrature, face_update_flags)
+    , fe_subface_values(mapping, fe, face_quadrature, face_update_flags)
+    , local_dof_indices(fe.dofs_per_cell)
 
-      {};
+        {};
 
   /**
    * Deep copy constructor.
    */
-  FEValuesCache(const FEValuesCache<dim, spacedim> &scratch) :
-    cache(scratch.cache),
-    fe_values(scratch.fe_values.get_mapping(),
-              scratch.fe_values.get_fe(),
-              scratch.fe_values.get_quadrature(),
-              scratch.fe_values.get_update_flags()),
-    fe_face_values(scratch.fe_values.get_mapping(),
-                   scratch.fe_values.get_fe(),
-                   scratch.fe_face_values.get_quadrature(),
-                   scratch.fe_face_values.get_update_flags()),
-    fe_subface_values(scratch.fe_values.get_mapping(),
-                      scratch.fe_values.get_fe(),
-                      scratch.fe_subface_values.get_quadrature(),
-                      scratch.fe_subface_values.get_update_flags()),
-    local_dof_indices(scratch.fe_values.get_fe().dofs_per_cell){};
+  FEValuesCache(const FEValuesCache<dim, spacedim> &scratch)
+    : cache(scratch.cache)
+    , fe_values(scratch.fe_values.get_mapping(),
+                scratch.fe_values.get_fe(),
+                scratch.fe_values.get_quadrature(),
+                scratch.fe_values.get_update_flags())
+    , fe_face_values(scratch.fe_values.get_mapping(),
+                     scratch.fe_values.get_fe(),
+                     scratch.fe_face_values.get_quadrature(),
+                     scratch.fe_face_values.get_update_flags())
+    , fe_subface_values(scratch.fe_values.get_mapping(),
+                        scratch.fe_values.get_fe(),
+                        scratch.fe_subface_values.get_quadrature(),
+                        scratch.fe_subface_values.get_update_flags())
+    , local_dof_indices(scratch.fe_values.get_fe().dofs_per_cell){};
 
 
   /**
@@ -181,7 +181,11 @@ public:
    *
    * @return reference to @p cache.
    */
-  AnyData &get_cache() { return cache; };
+  AnyData &
+  get_cache()
+  {
+    return cache;
+  };
 
   /**
    * Get the currently initialized FEValues.
@@ -190,7 +194,8 @@ public:
    * function was called last. If the reinit(cell, face_no) function was called,
    * then this function returns the internal FEFaceValues.
    */
-  const FEValuesBase<dim, spacedim> &get_current_fe_values()
+  const FEValuesBase<dim, spacedim> &
+  get_current_fe_values()
   {
     Assert(cache.have("FEValuesBase"),
            ExcMessage("You have to initialize the cache using one of the "
@@ -222,7 +227,8 @@ public:
   /**
    * Return the quadrature points of the internal FEValues object.
    */
-  const std::vector<Point<spacedim>> &get_quadrature_points()
+  const std::vector<Point<spacedim>> &
+  get_quadrature_points()
   {
     return get_current_fe_values().get_quadrature_points();
   }
@@ -231,7 +237,8 @@ public:
   /**
    * Return the JxW values of the internal FEValues object.
    */
-  const std::vector<double> &get_JxW_values()
+  const std::vector<double> &
+  get_JxW_values()
   {
     return get_current_fe_values().get_JxW_values();
   }
@@ -241,7 +248,8 @@ public:
    * Print the content of the internal cache.
    */
   template <class STREAM>
-  void print_info(STREAM &os)
+  void
+  print_info(STREAM &os)
   {
     cache.print_info(os);
   }
@@ -265,9 +273,10 @@ public:
    * inside the vector.
    */
   template <typename VEC, typename Number>
-  void cache_local_solution_vector(const std::string &prefix,
-                                   const VEC &        input_vector,
-                                   const Number       dummy)
+  void
+  cache_local_solution_vector(const std::string &prefix,
+                              const VEC &        input_vector,
+                              const Number       dummy)
   {
     const unsigned int n_dofs = get_current_fe_values().get_fe().dofs_per_cell;
 
@@ -278,8 +287,9 @@ public:
 
     std::vector<Number> &independent_local_dofs =
       cache.template get<std::vector<Number>>(name);
-    DOFUtilities::extract_local_dofs(
-      input_vector, local_dof_indices, independent_local_dofs);
+    DOFUtilities::extract_local_dofs(input_vector,
+                                     local_dof_indices,
+                                     independent_local_dofs);
   }
 
 
@@ -292,8 +302,8 @@ public:
    * here and with the same dummy type you use here.
    */
   template <typename Number>
-  const std::vector<std::vector<Number>> &get_values(const std::string &prefix,
-                                                     const Number       dummy)
+  const std::vector<std::vector<Number>> &
+  get_values(const std::string &prefix, const Number dummy)
   {
     const std::vector<Number> &independent_local_dofs =
       get_current_independent_local_dofs(prefix, dummy);
@@ -429,8 +439,10 @@ public:
       cache.add_copy(RetType(n_q_points), name);
 
     RetType &ret = cache.template get<RetType>(name);
-    DOFUtilities::get_divergences(
-      fev, independent_local_dofs, vector_variable, ret);
+    DOFUtilities::get_divergences(fev,
+                                  independent_local_dofs,
+                                  vector_variable,
+                                  ret);
     return ret;
   }
 
@@ -650,8 +662,10 @@ public:
       cache.add_copy(RetType(n_q_points), name);
 
     RetType &ret = cache.template get<RetType>(name);
-    DOFUtilities::get_deformation_gradients(
-      fev, independent_local_dofs, variable, ret);
+    DOFUtilities::get_deformation_gradients(fev,
+                                            independent_local_dofs,
+                                            variable,
+                                            ret);
     return ret;
   }
 
@@ -688,8 +702,10 @@ public:
       cache.add_copy(RetType(n_q_points), name);
 
     RetType &ret = cache.template get<RetType>(name);
-    DOFUtilities::get_symmetric_gradients(
-      fev, independent_local_dofs, variable, ret);
+    DOFUtilities::get_symmetric_gradients(fev,
+                                          independent_local_dofs,
+                                          variable,
+                                          ret);
     return ret;
   }
 

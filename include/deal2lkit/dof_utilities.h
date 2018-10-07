@@ -56,7 +56,8 @@ namespace DOFUtilities
    *
    */
   template <typename Number, typename VEC>
-  void extract_local_dofs(
+  void
+  extract_local_dofs(
     const VEC &                                 global_vector,
     const std::vector<types::global_dof_index> &local_dof_indices,
     std::vector<Number> &                       independent_local_dofs)
@@ -79,8 +80,9 @@ namespace DOFUtilities
           }
         else if (typeid(Number) == typeid(SSdouble))
           {
-            SSdouble ildv(
-              dofs_per_cell, i, global_vector(local_dof_indices[i]));
+            SSdouble ildv(dofs_per_cell,
+                          i,
+                          global_vector(local_dof_indices[i]));
             ildv.val() =
               Sdouble(dofs_per_cell, i, global_vector(local_dof_indices[i]));
             ((SSdouble &)independent_local_dofs[i]) = ildv;
@@ -101,9 +103,10 @@ namespace DOFUtilities
    *
    */
   template <int dim, int spacedim, typename Number>
-  void get_values(const FEValuesBase<dim, spacedim> &fe_values,
-                  const std::vector<Number> &independent_local_dof_values,
-                  std::vector<std::vector<Number>> &us)
+  void
+  get_values(const FEValuesBase<dim, spacedim> &fe_values,
+             const std::vector<Number> &        independent_local_dof_values,
+             std::vector<std::vector<Number>> & us)
 
   {
     const unsigned int dofs_per_cell = fe_values.dofs_per_cell;
@@ -136,10 +139,11 @@ namespace DOFUtilities
    */
   template <int dim, int spacedim, typename Number>
 
-  void get_values(const FEValuesBase<dim, spacedim> &fe_values,
-                  const std::vector<Number> &independent_local_dof_values,
-                  const FEValuesExtractors::Vector &        vector_variable,
-                  std::vector<Tensor<1, spacedim, Number>> &us)
+  void
+  get_values(const FEValuesBase<dim, spacedim> &fe_values,
+             const std::vector<Number> &        independent_local_dof_values,
+             const FEValuesExtractors::Vector & vector_variable,
+             std::vector<Tensor<1, spacedim, Number>> &us)
 
   {
     const unsigned int dofs_per_cell = fe_values.dofs_per_cell;
@@ -167,10 +171,11 @@ namespace DOFUtilities
    *
    */
   template <int dim, int spacedim, typename Number>
-  void get_values(const FEValuesBase<dim, spacedim> &fe_values,
-                  const std::vector<Number> &independent_local_dof_values,
-                  const FEValuesExtractors::Scalar &scalar_variable,
-                  std::vector<Number> &             us)
+  void
+  get_values(const FEValuesBase<dim, spacedim> &fe_values,
+             const std::vector<Number> &        independent_local_dof_values,
+             const FEValuesExtractors::Scalar & scalar_variable,
+             std::vector<Number> &              us)
 
   {
     const unsigned int dofs_per_cell = fe_values.dofs_per_cell;
@@ -197,10 +202,11 @@ namespace DOFUtilities
    *
    */
   template <int dim, int spacedim, typename Number>
-  void get_divergences(const FEValuesBase<dim, spacedim> &fe_values,
-                       const std::vector<Number> &independent_local_dof_values,
-                       const FEValuesExtractors::Vector &vector_variable,
-                       std::vector<Number> &             us)
+  void
+  get_divergences(const FEValuesBase<dim, spacedim> &fe_values,
+                  const std::vector<Number> &independent_local_dof_values,
+                  const FEValuesExtractors::Vector &vector_variable,
+                  std::vector<Number> &             us)
 
   {
     const unsigned int dofs_per_cell = fe_values.dofs_per_cell;
@@ -227,10 +233,11 @@ namespace DOFUtilities
    *
    */
   template <int dim, int spacedim, typename Number>
-  void get_gradients(const FEValuesBase<dim, spacedim> &fe_values,
-                     const std::vector<Number> &independent_local_dof_values,
-                     const FEValuesExtractors::Vector &        vector_variable,
-                     std::vector<Tensor<2, spacedim, Number>> &grad_us)
+  void
+  get_gradients(const FEValuesBase<dim, spacedim> &fe_values,
+                const std::vector<Number> &        independent_local_dof_values,
+                const FEValuesExtractors::Vector & vector_variable,
+                std::vector<Tensor<2, spacedim, Number>> &grad_us)
   {
     const unsigned int dofs_per_cell = fe_values.dofs_per_cell;
     const unsigned int n_q_points    = fe_values.n_quadrature_points;
@@ -260,7 +267,8 @@ namespace DOFUtilities
    *
    */
   template <int dim, int spacedim, typename Number>
-  void get_curls(
+  void
+  get_curls(
     const FEValuesBase<dim, spacedim> &fe_values,
     const std::vector<Number> &        independent_local_dof_values,
     const FEValuesExtractors::Vector & vector_variable,
@@ -294,10 +302,11 @@ namespace DOFUtilities
    *
    */
   template <int dim, int spacedim, typename Number>
-  void get_gradients(const FEValuesBase<dim, spacedim> &fe_values,
-                     const std::vector<Number> &independent_local_dof_values,
-                     const FEValuesExtractors::Scalar &        scalar_variable,
-                     std::vector<Tensor<1, spacedim, Number>> &grad_us)
+  void
+  get_gradients(const FEValuesBase<dim, spacedim> &fe_values,
+                const std::vector<Number> &        independent_local_dof_values,
+                const FEValuesExtractors::Scalar & scalar_variable,
+                std::vector<Tensor<1, spacedim, Number>> &grad_us)
   {
     const unsigned int dofs_per_cell = fe_values.dofs_per_cell;
     const unsigned int n_q_points    = fe_values.n_quadrature_points;
@@ -325,7 +334,8 @@ namespace DOFUtilities
    *
    */
   template <int dim, int spacedim, typename Number>
-  void get_deformation_gradients(
+  void
+  get_deformation_gradients(
     const FEValuesBase<dim, spacedim> &       fe_values,
     const std::vector<Number> &               independent_local_dof_values,
     const FEValuesExtractors::Vector &        vector_variable,
@@ -335,8 +345,10 @@ namespace DOFUtilities
 
     AssertDimension(Fs.size(), n_q_points);
 
-    DOFUtilities::get_gradients(
-      fe_values, independent_local_dof_values, vector_variable, Fs);
+    DOFUtilities::get_gradients(fe_values,
+                                independent_local_dof_values,
+                                vector_variable,
+                                Fs);
 
     for (unsigned int q = 0; q < n_q_points; ++q)
       for (unsigned int d = 0; d < dim; ++d)
@@ -351,7 +363,8 @@ namespace DOFUtilities
    *
    */
   template <int dim, int spacedim, typename Number>
-  void get_symmetric_gradients(
+  void
+  get_symmetric_gradients(
     const FEValuesBase<dim, spacedim> &       fe_values,
     const std::vector<Number> &               independent_local_dof_values,
     const FEValuesExtractors::Vector &        vector_variable,
@@ -361,8 +374,10 @@ namespace DOFUtilities
 
     AssertDimension(grad_us.size(), n_q_points);
 
-    DOFUtilities::get_gradients(
-      fe_values, independent_local_dof_values, vector_variable, grad_us);
+    DOFUtilities::get_gradients(fe_values,
+                                independent_local_dof_values,
+                                vector_variable,
+                                grad_us);
     for (unsigned int q = 0; q < n_q_points; ++q)
       {
         grad_us[q] += transpose(grad_us[q]);
@@ -380,10 +395,11 @@ namespace DOFUtilities
    */
   template <int dim, int spacedim, typename Number>
 
-  void get_laplacians(const FEValuesBase<dim, spacedim> &fe_values,
-                      const std::vector<Number> &independent_local_dof_values,
-                      const FEValuesExtractors::Scalar &variable,
-                      std::vector<Number> &             us)
+  void
+  get_laplacians(const FEValuesBase<dim, spacedim> &fe_values,
+                 const std::vector<Number> &       independent_local_dof_values,
+                 const FEValuesExtractors::Scalar &variable,
+                 std::vector<Number> &             us)
 
   {
     const unsigned int dofs_per_cell = fe_values.dofs_per_cell;
@@ -411,10 +427,11 @@ namespace DOFUtilities
    */
   template <int dim, int spacedim, typename Number>
 
-  void get_laplacians(const FEValuesBase<dim, spacedim> &fe_values,
-                      const std::vector<Number> &independent_local_dof_values,
-                      const FEValuesExtractors::Vector &        variable,
-                      std::vector<Tensor<1, spacedim, Number>> &us)
+  void
+  get_laplacians(const FEValuesBase<dim, spacedim> &fe_values,
+                 const std::vector<Number> &       independent_local_dof_values,
+                 const FEValuesExtractors::Vector &variable,
+                 std::vector<Tensor<1, spacedim, Number>> &us)
 
   {
     const unsigned int dofs_per_cell = fe_values.dofs_per_cell;
@@ -442,10 +459,11 @@ namespace DOFUtilities
    */
   template <int dim, int spacedim, typename Number>
 
-  void get_hessians(const FEValuesBase<dim, spacedim> &fe_values,
-                    const std::vector<Number> &independent_local_dof_values,
-                    const FEValuesExtractors::Scalar &        variable,
-                    std::vector<Tensor<2, spacedim, Number>> &us)
+  void
+  get_hessians(const FEValuesBase<dim, spacedim> &fe_values,
+               const std::vector<Number> &        independent_local_dof_values,
+               const FEValuesExtractors::Scalar & variable,
+               std::vector<Tensor<2, spacedim, Number>> &us)
 
   {
     const unsigned int dofs_per_cell = fe_values.dofs_per_cell;
@@ -474,10 +492,11 @@ namespace DOFUtilities
    */
   template <int dim, int spacedim, typename Number>
 
-  void get_hessians(const FEValuesBase<dim, spacedim> &fe_values,
-                    const std::vector<Number> &independent_local_dof_values,
-                    const FEValuesExtractors::Vector &        variable,
-                    std::vector<Tensor<3, spacedim, Number>> &us)
+  void
+  get_hessians(const FEValuesBase<dim, spacedim> &fe_values,
+               const std::vector<Number> &        independent_local_dof_values,
+               const FEValuesExtractors::Vector & variable,
+               std::vector<Tensor<3, spacedim, Number>> &us)
 
   {
     const unsigned int dofs_per_cell = fe_values.dofs_per_cell;

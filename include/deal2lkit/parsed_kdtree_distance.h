@@ -101,14 +101,19 @@ public:
     /**
      * The constrcutor needs the data set source.
      */
-    PointCloudAdaptor(const std::vector<Point<dim>> &_points) : points(_points)
+    PointCloudAdaptor(const std::vector<Point<dim>> &_points)
+      : points(_points)
     {}
 
 
     /**
      * Return number of points in the data set (required by nanoflann).
      */
-    inline size_t kdtree_get_point_count() const { return points.size(); }
+    inline size_t
+    kdtree_get_point_count() const
+    {
+      return points.size();
+    }
 
 
     /**
@@ -128,7 +133,8 @@ public:
     /**
      * Return the dim'th component of the idx'th point in the class.
      */
-    inline coord_t kdtree_get_pt(const size_t idx, int d) const
+    inline coord_t
+    kdtree_get_pt(const size_t idx, int d) const
     {
       AssertIndexRange(d, dim);
       return points[idx][d];
@@ -143,7 +149,8 @@ public:
      * expected dimensionality (e.g. 2 or 3 for point clouds).
      */
     template <class BBOX>
-    bool kdtree_get_bbox(BBOX &) const
+    bool
+    kdtree_get_bbox(BBOX &) const
     {
       return false;
     }
@@ -163,7 +170,8 @@ public:
   /**
    * Calls the underlying function of ParsedFunction.
    */
-  virtual void declare_parameters(ParameterHandler &prm);
+  virtual void
+  declare_parameters(ParameterHandler &prm);
 
 
   /**
@@ -183,8 +191,8 @@ public:
    * @return the minimum distance from the collection of points set
    * with the constructor or with the method set_points()
    */
-  virtual double value(const Point<dim> & p,
-                       const unsigned int component = 0) const;
+  virtual double
+  value(const Point<dim> &p, const unsigned int component = 0) const;
 
 
   /**
@@ -205,7 +213,8 @@ public:
    *
    * @param pts: a collection of points
    */
-  void set_points(const std::vector<Point<dim>> &pts);
+  void
+  set_points(const std::vector<Point<dim>> &pts);
 
 
   /**
@@ -221,7 +230,8 @@ public:
   /**
    * The size of the vector stored by this class.
    */
-  inline unsigned int size() const
+  inline unsigned int
+  size() const
   {
     if (adaptor)
       return adaptor->points.size();
@@ -261,9 +271,10 @@ public:
    * @param[out] indices: indices of the matching points
    * @param[out] distances: distances of the matching points
    */
-  void get_closest_points(const Point<dim> &         target,
-                          std::vector<unsigned int> &indices,
-                          std::vector<double> &      distances) const;
+  void
+  get_closest_points(const Point<dim> &         target,
+                     std::vector<unsigned int> &indices,
+                     std::vector<double> &      distances) const;
 
 private:
   /**

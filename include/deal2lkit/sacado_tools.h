@@ -51,8 +51,9 @@ namespace SacadoTools
    *  i.e., Number and double  returning a Number.
    */
   template <int dim, typename Number>
-  Number scalar_product(const Tensor<1, dim, Number> &T1,
-                        const Tensor<1, dim, double> &T2)
+  Number
+  scalar_product(const Tensor<1, dim, Number> &T1,
+                 const Tensor<1, dim, double> &T2)
   {
     Number ret = 0;
     for (unsigned int i = 0; i < dim; ++i)
@@ -68,8 +69,9 @@ namespace SacadoTools
    *  i.e., Number and double  returning a Number.
    */
   template <int dim, typename Number>
-  Number scalar_product(const Tensor<1, dim, double> &T1,
-                        const Tensor<1, dim, Number> &T2)
+  Number
+  scalar_product(const Tensor<1, dim, double> &T1,
+                 const Tensor<1, dim, Number> &T2)
   {
     return SacadoTools::scalar_product(T2, T1);
   }
@@ -80,8 +82,9 @@ namespace SacadoTools
    * This function is needed to avoid conflict
    */
   template <int dim>
-  double scalar_product(const Tensor<1, dim, double> &T1,
-                        const Tensor<1, dim, double> &T2)
+  double
+  scalar_product(const Tensor<1, dim, double> &T1,
+                 const Tensor<1, dim, double> &T2)
   {
     return T1 * T2;
   }
@@ -94,8 +97,9 @@ namespace SacadoTools
    *  i.e., Number and double  returning a Number.
    */
   template <int dim, typename Number>
-  Number scalar_product(const Tensor<2, dim, Number> &T1,
-                        const Tensor<2, dim, double> &T2)
+  Number
+  scalar_product(const Tensor<2, dim, Number> &T1,
+                 const Tensor<2, dim, double> &T2)
   {
     Number ret = 0;
     for (unsigned int i = 0; i < dim; ++i)
@@ -112,8 +116,9 @@ namespace SacadoTools
    *  i.e., Number and double  returning a Number.
    */
   template <int dim, typename Number>
-  Number scalar_product(const Tensor<2, dim, double> &T1,
-                        const Tensor<2, dim, Number> &T2)
+  Number
+  scalar_product(const Tensor<2, dim, double> &T1,
+                 const Tensor<2, dim, Number> &T2)
   {
     return SacadoTools::scalar_product(T2, T1);
   }
@@ -124,8 +129,9 @@ namespace SacadoTools
    * This function is needed to avoid conflict
    */
   template <int dim>
-  double scalar_product(const Tensor<2, dim, double> &T1,
-                        const Tensor<2, dim, double> &T2)
+  double
+  scalar_product(const Tensor<2, dim, double> &T1,
+                 const Tensor<2, dim, double> &T2)
   {
     return dealii::scalar_product(T1, T2);
   }
@@ -137,7 +143,11 @@ namespace SacadoTools
   /**
    * Do nothing, required for compatibility
    */
-  double val(const double &n) { return n; }
+  double
+  val(const double &n)
+  {
+    return n;
+  }
 
 
 
@@ -145,7 +155,8 @@ namespace SacadoTools
    * Call val on a Sacado<number> and return a number
    */
   template <typename number>
-  number val(const Sacado::Fad::DFad<number> &n)
+  number
+  val(const Sacado::Fad::DFad<number> &n)
   {
     return n.val();
   }
@@ -188,7 +199,8 @@ namespace SacadoTools
    * Downgrade a std::vector<Sacado<number> > to std::vector<number>
    */
   template <typename number>
-  std::vector<number> val(const std::vector<Sacado::Fad::DFad<number>> v)
+  std::vector<number>
+  val(const std::vector<Sacado::Fad::DFad<number>> v)
   {
     std::vector<number> ret(v.size());
     for (unsigned int i = 0; i < v.size(); ++i)
@@ -203,21 +215,33 @@ namespace SacadoTools
   /**
    * Do nothing, required for compatibility.
    */
-  double to_double(const double &s) { return s; }
+  double
+  to_double(const double &s)
+  {
+    return s;
+  }
 
 
 
   /**
    * Return a double given a Sdouble
    */
-  double to_double(const Sdouble &s) { return s.val(); }
+  double
+  to_double(const Sdouble &s)
+  {
+    return s.val();
+  }
 
 
 
   /**
    * Return a double given a SSdouble
    */
-  double to_double(const SSdouble &s) { return s.val().val(); }
+  double
+  to_double(const SSdouble &s)
+  {
+    return s.val().val();
+  }
 
 
 
@@ -225,7 +249,8 @@ namespace SacadoTools
    * Do nothing, required for compatibility.
    */
   template <int index, int dim>
-  Tensor<index, dim> to_double(const Tensor<index, dim> &t)
+  Tensor<index, dim>
+  to_double(const Tensor<index, dim> &t)
   {
     return t;
   }
@@ -271,7 +296,8 @@ namespace SacadoTools
    * double, Sdouble etc.
    */
   template <typename number>
-  std::vector<double> to_double(const std::vector<number> &v)
+  std::vector<double>
+  to_double(const std::vector<number> &v)
   {
     std::vector<double> ret(v.size());
     for (unsigned int q = 0; q < v.size(); ++q)

@@ -40,13 +40,18 @@ class Test : public ParameterAcceptor
 {
 public:
   Test();
-  virtual void declare_parameters(ParameterHandler &prm);
-  void         run();
+  virtual void
+  declare_parameters(ParameterHandler &prm);
+  void
+  run();
 
 private:
-  void make_grid_fe();
-  void setup_dofs();
-  void output_results();
+  void
+  make_grid_fe();
+  void
+  setup_dofs();
+  void
+  output_results();
 
   ParsedFiniteElement<dim>            fe_builder;
   ParsedGridGenerator<dim, dim>       tria_builder;
@@ -59,15 +64,16 @@ private:
 };
 
 template <int dim>
-Test<dim>::Test() :
-  ParameterAcceptor("Global parameters"),
-  tria_builder("Triangulation"),
-  fe_builder("FE_Q", "FESystem[FE_Q(2)^dim-FE_Q(1)]", "u,u,p"),
-  data_out("Data out", "vtk", 1, "", "output")
+Test<dim>::Test()
+  : ParameterAcceptor("Global parameters")
+  , tria_builder("Triangulation")
+  , fe_builder("FE_Q", "FESystem[FE_Q(2)^dim-FE_Q(1)]", "u,u,p")
+  , data_out("Data out", "vtk", 1, "", "output")
 {}
 
 template <int dim>
-void Test<dim>::declare_parameters(ParameterHandler &prm)
+void
+Test<dim>::declare_parameters(ParameterHandler &prm)
 {
   add_parameter(prm,
                 &initial_refinement,
@@ -77,7 +83,8 @@ void Test<dim>::declare_parameters(ParameterHandler &prm)
 }
 
 template <int dim>
-void Test<dim>::make_grid_fe()
+void
+Test<dim>::make_grid_fe()
 {
   ParameterAcceptor::initialize("parameters_ser.prm",
                                 "used_parameters_ser.prm");
@@ -88,7 +95,8 @@ void Test<dim>::make_grid_fe()
 }
 
 template <int dim>
-void Test<dim>::setup_dofs()
+void
+Test<dim>::setup_dofs()
 {
   std::vector<unsigned int> sub_blocks(dim + 1, 0);
   sub_blocks[dim] = 1;
@@ -112,7 +120,8 @@ void Test<dim>::setup_dofs()
 }
 
 template <int dim>
-void Test<dim>::output_results()
+void
+Test<dim>::output_results()
 {
   data_out.prepare_data_output(*dof_handler);
   data_out.add_data_vector(solution, fe_builder.get_component_names());
@@ -121,14 +130,16 @@ void Test<dim>::output_results()
 }
 
 template <int dim>
-void Test<dim>::run()
+void
+Test<dim>::run()
 {
   make_grid_fe();
   setup_dofs();
   output_results();
 }
 
-int main(int argc, char *argv[])
+int
+main(int argc, char *argv[])
 {
 #ifdef DEAL_II_WITH_MPI
   Utilities::MPI::MPI_InitFinalize mpi_initialization(

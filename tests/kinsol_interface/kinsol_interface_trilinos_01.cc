@@ -35,7 +35,8 @@
 using namespace deal2lkit;
 
 
-int main(int argc, char **argv)
+int
+main(int argc, char **argv)
 {
   Utilities::MPI::MPI_InitFinalize initializater(argc, argv, 1);
   MPI_Comm                         comm = MPI_COMM_WORLD;
@@ -90,8 +91,9 @@ int main(int argc, char **argv)
   //  KINSOLInterface<VEC> solver( create_new_vector, residual, setup_jacobian,
   //  solve_linear_system, jacobian_vmult, comm );
   // initialize its parameters:
-  ParameterAcceptor::initialize(
-    SOURCE_DIR "/parameters/kinsol_interface_trilinos_01.prm", "ode.prm");
+  ParameterAcceptor::initialize(SOURCE_DIR
+                                "/parameters/kinsol_interface_trilinos_01.prm",
+                                "ode.prm");
 
   solver.create_new_vector   = create_new_vector;
   solver.residual            = residual;

@@ -24,7 +24,8 @@
 
 using namespace deal2lkit;
 
-int main()
+int
+main()
 {
   std::fstream fs("test_fstream.txt", std::fstream::out);
 

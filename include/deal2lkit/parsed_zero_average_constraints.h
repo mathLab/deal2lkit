@@ -108,24 +108,28 @@ public:
   /**
    * return the ComponentMask at boundary
    */
-  ComponentMask get_boundary_mask() const;
+  ComponentMask
+  get_boundary_mask() const;
 
 
   /**
    * return the ComponentMask
    */
-  ComponentMask get_mask() const;
+  ComponentMask
+  get_mask() const;
 
 
   /**
    * declare_parameters is inherithed by ParameterAcceptor
    */
-  virtual void declare_parameters(ParameterHandler &prm);
+  virtual void
+  declare_parameters(ParameterHandler &prm);
 
   /**
    * parse_parameters_call_back is inherithed by ParameterAcceptor
    */
-  virtual void parse_parameters_call_back();
+  virtual void
+  parse_parameters_call_back();
 
 
 
@@ -145,7 +149,8 @@ public:
                  << print(unique(arg2)) << ".");
 
 protected:
-  void internal_zero_average_constraints(
+  void
+  internal_zero_average_constraints(
     const DoFHandler<dim, spacedim> &dof_handler,
     const ComponentMask              mask,
     const bool                       at_boundary,

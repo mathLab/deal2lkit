@@ -46,7 +46,8 @@
 using namespace deal2lkit;
 
 template <int dim>
-void test(const Triangulation<dim> &tr, const FiniteElement<dim> &fe)
+void
+test(const Triangulation<dim> &tr, const FiniteElement<dim> &fe)
 {
   deallog << "FE=" << fe.get_name() << std::endl;
 
@@ -55,8 +56,9 @@ void test(const Triangulation<dim> &tr, const FiniteElement<dim> &fe)
 
 
   const QGauss<dim> quadrature(2);
-  FEValues<dim>     fe_values(
-    fe, quadrature, update_values | update_gradients | update_hessians);
+  FEValues<dim>     fe_values(fe,
+                          quadrature,
+                          update_values | update_gradients | update_hessians);
 
   std::vector<types::global_dof_index> local_dof_indices(
     fe_values.dofs_per_cell);
@@ -69,8 +71,9 @@ void test(const Triangulation<dim> &tr, const FiniteElement<dim> &fe)
   for (unsigned int i = 0; i < dof.n_dofs(); ++i)
     global_vector[i] += i * i;
 
-  DOFUtilities::extract_local_dofs(
-    global_vector, local_dof_indices, independent_local_dof_values);
+  DOFUtilities::extract_local_dofs(global_vector,
+                                   local_dof_indices,
+                                   independent_local_dof_values);
 
   for (unsigned int i = 0; i < dof.n_dofs(); ++i)
     deallog << independent_local_dof_values[i] << std::endl;
@@ -84,14 +87,22 @@ void test(const Triangulation<dim> &tr, const FiniteElement<dim> &fe)
   FEValuesExtractors::Scalar scalar(dim);
   FEValuesExtractors::Vector vector(0);
 
-  DOFUtilities::get_laplacians(
-    fe_values, independent_local_dof_values, vector, vector_laplacians);
-  DOFUtilities::get_hessians(
-    fe_values, independent_local_dof_values, scalar, scalar_hessians);
-  DOFUtilities::get_hessians(
-    fe_values, independent_local_dof_values, vector, vector_hessians);
-  DOFUtilities::get_curls(
-    fe_values, independent_local_dof_values, vector, curls);
+  DOFUtilities::get_laplacians(fe_values,
+                               independent_local_dof_values,
+                               vector,
+                               vector_laplacians);
+  DOFUtilities::get_hessians(fe_values,
+                             independent_local_dof_values,
+                             scalar,
+                             scalar_hessians);
+  DOFUtilities::get_hessians(fe_values,
+                             independent_local_dof_values,
+                             vector,
+                             vector_hessians);
+  DOFUtilities::get_curls(fe_values,
+                          independent_local_dof_values,
+                          vector,
+                          curls);
 
 
   deallog << "vector_laplacians" << std::endl;
@@ -110,7 +121,8 @@ void test(const Triangulation<dim> &tr, const FiniteElement<dim> &fe)
 
 
 template <int dim>
-void test_hyper_cube()
+void
+test_hyper_cube()
 {
   Triangulation<dim> tr;
   GridGenerator::hyper_cube(tr);
@@ -126,7 +138,8 @@ void test_hyper_cube()
 }
 
 
-int main()
+int
+main()
 {
   std::ofstream logfile("output");
   deallog << std::setprecision(3);

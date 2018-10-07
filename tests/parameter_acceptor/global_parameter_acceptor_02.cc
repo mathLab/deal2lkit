@@ -29,9 +29,9 @@ template <class T>
 class TemplateClass : public ParameterAcceptor
 {
 public:
-  TemplateClass(const T &i, const std::string &var) :
-    ParameterAcceptor("Class<" + var + " >"),
-    t(i)
+  TemplateClass(const T &i, const std::string &var)
+    : ParameterAcceptor("Class<" + var + " >")
+    , t(i)
   {
     add_parameter(t, var);
   };
@@ -40,7 +40,8 @@ private:
   T t;
 };
 
-int main()
+int
+main()
 {
   initlog();
 
@@ -53,17 +54,19 @@ int main()
   TemplateClass<Point<2>>     f06(Point<2>(0, 1), "Point<2>");
   TemplateClass<Point<3>>     f07(Point<3>(0, 1, 2), "Point<3>");
 
-  TemplateClass<std::vector<std::string>> f10(
-    std::vector<std::string>(3, "ciao"), "std::vector<std::string>");
+  TemplateClass<std::vector<std::string>>  f10(std::vector<std::string>(3,
+                                                                       "ciao"),
+                                              "std::vector<std::string>");
   TemplateClass<std::vector<int>>          f11(std::vector<int>(3, -1),
                                                "std::vector<int>");
   TemplateClass<std::vector<unsigned int>> f12(std::vector<unsigned int>(3, 1),
                                                "std::vector<unsigned int>");
   TemplateClass<std::vector<double>>       f13(std::vector<double>(3, 1e-4),
                                                "std::vector<double>");
-  TemplateClass<std::vector<Point<1>>>     f15(
-    std::vector<Point<1>>(3, Point<1>(0)), "std::vector<Point<1>>");
-  TemplateClass<std::vector<Point<2>>> f16(
+  TemplateClass<std::vector<Point<1>>>     f15(std::vector<Point<1>>(3,
+                                                                 Point<1>(0)),
+                                           "std::vector<Point<1>>");
+  TemplateClass<std::vector<Point<2>>>     f16(
     std::vector<Point<2>>(3, Point<2>(0, 1)), "std::vector<Point<2>>");
   TemplateClass<std::vector<Point<3>>> f17(
     std::vector<Point<3>>(3, Point<3>(0, 1, 2)), "std::vector<Point<3>>");

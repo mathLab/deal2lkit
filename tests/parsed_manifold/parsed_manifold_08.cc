@@ -52,7 +52,8 @@ using namespace deal2lkit;
 
 using namespace OpenCASCADE;
 
-int main()
+int
+main()
 {
   initlog();
 

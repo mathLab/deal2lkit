@@ -63,12 +63,14 @@ public:
   /**
    * Declare quadrature type and quadrature options.
    */
-  virtual void declare_parameters(ParameterHandler &prm);
+  virtual void
+  declare_parameters(ParameterHandler &prm);
 
   /**
    * Fill information about blocks after parsing the parameters.
    */
-  virtual void parse_parameters_call_back();
+  virtual void
+  parse_parameters_call_back();
 
 private:
   /**

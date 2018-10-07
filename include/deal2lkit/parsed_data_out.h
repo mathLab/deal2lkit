@@ -54,17 +54,20 @@ public:
                 const MPI_Comm &    comm                   = MPI_COMM_WORLD);
 
   /** Initialize the given values for the paramter file. */
-  virtual void declare_parameters(ParameterHandler &prm);
+  virtual void
+  declare_parameters(ParameterHandler &prm);
 
   /** Prepare names for output directories. */
-  virtual void parse_parameters_call_back();
+  virtual void
+  parse_parameters_call_back();
 
   /** Prepare to output data on the given file. This will initialize
       the data_out object and a file with a filename that is the
       combination of the @p base_name, the optional @p suffix,
       eventually a processor number and the output suffix.  */
-  void prepare_data_output(const DoFHandler<dim, spacedim> &dh,
-                           const std::string &              suffix = "");
+  void
+  prepare_data_output(const DoFHandler<dim, spacedim> &dh,
+                      const std::string &              suffix = "");
 
   /** Add the given vector to the output file. Prior to calling this
       method, you have to call the prepare_data_output method. The
@@ -72,15 +75,17 @@ public:
       description. In this latter case, a progressive number per
       component is added in the end. */
   template <typename VECTOR>
-  void add_data_vector(const VECTOR &data_vector, const std::string &desc);
+  void
+  add_data_vector(const VECTOR &data_vector, const std::string &desc);
 
 
   /**
    * Wrapper for the corrisponding function in dealii.
    */
   template <typename VECTOR>
-  void add_data_vector(const VECTOR &                     data_vector,
-                       const DataPostprocessor<spacedim> &postproc);
+  void
+  add_data_vector(const VECTOR &                     data_vector,
+                  const DataPostprocessor<spacedim> &postproc);
 
 
   /** Actually write the file. Once the data_out has been prepared,
@@ -91,8 +96,9 @@ public:
       @p used_files is an optional variable that takes a list of useful files
       (ex. "parameter.prm time.dat") and copies these files
       in the @p incremental_run_prefix of the costructor function.*/
-  void write_data_and_clear(const Mapping<dim, spacedim> &mapping =
-                              StaticMappingQ1<dim, spacedim>::mapping);
+  void
+  write_data_and_clear(const Mapping<dim, spacedim> &mapping =
+                         StaticMappingQ1<dim, spacedim>::mapping);
 
 private:
   /** Initialization flag.*/
@@ -157,8 +163,9 @@ private:
 
 template <int dim, int spacedim>
 template <typename VECTOR>
-void ParsedDataOut<dim, spacedim>::add_data_vector(const VECTOR &data_vector,
-                                                   const std::string &desc)
+void
+ParsedDataOut<dim, spacedim>::add_data_vector(const VECTOR &     data_vector,
+                                              const std::string &desc)
 {
   AssertThrow(initialized, ExcNotInitialized());
   deallog.push("AddingData");
@@ -207,7 +214,8 @@ void ParsedDataOut<dim, spacedim>::add_data_vector(const VECTOR &data_vector,
 
 template <int dim, int spacedim>
 template <typename VECTOR>
-void ParsedDataOut<dim, spacedim>::add_data_vector(
+void
+ParsedDataOut<dim, spacedim>::add_data_vector(
   const VECTOR &                     data_vector,
   const DataPostprocessor<spacedim> &postproc)
 {

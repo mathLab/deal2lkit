@@ -35,22 +35,23 @@ ParsedAMGMueLuPreconditioner::ParsedAMGMueLuPreconditioner(
   const unsigned int &smoother_overlap,
   const bool &        output_details,
   const std::string & smoother_type,
-  const std::string & coarse_type) :
-  ParameterAcceptor(name),
-  PreconditionAMGMueLu(),
-  elliptic(elliptic),
-  n_cycles(n_cycles),
-  w_cycle(w_cycle),
-  aggregation_threshold(aggregation_threshold),
-  var_const_modes(var_const_modes),
-  smoother_sweeps(smoother_sweeps),
-  smoother_overlap(smoother_overlap),
-  output_details(output_details),
-  smoother_type(smoother_type),
-  coarse_type(coarse_type)
+  const std::string & coarse_type)
+  : ParameterAcceptor(name)
+  , PreconditionAMGMueLu()
+  , elliptic(elliptic)
+  , n_cycles(n_cycles)
+  , w_cycle(w_cycle)
+  , aggregation_threshold(aggregation_threshold)
+  , var_const_modes(var_const_modes)
+  , smoother_sweeps(smoother_sweeps)
+  , smoother_overlap(smoother_overlap)
+  , output_details(output_details)
+  , smoother_type(smoother_type)
+  , coarse_type(coarse_type)
 {}
 
-void ParsedAMGMueLuPreconditioner::declare_parameters(ParameterHandler &prm)
+void
+ParsedAMGMueLuPreconditioner::declare_parameters(ParameterHandler &prm)
 {
   add_parameter(
     prm,
@@ -172,8 +173,8 @@ void ParsedAMGMueLuPreconditioner::declare_parameters(ParameterHandler &prm)
 }
 
 template <typename Matrix>
-void ParsedAMGMueLuPreconditioner::initialize_preconditioner(
-  const Matrix &matrix)
+void
+ParsedAMGMueLuPreconditioner::initialize_preconditioner(const Matrix &matrix)
 {
   TrilinosWrappers::PreconditionAMGMueLu::AdditionalData data;
 
@@ -191,7 +192,8 @@ void ParsedAMGMueLuPreconditioner::initialize_preconditioner(
 }
 
 template <int dim, int spacedim, typename Matrix>
-void ParsedAMGMueLuPreconditioner::initialize_preconditioner(
+void
+ParsedAMGMueLuPreconditioner::initialize_preconditioner(
   const Matrix &                            matrix,
   const ParsedFiniteElement<dim, spacedim> &fe,
   const DoFHandler<dim, spacedim> &         dh)
@@ -235,17 +237,20 @@ void ParsedAMGMueLuPreconditioner::initialize_preconditioner(
 
 D2K_NAMESPACE_CLOSE
 
-template void deal2lkit::ParsedAMGMueLuPreconditioner::
+template void
+deal2lkit::ParsedAMGMueLuPreconditioner::
   initialize_preconditioner<1, 1, dealii::TrilinosWrappers::SparseMatrix>(
     const dealii::TrilinosWrappers::SparseMatrix &,
     const ParsedFiniteElement<1, 1> &,
     const DoFHandler<1, 1> &);
-template void deal2lkit::ParsedAMGMueLuPreconditioner::
+template void
+deal2lkit::ParsedAMGMueLuPreconditioner::
   initialize_preconditioner<2, 2, dealii::TrilinosWrappers::SparseMatrix>(
     const dealii::TrilinosWrappers::SparseMatrix &,
     const ParsedFiniteElement<2, 2> &,
     const DoFHandler<2, 2> &);
-template void deal2lkit::ParsedAMGMueLuPreconditioner::
+template void
+deal2lkit::ParsedAMGMueLuPreconditioner::
   initialize_preconditioner<3, 3, dealii::TrilinosWrappers::SparseMatrix>(
     const dealii::TrilinosWrappers::SparseMatrix &,
     const ParsedFiniteElement<3, 3> &,

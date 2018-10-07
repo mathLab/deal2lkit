@@ -123,38 +123,45 @@ public:
   /**
    * return the ComponentMask corresponding to the given id
    */
-  ComponentMask get_mapped_mask(const unsigned int &id) const;
+  ComponentMask
+  get_mapped_mask(const unsigned int &id) const;
 
   /**
    * return the list of the mapped ids
    */
-  std::vector<unsigned int> get_mapped_ids() const;
+  std::vector<unsigned int>
+  get_mapped_ids() const;
 
   /**
    * return the list of the mapped ids for which normal components have been set
    */
-  std::vector<unsigned int> get_mapped_normal_ids() const;
+  std::vector<unsigned int>
+  get_mapped_normal_ids() const;
 
 
   /**
    * declare_parameters is inherithed by ParameterAcceptor
    */
-  virtual void declare_parameters(ParameterHandler &prm);
+  virtual void
+  declare_parameters(ParameterHandler &prm);
 
   /**
    * parse_parameters_call_back is inherithed by ParameterAcceptor
    */
-  virtual void parse_parameters_call_back();
+  virtual void
+  parse_parameters_call_back();
 
   /**
    * return true if there is a function that acts on the passed id
    */
-  bool acts_on_id(unsigned int &id) const;
+  bool
+  acts_on_id(unsigned int &id) const;
 
   /**
    * set time equal to t for all the mapped functions
    */
-  void set_time(const double &t);
+  void
+  set_time(const double &t);
 
 
   /// Mismatch between the number of ids set in 'IDs and component masks'
@@ -196,12 +203,16 @@ public:
                  << print(unique(arg3)) << ".");
 
 protected:
-  void split_id_components(const std::string &parsed_idcomponents);
-  void split_id_functions(const std::string &parsed_idfunctions,
-                          const std::string &constants);
-  void add_normal_components();
+  void
+  split_id_components(const std::string &parsed_idcomponents);
+  void
+  split_id_functions(const std::string &parsed_idfunctions,
+                     const std::string &constants);
+  void
+  add_normal_components();
 
-  void set_normal_functions();
+  void
+  set_normal_functions();
 
   std::string                           name;
   std::string                           str_id_components;

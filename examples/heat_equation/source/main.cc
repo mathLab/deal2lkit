@@ -20,7 +20,8 @@
 
 #include "heat_ida.h"
 
-int main(int argc, char **argv)
+int
+main(int argc, char **argv)
 {
   deallog.depth_console(0);
 

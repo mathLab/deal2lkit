@@ -34,7 +34,8 @@ using namespace deal2lkit;
 // Create a grid, refine it locally, write it out in ar format, read it
 // back in, and check that everything is fine.
 template <int dim, int spacedim>
-void test(const std::string &name)
+void
+test(const std::string &name)
 {
   deallog << "Testing " << name << "<" << dim << "," << spacedim << ">"
           << std::endl;
@@ -72,7 +73,8 @@ void test(const std::string &name)
   go.write_msh(*tria, out);
 }
 
-int main()
+int
+main()
 {
   initlog();
 

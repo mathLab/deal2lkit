@@ -15,7 +15,8 @@
 
 #include "tests.h"
 
-int main()
+int
+main()
 {
   initlog();
   deallog << 0 << std::endl;
