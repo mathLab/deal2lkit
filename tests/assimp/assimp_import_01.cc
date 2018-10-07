@@ -13,16 +13,18 @@
 //
 //-----------------------------------------------------------
 
-#include "../tests.h"
 #include <deal.II/grid/tria.h>
 
 #include <deal2lkit/assimp_interface.h>
 
+#include "../tests.h"
+
 using namespace deal2lkit;
 
-int main ()
+int main()
 {
-  Triangulation<2,3> tria;
-  AssimpInterface::generate_triangulation(SOURCE_DIR "/grids/torus.obj", tria, -1, true, 1e-3);
+  Triangulation<2, 3> tria;
+  AssimpInterface::generate_triangulation(
+    SOURCE_DIR "/grids/torus.obj", tria, -1, true, 1e-3);
   return 0;
 }

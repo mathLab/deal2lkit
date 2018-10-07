@@ -16,16 +16,21 @@
 #ifndef _d2k_parsed_zero_average_constraints_h
 #define _d2k_parsed_zero_average_constraints_h
 
-#include <deal2lkit/config.h>
 #include <deal.II/base/exceptions.h>
 #include <deal.II/base/parsed_function.h>
-#include <deal2lkit/parameter_acceptor.h>
+
+#include <deal.II/dofs/dof_handler.h>
+
 #include <deal.II/fe/component_mask.h>
+
+#include <deal.II/lac/constraint_matrix.h>
+
+#include <deal2lkit/config.h>
+#include <deal2lkit/parameter_acceptor.h>
+#include <deal2lkit/utilities.h>
+
 #include <algorithm>
 #include <map>
-#include <deal2lkit/utilities.h>
-#include <deal.II/dofs/dof_handler.h>
-#include <deal.II/lac/constraint_matrix.h>
 
 
 using namespace dealii;
@@ -61,7 +66,7 @@ D2K_NAMESPACE_OPEN
 
 
 
-template <int dim, int spacedim=dim>
+template <int dim, int spacedim = dim>
 class ParsedZeroAverageConstraints : public ParameterAcceptor
 {
 public:
@@ -83,68 +88,73 @@ public:
    * - a list of components, separated by a "," (i.e. 0,p,5), that are
    *   to be constrained on the boundary
    */
-  ParsedZeroAverageConstraints  (const std::string &name,
-                                 const unsigned int &n_components=1,
-                                 const std::string &component_names = "",
-                                 const std::string &default_components = "",
-                                 const std::string &default_boundary_components ="");
+  ParsedZeroAverageConstraints(
+    const std::string & name,
+    const unsigned int &n_components                = 1,
+    const std::string & component_names             = "",
+    const std::string & default_components          = "",
+    const std::string & default_boundary_components = "");
 
 
   /**
    * Compute the zero average constraints and apply them on the given
    * constraint matrix
    */
-  void apply_zero_average_constraints(const DoFHandler<dim,spacedim> &dof_handler,
-                                      ConstraintMatrix &constraints) const;
+  void
+  apply_zero_average_constraints(const DoFHandler<dim, spacedim> &dof_handler,
+                                 ConstraintMatrix &constraints) const;
 
 
   /**
    * return the ComponentMask at boundary
    */
-  ComponentMask get_boundary_mask () const;
+  ComponentMask get_boundary_mask() const;
 
 
   /**
    * return the ComponentMask
    */
-  ComponentMask get_mask () const;
+  ComponentMask get_mask() const;
 
 
   /**
    * declare_parameters is inherithed by ParameterAcceptor
    */
-  virtual void declare_parameters (ParameterHandler &prm);
+  virtual void declare_parameters(ParameterHandler &prm);
 
   /**
    * parse_parameters_call_back is inherithed by ParameterAcceptor
    */
-  virtual void parse_parameters_call_back ();
+  virtual void parse_parameters_call_back();
 
 
 
   /// Wrong number of component mask
-  DeclException2(ExcWrongComponent, unsigned int, unsigned int,
-                 << "Wrong component number has been used: "
-                 <<  arg1 << " is not in the range [0, "
-                 << arg2 <<").");
+  DeclException2(ExcWrongComponent,
+                 unsigned int,
+                 unsigned int,
+                 << "Wrong component number has been used: " << arg1
+                 << " is not in the range [0, " << arg2 << ").");
 
   /// Wrong variable name
-  DeclException2(ExcWrongVariable, std::string, std::vector<std::string>,
-                 << "Wrong variabile name has been used: "
-                 <<  arg1 << " does not belong to the knwon variables: "
-                 << print(unique(arg2)) <<".");
+  DeclException2(ExcWrongVariable,
+                 std::string,
+                 std::vector<std::string>,
+                 << "Wrong variabile name has been used: " << arg1
+                 << " does not belong to the knwon variables: "
+                 << print(unique(arg2)) << ".");
 
 protected:
+  void internal_zero_average_constraints(
+    const DoFHandler<dim, spacedim> &dof_handler,
+    const ComponentMask              mask,
+    const bool                       at_boundary,
+    ConstraintMatrix &               constraints) const;
 
-  void internal_zero_average_constraints(const DoFHandler<dim,spacedim> &dof_handler,
-                                         const ComponentMask mask,
-                                         const bool at_boundary,
-                                         ConstraintMatrix &constraints) const;
-
-  std::string name;
-  std::string str_components;
-  std::string str_boundary_components;
-  std::string str_component_names;
+  std::string              name;
+  std::string              str_components;
+  std::string              str_boundary_components;
+  std::string              str_component_names;
   std::vector<std::string> _component_names;
   std::vector<std::string> boundary_components;
   std::vector<std::string> components;
@@ -160,4 +170,3 @@ protected:
 D2K_NAMESPACE_CLOSE
 
 #endif
-

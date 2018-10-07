@@ -13,28 +13,30 @@
 //
 //-----------------------------------------------------------
 
-#include "stokes_ida.h"
 #include <deal2lkit/parameter_acceptor.h>
 #include <deal2lkit/utilities.h>
+
 #include <fstream>
+
+#include "stokes_ida.h"
 
 int main(int argc, char **argv)
 {
-
   deallog.depth_console(0);
 
 #ifdef D2K_WITH_SUNDIALS
-  Utilities::MPI::MPI_InitFinalize mpi_initialization(argc, argv, numbers::invalid_unsigned_int);
+  Utilities::MPI::MPI_InitFinalize mpi_initialization(
+    argc, argv, numbers::invalid_unsigned_int);
 
 
   MPI_Comm comm = MPI_COMM_WORLD;
 
 
 
-
   Stokes<2> solver(comm);
 
-  ParameterAcceptor::initialize("../source/stokes_ida.prm", "used_parameters.prm");
+  ParameterAcceptor::initialize("../source/stokes_ida.prm",
+                                "used_parameters.prm");
 
   solver.run();
 
@@ -44,8 +46,7 @@ int main(int argc, char **argv)
   std::cout << "This example requires that the option \n"
             << "D2K_WITH_SUNDIALS is set to ON. \n"
             << "Please recompile the deal2lkit library \n"
-            << "with the option -DD2K_WITH_SUNDIALS=ON "
-            << std::endl;
+            << "with the option -DD2K_WITH_SUNDIALS=ON " << std::endl;
   return 1;
 #endif
 }

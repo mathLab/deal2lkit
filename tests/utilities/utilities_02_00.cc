@@ -16,14 +16,15 @@
 
 // Test if the "create directory" utilities function works as expected.
 
-#include "../tests.h"
 #include <deal2lkit/utilities.h>
+
+#include "../tests.h"
 
 
 
 using namespace deal2lkit;
 
-int main ()
+int main()
 {
   initlog();
 

@@ -16,10 +16,11 @@
 #ifndef _d2k_parsed_kdtree_distance_h
 #define _d2k_parsed_kdtree_distance_h
 
-#include <deal2lkit/config.h>
-#include <deal2lkit/utilities.h>
 #include <deal.II/base/function.h>
+
+#include <deal2lkit/config.h>
 #include <deal2lkit/parameter_acceptor.h>
+#include <deal2lkit/utilities.h>
 
 DEAL_II_DISABLE_EXTRA_DIAGNOSTICS
 #include <external/nanoflann.h>
@@ -41,7 +42,7 @@ D2K_NAMESPACE_OPEN
  * nearest neighbors, or searching the points that fall within a
  * raidius of a target point.
  */
-template<int dim>
+template <int dim>
 class ParsedKDTreeDistance : public ParameterAcceptor, public Function<dim>
 {
 public:
@@ -70,9 +71,10 @@ public:
    * your points, and do not call again set_points(), your results
    * will likely be wrong.
    */
-  ParsedKDTreeDistance(const std::string &name="",
-                       const unsigned int &max_leaf_size=10,
-                       const std::vector<Point<dim> > &pts=std::vector<Point<dim> >());
+  ParsedKDTreeDistance(
+    const std::string &            name          = "",
+    const unsigned int &           max_leaf_size = 10,
+    const std::vector<Point<dim>> &pts           = std::vector<Point<dim>>());
 
 
   /**
@@ -92,33 +94,33 @@ public:
      * Reference to the vector of points from which we want to compute
      * the distance.
      */
-    const std::vector<Point<dim> > &points; //!< A const ref to the data set origin
+    const std::vector<Point<dim>>
+      &points; //!< A const ref to the data set origin
 
 
     /**
      * The constrcutor needs the data set source.
      */
-    PointCloudAdaptor(const std::vector<Point<dim> > &_points) : points(_points) { }
+    PointCloudAdaptor(const std::vector<Point<dim>> &_points) : points(_points)
+    {}
 
 
     /**
      * Return number of points in the data set (required by nanoflann).
      */
-    inline size_t kdtree_get_point_count() const
-    {
-      return points.size();
-    }
+    inline size_t kdtree_get_point_count() const { return points.size(); }
 
 
     /**
      * Return the L2 distance between points
      */
-    inline coord_t kdtree_distance(const coord_t *p1, const size_t idx_p2,size_t size) const
+    inline coord_t
+    kdtree_distance(const coord_t *p1, const size_t idx_p2, size_t size) const
     {
       AssertDimension(size, dim);
-      coord_t res=0.0;
-      for (size_t d=0; d<size; ++d)
-        res += (p1[d]-points[idx_p2][d])*(p1[d]-points[idx_p2][d]);
+      coord_t res = 0.0;
+      for (size_t d = 0; d < size; ++d)
+        res += (p1[d] - points[idx_p2][d]) * (p1[d] - points[idx_p2][d]);
       return std::sqrt(res);
     }
 
@@ -128,7 +130,7 @@ public:
      */
     inline coord_t kdtree_get_pt(const size_t idx, int d) const
     {
-      AssertIndexRange(d,dim);
+      AssertIndexRange(d, dim);
       return points[idx][d];
     }
 
@@ -151,8 +153,12 @@ public:
   /**
    * A typedef for the actual KDTree object.
    */
-  typedef typename nanoflann::KDTreeSingleIndexAdaptor<nanoflann::L2_Simple_Adaptor<double, PointCloudAdaptor> ,
-          PointCloudAdaptor, dim, unsigned int>  KDTree;
+  typedef typename nanoflann::KDTreeSingleIndexAdaptor<
+    nanoflann::L2_Simple_Adaptor<double, PointCloudAdaptor>,
+    PointCloudAdaptor,
+    dim,
+    unsigned int>
+    KDTree;
 
   /**
    * Calls the underlying function of ParsedFunction.
@@ -177,7 +183,8 @@ public:
    * @return the minimum distance from the collection of points set
    * with the constructor or with the method set_points()
    */
-  virtual double value(const Point<dim> &p, const unsigned int component=0) const;
+  virtual double value(const Point<dim> & p,
+                       const unsigned int component = 0) const;
 
 
   /**
@@ -198,7 +205,7 @@ public:
    *
    * @param pts: a collection of points
    */
-  void set_points(const std::vector<Point<dim> > &pts);
+  void set_points(const std::vector<Point<dim>> &pts);
 
 
   /**
@@ -232,13 +239,16 @@ public:
    * @param[in] point: the target point
    * @param[in] radius: the radius of the ball
    * @param[out] mathes: indices and distances of the matching points
-   * @param[in] sorted: sort the output results in ascending order with respect to distances
+   * @param[in] sorted: sort the output results in ascending order with respect
+   * to distances
    *
    * @return number of points that are within the ball
    */
-  unsigned int get_points_within_ball(const Point<dim> &target, const double &radius,
-                                      std::vector<std::pair<unsigned int, double> > &matches,
-                                      bool sorted=false) const;
+  unsigned int
+  get_points_within_ball(const Point<dim> &                            target,
+                         const double &                                radius,
+                         std::vector<std::pair<unsigned int, double>> &matches,
+                         bool sorted = false) const;
 
   /**
    * Fill two vectors with the indices and distances of the closest
@@ -251,9 +261,9 @@ public:
    * @param[out] indices: indices of the matching points
    * @param[out] distances: distances of the matching points
    */
-  void get_closest_points(const Point<dim> &target,
+  void get_closest_points(const Point<dim> &         target,
                           std::vector<unsigned int> &indices,
-                          std::vector<double> &distances) const;
+                          std::vector<double> &      distances) const;
 
 private:
   /**

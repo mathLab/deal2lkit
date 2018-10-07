@@ -15,10 +15,12 @@
 
 
 
-#include "../tests.h"
 #include <deal.II/base/path_search.h>
-#include <deal2lkit/utilities.h>
+
 #include <deal2lkit/parameter_acceptor.h>
+#include <deal2lkit/utilities.h>
+
+#include "../tests.h"
 
 
 using namespace deal2lkit;
@@ -26,26 +28,25 @@ using namespace deal2lkit;
 class MyClass : public ParameterAcceptor
 {
 public:
-  MyClass(const std::string &name = "My Class",
-          const unsigned int &i=0):
-    ParameterAcceptor(name+std::to_string(c++)),
+  MyClass(const std::string &name = "My Class", const unsigned int &i = 0) :
+    ParameterAcceptor(name + std::to_string(c++)),
     i(i)
   {
     add_parameter(this->i, "An integer");
   };
 
 private:
-  unsigned int i;
+  unsigned int        i;
   static unsigned int c;
 };
 
-unsigned int MyClass::c=0;
+unsigned int MyClass::c = 0;
 
 class MyMasterClass : public ParameterAcceptor
 {
 public:
   MyMasterClass(const std::string &name = "MyMasterClass",
-                const double &d=0):
+                const double &     d    = 0) :
     ParameterAcceptor(name),
     d(d),
     mc("Slave", 1)
@@ -54,27 +55,27 @@ public:
   };
 
 private:
-  double d;
+  double  d;
   MyClass mc;
 };
 
 
-int main ()
+int main()
 {
   initlog();
 
-  MyMasterClass  f00("/");
-  MyMasterClass  f0("Relative");
-  MyMasterClass  f1("RelativeTraling/");
-  MyMasterClass  f2("/Absolute");
-  MyMasterClass  f3("/AbsoluteTrailing/");
-  MyMasterClass  f4("/AbsoluteNested/Class");
-  MyMasterClass  f5("/AbsoluteNested/ClassTrailing/");
+  MyMasterClass f00("/");
+  MyMasterClass f0("Relative");
+  MyMasterClass f1("RelativeTraling/");
+  MyMasterClass f2("/Absolute");
+  MyMasterClass f3("/AbsoluteTrailing/");
+  MyMasterClass f4("/AbsoluteNested/Class");
+  MyMasterClass f5("/AbsoluteNested/ClassTrailing/");
 
   std::string test = "/AbsoluteTrailing/";
-  auto l = Utilities::split_string_list(test, '/');
+  auto        l    = Utilities::split_string_list(test, '/');
   deallog << l.size() << std::endl;
-  for (auto s: l)
+  for (auto s : l)
     deallog << s << std::endl;
 
   ParameterAcceptor::log_info();

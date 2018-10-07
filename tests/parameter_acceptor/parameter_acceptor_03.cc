@@ -14,25 +14,27 @@
 //-----------------------------------------------------------
 
 
-#include "../tests.h"
-#include <deal2lkit/utilities.h>
-#include <deal2lkit/parameter_acceptor.h>
-
 #include <deal.II/base/point.h>
+
+#include <deal2lkit/parameter_acceptor.h>
+#include <deal2lkit/utilities.h>
+
+#include "../tests.h"
 
 
 using namespace deal2lkit;
 
-template<int dim>
+template <int dim>
 class Test : public ParameterAcceptor
 {
 public:
   virtual void declare_parameters(ParameterHandler &prm)
   {
     std::string def = "0.";
-    for (int i=1; i<dim; ++i)
+    for (int i = 1; i < dim; ++i)
       def += ",0.";
-    add_parameter(prm, &p, "A point", def, Patterns::List(Patterns::Double(), dim, dim));
+    add_parameter(
+      prm, &p, "A point", def, Patterns::List(Patterns::Double(), dim, dim));
   };
 
   void log_info()
@@ -46,7 +48,7 @@ private:
 };
 
 
-int main ()
+int main()
 {
   initlog();
   Test<1> a;

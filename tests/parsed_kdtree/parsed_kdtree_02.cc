@@ -15,26 +15,27 @@
 
 // Create a list of points, and compute the closest points to a given one.
 
-#include "../tests.h"
 #include <deal2lkit/parsed_kdtree_distance.h>
+
+#include "../tests.h"
 
 using namespace deal2lkit;
 
-int main ()
+int main()
 {
   initlog();
 
   ParsedKDTreeDistance<2> kdtree;
 
-  std::vector<Point<2> > points;
+  std::vector<Point<2>> points;
 
   // Add four points
-  points.push_back(Point<2>(0,0));
-  points.push_back(Point<2>(0,1));
-  points.push_back(Point<2>(1,0));
-  points.push_back(Point<2>(1,1));
+  points.push_back(Point<2>(0, 0));
+  points.push_back(Point<2>(0, 1));
+  points.push_back(Point<2>(1, 0));
+  points.push_back(Point<2>(1, 1));
 
-  std::vector<Point<2> > test_points;
+  std::vector<Point<2>> test_points;
   test_points.push_back(Point<2>(.5, .5));
   test_points.push_back(Point<2>(2, 0));
   test_points.push_back(Point<2>(2, 2));
@@ -42,23 +43,25 @@ int main ()
   kdtree.set_points(points);
 
   std::vector<unsigned int> indices;
-  std::vector<double> distances;
+  std::vector<double>       distances;
 
   // Get closest points. Do a few rounds
   for (auto &p : test_points)
     {
-      for (unsigned int i=1; i<points.size()+1; ++i)
+      for (unsigned int i = 1; i < points.size() + 1; ++i)
         {
           indices.resize(i);
           distances.resize(i);
 
           kdtree.get_closest_points(p, indices, distances);
 
-          deallog << std::endl << "The first " << i << " closest points to " << p << " are:" << std::endl;
-          for (unsigned int j=0; j<i; ++j)
+          deallog << std::endl
+                  << "The first " << i << " closest points to " << p
+                  << " are:" << std::endl;
+          for (unsigned int j = 0; j < i; ++j)
             {
-              deallog << "points[" << indices[j] << "] = " << points[indices[j]] << ", distance: "
-                      << distances[j] << std::endl;
+              deallog << "points[" << indices[j] << "] = " << points[indices[j]]
+                      << ", distance: " << distances[j] << std::endl;
             }
         }
     }

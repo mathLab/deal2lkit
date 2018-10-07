@@ -19,73 +19,79 @@
 // element that consists of only a single set of vector components
 // (i.e. it has dim components)
 
-#include "../tests.h"
-#include <deal.II/base/logstream.h>
 #include <deal.II/base/function.h>
+#include <deal.II/base/logstream.h>
 #include <deal.II/base/quadrature_lib.h>
-#include <deal.II/lac/vector.h>
-#include <deal.II/grid/grid_generator.h>
+
 #include <deal.II/dofs/dof_handler.h>
-#include <deal.II/lac/constraint_matrix.h>
+
 #include <deal.II/fe/fe_q.h>
 #include <deal.II/fe/fe_system.h>
 #include <deal.II/fe/mapping_q1.h>
+
+#include <deal.II/grid/grid_generator.h>
+
+#include <deal.II/lac/constraint_matrix.h>
+#include <deal.II/lac/vector.h>
+
 #include <deal.II/numerics/vector_tools.h>
+
+#include <deal2lkit/parameter_acceptor.h>
+#include <deal2lkit/parsed_dirichlet_bcs.h>
+#include <deal2lkit/utilities.h>
 
 #include <fstream>
 
-#include <deal2lkit/utilities.h>
-#include <deal2lkit/parameter_acceptor.h>
-#include <deal2lkit/parsed_dirichlet_bcs.h>
+#include "../tests.h"
 
 
 using namespace deal2lkit;
 
-template<int dim>
-void test (const Triangulation<dim> &tr,
-           const FiniteElement<dim> &fe)
+template <int dim>
+void test(const Triangulation<dim> &tr, const FiniteElement<dim> &fe)
 {
   DoFHandler<dim> dof(tr);
   dof.distribute_dofs(fe);
 
-  deallog << "FE=" << fe.get_name()
-          << std::endl;
+  deallog << "FE=" << fe.get_name() << std::endl;
 
   ConstraintMatrix cm;
-//   std::set<types::boundary_id> boundary_ids;
-//   for (unsigned int j=0; j<GeometryInfo<dim>::faces_per_cell; ++j)
-//     boundary_ids.insert (j);
-//
-//   VectorTools::compute_no_normal_flux_constraints (dof, 1, boundary_ids, cm);
-  ParsedDirichletBCs<dim,dim> parsed_dirichlet("ParsedDirichletBCs",
-                                               dim+1,
-                                               (dim==2?"p,u,u":"p,u,u,u"),
-                                               (dim==2?"0=u.N % 1=u.N % 2=u.N % 3=u.N" :"0=u.N % 1=u.N % 2=u.N % 3=u.N % 4=u.N % 5=u.N"));
+  //   std::set<types::boundary_id> boundary_ids;
+  //   for (unsigned int j=0; j<GeometryInfo<dim>::faces_per_cell; ++j)
+  //     boundary_ids.insert (j);
+  //
+  //   VectorTools::compute_no_normal_flux_constraints (dof, 1, boundary_ids,
+  //   cm);
+  ParsedDirichletBCs<dim, dim> parsed_dirichlet(
+    "ParsedDirichletBCs",
+    dim + 1,
+    (dim == 2 ? "p,u,u" : "p,u,u,u"),
+    (dim == 2 ? "0=u.N % 1=u.N % 2=u.N % 3=u.N" :
+                "0=u.N % 1=u.N % 2=u.N % 3=u.N % 4=u.N % 5=u.N"));
 
 
   ParameterAcceptor::initialize();
-  parsed_dirichlet.compute_no_normal_flux_constraints(dof,cm);
+  parsed_dirichlet.compute_no_normal_flux_constraints(dof, cm);
 
-  cm.print (deallog.get_file_stream ());
+  cm.print(deallog.get_file_stream());
 }
 
 
-template<int dim>
+template <int dim>
 void test_hyper_cube()
 {
   Triangulation<dim> tr;
   GridGenerator::hyper_cube(tr);
 
-  for (unsigned int i=0; i<GeometryInfo<dim>::faces_per_cell; ++i)
-    tr.begin_active()->face(i)->set_boundary_id (i);
+  for (unsigned int i = 0; i < GeometryInfo<dim>::faces_per_cell; ++i)
+    tr.begin_active()->face(i)->set_boundary_id(i);
 
 
   tr.refine_global(2);
 
-  for (unsigned int degree=1; degree<4; ++degree)
+  for (unsigned int degree = 1; degree < 4; ++degree)
     {
-      FESystem<dim> fe (FE_Q<dim>(degree), 1,
-                        FE_Q<dim>(degree), dim);
+      FESystem<dim> fe(FE_Q<dim>(degree), 1, FE_Q<dim>(degree), dim);
       test(tr, fe);
     }
 }
@@ -94,10 +100,10 @@ void test_hyper_cube()
 int main()
 {
   initlog();
-  deallog << std::setprecision (2);
+  deallog << std::setprecision(2);
   deallog << std::fixed;
-  deallog.depth_console (0);
-  //ParameterAcceptor::prm.log_parameters(deallog);
+  deallog.depth_console(0);
+  // ParameterAcceptor::prm.log_parameters(deallog);
 
   test_hyper_cube<2>();
   test_hyper_cube<3>();

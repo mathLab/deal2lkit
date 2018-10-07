@@ -16,33 +16,35 @@
 #ifndef _d2k_ida_interface_h
 #define _d2k_ida_interface_h
 
-#include <deal2lkit/config.h>
-#include <deal2lkit/utilities.h>
 #include <deal.II/base/config.h>
-#include <deal.II/base/logstream.h>
-#include <deal.II/base/exceptions.h>
-#include <deal.II/base/parameter_handler.h>
+
 #include <deal.II/base/conditional_ostream.h>
+#include <deal.II/base/exceptions.h>
+#include <deal.II/base/logstream.h>
+#include <deal.II/base/parameter_handler.h>
+
 #include <deal.II/lac/vector.h>
 #include <deal.II/lac/vector_view.h>
+
+#include <deal2lkit/config.h>
+#include <deal2lkit/utilities.h>
 
 #ifdef D2K_WITH_SUNDIALS
 
 
-#include <deal2lkit/parameter_acceptor.h>
+#  include <deal2lkit/parameter_acceptor.h>
+#  include <ida/ida.h>
+#  include <ida/ida_spbcgs.h>
+#  include <ida/ida_spgmr.h>
+#  include <ida/ida_spils.h>
+#  include <ida/ida_sptfqmr.h>
+#  include <nvector/nvector_serial.h>
+#  include <sundials/sundials_math.h>
+#  include <sundials/sundials_types.h>
 
-#include <ida/ida.h>
-#include <ida/ida_spils.h>
-#include <ida/ida_spgmr.h>
-#include <ida/ida_spbcgs.h>
-#include <ida/ida_sptfqmr.h>
-#include <nvector/nvector_serial.h>
-#include <sundials/sundials_math.h>
-#include <sundials/sundials_types.h>
-
-#ifdef DEAL_II_WITH_MPI
-#include "mpi.h"
-#endif
+#  ifdef DEAL_II_WITH_MPI
+#    include "mpi.h"
+#  endif
 
 D2K_NAMESPACE_OPEN
 
@@ -77,8 +79,8 @@ D2K_NAMESPACE_OPEN
  *   \end{cases}
  * \f]
  *
- * where \f$y,\dot y\f$ are vectors in \f$\R^n\f$, \f$t\f$ is often the time (but can
- * also be a parametric quantity), and
+ * where \f$y,\dot y\f$ are vectors in \f$\R^n\f$, \f$t\f$ is often the time
+ * (but can also be a parametric quantity), and
  * \f$F:\R\times\R^n\times\R^n\rightarrow\R^n\f$. Such problem is solved
  * using Newton iteration augmented with a line search global
  * strategy. The integration method used in ida is the variable-order,
@@ -91,29 +93,27 @@ D2K_NAMESPACE_OPEN
  *   \label{eq:bdf}
  * \f]
  *
- * where \f$y_n\f$ and \f$\dot y_n\f$ are the computed approximations of \f$y(t_n)\f$
- * and \f$\dot y(t_n)\f$, respectively, and the step size is
+ * where \f$y_n\f$ and \f$\dot y_n\f$ are the computed approximations of
+ * \f$y(t_n)\f$ and \f$\dot y(t_n)\f$, respectively, and the step size is
  * \f$h_n=t_n-t_{n-1}\f$. The coefficients \f$\alpha_{n,i}\f$ are uniquely
  * determined by the order \f$q\f$, and the history of the step sizes. The
- * application of the BDF method to the DAE system results in a nonlinear algebraic
- * system to be solved at each time step:
+ * application of the BDF method to the DAE system results in a nonlinear
+ * algebraic system to be solved at each time step:
  *
  * \f[
- *   G(y_n)\equiv F\left(t_n,y_n,\dfrac{1}{h_n}\sum\limits_{i=0}^q \alpha_{n,i}\,y_{n-i}\right)=0\, .
- *   \label{eq:nonlinear}
- * \end{equation}
- * The Newton method leads to a linear system of the form
- * \begin{equation}
+ *   G(y_n)\equiv F\left(t_n,y_n,\dfrac{1}{h_n}\sum\limits_{i=0}^q
+ * \alpha_{n,i}\,y_{n-i}\right)=0\, . \label{eq:nonlinear} \end{equation} The
+ * Newton method leads to a linear system of the form \begin{equation}
  *   J[y_{n(m+1)}-y_{n(m)}]=-G(y_{n(m)})\, ,
  *   \label{eq:linear}
  * \f]
  *
- * where \f$y_{n(m)}\f$ is the \f$m\f$-th approximation to \f$y_n\f$, \f$J\f$ is the approximation of the system Jacobian
+ * where \f$y_{n(m)}\f$ is the \f$m\f$-th approximation to \f$y_n\f$, \f$J\f$ is
+ * the approximation of the system Jacobian
  *
  * \f[
- *   J=\dfrac{\partial G}{\partial y} = \dfrac{\partial F}{\partial y} + \alpha \dfrac{\partial F}{\partial \dot y}\, ,
- *   \label{eq:jacobian}
- * \f]
+ *   J=\dfrac{\partial G}{\partial y} = \dfrac{\partial F}{\partial y} + \alpha
+ * \dfrac{\partial F}{\partial \dot y}\, , \label{eq:jacobian} \f]
  *
  * and \f$\alpha = \alpha_{n,0}/h_n\f$. It is worthing metioning that the
  * scalar \f$\alpha\f$ changes whenever the step size or method order
@@ -129,23 +129,22 @@ D2K_NAMESPACE_OPEN
  * its problem class from the SundialsInterface class, and
  * implement all pure virtual methods.
  */
-template<typename VEC=Vector<double> >
+template <typename VEC = Vector<double>>
 class IDAInterface : public ParameterAcceptor
 {
 public:
-
-#ifdef DEAL_II_WITH_MPI
+#  ifdef DEAL_II_WITH_MPI
   /**
    * Constructor for the IDAInterface class.
    */
-  IDAInterface(const std::string name="",
-               const MPI_Comm mpi_comm = MPI_COMM_WORLD);
-#else
+  IDAInterface(const std::string name     = "",
+               const MPI_Comm    mpi_comm = MPI_COMM_WORLD);
+#  else
   /**
    * Constructor for the IDAInterface class.
    */
-  IDAInterface(const std::string name="");
-#endif
+  IDAInterface(const std::string name = "");
+#  endif
 
   /** House cleaning. */
   ~IDAInterface();
@@ -154,19 +153,14 @@ public:
   virtual void declare_parameters(ParameterHandler &prm);
 
   /** Evolve. This function returns the final number of steps. */
-  unsigned int solve_dae(VEC &solution,
-                         VEC &solution_dot);
+  unsigned int solve_dae(VEC &solution, VEC &solution_dot);
 
   /**
    * Clear internal memory, and start with clean objects. This
    * function is called when the simulation start and when the mesh is
    * refined.
    */
-  void reset_dae(const double t,
-                 VEC &y,
-                 VEC &yp,
-                 double h,
-                 bool first_step);
+  void reset_dae(const double t, VEC &y, VEC &yp, double h, bool first_step);
 
   /**
    * Return a shared_ptr<VEC>. A shared_ptr is needed in order
@@ -178,18 +172,15 @@ public:
   /**
    * Compute residual.
    */
-  std::function<int(const double t,
-                    const VEC &y,
-                    const VEC &y_dot,
-                    VEC &res)> residual;
+  std::function<int(const double t, const VEC &y, const VEC &y_dot, VEC &res)>
+    residual;
 
   /**
    * Compute Jacobian.
    */
-  std::function<int(const double t,
-                    const VEC &y,
-                    const VEC &y_dot,
-                    const double alpha)> setup_jacobian;
+  std::function<
+    int(const double t, const VEC &y, const VEC &y_dot, const double alpha)>
+    setup_jacobian;
 
   /**
    * Solve linear system.
@@ -199,32 +190,32 @@ public:
   /**
    * Store solutions to file.
    */
-  std::function<void (const double t,
-                      const VEC &sol,
-                      const VEC &sol_dot,
-                      const unsigned int step_number)> output_step;
+  std::function<void(const double       t,
+                     const VEC &        sol,
+                     const VEC &        sol_dot,
+                     const unsigned int step_number)>
+    output_step;
 
   /**
    * Evaluate wether the mesh should be refined or not. If so, it
    * refines and interpolate the solutions from the old to the new
    * mesh.
    */
-  std::function<bool (const double t,
-                      VEC &sol,
-                      VEC &sol_dot)> solver_should_restart;
+  std::function<bool(const double t, VEC &sol, VEC &sol_dot)>
+    solver_should_restart;
 
   /**
    * Return a vector whose component are 1 if the corresponding
    * dof is differential, 0 if algebraic.
    */
-  std::function<VEC&()> differential_components;
+  std::function<VEC &()> differential_components;
 
   /**
    * Return a vector whose components are the weights used by IDA to
    * compute the vector norm. The implementation of this function
    * is optional.
    */
-  std::function<VEC&()> get_local_tolerances;
+  std::function<VEC &()> get_local_tolerances;
 
 
 
@@ -235,7 +226,6 @@ public:
   void set_initial_time(const double &t);
 
 private:
-
   /**
    * This function is executed at construction time to set the
    * std::function above to trigger an assert if they are not
@@ -307,9 +297,9 @@ private:
   /** Ida differential components vector. */
   N_Vector diff_id;
 
-#ifdef DEAL_II_WITH_MPI
+#  ifdef DEAL_II_WITH_MPI
   MPI_Comm communicator;
-#endif
+#  endif
 
   /** Output stream */
   ConditionalOStream pcout;
@@ -317,7 +307,6 @@ private:
   unsigned int system_size;
 
   unsigned int local_system_size;
-
 };
 
 

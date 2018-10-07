@@ -14,13 +14,14 @@
 //-----------------------------------------------------------
 
 
-#include "../tests.h"
 #include <deal2lkit/parsed_function.h>
+
+#include "../tests.h"
 
 
 using namespace deal2lkit;
 
-int main ()
+int main()
 {
   initlog();
 
@@ -28,7 +29,6 @@ int main ()
 
   ParameterAcceptor::initialize();
 
-  Point<2> p(2,3);
+  Point<2> p(2, 3);
   deallog << "F(" << p << ") = x^2+y^2 = " << pf.value(p) << std::endl;
-
 }

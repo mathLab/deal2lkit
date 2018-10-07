@@ -14,37 +14,40 @@
 //-----------------------------------------------------------
 
 
-#include "../tests.h"
-#include <deal2lkit/utilities.h>
-#include <deal2lkit/parsed_grid_generator.h>
+#include <deal.II/base/utilities.h>
 
 #include <deal.II/grid/grid_out.h>
-#include <deal.II/base/utilities.h>
+
+#include <deal2lkit/parsed_grid_generator.h>
+#include <deal2lkit/utilities.h>
+
+#include "../tests.h"
 
 
 using namespace deal2lkit;
 
-template<int dim, int spacedim>
+template <int dim, int spacedim>
 void test(ParsedGridGenerator<dim, spacedim> &pgg)
 {
   Triangulation<dim, spacedim> *tria = pgg.serial();
-  GridOut go;
+  GridOut                       go;
   go.write_msh(*tria, deallog.get_file_stream());
-  std::ofstream ofile(("/tmp/mesh_"+Utilities::int_to_string(dim)
-                       +Utilities::int_to_string(spacedim)+".msh").c_str());
+  std::ofstream ofile(("/tmp/mesh_" + Utilities::int_to_string(dim) +
+                       Utilities::int_to_string(spacedim) + ".msh")
+                        .c_str());
 }
 
-int main ()
+int main()
 {
   initlog();
-  ParsedGridGenerator<3,3> a("Subdivided HyperCube");
-  ParsedGridGenerator<2,3> b("Subdivided HyperCube codim 1");
+  ParsedGridGenerator<3, 3> a("Subdivided HyperCube");
+  ParsedGridGenerator<2, 3> b("Subdivided HyperCube codim 1");
 
   ParameterHandler prm;
 
   std::vector<unsigned int> int_vec_2(2);
   std::vector<unsigned int> int_vec_3(3);
-  std::string int_string_2, int_string_3, string3, string2;
+  std::string               int_string_2, int_string_3, string3, string2;
 
   int_vec_2[0] = 2;
   int_vec_2[1] = 2;
@@ -62,7 +65,9 @@ int main ()
             "  set Grid to generate = rectangle\n"
             "  set Optional Point<spacedim> 1 = -1.,-1., -1.\n"
             "  set Optional Point<spacedim> 2 =  1., 1.,  1.\n"
-            "  set Optional vector of dim int = "+ int_string_3 + "\n"
+            "  set Optional vector of dim int = " +
+            int_string_3 +
+            "\n"
             "end\n";
 
   string2 = ""
@@ -70,7 +75,9 @@ int main ()
             "  set Grid to generate = rectangle\n"
             "  set Optional Point<spacedim> 1 = -1.,-1., 0.\n"
             "  set Optional Point<spacedim> 2 =  1., 1., 0.\n"
-            "  set Optional vector of dim int = "+ int_string_2 + "\n"
+            "  set Optional vector of dim int = " +
+            int_string_2 +
+            "\n"
             "end\n";
 
   prm.parse_input_from_string(string3.c_str());

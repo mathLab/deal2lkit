@@ -21,22 +21,22 @@
 
 #ifdef D2K_WITH_SUNDIALS
 
-#include <nvector/nvector_serial.h>
-#include <sundials/sundials_math.h>
-#include <sundials/sundials_types.h>
+#  include <deal.II/base/config.h>
 
-#include <deal.II/base/config.h>
-#include <deal.II/base/exceptions.h>
-#include <deal.II/base/conditional_ostream.h>
+#  include <deal.II/base/conditional_ostream.h>
+#  include <deal.II/base/exceptions.h>
 
-#include <deal2lkit/parameter_acceptor.h>
-#include <deal2lkit/utilities.h>
+#  include <deal2lkit/parameter_acceptor.h>
+#  include <deal2lkit/utilities.h>
+#  include <nvector/nvector_serial.h>
+#  include <sundials/sundials_math.h>
+#  include <sundials/sundials_types.h>
 
-#ifdef DEAL_II_WITH_MPI
-#include "mpi.h"
-#endif
+#  ifdef DEAL_II_WITH_MPI
+#    include "mpi.h"
+#  endif
 
-#include <kinsol/kinsol_impl.h>
+#  include <kinsol/kinsol_impl.h>
 
 using namespace dealii;
 
@@ -47,39 +47,38 @@ D2K_NAMESPACE_OPEN
  * \dk features an interface for the SUite of Nonlinear and
  * DIfferential/ALgebraic equation Solvers (\sundials).
  *
- * The class KINSOLInterface is a wrapper to the KINSOL solver in \sundials. This is a general-purpose
- * nonlinear system solver based on Newton-Krylov solver technology.
- * Developed with KINSOL v.2.8.0.
+ * The class KINSOLInterface is a wrapper to the KINSOL solver in \sundials.
+ * This is a general-purpose nonlinear system solver based on Newton-Krylov
+ * solver technology. Developed with KINSOL v.2.8.0.
  */
-template<typename VEC=Vector<double> >
+template <typename VEC = Vector<double>>
 class KINSOLInterface : public ParameterAcceptor
 {
 public:
-
-#ifdef DEAL_II_WITH_MPI
+#  ifdef DEAL_II_WITH_MPI
 
   /**
    * Constructor for the KINSOLInterface class.
    * The first string is the name of the section for
    * ParameterAcceptor
    */
-  KINSOLInterface(const std::string name="",
-                  const MPI_Comm mpi_comm = MPI_COMM_WORLD);
+  KINSOLInterface(const std::string name     = "",
+                  const MPI_Comm    mpi_comm = MPI_COMM_WORLD);
 
   /**
    * Return the comunicator
    */
-  MPI_Comm get_comm() const ;
+  MPI_Comm get_comm() const;
 
-#else
+#  else
   /**
    * Constructor for the KINSOLInterface class.
    * It takes the string containing the name of the section
    * for ParameterHandler
    */
-  KINSOLInterface(const std::string name="");
+  KINSOLInterface(const std::string name = "");
 
-#endif
+#  endif
 
   /**
    * House cleaning.
@@ -89,21 +88,23 @@ public:
   /**
    * Declare parameters for this class to function properly.
    */
-  virtual void declare_parameters( ParameterHandler &prm );
+  virtual void declare_parameters(ParameterHandler &prm);
 
   /**
    * Initializes the solver with the initial guess and the residual function.
-   * The system size is set inside this function. So, when a mesh refinement is done,
-   * you need to call this function in order to make kinsol aware of the changes.
+   * The system size is set inside this function. So, when a mesh refinement is
+   * done, you need to call this function in order to make kinsol aware of the
+   * changes.
    */
-  void initialize_solver( VEC &initial_guess );
+  void initialize_solver(VEC &initial_guess);
 
   /**
    * Set the scaling for the solver.
    * @p uscale is the scaling vector for the solution and @p fscale is the scaling for the Jacobian.
-   * If this function is not called by the user, a scaling factor equal to 1 is assumed.
+   * If this function is not called by the user, a scaling factor equal to 1 is
+   * assumed.
    */
-  void set_scaling_vectors( const VEC &uscale, const VEC &fscale );
+  void set_scaling_vectors(const VEC &uscale, const VEC &fscale);
 
   /**
    * Set the constraint.
@@ -117,12 +118,12 @@ public:
    *  -  −2.0 then u_i will be constrained to be u_i < 0.0.
    *
    */
-  void set_constraint_vector( const VEC &constraint );
+  void set_constraint_vector(const VEC &constraint);
 
   /**
    * solve the non-linear system
    */
-  int solve( VEC &solution );
+  int solve(VEC &solution);
 
   /**
    * This function has to be implemented by the user
@@ -140,10 +141,9 @@ public:
   std::function<int(const VEC &res, VEC &dst)> solve_linear_system;
 
   /** Standard function multiplying the Jacobian to a vector */
-  std::function<int(const VEC &v, VEC &dst )> jacobian_vmult;
+  std::function<int(const VEC &v, VEC &dst)> jacobian_vmult;
 
 private:
-
   /**
    * This function is executed at construction time to set the std::function
    * above to trigger an assert if they are not implemented.
@@ -227,7 +227,7 @@ private:
    */
   N_Vector f_scale;
 
-#ifdef DEAL_II_WITH_MPI
+#  ifdef DEAL_II_WITH_MPI
   /**
    * local size of the system
    */
@@ -237,7 +237,7 @@ private:
    * MPI communicator needed for parallel solver.
    */
   MPI_Comm communicator;
-#endif
+#  endif
 
   /**
    * Output stream
@@ -248,8 +248,6 @@ private:
    * Kinsol memory object.
    */
   void *kin_mem;
-
-
 };
 
 D2K_NAMESPACE_CLOSE

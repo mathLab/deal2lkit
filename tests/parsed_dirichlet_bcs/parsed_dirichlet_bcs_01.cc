@@ -13,24 +13,23 @@
 //
 //-----------------------------------------------------------
 
-//test constructor
+// test constructor
 //
-#include "../tests.h"
-#include <deal2lkit/utilities.h>
 #include <deal2lkit/parameter_acceptor.h>
 #include <deal2lkit/parsed_dirichlet_bcs.h>
+#include <deal2lkit/utilities.h>
+
+#include "../tests.h"
 
 
 using namespace deal2lkit;
 
-int main ()
+int main()
 {
   initlog();
 
-  ParsedDirichletBCs<2,2> pf("Dirichlet",1,"u","0=ALL","0=0");
+  ParsedDirichletBCs<2, 2> pf("Dirichlet", 1, "u", "0=ALL", "0=0");
 
   ParameterAcceptor::initialize();
   ParameterAcceptor::prm.log_parameters(deallog);
-
-
 }

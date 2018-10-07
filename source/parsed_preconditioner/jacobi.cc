@@ -19,11 +19,11 @@
 
 D2K_NAMESPACE_OPEN
 
-ParsedJacobiPreconditioner::ParsedJacobiPreconditioner(const std::string &name,
-                                                       const double &omega,
-                                                       const double &min_diagonal,
-                                                       const unsigned int &n_sweeps
-                                                      ):
+ParsedJacobiPreconditioner::ParsedJacobiPreconditioner(
+  const std::string & name,
+  const double &      omega,
+  const double &      min_diagonal,
+  const unsigned int &n_sweeps) :
   ParameterAcceptor(name),
   PreconditionJacobi(),
   omega(omega),
@@ -33,35 +33,48 @@ ParsedJacobiPreconditioner::ParsedJacobiPreconditioner(const std::string &name,
 
 void ParsedJacobiPreconditioner::declare_parameters(ParameterHandler &prm)
 {
-  add_parameter(prm, &omega, "Omega", std::to_string(omega),
-                Patterns::Double(0.0),
-                "This specifies the relaxation parameter in the Jacobi preconditioner.");
-  add_parameter(prm, &min_diagonal, "Min Diagonal", std::to_string(min_diagonal),
-                Patterns::Double(0.0),
-                "This specifies the minimum value the diagonal elements should\n"
-                "have. This might be necessary when the Jacobi preconditioner is used\n"
-                "on matrices with zero diagonal elements. In that case, a straight-\n"
-                "forward application would not be possible since we would divide by\n"
-                "zero.");
-  add_parameter(prm, &n_sweeps, "Number of sweeps", std::to_string(n_sweeps),
-                Patterns::Integer(0),
-                "Sets how many times the given operation should be applied during the\n"
-                "vmult() operation.");
+  add_parameter(
+    prm,
+    &omega,
+    "Omega",
+    std::to_string(omega),
+    Patterns::Double(0.0),
+    "This specifies the relaxation parameter in the Jacobi preconditioner.");
+  add_parameter(
+    prm,
+    &min_diagonal,
+    "Min Diagonal",
+    std::to_string(min_diagonal),
+    Patterns::Double(0.0),
+    "This specifies the minimum value the diagonal elements should\n"
+    "have. This might be necessary when the Jacobi preconditioner is used\n"
+    "on matrices with zero diagonal elements. In that case, a straight-\n"
+    "forward application would not be possible since we would divide by\n"
+    "zero.");
+  add_parameter(
+    prm,
+    &n_sweeps,
+    "Number of sweeps",
+    std::to_string(n_sweeps),
+    Patterns::Integer(0),
+    "Sets how many times the given operation should be applied during the\n"
+    "vmult() operation.");
 }
 
-template<typename Matrix>
-void ParsedJacobiPreconditioner::initialize_preconditioner( const Matrix &matrix)
+template <typename Matrix>
+void ParsedJacobiPreconditioner::initialize_preconditioner(const Matrix &matrix)
 {
   TrilinosWrappers::PreconditionJacobi::AdditionalData data;
 
-  data.omega = omega;
+  data.omega        = omega;
   data.min_diagonal = min_diagonal;
-  data.n_sweeps = n_sweeps;
+  data.n_sweeps     = n_sweeps;
   this->initialize(matrix, data);
 }
 D2K_NAMESPACE_CLOSE
 
-template void deal2lkit::ParsedJacobiPreconditioner::initialize_preconditioner<dealii::TrilinosWrappers::SparseMatrix>(
+template void deal2lkit::ParsedJacobiPreconditioner::initialize_preconditioner<
+  dealii::TrilinosWrappers::SparseMatrix>(
   const dealii::TrilinosWrappers::SparseMatrix &);
 
 #endif

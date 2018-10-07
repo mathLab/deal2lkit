@@ -14,14 +14,15 @@
 //-----------------------------------------------------------
 
 
-#include "../tests.h"
-#include <deal2lkit/utilities.h>
 #include <deal2lkit/parameter_acceptor.h>
+#include <deal2lkit/utilities.h>
+
+#include "../tests.h"
 
 
 using namespace deal2lkit;
 
-template<int dim>
+template <int dim>
 class Test : public ParameterAcceptor
 {
 public:
@@ -40,7 +41,7 @@ public:
 };
 
 
-int main ()
+int main()
 {
   initlog();
   Test<1> a;

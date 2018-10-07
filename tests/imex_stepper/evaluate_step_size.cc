@@ -16,10 +16,12 @@
 // test the DOFUtilities functions
 // for Number=double
 
-#include "../tests.h"
-#include <deal.II/base/logstream.h>
 #include <deal.II/base/function_parser.h>
+#include <deal.II/base/logstream.h>
+
 #include <deal2lkit/dof_utilities.h>
+
+#include "../tests.h"
 
 
 using namespace deal2lkit;
@@ -27,20 +29,18 @@ using namespace deal2lkit;
 
 int main()
 {
-  std::ofstream logfile ("output");
+  std::ofstream logfile("output");
 
   deallog.attach(logfile);
-  deallog.depth_console (0);
+  deallog.depth_console(0);
 
   // set up problem:
-  std::string variables = "t";
-  std::string _step_size = "(t<1?1e-3:(t<2?2e-3:7))";
-  std::map<std::string,double> constants;
+  std::string                   variables  = "t";
+  std::string                   _step_size = "(t<1?1e-3:(t<2?2e-3:7))";
+  std::map<std::string, double> constants;
   // FunctionParser with 2 variables and 1 component:
   FunctionParser<1> fp(1);
-  fp.initialize(variables,
-                _step_size,
-                constants);
+  fp.initialize(variables, _step_size, constants);
   // Point at which we want to evaluate the function
   Point<1> point1(0.0);
   // evaluate the expression at 'point':

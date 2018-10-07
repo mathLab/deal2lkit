@@ -19,54 +19,52 @@
 #include <deal2lkit/config.h>
 
 #ifdef D2K_WITH_SUNDIALS
-#include <deal.II/base/timer.h>
-#include <deal.II/base/index_set.h>
+#  include <deal.II/base/index_set.h>
+#  include <deal.II/base/timer.h>
 
-#include <deal.II/dofs/dof_handler.h>
+#  include <deal.II/dofs/dof_handler.h>
 
-#include <deal.II/lac/constraint_matrix.h>
-#include <deal.II/lac/block_sparsity_pattern.h>
-#include <deal.II/lac/sparsity_tools.h>
-#include <deal.II/lac/trilinos_vector.h>
-#include <deal.II/lac/trilinos_sparse_matrix.h>
-#include <deal.II/lac/trilinos_precondition.h>
+#  include <deal.II/lac/block_sparsity_pattern.h>
+#  include <deal.II/lac/constraint_matrix.h>
+#  include <deal.II/lac/sparsity_tools.h>
+#  include <deal.II/lac/trilinos_precondition.h>
+#  include <deal.II/lac/trilinos_sparse_matrix.h>
+#  include <deal.II/lac/trilinos_vector.h>
 
-#include <deal.II/numerics/error_estimator.h>
+#  include <deal.II/numerics/error_estimator.h>
 
-#include <deal2lkit/ida_interface.h>
-#include <deal2lkit/parameter_acceptor.h>
-#include <deal2lkit/parsed_grid_generator.h>
-#include <deal2lkit/parsed_grid_refinement.h>
-#include <deal2lkit/parsed_finite_element.h>
-#include <deal2lkit/error_handler.h>
-#include <deal2lkit/parsed_function.h>
-#include <deal2lkit/parsed_data_out.h>
-#include <deal2lkit/parsed_dirichlet_bcs.h>
-#include <deal2lkit/parsed_solver.h>
+#  include <deal2lkit/error_handler.h>
+#  include <deal2lkit/ida_interface.h>
+#  include <deal2lkit/parameter_acceptor.h>
+#  include <deal2lkit/parsed_data_out.h>
+#  include <deal2lkit/parsed_dirichlet_bcs.h>
+#  include <deal2lkit/parsed_finite_element.h>
+#  include <deal2lkit/parsed_function.h>
+#  include <deal2lkit/parsed_grid_generator.h>
+#  include <deal2lkit/parsed_grid_refinement.h>
+#  include <deal2lkit/parsed_solver.h>
+#  include <mpi.h>
+#  include <stdio.h>
+#  include <stdlib.h>
 
-#include <fstream>
-#include <mpi.h>
-#include <stdio.h>
-#include <stdlib.h>
+#  include <fstream>
 
 
 using namespace dealii;
 using namespace deal2lkit;
 
 typedef TrilinosWrappers::MPI::Vector VEC;
-template<int dim>
+template <int dim>
 class Heat : public ParameterAcceptor
 {
 public:
+  Heat(const MPI_Comm comm);
 
-  Heat (const MPI_Comm comm);
+  virtual void declare_parameters(ParameterHandler &prm);
 
-  virtual void declare_parameters (ParameterHandler &prm);
+  void run();
 
-  void run ();
-
-  shared_ptr<VEC>
-  create_new_vector() const;
+  shared_ptr<VEC> create_new_vector() const;
 
   /** Returns the number of degrees of freedom.*/
   unsigned int n_dofs() const;
@@ -75,9 +73,9 @@ public:
    * the ode solver. Once again, the conversion between pointers and
    * other forms of vectors need to be done inside the inheriting
    * class. */
-  void output_step(const double t,
-                   const VEC &solution,
-                   const VEC &solution_dot,
+  void output_step(const double       t,
+                   const VEC &        solution,
+                   const VEC &        solution_dot,
                    const unsigned int step_number);
 
   /** This function will check the behaviour of the solution. If it
@@ -85,27 +83,21 @@ public:
    * will be stopped. If the convergence is not achived the
    * calculation will be continued. If necessary, it can also reset
    * the time stepper. */
-  bool solver_should_restart(const double t,
-                             VEC &solution,
-                             VEC &solution_dot);
+  bool solver_should_restart(const double t, VEC &solution, VEC &solution_dot);
 
   /** For dae problems, we need a
    residual function. */
-  int residual(const double t,
-               const VEC &src_yy,
-               const VEC &src_yp,
-               VEC &dst);
+  int residual(const double t, const VEC &src_yy, const VEC &src_yp, VEC &dst);
 
   /** Setup Jacobian system and preconditioner. */
   int setup_jacobian(const double t,
-                     const VEC &src_yy,
-                     const VEC &src_yp,
+                     const VEC &  src_yy,
+                     const VEC &  src_yp,
                      const double alpha);
 
 
   /** Inverse of the Jacobian vector product. */
-  int solve_jacobian_system(const VEC &src,
-                            VEC &dst) const;
+  int solve_jacobian_system(const VEC &src, VEC &dst) const;
 
 
 
@@ -118,16 +110,16 @@ public:
   VEC &differential_components() const;
 
 private:
-  void refine_mesh ();
+  void refine_mesh();
   void make_grid_fe();
-  void setup_dofs (const bool &first_run=true);
+  void setup_dofs(const bool &first_run = true);
 
-  void assemble_jacobian_matrix (const double t,
-                                 const VEC &y,
-                                 const VEC &y_dot,
-                                 const double alpha);
+  void assemble_jacobian_matrix(const double t,
+                                const VEC &  y,
+                                const VEC &  y_dot,
+                                const double alpha);
 
-  void process_solution ();
+  void process_solution();
 
   void set_constrained_dofs_to_zero(VEC &v) const;
 
@@ -138,56 +130,56 @@ private:
 
   std::string timer_file_name;
 
-  ConditionalOStream        pcout;
-  std::ofstream         timer_outfile;
-  ConditionalOStream        tcout;
+  ConditionalOStream pcout;
+  std::ofstream      timer_outfile;
+  ConditionalOStream tcout;
 
-  shared_ptr<Mapping<dim,dim> >             mapping;
+  shared_ptr<Mapping<dim, dim>> mapping;
 
-  shared_ptr<parallel::distributed::Triangulation<dim,dim> > triangulation;
-  shared_ptr<FiniteElement<dim,dim> >       fe;
-  shared_ptr<DoFHandler<dim,dim> >          dof_handler;
+  shared_ptr<parallel::distributed::Triangulation<dim, dim>> triangulation;
+  shared_ptr<FiniteElement<dim, dim>>                        fe;
+  shared_ptr<DoFHandler<dim, dim>>                           dof_handler;
 
-  ConstraintMatrix                          constraints;
+  ConstraintMatrix constraints;
 
-  TrilinosWrappers::SparsityPattern       jacobian_matrix_sp;
-  TrilinosWrappers::SparseMatrix          jacobian_matrix;
+  TrilinosWrappers::SparsityPattern jacobian_matrix_sp;
+  TrilinosWrappers::SparseMatrix    jacobian_matrix;
 
-  TrilinosWrappers::PreconditionAMG       preconditioner;
+  TrilinosWrappers::PreconditionAMG preconditioner;
 
-  VEC        solution;
-  VEC        solution_dot;
+  VEC solution;
+  VEC solution_dot;
 
-  mutable VEC        distributed_solution;
-  mutable VEC        distributed_solution_dot;
+  mutable VEC distributed_solution;
+  mutable VEC distributed_solution_dot;
 
 
-  mutable TimerOutput     computing_timer;
+  mutable TimerOutput computing_timer;
 
-  ErrorHandler<dim>       eh;
-  ParsedGridGenerator<dim,dim>   pgg;
-  ParsedGridRefinement           pgr;
-  ParsedFiniteElement<dim,dim> fe_builder;
+  ErrorHandler<dim>             eh;
+  ParsedGridGenerator<dim, dim> pgg;
+  ParsedGridRefinement          pgr;
+  ParsedFiniteElement<dim, dim> fe_builder;
 
-  ParsedFunction<dim>        exact_solution;
-  ParsedFunction<dim>        forcing_term;
+  ParsedFunction<dim> exact_solution;
+  ParsedFunction<dim> forcing_term;
 
-  ParsedFunction<dim>        initial_solution;
-  ParsedFunction<dim>        initial_solution_dot;
-  ParsedDirichletBCs<dim,dim> dirichlet_bcs;
+  ParsedFunction<dim>          initial_solution;
+  ParsedFunction<dim>          initial_solution_dot;
+  ParsedDirichletBCs<dim, dim> dirichlet_bcs;
 
-  ParsedDataOut<dim, dim>       data_out;
+  ParsedDataOut<dim, dim> data_out;
 
-  ParsedSolver<VEC>             Ainv;
+  ParsedSolver<VEC> Ainv;
 
-  IDAInterface<VEC>  ida;
+  IDAInterface<VEC> ida;
 
   IndexSet global_partitioning;
   IndexSet partitioning;
   IndexSet relevant_partitioning;
 
-  bool adaptive_refinement;
-  bool use_space_adaptivity;
+  bool   adaptive_refinement;
+  bool   use_space_adaptivity;
   double kelly_threshold;
   double diffusivity;
 };

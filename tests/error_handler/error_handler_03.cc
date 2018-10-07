@@ -13,23 +13,25 @@
 //
 //-----------------------------------------------------------
 
-#include "../tests.h"
+#include <deal.II/base/function_lib.h>
+
+#include <deal.II/dofs/dof_handler.h>
 
 #include <deal2lkit/error_handler.h>
 #include <deal2lkit/parsed_grid_generator.h>
-#include <deal.II/base/function_lib.h>
-#include <deal.II/dofs/dof_handler.h>
+
+#include "../tests.h"
 
 
 using namespace deal2lkit;
 
-int main ()
+int main()
 {
   initlog();
 
-  ErrorHandler<> eh("", "u, u, p","L2, Linfty, H1; AddUp; L2"); // Only one table
+  ErrorHandler<> eh(
+    "", "u, u, p", "L2, Linfty, H1; AddUp; L2"); // Only one table
 
   ParameterAcceptor::initialize();
   ParameterAcceptor::prm.log_parameters(deallog);
-
 }

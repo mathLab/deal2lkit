@@ -13,13 +13,14 @@
 //
 //-----------------------------------------------------------
 
-#include "../tests.h"
 #include <deal2lkit/utilities.h>
+
+#include "../tests.h"
 
 
 using namespace deal2lkit;
 
-int main ()
+int main()
 {
   initlog();
 
@@ -31,12 +32,12 @@ int main ()
   std::vector<std::string>::iterator it;
 
   deallog << "original vector contains:" << std::endl;
-  for (it = components.begin(); it!=components.end(); ++it)
+  for (it = components.begin(); it != components.end(); ++it)
     deallog << *it << std::endl;
 
   std::vector<std::string> uvec = unique(components);
 
   deallog << "unique vector contains:" << std::endl;
-  for (it = uvec.begin(); it !=uvec.end(); ++it)
+  for (it = uvec.begin(); it != uvec.end(); ++it)
     deallog << *it << std::endl;
 }

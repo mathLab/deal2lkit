@@ -16,8 +16,9 @@
 #ifndef _d2k_parsed_function_h
 #define _d2k_parsed_function_h
 
-#include <deal2lkit/config.h>
 #include <deal.II/base/parsed_function.h>
+
+#include <deal2lkit/config.h>
 #include <deal2lkit/parameter_acceptor.h>
 
 using namespace dealii;
@@ -29,8 +30,9 @@ D2K_NAMESPACE_OPEN
  * template integer specify the dimension of points this function
  * accepts.
  */
-template<int dim>
-class ParsedFunction : public ParameterAcceptor, public Functions::ParsedFunction<dim>
+template <int dim>
+class ParsedFunction : public ParameterAcceptor,
+                       public Functions::ParsedFunction<dim>
 {
 public:
   /**
@@ -46,10 +48,10 @@ public:
    * components of the expression does not coincide with the parameter
    * passed at construction time to this function.
    */
-  ParsedFunction(const std::string &name="",
-                 const unsigned int &n_components=1,
-                 const std::string &default_exp="",
-                 const std::string &default_const="");
+  ParsedFunction(const std::string & name          = "",
+                 const unsigned int &n_components  = 1,
+                 const std::string & default_exp   = "",
+                 const std::string & default_const = "");
 
   /**
    * Calls the underlying function of ParsedFunction.
@@ -66,12 +68,11 @@ private:
   /**
    * Default expression of this function. "
    */
-  const std::string default_exp;
-  const std::string default_const;
+  const std::string  default_exp;
+  const std::string  default_const;
   const unsigned int n_components;
 };
 
 D2K_NAMESPACE_CLOSE
 
 #endif
-

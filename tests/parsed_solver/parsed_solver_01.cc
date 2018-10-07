@@ -13,41 +13,45 @@
 //
 //-----------------------------------------------------------
 
-#include "../tests.h"
+#include <deal.II/lac/vector.h>
+
 #include <deal2lkit/parsed_solver.h>
 
-#include <deal.II/lac/vector.h>
+#include "../tests.h"
 
 
 using namespace deal2lkit;
 
 std::function<void(Vector<double> &, bool)> default_reinit()
 {
-  return [](Vector<double> &, bool) { };
+  return [](Vector<double> &, bool) {};
 }
 
-int main ()
+int main()
 {
   initlog();
 
-  ParsedSolver<Vector<double> > solver("Solver", "cg", 100, 1e-6,
-                                       identity_operator<Vector<double>>(default_reinit()),
-                                       identity_operator<Vector<double>>(default_reinit()) );
+  ParsedSolver<Vector<double>> solver(
+    "Solver",
+    "cg",
+    100,
+    1e-6,
+    identity_operator<Vector<double>>(default_reinit()),
+    identity_operator<Vector<double>>(default_reinit()));
   ParameterAcceptor::initialize();
 
   ParameterAcceptor::prm.log_parameters(deallog);
 
   Vector<double> b(4);
-  for (unsigned int i=0; i<4; ++i)
+  for (unsigned int i = 0; i < 4; ++i)
     {
-      b(i) = i+1.;
+      b(i) = i + 1.;
     }
   Vector<double> x(4);
 
-  solver.vmult(x,b);
+  solver.vmult(x, b);
 
   x -= b;
 
   deallog << "Norm: " << x.l2_norm() << std::endl;
-
 }

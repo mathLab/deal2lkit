@@ -16,16 +16,17 @@
 #ifndef _d2k_dof_utilities_h
 #define _d2k_dof_utilities_h
 
-#include <deal2lkit/config.h>
-#include <deal.II/base/utilities.h>
-#include <deal.II/base/smartpointer.h>
-#include <typeinfo>
 #include <deal.II/base/exceptions.h>
+#include <deal.II/base/smartpointer.h>
+#include <deal.II/base/utilities.h>
+
 #include <deal.II/fe/fe.h>
 #include <deal.II/fe/fe_values.h>
 
+#include <deal2lkit/config.h>
 
 #include <sstream>
+#include <typeinfo>
 
 using namespace dealii;
 
@@ -41,8 +42,8 @@ using namespace dealii;
 #ifdef DEAL_II_WITH_TRILINOS
 
 
-#include <Sacado.hpp>
-typedef Sacado::Fad::DFad<double> Sdouble;
+#  include <Sacado.hpp>
+typedef Sacado::Fad::DFad<double>  Sdouble;
 typedef Sacado::Fad::DFad<Sdouble> SSdouble;
 #endif
 
@@ -55,37 +56,39 @@ namespace DOFUtilities
    *
    */
   template <typename Number, typename VEC>
-  void
-  extract_local_dofs (const VEC &global_vector,
-                      const std::vector<types::global_dof_index> &local_dof_indices,
-                      std::vector<Number> &independent_local_dofs)
+  void extract_local_dofs(
+    const VEC &                                 global_vector,
+    const std::vector<types::global_dof_index> &local_dof_indices,
+    std::vector<Number> &                       independent_local_dofs)
   {
-    AssertDimension(local_dof_indices.size(),independent_local_dofs.size());
+    AssertDimension(local_dof_indices.size(), independent_local_dofs.size());
 
     const unsigned int dofs_per_cell = local_dof_indices.size();
 
-    for (unsigned int i=0; i < dofs_per_cell; ++i)
+    for (unsigned int i = 0; i < dofs_per_cell; ++i)
       {
         if (typeid(Number) == typeid(double))
           {
-            independent_local_dofs[i] = global_vector (local_dof_indices[i]);
+            independent_local_dofs[i] = global_vector(local_dof_indices[i]);
           }
 #ifdef DEAL_II_WITH_TRILINOS
         else if (typeid(Number) == typeid(Sdouble))
           {
-            Sdouble ildv(dofs_per_cell, i, global_vector (local_dof_indices[i]));
+            Sdouble ildv(dofs_per_cell, i, global_vector(local_dof_indices[i]));
             ((Sdouble &)independent_local_dofs[i]) = ildv;
           }
         else if (typeid(Number) == typeid(SSdouble))
           {
-            SSdouble ildv(dofs_per_cell, i, global_vector(local_dof_indices[i]));
-            ildv.val() = Sdouble(dofs_per_cell, i, global_vector(local_dof_indices[i]));
+            SSdouble ildv(
+              dofs_per_cell, i, global_vector(local_dof_indices[i]));
+            ildv.val() =
+              Sdouble(dofs_per_cell, i, global_vector(local_dof_indices[i]));
             ((SSdouble &)independent_local_dofs[i]) = ildv;
           }
 #endif
         else
           {
-            Assert (false, ExcNotImplemented());
+            Assert(false, ExcNotImplemented());
           }
       }
   }
@@ -98,28 +101,28 @@ namespace DOFUtilities
    *
    */
   template <int dim, int spacedim, typename Number>
-  void
-  get_values (const FEValuesBase<dim, spacedim> &fe_values,
-              const std::vector<Number> &independent_local_dof_values,
-              std::vector <std::vector<Number> > &us)
+  void get_values(const FEValuesBase<dim, spacedim> &fe_values,
+                  const std::vector<Number> &independent_local_dof_values,
+                  std::vector<std::vector<Number>> &us)
 
   {
-    const unsigned int           dofs_per_cell = fe_values.dofs_per_cell;
-    const unsigned int           n_q_points    = fe_values.n_quadrature_points;
-    const unsigned int           n_components  = fe_values.get_fe().n_components();
+    const unsigned int dofs_per_cell = fe_values.dofs_per_cell;
+    const unsigned int n_q_points    = fe_values.n_quadrature_points;
+    const unsigned int n_components  = fe_values.get_fe().n_components();
 
     AssertDimension(us.size(), n_q_points);
     AssertDimension(us[0].size(), n_components);
     AssertDimension(independent_local_dof_values.size(), dofs_per_cell);
 
-    for (unsigned int q=0; q<n_q_points; ++q)
+    for (unsigned int q = 0; q < n_q_points; ++q)
       {
-        us[q] = std::vector<Number> (n_components,0.0);
-        for (unsigned int i=0; i<dofs_per_cell; ++i)
-          for (unsigned int j=0; j<n_components; ++j)
+        us[q] = std::vector<Number>(n_components, 0.0);
+        for (unsigned int i = 0; i < dofs_per_cell; ++i)
+          for (unsigned int j = 0; j < n_components; ++j)
             {
               FEValuesExtractors::Scalar s(j);
-              us[q][j] += independent_local_dof_values[i]*fe_values[s].value(i,q);
+              us[q][j] +=
+                independent_local_dof_values[i] * fe_values[s].value(i, q);
             }
       }
   }
@@ -133,26 +136,26 @@ namespace DOFUtilities
    */
   template <int dim, int spacedim, typename Number>
 
-  void
-  get_values (const FEValuesBase<dim, spacedim> &fe_values,
-              const std::vector<Number> &independent_local_dof_values,
-              const FEValuesExtractors::Vector &vector_variable,
-              std::vector <Tensor <1, spacedim, Number> > &us)
+  void get_values(const FEValuesBase<dim, spacedim> &fe_values,
+                  const std::vector<Number> &independent_local_dof_values,
+                  const FEValuesExtractors::Vector &        vector_variable,
+                  std::vector<Tensor<1, spacedim, Number>> &us)
 
   {
-    const unsigned int           dofs_per_cell = fe_values.dofs_per_cell;
-    const unsigned int           n_q_points    = fe_values.n_quadrature_points;
+    const unsigned int dofs_per_cell = fe_values.dofs_per_cell;
+    const unsigned int n_q_points    = fe_values.n_quadrature_points;
 
     AssertDimension(us.size(), n_q_points);
     AssertDimension(independent_local_dof_values.size(), dofs_per_cell);
 
-    for (unsigned int q=0; q<n_q_points; ++q)
+    for (unsigned int q = 0; q < n_q_points; ++q)
       {
         us[q] = 0;
-        for (unsigned int i=0; i<dofs_per_cell; ++i)
-          if (fe_values[vector_variable].value(i,q).norm() > 0.0)
-            for (unsigned int j=0; j<spacedim; ++j)
-              us[q][j] += independent_local_dof_values[i]*fe_values[vector_variable].value(i,q)[j];
+        for (unsigned int i = 0; i < dofs_per_cell; ++i)
+          if (fe_values[vector_variable].value(i, q).norm() > 0.0)
+            for (unsigned int j = 0; j < spacedim; ++j)
+              us[q][j] += independent_local_dof_values[i] *
+                          fe_values[vector_variable].value(i, q)[j];
       }
   }
 
@@ -164,24 +167,24 @@ namespace DOFUtilities
    *
    */
   template <int dim, int spacedim, typename Number>
-  void
-  get_values (const FEValuesBase<dim, spacedim> &fe_values,
-              const std::vector<Number> &independent_local_dof_values,
-              const FEValuesExtractors::Scalar &scalar_variable,
-              std::vector <Number> &us)
+  void get_values(const FEValuesBase<dim, spacedim> &fe_values,
+                  const std::vector<Number> &independent_local_dof_values,
+                  const FEValuesExtractors::Scalar &scalar_variable,
+                  std::vector<Number> &             us)
 
   {
-    const unsigned int           dofs_per_cell = fe_values.dofs_per_cell;
-    const unsigned int           n_q_points    = fe_values.n_quadrature_points;
+    const unsigned int dofs_per_cell = fe_values.dofs_per_cell;
+    const unsigned int n_q_points    = fe_values.n_quadrature_points;
 
     AssertDimension(us.size(), n_q_points);
     AssertDimension(independent_local_dof_values.size(), dofs_per_cell);
 
-    for (unsigned int q=0; q<n_q_points; ++q)
+    for (unsigned int q = 0; q < n_q_points; ++q)
       {
         us[q] = 0;
-        for (unsigned int i=0; i<dofs_per_cell; ++i)
-          us[q] += independent_local_dof_values[i]*fe_values[scalar_variable].value(i,q);
+        for (unsigned int i = 0; i < dofs_per_cell; ++i)
+          us[q] += independent_local_dof_values[i] *
+                   fe_values[scalar_variable].value(i, q);
       }
   }
 
@@ -194,24 +197,24 @@ namespace DOFUtilities
    *
    */
   template <int dim, int spacedim, typename Number>
-  void
-  get_divergences (const FEValuesBase<dim, spacedim> &fe_values,
-                   const std::vector<Number> &independent_local_dof_values,
-                   const FEValuesExtractors::Vector &vector_variable,
-                   std::vector <Number>  &us)
+  void get_divergences(const FEValuesBase<dim, spacedim> &fe_values,
+                       const std::vector<Number> &independent_local_dof_values,
+                       const FEValuesExtractors::Vector &vector_variable,
+                       std::vector<Number> &             us)
 
   {
-    const unsigned int           dofs_per_cell = fe_values.dofs_per_cell;
-    const unsigned int           n_q_points    = fe_values.n_quadrature_points;
+    const unsigned int dofs_per_cell = fe_values.dofs_per_cell;
+    const unsigned int n_q_points    = fe_values.n_quadrature_points;
 
     AssertDimension(us.size(), n_q_points);
     AssertDimension(independent_local_dof_values.size(), dofs_per_cell);
 
-    for (unsigned int q=0; q<n_q_points; ++q)
+    for (unsigned int q = 0; q < n_q_points; ++q)
       {
         us[q] = 0;
-        for (unsigned int i=0; i<dofs_per_cell; ++i)
-          us[q] += independent_local_dof_values[i]*fe_values[vector_variable].divergence(i,q);
+        for (unsigned int i = 0; i < dofs_per_cell; ++i)
+          us[q] += independent_local_dof_values[i] *
+                   fe_values[vector_variable].divergence(i, q);
       }
   }
 
@@ -224,28 +227,28 @@ namespace DOFUtilities
    *
    */
   template <int dim, int spacedim, typename Number>
-  void
-  get_gradients (const FEValuesBase<dim, spacedim> &fe_values,
-                 const std::vector<Number> &independent_local_dof_values,
-                 const FEValuesExtractors::Vector &vector_variable,
-                 std::vector <Tensor <2, spacedim, Number> > &grad_us)
+  void get_gradients(const FEValuesBase<dim, spacedim> &fe_values,
+                     const std::vector<Number> &independent_local_dof_values,
+                     const FEValuesExtractors::Vector &        vector_variable,
+                     std::vector<Tensor<2, spacedim, Number>> &grad_us)
   {
-    const unsigned int           dofs_per_cell = fe_values.dofs_per_cell;
-    const unsigned int           n_q_points    = fe_values.n_quadrature_points;
+    const unsigned int dofs_per_cell = fe_values.dofs_per_cell;
+    const unsigned int n_q_points    = fe_values.n_quadrature_points;
 
     AssertDimension(grad_us.size(), n_q_points);
     AssertDimension(independent_local_dof_values.size(), dofs_per_cell);
 
 
-    for (unsigned int q=0; q<n_q_points; ++q)
+    for (unsigned int q = 0; q < n_q_points; ++q)
       {
         grad_us[q] = 0;
-        for (unsigned int i=0; i<dofs_per_cell; ++i)
-          for (unsigned int d=0; d<spacedim; ++d)
-            for (unsigned int dd=0; dd<spacedim; ++dd)
-              grad_us[q][d][dd] += independent_local_dof_values[i]*fe_values[vector_variable].gradient(i,q)[d][dd];
+        for (unsigned int i = 0; i < dofs_per_cell; ++i)
+          for (unsigned int d = 0; d < spacedim; ++d)
+            for (unsigned int dd = 0; dd < spacedim; ++dd)
+              grad_us[q][d][dd] +=
+                independent_local_dof_values[i] *
+                fe_values[vector_variable].gradient(i, q)[d][dd];
       }
-
   }
 
 
@@ -257,30 +260,29 @@ namespace DOFUtilities
    *
    */
   template <int dim, int spacedim, typename Number>
-  void
-  get_curls (const FEValuesBase<dim, spacedim> &fe_values,
-             const std::vector<Number> &independent_local_dof_values,
-             const FEValuesExtractors::Vector &vector_variable,
-             std::vector <Tensor <1, (spacedim > 2 ? spacedim : 1), Number> > &curl_us)
+  void get_curls(
+    const FEValuesBase<dim, spacedim> &fe_values,
+    const std::vector<Number> &        independent_local_dof_values,
+    const FEValuesExtractors::Vector & vector_variable,
+    std::vector<Tensor<1, (spacedim > 2 ? spacedim : 1), Number>> &curl_us)
   {
-    const unsigned int           dofs_per_cell = fe_values.dofs_per_cell;
-    const unsigned int           n_q_points    = fe_values.n_quadrature_points;
+    const unsigned int dofs_per_cell = fe_values.dofs_per_cell;
+    const unsigned int n_q_points    = fe_values.n_quadrature_points;
 
     AssertDimension(curl_us.size(), n_q_points);
     AssertDimension(independent_local_dof_values.size(), dofs_per_cell);
 
 
-    for (unsigned int q=0; q<n_q_points; ++q)
+    for (unsigned int q = 0; q < n_q_points; ++q)
       {
         curl_us[q] = 0;
-        for (unsigned int i=0; i<dofs_per_cell; ++i)
+        for (unsigned int i = 0; i < dofs_per_cell; ++i)
           {
-            auto c = fe_values[vector_variable].curl(i,q);
-            for (unsigned int d=0; d<(spacedim > 2 ? spacedim : 1); ++d)
-              curl_us[q][d] += independent_local_dof_values[i]*c[d];
+            auto c = fe_values[vector_variable].curl(i, q);
+            for (unsigned int d = 0; d < (spacedim > 2 ? spacedim : 1); ++d)
+              curl_us[q][d] += independent_local_dof_values[i] * c[d];
           }
       }
-
   }
 
 
@@ -292,27 +294,26 @@ namespace DOFUtilities
    *
    */
   template <int dim, int spacedim, typename Number>
-  void
-  get_gradients (const FEValuesBase<dim, spacedim> &fe_values,
-                 const std::vector<Number> &independent_local_dof_values,
-                 const FEValuesExtractors::Scalar &scalar_variable,
-                 std::vector <Tensor <1, spacedim, Number> > &grad_us)
+  void get_gradients(const FEValuesBase<dim, spacedim> &fe_values,
+                     const std::vector<Number> &independent_local_dof_values,
+                     const FEValuesExtractors::Scalar &        scalar_variable,
+                     std::vector<Tensor<1, spacedim, Number>> &grad_us)
   {
-    const unsigned int           dofs_per_cell = fe_values.dofs_per_cell;
-    const unsigned int           n_q_points    = fe_values.n_quadrature_points;
+    const unsigned int dofs_per_cell = fe_values.dofs_per_cell;
+    const unsigned int n_q_points    = fe_values.n_quadrature_points;
 
     AssertDimension(grad_us.size(), n_q_points);
     AssertDimension(independent_local_dof_values.size(), dofs_per_cell);
 
 
-    for (unsigned int q=0; q<n_q_points; ++q)
+    for (unsigned int q = 0; q < n_q_points; ++q)
       {
         grad_us[q] = 0;
-        for (unsigned int i=0; i<dofs_per_cell; ++i)
-          for (unsigned int d=0; d<spacedim; ++d)
-            grad_us[q][d] += independent_local_dof_values[i]*fe_values[scalar_variable].gradient(i,q)[d];
+        for (unsigned int i = 0; i < dofs_per_cell; ++i)
+          for (unsigned int d = 0; d < spacedim; ++d)
+            grad_us[q][d] += independent_local_dof_values[i] *
+                             fe_values[scalar_variable].gradient(i, q)[d];
       }
-
   }
 
 
@@ -324,20 +325,21 @@ namespace DOFUtilities
    *
    */
   template <int dim, int spacedim, typename Number>
-  void
-  get_deformation_gradients (const FEValuesBase<dim, spacedim> &fe_values,
-                             const std::vector<Number> &independent_local_dof_values,
-                             const FEValuesExtractors::Vector &vector_variable,
-                             std::vector <Tensor <2, spacedim, Number> > &Fs)
+  void get_deformation_gradients(
+    const FEValuesBase<dim, spacedim> &       fe_values,
+    const std::vector<Number> &               independent_local_dof_values,
+    const FEValuesExtractors::Vector &        vector_variable,
+    std::vector<Tensor<2, spacedim, Number>> &Fs)
   {
-    const unsigned int           n_q_points    = fe_values.n_quadrature_points;
+    const unsigned int n_q_points = fe_values.n_quadrature_points;
 
     AssertDimension(Fs.size(), n_q_points);
 
-    DOFUtilities::get_gradients (fe_values, independent_local_dof_values, vector_variable, Fs);
+    DOFUtilities::get_gradients(
+      fe_values, independent_local_dof_values, vector_variable, Fs);
 
-    for (unsigned int q=0; q<n_q_points; ++q)
-      for (unsigned int d=0; d<dim; ++d)
+    for (unsigned int q = 0; q < n_q_points; ++q)
+      for (unsigned int d = 0; d < dim; ++d)
         Fs[q][d][d] += 1.0; // I + grad(u)
   }
 
@@ -349,23 +351,23 @@ namespace DOFUtilities
    *
    */
   template <int dim, int spacedim, typename Number>
-  void
-  get_symmetric_gradients (const FEValuesBase<dim, spacedim> &fe_values,
-                           const std::vector<Number> &independent_local_dof_values,
-                           const FEValuesExtractors::Vector &vector_variable,
-                           std::vector <Tensor <2, spacedim, Number> > &grad_us)
+  void get_symmetric_gradients(
+    const FEValuesBase<dim, spacedim> &       fe_values,
+    const std::vector<Number> &               independent_local_dof_values,
+    const FEValuesExtractors::Vector &        vector_variable,
+    std::vector<Tensor<2, spacedim, Number>> &grad_us)
   {
-    const unsigned int           n_q_points    = fe_values.n_quadrature_points;
+    const unsigned int n_q_points = fe_values.n_quadrature_points;
 
     AssertDimension(grad_us.size(), n_q_points);
 
-    DOFUtilities::get_gradients (fe_values, independent_local_dof_values, vector_variable, grad_us);
-    for (unsigned int q=0; q<n_q_points; ++q)
+    DOFUtilities::get_gradients(
+      fe_values, independent_local_dof_values, vector_variable, grad_us);
+    for (unsigned int q = 0; q < n_q_points; ++q)
       {
         grad_us[q] += transpose(grad_us[q]);
         grad_us[q] *= 0.5;
       }
-
   }
 
 
@@ -378,24 +380,24 @@ namespace DOFUtilities
    */
   template <int dim, int spacedim, typename Number>
 
-  void
-  get_laplacians (const FEValuesBase<dim, spacedim> &fe_values,
-                  const std::vector<Number> &independent_local_dof_values,
-                  const FEValuesExtractors::Scalar &variable,
-                  std::vector <Number> &us)
+  void get_laplacians(const FEValuesBase<dim, spacedim> &fe_values,
+                      const std::vector<Number> &independent_local_dof_values,
+                      const FEValuesExtractors::Scalar &variable,
+                      std::vector<Number> &             us)
 
   {
-    const unsigned int           dofs_per_cell = fe_values.dofs_per_cell;
-    const unsigned int           n_q_points    = fe_values.n_quadrature_points;
+    const unsigned int dofs_per_cell = fe_values.dofs_per_cell;
+    const unsigned int n_q_points    = fe_values.n_quadrature_points;
 
     AssertDimension(us.size(), n_q_points);
     AssertDimension(independent_local_dof_values.size(), dofs_per_cell);
 
-    for (unsigned int q=0; q<n_q_points; ++q)
+    for (unsigned int q = 0; q < n_q_points; ++q)
       {
         us[q] = 0;
-        for (unsigned int i=0; i<dofs_per_cell; ++i)
-          us[q] += independent_local_dof_values[i]*trace(fe_values[variable].hessian(i,q));
+        for (unsigned int i = 0; i < dofs_per_cell; ++i)
+          us[q] += independent_local_dof_values[i] *
+                   trace(fe_values[variable].hessian(i, q));
       }
   }
 
@@ -409,25 +411,25 @@ namespace DOFUtilities
    */
   template <int dim, int spacedim, typename Number>
 
-  void
-  get_laplacians (const FEValuesBase<dim, spacedim> &fe_values,
-                  const std::vector<Number> &independent_local_dof_values,
-                  const FEValuesExtractors::Vector &variable,
-                  std::vector <Tensor<1,spacedim,Number> > &us)
+  void get_laplacians(const FEValuesBase<dim, spacedim> &fe_values,
+                      const std::vector<Number> &independent_local_dof_values,
+                      const FEValuesExtractors::Vector &        variable,
+                      std::vector<Tensor<1, spacedim, Number>> &us)
 
   {
-    const unsigned int           dofs_per_cell = fe_values.dofs_per_cell;
-    const unsigned int           n_q_points    = fe_values.n_quadrature_points;
+    const unsigned int dofs_per_cell = fe_values.dofs_per_cell;
+    const unsigned int n_q_points    = fe_values.n_quadrature_points;
 
     AssertDimension(us.size(), n_q_points);
     AssertDimension(independent_local_dof_values.size(), dofs_per_cell);
 
-    for (unsigned int d=0; d<spacedim; ++d)
-      for (unsigned int q=0; q<n_q_points; ++q)
+    for (unsigned int d = 0; d < spacedim; ++d)
+      for (unsigned int q = 0; q < n_q_points; ++q)
         {
           us[q][d] = 0;
-          for (unsigned int i=0; i<dofs_per_cell; ++i)
-            us[q][d] += independent_local_dof_values[i]*trace(fe_values[variable].hessian(i,q)[d]);
+          for (unsigned int i = 0; i < dofs_per_cell; ++i)
+            us[q][d] += independent_local_dof_values[i] *
+                        trace(fe_values[variable].hessian(i, q)[d]);
         }
   }
 
@@ -440,25 +442,25 @@ namespace DOFUtilities
    */
   template <int dim, int spacedim, typename Number>
 
-  void
-  get_hessians (const FEValuesBase<dim, spacedim> &fe_values,
-                const std::vector<Number> &independent_local_dof_values,
-                const FEValuesExtractors::Scalar &variable,
-                std::vector <Tensor<2,spacedim,Number> > &us)
+  void get_hessians(const FEValuesBase<dim, spacedim> &fe_values,
+                    const std::vector<Number> &independent_local_dof_values,
+                    const FEValuesExtractors::Scalar &        variable,
+                    std::vector<Tensor<2, spacedim, Number>> &us)
 
   {
-    const unsigned int           dofs_per_cell = fe_values.dofs_per_cell;
-    const unsigned int           n_q_points    = fe_values.n_quadrature_points;
+    const unsigned int dofs_per_cell = fe_values.dofs_per_cell;
+    const unsigned int n_q_points    = fe_values.n_quadrature_points;
 
     AssertDimension(us.size(), n_q_points);
     AssertDimension(independent_local_dof_values.size(), dofs_per_cell);
 
-    for (unsigned int d=0; d<spacedim; ++d)
-      for (unsigned int q=0; q<n_q_points; ++q)
+    for (unsigned int d = 0; d < spacedim; ++d)
+      for (unsigned int q = 0; q < n_q_points; ++q)
         {
-          us[q]= 0;
-          for (unsigned int i=0; i<dofs_per_cell; ++i)
-            us[q] += independent_local_dof_values[i]*fe_values[variable].hessian(i,q);
+          us[q] = 0;
+          for (unsigned int i = 0; i < dofs_per_cell; ++i)
+            us[q] += independent_local_dof_values[i] *
+                     fe_values[variable].hessian(i, q);
         }
   }
 
@@ -472,31 +474,31 @@ namespace DOFUtilities
    */
   template <int dim, int spacedim, typename Number>
 
-  void
-  get_hessians (const FEValuesBase<dim, spacedim> &fe_values,
-                const std::vector<Number> &independent_local_dof_values,
-                const FEValuesExtractors::Vector &variable,
-                std::vector <Tensor<3,spacedim,Number> > &us)
+  void get_hessians(const FEValuesBase<dim, spacedim> &fe_values,
+                    const std::vector<Number> &independent_local_dof_values,
+                    const FEValuesExtractors::Vector &        variable,
+                    std::vector<Tensor<3, spacedim, Number>> &us)
 
   {
-    const unsigned int           dofs_per_cell = fe_values.dofs_per_cell;
-    const unsigned int           n_q_points    = fe_values.n_quadrature_points;
+    const unsigned int dofs_per_cell = fe_values.dofs_per_cell;
+    const unsigned int n_q_points    = fe_values.n_quadrature_points;
 
     AssertDimension(us.size(), n_q_points);
     AssertDimension(independent_local_dof_values.size(), dofs_per_cell);
 
-    for (unsigned int d=0; d<spacedim; ++d)
-      for (unsigned int q=0; q<n_q_points; ++q)
+    for (unsigned int d = 0; d < spacedim; ++d)
+      for (unsigned int q = 0; q < n_q_points; ++q)
         {
-          us[q]= 0;
-          for (unsigned int i=0; i<dofs_per_cell; ++i)
-            us[q] += independent_local_dof_values[i]*fe_values[variable].hessian(i,q);
+          us[q] = 0;
+          for (unsigned int i = 0; i < dofs_per_cell; ++i)
+            us[q] += independent_local_dof_values[i] *
+                     fe_values[variable].hessian(i, q);
         }
   }
 
 
 
-}// end namespace
+} // namespace DOFUtilities
 
 
 D2K_NAMESPACE_CLOSE

@@ -13,28 +13,32 @@
 //
 //-----------------------------------------------------------
 
-#include "../tests.h"
 #include <stdlib.h>
 
+#include "../tests.h"
 
 
-int main ()
+
+int main()
 {
   initlog();
   const std::string name_dir = "directory_test";
-  std::string cmd = "";
+  std::string       cmd      = "";
 
   cmd = name_dir;
   if (std::system(cmd.c_str()))
     {
-      cmd = "test -d "+name_dir;
+      cmd = "test -d " + name_dir;
       if (std::system(cmd.c_str()))
-        deallog << "The directory " + name_dir + " has been correctly created." << std::endl;
+        deallog << "The directory " + name_dir + " has been correctly created."
+                << std::endl;
 
       cmd = "rmdir" + name_dir;
       if (std::system(cmd.c_str()))
         {
-          deallog << "The directory " + name_dir + " has been correctly removed." << std::endl;
+          deallog << "The directory " + name_dir +
+                       " has been correctly removed."
+                  << std::endl;
         }
       else
         {

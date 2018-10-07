@@ -14,30 +14,32 @@
 //-----------------------------------------------------------
 
 
-#include "../tests.h"
-#include <deal2lkit/utilities.h>
-#include <deal2lkit/parsed_grid_generator.h>
+#include <deal.II/base/utilities.h>
 
 #include <deal.II/grid/grid_out.h>
-#include <deal.II/base/utilities.h>
+
+#include <deal2lkit/parsed_grid_generator.h>
+#include <deal2lkit/utilities.h>
+
+#include "../tests.h"
 
 
 using namespace deal2lkit;
 
-template<int dim, int spacedim>
+template <int dim, int spacedim>
 void test(ParsedGridGenerator<dim, spacedim> &pgg)
 {
   Triangulation<dim, spacedim> *tria = pgg.serial();
-  GridOut go;
+  GridOut                       go;
   go.write_msh(*tria, deallog.get_file_stream());
 }
 
 
-int main ()
+int main()
 {
   initlog();
-  ParsedGridGenerator<2,2> a("Rectangle");
-  ParsedGridGenerator<2,2> b("Cube");
+  ParsedGridGenerator<2, 2> a("Rectangle");
+  ParsedGridGenerator<2, 2> b("Cube");
 
   ParameterHandler prm;
   ParameterAcceptor::declare_all_parameters(prm);

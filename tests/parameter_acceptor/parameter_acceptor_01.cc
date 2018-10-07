@@ -16,31 +16,30 @@
 // Read a file in iges format, and write it out again in the same
 // format.
 
-#include "../tests.h"
 #include <deal2lkit/parameter_acceptor.h>
+
+#include "../tests.h"
 
 
 using namespace deal2lkit;
 
-template<int dim>
+template <int dim>
 class Test : public ParameterAcceptor
 {
 public:
   virtual void declare_parameters(ParameterHandler &prm)
   {
-    prm.declare_entry("A double", "0.0", Patterns::Double(),
-                      "Documentation");
+    prm.declare_entry("A double", "0.0", Patterns::Double(), "Documentation");
   };
 
   virtual void parse_parameters(ParameterHandler &prm)
   {
-    deallog << "Double: "
-            << prm.get_double("A double") << std::endl;
+    deallog << "Double: " << prm.get_double("A double") << std::endl;
   };
 };
 
 
-int main ()
+int main()
 {
   initlog();
   Test<2> a;

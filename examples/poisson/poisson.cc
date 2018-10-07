@@ -13,29 +13,28 @@
 //
 //-----------------------------------------------------------
 
-#include <deal2lkit/parameter_acceptor.h>
-#include <deal2lkit/parsed_grid_generator.h>
-#include <deal2lkit/parsed_finite_element.h>
-#include <deal2lkit/parsed_data_out.h>
-#include <deal2lkit/parsed_dirichlet_bcs.h>
-#include <deal2lkit/error_handler.h>
-#include <deal2lkit/parsed_solver.h>
-#include <deal2lkit/utilities.h>
-
-
-#include <deal.II/lac/sparse_ilu.h>
-#include <deal.II/lac/precondition.h>
-#include <deal.II/lac/sparsity_pattern.h>
-#include <deal.II/lac/dynamic_sparsity_pattern.h>
-#include <deal.II/lac/sparse_matrix.h>
-#include <deal.II/lac/vector.h>
-#include <deal.II/lac/constraint_matrix.h>
-
 #include <deal.II/dofs/dof_tools.h>
-#include <deal.II/numerics/matrix_tools.h>
+
+#include <deal.II/lac/constraint_matrix.h>
+#include <deal.II/lac/dynamic_sparsity_pattern.h>
 #include <deal.II/lac/linear_operator.h>
 #include <deal.II/lac/packaged_operation.h>
+#include <deal.II/lac/precondition.h>
+#include <deal.II/lac/sparse_ilu.h>
+#include <deal.II/lac/sparse_matrix.h>
+#include <deal.II/lac/sparsity_pattern.h>
+#include <deal.II/lac/vector.h>
 
+#include <deal.II/numerics/matrix_tools.h>
+
+#include <deal2lkit/error_handler.h>
+#include <deal2lkit/parameter_acceptor.h>
+#include <deal2lkit/parsed_data_out.h>
+#include <deal2lkit/parsed_dirichlet_bcs.h>
+#include <deal2lkit/parsed_finite_element.h>
+#include <deal2lkit/parsed_grid_generator.h>
+#include <deal2lkit/parsed_solver.h>
+#include <deal2lkit/utilities.h>
 
 #include <fstream>
 
@@ -66,40 +65,41 @@ int main(int argc, char **argv)
   Utilities::MPI::MPI_InitFinalize mpi_init(argc, argv);
 
   // Change this if you want a three dimensional simulation
-  const unsigned int dim = 2;
+  const unsigned int dim      = 2;
   const unsigned int spacedim = 2;
 
-  PoissonParameters par;
-  ParsedGridGenerator<dim,spacedim> pgg;
+  PoissonParameters                  par;
+  ParsedGridGenerator<dim, spacedim> pgg;
 
-  ParsedFiniteElement<dim,spacedim> pfe;
-  ParsedDirichletBCs<dim> bcs;
-  ParsedFunction<spacedim> kappa("Kappa", 1, "1.0");
-  ParsedFunction<spacedim> force("Forcing term");
-  ParsedFunction<spacedim> exact("Exact solution");
+  ParsedFiniteElement<dim, spacedim> pfe;
+  ParsedDirichletBCs<dim>            bcs;
+  ParsedFunction<spacedim>           kappa("Kappa", 1, "1.0");
+  ParsedFunction<spacedim>           force("Forcing term");
+  ParsedFunction<spacedim>           exact("Exact solution");
 
 
-  SparsityPattern sparsity;
+  SparsityPattern      sparsity;
   SparseMatrix<double> matrix;
-  ConstraintMatrix constraints;
-  Vector<double> solution;
-  Vector<double> rhs;
+  ConstraintMatrix     constraints;
+  Vector<double>       solution;
+  Vector<double>       rhs;
 
   SparseILU<double> prec;
 
-  ParsedSolver<Vector<double> > inverse("Solver",
-                                        "cg",
-                                        1000,
-                                        1e-8,
-                                        linear_operator<Vector<double> >(matrix),
-                                        linear_operator<Vector<double> >(matrix, prec));
+  ParsedSolver<Vector<double>> inverse(
+    "Solver",
+    "cg",
+    1000,
+    1e-8,
+    linear_operator<Vector<double>>(matrix),
+    linear_operator<Vector<double>>(matrix, prec));
 
 
-  shared_ptr<Triangulation<dim,spacedim> > tria;
-  shared_ptr<FiniteElement<dim,spacedim> > fe;
+  shared_ptr<Triangulation<dim, spacedim>> tria;
+  shared_ptr<FiniteElement<dim, spacedim>> fe;
 
-  ErrorHandler<1> eh;
-  ParsedDataOut<dim,spacedim> pdo;
+  ErrorHandler<1>              eh;
+  ParsedDataOut<dim, spacedim> pdo;
 
 
   // Generate Triangulation, DoFHandler, and FE
@@ -109,35 +109,34 @@ int main(int argc, char **argv)
   pgg.write(*tria);
 
   fe = SP(pfe());
-  DoFHandler<dim,spacedim> dh(*tria);
+  DoFHandler<dim, spacedim> dh(*tria);
 
   tria->refine_global(par.initial_refinement);
-  QGauss<dim> quad(2*fe->degree+1);
+  QGauss<dim> quad(2 * fe->degree + 1);
 
-  for (unsigned int i=0; i<par.n_cycles; ++i)
+  for (unsigned int i = 0; i < par.n_cycles; ++i)
     {
       dh.distribute_dofs(*fe);
-      std::cout << "Cycle " << i
-                << ", cells: " << tria->n_active_cells()
+      std::cout << "Cycle " << i << ", cells: " << tria->n_active_cells()
                 << ", dofs: " << dh.n_dofs() << std::endl;
 
       DynamicSparsityPattern dsp(dh.n_dofs());
-      DoFTools::make_sparsity_pattern (dh, dsp);
+      DoFTools::make_sparsity_pattern(dh, dsp);
       sparsity.copy_from(dsp);
 
-      matrix.reinit (sparsity);
-      solution.reinit (dh.n_dofs());
-      rhs.reinit (dh.n_dofs());
+      matrix.reinit(sparsity);
+      solution.reinit(dh.n_dofs());
+      rhs.reinit(dh.n_dofs());
 
       constraints.clear();
       bcs.interpolate_boundary_values(dh, constraints);
       constraints.close();
 
-      MatrixCreator::create_laplace_matrix(dh, quad, matrix, force,
-                                           rhs, &kappa, constraints);
+      MatrixCreator::create_laplace_matrix(
+        dh, quad, matrix, force, rhs, &kappa, constraints);
       prec.initialize(matrix);
 
-      solution = inverse*rhs;
+      solution = inverse * rhs;
       constraints.distribute(solution);
 
       pdo.prepare_data_output(dh, std::to_string(i));

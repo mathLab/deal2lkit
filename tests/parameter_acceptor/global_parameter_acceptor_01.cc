@@ -15,10 +15,12 @@
 
 
 
-#include "../tests.h"
 #include <deal.II/base/path_search.h>
-#include <deal2lkit/utilities.h>
+
 #include <deal2lkit/parameter_acceptor.h>
+#include <deal2lkit/utilities.h>
+
+#include "../tests.h"
 
 
 using namespace deal2lkit;
@@ -26,8 +28,7 @@ using namespace deal2lkit;
 class MyClass : public ParameterAcceptor
 {
 public:
-  MyClass(const std::string &name = "My Class",
-          const unsigned int &i=0):
+  MyClass(const std::string &name = "My Class", const unsigned int &i = 0) :
     ParameterAcceptor(name),
     i(i)
   {
@@ -38,13 +39,13 @@ private:
   unsigned int i;
 };
 
-int main ()
+int main()
 {
   initlog();
 
-  MyClass  f0("One", 1);
-  MyClass  f1("Two", 2);
-  MyClass  f2("Three", 3);
+  MyClass f0("One", 1);
+  MyClass f1("Two", 2);
+  MyClass f2("Three", 3);
 
   ParameterAcceptor::prm.log_parameters(deallog);
 }

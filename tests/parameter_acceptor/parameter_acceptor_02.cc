@@ -13,14 +13,15 @@
 //
 //-----------------------------------------------------------
 
-#include "../tests.h"
-#include <deal2lkit/utilities.h>
 #include <deal2lkit/parameter_acceptor.h>
+#include <deal2lkit/utilities.h>
+
+#include "../tests.h"
 
 
 using namespace deal2lkit;
 
-template<int dim>
+template <int dim>
 class Test : public ParameterAcceptor
 {
 public:
@@ -42,15 +43,14 @@ public:
   }
 
 private:
-  double a;
-  int b;
+  double      a;
+  int         b;
   std::string c;
-  bool d;
-
+  bool        d;
 };
 
 
-int main ()
+int main()
 {
   initlog();
   Test<1> a;
@@ -77,5 +77,4 @@ int main ()
 
   a.log_info();
   b.log_info();
-
 }

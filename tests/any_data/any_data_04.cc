@@ -13,16 +13,18 @@
 //
 //-----------------------------------------------------------
 
-#include "../tests.h"
-#include <deal2lkit/any_data.h>
 #include <deal.II/base/tensor.h>
+
+#include <deal2lkit/any_data.h>
+
+#include "../tests.h"
 
 
 
 using namespace deal2lkit;
 
 
-int main ()
+int main()
 {
   initlog();
 
@@ -30,5 +32,4 @@ int main ()
 
   data.add_copy(0, "zero");
   deallog << (data.have("zero") ? "OK" : "KO") << std::endl;
-
 }

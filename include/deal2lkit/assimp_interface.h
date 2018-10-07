@@ -27,7 +27,6 @@ using namespace dealii;
 D2K_NAMESPACE_OPEN
 namespace AssimpInterface
 {
-
   /**
    * Read in a file supported by Assimp, and generate a Triangulation
    * out of it.  If you specify a @p mesh_index, only the mesh with
@@ -51,13 +50,13 @@ namespace AssimpInterface
    * the right file to this function.
    */
   template <int dim, int spacedim>
-  bool generate_triangulation(const std::string filename,
-                              Triangulation<dim,spacedim> &tria,
-                              int mesh_index=-1,
-                              bool remove_duplicates=true,
-                              double tol = 1e-12);
+  bool generate_triangulation(const std::string             filename,
+                              Triangulation<dim, spacedim> &tria,
+                              int                           mesh_index = -1,
+                              bool   remove_duplicates                 = true,
+                              double tol                               = 1e-12);
 
-}
+} // namespace AssimpInterface
 D2K_NAMESPACE_CLOSE
 #endif
 

@@ -13,13 +13,15 @@
 //
 //-----------------------------------------------------------
 
-#include "../tests.h"
-#include <deal2lkit/parsed_quadrature.h>
 #include <deal.II/base/quadrature_lib.h>
+
+#include <deal2lkit/parsed_quadrature.h>
+
+#include "../tests.h"
 
 using namespace deal2lkit;
 
-int main ()
+int main()
 {
   initlog();
 
@@ -30,11 +32,11 @@ int main ()
 
   QGauss<2> quad(3);
 
-  if ( quad.size () == quadrature.size() )
+  if (quad.size() == quadrature.size())
     deallog << "OK!" << std::endl;
 
-  for (unsigned int i = 0 ; i < quad.size (); ++ i)
-    if ( quad.weight(i) != quadrature.weight(i) )
+  for (unsigned int i = 0; i < quad.size(); ++i)
+    if (quad.weight(i) != quadrature.weight(i))
       deallog << "FAIL! " << std::endl;
 
   deallog << "DONE! " << std::endl;
