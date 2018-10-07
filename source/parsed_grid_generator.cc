@@ -970,7 +970,8 @@ struct PGGHelper
     typename std::enable_if<(spacedim == 3), void *>::type = 0)
   {
     if (name == "SphericalManifold")
-      else if (name == "CylindricalManifoldOnAxis")
+      return SP(new SphericalManifold<dim, spacedim>(p->point_option_one));
+    else if (name == "CylindricalManifoldOnAxis")
       {
         return SP(new CylindricalManifold<dim, spacedim>(p->un_int_option_one));
       }
