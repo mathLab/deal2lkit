@@ -53,14 +53,14 @@ private:
   void
   output_results();
 
-  ParsedFiniteElement<dim>            fe_builder;
-  ParsedGridGenerator<dim, dim>       tria_builder;
-  unsigned int                        initial_refinement;
-  shared_ptr<Triangulation<dim>>      triangulation;
-  shared_ptr<FiniteElement<dim, dim>> fe;
-  shared_ptr<DoFHandler<dim>>         dof_handler;
-  BlockVector<double>                 solution;
-  ParsedDataOut<dim, dim>             data_out;
+  ParsedFiniteElement<dim>                 fe_builder;
+  ParsedGridGenerator<dim, dim>            tria_builder;
+  unsigned int                             initial_refinement;
+  shared_ptr<Triangulation<dim>>           triangulation;
+  std::unique_ptr<FiniteElement<dim, dim>> fe;
+  shared_ptr<DoFHandler<dim>>              dof_handler;
+  BlockVector<double>                      solution;
+  ParsedDataOut<dim, dim>                  data_out;
 };
 
 template <int dim>
@@ -91,7 +91,7 @@ Test<dim>::make_grid_fe()
   triangulation = SP(tria_builder.serial());
   triangulation->refine_global(initial_refinement);
   dof_handler = SP(new DoFHandler<dim>(*triangulation));
-  fe          = SP(fe_builder());
+  fe          = fe_builder();
 }
 
 template <int dim>

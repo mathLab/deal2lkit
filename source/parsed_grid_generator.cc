@@ -308,17 +308,6 @@ ParsedGridGenerator<dim, spacedim>::declare_parameters(ParameterHandler &prm)
                 "The use of it will depend on the specific grid.");
 
   add_parameter(prm,
-                &create_default_manifolds,
-                "Create default manifolds",
-                create_default_manifolds ? "true" : "false",
-                Patterns::Bool(),
-                "If set to true, boundary ids "
-                "will be copied over the manifold ids, and the "
-                "default manifolds for this triangulation will be"
-                "Generated.");
-
-
-  add_parameter(prm,
                 &copy_boundary_to_manifold_ids,
                 "Copy boundary to manifold ids",
                 copy_boundary_to_manifold_ids ? "true" : "false",
@@ -498,9 +487,6 @@ struct PGGHelper
         GridGenerator::hyper_sphere(tria,
                                     p->point_option_one,
                                     p->double_option_one);
-        if (p->create_default_manifolds)
-          tria.set_all_manifold_ids(0);
-        p->default_manifold_descriptors = "0=SphericalManifold";
       }
     else
       {
@@ -520,7 +506,6 @@ struct PGGHelper
         GridGenerator::hyper_ball(tria,
                                   p->point_option_one,
                                   p->double_option_one);
-        p->default_manifold_descriptors = "0=HyperBallBoundary";
       }
     else if (p->grid_name == "hyper_L")
       {
@@ -533,14 +518,12 @@ struct PGGHelper
         GridGenerator::half_hyper_ball(tria,
                                        p->point_option_one,
                                        p->double_option_one);
-        p->default_manifold_descriptors = "0=HalfHyperBallBoundary";
       }
     else if (p->grid_name == "cylinder")
       {
         GridGenerator::cylinder(tria,
                                 p->double_option_one,
                                 p->double_option_two);
-        p->default_manifold_descriptors = "0=CylindricalManifoldOnAxis";
       }
     else if (p->grid_name == "truncated_cone")
       {
@@ -548,7 +531,6 @@ struct PGGHelper
                                       p->double_option_one,
                                       p->double_option_two,
                                       p->double_option_three);
-        p->default_manifold_descriptors = dim == 3 ? "0=ConeBoundary" : "";
       }
     else if (p->grid_name == "hyper_cross")
       {
@@ -569,9 +551,6 @@ struct PGGHelper
                                         p->double_option_one,
                                         p->un_int_option_one,
                                         p->colorize);
-        p->default_manifold_descriptors =
-          p->colorize ? "0=SphericalManifold % 1=SphericalManifold" :
-                        "0=SphericalManifold";
       }
     else if (p->grid_name == "quarter_hyper_shell")
       {
@@ -581,9 +560,6 @@ struct PGGHelper
                                            p->double_option_one,
                                            p->un_int_option_one,
                                            p->colorize);
-        p->default_manifold_descriptors =
-          p->colorize ? "0=SphericalManifold % 1=SphericalManifold" :
-                        "0=SphericalManifold";
       }
     else if (p->grid_name == "cylinder_shell")
       {
@@ -593,10 +569,6 @@ struct PGGHelper
                                       p->double_option_one,
                                       p->un_int_option_one,
                                       p->un_int_option_two);
-        // This won't work, because of the differen meaning of the various
-        // options...
-
-        // p->default_manifold_descriptors = "0=CylindricalManifoldOnAxis";
       }
     else if (p->grid_name == "hyper_cube_with_cylindrical_hole")
       {
@@ -615,9 +587,6 @@ struct PGGHelper
                                    p->double_option_one,
                                    p->un_int_option_one,
                                    p->colorize);
-        p->default_manifold_descriptors =
-          p->colorize ? "0=SphericalManifold % 1=SphericalManifold" :
-                        "0=SphericalManifold";
       }
     else if (p->grid_name == "cheese")
       {
@@ -709,8 +678,6 @@ struct PGGHelper
     if (p->grid_name == "torus")
       {
         GridGenerator::torus(tria, p->double_option_one, p->double_option_two);
-
-        p->default_manifold_descriptors = "0=TorusBoundary";
       }
 #ifdef DEAL_II_WITH_OPENCASCADE
     else if (p->grid_name == "file")
@@ -1024,9 +991,6 @@ ParsedGridGenerator<dim, spacedim>::create(Triangulation<dim, spacedim> &tria)
 
       if (copy_material_to_manifold_ids)
         GridTools::copy_material_to_manifold_id(tria);
-
-      if (create_default_manifolds)
-        parse_manifold_descriptors(default_manifold_descriptors);
 
       // Now attach the manifold descriptors
       for (auto m : manifold_descriptors)

@@ -41,10 +41,10 @@ main()
   ParameterAcceptor::initialize();
   ParameterAcceptor::prm.log_parameters(deallog);
 
-  FiniteElement<1, 1> *fe11 = fe_builder11();
-  FiniteElement<2, 2> *fe22 = fe_builder22();
-  FiniteElement<2, 3> *fe23 = fe_builder23();
-  FiniteElement<3, 3> *fe33 = fe_builder33();
+  auto fe11 = fe_builder11();
+  auto fe22 = fe_builder22();
+  auto fe23 = fe_builder23();
+  auto fe33 = fe_builder33();
 
   deallog << "Generated fe11: " << fe11->get_name() << std::endl
           << "Generated fe22: " << fe22->get_name() << std::endl
