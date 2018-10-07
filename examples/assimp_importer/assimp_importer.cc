@@ -15,8 +15,8 @@
 
 #include <deal.II/grid/grid_out.h>
 #include <deal.II/grid/tria.h>
+#include <deal.II/grid/grid_in.h>
 
-#include <deal2lkit/assimp_interface.h>
 #include <deal2lkit/config.h>
 
 #include <fstream>
@@ -30,8 +30,10 @@ using namespace deal2lkit;
 int main(int argc, char **argv)
 {
   AssertThrow(argc == 3, ExcMessage("Must specify exactly 2 arguments!"));
-  Triangulation<2, 3> tria;
-  if (AssimpInterface::generate_triangulation(argv[1], tria, -1, true, 1e-3))
+  Triangulation<2,3> tria;
+  GridIn<2,3> gi;
+  gi.attach_triangulation(tria);
+  gi.read_assimp(argv[1], -1, true, 1e-3, true);
     {
       GridOut       grid_out;
       std::string   fname(argv[2]);
