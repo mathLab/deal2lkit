@@ -13,8 +13,8 @@
 //
 //-----------------------------------------------------------
 
-#ifndef _d2k_parsed_finite_element_h
-#define _d2k_parsed_finite_element_h
+#ifndef d2k_parsed_finite_element_h
+#define d2k_parsed_finite_element_h
 
 #include <deal2lkit/config.h>
 #include <deal.II/base/parameter_handler.h>

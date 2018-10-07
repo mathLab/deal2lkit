@@ -13,8 +13,8 @@
 //
 //-----------------------------------------------------------
 
-#ifndef _d2k_error_handler_h
-#define _d2k_error_handler_h
+#ifndef d2k_error_handler_h
+#define d2k_error_handler_h
 
 #include <deal2lkit/config.h>
 #include <fstream>

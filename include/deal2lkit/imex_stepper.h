@@ -13,8 +13,8 @@
 //
 //-----------------------------------------------------------
 
-#ifndef _d2k_imex_stepper_h
-#define _d2k_imex_stepper_h
+#ifndef d2k_imex_stepper_h
+#define d2k_imex_stepper_h
 
 #include <deal2lkit/config.h>
 #include <deal.II/base/config.h>

@@ -13,8 +13,8 @@
 //
 //-----------------------------------------------------------
 
-#ifndef _d2k_fe_values_cache_h_
-#define _d2k_fe_values_cache_h_
+#ifndef d2k_fe_values_cache_h_
+#define d2k_fe_values_cache_h_
 
 #include <deal2lkit/config.h>
 #include <deal.II/fe/fe_values.h>

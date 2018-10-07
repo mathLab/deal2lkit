@@ -13,8 +13,8 @@
 //
 //-----------------------------------------------------------
 
-#ifndef _d2k_assimp_interface_h
-#define _d2k_assimp_interface_h
+#ifndef d2k_assimp_interface_h
+#define d2k_assimp_interface_h
 
 #include <deal.II/grid/tria.h>
 

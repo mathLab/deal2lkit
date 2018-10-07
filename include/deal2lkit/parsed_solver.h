@@ -13,8 +13,8 @@
 //
 //-----------------------------------------------------------
 
-#ifndef _d2k_parsed_solver_h
-#define _d2k_parsed_solver_h
+#ifndef d2k_parsed_solver_h
+#define d2k_parsed_solver_h
 
 #include <deal2lkit/config.h>
 #include <deal.II/base/config.h>

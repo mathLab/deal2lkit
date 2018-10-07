@@ -13,8 +13,8 @@
 //
 //---------------------------------------------------------------
 
-#ifndef _d2k_ida_interface_h
-#define _d2k_ida_interface_h
+#ifndef d2k_ida_interface_h
+#define d2k_ida_interface_h
 
 #include <deal2lkit/config.h>
 #include <deal2lkit/utilities.h>

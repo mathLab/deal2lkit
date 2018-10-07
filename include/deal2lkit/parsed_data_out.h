@@ -13,8 +13,8 @@
 //
 //-----------------------------------------------------------
 
-#ifndef _d2k_parsed_data_out_h
-#define _d2k_parsed_data_out_h
+#ifndef d2k_parsed_data_out_h
+#define d2k_parsed_data_out_h
 
 #include <deal2lkit/config.h>
 #include <fstream>

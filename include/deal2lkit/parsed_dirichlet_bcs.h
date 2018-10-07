@@ -13,8 +13,8 @@
 //
 //-----------------------------------------------------------
 
-#ifndef _d2k_parsed_dirichlet_bcs_h
-#define _d2k_parsed_dirichlet_bcs_h
+#ifndef d2k_parsed_dirichlet_bcs_h
+#define d2k_parsed_dirichlet_bcs_h
 
 #include <deal2lkit/config.h>
 #include <deal2lkit/parameter_acceptor.h>

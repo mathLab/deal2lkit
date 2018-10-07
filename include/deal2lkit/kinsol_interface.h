@@ -13,8 +13,8 @@
 //
 //-----------------------------------------------------------
 
-#ifndef _d2k_kinsol_interface_h
-#define _d2k_kinsol_interface_h
+#ifndef d2k_kinsol_interface_h
+#define d2k_kinsol_interface_h
 
 #include <deal2lkit/config.h>
 
