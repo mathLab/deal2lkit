@@ -13,8 +13,8 @@
 //
 //-----------------------------------------------------------
 
-#ifndef _d2k_parsed_ilu_preconditioner_h
-#define _d2k_parsed_ilu_preconditioner_h
+#ifndef d2k_parsed_ilu_preconditioner_h
+#define d2k_parsed_ilu_preconditioner_h
 
 #include <deal2lkit/config.h>
 #include <deal.II/base/config.h>

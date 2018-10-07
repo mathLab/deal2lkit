@@ -13,8 +13,8 @@
 //
 //-----------------------------------------------------------
 
-#ifndef _d2k_parsed_mapped_function_h
-#define _d2k_parsed_mapped_function_h
+#ifndef d2k_parsed_mapped_function_h
+#define d2k_parsed_mapped_function_h
 
 #include <deal2lkit/config.h>
 #include <deal.II/base/exceptions.h>

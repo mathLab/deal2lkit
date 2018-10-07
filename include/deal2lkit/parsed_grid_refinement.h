@@ -13,8 +13,8 @@
 //
 //-----------------------------------------------------------
 
-#ifndef _d2k_parsed_grid_refinement_h
-#define _d2k_parsed_grid_refinement_h
+#ifndef d2k_parsed_grid_refinement_h
+#define d2k_parsed_grid_refinement_h
 
 #include <deal.II/grid/tria.h>
 #include <deal.II/grid/grid_refinement.h>

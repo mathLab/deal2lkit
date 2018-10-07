@@ -13,8 +13,8 @@
 //
 //-----------------------------------------------------------
 
-#ifndef _d2k_parameter_acceptor_h
-#define _d2k_parameter_acceptor_h
+#ifndef d2k_parameter_acceptor_h
+#define d2k_parameter_acceptor_h
 
 #include <deal2lkit/config.h>
 #include <deal2lkit/utilities.h>

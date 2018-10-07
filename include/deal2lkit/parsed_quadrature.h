@@ -13,8 +13,8 @@
 //
 //-----------------------------------------------------------
 
-#ifndef _d2k_parsed_quadrature
-#define _d2k_parsed_quadrature
+#ifndef d2k_parsed_quadrature
+#define d2k_parsed_quadrature
 
 #include <deal.II/base/quadrature.h>
 #include <deal2lkit/parameter_acceptor.h>
