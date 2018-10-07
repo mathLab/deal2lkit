@@ -9,9 +9,9 @@ template <int dim>
 ParsedKDTreeDistance<dim>::ParsedKDTreeDistance(
   const std::string &            name,
   const unsigned int &           max_leaf_size,
-  const std::vector<Point<dim>> &pts) :
-  ParameterAcceptor(name),
-  max_leaf_size(max_leaf_size)
+  const std::vector<Point<dim>> &pts)
+  : ParameterAcceptor(name)
+  , max_leaf_size(max_leaf_size)
 {
   if (pts.size() > 0)
     set_points(pts);
@@ -20,7 +20,8 @@ ParsedKDTreeDistance<dim>::ParsedKDTreeDistance(
 
 
 template <int dim>
-void ParsedKDTreeDistance<dim>::declare_parameters(ParameterHandler &prm)
+void
+ParsedKDTreeDistance<dim>::declare_parameters(ParameterHandler &prm)
 {
   add_parameter(
     prm,
@@ -37,8 +38,9 @@ void ParsedKDTreeDistance<dim>::declare_parameters(ParameterHandler &prm)
 
 
 template <int dim>
-double ParsedKDTreeDistance<dim>::value(const Point<dim> & p,
-                                        const unsigned int component) const
+double
+ParsedKDTreeDistance<dim>::value(const Point<dim> & p,
+                                 const unsigned int component) const
 {
   // Only 1 component in this function
   AssertDimension(component, 0);
@@ -68,7 +70,8 @@ double ParsedKDTreeDistance<dim>::value(const Point<dim> & p,
 
 
 template <int dim>
-unsigned int ParsedKDTreeDistance<dim>::get_points_within_ball(
+unsigned int
+ParsedKDTreeDistance<dim>::get_points_within_ball(
   const Point<dim> &                            center,
   const double &                                radius,
   std::vector<std::pair<unsigned int, double>> &matches,
@@ -85,7 +88,8 @@ unsigned int ParsedKDTreeDistance<dim>::get_points_within_ball(
 }
 
 template <int dim>
-void ParsedKDTreeDistance<dim>::get_closest_points(
+void
+ParsedKDTreeDistance<dim>::get_closest_points(
   const Point<dim> &         target,
   std::vector<unsigned int> &indices,
   std::vector<double> &      distances) const
@@ -98,7 +102,8 @@ void ParsedKDTreeDistance<dim>::get_closest_points(
 }
 
 template <int dim>
-void ParsedKDTreeDistance<dim>::set_points(const std::vector<Point<dim>> &pts)
+void
+ParsedKDTreeDistance<dim>::set_points(const std::vector<Point<dim>> &pts)
 {
   Assert(pts.size() > 0, ExcMessage("Expecting a non zero set of points."));
   adaptor = SP(new PointCloudAdaptor(pts));

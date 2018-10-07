@@ -53,7 +53,8 @@ using namespace deal2lkit;
 
 
 template <int dim>
-void test()
+void
+test()
 {
   deallog << "dim = " << dim << std::endl;
 
@@ -87,8 +88,10 @@ void test()
 
   ParameterAcceptor::initialize();
   std::map<types::global_dof_index, double> boundary_values;
-  parsed_dirichlet.project_boundary_values(
-    mapping, dof_handler, quadrature, boundary_values);
+  parsed_dirichlet.project_boundary_values(mapping,
+                                           dof_handler,
+                                           quadrature,
+                                           boundary_values);
   //  VectorTools::project_boundary_values(mapping, dof_handler, boundary_map,
   //  quadrature,
   //                                       boundary_values);
@@ -101,7 +104,8 @@ void test()
 }
 
 
-int main()
+int
+main()
 {
   initlog();
   deallog.depth_console(0);

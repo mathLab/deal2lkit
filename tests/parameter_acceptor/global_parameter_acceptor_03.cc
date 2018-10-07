@@ -28,9 +28,9 @@ using namespace deal2lkit;
 class MyClass : public ParameterAcceptor
 {
 public:
-  MyClass(const std::string &name = "My Class", const unsigned int &i = 0) :
-    ParameterAcceptor(name + std::to_string(c++)),
-    i(i)
+  MyClass(const std::string &name = "My Class", const unsigned int &i = 0)
+    : ParameterAcceptor(name + std::to_string(c++))
+    , i(i)
   {
     add_parameter(this->i, "An integer");
   };
@@ -45,11 +45,10 @@ unsigned int MyClass::c = 0;
 class MyMasterClass : public ParameterAcceptor
 {
 public:
-  MyMasterClass(const std::string &name = "MyMasterClass",
-                const double &     d    = 0) :
-    ParameterAcceptor(name),
-    d(d),
-    mc("Slave", 1)
+  MyMasterClass(const std::string &name = "MyMasterClass", const double &d = 0)
+    : ParameterAcceptor(name)
+    , d(d)
+    , mc("Slave", 1)
   {
     add_parameter(this->d, "A double");
   };
@@ -60,7 +59,8 @@ private:
 };
 
 
-int main()
+int
+main()
 {
   initlog();
 

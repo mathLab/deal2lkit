@@ -42,36 +42,41 @@
 #  include <sundials/sundials_types.h>
 
 template <int dim>
-Heat<dim>::Heat(const MPI_Comm communicator) :
-  comm(Utilities::MPI::duplicate_communicator(communicator)),
-  pcout(std::cout, (Utilities::MPI::this_mpi_process(comm) == 0)),
-  timer_outfile("timer.txt"),
-  tcout(timer_outfile, (Utilities::MPI::this_mpi_process(comm) == 0)),
-  computing_timer(comm, tcout, TimerOutput::summary, TimerOutput::wall_times),
+Heat<dim>::Heat(const MPI_Comm communicator)
+  : comm(Utilities::MPI::duplicate_communicator(communicator))
+  , pcout(std::cout, (Utilities::MPI::this_mpi_process(comm) == 0))
+  , timer_outfile("timer.txt")
+  , tcout(timer_outfile, (Utilities::MPI::this_mpi_process(comm) == 0))
+  , computing_timer(comm, tcout, TimerOutput::summary, TimerOutput::wall_times)
+  ,
 
-  eh("Error Tables", "u", "L2,H1"),
+  eh("Error Tables", "u", "L2,H1")
+  ,
 
-  pgg("Domain"),
-  pgr("Refinement"),
-  fe_builder("Finite Element"),
+  pgg("Domain")
+  , pgr("Refinement")
+  , fe_builder("Finite Element")
+  ,
 
-  exact_solution("Exact solution", 1),
-  forcing_term("Forcing term", 1),
-  initial_solution("Initial solution", 1),
-  initial_solution_dot("Initial solution_dot", 1),
-  dirichlet_bcs("Dirichlet BCs", 1, "u", "0=u"),
+  exact_solution("Exact solution", 1)
+  , forcing_term("Forcing term", 1)
+  , initial_solution("Initial solution", 1)
+  , initial_solution_dot("Initial solution_dot", 1)
+  , dirichlet_bcs("Dirichlet BCs", 1, "u", "0=u")
+  ,
 
-  data_out("Output Parameters", "vtu"),
-  Ainv("Solver",
-       "cg",
-       /* iter= */ 1000,
-       /* reduction= */ 1e-8,
-       linear_operator<VEC>(jacobian_matrix)),
-  ida("IDA Solver Parameters", comm)
+  data_out("Output Parameters", "vtu")
+  , Ainv("Solver",
+         "cg",
+         /* iter= */ 1000,
+         /* reduction= */ 1e-8,
+         linear_operator<VEC>(jacobian_matrix))
+  , ida("IDA Solver Parameters", comm)
 {}
 
 template <int dim>
-void Heat<dim>::declare_parameters(ParameterHandler &prm)
+void
+Heat<dim>::declare_parameters(ParameterHandler &prm)
 {
   add_parameter(prm,
                 &initial_global_refinement,
@@ -111,7 +116,8 @@ void Heat<dim>::declare_parameters(ParameterHandler &prm)
 }
 
 template <int dim>
-void Heat<dim>::make_grid_fe()
+void
+Heat<dim>::make_grid_fe()
 {
   triangulation = SP(pgg.distributed(comm));
   dof_handler   = SP(new DoFHandler<dim>(*triangulation));
@@ -121,7 +127,8 @@ void Heat<dim>::make_grid_fe()
 
 
 template <int dim>
-void Heat<dim>::setup_dofs(const bool &first_run)
+void
+Heat<dim>::setup_dofs(const bool &first_run)
 {
   computing_timer.enter_section("Setup dof systems");
 
@@ -151,8 +158,10 @@ void Heat<dim>::setup_dofs(const bool &first_run)
   constraints.close();
 
   jacobian_matrix.clear();
-  jacobian_matrix_sp.reinit(
-    partitioning, partitioning, relevant_partitioning, comm);
+  jacobian_matrix_sp.reinit(partitioning,
+                            partitioning,
+                            relevant_partitioning,
+                            comm);
 
 
   DoFTools::make_sparsity_pattern(*dof_handler,
@@ -174,8 +183,9 @@ void Heat<dim>::setup_dofs(const bool &first_run)
   if (first_run)
     {
       VectorTools::interpolate(*dof_handler, initial_solution, solution);
-      VectorTools::interpolate(
-        *dof_handler, initial_solution_dot, solution_dot);
+      VectorTools::interpolate(*dof_handler,
+                               initial_solution_dot,
+                               solution_dot);
     }
 
   computing_timer.exit_section();
@@ -183,10 +193,11 @@ void Heat<dim>::setup_dofs(const bool &first_run)
 
 
 template <int dim>
-void Heat<dim>::assemble_jacobian_matrix(const double t,
-                                         const VEC &  solution,
-                                         const VEC &  solution_dot,
-                                         const double alpha)
+void
+Heat<dim>::assemble_jacobian_matrix(const double t,
+                                    const VEC &  solution,
+                                    const VEC &  solution_dot,
+                                    const double alpha)
 {
   computing_timer.enter_section("   Assemble jacobian matrix");
   jacobian_matrix = 0;
@@ -247,8 +258,9 @@ void Heat<dim>::assemble_jacobian_matrix(const double t,
           }
 
         cell->get_dof_indices(local_dof_indices);
-        constraints.distribute_local_to_global(
-          cell_matrix, local_dof_indices, jacobian_matrix);
+        constraints.distribute_local_to_global(cell_matrix,
+                                               local_dof_indices,
+                                               jacobian_matrix);
       }
 
   jacobian_matrix.compress(VectorOperation::add);
@@ -267,10 +279,11 @@ void Heat<dim>::assemble_jacobian_matrix(const double t,
 }
 
 template <int dim>
-int Heat<dim>::residual(const double t,
-                        const VEC &  solution,
-                        const VEC &  solution_dot,
-                        VEC &        dst)
+int
+Heat<dim>::residual(const double t,
+                    const VEC &  solution,
+                    const VEC &  solution_dot,
+                    VEC &        dst)
 {
   computing_timer.enter_section("Residual");
   dirichlet_bcs.set_time(t);
@@ -355,8 +368,9 @@ int Heat<dim>::residual(const double t,
               }
           }
 
-        constraints.distribute_local_to_global(
-          cell_rhs, local_dof_indices, dst);
+        constraints.distribute_local_to_global(cell_rhs,
+                                               local_dof_indices,
+                                               dst);
       }
 
   dst.compress(VectorOperation::add);
@@ -375,23 +389,26 @@ int Heat<dim>::residual(const double t,
 }
 
 template <int dim>
-shared_ptr<VEC> Heat<dim>::create_new_vector() const
+shared_ptr<VEC>
+Heat<dim>::create_new_vector() const
 {
   shared_ptr<VEC> ret = SP(new VEC(solution));
   return ret;
 }
 
 template <int dim>
-unsigned int Heat<dim>::n_dofs() const
+unsigned int
+Heat<dim>::n_dofs() const
 {
   return dof_handler->n_dofs();
 }
 
 template <int dim>
-void Heat<dim>::output_step(const double       t,
-                            const VEC &        solution,
-                            const VEC &        solution_dot,
-                            const unsigned int step_number)
+void
+Heat<dim>::output_step(const double       t,
+                       const VEC &        solution,
+                       const VEC &        solution_dot,
+                       const unsigned int step_number)
 {
   computing_timer.enter_section("Postprocessing");
   dirichlet_bcs.set_time(t);
@@ -420,16 +437,17 @@ void Heat<dim>::output_step(const double       t,
   data_out.add_data_vector(distributed_solution_dot, print(sol_dot_names, ","));
 
   data_out.write_data_and_clear(*mapping);
-  eh.error_from_exact(
-    *mapping, *dof_handler, distributed_solution, exact_solution);
+  eh.error_from_exact(*mapping,
+                      *dof_handler,
+                      distributed_solution,
+                      exact_solution);
 
   computing_timer.exit_section();
 }
 
 template <int dim>
-bool Heat<dim>::solver_should_restart(const double,
-                                      VEC &solution,
-                                      VEC &solution_dot)
+bool
+Heat<dim>::solver_should_restart(const double, VEC &solution, VEC &solution_dot)
 {
   if (use_space_adaptivity)
     {
@@ -513,10 +531,11 @@ bool Heat<dim>::solver_should_restart(const double,
 
 
 template <int dim>
-int Heat<dim>::setup_jacobian(const double t,
-                              const VEC &  src_yy,
-                              const VEC &  src_yp,
-                              const double alpha)
+int
+Heat<dim>::setup_jacobian(const double t,
+                          const VEC &  src_yy,
+                          const VEC &  src_yp,
+                          const double alpha)
 {
   computing_timer.enter_section("   Setup Jacobian");
   assemble_jacobian_matrix(t, src_yy, src_yp, alpha);
@@ -531,7 +550,8 @@ int Heat<dim>::setup_jacobian(const double t,
 }
 
 template <int dim>
-int Heat<dim>::solve_jacobian_system(const VEC &src, VEC &dst) const
+int
+Heat<dim>::solve_jacobian_system(const VEC &src, VEC &dst) const
 {
   computing_timer.enter_section("   Solve system");
   set_constrained_dofs_to_zero(dst);
@@ -545,7 +565,8 @@ int Heat<dim>::solve_jacobian_system(const VEC &src, VEC &dst) const
 }
 
 template <int dim>
-VEC &Heat<dim>::differential_components() const
+VEC &
+Heat<dim>::differential_components() const
 {
   static VEC diff_comps;
   IndexSet   is = dof_handler->locally_owned_dofs();
@@ -556,7 +577,8 @@ VEC &Heat<dim>::differential_components() const
 }
 
 template <int dim>
-void Heat<dim>::set_constrained_dofs_to_zero(VEC &v) const
+void
+Heat<dim>::set_constrained_dofs_to_zero(VEC &v) const
 {
   for (unsigned int i = 0; i < partitioning.n_elements(); ++i)
     {
@@ -567,7 +589,8 @@ void Heat<dim>::set_constrained_dofs_to_zero(VEC &v) const
 }
 
 template <int dim>
-void Heat<dim>::run()
+void
+Heat<dim>::run()
 {
   make_grid_fe();
   setup_dofs(true);
@@ -611,8 +634,10 @@ void Heat<dim>::run()
   };
 
   ida.solve_dae(solution, solution_dot);
-  eh.error_from_exact(
-    *mapping, *dof_handler, distributed_solution, exact_solution);
+  eh.error_from_exact(*mapping,
+                      *dof_handler,
+                      distributed_solution,
+                      exact_solution);
 
   eh.output_table(pcout);
 

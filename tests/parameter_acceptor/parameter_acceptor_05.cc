@@ -25,7 +25,8 @@ template <int dim>
 class Test : public ParameterAcceptor
 {
 public:
-  virtual void declare_parameters(ParameterHandler &prm)
+  virtual void
+  declare_parameters(ParameterHandler &prm)
   {
     add_parameter(prm,
                   &int_list,
@@ -34,7 +35,8 @@ public:
                   Patterns::List(Patterns::Integer()));
   };
 
-  void log_info()
+  void
+  log_info()
   {
     deallog << "My type: " << type(*this) << std::endl;
     for (unsigned int i = 0; i < int_list.size(); ++i)
@@ -46,7 +48,8 @@ private:
 };
 
 
-int main()
+int
+main()
 {
   initlog();
   Test<1> a;

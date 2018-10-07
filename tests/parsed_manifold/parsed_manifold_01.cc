@@ -34,7 +34,8 @@ using namespace deal2lkit;
 // Balls and spheres
 
 template <int dim, int spacedim>
-void test(const std::string &name)
+void
+test(const std::string &name)
 {
   deallog << "Testing " << name << "<" << dim << "," << spacedim << ">"
           << std::endl;
@@ -65,7 +66,8 @@ void test(const std::string &name)
   go.write_msh(*tria, deallog.get_file_stream());
 }
 
-int main()
+int
+main()
 {
   initlog();
   test<2, 2>("hyper_ball");

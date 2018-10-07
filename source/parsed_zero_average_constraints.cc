@@ -27,19 +27,20 @@ ParsedZeroAverageConstraints<dim, spacedim>::ParsedZeroAverageConstraints(
   const unsigned int &n_components,
   const std::string & parsed_component_names,
   const std::string & parsed_components,
-  const std::string & parsed_boundary_components) :
-  ParameterAcceptor(parsed_name),
-  name(parsed_name),
-  str_components(parsed_components),
-  str_boundary_components(parsed_boundary_components),
-  str_component_names(parsed_component_names),
-  mask(n_components, false),
-  boundary_mask(n_components, false),
-  n_components(n_components)
+  const std::string & parsed_boundary_components)
+  : ParameterAcceptor(parsed_name)
+  , name(parsed_name)
+  , str_components(parsed_components)
+  , str_boundary_components(parsed_boundary_components)
+  , str_component_names(parsed_component_names)
+  , mask(n_components, false)
+  , boundary_mask(n_components, false)
+  , n_components(n_components)
 {}
 
 template <int dim, int spacedim>
-void ParsedZeroAverageConstraints<dim, spacedim>::parse_parameters_call_back()
+void
+ParsedZeroAverageConstraints<dim, spacedim>::parse_parameters_call_back()
 {
   for (unsigned int c = 0; c < components.size(); ++c)
     {
@@ -56,8 +57,9 @@ void ParsedZeroAverageConstraints<dim, spacedim>::parse_parameters_call_back()
               AssertThrow(m < n_components, ExcWrongComponent(m, n_components));
               mask[m] = true;
             }
-          catch (std::exception &exc) AssertThrow(
-            false, ExcWrongVariable(components[c], _component_names));
+          catch (std::exception &exc)
+            AssertThrow(false,
+                        ExcWrongVariable(components[c], _component_names));
         }
     }
 
@@ -88,7 +90,8 @@ void ParsedZeroAverageConstraints<dim, spacedim>::parse_parameters_call_back()
 
 
 template <int dim, int spacedim>
-ComponentMask ParsedZeroAverageConstraints<dim, spacedim>::get_mask() const
+ComponentMask
+ParsedZeroAverageConstraints<dim, spacedim>::get_mask() const
 {
   return ComponentMask(mask);
 }
@@ -103,7 +106,8 @@ ParsedZeroAverageConstraints<dim, spacedim>::get_boundary_mask() const
 
 
 template <int dim, int spacedim>
-void ParsedZeroAverageConstraints<dim, spacedim>::declare_parameters(
+void
+ParsedZeroAverageConstraints<dim, spacedim>::declare_parameters(
   ParameterHandler &prm)
 {
   if (str_component_names != "")
@@ -152,7 +156,8 @@ void ParsedZeroAverageConstraints<dim, spacedim>::declare_parameters(
 }
 
 template <>
-void ParsedZeroAverageConstraints<1, 1>::internal_zero_average_constraints(
+void
+ParsedZeroAverageConstraints<1, 1>::internal_zero_average_constraints(
   const DoFHandler<1, 1> &,
   const ComponentMask,
   const bool,
@@ -162,7 +167,8 @@ void ParsedZeroAverageConstraints<1, 1>::internal_zero_average_constraints(
 }
 
 template <>
-void ParsedZeroAverageConstraints<1, 2>::internal_zero_average_constraints(
+void
+ParsedZeroAverageConstraints<1, 2>::internal_zero_average_constraints(
   const DoFHandler<1, 2> &,
   const ComponentMask,
   const bool,
@@ -172,7 +178,8 @@ void ParsedZeroAverageConstraints<1, 2>::internal_zero_average_constraints(
 }
 
 template <>
-void ParsedZeroAverageConstraints<1, 3>::internal_zero_average_constraints(
+void
+ParsedZeroAverageConstraints<1, 3>::internal_zero_average_constraints(
   const DoFHandler<1, 3> &,
   const ComponentMask,
   const bool,
@@ -183,12 +190,12 @@ void ParsedZeroAverageConstraints<1, 3>::internal_zero_average_constraints(
 
 
 template <int dim, int spacedim>
-void ParsedZeroAverageConstraints<dim, spacedim>::
-  internal_zero_average_constraints(
-    const DoFHandler<dim, spacedim> &dof_handler,
-    const ComponentMask              mask,
-    const bool                       at_boundary,
-    ConstraintMatrix &               constraints) const
+void
+ParsedZeroAverageConstraints<dim, spacedim>::internal_zero_average_constraints(
+  const DoFHandler<dim, spacedim> &dof_handler,
+  const ComponentMask              mask,
+  const bool                       at_boundary,
+  ConstraintMatrix &               constraints) const
 {
   std::vector<bool> constrained_dofs(dof_handler.n_dofs(), false);
 
@@ -210,9 +217,10 @@ void ParsedZeroAverageConstraints<dim, spacedim>::
 
 
 template <int dim, int spacedim>
-void ParsedZeroAverageConstraints<dim, spacedim>::
-  apply_zero_average_constraints(const DoFHandler<dim, spacedim> &dof_handler,
-                                 ConstraintMatrix &constraints) const
+void
+ParsedZeroAverageConstraints<dim, spacedim>::apply_zero_average_constraints(
+  const DoFHandler<dim, spacedim> &dof_handler,
+  ConstraintMatrix &               constraints) const
 {
   for (unsigned int i = 0; i < n_components; ++i)
     {
@@ -222,15 +230,19 @@ void ParsedZeroAverageConstraints<dim, spacedim>::
       if (boundary_mask[i])
         {
           m_boundary[i] = true;
-          internal_zero_average_constraints(
-            dof_handler, ComponentMask(m_boundary), true, constraints);
+          internal_zero_average_constraints(dof_handler,
+                                            ComponentMask(m_boundary),
+                                            true,
+                                            constraints);
         }
 
       if (mask[i])
         {
           m[i] = true;
-          internal_zero_average_constraints(
-            dof_handler, ComponentMask(m), false, constraints);
+          internal_zero_average_constraints(dof_handler,
+                                            ComponentMask(m),
+                                            false,
+                                            constraints);
         }
     }
 }

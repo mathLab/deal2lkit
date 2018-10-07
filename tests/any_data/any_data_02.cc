@@ -29,7 +29,8 @@ class Energy
 {
 public:
   template <typename Number>
-  void fill_data(AnyData &d)
+  void
+  fill_data(AnyData &d)
   {
     Tensor<1, spacedim, Number> p;
     p[0] = 1.0;
@@ -37,7 +38,8 @@ public:
   }
 
   template <typename Number>
-  Number energy(const AnyData &d) const
+  Number
+  energy(const AnyData &d) const
   {
     const Tensor<1, spacedim, Number> &p =
       d.get<Tensor<1, spacedim, Number>>("u");
@@ -51,7 +53,8 @@ class Problem
 public:
   EnergyClass e;
 
-  void run()
+  void
+  run()
   {
     AnyData d_double;
     AnyData d_int;
@@ -63,7 +66,8 @@ public:
 };
 
 
-int main()
+int
+main()
 {
   initlog();
 

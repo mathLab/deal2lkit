@@ -25,7 +25,8 @@ template <int dim>
 class Test : public ParameterAcceptor
 {
 public:
-  virtual void declare_parameters(ParameterHandler &prm)
+  virtual void
+  declare_parameters(ParameterHandler &prm)
   {
     add_parameter(prm, &a, "A double", "1.0", Patterns::Double());
     add_parameter(prm, &b, "An int", "2", Patterns::Integer());
@@ -33,7 +34,8 @@ public:
     add_parameter(prm, &d, "A bool", "true", Patterns::Bool());
   };
 
-  void log_info()
+  void
+  log_info()
   {
     deallog << "My type: " << type(*this) << std::endl
             << "a: " << a << std::endl
@@ -50,7 +52,8 @@ private:
 };
 
 
-int main()
+int
+main()
 {
   initlog();
   Test<1> a;

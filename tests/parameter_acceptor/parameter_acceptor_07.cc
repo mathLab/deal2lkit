@@ -27,13 +27,15 @@ template <int dim>
 class Test : public ParameterAcceptor
 {
 public:
-  virtual void declare_parameters(ParameterHandler &prm)
+  virtual void
+  declare_parameters(ParameterHandler &prm)
   {
     add_parameter(
       prm, &my_list, "A table", "1,2,3;5,6 ; 7,8,9, 10", Patterns::Anything());
   };
 
-  void log_info()
+  void
+  log_info()
   {
     deallog << "My type: " << type(*this) << std::endl;
     for (unsigned int i = 0; i < my_list.size(); ++i)
@@ -44,7 +46,8 @@ public:
 };
 
 
-int main()
+int
+main()
 {
   initlog();
   Test<1> a;

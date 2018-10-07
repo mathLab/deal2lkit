@@ -189,12 +189,14 @@ public:
   /**
    * Return a list of implemented grids.
    */
-  static std::string get_grid_names();
+  static std::string
+  get_grid_names();
 
   /**
    * Declare all parameters of this class.
    */
-  virtual void declare_parameters(ParameterHandler &prm);
+  virtual void
+  declare_parameters(ParameterHandler &prm);
 
   /**
    * Return a pointer to a newly created serial Triangulation. It will
@@ -202,7 +204,8 @@ public:
    * is the user's responsability to destroy the created grid once it
    * is no longer needed.
    */
-  Triangulation<dim, spacedim> *serial();
+  Triangulation<dim, spacedim> *
+  serial();
 
   /**
    * Generate the grid. Fill a user supplied empty Triangulation using
@@ -342,7 +345,8 @@ public:
    * :"
    *   - *Vector of dim int*: number of holes on each direction"
    */
-  void create(Triangulation<dim, spacedim> &tria);
+  void
+  create(Triangulation<dim, spacedim> &tria);
 
 #ifdef DEAL_II_WITH_MPI
 #  ifdef DEAL_II_WITH_P4EST
@@ -367,15 +371,17 @@ public:
    * argument to this function), then this function will call the appropriate
    * GridOut method according to the extension of the file name.
    */
-  void write(const Triangulation<dim, spacedim> &tria,
-             const std::string &                 filename = "") const;
+  void
+  write(const Triangulation<dim, spacedim> &tria,
+        const std::string &                 filename = "") const;
 
 private:
   /**
    * Mesh smoothing. Parse the type of MeshSmoothing for the
    * generated Triangulation.
    */
-  typename Triangulation<dim, spacedim>::MeshSmoothing get_smoothing();
+  typename Triangulation<dim, spacedim>::MeshSmoothing
+  get_smoothing();
 
   /**
    * Take @p str_manifold_descriptors and fill @p manifold_descriptors with
@@ -420,7 +426,8 @@ private:
    * - NormalToMeshProjectionBoundary:file.iges/step : interface to CAD file:
    *  - Optional double 1     : scale to apply to input CAD file
    */
-  void parse_manifold_descriptors(const std::string &str_manifold_descriptors);
+  void
+  parse_manifold_descriptors(const std::string &str_manifold_descriptors);
 
   /**
    * Mesh smoothing to apply to the newly created Triangulation. This

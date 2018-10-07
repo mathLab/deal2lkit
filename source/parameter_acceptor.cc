@@ -31,25 +31,30 @@ std::vector<SmartPointer<ParameterAcceptor>> ParameterAcceptor::class_list;
 // Static parameter handler
 ParameterHandler ParameterAcceptor::prm;
 
-ParameterAcceptor::ParameterAcceptor(const std::string name) :
-  acceptor_id(class_list.size()),
-  section_name(name)
+ParameterAcceptor::ParameterAcceptor(const std::string name)
+  : acceptor_id(class_list.size())
+  , section_name(name)
 {
   SmartPointer<ParameterAcceptor> pt(this, type(*this).c_str());
   class_list.push_back(pt);
 }
 
 
-ParameterAcceptor::~ParameterAcceptor() { class_list[acceptor_id] = 0; }
+ParameterAcceptor::~ParameterAcceptor()
+{
+  class_list[acceptor_id] = 0;
+}
 
-std::string ParameterAcceptor::get_section_name() const
+std::string
+ParameterAcceptor::get_section_name() const
 {
   return (section_name != "" ? section_name : type(*this));
 }
 
 
-void ParameterAcceptor::initialize(const std::string filename,
-                                   const std::string out_filename)
+void
+ParameterAcceptor::initialize(const std::string filename,
+                              const std::string out_filename)
 {
   // prm.clear();
   declare_all_parameters(prm);
@@ -120,7 +125,8 @@ void ParameterAcceptor::initialize(const std::string filename,
     }
 }
 
-void ParameterAcceptor::clear()
+void
+ParameterAcceptor::clear()
 {
   for (unsigned int i = 0; i < class_list.size(); ++i)
     if (class_list[i] != NULL)
@@ -132,7 +138,8 @@ void ParameterAcceptor::clear()
   prm.clear();
 }
 
-void ParameterAcceptor::log_info()
+void
+ParameterAcceptor::log_info()
 {
   deallog.push("ParameterAcceptor");
   for (unsigned int i = 0; i < class_list.size(); ++i)
@@ -146,7 +153,8 @@ void ParameterAcceptor::log_info()
   deallog.pop();
 }
 
-void ParameterAcceptor::parse_all_parameters(ParameterHandler &prm)
+void
+ParameterAcceptor::parse_all_parameters(ParameterHandler &prm)
 {
   for (unsigned int i = 0; i < class_list.size(); ++i)
     if (class_list[i] != NULL)
@@ -158,7 +166,8 @@ void ParameterAcceptor::parse_all_parameters(ParameterHandler &prm)
       }
 }
 
-void ParameterAcceptor::declare_all_parameters(ParameterHandler &prm)
+void
+ParameterAcceptor::declare_all_parameters(ParameterHandler &prm)
 {
   for (unsigned int i = 0; i < class_list.size(); ++i)
     if (class_list[i] != NULL)
@@ -170,11 +179,13 @@ void ParameterAcceptor::declare_all_parameters(ParameterHandler &prm)
 }
 
 
-std::vector<std::string> ParameterAcceptor::get_section_path() const
+std::vector<std::string>
+ParameterAcceptor::get_section_path() const
 {
   Assert(acceptor_id < class_list.size(), ExcInternalError());
-  std::vector<std::string> sections = Utilities::split_string_list(
-    class_list[acceptor_id]->get_section_name(), sep);
+  std::vector<std::string> sections =
+    Utilities::split_string_list(class_list[acceptor_id]->get_section_name(),
+                                 sep);
   bool is_absolute = false;
   if (sections.size() > 1)
     {
@@ -196,8 +207,9 @@ std::vector<std::string> ParameterAcceptor::get_section_path() const
               bool has_trailing =
                 class_list[i]->get_section_name().back() == sep;
               // Absolute path found
-              auto secs = Utilities::split_string_list(
-                class_list[i]->get_section_name(), sep);
+              auto secs =
+                Utilities::split_string_list(class_list[i]->get_section_name(),
+                                             sep);
               Assert(secs[0] == "", ExcInternalError());
               // Insert all sections except first and last
               sections.insert(sections.begin(),
@@ -210,7 +222,8 @@ std::vector<std::string> ParameterAcceptor::get_section_path() const
   return sections;
 }
 
-void ParameterAcceptor::enter_my_subsection(ParameterHandler &prm)
+void
+ParameterAcceptor::enter_my_subsection(ParameterHandler &prm)
 {
   std::vector<std::string> sections = get_section_path();
   for (auto sec : sections)
@@ -219,7 +232,8 @@ void ParameterAcceptor::enter_my_subsection(ParameterHandler &prm)
     }
 }
 
-void ParameterAcceptor::leave_my_subsection(ParameterHandler &prm)
+void
+ParameterAcceptor::leave_my_subsection(ParameterHandler &prm)
 {
   std::vector<std::string> sections = get_section_path();
   for (auto sec : sections)
@@ -240,7 +254,8 @@ ParameterAcceptor::to_pattern<std::string>(const std::string &)
 }
 
 template <>
-std::string ParameterAcceptor::to_string<std::string>(const std::string &entry)
+std::string
+ParameterAcceptor::to_string<std::string>(const std::string &entry)
 {
   return entry;
 }
@@ -261,13 +276,15 @@ ParameterAcceptor::to_pattern<double>(const double &)
 }
 
 template <>
-std::string ParameterAcceptor::to_string<double>(const double &entry)
+std::string
+ParameterAcceptor::to_string<double>(const double &entry)
 {
   return std::to_string(entry);
 }
 
 template <>
-double ParameterAcceptor::to_type<double>(const std::string &parameter)
+double
+ParameterAcceptor::to_type<double>(const std::string &parameter)
 {
   return std::stod(parameter);
 }
@@ -282,13 +299,15 @@ ParameterAcceptor::to_pattern<int>(const int &)
 }
 
 template <>
-std::string ParameterAcceptor::to_string<int>(const int &entry)
+std::string
+ParameterAcceptor::to_string<int>(const int &entry)
 {
   return std::to_string(entry);
 }
 
 template <>
-int ParameterAcceptor::to_type<int>(const std::string &parameter)
+int
+ParameterAcceptor::to_type<int>(const std::string &parameter)
 {
   return std::stoi(parameter);
 }
@@ -326,13 +345,15 @@ ParameterAcceptor::to_pattern<bool>(const bool &)
 }
 
 template <>
-std::string ParameterAcceptor::to_string<bool>(const bool &entry)
+std::string
+ParameterAcceptor::to_string<bool>(const bool &entry)
 {
   return std::string((entry ? "true" : "false"));
 }
 
 template <>
-bool ParameterAcceptor::to_type<bool>(const std::string &parameter)
+bool
+ParameterAcceptor::to_type<bool>(const std::string &parameter)
 {
   return (parameter == "true" || parameter == "1");
 }
@@ -429,9 +450,10 @@ MYV(std::vector<unsigned int>, ";")
 namespace
 {
   template <class T>
-  inline bool to_boost_any(const std::string &          entry,
-                           const Patterns::PatternBase &pattern,
-                           boost::any &                 boost_parameter)
+  inline bool
+  to_boost_any(const std::string &          entry,
+               const Patterns::PatternBase &pattern,
+               boost::any &                 boost_parameter)
   {
     if (boost_parameter.type() == typeid(T *))
       {
@@ -451,7 +473,8 @@ namespace
   }
 } // namespace
 
-void ParameterAcceptor::parse_parameters(ParameterHandler &prm)
+void
+ParameterAcceptor::parse_parameters(ParameterHandler &prm)
 {
   for (auto &it : parameters)
     {
@@ -476,36 +499,44 @@ void ParameterAcceptor::parse_parameters(ParameterHandler &prm)
         {}
       else if (to_boost_any<Point<3>>(entry, pattern, boost_parameter))
         {}
-      else if (to_boost_any<std::vector<std::string>>(
-                 entry, pattern, boost_parameter))
+      else if (to_boost_any<std::vector<std::string>>(entry,
+                                                      pattern,
+                                                      boost_parameter))
         {}
-      else if (to_boost_any<std::vector<double>>(
-                 entry, pattern, boost_parameter))
+      else if (to_boost_any<std::vector<double>>(entry,
+                                                 pattern,
+                                                 boost_parameter))
         {}
       else if (to_boost_any<std::vector<int>>(entry, pattern, boost_parameter))
         {}
-      else if (to_boost_any<std::vector<unsigned int>>(
-                 entry, pattern, boost_parameter))
+      else if (to_boost_any<std::vector<unsigned int>>(entry,
+                                                       pattern,
+                                                       boost_parameter))
         {}
       //      else if (to_boost_any<std::vector<bool> >(entry, pattern,
       //      boost_parameter)) {}
-      else if (to_boost_any<std::vector<Point<1>>>(
-                 entry, pattern, boost_parameter))
+      else if (to_boost_any<std::vector<Point<1>>>(entry,
+                                                   pattern,
+                                                   boost_parameter))
         {}
-      else if (to_boost_any<std::vector<Point<2>>>(
-                 entry, pattern, boost_parameter))
+      else if (to_boost_any<std::vector<Point<2>>>(entry,
+                                                   pattern,
+                                                   boost_parameter))
         {}
-      else if (to_boost_any<std::vector<Point<3>>>(
-                 entry, pattern, boost_parameter))
+      else if (to_boost_any<std::vector<Point<3>>>(entry,
+                                                   pattern,
+                                                   boost_parameter))
         {}
       else if (to_boost_any<std::vector<std::vector<std::string>>>(
                  entry, pattern, boost_parameter))
         {}
-      else if (to_boost_any<std::vector<std::vector<double>>>(
-                 entry, pattern, boost_parameter))
+      else if (to_boost_any<std::vector<std::vector<double>>>(entry,
+                                                              pattern,
+                                                              boost_parameter))
         {}
-      else if (to_boost_any<std::vector<std::vector<int>>>(
-                 entry, pattern, boost_parameter))
+      else if (to_boost_any<std::vector<std::vector<int>>>(entry,
+                                                           pattern,
+                                                           boost_parameter))
         {}
       else if (to_boost_any<std::vector<std::vector<unsigned int>>>(
                  entry, pattern, boost_parameter))
@@ -519,6 +550,8 @@ void ParameterAcceptor::parse_parameters(ParameterHandler &prm)
     }
 }
 
-void ParameterAcceptor::parse_parameters_call_back() {}
+void
+ParameterAcceptor::parse_parameters_call_back()
+{}
 
 D2K_NAMESPACE_CLOSE

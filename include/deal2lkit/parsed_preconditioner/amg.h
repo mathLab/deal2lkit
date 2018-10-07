@@ -62,22 +62,25 @@ public:
   /**
    * Declare preconditioner options.
    */
-  virtual void declare_parameters(ParameterHandler &prm);
+  virtual void
+  declare_parameters(ParameterHandler &prm);
 
   /**
    * Initialize the preconditioner using @p matrix. Constant modes are not computed.
    */
   template <typename Matrix>
-  void initialize_preconditioner(const Matrix &matrix);
+  void
+  initialize_preconditioner(const Matrix &matrix);
 
   /**
    * Initialize the preconditioner using a @p matrix, a ParsedFiniteElement @p fe,
    * and a DoFHandler @p dh. This is the variant for constant modes.
    */
   template <int dim, int spacedim = dim, typename Matrix>
-  void initialize_preconditioner(const Matrix &matrix,
-                                 const ParsedFiniteElement<dim, spacedim> &fe,
-                                 const DoFHandler<dim, spacedim> &         dh);
+  void
+  initialize_preconditioner(const Matrix &                            matrix,
+                            const ParsedFiniteElement<dim, spacedim> &fe,
+                            const DoFHandler<dim, spacedim> &         dh);
 
   using TrilinosWrappers::PreconditionAMG::initialize;
 

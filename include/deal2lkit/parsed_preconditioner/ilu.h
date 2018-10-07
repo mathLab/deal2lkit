@@ -55,13 +55,15 @@ public:
   /**
    * Declare preconditioner options.
    */
-  virtual void declare_parameters(ParameterHandler &prm);
+  virtual void
+  declare_parameters(ParameterHandler &prm);
 
   /**
    * Initialize the preconditioner using @p matrix.
    */
   template <typename Matrix>
-  void initialize_preconditioner(const Matrix &matrix);
+  void
+  initialize_preconditioner(const Matrix &matrix);
 
   using TrilinosWrappers::PreconditionILU::initialize;
 

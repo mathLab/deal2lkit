@@ -24,11 +24,13 @@
 using namespace deal2lkit;
 
 
-int main()
+int
+main()
 {
   initlog();
-  ParsedFiniteElement<2, 2> fe_builder(
-    "FE", "FESystem[FE_Q(2)^d-FE_DGP(1)]", "u,u,p");
+  ParsedFiniteElement<2, 2> fe_builder("FE",
+                                       "FESystem[FE_Q(2)^d-FE_DGP(1)]",
+                                       "u,u,p");
 
   ParameterAcceptor::initialize();
   auto fe = fe_builder();

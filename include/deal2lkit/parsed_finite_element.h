@@ -129,7 +129,8 @@ public:
    * components). The numbers are interpreted as: 0=DoFTools::none,
    * 1=DoFTools::always, 2=DoFTools::nonzero.
    */
-  virtual void declare_parameters(ParameterHandler &prm);
+  virtual void
+  declare_parameters(ParameterHandler &prm);
 
   /**
    * Return a shared pointer to a newly created Finite Element. It
@@ -138,24 +139,28 @@ public:
    * different from the number of components given at construction
    * time.
    */
-  std::unique_ptr<FiniteElement<dim, spacedim>> operator()() const;
+  std::unique_ptr<FiniteElement<dim, spacedim>>
+  operator()() const;
 
   /**
    * Fill information about blocks after parsing the parameters.
    */
-  virtual void parse_parameters_call_back();
+  virtual void
+  parse_parameters_call_back();
 
   /**
    * Return the component names for this Finite Element.
    */
-  std::string get_component_names() const;
+  std::string
+  get_component_names() const;
 
   /**
    * Return the blocking of the components for this finite
    * element. This is what's needed by the block renumbering
    * algorithm.
    */
-  std::vector<unsigned int> get_component_blocks() const;
+  std::vector<unsigned int>
+  get_component_blocks() const;
 
 
   /**
@@ -163,30 +168,35 @@ public:
    * as std::unique(get_component_names().begin(),
    * get_component_names().end())
    */
-  std::string get_block_names() const;
+  std::string
+  get_block_names() const;
 
   /**
    * Return the number of components of the Finite Element.
    */
-  unsigned int n_components() const;
+  unsigned int
+  n_components() const;
 
   /**
    * Return the number of blocks of the Finite Element, i.e.,
    * the number of variables. For example, simple Heat equation
    * has 1 block, Navier-Stokes 2 blocks (u and p).
    */
-  unsigned int n_blocks() const;
+  unsigned int
+  n_blocks() const;
 
   /**
    * Return the first occurence of @p var in @p default_component_names.
    * Remark: this is the value required by FEValuesExtractors.
    */
-  unsigned int get_first_occurence(const std::string &var) const;
+  unsigned int
+  get_first_occurence(const std::string &var) const;
 
   /**
    * Return @p true if @p var is vector, @p false otherwise.
    */
-  bool is_vector(const std::string &var) const;
+  bool
+  is_vector(const std::string &var) const;
 
 protected:
   /**

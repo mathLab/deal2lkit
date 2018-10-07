@@ -25,7 +25,8 @@
 D2K_NAMESPACE_OPEN
 
 
-std::string demangle(const char *name)
+std::string
+demangle(const char *name)
 {
   int   status = -4; // some arbitrary value to eliminate the compiler warning
   char *demangled;
@@ -41,12 +42,14 @@ std::string demangle(const char *name)
   return (status == 0) ? result : name;
 }
 
-void TimeUtilities::sleep(unsigned int t)
+void
+TimeUtilities::sleep(unsigned int t)
 {
   std::this_thread::sleep_for(std::chrono::milliseconds(t));
 }
 
-void TimeUtilities::get_start_time()
+void
+TimeUtilities::get_start_time()
 {
   AssertThrow(status == true,
               ExcMessage("Use get_end_time() before reuse get_start_time()."));
@@ -56,7 +59,8 @@ void TimeUtilities::get_start_time()
   status = false;
 }
 
-void TimeUtilities::get_end_time()
+void
+TimeUtilities::get_end_time()
 {
   AssertThrow(status == false,
               ExcMessage("Use get_start_time() before get_end_time()."));
@@ -69,9 +73,14 @@ void TimeUtilities::get_end_time()
   status = true;
 }
 
-int TimeUtilities::get_num_measures() { return times.size(); }
+int
+TimeUtilities::get_num_measures()
+{
+  return times.size();
+}
 
-void append_to_file(const std::string &in_file, const std::string &out_file)
+void
+append_to_file(const std::string &in_file, const std::string &out_file)
 {
   std::ifstream ifile(in_file, std::ios::in);
   std::ofstream ofile(out_file, std::ios::out | std::ios::app);
@@ -81,28 +90,33 @@ void append_to_file(const std::string &in_file, const std::string &out_file)
   return;
 }
 
-bool file_exists(const std::string &file)
+bool
+file_exists(const std::string &file)
 {
   struct stat st;
   return (stat(file.c_str(), &st) == 0);
 }
 
-bool dir_exists(const std::string &dir)
+bool
+dir_exists(const std::string &dir)
 {
   struct stat st;
   return (stat(dir.c_str(), &st) == 0);
 }
 
-unsigned int get_next_available_index_directory_name(const std::string &base,
-                                                     int          n_digits,
-                                                     unsigned int start,
-                                                     unsigned int index_max)
+unsigned int
+get_next_available_index_directory_name(const std::string &base,
+                                        int                n_digits,
+                                        unsigned int       start,
+                                        unsigned int       index_max)
 {
   if (start < index_max)
     {
       if (dir_exists(base + dealii::Utilities::int_to_string(start, n_digits)))
-        return get_next_available_index_directory_name(
-          base, n_digits, ++start, index_max);
+        return get_next_available_index_directory_name(base,
+                                                       n_digits,
+                                                       ++start,
+                                                       index_max);
       else
         return start;
     }
@@ -110,17 +124,19 @@ unsigned int get_next_available_index_directory_name(const std::string &base,
     return index_max;
 }
 
-std::string get_next_available_directory_name(const std::string &base,
-                                              int                n_digits,
-                                              unsigned int       start,
-                                              unsigned int       index_max)
+std::string
+get_next_available_directory_name(const std::string &base,
+                                  int                n_digits,
+                                  unsigned int       start,
+                                  unsigned int       index_max)
 {
   unsigned int index =
     get_next_available_index_directory_name(base, n_digits, start, index_max);
   return base + dealii::Utilities::int_to_string(index, n_digits);
 }
 
-bool create_directory(const std::string &name)
+bool
+create_directory(const std::string &name)
 {
   Assert((std::find(name.begin(), name.end(), ' ') == name.end()),
          ExcMessage("Invalid name of directory."));
@@ -131,7 +147,8 @@ bool create_directory(const std::string &name)
   return dir_exists(name);
 }
 
-bool copy_files(const std::string &files, const std::string &destination)
+bool
+copy_files(const std::string &files, const std::string &destination)
 {
   create_directory("./" + destination);
   bool                     result = true;
@@ -151,7 +168,8 @@ bool copy_files(const std::string &files, const std::string &destination)
   return result;
 }
 
-bool copy_file(const std::string &file, const std::string &new_file)
+bool
+copy_file(const std::string &file, const std::string &new_file)
 {
   Assert(file_exists(file), ExcMessage("No such file or directory"));
   std::string cmd = "cp " + file + " " + new_file;
@@ -161,7 +179,8 @@ bool copy_file(const std::string &file, const std::string &new_file)
   return file_exists(new_file);
 }
 
-bool rename_file(const std::string &file, const std::string &new_file)
+bool
+rename_file(const std::string &file, const std::string &new_file)
 {
   Assert(file_exists(file), ExcMessage("No such file or directory"));
   std::string cmd = "mv " + file + " " + new_file;
@@ -178,7 +197,8 @@ bool rename_file(const std::string &file, const std::string &new_file)
 
 #    ifdef DEAL_II_WITH_TRILINOS
 
-void copy(TrilinosWrappers::MPI::Vector &dst, const N_Vector &src)
+void
+copy(TrilinosWrappers::MPI::Vector &dst, const N_Vector &src)
 {
   IndexSet is = dst.locally_owned_elements();
   AssertDimension(is.n_elements(), NV_LOCLENGTH_P(src));
@@ -189,7 +209,8 @@ void copy(TrilinosWrappers::MPI::Vector &dst, const N_Vector &src)
   dst.compress(VectorOperation::insert);
 }
 
-void copy(N_Vector &dst, const TrilinosWrappers::MPI::Vector &src)
+void
+copy(N_Vector &dst, const TrilinosWrappers::MPI::Vector &src)
 {
   IndexSet is = src.locally_owned_elements();
   AssertDimension(is.n_elements(), NV_LOCLENGTH_P(dst));
@@ -199,7 +220,8 @@ void copy(N_Vector &dst, const TrilinosWrappers::MPI::Vector &src)
     }
 }
 
-void copy(TrilinosWrappers::MPI::BlockVector &dst, const N_Vector &src)
+void
+copy(TrilinosWrappers::MPI::BlockVector &dst, const N_Vector &src)
 {
   IndexSet is = dst.locally_owned_elements();
   AssertDimension(is.n_elements(), NV_LOCLENGTH_P(src));
@@ -210,7 +232,8 @@ void copy(TrilinosWrappers::MPI::BlockVector &dst, const N_Vector &src)
   dst.compress(VectorOperation::insert);
 }
 
-void copy(N_Vector &dst, const TrilinosWrappers::MPI::BlockVector &src)
+void
+copy(N_Vector &dst, const TrilinosWrappers::MPI::BlockVector &src)
 {
   IndexSet is = src.locally_owned_elements();
   AssertDimension(is.n_elements(), NV_LOCLENGTH_P(dst));
@@ -224,7 +247,8 @@ void copy(N_Vector &dst, const TrilinosWrappers::MPI::BlockVector &src)
 
 #    ifdef DEAL_II_WITH_PETSC
 
-void copy(PETScWrappers::MPI::Vector &dst, const N_Vector &src)
+void
+copy(PETScWrappers::MPI::Vector &dst, const N_Vector &src)
 {
   IndexSet is = dst.locally_owned_elements();
   AssertDimension(is.n_elements(), NV_LOCLENGTH_P(src));
@@ -235,7 +259,8 @@ void copy(PETScWrappers::MPI::Vector &dst, const N_Vector &src)
   dst.compress(VectorOperation::insert);
 }
 
-void copy(N_Vector &dst, const PETScWrappers::MPI::Vector &src)
+void
+copy(N_Vector &dst, const PETScWrappers::MPI::Vector &src)
 {
   IndexSet is = src.locally_owned_elements();
   AssertDimension(is.n_elements(), NV_LOCLENGTH_P(dst));
@@ -245,7 +270,8 @@ void copy(N_Vector &dst, const PETScWrappers::MPI::Vector &src)
     }
 }
 
-void copy(PETScWrappers::MPI::BlockVector &dst, const N_Vector &src)
+void
+copy(PETScWrappers::MPI::BlockVector &dst, const N_Vector &src)
 {
   IndexSet is = dst.locally_owned_elements();
   AssertDimension(is.n_elements(), NV_LOCLENGTH_P(src));
@@ -256,7 +282,8 @@ void copy(PETScWrappers::MPI::BlockVector &dst, const N_Vector &src)
   dst.compress(VectorOperation::insert);
 }
 
-void copy(N_Vector &dst, const PETScWrappers::MPI::BlockVector &src)
+void
+copy(N_Vector &dst, const PETScWrappers::MPI::BlockVector &src)
 {
   IndexSet is = src.locally_owned_elements();
   AssertDimension(is.n_elements(), NV_LOCLENGTH_P(dst));
@@ -270,7 +297,8 @@ void copy(N_Vector &dst, const PETScWrappers::MPI::BlockVector &src)
 
 #  endif // mpi
 
-void copy(BlockVector<double> &dst, const N_Vector &src)
+void
+copy(BlockVector<double> &dst, const N_Vector &src)
 {
 #  ifdef DEAL_II_WITH_MPI
   AssertDimension((unsigned int)NV_LOCLENGTH_P(src), dst.size());
@@ -287,7 +315,8 @@ void copy(BlockVector<double> &dst, const N_Vector &src)
     }
 }
 
-void copy(N_Vector &dst, const BlockVector<double> &src)
+void
+copy(N_Vector &dst, const BlockVector<double> &src)
 {
 #  ifdef DEAL_II_WITH_MPI
   AssertDimension((unsigned int)NV_LOCLENGTH_P(dst), src.size());

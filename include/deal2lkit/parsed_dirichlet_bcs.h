@@ -128,12 +128,14 @@ public:
   /**
    * these method calls the method of the Parent class
    */
-  virtual void declare_parameters(ParameterHandler &prm);
+  virtual void
+  declare_parameters(ParameterHandler &prm);
 
   /**
    * these method calls the method of the Parent class
    */
-  virtual void parse_parameters_call_back();
+  virtual void
+  parse_parameters_call_back();
 
   /**
    * This function must be called in order to apply the boundary conditions
@@ -141,8 +143,9 @@ public:
    * It relies on the VectorTools::interpolate_boundary_values functions of the
    * deal.II library
    */
-  void interpolate_boundary_values(const DoFHandler<dim, spacedim> &dof_handler,
-                                   ConstraintMatrix &constraints) const;
+  void
+  interpolate_boundary_values(const DoFHandler<dim, spacedim> &dof_handler,
+                              ConstraintMatrix &constraints) const;
 
   /**
    * This function must be called in order to apply the boundary conditions
@@ -150,9 +153,10 @@ public:
    * It relies on the VectorTools::interpolate_boundary_values functions of the
    * deal.II library
    */
-  void interpolate_boundary_values(const Mapping<dim, spacedim> &   mapping,
-                                   const DoFHandler<dim, spacedim> &dof_handler,
-                                   ConstraintMatrix &constraints) const;
+  void
+  interpolate_boundary_values(const Mapping<dim, spacedim> &   mapping,
+                              const DoFHandler<dim, spacedim> &dof_handler,
+                              ConstraintMatrix &constraints) const;
 
   /**
    * This function must be called in order to apply the boundary conditions
@@ -160,7 +164,8 @@ public:
    * It relies on the VectorTools::interpolate_boundary_values functions of the
    * deal.II library
    */
-  void interpolate_boundary_values(
+  void
+  interpolate_boundary_values(
     const DoFHandler<dim, spacedim> &          dof_handler,
     std::map<types::global_dof_index, double> &d_dofs) const;
 
@@ -170,7 +175,8 @@ public:
    * It relies on the VectorTools::interpolate_boundary_values functions of the
    * deal.II library
    */
-  void interpolate_boundary_values(
+  void
+  interpolate_boundary_values(
     const Mapping<dim, spacedim> &             mapping,
     const DoFHandler<dim, spacedim> &          dof_handler,
     std::map<types::global_dof_index, double> &d_dofs) const;
@@ -181,9 +187,10 @@ public:
    * It relies on the VectorTools::project_boundary_values functions of the
    * deal.II library
    */
-  void project_boundary_values(const DoFHandler<dim, spacedim> &dof_handler,
-                               const Quadrature<dim - 1> &      quadrature,
-                               ConstraintMatrix &constraints) const;
+  void
+  project_boundary_values(const DoFHandler<dim, spacedim> &dof_handler,
+                          const Quadrature<dim - 1> &      quadrature,
+                          ConstraintMatrix &               constraints) const;
 
   /**
    * This function must be called in order to apply the boundary conditions
@@ -191,10 +198,11 @@ public:
    * It relies on the VectorTools::project_boundary_values functions of the
    * deal.II library
    */
-  void project_boundary_values(const Mapping<dim, spacedim> &   mapping,
-                               const DoFHandler<dim, spacedim> &dof_handler,
-                               const Quadrature<dim - 1> &      quadrature,
-                               ConstraintMatrix &constraints) const;
+  void
+  project_boundary_values(const Mapping<dim, spacedim> &   mapping,
+                          const DoFHandler<dim, spacedim> &dof_handler,
+                          const Quadrature<dim - 1> &      quadrature,
+                          ConstraintMatrix &               constraints) const;
 
   /**
    * This function must be called in order to apply the boundary conditions
@@ -202,7 +210,8 @@ public:
    * It relies on the VectorTools::project_boundary_values functions of the
    * deal.II library
    */
-  void project_boundary_values(
+  void
+  project_boundary_values(
     const DoFHandler<dim, spacedim> &          dof_handler,
     const Quadrature<dim - 1> &                quadrature,
     std::map<types::global_dof_index, double> &projected_bv) const;
@@ -213,7 +222,8 @@ public:
    * It relies on the VectorTools::project_boundary_values functions of the
    * deal.II library
    */
-  void project_boundary_values(
+  void
+  project_boundary_values(
     const Mapping<dim, spacedim> &             mapping,
     const DoFHandler<dim, spacedim> &          dof_handler,
     const Quadrature<dim - 1> &                quadrature,
@@ -230,7 +240,8 @@ public:
    * It relies on the VectorTools::compute_no_normal_flux_constraints functions
    * of the deal.II library
    */
-  void compute_no_normal_flux_constraints(
+  void
+  compute_no_normal_flux_constraints(
     const DoFHandler<dim, spacedim> &dof_handler,
     ConstraintMatrix &               constraints) const;
   /**
@@ -243,7 +254,8 @@ public:
    * It relies on the VectorTools::compute_no_normal_flux_constraints functions
    * of the deal.II library
    */
-  void compute_no_normal_flux_constraints(
+  void
+  compute_no_normal_flux_constraints(
     const DoFHandler<dim, spacedim> &dof_handler,
     const Mapping<dim, spacedim> &   mapping,
     ConstraintMatrix &               constraints) const;
@@ -260,7 +272,8 @@ public:
    * Note that calling this functions with an expression equal to zero is
    * equivalent to call the compute_no_normal_flux_constraints function.
    */
-  void compute_nonzero_normal_flux_constraints(
+  void
+  compute_nonzero_normal_flux_constraints(
     const DoFHandler<dim, spacedim> &dof_handler,
     ConstraintMatrix &               constraints) const;
 
@@ -277,7 +290,8 @@ public:
    * Note that calling this functions with an expression equal to zero is
    * equivalent to call the compute_no_normal_flux_constraints function.
    */
-  void compute_nonzero_normal_flux_constraints(
+  void
+  compute_nonzero_normal_flux_constraints(
     const DoFHandler<dim, spacedim> &dof_handler,
     const Mapping<dim, spacedim> &   mapping,
     ConstraintMatrix &               constraints) const;

@@ -60,44 +60,53 @@ class Heat : public ParameterAcceptor
 public:
   Heat(const MPI_Comm comm);
 
-  virtual void declare_parameters(ParameterHandler &prm);
+  virtual void
+  declare_parameters(ParameterHandler &prm);
 
-  void run();
+  void
+  run();
 
-  shared_ptr<VEC> create_new_vector() const;
+  shared_ptr<VEC>
+  create_new_vector() const;
 
   /** Returns the number of degrees of freedom.*/
-  unsigned int n_dofs() const;
+  unsigned int
+  n_dofs() const;
 
   /** This function is called at the end of each iteration step for
    * the ode solver. Once again, the conversion between pointers and
    * other forms of vectors need to be done inside the inheriting
    * class. */
-  void output_step(const double       t,
-                   const VEC &        solution,
-                   const VEC &        solution_dot,
-                   const unsigned int step_number);
+  void
+  output_step(const double       t,
+              const VEC &        solution,
+              const VEC &        solution_dot,
+              const unsigned int step_number);
 
   /** This function will check the behaviour of the solution. If it
    * is converged or if it is becoming unstable the time integrator
    * will be stopped. If the convergence is not achived the
    * calculation will be continued. If necessary, it can also reset
    * the time stepper. */
-  bool solver_should_restart(const double t, VEC &solution, VEC &solution_dot);
+  bool
+  solver_should_restart(const double t, VEC &solution, VEC &solution_dot);
 
   /** For dae problems, we need a
    residual function. */
-  int residual(const double t, const VEC &src_yy, const VEC &src_yp, VEC &dst);
+  int
+  residual(const double t, const VEC &src_yy, const VEC &src_yp, VEC &dst);
 
   /** Setup Jacobian system and preconditioner. */
-  int setup_jacobian(const double t,
-                     const VEC &  src_yy,
-                     const VEC &  src_yp,
-                     const double alpha);
+  int
+  setup_jacobian(const double t,
+                 const VEC &  src_yy,
+                 const VEC &  src_yp,
+                 const double alpha);
 
 
   /** Inverse of the Jacobian vector product. */
-  int solve_jacobian_system(const VEC &src, VEC &dst) const;
+  int
+  solve_jacobian_system(const VEC &src, VEC &dst) const;
 
 
 
@@ -107,21 +116,28 @@ public:
    corresponding variable is a
    differential component, zero
    otherwise.  */
-  VEC &differential_components() const;
+  VEC &
+  differential_components() const;
 
 private:
-  void refine_mesh();
-  void make_grid_fe();
-  void setup_dofs(const bool &first_run = true);
+  void
+  refine_mesh();
+  void
+  make_grid_fe();
+  void
+  setup_dofs(const bool &first_run = true);
 
-  void assemble_jacobian_matrix(const double t,
-                                const VEC &  y,
-                                const VEC &  y_dot,
-                                const double alpha);
+  void
+  assemble_jacobian_matrix(const double t,
+                           const VEC &  y,
+                           const VEC &  y_dot,
+                           const double alpha);
 
-  void process_solution();
+  void
+  process_solution();
 
-  void set_constrained_dofs_to_zero(VEC &v) const;
+  void
+  set_constrained_dofs_to_zero(VEC &v) const;
 
   const MPI_Comm comm;
 

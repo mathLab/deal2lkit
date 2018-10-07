@@ -150,17 +150,20 @@ public:
   ~IDAInterface();
 
   /** Declare parameters for this class to function properly. */
-  virtual void declare_parameters(ParameterHandler &prm);
+  virtual void
+  declare_parameters(ParameterHandler &prm);
 
   /** Evolve. This function returns the final number of steps. */
-  unsigned int solve_dae(VEC &solution, VEC &solution_dot);
+  unsigned int
+  solve_dae(VEC &solution, VEC &solution_dot);
 
   /**
    * Clear internal memory, and start with clean objects. This
    * function is called when the simulation start and when the mesh is
    * refined.
    */
-  void reset_dae(const double t, VEC &y, VEC &yp, double h, bool first_step);
+  void
+  reset_dae(const double t, VEC &y, VEC &yp, double h, bool first_step);
 
   /**
    * Return a shared_ptr<VEC>. A shared_ptr is needed in order
@@ -223,7 +226,8 @@ public:
    * Set initial time equal to @p t disregarding what is written
    * in the parameter file.
    */
-  void set_initial_time(const double &t);
+  void
+  set_initial_time(const double &t);
 
 private:
   /**
@@ -231,7 +235,8 @@ private:
    * std::function above to trigger an assert if they are not
    * implemented.
    */
-  void set_functions_to_trigger_an_assert();
+  void
+  set_functions_to_trigger_an_assert();
 
 
   /** Final time. */

@@ -27,7 +27,8 @@
 using namespace deal2lkit;
 
 template <int dim, int spacedim>
-void test(ParsedGridGenerator<dim, spacedim> &pgg)
+void
+test(ParsedGridGenerator<dim, spacedim> &pgg)
 {
   Triangulation<dim, spacedim> *tria = pgg.serial();
   GridOut                       go;
@@ -36,7 +37,8 @@ void test(ParsedGridGenerator<dim, spacedim> &pgg)
 }
 
 
-int main()
+int
+main()
 {
   initlog();
   ParsedGridGenerator<2, 2> a("Unit Hyperball", "hyper_ball");

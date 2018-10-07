@@ -42,7 +42,8 @@ namespace
 {
   /** helper function to interface residual to sundials */
   template <typename VEC>
-  int kinsol_residual(N_Vector y, N_Vector res, void *user_data)
+  int
+  kinsol_residual(N_Vector y, N_Vector res, void *user_data)
   {
     KINSOLInterface<VEC> &solver =
       *static_cast<KINSOLInterface<VEC> *>(user_data);
@@ -62,7 +63,8 @@ namespace
 
   /** helper function to interface setup_jacobian to sundials */
   template <typename VEC>
-  int kinsol_setup_jacobian(KINMem kin_mem)
+  int
+  kinsol_setup_jacobian(KINMem kin_mem)
   {
     KINSOLInterface<VEC> &solver =
       *static_cast<KINSOLInterface<VEC> *>(kin_mem->kin_user_data);
@@ -76,11 +78,12 @@ namespace
 
   /** helper function to interface solve_linear_system to sundials */
   template <typename VEC>
-  int kinsol_solve_linear_system(KINMem   kin_mem,
-                                 N_Vector x,
-                                 N_Vector b,
-                                 double * sJpnorm,
-                                 double * sFdotJp)
+  int
+  kinsol_solve_linear_system(KINMem   kin_mem,
+                             N_Vector x,
+                             N_Vector b,
+                             double * sJpnorm,
+                             double * sFdotJp)
   {
     KINSOLInterface<VEC> &solver =
       *static_cast<KINSOLInterface<VEC> *>(kin_mem->kin_user_data);
@@ -110,7 +113,8 @@ namespace
 } // namespace
 
 template <typename VEC>
-void KINSOLInterface<VEC>::set_functions_to_trigger_an_assert()
+void
+KINSOLInterface<VEC>::set_functions_to_trigger_an_assert()
 {
   create_new_vector = []() -> shared_ptr<VEC> {
     shared_ptr<VEC> p;
@@ -149,16 +153,16 @@ void KINSOLInterface<VEC>::set_functions_to_trigger_an_assert()
 
 template <typename VEC>
 KINSOLInterface<VEC>::KINSOLInterface(const std::string name,
-                                      const MPI_Comm    mpi_comm) :
-  ParameterAcceptor(name),
-  is_initialized(false),
-  scaling_is_set(false),
-  solution(nullptr),
-  u_scale(nullptr),
-  f_scale(nullptr),
-  communicator(Utilities::MPI::duplicate_communicator(mpi_comm)),
-  pcout(std::cout, Utilities::MPI::this_mpi_process(mpi_comm) == 0),
-  kin_mem(nullptr)
+                                      const MPI_Comm    mpi_comm)
+  : ParameterAcceptor(name)
+  , is_initialized(false)
+  , scaling_is_set(false)
+  , solution(nullptr)
+  , u_scale(nullptr)
+  , f_scale(nullptr)
+  , communicator(Utilities::MPI::duplicate_communicator(mpi_comm))
+  , pcout(std::cout, Utilities::MPI::this_mpi_process(mpi_comm) == 0)
+  , kin_mem(nullptr)
 {
   set_functions_to_trigger_an_assert();
 }
@@ -166,11 +170,11 @@ KINSOLInterface<VEC>::KINSOLInterface(const std::string name,
 #  else
 
 template <typename VEC>
-KINSOLInterface<VEC>::KINSOLInterface(const std::string name) :
-  ParameterAcceptor(name),
-  is_initialized(false),
-  pcout(std::cout),
-  kin_mem(nullptr)
+KINSOLInterface<VEC>::KINSOLInterface(const std::string name)
+  : ParameterAcceptor(name)
+  , is_initialized(false)
+  , pcout(std::cout)
+  , kin_mem(nullptr)
 {
   set_functions_to_trigger_an_assert();
 }
@@ -203,7 +207,8 @@ KINSOLInterface<VEC>::~KINSOLInterface()
 
 // Parameters parsing and initialization of the parameters:
 template <typename VEC>
-void KINSOLInterface<VEC>::declare_parameters(ParameterHandler &prm)
+void
+KINSOLInterface<VEC>::declare_parameters(ParameterHandler &prm)
 {
   add_parameter(prm,
                 &max_iterations,
@@ -267,7 +272,8 @@ void KINSOLInterface<VEC>::declare_parameters(ParameterHandler &prm)
 
 // Initialization of the solver:
 template <typename VEC>
-void KINSOLInterface<VEC>::initialize_solver(VEC &initial_guess)
+void
+KINSOLInterface<VEC>::initialize_solver(VEC &initial_guess)
 {
   int status;
 
@@ -364,7 +370,8 @@ void KINSOLInterface<VEC>::initialize_solver(VEC &initial_guess)
 
 // Run the solver:
 template <typename VEC>
-int KINSOLInterface<VEC>::solve(VEC &sol)
+int
+KINSOLInterface<VEC>::solve(VEC &sol)
 {
   int status = 0;
   // Check initialization:
@@ -438,8 +445,8 @@ int KINSOLInterface<VEC>::solve(VEC &sol)
 }
 
 template <typename VEC>
-void KINSOLInterface<VEC>::set_scaling_vectors(const VEC &uscale,
-                                               const VEC &fscale)
+void
+KINSOLInterface<VEC>::set_scaling_vectors(const VEC &uscale, const VEC &fscale)
 {
   // Check initialization:
   AssertThrow(
@@ -465,7 +472,8 @@ void KINSOLInterface<VEC>::set_scaling_vectors(const VEC &uscale,
 }
 
 template <typename VEC>
-void KINSOLInterface<VEC>::set_constraint_vector(const VEC &constraint)
+void
+KINSOLInterface<VEC>::set_constraint_vector(const VEC &constraint)
 {
   int status;
   // Check initialization:

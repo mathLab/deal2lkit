@@ -29,7 +29,8 @@
 using namespace deal2lkit;
 
 
-int main()
+int
+main()
 {
   initlog();
   ParsedMappedFunctions<3> pmf("Mapped functions", 1, "", "5=ALL % 3=ALL");

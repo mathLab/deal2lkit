@@ -50,7 +50,8 @@ typedef Sacado::Fad::DFad<Sdouble> SSdouble;
 
 
 template <int dim>
-void test(const Triangulation<dim> &tr, const FiniteElement<dim> &fe)
+void
+test(const Triangulation<dim> &tr, const FiniteElement<dim> &fe)
 {
   deallog << "FE=" << fe.get_name() << std::endl;
 
@@ -72,16 +73,19 @@ void test(const Triangulation<dim> &tr, const FiniteElement<dim> &fe)
   for (unsigned int i = 0; i < dof.n_dofs(); ++i)
     global_vector[i] += i * i;
 
-  DOFUtilities::extract_local_dofs(
-    global_vector, local_dof_indices, independent_local_dof_values);
+  DOFUtilities::extract_local_dofs(global_vector,
+                                   local_dof_indices,
+                                   independent_local_dof_values);
 
   FEValuesExtractors::Scalar scalar(dim);
   FEValuesExtractors::Vector vector(0);
 
   // compute divergences with sacado
   std::vector<SSdouble> div_v(quadrature.size());
-  DOFUtilities::get_divergences(
-    fe_values, independent_local_dof_values, vector, div_v);
+  DOFUtilities::get_divergences(fe_values,
+                                independent_local_dof_values,
+                                vector,
+                                div_v);
 
   // compute divergences with dealii
   std::vector<double> div_v_double(quadrature.size());
@@ -89,8 +93,10 @@ void test(const Triangulation<dim> &tr, const FiniteElement<dim> &fe)
 
   // compute gradient with sacado
   std::vector<Tensor<1, dim, SSdouble>> grad_s(quadrature.size());
-  DOFUtilities::get_gradients(
-    fe_values, independent_local_dof_values, scalar, grad_s);
+  DOFUtilities::get_gradients(fe_values,
+                              independent_local_dof_values,
+                              scalar,
+                              grad_s);
 
   // compute gradient with dealii
   std::vector<Tensor<1, dim, double>> grad_s_double(quadrature.size());
@@ -98,8 +104,10 @@ void test(const Triangulation<dim> &tr, const FiniteElement<dim> &fe)
 
   // compute gradient with sacado
   std::vector<Tensor<2, dim, SSdouble>> grad_v(quadrature.size());
-  DOFUtilities::get_gradients(
-    fe_values, independent_local_dof_values, vector, grad_v);
+  DOFUtilities::get_gradients(fe_values,
+                              independent_local_dof_values,
+                              vector,
+                              grad_v);
 
   // compute gradient with dealii
   std::vector<Tensor<2, dim, double>> grad_v_double(quadrature.size());
@@ -107,8 +115,10 @@ void test(const Triangulation<dim> &tr, const FiniteElement<dim> &fe)
 
   // compute symmetric gradient with sacado
   std::vector<Tensor<2, dim, SSdouble>> sym_grad_v(quadrature.size());
-  DOFUtilities::get_symmetric_gradients(
-    fe_values, independent_local_dof_values, vector, sym_grad_v);
+  DOFUtilities::get_symmetric_gradients(fe_values,
+                                        independent_local_dof_values,
+                                        vector,
+                                        sym_grad_v);
 
   // compute symmetric gradient with dealii
   std::vector<SymmetricTensor<2, dim, double>> sym_grad_v_double(
@@ -181,7 +191,8 @@ void test(const Triangulation<dim> &tr, const FiniteElement<dim> &fe)
 
 
 template <int dim>
-void test_hyper_cube()
+void
+test_hyper_cube()
 {
   Triangulation<dim> tr;
   GridGenerator::hyper_cube(tr);
@@ -192,7 +203,8 @@ void test_hyper_cube()
 }
 
 
-int main()
+int
+main()
 {
   std::ofstream logfile("output");
   deallog << std::setprecision(3);

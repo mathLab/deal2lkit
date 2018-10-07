@@ -38,7 +38,8 @@ using namespace dealii;
 D2K_NAMESPACE_OPEN
 
 template <typename VECTOR>
-std::function<void(VECTOR &, bool)> default_reinit()
+std::function<void(VECTOR &, bool)>
+default_reinit()
 {
   return [](VECTOR &, bool) {
     Assert(false,
@@ -92,17 +93,20 @@ public:
   /**
    * Declare solver type and solver options.
    */
-  virtual void declare_parameters(ParameterHandler &prm);
+  virtual void
+  declare_parameters(ParameterHandler &prm);
 
   /**
    * Parse solver type and solver options.
    */
-  virtual void parse_parameters(ParameterHandler &prm);
+  virtual void
+  parse_parameters(ParameterHandler &prm);
 
   /**
    * Initialize internal variables.
    */
-  virtual void parse_parameters_call_back();
+  virtual void
+  parse_parameters_call_back();
 
 
   /**
@@ -129,7 +133,8 @@ private:
    * Store a shared pointer, and intilize the inverse operator.
    */
   template <typename MySolver>
-  void initialize_solver(MySolver *);
+  void
+  initialize_solver(MySolver *);
 
   /**
    * Solver name."
@@ -164,18 +169,19 @@ ParsedSolver<VECTOR>::ParsedSolver(const std::string &name,
                                    const unsigned int default_iter,
                                    const double       default_reduction,
                                    const LinearOperator<VECTOR> &op,
-                                   const LinearOperator<VECTOR> &prec) :
-  ParameterAcceptor(name),
-  op(op),
-  prec(prec),
-  solver_name(default_solver),
-  max_iterations(default_iter),
-  reduction(default_reduction)
+                                   const LinearOperator<VECTOR> &prec)
+  : ParameterAcceptor(name)
+  , op(op)
+  , prec(prec)
+  , solver_name(default_solver)
+  , max_iterations(default_iter)
+  , reduction(default_reduction)
 {}
 
 
 template <typename VECTOR>
-void ParsedSolver<VECTOR>::declare_parameters(ParameterHandler &prm)
+void
+ParsedSolver<VECTOR>::declare_parameters(ParameterHandler &prm)
 {
   add_parameter(prm,
                 &solver_name,
@@ -193,7 +199,8 @@ void ParsedSolver<VECTOR>::declare_parameters(ParameterHandler &prm)
 
 
 template <typename VECTOR>
-void ParsedSolver<VECTOR>::parse_parameters(ParameterHandler &prm)
+void
+ParsedSolver<VECTOR>::parse_parameters(ParameterHandler &prm)
 {
   ParameterAcceptor::parse_parameters(prm);
   control.parse_parameters(prm);
@@ -202,14 +209,16 @@ void ParsedSolver<VECTOR>::parse_parameters(ParameterHandler &prm)
 
 template <typename VECTOR>
 template <typename MySolver>
-void ParsedSolver<VECTOR>::initialize_solver(MySolver *s)
+void
+ParsedSolver<VECTOR>::initialize_solver(MySolver *s)
 {
   solver                                    = SP(s);
   (LinearOperator<VECTOR, VECTOR> &)(*this) = inverse_operator(op, *s, prec);
 }
 
 template <typename VECTOR>
-void ParsedSolver<VECTOR>::parse_parameters_call_back()
+void
+ParsedSolver<VECTOR>::parse_parameters_call_back()
 {
   if (solver_name == "cg")
     {

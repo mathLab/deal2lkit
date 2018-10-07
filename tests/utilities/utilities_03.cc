@@ -22,7 +22,8 @@
 
 using namespace deal2lkit;
 
-int main()
+int
+main()
 {
   initlog();
   std::system("touch test1.txt");

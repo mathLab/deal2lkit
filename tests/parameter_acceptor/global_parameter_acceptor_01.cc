@@ -28,9 +28,9 @@ using namespace deal2lkit;
 class MyClass : public ParameterAcceptor
 {
 public:
-  MyClass(const std::string &name = "My Class", const unsigned int &i = 0) :
-    ParameterAcceptor(name),
-    i(i)
+  MyClass(const std::string &name = "My Class", const unsigned int &i = 0)
+    : ParameterAcceptor(name)
+    , i(i)
   {
     add_parameter(this->i, "An integer");
   };
@@ -39,7 +39,8 @@ private:
   unsigned int i;
 };
 
-int main()
+int
+main()
 {
   initlog();
 

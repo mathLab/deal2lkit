@@ -65,7 +65,8 @@ D2K_NAMESPACE_OPEN
 
 
 /** Demangle c++ names. */
-std::string demangle(const char *name);
+std::string
+demangle(const char *name);
 
 /**
  * This function collects some time utilities.
@@ -76,27 +77,34 @@ std::string demangle(const char *name);
 class TimeUtilities
 {
 public:
-  TimeUtilities() : status(true), times() {}
+  TimeUtilities()
+    : status(true)
+    , times()
+  {}
 
   /**
    * It freezes the thread for t milliseconds.
    */
-  void sleep(unsigned int t);
+  void
+  sleep(unsigned int t);
 
   /**
    * It sets the start time for a measure.
    */
-  void get_start_time();
+  void
+  get_start_time();
 
   /**
    * It sets the end time for a measure.
    */
-  void get_end_time();
+  void
+  get_end_time();
 
   /**
    * It returns the number of measures done
    */
-  int get_num_measures();
+  int
+  get_num_measures();
 
   /**
    * An overload of the operator [] is provided to access to all measures.
@@ -123,7 +131,8 @@ private:
  * This function copy the text contained in @p in_file to the file
  * @p out_file .
  */
-void append_to_file(const std::string &in_file, const std::string &out_file);
+void
+append_to_file(const std::string &in_file, const std::string &out_file);
 
 /**
  * A function that return the index of the first non existing folder matching
@@ -143,41 +152,48 @@ get_next_available_index_directory_name(const std::string &base,
  * The research of the index starts from the value @p start and ends when @p index_max
  * is reached.
  */
-std::string get_next_available_directory_name(const std::string &base,
-                                              int                n_digits = 3,
-                                              unsigned int       start    = 0,
-                                              unsigned int index_max = 1000);
+std::string
+get_next_available_directory_name(const std::string &base,
+                                  int                n_digits  = 3,
+                                  unsigned int       start     = 0,
+                                  unsigned int       index_max = 1000);
 
 /**
  * A function to check the existence of @p dir directory.
  */
-bool dir_exists(const std::string &dir);
+bool
+dir_exists(const std::string &dir);
 
 /**
  * A function to check the existence of @p file file.
  */
-bool file_exists(const std::string &file);
+bool
+file_exists(const std::string &file);
 
 /**
  * A function to create directory. It creates all directories needed.
  */
-bool create_directory(const std::string &name);
+bool
+create_directory(const std::string &name);
 
 /**
  * A function to copy a list of @p file ( "file1 file2 file3" ) in the
  * destination folder (@p destination)
  */
-bool copy_files(const std::string &files, const std::string &destination);
+bool
+copy_files(const std::string &files, const std::string &destination);
 
 /**
  * A function to make a copy of @p file with the name @p destination
  */
-bool copy_file(const std::string &files, const std::string &destination);
+bool
+copy_file(const std::string &files, const std::string &destination);
 
 /**
  * A function to rename a @p file with a new name @p new_file
  */
-bool rename_file(const std::string &file, const std::string &new_file);
+bool
+rename_file(const std::string &file, const std::string &new_file);
 
 /// Cannot execute std::system(command)
 DeclException1(ExcCannottExecuteCommand,
@@ -205,12 +221,12 @@ class OverWriteStream
 public:
   OverWriteStream(unsigned int n_lines    = 1,
                   Stream &     stream_out = std::cout,
-                  unsigned int width      = 60) :
-    n_lines(n_lines),
-    width(width),
-    current_line(0),
-    clear_next(true),
-    stream_out(stream_out)
+                  unsigned int width      = 60)
+    : n_lines(n_lines)
+    , width(width)
+    , current_line(0)
+    , clear_next(true)
+    , stream_out(stream_out)
   {
     struct winsize w;
     ioctl(0, TIOCGWINSZ, &w);
@@ -230,31 +246,46 @@ public:
   }
 
   template <typename OBJ>
-  OverWriteStream<Stream> &operator<<(OBJ &o)
+  OverWriteStream<Stream> &
+  operator<<(OBJ &o)
   {
     clear();
     stream_out << o;
     return *this;
   }
 
-  OverWriteStream<Stream> &operator<<(std::ostream &(*p)(std::ostream &))
+  OverWriteStream<Stream> &
+  operator<<(std::ostream &(*p)(std::ostream &))
   {
     class QueryStreambuf : public std::streambuf
     {
       // Implement a minimalistic stream buffer that only stores the fact
       // whether overflow or sync was called
     public:
-      QueryStreambuf() : flushed_(false), newline_written_(false) {}
-      bool flushed() { return flushed_; }
-      bool newline_written() { return newline_written_; }
+      QueryStreambuf()
+        : flushed_(false)
+        , newline_written_(false)
+      {}
+      bool
+      flushed()
+      {
+        return flushed_;
+      }
+      bool
+      newline_written()
+      {
+        return newline_written_;
+      }
 
     private:
-      int_type overflow(int_type ch)
+      int_type
+      overflow(int_type ch)
       {
         newline_written_ = true;
         return ch;
       }
-      int sync()
+      int
+      sync()
       {
         flushed_ = true;
         return 0;
@@ -288,16 +319,22 @@ public:
   }
 
   template <typename S, typename T>
-  friend OverWriteStream<S> &operator<<(OverWriteStream<S> &, const T &);
+  friend OverWriteStream<S> &
+  operator<<(OverWriteStream<S> &, const T &);
 
-  Stream &get_stream() { return stream_out; }
+  Stream &
+  get_stream()
+  {
+    return stream_out;
+  }
 
   /**
    * Move the cursor at the end of the output. It is needed to avoid to rewrite
    * useful lines.
    * Finally, this method delete the class.
    */
-  void end()
+  void
+  end()
   {
     while (current_line <= n_lines - 1)
       {
@@ -312,7 +349,8 @@ public:
    * only if the internal counter is set to zero, i.e., we are at the
    * beginning of the next n lines.
    */
-  void clear(bool force = false)
+  void
+  clear(bool force = false)
   {
     if (force)
       {
@@ -356,17 +394,29 @@ public:
   /**
    * It returns the number of rows of the current shell.
    */
-  unsigned int get_shell_rows() { return rows_shell; }
+  unsigned int
+  get_shell_rows()
+  {
+    return rows_shell;
+  }
 
   /**
    * It returns the number of coloumns of the current shell.
    */
-  unsigned int get_shell_cols() { return cols_shell; }
+  unsigned int
+  get_shell_cols()
+  {
+    return cols_shell;
+  }
 
   /**
    * It returns current line of the stream.
    */
-  int get_current_line() { return current_line; }
+  int
+  get_current_line()
+  {
+    return current_line;
+  }
 
 private:
   unsigned int cols_shell;
@@ -382,8 +432,8 @@ private:
 };
 
 template <typename S, typename T>
-inline OverWriteStream<S> &operator<<(OverWriteStream<S> &output_stream,
-                                      const T &           t)
+inline OverWriteStream<S> &
+operator<<(OverWriteStream<S> &output_stream, const T &t)
 {
   output_stream.clear();
   output_stream.get_stream() << t;
@@ -400,7 +450,8 @@ inline OverWriteStream<S> &operator<<(OverWriteStream<S> &output_stream,
  * of the original vector.
  */
 template <class T>
-std::vector<T> unique(const std::vector<T> &myvector)
+std::vector<T>
+unique(const std::vector<T> &myvector)
 {
   std::vector<T> ret;
   std::unique_copy(myvector.begin(), myvector.end(), std::back_inserter(ret));
@@ -413,7 +464,8 @@ std::vector<T> unique(const std::vector<T> &myvector)
  * separated by the @ sep parameter.
  */
 template <class Type>
-std::string print(const std::vector<Type> &list, const std::string sep = ",")
+std::string
+print(const std::vector<Type> &list, const std::string sep = ",")
 {
   std::stringstream ret;
   if (list.size() > 0)
@@ -431,7 +483,8 @@ std::string print(const std::vector<Type> &list, const std::string sep = ",")
  * separated by the @ sep parameter.
  */
 template <int dim>
-std::string print(const Point<dim> &point, const std::string sep = ",")
+std::string
+print(const Point<dim> &point, const std::string sep = ",")
 {
   std::stringstream ret;
   ret << point[0];
@@ -448,7 +501,8 @@ std::string print(const Point<dim> &point, const std::string sep = ",")
  * Return a human readable name of the type passed as argument.
  */
 template <class T>
-std::string type(const T &t)
+std::string
+type(const T &t)
 {
   return demangle(typeid(t).name());
 }
@@ -469,7 +523,8 @@ std::string type(const T &t)
  *  @endcode
  */
 template <class T>
-inline shared_ptr<T> SP(T *t)
+inline shared_ptr<T>
+SP(T *t)
 {
   return shared_ptr<T>(t);
 }
@@ -490,7 +545,8 @@ inline shared_ptr<T> SP(T *t)
  *  @endcode
  */
 template <class T>
-inline shared_ptr<const T> SP(const T *t)
+inline shared_ptr<const T>
+SP(const T *t)
 {
   return shared_ptr<const T>(t);
 }
@@ -501,7 +557,8 @@ inline shared_ptr<const T> SP(const T *t)
  */
 
 template <typename VEC>
-void vector_shift(VEC &in_vec, double a_scalar)
+void
+vector_shift(VEC &in_vec, double a_scalar)
 {
   for (auto i : in_vec.locally_owned_elements())
     in_vec[i] += a_scalar;
@@ -512,23 +569,33 @@ void vector_shift(VEC &in_vec, double a_scalar)
 #  ifdef DEAL_II_WITH_MPI
 
 #    ifdef DEAL_II_WITH_TRILINOS
-void copy(TrilinosWrappers::MPI::Vector &dst, const N_Vector &src);
-void copy(N_Vector &dst, const TrilinosWrappers::MPI::Vector &src);
-void copy(TrilinosWrappers::MPI::BlockVector &dst, const N_Vector &src);
-void copy(N_Vector &dst, const TrilinosWrappers::MPI::BlockVector &src);
+void
+copy(TrilinosWrappers::MPI::Vector &dst, const N_Vector &src);
+void
+copy(N_Vector &dst, const TrilinosWrappers::MPI::Vector &src);
+void
+copy(TrilinosWrappers::MPI::BlockVector &dst, const N_Vector &src);
+void
+copy(N_Vector &dst, const TrilinosWrappers::MPI::BlockVector &src);
 #    endif // DEAL_II_WITH_TRILINOS
 
 #    ifdef DEAL_II_WITH_PETSC
-void copy(PETScWrappers::MPI::Vector &dst, const N_Vector &src);
-void copy(N_Vector &dst, const PETScWrappers::MPI::Vector &src);
-void copy(PETScWrappers::MPI::BlockVector &dst, const N_Vector &src);
-void copy(N_Vector &dst, const PETScWrappers::MPI::BlockVector &src);
+void
+copy(PETScWrappers::MPI::Vector &dst, const N_Vector &src);
+void
+copy(N_Vector &dst, const PETScWrappers::MPI::Vector &src);
+void
+copy(PETScWrappers::MPI::BlockVector &dst, const N_Vector &src);
+void
+copy(N_Vector &dst, const PETScWrappers::MPI::BlockVector &src);
 #    endif // DEAL_II_WITH_PETSC
 
 #  endif
 
-void copy(BlockVector<double> &dst, const N_Vector &src);
-void copy(N_Vector &dst, const BlockVector<double> &src);
+void
+copy(BlockVector<double> &dst, const N_Vector &src);
+void
+copy(N_Vector &dst, const BlockVector<double> &src);
 
 #endif
 
@@ -547,10 +614,13 @@ public:
    * A mixed deal.II - Trilinos monitor.
    */
   TimeMonitor(const MPI_Comm &comm   = MPI_COMM_WORLD,
-              std::ostream &  stream = std::cout) :
-    outstream(stream),
-    out(outstream, Utilities::MPI::this_mpi_process(comm) == 0),
-    dealii_timer(comm, out, TimerOutput::never, TimerOutput::cpu_and_wall_times)
+              std::ostream &  stream = std::cout)
+    : outstream(stream)
+    , out(outstream, Utilities::MPI::this_mpi_process(comm) == 0)
+    , dealii_timer(comm,
+                   out,
+                   TimerOutput::never,
+                   TimerOutput::cpu_and_wall_times)
   {}
 
   /**
@@ -575,9 +645,9 @@ public:
      */
     Scope(Teuchos::Time &    trilinos_time,
           TimerOutput &      dealii_timer_output,
-          const std::string &section) :
-      trilinos_scoped_monitor(trilinos_time),
-      dealii_scoped_monitor(dealii_timer_output, section)
+          const std::string &section)
+      : trilinos_scoped_monitor(trilinos_time)
+      , dealii_scoped_monitor(dealii_timer_output, section)
     {}
 
   private:
@@ -597,7 +667,8 @@ public:
    * created object is destroyed, the timer is stopped. Repeated calls with
    * the same timer are accumulated, together with some statistics.
    */
-  Scope scoped_timer(const std::string &section) const
+  Scope
+  scoped_timer(const std::string &section) const
   {
     if (timers.find(section) == timers.end())
       timers[section] = Teuchos::TimeMonitor::getNewCounter(section);

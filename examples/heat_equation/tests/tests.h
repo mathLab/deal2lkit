@@ -49,7 +49,8 @@ using namespace dealii;
 // namespace to not conflict with stdlib
 namespace Testing
 {
-  int rand(bool reseed = false, int seed = 1) throw()
+  int
+  rand(bool reseed = false, int seed = 1) throw()
   {
     static int  r[32];
     static int  k;
@@ -89,14 +90,19 @@ namespace Testing
   }
 
   // reseed our random number generator
-  void srand(int seed) throw() { rand(true, seed); }
+  void
+  srand(int seed) throw()
+  {
+    rand(true, seed);
+  }
 } // namespace Testing
 
 
 
 // given the name of a file, copy it to deallog
 // and then delete it
-void cat_file(const char *filename)
+void
+cat_file(const char *filename)
 {
   std::ifstream in(filename);
   Assert(in, dealii::ExcIO());
@@ -121,7 +127,8 @@ void cat_file(const char *filename)
  * This function does just that with the file given. All streams writing
  * to this should be closed when calling this function.
  */
-void sort_file_contents(const std::string &filename)
+void
+sort_file_contents(const std::string &filename)
 {
   int error = std::system(
     (std::string("LC_ALL=C sort ") + filename + " -o " + filename).c_str());
@@ -137,7 +144,8 @@ void sort_file_contents(const std::string &filename)
  * Also, while GCC prepends the name by "virtual " if the function is virtual,
  * Intel's ICC does not do that, so filter that out as well.
  */
-void unify_pretty_function(const std::string &filename)
+void
+unify_pretty_function(const std::string &filename)
 {
   int error = std::system(
     (std::string(
@@ -158,8 +166,10 @@ void unify_pretty_function(const std::string &filename)
  * steps.
  */
 
-#define check_solver_within_range(                                   \
-  SOLVER_COMMAND, CONTROL_COMMAND, MIN_ALLOWED, MAX_ALLOWED)         \
+#define check_solver_within_range(SOLVER_COMMAND,                    \
+                                  CONTROL_COMMAND,                   \
+                                  MIN_ALLOWED,                       \
+                                  MAX_ALLOWED)                       \
   {                                                                  \
     const unsigned int previous_depth = deallog.depth_file(0);       \
     SOLVER_COMMAND;                                                  \
@@ -196,7 +206,10 @@ void unify_pretty_function(const std::string &filename)
 #ifndef DEAL_II_WITH_MPI
 struct LimitConcurrency
 {
-  LimitConcurrency() { MultithreadInfo::set_thread_limit(5); }
+  LimitConcurrency()
+  {
+    MultithreadInfo::set_thread_limit(5);
+  }
 } limit_concurrency;
 #endif
 
@@ -207,7 +220,8 @@ struct LimitConcurrency
 
 namespace
 {
-  void check_petsc_allocations()
+  void
+  check_petsc_allocations()
   {
     PetscStageLog stageLog;
     PetscLogGetStageLog(&stageLog);
@@ -255,7 +269,8 @@ namespace
 std::string   deallogname;
 std::ofstream deallogfile;
 
-void initlog(bool console = false)
+void
+initlog(bool console = false)
 {
   deallogname = "output";
   deallogfile.open(deallogname.c_str());
@@ -268,7 +283,8 @@ void initlog(bool console = false)
 }
 
 
-inline void mpi_initlog(bool console = false)
+inline void
+mpi_initlog(bool console = false)
 {
 #ifdef DEAL_II_WITH_MPI
   unsigned int myid = Utilities::MPI::this_mpi_process(MPI_COMM_WORLD);
@@ -379,10 +395,11 @@ namespace deal_II_exceptions
 DEAL_II_NAMESPACE_CLOSE
 
 
-void new_tbb_assertion_handler(const char *file,
-                               int         line,
-                               const char *expr,
-                               const char *comment)
+void
+new_tbb_assertion_handler(const char *file,
+                          int         line,
+                          const char *expr,
+                          const char *comment)
 {
   // Print out the original assertion message
   std::cerr << "TBB assertion:" << std::endl;

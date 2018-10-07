@@ -68,7 +68,8 @@ public:
   /**
    * Return the comunicator
    */
-  MPI_Comm get_comm() const;
+  MPI_Comm
+  get_comm() const;
 
 #  else
   /**
@@ -88,7 +89,8 @@ public:
   /**
    * Declare parameters for this class to function properly.
    */
-  virtual void declare_parameters(ParameterHandler &prm);
+  virtual void
+  declare_parameters(ParameterHandler &prm);
 
   /**
    * Initializes the solver with the initial guess and the residual function.
@@ -96,7 +98,8 @@ public:
    * done, you need to call this function in order to make kinsol aware of the
    * changes.
    */
-  void initialize_solver(VEC &initial_guess);
+  void
+  initialize_solver(VEC &initial_guess);
 
   /**
    * Set the scaling for the solver.
@@ -104,7 +107,8 @@ public:
    * If this function is not called by the user, a scaling factor equal to 1 is
    * assumed.
    */
-  void set_scaling_vectors(const VEC &uscale, const VEC &fscale);
+  void
+  set_scaling_vectors(const VEC &uscale, const VEC &fscale);
 
   /**
    * Set the constraint.
@@ -118,12 +122,14 @@ public:
    *  -  −2.0 then u_i will be constrained to be u_i < 0.0.
    *
    */
-  void set_constraint_vector(const VEC &constraint);
+  void
+  set_constraint_vector(const VEC &constraint);
 
   /**
    * solve the non-linear system
    */
-  int solve(VEC &solution);
+  int
+  solve(VEC &solution);
 
   /**
    * This function has to be implemented by the user
@@ -148,7 +154,8 @@ private:
    * This function is executed at construction time to set the std::function
    * above to trigger an assert if they are not implemented.
    */
-  void set_functions_to_trigger_an_assert();
+  void
+  set_functions_to_trigger_an_assert();
 
   /** Strategy used by the solver:
    *

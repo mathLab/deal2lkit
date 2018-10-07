@@ -84,14 +84,16 @@ get_real_assert_zero_imag(const PETScWrappers::internal::VectorReference &a)
 #endif
 
 template <typename number>
-number get_real_assert_zero_imag(const std::complex<number> &a)
+number
+get_real_assert_zero_imag(const std::complex<number> &a)
 {
   Assert(a.imag() == 0.0, ExcInternalError());
   return a.real();
 }
 
 template <typename number>
-number get_real_assert_zero_imag(const number &a)
+number
+get_real_assert_zero_imag(const number &a)
 {
   return a;
 }
@@ -103,7 +105,8 @@ number get_real_assert_zero_imag(const number &a)
 // namespace to not conflict with stdlib
 namespace Testing
 {
-  int rand(const bool reseed = false, const int seed = 1)
+  int
+  rand(const bool reseed = false, const int seed = 1)
   {
     static int  r[32];
     static int  k;
@@ -143,14 +146,19 @@ namespace Testing
   }
 
   // reseed our random number generator
-  void srand(const int seed) { rand(true, seed); }
+  void
+  srand(const int seed)
+  {
+    rand(true, seed);
+  }
 } // namespace Testing
 
 
 
 // given the name of a file, copy it to deallog
 // and then delete it
-void cat_file(const char *filename)
+void
+cat_file(const char *filename)
 {
   std::ifstream in(filename);
   Assert(in, dealii::ExcIO());
@@ -175,7 +183,8 @@ void cat_file(const char *filename)
  * This function does just that with the file given. All streams writing
  * to this should be closed when calling this function.
  */
-void sort_file_contents(const std::string &filename)
+void
+sort_file_contents(const std::string &filename)
 {
   int error = std::system(
     (std::string("LC_ALL=C sort ") + filename + " -o " + filename).c_str());
@@ -187,7 +196,8 @@ void sort_file_contents(const std::string &filename)
  * simple ADLER32 checksum for a range of chars
  */
 template <class IT>
-unsigned int checksum(const IT &begin, const IT &end)
+unsigned int
+checksum(const IT &begin, const IT &end)
 {
   AssertThrow(sizeof(unsigned int) == 4, ExcInternalError());
   AssertThrow(sizeof(*begin) == 1, ExcInternalError());
@@ -216,7 +226,8 @@ unsigned int checksum(const IT &begin, const IT &end)
  * Also, while GCC prepends the name by "virtual " if the function is virtual,
  * Intel's ICC does not do that, so filter that out as well.
  */
-std::string unify_pretty_function(const std::string &text)
+std::string
+unify_pretty_function(const std::string &text)
 {
   std::string t = text;
   t             = Utilities::replace_in_string(t, " &", " & ");
@@ -237,8 +248,10 @@ std::string unify_pretty_function(const std::string &text)
  * steps.
  */
 
-#define check_solver_within_range(                                   \
-  SolverType_COMMAND, CONTROL_COMMAND, MIN_ALLOWED, MAX_ALLOWED)     \
+#define check_solver_within_range(SolverType_COMMAND,                \
+                                  CONTROL_COMMAND,                   \
+                                  MIN_ALLOWED,                       \
+                                  MAX_ALLOWED)                       \
   {                                                                  \
     const unsigned int previous_depth = deallog.depth_file(0);       \
     try                                                              \
@@ -272,7 +285,11 @@ std::string unify_pretty_function(const std::string &text)
  * Limit concurrency to a fixed (small) number of threads, independent
  * of the core count.
  */
-inline unsigned int testing_max_num_threads() { return 5; }
+inline unsigned int
+testing_max_num_threads()
+{
+  return 5;
+}
 
 struct LimitConcurrency
 {
@@ -289,7 +306,8 @@ struct LimitConcurrency
 
 namespace
 {
-  void check_petsc_allocations()
+  void
+  check_petsc_allocations()
   {
 #  if DEAL_II_PETSC_VERSION_GTE(3, 2, 0)
     PetscStageLog stageLog;
@@ -339,7 +357,8 @@ namespace
 std::string   deallogname;
 std::ofstream deallogfile;
 
-void initlog(bool console = false)
+void
+initlog(bool console = false)
 {
   deallogname = "output";
   deallogfile.open(deallogname.c_str());
@@ -348,7 +367,8 @@ void initlog(bool console = false)
 }
 
 
-inline void mpi_initlog(bool console = false)
+inline void
+mpi_initlog(bool console = false)
 {
 #ifdef DEAL_II_WITH_MPI
   unsigned int myid = Utilities::MPI::this_mpi_process(MPI_COMM_WORLD);
@@ -461,10 +481,11 @@ namespace deal_II_exceptions
 DEAL_II_NAMESPACE_CLOSE
 
 
-void new_tbb_assertion_handler(const char *file,
-                               int         line,
-                               const char *expr,
-                               const char *comment)
+void
+new_tbb_assertion_handler(const char *file,
+                          int         line,
+                          const char *expr,
+                          const char *comment)
 {
   // Print out the original assertion message
   std::cerr << "TBB assertion:" << std::endl;
@@ -560,22 +581,24 @@ DEAL_II_NAMESPACE_CLOSE
  *
  * - Maier 2013
  */
-LogStream &operator<<(LogStream &out, const std::vector<unsigned int> &v)
+LogStream &
+operator<<(LogStream &out, const std::vector<unsigned int> &v)
 {
   for (unsigned int i = 0; i < v.size(); ++i)
     out << v[i] << (i == v.size() - 1 ? "" : " ");
   return out;
 }
 
-LogStream &operator<<(LogStream &                                out,
-                      const std::vector<long long unsigned int> &v)
+LogStream &
+operator<<(LogStream &out, const std::vector<long long unsigned int> &v)
 {
   for (unsigned int i = 0; i < v.size(); ++i)
     out << v[i] << (i == v.size() - 1 ? "" : " ");
   return out;
 }
 
-LogStream &operator<<(LogStream &out, const std::vector<double> &v)
+LogStream &
+operator<<(LogStream &out, const std::vector<double> &v)
 {
   for (unsigned int i = 0; i < v.size(); ++i)
     out << v[i] << (i == v.size() - 1 ? "" : " ");

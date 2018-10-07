@@ -51,7 +51,8 @@ using namespace dealii;
 class PoissonParameters : public ParameterAcceptor
 {
 public:
-  virtual void declare_parameters(ParameterHandler &prm)
+  virtual void
+  declare_parameters(ParameterHandler &prm)
   {
     add_parameter(prm, &n_cycles, "Number of cycles", "4");
     add_parameter(prm, &initial_refinement, "Initial refinement", "3");
@@ -60,7 +61,8 @@ public:
   unsigned int initial_refinement;
 };
 
-int main(int argc, char **argv)
+int
+main(int argc, char **argv)
 {
   Utilities::MPI::MPI_InitFinalize mpi_init(argc, argv);
 
@@ -86,13 +88,13 @@ int main(int argc, char **argv)
 
   SparseILU<double> prec;
 
-  ParsedSolver<Vector<double>> inverse(
-    "Solver",
-    "cg",
-    1000,
-    1e-8,
-    linear_operator<Vector<double>>(matrix),
-    linear_operator<Vector<double>>(matrix, prec));
+  ParsedSolver<Vector<double>> inverse("Solver",
+                                       "cg",
+                                       1000,
+                                       1e-8,
+                                       linear_operator<Vector<double>>(matrix),
+                                       linear_operator<Vector<double>>(matrix,
+                                                                       prec));
 
 
   shared_ptr<Triangulation<dim, spacedim>> tria;

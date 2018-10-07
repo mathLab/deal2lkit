@@ -23,15 +23,16 @@ ParsedJacobiPreconditioner::ParsedJacobiPreconditioner(
   const std::string & name,
   const double &      omega,
   const double &      min_diagonal,
-  const unsigned int &n_sweeps) :
-  ParameterAcceptor(name),
-  PreconditionJacobi(),
-  omega(omega),
-  min_diagonal(min_diagonal),
-  n_sweeps(n_sweeps)
+  const unsigned int &n_sweeps)
+  : ParameterAcceptor(name)
+  , PreconditionJacobi()
+  , omega(omega)
+  , min_diagonal(min_diagonal)
+  , n_sweeps(n_sweeps)
 {}
 
-void ParsedJacobiPreconditioner::declare_parameters(ParameterHandler &prm)
+void
+ParsedJacobiPreconditioner::declare_parameters(ParameterHandler &prm)
 {
   add_parameter(
     prm,
@@ -62,7 +63,8 @@ void ParsedJacobiPreconditioner::declare_parameters(ParameterHandler &prm)
 }
 
 template <typename Matrix>
-void ParsedJacobiPreconditioner::initialize_preconditioner(const Matrix &matrix)
+void
+ParsedJacobiPreconditioner::initialize_preconditioner(const Matrix &matrix)
 {
   TrilinosWrappers::PreconditionJacobi::AdditionalData data;
 
@@ -73,7 +75,8 @@ void ParsedJacobiPreconditioner::initialize_preconditioner(const Matrix &matrix)
 }
 D2K_NAMESPACE_CLOSE
 
-template void deal2lkit::ParsedJacobiPreconditioner::initialize_preconditioner<
+template void
+deal2lkit::ParsedJacobiPreconditioner::initialize_preconditioner<
   dealii::TrilinosWrappers::SparseMatrix>(
   const dealii::TrilinosWrappers::SparseMatrix &);
 

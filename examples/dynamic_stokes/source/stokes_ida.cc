@@ -46,30 +46,34 @@
 #  include <sundials/sundials_math.h>
 #  include <sundials/sundials_types.h>
 template <int dim>
-Stokes<dim>::Stokes(const MPI_Comm communicator) :
-  comm(Utilities::MPI::duplicate_communicator(communicator)),
-  pcout(std::cout, (Utilities::MPI::this_mpi_process(comm) == 0)),
-  timer_outfile("timer.txt"),
-  tcout(timer_outfile, (Utilities::MPI::this_mpi_process(comm) == 0)),
-  computing_timer(comm, tcout, TimerOutput::summary, TimerOutput::wall_times),
+Stokes<dim>::Stokes(const MPI_Comm communicator)
+  : comm(Utilities::MPI::duplicate_communicator(communicator))
+  , pcout(std::cout, (Utilities::MPI::this_mpi_process(comm) == 0))
+  , timer_outfile("timer.txt")
+  , tcout(timer_outfile, (Utilities::MPI::this_mpi_process(comm) == 0))
+  , computing_timer(comm, tcout, TimerOutput::summary, TimerOutput::wall_times)
+  ,
 
-  pgg("Domain"),
-  pgr("Refinement"),
-  fe_builder("Finite Element", "FESystem[FE_Q(2)^dim-FE_Q(1)]", "u,u,p"),
+  pgg("Domain")
+  , pgr("Refinement")
+  , fe_builder("Finite Element", "FESystem[FE_Q(2)^dim-FE_Q(1)]", "u,u,p")
+  ,
 
-  exact_solution("Exact solution", 3),
-  forcing_term("Forcing term", 3),
-  initial_solution("Initial solution", 3),
-  initial_solution_dot("Initial solution_dot", 3),
-  dirichlet_bcs("Dirichlet BCs", 3, "u,u,p", "0=u"),
-  dirichlet_dot("Dirichlet dot", 3, "u,u,p", "0=u"),
+  exact_solution("Exact solution", 3)
+  , forcing_term("Forcing term", 3)
+  , initial_solution("Initial solution", 3)
+  , initial_solution_dot("Initial solution_dot", 3)
+  , dirichlet_bcs("Dirichlet BCs", 3, "u,u,p", "0=u")
+  , dirichlet_dot("Dirichlet dot", 3, "u,u,p", "0=u")
+  ,
 
-  data_out("Output Parameters", "vtu"),
-  ida("IDA Solver Parameters", comm)
+  data_out("Output Parameters", "vtu")
+  , ida("IDA Solver Parameters", comm)
 {}
 
 template <int dim>
-void Stokes<dim>::declare_parameters(ParameterHandler &prm)
+void
+Stokes<dim>::declare_parameters(ParameterHandler &prm)
 {
   add_parameter(prm,
                 &initial_global_refinement,
@@ -110,7 +114,8 @@ void Stokes<dim>::declare_parameters(ParameterHandler &prm)
 }
 
 template <int dim>
-void Stokes<dim>::make_grid_fe()
+void
+Stokes<dim>::make_grid_fe()
 {
   fe            = SP(fe_builder());
   triangulation = SP(pgg.distributed(comm));
@@ -124,7 +129,8 @@ void Stokes<dim>::make_grid_fe()
 
 
 template <int dim>
-void Stokes<dim>::setup_dofs(const bool &first_run)
+void
+Stokes<dim>::setup_dofs(const bool &first_run)
 {
   computing_timer.enter_section("Setup dof systems");
 
@@ -160,24 +166,27 @@ void Stokes<dim>::setup_dofs(const bool &first_run)
     for (unsigned int i = 0; i < fe_builder.n_blocks(); ++i)
       partitioning.push_back(global_partitioning.get_view(
         std::accumulate(dofs_per_block.begin(), dofs_per_block.begin() + i, 0),
-        std::accumulate(
-          dofs_per_block.begin(), dofs_per_block.begin() + i + 1, 0)));
+        std::accumulate(dofs_per_block.begin(),
+                        dofs_per_block.begin() + i + 1,
+                        0)));
 
     DoFTools::extract_locally_relevant_dofs(*dof_handler, relevant_set);
 
     for (unsigned int i = 0; i < fe_builder.n_blocks(); ++i)
       relevant_partitioning.push_back(relevant_set.get_view(
         std::accumulate(dofs_per_block.begin(), dofs_per_block.begin() + i, 0),
-        std::accumulate(
-          dofs_per_block.begin(), dofs_per_block.begin() + i + 1, 0)));
+        std::accumulate(dofs_per_block.begin(),
+                        dofs_per_block.begin() + i + 1,
+                        0)));
   }
   constraints.clear();
   constraints.reinit(relevant_set);
 
   DoFTools::make_hanging_node_constraints(*dof_handler, constraints);
 
-  dirichlet_bcs.interpolate_boundary_values(
-    *mapping, *dof_handler, constraints);
+  dirichlet_bcs.interpolate_boundary_values(*mapping,
+                                            *dof_handler,
+                                            constraints);
   constraints.close();
 
   constraints_dot.clear();
@@ -185,13 +194,16 @@ void Stokes<dim>::setup_dofs(const bool &first_run)
 
   DoFTools::make_hanging_node_constraints(*dof_handler, constraints_dot);
 
-  dirichlet_dot.interpolate_boundary_values(
-    *mapping, *dof_handler, constraints_dot);
+  dirichlet_dot.interpolate_boundary_values(*mapping,
+                                            *dof_handler,
+                                            constraints_dot);
   constraints_dot.close();
 
   jacobian_matrix.clear();
-  jacobian_matrix_sp.reinit(
-    partitioning, partitioning, relevant_partitioning, comm);
+  jacobian_matrix_sp.reinit(partitioning,
+                            partitioning,
+                            relevant_partitioning,
+                            comm);
 
 
   Table<2, DoFTools::Coupling> coupling(dim + 1, dim + 1);
@@ -213,8 +225,10 @@ void Stokes<dim>::setup_dofs(const bool &first_run)
   jacobian_matrix.reinit(jacobian_matrix_sp);
 
   jacobian_preconditioner_matrix.clear();
-  jacobian_preconditioner_matrix_sp.reinit(
-    partitioning, partitioning, relevant_partitioning, comm);
+  jacobian_preconditioner_matrix_sp.reinit(partitioning,
+                                           partitioning,
+                                           relevant_partitioning,
+                                           comm);
 
 
   Table<2, DoFTools::Coupling> prec_coupling(dim + 1, dim + 1);
@@ -247,10 +261,14 @@ void Stokes<dim>::setup_dofs(const bool &first_run)
 
   if (first_run)
     {
-      VectorTools::interpolate(
-        *mapping, *dof_handler, initial_solution, solution);
-      VectorTools::interpolate(
-        *mapping, *dof_handler, initial_solution_dot, solution_dot);
+      VectorTools::interpolate(*mapping,
+                               *dof_handler,
+                               initial_solution,
+                               solution);
+      VectorTools::interpolate(*mapping,
+                               *dof_handler,
+                               initial_solution_dot,
+                               solution_dot);
     }
 
   computing_timer.exit_section();
@@ -258,7 +276,8 @@ void Stokes<dim>::setup_dofs(const bool &first_run)
 
 
 template <int dim>
-void Stokes<dim>::update_constraints(const double &t)
+void
+Stokes<dim>::update_constraints(const double &t)
 {
   dirichlet_bcs.set_time(t);
   dirichlet_dot.set_time(t);
@@ -266,24 +285,27 @@ void Stokes<dim>::update_constraints(const double &t)
   constraints.clear();
   DoFTools::make_hanging_node_constraints(*dof_handler, constraints);
 
-  dirichlet_bcs.interpolate_boundary_values(
-    *mapping, *dof_handler, constraints);
+  dirichlet_bcs.interpolate_boundary_values(*mapping,
+                                            *dof_handler,
+                                            constraints);
 
   constraints.close();
   constraints_dot.clear();
 
   DoFTools::make_hanging_node_constraints(*dof_handler, constraints_dot);
 
-  dirichlet_dot.interpolate_boundary_values(
-    *mapping, *dof_handler, constraints_dot);
+  dirichlet_dot.interpolate_boundary_values(*mapping,
+                                            *dof_handler,
+                                            constraints_dot);
   constraints_dot.close();
 }
 
 template <int dim>
-void Stokes<dim>::assemble_jacobian_matrix(const double t,
-                                           const VEC &  solution,
-                                           const VEC &  solution_dot,
-                                           const double alpha)
+void
+Stokes<dim>::assemble_jacobian_matrix(const double t,
+                                      const VEC &  solution,
+                                      const VEC &  solution_dot,
+                                      const double alpha)
 {
   computing_timer.enter_section("   Assemble jacobian matrix");
   jacobian_matrix                = 0;
@@ -369,11 +391,13 @@ void Stokes<dim>::assemble_jacobian_matrix(const double t,
           }
 
         cell->get_dof_indices(local_dof_indices);
-        constraints.distribute_local_to_global(
-          cell_matrix, local_dof_indices, jacobian_matrix);
+        constraints.distribute_local_to_global(cell_matrix,
+                                               local_dof_indices,
+                                               jacobian_matrix);
 
-        constraints.distribute_local_to_global(
-          cell_prec, local_dof_indices, jacobian_preconditioner_matrix);
+        constraints.distribute_local_to_global(cell_prec,
+                                               local_dof_indices,
+                                               jacobian_preconditioner_matrix);
       }
 
   jacobian_matrix.compress(VectorOperation::add);
@@ -381,10 +405,10 @@ void Stokes<dim>::assemble_jacobian_matrix(const double t,
 
   // ########## Operators setup
   std::vector<std::vector<bool>> constant_modes;
-  DoFTools::extract_constant_modes(
-    *dof_handler,
-    dof_handler->get_fe().component_mask(velocities),
-    constant_modes);
+  DoFTools::extract_constant_modes(*dof_handler,
+                                   dof_handler->get_fe().component_mask(
+                                     velocities),
+                                   constant_modes);
 
   Mp_preconditioner.reset(new TrilinosWrappers::PreconditionJacobi());
   Amg_preconditioner.reset(new TrilinosWrappers::PreconditionAMG());
@@ -428,8 +452,9 @@ void Stokes<dim>::assemble_jacobian_matrix(const double t,
         P[i][j] = null_operator<TrilinosWrappers::MPI::Vector>(P[i][j]);
 
   P[0][0] = inverse_operator<>(S[0][0], solver_CG, *Amg_preconditioner);
-  P[1][1] = inverse_operator<>(
-    jacobian_preconditioner_matrix.block(1, 1), solver_CG, *Mp_preconditioner);
+  P[1][1] = inverse_operator<>(jacobian_preconditioner_matrix.block(1, 1),
+                               solver_CG,
+                               *Mp_preconditioner);
 
   jacobian_preconditioner_op = block_forward_substitution<>(
     BlockLinearOperator<TrilinosWrappers::MPI::BlockVector>(S),
@@ -439,10 +464,11 @@ void Stokes<dim>::assemble_jacobian_matrix(const double t,
 }
 
 template <int dim>
-int Stokes<dim>::residual(const double t,
-                          const VEC &  solution,
-                          const VEC &  solution_dot,
-                          VEC &        dst)
+int
+Stokes<dim>::residual(const double t,
+                      const VEC &  solution,
+                      const VEC &  solution_dot,
+                      VEC &        dst)
 {
   computing_timer.enter_section("Residual");
 
@@ -513,9 +539,10 @@ int Stokes<dim>::residual(const double t,
                 cell_rhs(i) +=
                   (sols_dot[q_point] * fe_values[u].value(i, q_point)
 
-                   + mu * scalar_product(
-                            grad_sols[q_point],
-                            fe_values[u].symmetric_gradient(i, q_point))
+                   +
+                   mu *
+                     scalar_product(grad_sols[q_point],
+                                    fe_values[u].symmetric_gradient(i, q_point))
 
                    - ps[q_point] * fe_values[u].divergence(i, q_point)
 
@@ -533,8 +560,9 @@ int Stokes<dim>::residual(const double t,
               }
           }
 
-        constraints.distribute_local_to_global(
-          cell_rhs, local_dof_indices, dst);
+        constraints.distribute_local_to_global(cell_rhs,
+                                               local_dof_indices,
+                                               dst);
       }
 
   dst.compress(VectorOperation::add);
@@ -553,23 +581,26 @@ int Stokes<dim>::residual(const double t,
 }
 
 template <int dim>
-shared_ptr<VEC> Stokes<dim>::create_new_vector() const
+shared_ptr<VEC>
+Stokes<dim>::create_new_vector() const
 {
   shared_ptr<VEC> ret = SP(new VEC(solution));
   return ret;
 }
 
 template <int dim>
-unsigned int Stokes<dim>::n_dofs() const
+unsigned int
+Stokes<dim>::n_dofs() const
 {
   return dof_handler->n_dofs();
 }
 
 template <int dim>
-void Stokes<dim>::output_step(const double       t,
-                              const VEC &        solution,
-                              const VEC &        solution_dot,
-                              const unsigned int step_number)
+void
+Stokes<dim>::output_step(const double       t,
+                         const VEC &        solution,
+                         const VEC &        solution_dot,
+                         const unsigned int step_number)
 {
   computing_timer.enter_section("Postprocessing");
 
@@ -602,9 +633,10 @@ void Stokes<dim>::output_step(const double       t,
 }
 
 template <int dim>
-bool Stokes<dim>::solver_should_restart(const double t,
-                                        VEC &        solution,
-                                        VEC &        solution_dot)
+bool
+Stokes<dim>::solver_should_restart(const double t,
+                                   VEC &        solution,
+                                   VEC &        solution_dot)
 {
   if (use_space_adaptivity)
     {
@@ -697,10 +729,11 @@ bool Stokes<dim>::solver_should_restart(const double t,
 
 
 template <int dim>
-int Stokes<dim>::setup_jacobian(const double t,
-                                const VEC &  src_yy,
-                                const VEC &  src_yp,
-                                const double alpha)
+int
+Stokes<dim>::setup_jacobian(const double t,
+                            const VEC &  src_yy,
+                            const VEC &  src_yp,
+                            const double alpha)
 {
   computing_timer.enter_section("   Setup Jacobian");
 
@@ -712,7 +745,8 @@ int Stokes<dim>::setup_jacobian(const double t,
 }
 
 template <int dim>
-int Stokes<dim>::solve_jacobian_system(const VEC &src, VEC &dst) const
+int
+Stokes<dim>::solve_jacobian_system(const VEC &src, VEC &dst) const
 {
   computing_timer.enter_section("   Solve system");
 
@@ -778,7 +812,8 @@ int Stokes<dim>::solve_jacobian_system(const VEC &src, VEC &dst) const
 }
 
 template <int dim>
-VEC &Stokes<dim>::differential_components() const
+VEC &
+Stokes<dim>::differential_components() const
 {
   static VEC diff_comps;
   diff_comps.reinit(solution);
@@ -790,7 +825,8 @@ VEC &Stokes<dim>::differential_components() const
 }
 
 template <int dim>
-void Stokes<dim>::set_constrained_dofs_to_zero(VEC &v) const
+void
+Stokes<dim>::set_constrained_dofs_to_zero(VEC &v) const
 {
   for (unsigned int i = 0; i < global_partitioning.n_elements(); ++i)
     {
@@ -801,7 +837,8 @@ void Stokes<dim>::set_constrained_dofs_to_zero(VEC &v) const
 }
 
 template <int dim>
-void Stokes<dim>::run()
+void
+Stokes<dim>::run()
 {
   make_grid_fe();
   setup_dofs(true);

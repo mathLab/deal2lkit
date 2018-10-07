@@ -25,18 +25,19 @@ ParsedMappedFunctions<spacedim>::ParsedMappedFunctions(
   const std::string & parsed_component_names,
   const std::string & parsed_id_components,
   const std::string & parsed_id_functions,
-  const std::string & parsed_constants) :
-  ParameterAcceptor(parsed_name),
-  name(parsed_name),
-  str_id_components(parsed_id_components),
-  str_id_functions(parsed_id_functions),
-  str_component_names(parsed_component_names),
-  str_constants(parsed_constants),
-  n_components(n_components)
+  const std::string & parsed_constants)
+  : ParameterAcceptor(parsed_name)
+  , name(parsed_name)
+  , str_id_components(parsed_id_components)
+  , str_id_functions(parsed_id_functions)
+  , str_component_names(parsed_component_names)
+  , str_constants(parsed_constants)
+  , n_components(n_components)
 {}
 
 template <int spacedim>
-void ParsedMappedFunctions<spacedim>::add_normal_components()
+void
+ParsedMappedFunctions<spacedim>::add_normal_components()
 {
   std::vector<std::string> var = unique(_component_names);
   for (unsigned int i = 0; i < var.size(); ++i)
@@ -57,7 +58,8 @@ void ParsedMappedFunctions<spacedim>::add_normal_components()
 }
 
 template <int spacedim>
-void ParsedMappedFunctions<spacedim>::parse_parameters_call_back()
+void
+ParsedMappedFunctions<spacedim>::parse_parameters_call_back()
 {
   add_normal_components();
   _all_components = _component_names;
@@ -84,7 +86,8 @@ void ParsedMappedFunctions<spacedim>::parse_parameters_call_back()
 }
 
 template <int spacedim>
-void ParsedMappedFunctions<spacedim>::split_id_components(
+void
+ParsedMappedFunctions<spacedim>::split_id_components(
   const std::string &parsed_idcomponents)
 {
   std::vector<std::string> idcomponents;
@@ -157,7 +160,8 @@ void ParsedMappedFunctions<spacedim>::split_id_components(
 }
 
 template <int spacedim>
-void ParsedMappedFunctions<spacedim>::split_id_functions(
+void
+ParsedMappedFunctions<spacedim>::split_id_functions(
   const std::string &parsed_idfunctions,
   const std::string &constants)
 {
@@ -277,7 +281,8 @@ ParsedMappedFunctions<spacedim>::get_mapped_normal_ids() const
 }
 
 template <int spacedim>
-void ParsedMappedFunctions<spacedim>::declare_parameters(ParameterHandler &prm)
+void
+ParsedMappedFunctions<spacedim>::declare_parameters(ParameterHandler &prm)
 {
   if (str_component_names != "")
     add_parameter(
@@ -344,13 +349,15 @@ void ParsedMappedFunctions<spacedim>::declare_parameters(ParameterHandler &prm)
 }
 
 template <int spacedim>
-bool ParsedMappedFunctions<spacedim>::acts_on_id(unsigned int &id) const
+bool
+ParsedMappedFunctions<spacedim>::acts_on_id(unsigned int &id) const
 {
   return id_components.find(id) != id_components.end();
 }
 
 template <int spacedim>
-void ParsedMappedFunctions<spacedim>::set_time(const double &t)
+void
+ParsedMappedFunctions<spacedim>::set_time(const double &t)
 {
   typedef typename std::map<
     unsigned int,
@@ -360,7 +367,8 @@ void ParsedMappedFunctions<spacedim>::set_time(const double &t)
 }
 
 template <int spacedim>
-void ParsedMappedFunctions<spacedim>::set_normal_functions()
+void
+ParsedMappedFunctions<spacedim>::set_normal_functions()
 {
   typedef std::map<std::string,
                    std::pair<std::vector<unsigned int>, unsigned int>>::iterator

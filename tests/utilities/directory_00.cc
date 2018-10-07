@@ -19,7 +19,8 @@
 
 
 
-int main()
+int
+main()
 {
   initlog();
   const std::string name_dir = "directory_test";

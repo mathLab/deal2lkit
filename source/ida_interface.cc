@@ -46,11 +46,12 @@ D2K_NAMESPACE_OPEN
 namespace
 {
   template <typename VEC>
-  int t_dae_residual(realtype tt,
-                     N_Vector yy,
-                     N_Vector yp,
-                     N_Vector rr,
-                     void *   user_data)
+  int
+  t_dae_residual(realtype tt,
+                 N_Vector yy,
+                 N_Vector yp,
+                 N_Vector rr,
+                 void *   user_data)
   {
     IDAInterface<VEC> &solver = *static_cast<IDAInterface<VEC> *>(user_data);
 
@@ -71,13 +72,14 @@ namespace
 
 
   template <typename VEC>
-  int t_dae_lsetup(IDAMem   IDA_mem,
-                   N_Vector yy,
-                   N_Vector yp,
-                   N_Vector resp,
-                   N_Vector tmp1,
-                   N_Vector tmp2,
-                   N_Vector tmp3)
+  int
+  t_dae_lsetup(IDAMem   IDA_mem,
+               N_Vector yy,
+               N_Vector yp,
+               N_Vector resp,
+               N_Vector tmp1,
+               N_Vector tmp2,
+               N_Vector tmp3)
   {
     (void)tmp1;
     (void)tmp2;
@@ -99,12 +101,13 @@ namespace
 
 
   template <typename VEC>
-  int t_dae_solve(IDAMem   IDA_mem,
-                  N_Vector b,
-                  N_Vector weight,
-                  N_Vector yy,
-                  N_Vector yp,
-                  N_Vector resp)
+  int
+  t_dae_solve(IDAMem   IDA_mem,
+              N_Vector b,
+              N_Vector weight,
+              N_Vector yy,
+              N_Vector yp,
+              N_Vector resp)
   {
     (void)weight;
     (void)yy;
@@ -127,21 +130,20 @@ namespace
 
 #  ifdef DEAL_II_WITH_MPI
 template <typename VEC>
-IDAInterface<VEC>::IDAInterface(const std::string name,
-                                const MPI_Comm    mpi_comm) :
-  ParameterAcceptor(name),
-  ida_mem(nullptr),
-  communicator(Utilities::MPI::duplicate_communicator(mpi_comm)),
-  pcout(std::cout, Utilities::MPI::this_mpi_process(mpi_comm) == 0)
+IDAInterface<VEC>::IDAInterface(const std::string name, const MPI_Comm mpi_comm)
+  : ParameterAcceptor(name)
+  , ida_mem(nullptr)
+  , communicator(Utilities::MPI::duplicate_communicator(mpi_comm))
+  , pcout(std::cout, Utilities::MPI::this_mpi_process(mpi_comm) == 0)
 {
   set_functions_to_trigger_an_assert();
 }
 #  else
 template <typename VEC>
-IDAInterface<VEC>::IDAInterface(const std::string name) :
-  ParameterAcceptor(name),
-  ida_mem(nullptr),
-  pcout(std::cout)
+IDAInterface<VEC>::IDAInterface(const std::string name)
+  : ParameterAcceptor(name)
+  , ida_mem(nullptr)
+  , pcout(std::cout)
 {
   set_functions_to_trigger_an_assert();
 }
@@ -158,7 +160,8 @@ IDAInterface<VEC>::~IDAInterface()
 }
 
 template <typename VEC>
-void IDAInterface<VEC>::declare_parameters(ParameterHandler &prm)
+void
+IDAInterface<VEC>::declare_parameters(ParameterHandler &prm)
 {
   add_parameter(
     prm, &initial_step_size, "Initial step size", "1e-4", Patterns::Double());
@@ -257,7 +260,8 @@ void IDAInterface<VEC>::declare_parameters(ParameterHandler &prm)
 
 
 template <typename VEC>
-unsigned int IDAInterface<VEC>::solve_dae(VEC &solution, VEC &solution_dot)
+unsigned int
+IDAInterface<VEC>::solve_dae(VEC &solution, VEC &solution_dot)
 {
   system_size = solution.size();
 
@@ -350,11 +354,12 @@ unsigned int IDAInterface<VEC>::solve_dae(VEC &solution, VEC &solution_dot)
 }
 
 template <typename VEC>
-void IDAInterface<VEC>::reset_dae(double current_time,
-                                  VEC &  solution,
-                                  VEC &  solution_dot,
-                                  double current_time_step,
-                                  bool   first_step)
+void
+IDAInterface<VEC>::reset_dae(double current_time,
+                             VEC &  solution,
+                             VEC &  solution_dot,
+                             double current_time_step,
+                             bool   first_step)
 {
   if (ida_mem)
     IDAFree(&ida_mem);
@@ -480,13 +485,15 @@ void IDAInterface<VEC>::reset_dae(double current_time,
 }
 
 template <typename VEC>
-void IDAInterface<VEC>::set_initial_time(const double &t)
+void
+IDAInterface<VEC>::set_initial_time(const double &t)
 {
   initial_time = t;
 }
 
 template <typename VEC>
-void IDAInterface<VEC>::set_functions_to_trigger_an_assert()
+void
+IDAInterface<VEC>::set_functions_to_trigger_an_assert()
 {
   create_new_vector = []() -> shared_ptr<VEC> {
     shared_ptr<VEC> p;

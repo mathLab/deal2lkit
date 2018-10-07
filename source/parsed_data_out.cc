@@ -49,22 +49,23 @@ ParsedDataOut<dim, spacedim>::ParsedDataOut(
   const std::string & incremental_run_prefix,
   const std::string & base_name_input,
   const std::string & files_to_save,
-  const MPI_Comm &    comm) :
-  ParameterAcceptor(name),
-  comm(comm),
-  n_mpi_processes(Utilities::MPI::n_mpi_processes(comm)),
-  this_mpi_process(Utilities::MPI::this_mpi_process(comm)),
-  output_format(output_format),
-  subdivisions(subdivisions),
-  base_name(base_name_input),
-  incremental_run_prefix(incremental_run_prefix),
-  files_to_save(files_to_save)
+  const MPI_Comm &    comm)
+  : ParameterAcceptor(name)
+  , comm(comm)
+  , n_mpi_processes(Utilities::MPI::n_mpi_processes(comm))
+  , this_mpi_process(Utilities::MPI::this_mpi_process(comm))
+  , output_format(output_format)
+  , subdivisions(subdivisions)
+  , base_name(base_name_input)
+  , incremental_run_prefix(incremental_run_prefix)
+  , files_to_save(files_to_save)
 {
   initialized = false;
 }
 
 template <int dim, int spacedim>
-void ParsedDataOut<dim, spacedim>::declare_parameters(ParameterHandler &prm)
+void
+ParsedDataOut<dim, spacedim>::declare_parameters(ParameterHandler &prm)
 {
   add_parameter(
     prm, &base_name, "Problem base name", base_name, Patterns::Anything());
@@ -109,7 +110,8 @@ void ParsedDataOut<dim, spacedim>::declare_parameters(ParameterHandler &prm)
 }
 
 template <int dim, int spacedim>
-void ParsedDataOut<dim, spacedim>::parse_parameters_call_back()
+void
+ParsedDataOut<dim, spacedim>::parse_parameters_call_back()
 {
   if (incremental_run_prefix != "")
     {
@@ -134,7 +136,8 @@ void ParsedDataOut<dim, spacedim>::parse_parameters_call_back()
 }
 
 template <int dim, int spacedim>
-void ParsedDataOut<dim, spacedim>::prepare_data_output(
+void
+ParsedDataOut<dim, spacedim>::prepare_data_output(
   const DoFHandler<dim, spacedim> &dh,
   const std::string &              suffix)
 {
@@ -189,7 +192,8 @@ void ParsedDataOut<dim, spacedim>::prepare_data_output(
 
 
 template <int dim, int spacedim>
-void ParsedDataOut<dim, spacedim>::write_data_and_clear(
+void
+ParsedDataOut<dim, spacedim>::write_data_and_clear(
   const Mapping<dim, spacedim> &mapping)
 {
   if (output_format == "none")

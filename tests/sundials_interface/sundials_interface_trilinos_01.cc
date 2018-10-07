@@ -40,25 +40,28 @@ template <typename VEC>
 class Solver : public SundialsInterface<VEC>, public ParameterAcceptor
 {
 public:
-  Solver(const MPI_Comm &comm) :
-    SundialsInterface<VEC>(comm),
-    n_dofs_(1),
-    ofile("output.gpl"){};
+  Solver(const MPI_Comm &comm)
+    : SundialsInterface<VEC>(comm)
+    , n_dofs_(1)
+    , ofile("output.gpl"){};
 
 
-  virtual void declare_parameters(ParameterHandler &prm)
+  virtual void
+  declare_parameters(ParameterHandler &prm)
   {
     add_parameter(prm, &n_dofs_, "Number of comps", "2", Patterns::Integer(0));
   }
 
-  virtual unsigned int n_dofs() const
+  virtual unsigned int
+  n_dofs() const
   {
     static int n_procs = Utilities::MPI::n_mpi_processes(this->get_comm());
     static int my_id   = Utilities::MPI::this_mpi_process(this->get_comm());
     return n_procs * n_dofs_;
   };
 
-  virtual shared_ptr<VEC> create_new_vector() const
+  virtual shared_ptr<VEC>
+  create_new_vector() const
   {
     static int n_procs = Utilities::MPI::n_mpi_processes(this->get_comm());
     static int my_id   = Utilities::MPI::this_mpi_process(this->get_comm());
@@ -74,11 +77,12 @@ public:
     return SP(new TrilinosWrappers::MPI::BlockVector(all_is, this->get_comm()));
   }
 
-  virtual void output_step(const double       t,
-                           const VEC &        solution,
-                           const VEC &        solution_dot,
-                           const unsigned int step_number,
-                           const double       h)
+  virtual void
+  output_step(const double       t,
+              const VEC &        solution,
+              const VEC &        solution_dot,
+              const unsigned int step_number,
+              const double       h)
   {
     deallog << "Step " << step_number << ", t: " << t << std::endl;
     if (solution.block(0).in_local_range(0))
@@ -111,11 +115,12 @@ public:
   }
 
   /** Jacobian vector product. */
-  virtual int setup_jacobian(const double t,
-                             const VEC &  src_yy,
-                             const VEC &  src_yp,
-                             const VEC &  residual,
-                             const double alpha_in)
+  virtual int
+  setup_jacobian(const double t,
+                 const VEC &  src_yy,
+                 const VEC &  src_yp,
+                 const VEC &  residual,
+                 const double alpha_in)
   {
     y     = SP(new VEC(src_yy));
     y_dot = SP(new VEC(src_yp));
@@ -124,7 +129,8 @@ public:
   }
 
 
-  virtual VEC &differential_components() const
+  virtual VEC &
+  differential_components() const
   {
     static shared_ptr<VEC> diff        = create_new_vector();
     static bool            initialized = false;
@@ -136,7 +142,8 @@ public:
     return *diff;
   }
 
-  virtual VEC &get_local_tolerances() const
+  virtual VEC &
+  get_local_tolerances() const
   {
     static shared_ptr<VEC> diff        = create_new_vector();
     static bool            initialized = false;
@@ -148,13 +155,14 @@ public:
     return *diff;
   }
 
-  virtual int solve_jacobian_system(const double t,
-                                    const VEC &  y,
-                                    const VEC &  y_dot,
-                                    const VEC &  residual,
-                                    const double alpha,
-                                    const VEC &  src,
-                                    VEC &        dst) const
+  virtual int
+  solve_jacobian_system(const double t,
+                        const VEC &  y,
+                        const VEC &  y_dot,
+                        const VEC &  residual,
+                        const double alpha,
+                        const VEC &  src,
+                        VEC &        dst) const
   {
     deallog << "solved" << std::endl;
     return 0;
@@ -172,7 +180,8 @@ private:
 
 
 
-int main(int argc, char **argv)
+int
+main(int argc, char **argv)
 {
   Utilities::MPI::MPI_InitFinalize initializater(argc, argv, 1);
 

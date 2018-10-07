@@ -30,7 +30,8 @@
 using namespace deal2lkit;
 
 template <int dim, int spacedim>
-void test()
+void
+test()
 {
   ParsedGridGenerator<dim, spacedim> pgg;
   ParsedGridRefinement               pgr("", "number");
@@ -61,7 +62,8 @@ void test()
   delete tria;
 }
 
-int main()
+int
+main()
 {
   initlog();
 
