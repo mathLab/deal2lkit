@@ -16,16 +16,17 @@
 #ifndef d2k_parsed_ilu_preconditioner_h
 #define d2k_parsed_ilu_preconditioner_h
 
-#include <deal2lkit/config.h>
 #include <deal.II/base/config.h>
+
+#include <deal2lkit/config.h>
 
 #ifdef DEAL_II_WITH_TRILINOS
 
-#include <deal.II/lac/trilinos_precondition.h>
+#  include <deal.II/lac/trilinos_precondition.h>
 
-#include <deal2lkit/parsed_finite_element.h>
-#include <deal2lkit/parameter_acceptor.h>
-#include <deal2lkit/utilities.h>
+#  include <deal2lkit/parameter_acceptor.h>
+#  include <deal2lkit/parsed_finite_element.h>
+#  include <deal2lkit/utilities.h>
 
 using namespace dealii;
 
@@ -38,18 +39,18 @@ D2K_NAMESPACE_OPEN
  * TrilinosWrappers::PreconditionILU which can be called in place
  * of the preconditioner.
  */
-class ParsedILUPreconditioner : public ParameterAcceptor, public TrilinosWrappers::PreconditionILU
+class ParsedILUPreconditioner : public ParameterAcceptor,
+                                public TrilinosWrappers::PreconditionILU
 {
 public:
   /**
    * Constructor. Build the preconditioner of a matrix using ILU.
    */
-  ParsedILUPreconditioner(const std::string &name = "ILU Preconditioner",
+  ParsedILUPreconditioner(const std::string & name     = "ILU Preconditioner",
                           const unsigned int &ilu_fill = 0,
-                          const double &ilu_atol = 0.0,
-                          const double &ilu_rtol = 1.0,
-                          const unsigned int &overlap = 0
-                         );
+                          const double &      ilu_atol = 0.0,
+                          const double &      ilu_rtol = 1.0,
+                          const unsigned int &overlap  = 0);
 
   /**
    * Declare preconditioner options.
@@ -59,18 +60,17 @@ public:
   /**
    * Initialize the preconditioner using @p matrix.
    */
-  template<typename Matrix>
-  void initialize_preconditioner( const Matrix &matrix);
+  template <typename Matrix>
+  void initialize_preconditioner(const Matrix &matrix);
 
   using TrilinosWrappers::PreconditionILU::initialize;
 
 private:
-
-
   /**
    * This specifies the amount of additional fill-in elements besides
-   * the original sparse matrix structure. If \f$k\f$ is fill, the sparsity pattern
-   * of \f$Ak+1\f$ is used for the storage of the result of the Gaussian elimination.
+   * the original sparse matrix structure. If \f$k\f$ is fill, the sparsity
+   * pattern of \f$Ak+1\f$ is used for the storage of the result of the Gaussian
+   * elimination.
    * This is known as \f$ILU( k)\f$ in the literature. When @p ilu_fill is large,
    * the preconditioner comes closer to a (direct) sparse LU decomposition.
    * @note however, that this will drastically increase the memory requirement,
@@ -131,4 +131,3 @@ D2K_NAMESPACE_CLOSE
 #endif // DEAL_II_WITH_TRILINOS
 
 #endif
-

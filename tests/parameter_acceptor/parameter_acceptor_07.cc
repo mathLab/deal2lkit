@@ -15,34 +15,36 @@
 
 // Test parmeter table
 
-#include "../tests.h"
-#include <deal2lkit/utilities.h>
 #include <deal2lkit/parameter_acceptor.h>
+#include <deal2lkit/utilities.h>
+
+#include "../tests.h"
 
 
 using namespace deal2lkit;
 
-template<int dim>
+template <int dim>
 class Test : public ParameterAcceptor
 {
 public:
   virtual void declare_parameters(ParameterHandler &prm)
   {
-    add_parameter(prm, &my_list, "A table", "1,2,3;5,6 ; 7,8,9, 10", Patterns::Anything());
+    add_parameter(
+      prm, &my_list, "A table", "1,2,3;5,6 ; 7,8,9, 10", Patterns::Anything());
   };
 
   void log_info()
   {
     deallog << "My type: " << type(*this) << std::endl;
-    for (unsigned int i=0; i<my_list.size(); ++i)
+    for (unsigned int i = 0; i < my_list.size(); ++i)
       deallog << i << ": " << print(my_list[i]) << std::endl;
   };
 
-  std::vector<std::vector<unsigned int> > my_list;
+  std::vector<std::vector<unsigned int>> my_list;
 };
 
 
-int main ()
+int main()
 {
   initlog();
   Test<1> a;
@@ -50,5 +52,4 @@ int main ()
   ParameterAcceptor::initialize();
   ParameterAcceptor::prm.log_parameters(deallog);
   a.log_info();
-
 }

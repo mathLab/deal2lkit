@@ -13,32 +13,25 @@
 //
 //-----------------------------------------------------------
 
-#include "../tests.h"
-
-#include <stdio.h>
-#include <stdlib.h>
-
-#include <sundials/sundials_types.h>
-#include <nvector/nvector_parallel.h>
-#include <sundials/sundials_math.h>
-
-#include <mpi.h>
-
-
-#include <nvector/nvector_parallel.h>
+#include <deal.II/base/index_set.h>
 
 #include <deal.II/lac/parallel_vector.h>
 #include <deal.II/lac/trilinos_parallel_block_vector.h>
-#include <deal.II/base/index_set.h>
 
-#include <mpi.h>
-
-#include <deal2lkit/utilities.h>
-#include <deal2lkit/sundials_interface.h>
 #include <deal2lkit/ida_interface.h>
 #include <deal2lkit/parameter_acceptor.h>
+#include <deal2lkit/sundials_interface.h>
+#include <deal2lkit/utilities.h>
+#include <mpi.h>
+#include <nvector/nvector_parallel.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <sundials/sundials_math.h>
+#include <sundials/sundials_types.h>
 
 #include <fstream>
+
+#include "../tests.h"
 
 
 using namespace deal2lkit;
@@ -47,12 +40,10 @@ template <typename VEC>
 class Solver : public SundialsInterface<VEC>, public ParameterAcceptor
 {
 public:
-
   Solver(const MPI_Comm &comm) :
     SundialsInterface<VEC>(comm),
     n_dofs_(1),
-    ofile("output.gpl")
-  {};
+    ofile("output.gpl"){};
 
 
   virtual void declare_parameters(ParameterHandler &prm)
@@ -63,49 +54,46 @@ public:
   virtual unsigned int n_dofs() const
   {
     static int n_procs = Utilities::MPI::n_mpi_processes(this->get_comm());
-    static int my_id = Utilities::MPI::this_mpi_process(this->get_comm());
-    return n_procs*n_dofs_;
+    static int my_id   = Utilities::MPI::this_mpi_process(this->get_comm());
+    return n_procs * n_dofs_;
   };
 
   virtual shared_ptr<VEC> create_new_vector() const
   {
     static int n_procs = Utilities::MPI::n_mpi_processes(this->get_comm());
-    static int my_id = Utilities::MPI::this_mpi_process(this->get_comm());
+    static int my_id   = Utilities::MPI::this_mpi_process(this->get_comm());
     static std::vector<IndexSet> all_is;
     if (all_is.size() == 0)
       {
-        IndexSet is(n_dofs()/2);
-        is.add_range(my_id*(n_dofs()/n_procs/2), (my_id+1)*(n_dofs()/n_procs/2));
+        IndexSet is(n_dofs() / 2);
+        is.add_range(my_id * (n_dofs() / n_procs / 2),
+                     (my_id + 1) * (n_dofs() / n_procs / 2));
         all_is.push_back(is);
         all_is.push_back(is);
       }
     return SP(new TrilinosWrappers::MPI::BlockVector(all_is, this->get_comm()));
   }
 
-  virtual void output_step(const double t,
-                           const VEC &solution,
-                           const VEC &solution_dot,
+  virtual void output_step(const double       t,
+                           const VEC &        solution,
+                           const VEC &        solution_dot,
                            const unsigned int step_number,
-                           const double h)
+                           const double       h)
   {
-    deallog << "Step " << step_number
-            << ", t: " << t << std::endl;
+    deallog << "Step " << step_number << ", t: " << t << std::endl;
     if (solution.block(0).in_local_range(0))
       {
-        ofile << t << " " << solution.block(0)[0]
-              << " " << solution.block(1)[0] << std::endl;
+        ofile << t << " " << solution.block(0)[0] << " " << solution.block(1)[0]
+              << std::endl;
       }
   }
 
 
-  virtual int residual(const double t,
-                       const VEC &src_yy,
-                       const VEC &src_yp,
-                       VEC &dst)
+  virtual int
+  residual(const double t, const VEC &src_yy, const VEC &src_yp, VEC &dst)
   {
-
-    auto &y = src_yy.block(0);
-    auto &p = src_yy.block(1);
+    auto &y    = src_yy.block(0);
+    auto &p    = src_yy.block(1);
     auto &ydot = src_yp.block(0);
 
     auto &dy = dst.block(0);
@@ -117,19 +105,19 @@ public:
     dy += ydot;
 
     dp = p;
-    vector_shift(dp,-1.);
+    vector_shift(dp, -1.);
     dp.scale(p);
     return 0;
   }
 
   /** Jacobian vector product. */
   virtual int setup_jacobian(const double t,
-                             const VEC &src_yy,
-                             const VEC &src_yp,
-                             const VEC &residual,
+                             const VEC &  src_yy,
+                             const VEC &  src_yp,
+                             const VEC &  residual,
                              const double alpha_in)
   {
-    y = SP(new VEC(src_yy));
+    y     = SP(new VEC(src_yy));
     y_dot = SP(new VEC(src_yp));
     alpha = alpha_in;
     return 0;
@@ -138,20 +126,20 @@ public:
 
   virtual VEC &differential_components() const
   {
-    static shared_ptr<VEC> diff = create_new_vector();
-    static bool initialized = false;
+    static shared_ptr<VEC> diff        = create_new_vector();
+    static bool            initialized = false;
     if (initialized == false)
       {
         diff->block(0) = 1.0;
-        initialized = true;
+        initialized    = true;
       }
     return *diff;
   }
 
   virtual VEC &get_local_tolerances() const
   {
-    static shared_ptr<VEC> diff = create_new_vector();
-    static bool initialized = false;
+    static shared_ptr<VEC> diff        = create_new_vector();
+    static bool            initialized = false;
     if (initialized == false)
       {
         vector_shift(*diff, 1.0);
@@ -161,26 +149,25 @@ public:
   }
 
   virtual int solve_jacobian_system(const double t,
-                                    const VEC &y,
-                                    const VEC &y_dot,
-                                    const VEC &residual,
+                                    const VEC &  y,
+                                    const VEC &  y_dot,
+                                    const VEC &  residual,
                                     const double alpha,
-                                    const VEC &src,
-                                    VEC &dst) const
+                                    const VEC &  src,
+                                    VEC &        dst) const
   {
-    deallog<<"solved" << std::endl;
+    deallog << "solved" << std::endl;
     return 0;
   }
 
 
 private:
-  unsigned int n_dofs_;
+  unsigned int  n_dofs_;
   std::ofstream ofile;
 
   shared_ptr<VEC> y;
   shared_ptr<VEC> y_dot;
-  double alpha;
-
+  double          alpha;
 };
 
 
@@ -194,35 +181,36 @@ int main(int argc, char **argv)
   mpi_initlog();
 
   int numprocs = Utilities::MPI::n_mpi_processes(comm);
-  int myid = Utilities::MPI::this_mpi_process(comm);
-//
-//  std::cout << "Process " << getpid() << " is " << myid
-//            << " of " << numprocs << " processes" << std::endl;
-//  if (myid == 0) system("read -p \"Press [Enter] key to start debug...\"");
-//
-//
+  int myid     = Utilities::MPI::this_mpi_process(comm);
+  //
+  //  std::cout << "Process " << getpid() << " is " << myid
+  //            << " of " << numprocs << " processes" << std::endl;
+  //  if (myid == 0) system("read -p \"Press [Enter] key to start debug...\"");
+  //
+  //
 
   typedef TrilinosWrappers::MPI::BlockVector VEC;
 
-  Solver<VEC> solver(comm);
+  Solver<VEC>       solver(comm);
   IDAInterface<VEC> ode(solver);
 
-  ParameterAcceptor::initialize(SOURCE_DIR "/parameters/sundials_interface_trilinos_01.prm", "ode.prm");
+  ParameterAcceptor::initialize(
+    SOURCE_DIR "/parameters/sundials_interface_trilinos_01.prm", "ode.prm");
 
   shared_ptr<VEC> sol = solver.create_new_vector();
-  vector_shift(*sol,1.);
+  vector_shift(*sol, 1.);
 
   shared_ptr<VEC> sol_dot = solver.create_new_vector();
 
   IndexSet is = sol->locally_owned_elements();
 
-  deallog << "[IS] N_dofs: " << is.size()
-          << ", locally: " << is.n_elements() << std::endl;
+  deallog << "[IS] N_dofs: " << is.size() << ", locally: " << is.n_elements()
+          << std::endl;
 
-  deallog << "Dofs: " << solver.n_dofs()
-          << ", vec size: " << sol->size() << std::endl;
+  deallog << "Dofs: " << solver.n_dofs() << ", vec size: " << sol->size()
+          << std::endl;
 
-  unsigned int max_steps=10000;
+  unsigned int max_steps = 10000;
 
 
   ode.start_ode(*sol, *sol_dot, max_steps);

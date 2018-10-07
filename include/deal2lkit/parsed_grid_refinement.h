@@ -16,14 +16,14 @@
 #ifndef d2k_parsed_grid_refinement_h
 #define d2k_parsed_grid_refinement_h
 
-#include <deal.II/grid/tria.h>
 #include <deal.II/grid/grid_refinement.h>
+#include <deal.II/grid/tria.h>
 
 #ifdef DEAL_II_WITH_MPI
-#ifdef DEAL_II_WITH_P4EST
-#include <deal.II/distributed/tria.h>
-#include <deal.II/distributed/grid_refinement.h>
-#endif
+#  ifdef DEAL_II_WITH_P4EST
+#    include <deal.II/distributed/grid_refinement.h>
+#    include <deal.II/distributed/tria.h>
+#  endif
 #endif
 
 
@@ -43,12 +43,12 @@ public:
   /**
    * Constructor.
    */
-  ParsedGridRefinement(const std::string &name="",
-                       const std::string &strategy="fraction",
-                       const double &top_parameter=.3,
-                       const double &bottom_parameter=.1,
-                       const unsigned int &max_cells=0,
-                       const unsigned int &order=2);
+  ParsedGridRefinement(const std::string & name             = "",
+                       const std::string & strategy         = "fraction",
+                       const double &      top_parameter    = .3,
+                       const double &      bottom_parameter = .1,
+                       const unsigned int &max_cells        = 0,
+                       const unsigned int &order            = 2);
 
   /**
    * Declare local parameters.
@@ -65,12 +65,12 @@ public:
    * is actually performed. You need to call
    * Triangulation::execute_coarsening_and_refinement() yourself.
    */
-  template<int dim, class Vector , int spacedim>
-  void mark_cells(const Vector &criteria,
-                  Triangulation< dim, spacedim > &tria) const;
+  template <int dim, class Vector, int spacedim>
+  void mark_cells(const Vector &                criteria,
+                  Triangulation<dim, spacedim> &tria) const;
 
 #ifdef DEAL_II_WITH_MPI
-#ifdef DEAL_II_WITH_P4EST
+#  ifdef DEAL_II_WITH_P4EST
   /**
    * Mark cells of a distribtued triangulation for refinement or
    * coarsening, according to the given strategy applied to the
@@ -82,19 +82,20 @@ public:
    * is actually performed. You need to call
    * Triangulation::execute_coarsening_and_refinement() yourself.
    */
-  template<int dim, class Vector , int spacedim>
-  void mark_cells(const Vector &criteria,
-                  parallel::distributed::Triangulation< dim, spacedim > &tria) const;
-#endif
+  template <int dim, class Vector, int spacedim>
+  void
+  mark_cells(const Vector &                                       criteria,
+             parallel::distributed::Triangulation<dim, spacedim> &tria) const;
+#  endif
 #endif
 
 private:
   /**
    * Default expression of this function. "
    */
-  std::string strategy;
-  double top_parameter;
-  double bottom_parameter;
+  std::string  strategy;
+  double       top_parameter;
+  double       bottom_parameter;
   unsigned int max_cells;
   unsigned int order;
 };
@@ -102,44 +103,46 @@ private:
 
 
 #ifdef DEAL_II_WITH_MPI
-#ifdef DEAL_II_WITH_P4EST
-template<int dim, class Vector , int spacedim>
-void ParsedGridRefinement::mark_cells(const Vector &criteria,
-                                      parallel::distributed::Triangulation< dim, spacedim > &tria) const
+#  ifdef DEAL_II_WITH_P4EST
+template <int dim, class Vector, int spacedim>
+void ParsedGridRefinement::mark_cells(
+  const Vector &                                       criteria,
+  parallel::distributed::Triangulation<dim, spacedim> &tria) const
 {
   if (strategy == "number")
-    parallel::distributed::GridRefinement::refine_and_coarsen_fixed_number (tria,
-        criteria,
-        top_parameter, bottom_parameter,
-        max_cells ? max_cells :
-        std::numeric_limits< unsigned int >::max());
+    parallel::distributed::GridRefinement::refine_and_coarsen_fixed_number(
+      tria,
+      criteria,
+      top_parameter,
+      bottom_parameter,
+      max_cells ? max_cells : std::numeric_limits<unsigned int>::max());
   else if (strategy == "fraction")
-    parallel::distributed::GridRefinement::refine_and_coarsen_fixed_fraction (tria,
-        criteria,
-        top_parameter, bottom_parameter);
+    parallel::distributed::GridRefinement::refine_and_coarsen_fixed_fraction(
+      tria, criteria, top_parameter, bottom_parameter);
   else
     Assert(false, ExcInternalError());
-
 }
-#endif
+#  endif
 #endif
 
-template<int dim, class Vector , int spacedim>
-void ParsedGridRefinement::mark_cells(const Vector &criteria,
-                                      Triangulation< dim, spacedim > &tria) const
+template <int dim, class Vector, int spacedim>
+void ParsedGridRefinement::mark_cells(const Vector &                criteria,
+                                      Triangulation<dim, spacedim> &tria) const
 {
   if (strategy == "number")
-    GridRefinement::refine_and_coarsen_fixed_number (tria,
-                                                     criteria,
-                                                     top_parameter, bottom_parameter,
-                                                     max_cells ? max_cells :
-                                                     std::numeric_limits< unsigned int >::max());
+    GridRefinement::refine_and_coarsen_fixed_number(
+      tria,
+      criteria,
+      top_parameter,
+      bottom_parameter,
+      max_cells ? max_cells : std::numeric_limits<unsigned int>::max());
   else if (strategy == "fraction")
-    GridRefinement::refine_and_coarsen_fixed_fraction (tria,
-                                                       criteria,
-                                                       top_parameter, bottom_parameter,
-                                                       max_cells ? max_cells :
-                                                       std::numeric_limits< unsigned int >::max());
+    GridRefinement::refine_and_coarsen_fixed_fraction(
+      tria,
+      criteria,
+      top_parameter,
+      bottom_parameter,
+      max_cells ? max_cells : std::numeric_limits<unsigned int>::max());
   // This one does not seem to work properly
   // else if(strategy == "optimize")
   //   GridRefinement::refine_and_coarsen_optimize (tria, order);
@@ -151,4 +154,3 @@ D2K_NAMESPACE_CLOSE
 
 
 #endif
-

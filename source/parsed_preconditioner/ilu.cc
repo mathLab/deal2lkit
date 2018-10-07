@@ -19,12 +19,11 @@
 
 D2K_NAMESPACE_OPEN
 
-ParsedILUPreconditioner::ParsedILUPreconditioner(const std::string &name,
+ParsedILUPreconditioner::ParsedILUPreconditioner(const std::string & name,
                                                  const unsigned int &ilu_fill,
-                                                 const double &ilu_atol,
-                                                 const double &ilu_rtol,
-                                                 const unsigned int &overlap
-                                                ):
+                                                 const double &      ilu_atol,
+                                                 const double &      ilu_rtol,
+                                                 const unsigned int &overlap) :
   ParameterAcceptor(name),
   PreconditionILU(),
   ilu_fill(ilu_fill),
@@ -35,34 +34,47 @@ ParsedILUPreconditioner::ParsedILUPreconditioner(const std::string &name,
 
 void ParsedILUPreconditioner::declare_parameters(ParameterHandler &prm)
 {
-  add_parameter(prm, &ilu_fill, "Fill-in", std::to_string(ilu_fill),
+  add_parameter(prm,
+                &ilu_fill,
+                "Fill-in",
+                std::to_string(ilu_fill),
                 Patterns::Integer(0),
                 "Additional fill-in.");
-  add_parameter(prm, &ilu_atol, "ILU atol", std::to_string(ilu_atol),
+  add_parameter(prm,
+                &ilu_atol,
+                "ILU atol",
+                std::to_string(ilu_atol),
                 Patterns::Double(0.0),
                 "The amount of perturbation to add to diagonal entries.");
-  add_parameter(prm, &ilu_rtol, "ILU rtol", std::to_string(ilu_rtol),
+  add_parameter(prm,
+                &ilu_rtol,
+                "ILU rtol",
+                std::to_string(ilu_rtol),
                 Patterns::Double(0.0),
                 "Scaling factor for diagonal entries.");
-  add_parameter(prm, &overlap, "Overlap", std::to_string(overlap),
+  add_parameter(prm,
+                &overlap,
+                "Overlap",
+                std::to_string(overlap),
                 Patterns::Integer(0),
                 "Overlap between processors.");
 }
 
-template<typename Matrix>
-void ParsedILUPreconditioner::initialize_preconditioner( const Matrix &matrix)
+template <typename Matrix>
+void ParsedILUPreconditioner::initialize_preconditioner(const Matrix &matrix)
 {
   TrilinosWrappers::PreconditionILU::AdditionalData data;
 
   data.ilu_fill = ilu_fill;
   data.ilu_atol = ilu_atol;
   data.ilu_rtol = ilu_rtol;
-  data.overlap = overlap;
+  data.overlap  = overlap;
   this->initialize(matrix, data);
 }
 D2K_NAMESPACE_CLOSE
 
-template void deal2lkit::ParsedILUPreconditioner::initialize_preconditioner<dealii::TrilinosWrappers::SparseMatrix>(
+template void deal2lkit::ParsedILUPreconditioner::initialize_preconditioner<
+  dealii::TrilinosWrappers::SparseMatrix>(
   const dealii::TrilinosWrappers::SparseMatrix &);
 
 #endif

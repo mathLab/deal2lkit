@@ -15,54 +15,58 @@
 //-----------------------------------------------------------
 
 
-#include "../tests.h"
-#include <deal.II/base/logstream.h>
 #include <deal.II/base/function.h>
+#include <deal.II/base/logstream.h>
 #include <deal.II/base/quadrature_lib.h>
-#include <deal.II/lac/vector.h>
-#include <deal.II/grid/grid_generator.h>
+
 #include <deal.II/dofs/dof_handler.h>
-#include <deal.II/lac/constraint_matrix.h>
+
 #include <deal.II/fe/fe_q.h>
 #include <deal.II/fe/fe_system.h>
 #include <deal.II/fe/mapping_q1.h>
+
+#include <deal.II/grid/grid_generator.h>
+
+#include <deal.II/lac/constraint_matrix.h>
+#include <deal.II/lac/vector.h>
+
 #include <deal.II/numerics/vector_tools.h>
+
+#include <deal2lkit/parsed_zero_average_constraints.h>
+#include <deal2lkit/utilities.h>
 
 #include <fstream>
 
-#include <deal2lkit/utilities.h>
-#include <deal2lkit/parsed_zero_average_constraints.h>
+#include "../tests.h"
 
 
 using namespace deal2lkit;
 
-template<int dim>
-void test (const Triangulation<dim> &tr,
-           const FiniteElement<dim> &fe)
+template <int dim>
+void test(const Triangulation<dim> &tr, const FiniteElement<dim> &fe)
 {
   DoFHandler<dim> dof(tr);
   dof.distribute_dofs(fe);
 
-  deallog << "FE=" << fe.get_name()
-          << std::endl;
+  deallog << "FE=" << fe.get_name() << std::endl;
 
-  ConstraintMatrix cm;
+  ConstraintMatrix                  cm;
   ParsedZeroAverageConstraints<dim> pnac("Parsed Zero Average Constraints",
-                                         dim+1,
-                                         (dim==2?"u,u,p":"u,u,u,p"),
+                                         dim + 1,
+                                         (dim == 2 ? "u,u,p" : "u,u,u,p"),
                                          "",
                                          "p");
 
 
 
   ParameterAcceptor::initialize();
-  pnac.apply_zero_average_constraints(dof,cm);
+  pnac.apply_zero_average_constraints(dof, cm);
 
-  cm.print (deallog.get_file_stream ());
+  cm.print(deallog.get_file_stream());
 }
 
 
-template<int dim>
+template <int dim>
 void test_hyper_cube()
 {
   Triangulation<dim> tr;
@@ -70,8 +74,7 @@ void test_hyper_cube()
 
   tr.refine_global(2);
 
-  FESystem<dim> fe (FE_Q<dim>(2), dim,
-                    FE_Q<dim>(1), 1);
+  FESystem<dim> fe(FE_Q<dim>(2), dim, FE_Q<dim>(1), 1);
   test(tr, fe);
 }
 
@@ -79,9 +82,9 @@ void test_hyper_cube()
 int main()
 {
   initlog();
-  deallog << std::setprecision (2);
+  deallog << std::setprecision(2);
   deallog << std::fixed;
-  //ParameterAcceptor::prm.log_parameters(deallog);
+  // ParameterAcceptor::prm.log_parameters(deallog);
 
   test_hyper_cube<2>();
   test_hyper_cube<3>();

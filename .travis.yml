@@ -13,6 +13,7 @@ language: cpp
 
 before_install:
   - test -d build-travis || mkdir build-travis; sudo chown -R 1000:1000 build-travis
+  - ./scripts/dr.sh "cd deal2lkit; ./scripts/download_clang_format"
   - ./scripts/dr.sh "cd deal2lkit; ./scripts/check_indentation.sh"
 
 script:

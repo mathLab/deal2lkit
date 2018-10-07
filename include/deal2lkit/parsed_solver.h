@@ -16,20 +16,19 @@
 #ifndef d2k_parsed_solver_h
 #define d2k_parsed_solver_h
 
-#include <deal2lkit/config.h>
 #include <deal.II/base/config.h>
 
-
-#include <deal.II/lac/solver.h>
-#include <deal.II/lac/solver_cg.h>
-#include <deal.II/lac/solver_gmres.h>
-#include <deal.II/lac/solver_qmrs.h>
-#include <deal.II/lac/solver_minres.h>
-#include <deal.II/lac/solver_bicgstab.h>
-#include <deal.II/lac/solver_richardson.h>
-#include <deal.II/lac/solver_control.h>
 #include <deal.II/lac/linear_operator.h>
+#include <deal.II/lac/solver.h>
+#include <deal.II/lac/solver_bicgstab.h>
+#include <deal.II/lac/solver_cg.h>
+#include <deal.II/lac/solver_control.h>
+#include <deal.II/lac/solver_gmres.h>
+#include <deal.II/lac/solver_minres.h>
+#include <deal.II/lac/solver_qmrs.h>
+#include <deal.II/lac/solver_richardson.h>
 
+#include <deal2lkit/config.h>
 #include <deal2lkit/parameter_acceptor.h>
 #include <deal2lkit/utilities.h>
 
@@ -41,11 +40,12 @@ D2K_NAMESPACE_OPEN
 template <typename VECTOR>
 std::function<void(VECTOR &, bool)> default_reinit()
 {
-  return [](VECTOR &, bool)
-  {
-    Assert(false, ExcInternalError("It seems you really need to set a ReinitFunction for your "
-                                   "operator. Try avoiding PackagedOperator if you don't want "
-                                   "to implement this function."));
+  return [](VECTOR &, bool) {
+    Assert(false,
+           ExcInternalError(
+             "It seems you really need to set a ReinitFunction for your "
+             "operator. Try avoiding PackagedOperator if you don't want "
+             "to implement this function."));
   };
 }
 
@@ -67,8 +67,9 @@ std::function<void(VECTOR &, bool)> default_reinit()
  *
  * @endcode
  */
-template<typename VECTOR>
-class ParsedSolver : public LinearOperator<VECTOR, VECTOR>,  public ParameterAcceptor
+template <typename VECTOR>
+class ParsedSolver : public LinearOperator<VECTOR, VECTOR>,
+                     public ParameterAcceptor
 {
 public:
   /**
@@ -79,13 +80,13 @@ public:
    * will need, you can also supply them here. They default to the
    * identity, and you can assign them later by setting op and prec.
    */
-  ParsedSolver(const std::string &name="",
-               const std::string &default_solver="cg",
-               const unsigned int iter=1000,
-               const double reduction=1e-8,
-               const LinearOperator<VECTOR> &op=
+  ParsedSolver(const std::string &           name           = "",
+               const std::string &           default_solver = "cg",
+               const unsigned int            iter           = 1000,
+               const double                  reduction      = 1e-8,
+               const LinearOperator<VECTOR> &op =
                  identity_operator<VECTOR>(default_reinit<VECTOR>()),
-               const LinearOperator<VECTOR> &prec=
+               const LinearOperator<VECTOR> &prec =
                  identity_operator<VECTOR>(default_reinit<VECTOR>()));
 
   /**
@@ -122,11 +123,12 @@ public:
    * ReductionControl. Used internally by the solver.
    */
   ReductionControl control;
+
 private:
   /**
    * Store a shared pointer, and intilize the inverse operator.
    */
-  template<typename MySolver >
+  template <typename MySolver>
   void initialize_solver(MySolver *);
 
   /**
@@ -149,18 +151,18 @@ private:
   /**
    * The actual solver.
    */
-  shared_ptr<Solver<VECTOR> > solver;
+  shared_ptr<Solver<VECTOR>> solver;
 };
 
 // ============================================================
 // Explicit template functions
 // ============================================================
 
-template<typename VECTOR>
+template <typename VECTOR>
 ParsedSolver<VECTOR>::ParsedSolver(const std::string &name,
                                    const std::string &default_solver,
                                    const unsigned int default_iter,
-                                   const double default_reduction,
+                                   const double       default_reduction,
                                    const LinearOperator<VECTOR> &op,
                                    const LinearOperator<VECTOR> &prec) :
   ParameterAcceptor(name),
@@ -172,10 +174,13 @@ ParsedSolver<VECTOR>::ParsedSolver(const std::string &name,
 {}
 
 
-template<typename VECTOR>
+template <typename VECTOR>
 void ParsedSolver<VECTOR>::declare_parameters(ParameterHandler &prm)
 {
-  add_parameter(prm, &solver_name, "Solver name", solver_name,
+  add_parameter(prm,
+                &solver_name,
+                "Solver name",
+                solver_name,
                 Patterns::Selection("cg|bicgstab|gmres|fgmres|"
                                     "minres|qmrs|richardson"),
                 "Name of the solver to use.");
@@ -187,7 +192,7 @@ void ParsedSolver<VECTOR>::declare_parameters(ParameterHandler &prm)
 }
 
 
-template<typename VECTOR>
+template <typename VECTOR>
 void ParsedSolver<VECTOR>::parse_parameters(ParameterHandler &prm)
 {
   ParameterAcceptor::parse_parameters(prm);
@@ -195,15 +200,15 @@ void ParsedSolver<VECTOR>::parse_parameters(ParameterHandler &prm)
 }
 
 
-template<typename VECTOR>
-template<typename MySolver >
+template <typename VECTOR>
+template <typename MySolver>
 void ParsedSolver<VECTOR>::initialize_solver(MySolver *s)
 {
-  solver = SP(s);
-  (LinearOperator<VECTOR,VECTOR> &)(*this) = inverse_operator(op, *s, prec);
+  solver                                    = SP(s);
+  (LinearOperator<VECTOR, VECTOR> &)(*this) = inverse_operator(op, *s, prec);
 }
 
-template<typename VECTOR>
+template <typename VECTOR>
 void ParsedSolver<VECTOR>::parse_parameters_call_back()
 {
   if (solver_name == "cg")
@@ -244,4 +249,3 @@ D2K_NAMESPACE_CLOSE
 
 
 #endif
-

@@ -14,15 +14,17 @@
 //-----------------------------------------------------------
 
 
-#include "../tests.h"
 #include <deal2lkit/parsed_preconditioner/ilu.h>
+
+#include "../tests.h"
 
 
 using namespace deal2lkit;
 
-int main (int argc, char *argv[])
+int main(int argc, char *argv[])
 {
-  Utilities::MPI::MPI_InitFinalize mpi_initialization(argc, argv, numbers::invalid_unsigned_int);
+  Utilities::MPI::MPI_InitFinalize mpi_initialization(
+    argc, argv, numbers::invalid_unsigned_int);
 
   initlog();
 
@@ -30,5 +32,4 @@ int main (int argc, char *argv[])
 
   ParameterAcceptor::initialize();
   ParameterAcceptor::prm.log_parameters(deallog);
-
 }

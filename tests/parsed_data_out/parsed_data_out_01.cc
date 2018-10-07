@@ -13,19 +13,20 @@
 //
 //-----------------------------------------------------------
 
-#include "../tests.h"
 #include <deal2lkit/parsed_data_out.h>
+
+#include "../tests.h"
 
 
 using namespace deal2lkit;
 
-int main (int argc, char **argv)
+int main(int argc, char **argv)
 {
 #ifdef DEAL_II_WITH_MPI
-  Utilities::MPI::MPI_InitFinalize mpi_initialization(argc, argv,1);
+  Utilities::MPI::MPI_InitFinalize mpi_initialization(argc, argv, 1);
 #endif
   initlog();
-  ParsedDataOut<2,2> pp("Test", "gnuplot");
+  ParsedDataOut<2, 2> pp("Test", "gnuplot");
 
   ParameterAcceptor::initialize();
 

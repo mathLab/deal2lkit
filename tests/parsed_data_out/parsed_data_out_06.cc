@@ -13,21 +13,25 @@
 //
 //-----------------------------------------------------------
 
-// Test if the "test utilities and ParsedDataOut" utilities function works as expected
+// Test if the "test utilities and ParsedDataOut" utilities function works as
+// expected
+
+#include <deal.II/base/mpi.h>
+#include <deal.II/base/utilities.h>
+
+#include <deal2lkit/parsed_data_out.h>
+#include <deal2lkit/utilities.h>
 
 #include "../tests.h"
-#include <deal2lkit/utilities.h>
-#include <deal2lkit/parsed_data_out.h>
-#include <deal.II/base/utilities.h>
-#include <deal.II/base/mpi.h>
 
 
 using namespace deal2lkit;
 
-int main (int argc, char *argv[])
+int main(int argc, char *argv[])
 {
 #ifdef DEAL_II_WITH_MPI
-  Utilities::MPI::MPI_InitFinalize mpi_initialization(argc, argv, numbers::invalid_unsigned_int);
+  Utilities::MPI::MPI_InitFinalize mpi_initialization(
+    argc, argv, numbers::invalid_unsigned_int);
   mpi_initlog();
 #else
   initlog();
@@ -35,13 +39,8 @@ int main (int argc, char *argv[])
 
   std::system("rm -rf solution*");
 
-  ParsedDataOut<2,2> pp("test",
-                        "none",
-                        1,
-                        "solution/run",
-                        "solution",
-                        "",
-                        MPI_COMM_WORLD);
+  ParsedDataOut<2, 2> pp(
+    "test", "none", 1, "solution/run", "solution", "", MPI_COMM_WORLD);
 
   ParameterAcceptor::initialize();
   ParameterAcceptor::prm.log_parameters(deallog);
@@ -49,5 +48,6 @@ int main (int argc, char *argv[])
   pp.write_data_and_clear();
 
   std::system("touch solution/run000/test.txt");
-  deallog << "exists ? = " << file_exists("solution/run000/test.txt") << std::endl;
+  deallog << "exists ? = " << file_exists("solution/run000/test.txt")
+          << std::endl;
 }

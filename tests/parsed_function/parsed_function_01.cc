@@ -14,13 +14,14 @@
 //-----------------------------------------------------------
 
 
-#include "../tests.h"
 #include <deal2lkit/parsed_function.h>
+
+#include "../tests.h"
 
 
 using namespace deal2lkit;
 
-int main ()
+int main()
 {
   initlog();
 
@@ -28,6 +29,4 @@ int main ()
 
   ParameterAcceptor::initialize();
   ParameterAcceptor::prm.log_parameters(deallog);
-
-
 }

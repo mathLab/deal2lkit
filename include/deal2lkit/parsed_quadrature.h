@@ -17,6 +17,7 @@
 #define d2k_parsed_quadrature
 
 #include <deal.II/base/quadrature.h>
+
 #include <deal2lkit/parameter_acceptor.h>
 
 using namespace dealii;
@@ -29,7 +30,7 @@ D2K_NAMESPACE_OPEN
  * dealii::QuadratureSelector.  The template integer specifies the
  * dimension of the quadrature.
  */
-template<int dim>
+template <int dim>
 class ParsedQuadrature : public Quadrature<dim>, public ParameterAcceptor
 {
 public:
@@ -54,10 +55,10 @@ public:
    * the respective iterated quadrature formula in one space
    * dimension.
    */
-  ParsedQuadrature( const std::string   &name="",
-                    const std::string   &quadrature_type="gauss",
-                    const unsigned int  order = 3,
-                    const unsigned int  repetitions = 1);
+  ParsedQuadrature(const std::string &name            = "",
+                   const std::string &quadrature_type = "gauss",
+                   const unsigned int order           = 3,
+                   const unsigned int repetitions     = 1);
 
   /**
    * Declare quadrature type and quadrature options.
@@ -70,12 +71,11 @@ public:
   virtual void parse_parameters_call_back();
 
 private:
-
   /**
    * Name of the quadrature of the quadrature rule: "gauss", "midpoint",
    * "milne", "simpson", "trapez", or "weddle".
    */
-  std::string   quadrature_type;
+  std::string quadrature_type;
 
   /**
    * In one space dimension, the given base formula is copied and scaled onto a
@@ -84,13 +84,13 @@ private:
    * usual way by building the tensor product of the respective iterated
    * quadrature formula in one space dimension.
    */
-  unsigned int  repetitions;
+  unsigned int repetitions;
 
   /**
    * Number of quadrature points in each coordinate direction.
    * This variable is only valid for gauss rule.
    */
-  unsigned int  order;
+  unsigned int order;
 };
 
 D2K_NAMESPACE_CLOSE

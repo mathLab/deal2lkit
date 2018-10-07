@@ -14,35 +14,36 @@
 //-----------------------------------------------------------
 
 
-#include "../tests.h"
-#include <deal2lkit/utilities.h>
-#include <deal2lkit/parsed_grid_generator.h>
-
-#include <deal.II/grid/grid_out.h>
 #include <deal.II/base/utilities.h>
 
-#include <string>
+#include <deal.II/grid/grid_out.h>
+
+#include <deal2lkit/parsed_grid_generator.h>
+#include <deal2lkit/utilities.h>
+
 #include <fstream>
 #include <streambuf>
-#include <deal.II/grid/grid_out.h>
+#include <string>
+
+#include "../tests.h"
 
 
 using namespace deal2lkit;
 
 // Create a grid, refine it locally, write it out in ar format, read it
 // back in, and check that everything is fine.
-template<int dim, int spacedim>
+template <int dim, int spacedim>
 void test(ParsedGridGenerator<dim, spacedim> &pgg)
 {
   Triangulation<dim, spacedim> *tria = pgg.serial();
-  GridOut go;
+  GridOut                       go;
   go.write_msh(*tria, deallog.get_file_stream());
 }
 
-int main ()
+int main()
 {
   initlog();
-  ParsedGridGenerator<2,2> a("Grid");
+  ParsedGridGenerator<2, 2> a("Grid");
 
   ParameterHandler prm;
   ParameterAcceptor::declare_all_parameters(prm);
@@ -61,8 +62,8 @@ int main ()
 
   a.write(*t);
   std::ifstream is("grid.ar");
-  std::string str((std::istreambuf_iterator<char>(is)),
-                  std::istreambuf_iterator<char>());
+  std::string   str((std::istreambuf_iterator<char>(is)),
+                    std::istreambuf_iterator<char>());
   deallog << str;
   is.close();
 
@@ -76,7 +77,8 @@ int main ()
   ParameterAcceptor::parse_all_parameters(prm);
   auto t2 = SP(a.serial());
   a.write(*t2);
-  deallog << std::endl << "========================================" << std::endl;
+  deallog << std::endl
+          << "========================================" << std::endl;
   is.open("grid2.ar");
   std::string str2((std::istreambuf_iterator<char>(is)),
                    std::istreambuf_iterator<char>());

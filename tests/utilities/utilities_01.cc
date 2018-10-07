@@ -17,13 +17,14 @@
 // somewhat the inverse of the dealii::Utilities::split_string_list(),
 // but it works with arbitrary objects that support operator<<();
 
-#include "../tests.h"
 #include <deal2lkit/utilities.h>
+
+#include "../tests.h"
 
 
 using namespace deal2lkit;
 
-int main ()
+int main()
 {
   initlog();
 
@@ -38,5 +39,4 @@ int main ()
 
   deallog << print(s) << std::endl;
   deallog << print(s, "+") << std::endl;
-
 }

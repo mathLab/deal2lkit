@@ -16,17 +16,19 @@
 #ifndef d2k_parsed_grid_generator_h
 #define d2k_parsed_grid_generator_h
 
-#include <deal2lkit/config.h>
-#include <deal2lkit/utilities.h>
-
 #include <deal.II/base/config.h>
-#include <deal.II/base/parameter_handler.h>
-#include <deal.II/grid/tria.h>
-#include <deal.II/distributed/tria.h>
-#include <deal.II/grid/manifold_lib.h>
-#include <deal.II/grid/grid_generator.h>
 
+#include <deal.II/base/parameter_handler.h>
+
+#include <deal.II/distributed/tria.h>
+
+#include <deal.II/grid/grid_generator.h>
+#include <deal.II/grid/manifold_lib.h>
+#include <deal.II/grid/tria.h>
+
+#include <deal2lkit/config.h>
 #include <deal2lkit/parameter_acceptor.h>
+#include <deal2lkit/utilities.h>
 
 using namespace dealii;
 
@@ -141,7 +143,7 @@ struct PGGHelper;
  * and the resulting OpenCASCADE object is split into its faces. The
  * face can be selected using the "Optional int 1" parameter.
  */
-template<int dim, int spacedim=dim>
+template <int dim, int spacedim = dim>
 class ParsedGridGenerator : public ParameterAcceptor
 {
 public:
@@ -167,21 +169,21 @@ public:
    * arguments, we provide a list of optional arguments that will be
    * used by the class itself.
    */
-  ParsedGridGenerator (const std::string section_name="",
-                       const std::string grid_type="rectangle",
-                       const std::string input_grid_file="",
-                       const std::string opt_point_1="",
-                       const std::string opt_point_2="",
-                       const std::string opt_colorize="false",
-                       const std::string opt_double_1="1.0",
-                       const std::string opt_double_2="0.5",
-                       const std::string opt_double_3="1.5",
-                       const std::string opt_int_1="1",
-                       const std::string opt_int_2="2",
-                       const std::string opt_vec_of_int="",
-                       const std::string mesh_smoothing="none",
-                       const std::string output_grid_file="",
-                       const std::string opt_manifold_descriptors="");
+  ParsedGridGenerator(const std::string section_name             = "",
+                      const std::string grid_type                = "rectangle",
+                      const std::string input_grid_file          = "",
+                      const std::string opt_point_1              = "",
+                      const std::string opt_point_2              = "",
+                      const std::string opt_colorize             = "false",
+                      const std::string opt_double_1             = "1.0",
+                      const std::string opt_double_2             = "0.5",
+                      const std::string opt_double_3             = "1.5",
+                      const std::string opt_int_1                = "1",
+                      const std::string opt_int_2                = "2",
+                      const std::string opt_vec_of_int           = "",
+                      const std::string mesh_smoothing           = "none",
+                      const std::string output_grid_file         = "",
+                      const std::string opt_manifold_descriptors = "");
 
 
   /**
@@ -227,7 +229,8 @@ public:
    *   - *double*: radius
    *
    * - **parallelepiped**-> ccalls GridGenerator::Parallelepiped() using:
-   *   - std::vector<unsigned int> : number of subdivisions in each coordinate direction
+   *   - std::vector<unsigned int> : number of subdivisions in each coordinate
+   * direction
    *   - *Point<spacedim>*: lower-left corner
    *   - *Point<spacedim>*: upper-right corner
    *   - *bool*: colorize grid
@@ -236,88 +239,122 @@ public:
    *   - *Point<spacedim>*: center
    *   - *double*: inner sphere radius
    *   - *double*: outer sphere radius
-   *   - *unsigned int*: number of cells of the resulting triangulation (In 3D, only 6, 12, and 96 are allowed)
+   *   - *unsigned int*: number of cells of the resulting triangulation (In 3D,
+   * only 6, 12, and 96 are allowed)
    *   - *bool*: colorize grid
    *
-   * - **hyper_L**-> GridGenerator::HyperL(). It produces the hypercube with the interval [left,right] without the hypercube made out of the interval [(left+right)/2,right] for each coordinate.:
+   * - **hyper_L**-> GridGenerator::HyperL(). It produces the hypercube with the
+   * interval [left,right] without the hypercube made out of the interval
+   * [(left+right)/2,right] for each coordinate.:
    *   - *double*: left
    *   - *double*: right
    *
-   * - **half_hyper_ball**-> produce a half hyper-ball around center, which contains four elements in 2d and 6 in 3d. The cut plane is perpendicular to the x-axis:
+   * - **half_hyper_ball**-> produce a half hyper-ball around center, which
+   * contains four elements in 2d and 6 in 3d. The cut plane is perpendicular to
+   * the x-axis:
    *   - *Point<spacedim>*: center
    *   - *double*: radius
    *
-   * - **cylinder**-> create a cylinder around the x-axis. The cylinder extends from x=-half_length to x=+half_length and its projection into the yz-plane is a circle of radius radius:
+   * - **cylinder**-> create a cylinder around the x-axis. The cylinder extends
+   * from x=-half_length to x=+half_length and its projection into the yz-plane
+   * is a circle of radius radius:
    *   - *double*: radius
    *   - *double*: half length of the cylinder
    *
-   * - **truncated_cone**-> create a cut cone around the x-axis. The cone extends from x=-half_length to x=half_length and its projection into the yz-plane is a circle of radius radius1 at x=-half_length and a circle of radius radius2 at x=+half_length:
+   * - **truncated_cone**-> create a cut cone around the x-axis. The cone
+   * extends from x=-half_length to x=half_length and its projection into the
+   * yz-plane is a circle of radius radius1 at x=-half_length and a circle of
+   * radius radius2 at x=+half_length:
    *   - *double*: radius 1
    *   - *double*: radius 2
    *   - *double*: half length
    *
-   * - **hyper_cross**-> a center cell with stacks of cell protruding from each surface:
+   * - **hyper_cross**-> a center cell with stacks of cell protruding from each
+   * surface:
    *   - *Vector of dim int*: sizes
    *   - *bool*: colorize grid
    *
-   * - **hyper_cube_slit**-> initialize the given Triangulation with a hypercube with a slit. In each coordinate direction, the hypercube extends from left to right:
+   * - **hyper_cube_slit**-> initialize the given Triangulation with a hypercube
+   * with a slit. In each coordinate direction, the hypercube extends from left
+   * to right:
    *   - *double*: left
    *   - *double*: right
    *   - *bool*: colorize grid
    *
-   * - **half_hyper_shell**-> produce a half hyper-shell, i.e. the space between two circles in two space dimensions and the region between two spheres in 3D:
+   * - **half_hyper_shell**-> produce a half hyper-shell, i.e. the space between
+   * two circles in two space dimensions and the region between two spheres in
+   * 3D:
    *   - *Point<spacedim>*: center
    *   - *double*: inner radius
    *   - *double*: outer radius
    *   - *unsigned int*: number of cells
    *   - *bool*: colorize grid
    *
-   * - **quarter_hyper_shell**-> Produce a domain that is the intersection between a hyper-shell with given inner and outer radius, i.e. the space between two circles in two space dimensions and the region between two spheres in 3D, and the positive quadrant (in 2D) or octant (in 3D). In 2D, this is indeed a quarter of the full annulus, while the function is a misnomer in 3D because there the domain is not a quarter but one eighth of the full shell:
+   * - **quarter_hyper_shell**-> Produce a domain that is the intersection
+   * between a hyper-shell with given inner and outer radius, i.e. the space
+   * between two circles in two space dimensions and the region between two
+   * spheres in 3D, and the positive quadrant (in 2D) or octant (in 3D). In 2D,
+   * this is indeed a quarter of the full annulus, while the function is a
+   * misnomer in 3D because there the domain is not a quarter but one eighth of
+   * the full shell:
    *   - *Point<spacedim>*: center
    *   - *double*: inner radius
    *   - *double*: outer radius
    *   - *unsigned int*: number of cells
    *   - *bool*: colorize grid
    *
-   * - **cylinder_shell**-> produce a domain that is the space between two cylinders in 3D, with given length, inner and outer radius and a given number of elements for this initial triangulation. If n_radial_cells is zero (as is the default), then it is computed adaptively such that the resulting elements have the least aspect ratio. The same holds for n_axial_cells:
+   * - **cylinder_shell**-> produce a domain that is the space between two
+   * cylinders in 3D, with given length, inner and outer radius and a given
+   * number of elements for this initial triangulation. If n_radial_cells is
+   * zero (as is the default), then it is computed adaptively such that the
+   * resulting elements have the least aspect ratio. The same holds for
+   * n_axial_cells:
    *   - *double*: lenght
    *   - *double*: inner radius
    *   - *double*: outer radius
    *   - *unsigned int*: n_radial_cells
    *   - *unsigned int*: n_axial_cells
    *
-   * - **moebius**-> produce a ring of cells in 3d that is cut open, twisted and glued together again. This results in a kind of m\"oebius-loop:
+   * - **moebius**-> produce a ring of cells in 3d that is cut open, twisted and
+   * glued together again. This results in a kind of m\"oebius-loop:
    *   - *unsigned int*: number of cells in the loop
-   *   - *unsigned int*: number of rotations (Pi/2 each) to be performed before gluing the loop together
+   *   - *unsigned int*: number of rotations (Pi/2 each) to be performed before
+   * gluing the loop together
    *   - *double*: radius of the circle
    *   - *double*: radius of the cylinder bend together as loop
    *
-   * - **hyper_cube_with_cylindrical_hole**-> produces a square in the xy-plane with a circular hole in the middle:
+   * - **hyper_cube_with_cylindrical_hole**-> produces a square in the xy-plane
+   * with a circular hole in the middle:
    *   - *double*: inner radius
    *   - *double*: outer radius
    *   - *double*: length
-   *   - *unsigned int*: repetitions (number of subdivisions along the z-direction)
+   *   - *unsigned int*: repetitions (number of subdivisions along the
+   * z-direction)
    *   - *bool*: colorize grid
    *
    * - **torus**-> produce the surface meshing of the torus:
-   *   - *double*: radius of the circle which forms the middle line of the torus containing the loop of cells
+   *   - *double*: radius of the circle which forms the middle line of the torus
+   * containing the loop of cells
    *   - *double*: inner radius of the torus
    *
-   * - **cheese**-> domain itself is rectangular. The argument holes specifies how many square holes the domain should have in each coordinate direction :"
+   * - **cheese**-> domain itself is rectangular. The argument holes specifies
+   * how many square holes the domain should have in each coordinate direction
+   * :"
    *   - *Vector of dim int*: number of holes on each direction"
    */
   void create(Triangulation<dim, spacedim> &tria);
 
 #ifdef DEAL_II_WITH_MPI
-#ifdef DEAL_II_WITH_P4EST
+#  ifdef DEAL_II_WITH_P4EST
   /**
    * Return a pointer to a newly created parallel Triangulation. It
    * will throw an exception if called before any parsing has
    * occured. It is the user's responsability to destroy the created
    * grid once it is no longer needed.
    */
-  parallel::distributed::Triangulation<dim, spacedim> *distributed(MPI_Comm mpi_communicator);
-#endif
+  parallel::distributed::Triangulation<dim, spacedim> *
+  distributed(MPI_Comm mpi_communicator);
+#  endif
 #endif
 
   /**
@@ -326,21 +363,19 @@ public:
    *
    * If no `Output file name` is given and filename is the empty string,
    * this function does nothing. If
-   * an output file name is provided (either in the input file, or as an argument
-   * to this function), then this function will call the
-   * appropriate GridOut method according to the extension of the file
-   * name.
+   * an output file name is provided (either in the input file, or as an
+   * argument to this function), then this function will call the appropriate
+   * GridOut method according to the extension of the file name.
    */
   void write(const Triangulation<dim, spacedim> &tria,
-             const std::string &filename="") const;
+             const std::string &                 filename = "") const;
 
 private:
   /**
    * Mesh smoothing. Parse the type of MeshSmoothing for the
    * generated Triangulation.
    */
-  typename Triangulation<dim,spacedim>::MeshSmoothing
-  get_smoothing();
+  typename Triangulation<dim, spacedim>::MeshSmoothing get_smoothing();
 
   /**
    * Take @p str_manifold_descriptors and fill @p manifold_descriptors with
@@ -358,12 +393,14 @@ private:
    * - CylinderBoundaryOnAxis : boundary of a cylinder, given radius and axis :
    *  - Optional double     : radius
    *  - Optional int 1      : axis (0=x, 1=y, 2=z)
-   * - GeneralCylinderBoundary : boundary of a cylinder, given radius, a point on the axis and a  direction :
+   * - GeneralCylinderBoundary : boundary of a cylinder, given radius, a point
+   * on the axis and a  direction :
    *  - Optional double     : radius
    *  - Optional int 1      : axis (0=x, 1=y, 2=z)
    *  - Optional Point<spacedim> 1: point on axis
    *  - Optional Point<spacedim> 2: direction
-   * - ConeBoundary :  boundary of a cone, given radii, and two points on the faces :
+   * - ConeBoundary :  boundary of a cone, given radii, and two points on the
+   * faces :
    *  - Optional double 1     : radius 1
    *  - Optional double 2     : radius 2
    *  - Optional Point<spacedim> 1: point on first face
@@ -417,7 +454,8 @@ private:
   /**
    * A map of Manifold associated to the given manifold_ids.
    */
-  std::map<types::manifold_id, shared_ptr<Manifold<dim,spacedim> > > manifold_descriptors;
+  std::map<types::manifold_id, shared_ptr<Manifold<dim, spacedim>>>
+    manifold_descriptors;
 
   /**
    * Optional double argument. First option.

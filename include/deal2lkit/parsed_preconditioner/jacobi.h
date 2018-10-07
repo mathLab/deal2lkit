@@ -16,16 +16,17 @@
 #ifndef d2k_parsed_jacobi_preconditioner_h
 #define d2k_parsed_jacobi_preconditioner_h
 
-#include <deal2lkit/config.h>
 #include <deal.II/base/config.h>
+
+#include <deal2lkit/config.h>
 
 #ifdef DEAL_II_WITH_TRILINOS
 
-#include <deal.II/lac/trilinos_precondition.h>
+#  include <deal.II/lac/trilinos_precondition.h>
 
-#include <deal2lkit/parsed_finite_element.h>
-#include <deal2lkit/parameter_acceptor.h>
-#include <deal2lkit/utilities.h>
+#  include <deal2lkit/parameter_acceptor.h>
+#  include <deal2lkit/parsed_finite_element.h>
+#  include <deal2lkit/utilities.h>
 
 using namespace dealii;
 
@@ -38,17 +39,17 @@ D2K_NAMESPACE_OPEN
  * TrilinosWrappers::PreconditionJacobi which can be called in place
  * of the preconditioner.
  */
-class ParsedJacobiPreconditioner : public ParameterAcceptor, public TrilinosWrappers::PreconditionJacobi
+class ParsedJacobiPreconditioner : public ParameterAcceptor,
+                                   public TrilinosWrappers::PreconditionJacobi
 {
 public:
   /**
    * Constructor. Build the preconditioner of a matrix using Jacobi.
    */
-  ParsedJacobiPreconditioner(const std::string &name = "Jacobi Preconditioner",
-                             const double &omega = 1,
-                             const double &min_diagonal = 0,
-                             const unsigned int &n_sweeps = 1
-                            );
+  ParsedJacobiPreconditioner(const std::string & name = "Jacobi Preconditioner",
+                             const double &      omega        = 1,
+                             const double &      min_diagonal = 0,
+                             const unsigned int &n_sweeps     = 1);
 
   /**
    * Declare preconditioner options.
@@ -58,13 +59,12 @@ public:
   /**
    * Initialize the preconditioner using @p matrix.
    */
-  template<typename Matrix>
-  void initialize_preconditioner( const Matrix &matrix);
+  template <typename Matrix>
+  void initialize_preconditioner(const Matrix &matrix);
 
   using TrilinosWrappers::PreconditionJacobi::initialize;
 
 private:
-
   /**
    * This specifies the relaxation parameter in the Jacobi
    * preconditioner.
@@ -92,4 +92,3 @@ D2K_NAMESPACE_CLOSE
 #endif // DEAL_II_WITH_TRILINOS
 
 #endif
-

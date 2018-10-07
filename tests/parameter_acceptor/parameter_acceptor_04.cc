@@ -13,26 +13,31 @@
 //
 //-----------------------------------------------------------
 
-#include "../tests.h"
-#include <deal2lkit/utilities.h>
 #include <deal2lkit/parameter_acceptor.h>
+#include <deal2lkit/utilities.h>
+
+#include "../tests.h"
 
 
 using namespace deal2lkit;
 
-template<int dim>
+template <int dim>
 class Test : public ParameterAcceptor
 {
 public:
   virtual void declare_parameters(ParameterHandler &prm)
   {
-    add_parameter(prm, &string_list, "A list of strings", "ciao, mamma", Patterns::List(Patterns::Anything()));
+    add_parameter(prm,
+                  &string_list,
+                  "A list of strings",
+                  "ciao, mamma",
+                  Patterns::List(Patterns::Anything()));
   };
 
   void log_info()
   {
     deallog << "My type: " << type(*this) << std::endl;
-    for (unsigned int i=0; i<string_list.size(); ++i)
+    for (unsigned int i = 0; i < string_list.size(); ++i)
       deallog << string_list[i] << std::endl;
   };
 
@@ -41,7 +46,7 @@ private:
 };
 
 
-int main ()
+int main()
 {
   initlog();
   Test<1> a;

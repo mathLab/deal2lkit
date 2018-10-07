@@ -16,13 +16,16 @@
 #ifndef d2k_parameter_acceptor_h
 #define d2k_parameter_acceptor_h
 
-#include <deal2lkit/config.h>
-#include <deal2lkit/utilities.h>
+#include <deal.II/base/exceptions.h>
+#include <deal.II/base/logstream.h>
 #include <deal.II/base/parameter_handler.h>
 #include <deal.II/base/smartpointer.h>
-#include <deal.II/base/logstream.h>
-#include <deal.II/base/exceptions.h>
+
 #include <boost/any.hpp>
+
+#include <deal2lkit/config.h>
+#include <deal2lkit/utilities.h>
+
 #include <typeinfo>
 
 
@@ -258,8 +261,8 @@ D2K_NAMESPACE_OPEN
  * {}
  * @endcode
  *
- * The other way to proceed (recommended) is to use exploit the /section/subsection
- * approach **in the main class**.
+ * The other way to proceed (recommended) is to use exploit the
+ * /section/subsection approach **in the main class**.
  * @code
  * int main()
  * {
@@ -386,7 +389,7 @@ public:
    * parameters in the given section, otherwise a pretty printed
    * version of the derived class is used.
    */
-  ParameterAcceptor(const std::string section_name="");
+  ParameterAcceptor(const std::string section_name = "");
 
   /**
    * The destructor sets to zero the pointer relative to this index,
@@ -401,8 +404,8 @@ public:
    * read in to the outfilename. This is useful to get all used
    * parameters, and not only those that were set in the input file.
    */
-  static void initialize(const std::string filename="",
-                         const std::string outfilename="");
+  static void initialize(const std::string filename    = "",
+                         const std::string outfilename = "");
 
   /**
    * Clear class list and global parameter file.
@@ -446,7 +449,7 @@ public:
    * with the strategy advocated by the \dealii library of splitting declaration
    * and parsing of parameters into two functions.
    */
-  virtual void declare_parameters(ParameterHandler &) {};
+  virtual void declare_parameters(ParameterHandler &){};
 
 
   /**
@@ -454,7 +457,8 @@ public:
    * subsection returned by get_section_name() for each derived class,
    * and parses all parameters that were added using add_parameter().
    */
-  static void parse_all_parameters(ParameterHandler &prm=ParameterAcceptor::prm);
+  static void
+  parse_all_parameters(ParameterHandler &prm = ParameterAcceptor::prm);
 
 
   /**
@@ -469,7 +473,8 @@ public:
    * get_section_name() for each derived class, and declares all
    * parameters that were added using add_parameter().
    */
-  static void declare_all_parameters(ParameterHandler &prm=ParameterAcceptor::prm);
+  static void
+  declare_all_parameters(ParameterHandler &prm = ParameterAcceptor::prm);
 
 
   /**
@@ -492,11 +497,13 @@ public:
    * updated with the value contained in prm.
    */
   template <class T>
-  void add_parameter(ParameterHandler &prm, T *parameter,
-                     const std::string &entry,
-                     const std::string &default_value,
-                     const Patterns::PatternBase &pattern=Patterns::Anything(),
-                     const std::string &documentation=std::string())
+  void
+  add_parameter(ParameterHandler &           prm,
+                T *                          parameter,
+                const std::string &          entry,
+                const std::string &          default_value,
+                const Patterns::PatternBase &pattern = Patterns::Anything(),
+                const std::string &          documentation = std::string())
   {
     AssertThrow(std::is_const<T>::value == false,
                 ExcMessage("You tried to add a parameter using a const "
@@ -506,7 +513,7 @@ public:
 
     prm.declare_entry(entry, default_value, pattern, documentation);
     parameters[entry] = boost::any(parameter);
-    patterns[entry] = std::unique_ptr<Patterns::PatternBase> (pattern.clone());
+    patterns[entry]   = std::unique_ptr<Patterns::PatternBase>(pattern.clone());
   }
 
 
@@ -527,11 +534,11 @@ public:
    * in the nested sections returned by get_section_path().
    */
   template <class T>
-  void add_parameter(T &parameter,
-                     const std::string &entry,
-                     const std::string &documentation=std::string(),
-                     const Patterns::PatternBase &pattern=*to_pattern(T()),
-                     ParameterHandler &prm=ParameterAcceptor::prm)
+  void add_parameter(T &                          parameter,
+                     const std::string &          entry,
+                     const std::string &          documentation = std::string(),
+                     const Patterns::PatternBase &pattern = *to_pattern(T()),
+                     ParameterHandler &           prm = ParameterAcceptor::prm)
   {
     AssertThrow(std::is_const<T>::value == false,
                 ExcMessage("You tried to add a parameter using a const "
@@ -540,12 +547,10 @@ public:
                            "parsing the parameter."));
 
     enter_my_subsection(prm);
-    prm.declare_entry(entry, to_string(parameter),
-                      pattern,
-                      documentation);
+    prm.declare_entry(entry, to_string(parameter), pattern, documentation);
     leave_my_subsection(prm);
     parameters[entry] = boost::any(&parameter);
-    patterns[entry] = std::unique_ptr<Patterns::PatternBase>(pattern.clone());
+    patterns[entry]   = std::unique_ptr<Patterns::PatternBase>(pattern.clone());
   }
 
   /**
@@ -589,7 +594,7 @@ private:
    * A list containing all constructed classes of type
    * ParameterAcceptor.
    */
-  static std::vector<SmartPointer<ParameterAcceptor> > class_list;
+  static std::vector<SmartPointer<ParameterAcceptor>> class_list;
 
   /** The index of this specific class within the class list. */
   const unsigned int acceptor_id;
@@ -604,7 +609,8 @@ private:
    * A map of patterns that are initialized in this class with the
    * functions add_parameters.
    */
-  mutable std::map<std::string, std::unique_ptr<Patterns::PatternBase> > patterns;
+  mutable std::map<std::string, std::unique_ptr<Patterns::PatternBase>>
+    patterns;
 
 
   /**
@@ -621,4 +627,3 @@ protected:
 D2K_NAMESPACE_CLOSE
 
 #endif
-

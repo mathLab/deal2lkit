@@ -16,19 +16,19 @@
 // test basic functionalities
 
 
-#include "../tests.h"
 #include <deal2lkit/parsed_zero_average_constraints.h>
+
+#include "../tests.h"
 
 
 using namespace deal2lkit;
 
 
-int main ()
+int main()
 {
   initlog();
-  ParsedZeroAverageConstraints<2,2> pnac("ciao",1,"u","u","" );
+  ParsedZeroAverageConstraints<2, 2> pnac("ciao", 1, "u", "u", "");
 
   ParameterAcceptor::initialize();
   ParameterAcceptor::prm.log_parameters(deallog);
-
 }

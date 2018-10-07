@@ -16,11 +16,8 @@
 #include HEADER
 
 #if !defined(D2K_NAMESPACE_OPEN) && !defined(_d2k_config_h)
-#error "HEADER does not include config.h."
+#  error "HEADER does not include config.h."
 #endif
 
 
-int main()
-{
-  return 0;
-}
+int main() { return 0; }

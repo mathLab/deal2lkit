@@ -13,28 +13,31 @@
 //
 //-----------------------------------------------------------
 
-#include "../tests.h"
-#include <deal2lkit/parsed_quadrature.h>
 #include <deal.II/base/quadrature_lib.h>
+
+#include <deal2lkit/parsed_quadrature.h>
+
+#include "../tests.h"
 
 using namespace deal2lkit;
 
-int main ()
+int main()
 {
   initlog();
 
   ParsedQuadrature<2> quadrature;
 
-  ParameterAcceptor::initialize(SOURCE_DIR "/parameters/quadrature_02.prm", "used_parameters.prm");
+  ParameterAcceptor::initialize(SOURCE_DIR "/parameters/quadrature_02.prm",
+                                "used_parameters.prm");
   ParameterAcceptor::prm.log_parameters(deallog);
 
   QSimpson<2> quad;
 
-  if ( quad.size () == quadrature.size() )
+  if (quad.size() == quadrature.size())
     deallog << "OK! " << std::endl;
 
-  for (unsigned int i = 0 ; i < quad.size (); ++ i)
-    if ( quad.weight(i)!=quadrature.weight(i) )
+  for (unsigned int i = 0; i < quad.size(); ++i)
+    if (quad.weight(i) != quadrature.weight(i))
       deallog << "FAIL! " << std::endl;
 
   deallog << "DONE! " << std::endl;

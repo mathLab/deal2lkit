@@ -15,13 +15,14 @@
 
 // Test if the "copy files" utilities function works as expected
 
-#include "../tests.h"
 #include <deal2lkit/utilities.h>
+
+#include "../tests.h"
 
 
 using namespace deal2lkit;
 
-int main ()
+int main()
 {
   initlog();
   std::system("touch test1.txt");
@@ -30,11 +31,15 @@ int main ()
   deallog << "copy   --> " << copy_file("test1.txt", "tmp") << std::endl;
   deallog << "exist  --> " << file_exists("test1.txt") << std::endl;
   deallog << "exist  --> " << file_exists("test2.txt") << std::endl;
-  std::string folder = get_next_available_directory_name("new_folder",3);
-  deallog << "create --> " << folder << " - "<< create_directory(folder) << std::endl;
-  deallog << "copy   --> " << copy_files("test1.txt test2.txt", folder) << std::endl;
-  deallog << "exist  --> " << file_exists(folder+"/"+"test1.txt") << std::endl;
-  deallog << "exist  --> " << file_exists(folder+"/"+"test2.txt") << std::endl;
+  std::string folder = get_next_available_directory_name("new_folder", 3);
+  deallog << "create --> " << folder << " - " << create_directory(folder)
+          << std::endl;
+  deallog << "copy   --> " << copy_files("test1.txt test2.txt", folder)
+          << std::endl;
+  deallog << "exist  --> " << file_exists(folder + "/" + "test1.txt")
+          << std::endl;
+  deallog << "exist  --> " << file_exists(folder + "/" + "test2.txt")
+          << std::endl;
   std::system("rm -rf new_folder*");
   deallog << "exist  --> " << dir_exists("new_folder000") << std::endl;
 }

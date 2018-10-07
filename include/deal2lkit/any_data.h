@@ -16,18 +16,20 @@
 #ifndef d2k_any_data_h
 #define d2k_any_data_h
 
-#include <deal2lkit/config.h>
 #include <deal.II/base/config.h>
+
 #include <deal.II/base/exceptions.h>
 #include <deal.II/base/subscriptor.h>
 
 #include <boost/any.hpp>
-#include <vector>
-#include <algorithm>
-#include <typeinfo>
 
-#include <map>
+#include <deal2lkit/config.h>
 #include <deal2lkit/utilities.h>
+
+#include <algorithm>
+#include <map>
+#include <typeinfo>
+#include <vector>
 
 using namespace dealii;
 
@@ -65,7 +67,6 @@ D2K_NAMESPACE_OPEN
 class AnyData : public Subscriptor
 {
 public:
-
   /**
    * @brief Add a copy of an object
    *
@@ -73,7 +74,7 @@ public:
    *
    */
   template <typename type>
-  void add_copy (const type &entry, const std::string &name);
+  void add_copy(const type &entry, const std::string &name);
 
   /**
    * @brief Add a reference to an already existing object.
@@ -82,7 +83,7 @@ public:
    *
    */
   template <typename type>
-  void add_ref (type &entry, const std::string &name);
+  void add_ref(type &entry, const std::string &name);
 
   /**
    * @brief Access to stored data object by name.
@@ -93,7 +94,7 @@ public:
    *
    */
   template <typename type>
-  type &get (const std::string &name);
+  type &get(const std::string &name);
 
   /**
    * @brief Read-only access to stored data object by name.
@@ -104,7 +105,7 @@ public:
    *
    */
   template <typename type>
-  const type &get (const std::string &name) const;
+  const type &get(const std::string &name) const;
 
   /**
    * @brief Query if we store the given object.
@@ -112,7 +113,7 @@ public:
    * Find out if we store an object with given name.
    *
    */
-  inline bool have (const std::string &name) const;
+  inline bool have(const std::string &name) const;
 
   /**
    * @brief Print the name and type of the stored objects
@@ -121,18 +122,19 @@ public:
    *
    */
   template <class STREAM>
-  void print_info (STREAM &os);
+  void print_info(STREAM &os);
 
   /// An entry with this name does not exist in the AnyData object.
-  DeclException1(ExcNameNotFound, std::string,
+  DeclException1(ExcNameNotFound,
+                 std::string,
                  << "No entry with the name " << arg1 << " exists.");
 
   /// The requested type and the stored type are different
   DeclException2(ExcTypeMismatch,
-                 char *, char *,
-                 << "The requested type " << arg1
-                 << " and the stored type " << arg2
-                 << " must coincide");
+                 char *,
+                 char *,
+                 << "The requested type " << arg1 << " and the stored type "
+                 << arg2 << " must coincide");
 
 
 private:
@@ -140,27 +142,26 @@ private:
 }; // end class
 
 template <typename type>
-void AnyData::add_copy (const type &entry, const std::string &name)
+void AnyData::add_copy(const type &entry, const std::string &name)
 {
   mydata[name] = entry;
 }
 
 template <typename type>
-void AnyData::add_ref (type &entry, const std::string &name)
+void AnyData::add_ref(type &entry, const std::string &name)
 {
-  type *ptr = &entry;
+  type *ptr    = &entry;
   mydata[name] = ptr;
 }
 
 template <typename type>
 type &AnyData::get(const std::string &name)
 {
-  Assert( mydata.find(name) != mydata.end(),
-          ExcNameNotFound(name));
+  Assert(mydata.find(name) != mydata.end(), ExcNameNotFound(name));
 
-  type *p=NULL;
+  type *p = NULL;
 
-  if (mydata[name].type() == typeid(type *) )
+  if (mydata[name].type() == typeid(type *))
     {
       p = boost::any_cast<type *>(mydata[name]);
     }
@@ -171,7 +172,7 @@ type &AnyData::get(const std::string &name)
   else
     {
       Assert(false,
-             ExcTypeMismatch(typeid(type).name(),mydata[name].type().name()));
+             ExcTypeMismatch(typeid(type).name(), mydata[name].type().name()));
     }
 
   return *p;
@@ -180,14 +181,13 @@ type &AnyData::get(const std::string &name)
 template <typename type>
 const type &AnyData::get(const std::string &name) const
 {
-  Assert( mydata.find(name) != mydata.end(),
-          ExcNameNotFound(name));
+  Assert(mydata.find(name) != mydata.end(), ExcNameNotFound(name));
 
   typedef std::map<std::string, boost::any>::const_iterator it_type;
 
   it_type it = mydata.find(name);
 
-  if (it->second.type() == typeid(type *) )
+  if (it->second.type() == typeid(type *))
     {
       const type *p = boost::any_cast<type *>(it->second);
       return *p;
@@ -200,8 +200,8 @@ const type &AnyData::get(const std::string &name) const
   else
     {
       Assert(false,
-             ExcTypeMismatch(typeid(type).name(),it->second.type().name()));
-      const type *p=NULL;
+             ExcTypeMismatch(typeid(type).name(), it->second.type().name()));
+      const type *p = NULL;
       return *p;
     }
 }
@@ -213,14 +213,13 @@ bool AnyData::have(const std::string &name) const
 }
 
 template <class STREAM>
-inline
-void AnyData::print_info(STREAM &os)
+inline void AnyData::print_info(STREAM &os)
 {
-  for (std::map<std::string, boost::any>::iterator  it=mydata.begin(); it != mydata.end(); ++it)
+  for (std::map<std::string, boost::any>::iterator it = mydata.begin();
+       it != mydata.end();
+       ++it)
     {
-      os << it->first
-         << '\t' << '\t'
-         << demangle(it->second.type().name())
+      os << it->first << '\t' << '\t' << demangle(it->second.type().name())
          << std::endl;
     }
 }
@@ -229,4 +228,3 @@ void AnyData::print_info(STREAM &os)
 D2K_NAMESPACE_CLOSE
 
 #endif
-

@@ -19,11 +19,11 @@
 
 D2K_NAMESPACE_OPEN
 
-template<int dim>
-ParsedFunction<dim>::ParsedFunction(const std::string &name,
+template <int dim>
+ParsedFunction<dim>::ParsedFunction(const std::string & name,
                                     const unsigned int &n_components,
-                                    const std::string &default_exp,
-                                    const std::string &default_const) :
+                                    const std::string & default_exp,
+                                    const std::string & default_const) :
   ParameterAcceptor(name),
   Functions::ParsedFunction<dim>(n_components),
   default_exp(default_exp),
@@ -32,7 +32,7 @@ ParsedFunction<dim>::ParsedFunction(const std::string &name,
 {}
 
 
-template<int dim>
+template <int dim>
 void ParsedFunction<dim>::declare_parameters(ParameterHandler &prm)
 {
   Functions::ParsedFunction<dim>::declare_parameters(prm, n_components);
@@ -43,7 +43,7 @@ void ParsedFunction<dim>::declare_parameters(ParameterHandler &prm)
 }
 
 
-template<int dim>
+template <int dim>
 void ParsedFunction<dim>::parse_parameters(ParameterHandler &prm)
 {
   Functions::ParsedFunction<dim>::parse_parameters(prm);

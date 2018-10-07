@@ -16,16 +16,17 @@
 #ifndef d2k_parsed_amg_preconditioner_h
 #define d2k_parsed_amg_preconditioner_h
 
-#include <deal2lkit/config.h>
 #include <deal.II/base/config.h>
+
+#include <deal2lkit/config.h>
 
 #ifdef DEAL_II_WITH_TRILINOS
 
-#include <deal.II/lac/trilinos_precondition.h>
+#  include <deal.II/lac/trilinos_precondition.h>
 
-#include <deal2lkit/parsed_finite_element.h>
-#include <deal2lkit/parameter_acceptor.h>
-#include <deal2lkit/utilities.h>
+#  include <deal2lkit/parameter_acceptor.h>
+#  include <deal2lkit/parsed_finite_element.h>
+#  include <deal2lkit/utilities.h>
 
 using namespace dealii;
 
@@ -38,25 +39,25 @@ D2K_NAMESPACE_OPEN
  * TrilinosWrappers::PreconditionAMG which can be called in place of
  * the preconditioner.
  */
-class ParsedAMGPreconditioner : public ParameterAcceptor, public TrilinosWrappers::PreconditionAMG
+class ParsedAMGPreconditioner : public ParameterAcceptor,
+                                public TrilinosWrappers::PreconditionAMG
 {
 public:
   /**
    * Constructor. Build the preconditioner of a matrix using AMG.
    */
-  ParsedAMGPreconditioner(const std::string &name = "AMG Preconditioner",
-                          const bool &elliptic = true,
-                          const bool &higher_order_elements = false,
-                          const unsigned int &n_cycles = 1,
-                          const bool &w_cycle = false,
-                          const double &aggregation_threshold = 1e-4,
-                          const std::string &var_const_modes = "none",
-                          const unsigned int &smoother_sweeps = 2,
-                          const unsigned int &smoother_overlap = 0,
-                          const bool &output_details = false,
-                          const std::string &smoother_type = "Chebyshev",
-                          const std::string &coarse_type = "Amesos-KLU"
-                         );
+  ParsedAMGPreconditioner(const std::string & name     = "AMG Preconditioner",
+                          const bool &        elliptic = true,
+                          const bool &        higher_order_elements = false,
+                          const unsigned int &n_cycles              = 1,
+                          const bool &        w_cycle               = false,
+                          const double &      aggregation_threshold = 1e-4,
+                          const std::string & var_const_modes       = "none",
+                          const unsigned int &smoother_sweeps       = 2,
+                          const unsigned int &smoother_overlap      = 0,
+                          const bool &        output_details        = false,
+                          const std::string & smoother_type = "Chebyshev",
+                          const std::string & coarse_type   = "Amesos-KLU");
 
   /**
    * Declare preconditioner options.
@@ -66,17 +67,17 @@ public:
   /**
    * Initialize the preconditioner using @p matrix. Constant modes are not computed.
    */
-  template<typename Matrix>
+  template <typename Matrix>
   void initialize_preconditioner(const Matrix &matrix);
 
   /**
    * Initialize the preconditioner using a @p matrix, a ParsedFiniteElement @p fe,
    * and a DoFHandler @p dh. This is the variant for constant modes.
    */
-  template<int dim, int spacedim=dim, typename Matrix>
+  template <int dim, int spacedim = dim, typename Matrix>
   void initialize_preconditioner(const Matrix &matrix,
-                                 const ParsedFiniteElement<dim, spacedim > &fe,
-                                 const DoFHandler<dim, spacedim > &dh);
+                                 const ParsedFiniteElement<dim, spacedim> &fe,
+                                 const DoFHandler<dim, spacedim> &         dh);
 
   using TrilinosWrappers::PreconditionAMG::initialize;
 
@@ -177,4 +178,3 @@ D2K_NAMESPACE_CLOSE
 #endif // DEAL_II_WITH_TRILINOS
 
 #endif
-

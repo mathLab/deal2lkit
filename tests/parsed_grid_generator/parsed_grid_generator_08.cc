@@ -14,37 +14,40 @@
 //-----------------------------------------------------------
 
 
-#include "../tests.h"
-#include <deal2lkit/utilities.h>
-#include <deal2lkit/parsed_grid_generator.h>
+#include <deal.II/base/utilities.h>
 
 #include <deal.II/grid/grid_out.h>
-#include <deal.II/base/utilities.h>
+
+#include <deal2lkit/parsed_grid_generator.h>
+#include <deal2lkit/utilities.h>
+
+#include "../tests.h"
 
 
 using namespace deal2lkit;
 
-template<int dim, int spacedim>
+template <int dim, int spacedim>
 void test(ParsedGridGenerator<dim, spacedim> &pgg)
 {
   Triangulation<dim, spacedim> *tria = pgg.serial();
-  GridOut go;
+  GridOut                       go;
   go.write_msh(*tria, deallog.get_file_stream());
 }
 
 
-int main ()
+int main()
 {
   initlog();
-  ParsedGridGenerator<2,2> a("Rectangle", "rectangle","","10,10", "20,20", "true");
-  ParsedGridGenerator<3,3> b("Cube", "rectangle", "", "7,8,9", "15,16,16");
+  ParsedGridGenerator<2, 2> a(
+    "Rectangle", "rectangle", "", "10,10", "20,20", "true");
+  ParsedGridGenerator<3, 3> b("Cube", "rectangle", "", "7,8,9", "15,16,16");
 
 
   ParameterAcceptor::initialize();
   ParameterAcceptor::prm.log_parameters(deallog);
 
-  deallog <<"2D"<<std::endl;
+  deallog << "2D" << std::endl;
   test(a);
-  deallog <<"3D"<<std::endl;
+  deallog << "3D" << std::endl;
   test(b);
 }

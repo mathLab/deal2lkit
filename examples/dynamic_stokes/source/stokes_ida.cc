@@ -17,57 +17,45 @@
 
 #ifdef D2K_WITH_SUNDIALS
 
-#include <deal.II/lac/sparsity_tools.h>
+#  include <deal.II/distributed/grid_refinement.h>
+#  include <deal.II/distributed/solution_transfer.h>
+#  include <deal.II/distributed/tria.h>
 
-#include <deal.II/dofs/dof_renumbering.h>
-#include <deal.II/dofs/dof_accessor.h>
-#include <deal.II/dofs/dof_tools.h>
+#  include <deal.II/dofs/dof_accessor.h>
+#  include <deal.II/dofs/dof_renumbering.h>
+#  include <deal.II/dofs/dof_tools.h>
 
-#include <deal.II/lac/solver_cg.h>
-#include <deal.II/lac/trilinos_solver.h>
+#  include <deal.II/fe/mapping_q.h>
 
-#include <nvector/nvector_parallel.h>
-#include <deal.II/lac/parallel_vector.h>
-#include <deal.II/lac/trilinos_vector.h>
-#include <deal.II/numerics/vector_tools.h>
-#include <deal.II/numerics/matrix_tools.h>
-#include <deal.II/numerics/solution_transfer.h>
-#include <deal.II/distributed/solution_transfer.h>
-#include <deal.II/numerics/error_estimator.h>
-#include <deal.II/distributed/solution_transfer.h>
-#include <deal.II/distributed/tria.h>
-#include <deal.II/distributed/grid_refinement.h>
-#include <deal.II/grid/grid_refinement.h>
-#include <deal.II/grid/tria_boundary_lib.h>
-#include <deal.II/numerics/solution_transfer.h>
-#include <deal.II/fe/mapping_q.h>
+#  include <deal.II/grid/grid_refinement.h>
+#  include <deal.II/grid/tria_boundary_lib.h>
 
-#include <sundials/sundials_types.h>
-#include <nvector/nvector_parallel.h>
-#include <sundials/sundials_math.h>
+#  include <deal.II/lac/parallel_vector.h>
+#  include <deal.II/lac/solver_cg.h>
+#  include <deal.II/lac/solver_gmres.h>
+#  include <deal.II/lac/sparsity_tools.h>
+#  include <deal.II/lac/trilinos_solver.h>
+#  include <deal.II/lac/trilinos_vector.h>
 
-#include <deal.II/lac/solver_gmres.h>
+#  include <deal.II/numerics/error_estimator.h>
+#  include <deal.II/numerics/matrix_tools.h>
+#  include <deal.II/numerics/solution_transfer.h>
+#  include <deal.II/numerics/vector_tools.h>
+
+#  include <nvector/nvector_parallel.h>
+#  include <sundials/sundials_math.h>
+#  include <sundials/sundials_types.h>
 template <int dim>
-Stokes<dim>::Stokes (const MPI_Comm communicator)
-  :
+Stokes<dim>::Stokes(const MPI_Comm communicator) :
   comm(Utilities::MPI::duplicate_communicator(communicator)),
-  pcout (std::cout,
-         (Utilities::MPI::this_mpi_process(comm)
-          == 0)),
+  pcout(std::cout, (Utilities::MPI::this_mpi_process(comm) == 0)),
   timer_outfile("timer.txt"),
-  tcout (timer_outfile,
-         (Utilities::MPI::this_mpi_process(comm)
-          == 0)),
-  computing_timer (comm,
-                   tcout,
-                   TimerOutput::summary,
-                   TimerOutput::wall_times),
+  tcout(timer_outfile, (Utilities::MPI::this_mpi_process(comm) == 0)),
+  computing_timer(comm, tcout, TimerOutput::summary, TimerOutput::wall_times),
 
   pgg("Domain"),
   pgr("Refinement"),
-  fe_builder("Finite Element",
-             "FESystem[FE_Q(2)^dim-FE_Q(1)]",
-             "u,u,p"),
+  fe_builder("Finite Element", "FESystem[FE_Q(2)^dim-FE_Q(1)]", "u,u,p"),
 
   exact_solution("Exact solution", 3),
   forcing_term("Forcing term", 3),
@@ -81,99 +69,85 @@ Stokes<dim>::Stokes (const MPI_Comm communicator)
 {}
 
 template <int dim>
-void Stokes<dim>::declare_parameters (ParameterHandler &prm)
+void Stokes<dim>::declare_parameters(ParameterHandler &prm)
 {
-  add_parameter(  prm,
-                  &initial_global_refinement,
-                  "Initial global refinement",
-                  "1",
-                  Patterns::Integer (0));
+  add_parameter(prm,
+                &initial_global_refinement,
+                "Initial global refinement",
+                "1",
+                Patterns::Integer(0));
 
-  add_parameter(  prm,
-                  &max_time_iterations,
-                  "Maximum number of time steps",
-                  "10000",
-                  Patterns::Integer (0));
+  add_parameter(prm,
+                &max_time_iterations,
+                "Maximum number of time steps",
+                "10000",
+                Patterns::Integer(0));
 
-  add_parameter(  prm,
-                  &timer_file_name,
-                  "Timer output file",
-                  "timer.txt",
-                  Patterns::FileName());
-
-
-  add_parameter(  prm,
-                  &adaptive_refinement,
-                  "Adaptive refinement",
-                  "true",
-                  Patterns::Bool());
+  add_parameter(prm,
+                &timer_file_name,
+                "Timer output file",
+                "timer.txt",
+                Patterns::FileName());
 
 
-  add_parameter(  prm,
-                  &use_space_adaptivity,
-                  "Refine mesh during transient",
-                  "true",
-                  Patterns::Bool());
+  add_parameter(
+    prm, &adaptive_refinement, "Adaptive refinement", "true", Patterns::Bool());
 
-  add_parameter(  prm,
-                  &kelly_threshold,
-                  "Threshold for restart solver",
-                  "1e-2",
-                  Patterns::Double(0.0));
 
-  add_parameter(  prm,
-                  &mu,
-                  "mu",
-                  "1.",
-                  Patterns::Double(0.0));
+  add_parameter(prm,
+                &use_space_adaptivity,
+                "Refine mesh during transient",
+                "true",
+                Patterns::Bool());
+
+  add_parameter(prm,
+                &kelly_threshold,
+                "Threshold for restart solver",
+                "1e-2",
+                Patterns::Double(0.0));
+
+  add_parameter(prm, &mu, "mu", "1.", Patterns::Double(0.0));
 }
 
 template <int dim>
 void Stokes<dim>::make_grid_fe()
 {
-  fe=SP(fe_builder());
+  fe            = SP(fe_builder());
   triangulation = SP(pgg.distributed(comm));
 
   static HyperShellBoundary<dim> boundary;
-  triangulation->set_all_manifold_ids_on_boundary(5,99);
-  triangulation->set_manifold (99, boundary);
-  triangulation->refine_global (initial_global_refinement);
+  triangulation->set_all_manifold_ids_on_boundary(5, 99);
+  triangulation->set_manifold(99, boundary);
+  triangulation->refine_global(initial_global_refinement);
   dof_handler = SP(new DoFHandler<dim>(*triangulation));
 }
 
 
 template <int dim>
-void Stokes<dim>::setup_dofs (const bool &first_run)
+void Stokes<dim>::setup_dofs(const bool &first_run)
 {
   computing_timer.enter_section("Setup dof systems");
 
   std::vector<unsigned int> sub_blocks = fe_builder.get_component_blocks();
 
-  dof_handler->distribute_dofs (*fe);
-  DoFRenumbering::component_wise (*dof_handler, sub_blocks);
+  dof_handler->distribute_dofs(*fe);
+  DoFRenumbering::component_wise(*dof_handler, sub_blocks);
 
-  mapping = SP(new MappingQ<dim,dim>(2));
+  mapping = SP(new MappingQ<dim, dim>(2));
 
   dofs_per_block.clear();
   dofs_per_block.resize(fe_builder.n_blocks());
 
-  DoFTools::count_dofs_per_block (*dof_handler, dofs_per_block,
-                                  sub_blocks);
+  DoFTools::count_dofs_per_block(*dof_handler, dofs_per_block, sub_blocks);
 
   const unsigned int n_dofs = dof_handler->n_dofs();
 
   std::locale s = pcout.get_stream().getloc();
   pcout.get_stream().imbue(std::locale(""));
-  pcout << "Number of active cells: "
-        << triangulation->n_global_active_cells()
-        << " (on "
-        << triangulation->n_levels()
-        << " levels)"
-        << std::endl
-        << "Number of degrees of freedom: "
-        << n_dofs
-        << " (" << print(dofs_per_block, "+") << ")"
-        << std::endl;
+  pcout << "Number of active cells: " << triangulation->n_global_active_cells()
+        << " (on " << triangulation->n_levels() << " levels)" << std::endl
+        << "Number of degrees of freedom: " << n_dofs << " ("
+        << print(dofs_per_block, "+") << ")" << std::endl;
   pcout.get_stream().imbue(s);
 
 
@@ -184,77 +158,82 @@ void Stokes<dim>::setup_dofs (const bool &first_run)
   {
     global_partitioning = dof_handler->locally_owned_dofs();
     for (unsigned int i = 0; i < fe_builder.n_blocks(); ++i)
-      partitioning.push_back(global_partitioning.get_view( std::accumulate(dofs_per_block.begin(), dofs_per_block.begin() + i, 0),
-                                                           std::accumulate(dofs_per_block.begin(), dofs_per_block.begin() + i + 1, 0)));
+      partitioning.push_back(global_partitioning.get_view(
+        std::accumulate(dofs_per_block.begin(), dofs_per_block.begin() + i, 0),
+        std::accumulate(
+          dofs_per_block.begin(), dofs_per_block.begin() + i + 1, 0)));
 
-    DoFTools::extract_locally_relevant_dofs (*dof_handler,
-                                             relevant_set);
+    DoFTools::extract_locally_relevant_dofs(*dof_handler, relevant_set);
 
     for (unsigned int i = 0; i < fe_builder.n_blocks(); ++i)
-      relevant_partitioning.push_back(relevant_set.get_view(std::accumulate(dofs_per_block.begin(), dofs_per_block.begin() + i, 0),
-                                                            std::accumulate(dofs_per_block.begin(), dofs_per_block.begin() + i + 1, 0)));
+      relevant_partitioning.push_back(relevant_set.get_view(
+        std::accumulate(dofs_per_block.begin(), dofs_per_block.begin() + i, 0),
+        std::accumulate(
+          dofs_per_block.begin(), dofs_per_block.begin() + i + 1, 0)));
   }
-  constraints.clear ();
-  constraints.reinit (relevant_set);
+  constraints.clear();
+  constraints.reinit(relevant_set);
 
-  DoFTools::make_hanging_node_constraints (*dof_handler,
-                                           constraints);
+  DoFTools::make_hanging_node_constraints(*dof_handler, constraints);
 
-  dirichlet_bcs.interpolate_boundary_values(*mapping,*dof_handler, constraints);
-  constraints.close ();
+  dirichlet_bcs.interpolate_boundary_values(
+    *mapping, *dof_handler, constraints);
+  constraints.close();
 
-  constraints_dot.clear ();
-  constraints_dot.reinit (relevant_set);
+  constraints_dot.clear();
+  constraints_dot.reinit(relevant_set);
 
-  DoFTools::make_hanging_node_constraints (*dof_handler,
-                                           constraints_dot);
+  DoFTools::make_hanging_node_constraints(*dof_handler, constraints_dot);
 
-  dirichlet_dot.interpolate_boundary_values(*mapping,*dof_handler, constraints_dot);
-  constraints_dot.close ();
+  dirichlet_dot.interpolate_boundary_values(
+    *mapping, *dof_handler, constraints_dot);
+  constraints_dot.close();
 
   jacobian_matrix.clear();
-  jacobian_matrix_sp.reinit(partitioning,partitioning,relevant_partitioning,comm);
+  jacobian_matrix_sp.reinit(
+    partitioning, partitioning, relevant_partitioning, comm);
 
 
-  Table<2,DoFTools::Coupling> coupling (dim+1, dim+1);
-  for (unsigned int c=0; c<dim+1; ++c)
-    for (unsigned int d=0; d<dim+1; ++d)
+  Table<2, DoFTools::Coupling> coupling(dim + 1, dim + 1);
+  for (unsigned int c = 0; c < dim + 1; ++c)
+    for (unsigned int d = 0; d < dim + 1; ++d)
       coupling[c][d] = DoFTools::always;
 
   coupling[dim][dim] = DoFTools::none;
 
-  DoFTools::make_sparsity_pattern (*dof_handler,
-                                   coupling,
-                                   jacobian_matrix_sp,
-                                   constraints,
-                                   false,
-                                   Utilities::MPI::this_mpi_process(comm));
+  DoFTools::make_sparsity_pattern(*dof_handler,
+                                  coupling,
+                                  jacobian_matrix_sp,
+                                  constraints,
+                                  false,
+                                  Utilities::MPI::this_mpi_process(comm));
 
   jacobian_matrix_sp.compress();
 
   jacobian_matrix.reinit(jacobian_matrix_sp);
 
   jacobian_preconditioner_matrix.clear();
-  jacobian_preconditioner_matrix_sp.reinit(partitioning,partitioning,relevant_partitioning,comm);
+  jacobian_preconditioner_matrix_sp.reinit(
+    partitioning, partitioning, relevant_partitioning, comm);
 
 
-  Table<2,DoFTools::Coupling> prec_coupling (dim+1, dim+1);
-  for (unsigned int c=0; c<dim+1; ++c)
-    for (unsigned int d=0; d<dim+1; ++d)
-      if (c==d)
+  Table<2, DoFTools::Coupling> prec_coupling(dim + 1, dim + 1);
+  for (unsigned int c = 0; c < dim + 1; ++c)
+    for (unsigned int d = 0; d < dim + 1; ++d)
+      if (c == d)
         prec_coupling[c][d] = DoFTools::always;
-      else if (c<dim && d<dim)
+      else if (c < dim && d < dim)
         prec_coupling[c][d] = DoFTools::always;
       else
         prec_coupling[c][d] = DoFTools::none;
 
 
-  DoFTools::make_sparsity_pattern (*dof_handler,
-                                   prec_coupling,
-                                   jacobian_preconditioner_matrix_sp,
-                                   constraints,
-                                   false,
-                                   Utilities::MPI::this_mpi_process(comm));
+  DoFTools::make_sparsity_pattern(*dof_handler,
+                                  prec_coupling,
+                                  jacobian_preconditioner_matrix_sp,
+                                  constraints,
+                                  false,
+                                  Utilities::MPI::this_mpi_process(comm));
 
   jacobian_preconditioner_matrix_sp.compress();
 
@@ -263,13 +242,15 @@ void Stokes<dim>::setup_dofs (const bool &first_run)
   solution.reinit(partitioning, comm);
   solution_dot.reinit(partitioning, comm);
 
-  distributed_solution.reinit(partitioning,relevant_partitioning,comm);
-  distributed_solution_dot.reinit(partitioning,relevant_partitioning,comm);
+  distributed_solution.reinit(partitioning, relevant_partitioning, comm);
+  distributed_solution_dot.reinit(partitioning, relevant_partitioning, comm);
 
   if (first_run)
     {
-      VectorTools::interpolate(*mapping,*dof_handler, initial_solution, solution);
-      VectorTools::interpolate(*mapping,*dof_handler, initial_solution_dot, solution_dot);
+      VectorTools::interpolate(
+        *mapping, *dof_handler, initial_solution, solution);
+      VectorTools::interpolate(
+        *mapping, *dof_handler, initial_solution_dot, solution_dot);
     }
 
   computing_timer.exit_section();
@@ -277,35 +258,35 @@ void Stokes<dim>::setup_dofs (const bool &first_run)
 
 
 template <int dim>
-void Stokes<dim>::update_constraints (const double &t)
+void Stokes<dim>::update_constraints(const double &t)
 {
   dirichlet_bcs.set_time(t);
   dirichlet_dot.set_time(t);
   exact_solution.set_time(t);
   constraints.clear();
-  DoFTools::make_hanging_node_constraints (*dof_handler,
-                                           constraints);
+  DoFTools::make_hanging_node_constraints(*dof_handler, constraints);
 
-  dirichlet_bcs.interpolate_boundary_values(*mapping,*dof_handler, constraints);
+  dirichlet_bcs.interpolate_boundary_values(
+    *mapping, *dof_handler, constraints);
 
-  constraints.close ();
+  constraints.close();
   constraints_dot.clear();
 
-  DoFTools::make_hanging_node_constraints (*dof_handler,
-                                           constraints_dot);
+  DoFTools::make_hanging_node_constraints(*dof_handler, constraints_dot);
 
-  dirichlet_dot.interpolate_boundary_values(*mapping,*dof_handler, constraints_dot);
-  constraints_dot.close ();
+  dirichlet_dot.interpolate_boundary_values(
+    *mapping, *dof_handler, constraints_dot);
+  constraints_dot.close();
 }
 
 template <int dim>
 void Stokes<dim>::assemble_jacobian_matrix(const double t,
-                                           const VEC &solution,
-                                           const VEC &solution_dot,
+                                           const VEC &  solution,
+                                           const VEC &  solution_dot,
                                            const double alpha)
 {
-  computing_timer.enter_section ("   Assemble jacobian matrix");
-  jacobian_matrix = 0;
+  computing_timer.enter_section("   Assemble jacobian matrix");
+  jacobian_matrix                = 0;
   jacobian_preconditioner_matrix = 0;
 
   update_constraints(t);
@@ -314,122 +295,117 @@ void Stokes<dim>::assemble_jacobian_matrix(const double t,
   VEC tmp_dot(solution_dot);
   constraints.distribute(tmp);
   constraints_dot.distribute(tmp_dot);
-  distributed_solution = tmp;
+  distributed_solution     = tmp;
   distributed_solution_dot = tmp_dot;
 
-  const QGauss<dim>  quadrature_formula(fe->degree+1);
+  const QGauss<dim> quadrature_formula(fe->degree + 1);
 
-  FEValues<dim> fe_values (*mapping,*fe, quadrature_formula,
-                           update_values    |  update_gradients |
-                           update_quadrature_points |
-                           update_JxW_values);
+  FEValues<dim> fe_values(*mapping,
+                          *fe,
+                          quadrature_formula,
+                          update_values | update_gradients |
+                            update_quadrature_points | update_JxW_values);
 
-  const unsigned int   dofs_per_cell = fe->dofs_per_cell;
-  const unsigned int   n_q_points    = quadrature_formula.size();
+  const unsigned int dofs_per_cell = fe->dofs_per_cell;
+  const unsigned int n_q_points    = quadrature_formula.size();
 
-  FullMatrix<double>   cell_matrix (dofs_per_cell, dofs_per_cell);
-  FullMatrix<double>   cell_prec (dofs_per_cell, dofs_per_cell);
+  FullMatrix<double> cell_matrix(dofs_per_cell, dofs_per_cell);
+  FullMatrix<double> cell_prec(dofs_per_cell, dofs_per_cell);
 
-  const FEValuesExtractors::Vector velocities (0);
-  const FEValuesExtractors::Scalar pressure (dim);
-  std::vector<types::global_dof_index> local_dof_indices (dofs_per_cell);
+  const FEValuesExtractors::Vector     velocities(0);
+  const FEValuesExtractors::Scalar     pressure(dim);
+  std::vector<types::global_dof_index> local_dof_indices(dofs_per_cell);
 
-  std::vector<Tensor<1,dim> >          phi_u(dofs_per_cell);
-  std::vector<SymmetricTensor<2,dim> > sym_grads_phi_u(dofs_per_cell);
-  std::vector<Tensor<2,dim> >          grads_phi_u(dofs_per_cell);
+  std::vector<Tensor<1, dim>>          phi_u(dofs_per_cell);
+  std::vector<SymmetricTensor<2, dim>> sym_grads_phi_u(dofs_per_cell);
+  std::vector<Tensor<2, dim>>          grads_phi_u(dofs_per_cell);
   std::vector<double>                  div_phi_u(dofs_per_cell);
   std::vector<double>                  phi_p(dofs_per_cell);
 
-  typename DoFHandler<dim>::active_cell_iterator
-  cell = dof_handler->begin_active(),
-  endc = dof_handler->end();
-  for (; cell!=endc; ++cell)
+  typename DoFHandler<dim>::active_cell_iterator cell =
+                                                   dof_handler->begin_active(),
+                                                 endc = dof_handler->end();
+  for (; cell != endc; ++cell)
     if (cell->is_locally_owned())
       {
         cell_matrix = 0;
-        cell_prec = 0;
+        cell_prec   = 0;
 
-        fe_values.reinit (cell);
+        fe_values.reinit(cell);
 
-        for (unsigned int q_point=0; q_point<n_q_points; ++q_point)
+        for (unsigned int q_point = 0; q_point < n_q_points; ++q_point)
           {
-            for (unsigned int k=0; k<dofs_per_cell; ++k)
+            for (unsigned int k = 0; k < dofs_per_cell; ++k)
               {
-                phi_u[k]       = fe_values[velocities].value (k,q_point);
-                sym_grads_phi_u[k] = fe_values[velocities].symmetric_gradient(k,q_point);
-                grads_phi_u[k] = fe_values[velocities].gradient(k,q_point);
-                div_phi_u[k]   = fe_values[velocities].divergence (k, q_point);
-                phi_p[k]       = fe_values[pressure].value (k, q_point);
+                phi_u[k] = fe_values[velocities].value(k, q_point);
+                sym_grads_phi_u[k] =
+                  fe_values[velocities].symmetric_gradient(k, q_point);
+                grads_phi_u[k] = fe_values[velocities].gradient(k, q_point);
+                div_phi_u[k]   = fe_values[velocities].divergence(k, q_point);
+                phi_p[k]       = fe_values[pressure].value(k, q_point);
               }
 
-            for (unsigned int i=0; i<dofs_per_cell; ++i)
+            for (unsigned int i = 0; i < dofs_per_cell; ++i)
               {
-                for (unsigned int j=0; j<dofs_per_cell; ++j)
+                for (unsigned int j = 0; j < dofs_per_cell; ++j)
                   {
-                    cell_matrix(i,j) += (
-                                          alpha*phi_u[i] *
-                                          phi_u[j]
-                                          +
-                                          mu*sym_grads_phi_u[i] * sym_grads_phi_u[j]
-                                          -
-                                          (div_phi_u[i] * phi_p[j])
-                                          -
-                                          (phi_p[i] * div_phi_u[j])
+                    cell_matrix(i, j) +=
+                      (alpha * phi_u[i] * phi_u[j] +
+                       mu * sym_grads_phi_u[i] * sym_grads_phi_u[j] -
+                       (div_phi_u[i] * phi_p[j]) - (phi_p[i] * div_phi_u[j])
 
-                                        )*fe_values.JxW(q_point);
+                         ) *
+                      fe_values.JxW(q_point);
 
-                    cell_prec(i,j) += (
-                                        alpha*phi_u[i]*phi_u[j]
-                                        +
-                                        mu*sym_grads_phi_u[i]*sym_grads_phi_u[j]
-                                        +
-                                        (1./mu)*phi_p[i]*phi_p[j]
+                    cell_prec(i, j) +=
+                      (alpha * phi_u[i] * phi_u[j] +
+                       mu * sym_grads_phi_u[i] * sym_grads_phi_u[j] +
+                       (1. / mu) * phi_p[i] * phi_p[j]
 
-                                      )*fe_values.JxW(q_point);
+                       ) *
+                      fe_values.JxW(q_point);
                   }
-
-
               }
           }
 
-        cell->get_dof_indices (local_dof_indices);
-        constraints.distribute_local_to_global (cell_matrix,
-                                                local_dof_indices,
-                                                jacobian_matrix);
+        cell->get_dof_indices(local_dof_indices);
+        constraints.distribute_local_to_global(
+          cell_matrix, local_dof_indices, jacobian_matrix);
 
-        constraints.distribute_local_to_global (cell_prec,
-                                                local_dof_indices,
-                                                jacobian_preconditioner_matrix);
+        constraints.distribute_local_to_global(
+          cell_prec, local_dof_indices, jacobian_preconditioner_matrix);
       }
 
-  jacobian_matrix.compress (VectorOperation::add);
-  jacobian_preconditioner_matrix.compress (VectorOperation::add);
+  jacobian_matrix.compress(VectorOperation::add);
+  jacobian_preconditioner_matrix.compress(VectorOperation::add);
 
   // ########## Operators setup
-  std::vector<std::vector<bool> > constant_modes;
-  DoFTools::extract_constant_modes (*dof_handler, dof_handler->get_fe().component_mask(velocities),
-                                    constant_modes);
+  std::vector<std::vector<bool>> constant_modes;
+  DoFTools::extract_constant_modes(
+    *dof_handler,
+    dof_handler->get_fe().component_mask(velocities),
+    constant_modes);
 
-  Mp_preconditioner.reset  (new TrilinosWrappers::PreconditionJacobi());
-  Amg_preconditioner.reset (new TrilinosWrappers::PreconditionAMG());
+  Mp_preconditioner.reset(new TrilinosWrappers::PreconditionJacobi());
+  Amg_preconditioner.reset(new TrilinosWrappers::PreconditionAMG());
 
   TrilinosWrappers::PreconditionAMG::AdditionalData Amg_data;
-  Amg_data.constant_modes = constant_modes;
-  Amg_data.elliptic = true;
+  Amg_data.constant_modes        = constant_modes;
+  Amg_data.elliptic              = true;
   Amg_data.higher_order_elements = true;
-  Amg_data.smoother_sweeps = 2;
+  Amg_data.smoother_sweeps       = 2;
   Amg_data.aggregation_threshold = 0.02;
 
-  Mp_preconditioner->initialize  (jacobian_preconditioner_matrix.block(1,1));
-  Amg_preconditioner->initialize (jacobian_matrix.block(0,0),
-                                  Amg_data);
+  Mp_preconditioner->initialize(jacobian_preconditioner_matrix.block(1, 1));
+  Amg_preconditioner->initialize(jacobian_matrix.block(0, 0), Amg_data);
 
 
   // SYSTEM MATRIX:
   std::array<std::array<LinearOperator<TrilinosWrappers::MPI::Vector>, 2>, 2> S;
-  for (unsigned int i = 0; i<2; ++i)
-    for (unsigned int j = 0; j<2; ++j)
-      S[i][j] = linear_operator< TrilinosWrappers::MPI::Vector >( jacobian_matrix.block(i,j) );
+  for (unsigned int i = 0; i < 2; ++i)
+    for (unsigned int j = 0; j < 2; ++j)
+      S[i][j] = linear_operator<TrilinosWrappers::MPI::Vector>(
+        jacobian_matrix.block(i, j));
 
   S[1][1] = null_operator(S[1][1]); // p p
 
@@ -438,39 +414,37 @@ void Stokes<dim>::assemble_jacobian_matrix(const double t,
   // PRECONDITIONER
 
   std::array<std::array<LinearOperator<TrilinosWrappers::MPI::Vector>, 2>, 2> P;
-  for (unsigned int i = 0; i<2; ++i)
-    for (unsigned int j = 0; j<2; ++j)
-      P[i][j] = linear_operator< TrilinosWrappers::MPI::Vector >( jacobian_preconditioner_matrix.block(i,j) );
+  for (unsigned int i = 0; i < 2; ++i)
+    for (unsigned int j = 0; j < 2; ++j)
+      P[i][j] = linear_operator<TrilinosWrappers::MPI::Vector>(
+        jacobian_preconditioner_matrix.block(i, j));
 
-  static ReductionControl solver_control_pre(5000, 1e-8);
+  static ReductionControl                        solver_control_pre(5000, 1e-8);
   static SolverCG<TrilinosWrappers::MPI::Vector> solver_CG(solver_control_pre);
 
-  for (unsigned int i = 0; i<2; ++i)
-    for (unsigned int j = 0; j<2; ++j)
-      if (i!=j)
-        P[i][j] = null_operator< TrilinosWrappers::MPI::Vector >(P[i][j]);
+  for (unsigned int i = 0; i < 2; ++i)
+    for (unsigned int j = 0; j < 2; ++j)
+      if (i != j)
+        P[i][j] = null_operator<TrilinosWrappers::MPI::Vector>(P[i][j]);
 
-  P[0][0] = inverse_operator< >(  S[0][0],
-                                  solver_CG,
-                                  *Amg_preconditioner);
-  P[1][1] = inverse_operator< >(  jacobian_preconditioner_matrix.block(1,1),
-                                  solver_CG,
-                                  *Mp_preconditioner);
+  P[0][0] = inverse_operator<>(S[0][0], solver_CG, *Amg_preconditioner);
+  P[1][1] = inverse_operator<>(
+    jacobian_preconditioner_matrix.block(1, 1), solver_CG, *Mp_preconditioner);
 
-  jacobian_preconditioner_op = block_forward_substitution< >(
-                                 BlockLinearOperator<TrilinosWrappers::MPI::BlockVector>(S),
-                                 BlockLinearOperator<TrilinosWrappers::MPI::BlockVector>(P));
+  jacobian_preconditioner_op = block_forward_substitution<>(
+    BlockLinearOperator<TrilinosWrappers::MPI::BlockVector>(S),
+    BlockLinearOperator<TrilinosWrappers::MPI::BlockVector>(P));
 
   computing_timer.exit_section();
 }
 
 template <int dim>
-int Stokes<dim>::residual (const double t,
-                           const VEC &solution,
-                           const VEC &solution_dot,
-                           VEC &dst)
+int Stokes<dim>::residual(const double t,
+                          const VEC &  solution,
+                          const VEC &  solution_dot,
+                          VEC &        dst)
 {
-  computing_timer.enter_section ("Residual");
+  computing_timer.enter_section("Residual");
 
   update_constraints(t);
 
@@ -480,102 +454,97 @@ int Stokes<dim>::residual (const double t,
   constraints.distribute(tmp);
   constraints_dot.distribute(tmp_dot);
 
-  distributed_solution = tmp;
+  distributed_solution     = tmp;
   distributed_solution_dot = tmp_dot;
 
   dst = 0;
 
-  const QGauss<dim>  quadrature_formula(fe->degree+1);
+  const QGauss<dim> quadrature_formula(fe->degree + 1);
 
-  FEValues<dim> fe_values (*fe, quadrature_formula,
-                           update_values |  update_gradients |
-                           update_quadrature_points |
-                           update_JxW_values);
+  FEValues<dim> fe_values(*fe,
+                          quadrature_formula,
+                          update_values | update_gradients |
+                            update_quadrature_points | update_JxW_values);
 
-  const unsigned int   dofs_per_cell = fe->dofs_per_cell;
-  const unsigned int   n_q_points    = quadrature_formula.size();
+  const unsigned int dofs_per_cell = fe->dofs_per_cell;
+  const unsigned int n_q_points    = quadrature_formula.size();
 
-  Vector<double>       cell_rhs (dofs_per_cell);
+  Vector<double> cell_rhs(dofs_per_cell);
 
-  std::vector<types::global_dof_index> local_dof_indices (dofs_per_cell);
+  std::vector<types::global_dof_index> local_dof_indices(dofs_per_cell);
 
-  const FEValuesExtractors::Vector u (0);
-  const FEValuesExtractors::Scalar p (dim);
+  const FEValuesExtractors::Vector u(0);
+  const FEValuesExtractors::Scalar p(dim);
 
-  typename DoFHandler<dim>::active_cell_iterator
-  cell = dof_handler->begin_active(),
-  endc = dof_handler->end();
-  for (; cell!=endc; ++cell)
+  typename DoFHandler<dim>::active_cell_iterator cell =
+                                                   dof_handler->begin_active(),
+                                                 endc = dof_handler->end();
+  for (; cell != endc; ++cell)
     if (cell->is_locally_owned())
       {
         cell_rhs = 0;
 
-        fe_values.reinit (cell);
-        cell->get_dof_indices (local_dof_indices);
+        fe_values.reinit(cell);
+        cell->get_dof_indices(local_dof_indices);
 
-        std::vector<Vector<double> > rhs_values (n_q_points, Vector<double>(dim+1));
-        forcing_term.vector_value_list (fe_values.get_quadrature_points(),
-                                        rhs_values);
+        std::vector<Vector<double>> rhs_values(n_q_points,
+                                               Vector<double>(dim + 1));
+        forcing_term.vector_value_list(fe_values.get_quadrature_points(),
+                                       rhs_values);
 
 
-        std::vector<SymmetricTensor<2,dim> > grad_sols(n_q_points);
-        fe_values[u].get_function_symmetric_gradients(distributed_solution,grad_sols);
+        std::vector<SymmetricTensor<2, dim>> grad_sols(n_q_points);
+        fe_values[u].get_function_symmetric_gradients(distributed_solution,
+                                                      grad_sols);
 
-        std::vector<Tensor<1,dim> > sols_dot (n_q_points);
-        fe_values[u].get_function_values(distributed_solution_dot,sols_dot);
+        std::vector<Tensor<1, dim>> sols_dot(n_q_points);
+        fe_values[u].get_function_values(distributed_solution_dot, sols_dot);
 
-        std::vector<double> div_us (n_q_points);
-        fe_values[u].get_function_divergences(distributed_solution,div_us);
+        std::vector<double> div_us(n_q_points);
+        fe_values[u].get_function_divergences(distributed_solution, div_us);
 
-        std::vector<double> ps (n_q_points);
-        fe_values[p].get_function_values(distributed_solution,ps);
+        std::vector<double> ps(n_q_points);
+        fe_values[p].get_function_values(distributed_solution, ps);
 
-        for (unsigned int q_point=0; q_point<n_q_points; ++q_point)
+        for (unsigned int q_point = 0; q_point < n_q_points; ++q_point)
           {
-
-            for (unsigned int i=0; i<dofs_per_cell; ++i)
+            for (unsigned int i = 0; i < dofs_per_cell; ++i)
               {
+                cell_rhs(i) +=
+                  (sols_dot[q_point] * fe_values[u].value(i, q_point)
 
-                cell_rhs(i) += (
-                                 sols_dot[q_point]*
-                                 fe_values[u].value(i,q_point)
+                   + mu * scalar_product(
+                            grad_sols[q_point],
+                            fe_values[u].symmetric_gradient(i, q_point))
 
-                                 +
-                                 mu*scalar_product(grad_sols[q_point],
-                                                   fe_values[u].symmetric_gradient(i,q_point))
+                   - ps[q_point] * fe_values[u].divergence(i, q_point)
 
-                                 -
-                                 ps[q_point] *
-                                 fe_values[u].divergence(i,q_point)
+                   - div_us[q_point] * fe_values[p].value(i, q_point)
 
-                                 -
-                                 div_us[q_point]*
-                                 fe_values[p].value(i,q_point)
-
-                               )*fe_values.JxW(q_point);
+                     ) *
+                  fe_values.JxW(q_point);
 
 
                 unsigned int comp_i = fe->system_to_component_index(i).first;
-                if (comp_i<dim)
+                if (comp_i < dim)
                   cell_rhs(i) -= (rhs_values[q_point](comp_i) *
-                                  fe_values[u].value(i,q_point)[comp_i] *
+                                  fe_values[u].value(i, q_point)[comp_i] *
                                   fe_values.JxW(q_point));
               }
           }
 
-        constraints.distribute_local_to_global (cell_rhs,
-                                                local_dof_indices,
-                                                dst);
+        constraints.distribute_local_to_global(
+          cell_rhs, local_dof_indices, dst);
       }
 
-  dst.compress (VectorOperation::add);
+  dst.compress(VectorOperation::add);
 
   auto id = solution.locally_owned_elements();
-  for (unsigned int i=0; i<id.n_elements(); ++i)
+  for (unsigned int i = 0; i < id.n_elements(); ++i)
     {
       auto j = id.nth_index_in_set(i);
       if (constraints.is_constrained(j))
-        dst[j] = solution(j)-distributed_solution(j);
+        dst[j] = solution(j) - distributed_solution(j);
     }
 
   dst.compress(VectorOperation::insert);
@@ -584,7 +553,7 @@ int Stokes<dim>::residual (const double t,
 }
 
 template <int dim>
-shared_ptr<VEC> Stokes<dim>::create_new_vector () const
+shared_ptr<VEC> Stokes<dim>::create_new_vector() const
 {
   shared_ptr<VEC> ret = SP(new VEC(solution));
   return ret;
@@ -597,12 +566,12 @@ unsigned int Stokes<dim>::n_dofs() const
 }
 
 template <int dim>
-void Stokes<dim>::output_step(const double t,
-                              const VEC &solution,
-                              const VEC &solution_dot,
+void Stokes<dim>::output_step(const double       t,
+                              const VEC &        solution,
+                              const VEC &        solution_dot,
                               const unsigned int step_number)
 {
-  computing_timer.enter_section ("Postprocessing");
+  computing_timer.enter_section("Postprocessing");
 
   update_constraints(t);
 
@@ -611,38 +580,37 @@ void Stokes<dim>::output_step(const double t,
 
   constraints.distribute(tmp);
   constraints_dot.distribute(tmp_dot);
-  distributed_solution = tmp;
+  distributed_solution     = tmp;
   distributed_solution_dot = tmp_dot;
 
   std::stringstream suffix;
   suffix << "." << step_number;
-  data_out.prepare_data_output( *dof_handler,
-                                suffix.str());
-  data_out.add_data_vector (distributed_solution, fe_builder.get_component_names());
+  data_out.prepare_data_output(*dof_handler, suffix.str());
+  data_out.add_data_vector(distributed_solution,
+                           fe_builder.get_component_names());
   std::vector<std::string> sol_dot_names =
-    Utilities::split_string_list( fe_builder.get_component_names());
+    Utilities::split_string_list(fe_builder.get_component_names());
   for (auto &name : sol_dot_names)
     {
       name += "_dot";
     }
-  data_out.add_data_vector (distributed_solution_dot, print(sol_dot_names,","));
+  data_out.add_data_vector(distributed_solution_dot, print(sol_dot_names, ","));
 
   data_out.write_data_and_clear(*mapping);
 
-  computing_timer.exit_section ();
+  computing_timer.exit_section();
 }
 
 template <int dim>
-bool Stokes<dim>::solver_should_restart (const double t,
-                                         VEC &solution,
-                                         VEC &solution_dot)
+bool Stokes<dim>::solver_should_restart(const double t,
+                                        VEC &        solution,
+                                        VEC &        solution_dot)
 {
-
   if (use_space_adaptivity)
     {
-      double max_kelly=0;
+      double max_kelly = 0;
 
-      computing_timer.enter_section ("   Compute error estimator");
+      computing_timer.enter_section("   Compute error estimator");
 
 
       update_constraints(t);
@@ -650,19 +618,20 @@ bool Stokes<dim>::solver_should_restart (const double t,
       VEC tmp_c(solution);
       constraints.distribute(tmp_c);
       distributed_solution = tmp_c;
-      std::vector<bool> mask(dim+1,true);
+      std::vector<bool> mask(dim + 1, true);
       mask[dim] = false;
 
-      Vector<float> estimated_error_per_cell (triangulation->n_active_cells());
-      KellyErrorEstimator<dim>::estimate (*dof_handler,
-                                          QGauss<dim-1>(4),
-                                          typename FunctionMap<dim>::type(),
-                                          distributed_solution,
-                                          estimated_error_per_cell,
-                                          ComponentMask(mask),
-                                          0,
-                                          0,
-                                          triangulation->locally_owned_subdomain());
+      Vector<float> estimated_error_per_cell(triangulation->n_active_cells());
+      KellyErrorEstimator<dim>::estimate(
+        *dof_handler,
+        QGauss<dim - 1>(4),
+        typename FunctionMap<dim>::type(),
+        distributed_solution,
+        estimated_error_per_cell,
+        ComponentMask(mask),
+        0,
+        0,
+        triangulation->locally_owned_subdomain());
 
 
       max_kelly = estimated_error_per_cell.linfty_norm();
@@ -673,37 +642,38 @@ bool Stokes<dim>::solver_should_restart (const double t,
         {
           pcout << "  ################ restart ######### \n"
                 << "max_kelly > threshold\n"
-                << max_kelly  << " >  " << kelly_threshold
-                << std::endl
+                << max_kelly << " >  " << kelly_threshold << std::endl
                 << "######################################\n";
           pgr.mark_cells(estimated_error_per_cell, *triangulation);
 
-          parallel::distributed::SolutionTransfer<dim,VEC> sol_tr(*dof_handler);
-          parallel::distributed::SolutionTransfer<dim,VEC> sol_dot_tr(*dof_handler);
+          parallel::distributed::SolutionTransfer<dim, VEC> sol_tr(
+            *dof_handler);
+          parallel::distributed::SolutionTransfer<dim, VEC> sol_dot_tr(
+            *dof_handler);
 
-          VEC sol (distributed_solution);
-          VEC sol_dot (distributed_solution_dot);
-          sol = solution;
+          VEC sol(distributed_solution);
+          VEC sol_dot(distributed_solution_dot);
+          sol     = solution;
           sol_dot = solution_dot;
 
           triangulation->prepare_coarsening_and_refinement();
-          sol_tr.prepare_for_coarsening_and_refinement (sol);
+          sol_tr.prepare_for_coarsening_and_refinement(sol);
           sol_dot_tr.prepare_for_coarsening_and_refinement(sol_dot);
 
           if (adaptive_refinement)
-            triangulation->execute_coarsening_and_refinement ();
+            triangulation->execute_coarsening_and_refinement();
           else
-            triangulation->refine_global (1);
+            triangulation->refine_global(1);
 
           setup_dofs(false);
 
-          VEC tmp (solution);
-          VEC tmp_dot (solution_dot);
+          VEC tmp(solution);
+          VEC tmp_dot(solution_dot);
 
-          sol_tr.interpolate (tmp);
-          sol_dot_tr.interpolate (tmp_dot);
+          sol_tr.interpolate(tmp);
+          sol_dot_tr.interpolate(tmp_dot);
 
-          solution = tmp;
+          solution     = tmp;
           solution_dot = tmp_dot;
 
           update_constraints(t);
@@ -719,7 +689,6 @@ bool Stokes<dim>::solver_should_restart (const double t,
           computing_timer.exit_section();
           return false;
         }
-
     }
   else // use space adaptivity
 
@@ -728,12 +697,12 @@ bool Stokes<dim>::solver_should_restart (const double t,
 
 
 template <int dim>
-int Stokes<dim>::setup_jacobian (const double t,
-                                 const VEC &src_yy,
-                                 const VEC &src_yp,
-                                 const double alpha)
+int Stokes<dim>::setup_jacobian(const double t,
+                                const VEC &  src_yy,
+                                const VEC &  src_yp,
+                                const double alpha)
 {
-  computing_timer.enter_section ("   Setup Jacobian");
+  computing_timer.enter_section("   Setup Jacobian");
 
   assemble_jacobian_matrix(t, src_yy, src_yp, alpha);
 
@@ -743,62 +712,67 @@ int Stokes<dim>::setup_jacobian (const double t,
 }
 
 template <int dim>
-int Stokes<dim>::solve_jacobian_system (const VEC &src,
-                                        VEC &dst) const
+int Stokes<dim>::solve_jacobian_system(const VEC &src, VEC &dst) const
 {
-  computing_timer.enter_section ("   Solve system");
+  computing_timer.enter_section("   Solve system");
 
   dst = solution;
   set_constrained_dofs_to_zero(dst);
 
   PrimitiveVectorMemory<TrilinosWrappers::MPI::BlockVector> mem;
 
-  unsigned int n_iterations = 0;
-  const double solver_tolerance = 1e-8 * src.l2_norm();
-  SolverControl solver_control (30, solver_tolerance);
+  unsigned int  n_iterations     = 0;
+  const double  solver_tolerance = 1e-8 * src.l2_norm();
+  SolverControl solver_control(30, solver_tolerance);
 
   try
     {
-      const LinearSolvers::BlockSchurPreconditioner<TrilinosWrappers::PreconditionAMG,
-            TrilinosWrappers::PreconditionJacobi>
-            preconditioner (jacobian_matrix, jacobian_preconditioner_matrix,
-                            *Mp_preconditioner, *Amg_preconditioner,
-                            false);
+      const LinearSolvers::BlockSchurPreconditioner<
+        TrilinosWrappers::PreconditionAMG,
+        TrilinosWrappers::PreconditionJacobi>
+        preconditioner(jacobian_matrix,
+                       jacobian_preconditioner_matrix,
+                       *Mp_preconditioner,
+                       *Amg_preconditioner,
+                       false);
 
-      SolverFGMRES<TrilinosWrappers::MPI::BlockVector>
-      solver(solver_control, mem,
-             SolverFGMRES<TrilinosWrappers::MPI::BlockVector>::
-             AdditionalData(30, true));
-      solver.solve(jacobian_matrix, dst, src,
-                   preconditioner);
+      SolverFGMRES<TrilinosWrappers::MPI::BlockVector> solver(
+        solver_control,
+        mem,
+        SolverFGMRES<TrilinosWrappers::MPI::BlockVector>::AdditionalData(30,
+                                                                         true));
+      solver.solve(jacobian_matrix, dst, src, preconditioner);
 
       n_iterations = solver_control.last_step();
     }
 
   catch (SolverControl::NoConvergence)
     {
-      const LinearSolvers::BlockSchurPreconditioner<TrilinosWrappers::PreconditionAMG,
-            TrilinosWrappers::PreconditionJacobi>
-            preconditioner (jacobian_matrix, jacobian_preconditioner_matrix,
-                            *Mp_preconditioner, *Amg_preconditioner,
-                            true);
+      const LinearSolvers::BlockSchurPreconditioner<
+        TrilinosWrappers::PreconditionAMG,
+        TrilinosWrappers::PreconditionJacobi>
+        preconditioner(jacobian_matrix,
+                       jacobian_preconditioner_matrix,
+                       *Mp_preconditioner,
+                       *Amg_preconditioner,
+                       true);
 
-      SolverControl solver_control_refined (jacobian_matrix.m(), solver_tolerance);
-      SolverFGMRES<TrilinosWrappers::MPI::BlockVector>
-      solver(solver_control_refined, mem,
-             SolverFGMRES<TrilinosWrappers::MPI::BlockVector>::
-             AdditionalData(50, true));
-      solver.solve(jacobian_matrix, dst, src,
-                   preconditioner);
+      SolverControl solver_control_refined(jacobian_matrix.m(),
+                                           solver_tolerance);
+      SolverFGMRES<TrilinosWrappers::MPI::BlockVector> solver(
+        solver_control_refined,
+        mem,
+        SolverFGMRES<TrilinosWrappers::MPI::BlockVector>::AdditionalData(50,
+                                                                         true));
+      solver.solve(jacobian_matrix, dst, src, preconditioner);
 
-      n_iterations = (solver_control.last_step() +
-                      solver_control_refined.last_step());
+      n_iterations =
+        (solver_control.last_step() + solver_control_refined.last_step());
     }
 
 
   set_constrained_dofs_to_zero(dst);
-  pcout << n_iterations  << " iterations."
-        << std::endl;
+  pcout << n_iterations << " iterations." << std::endl;
   computing_timer.exit_section();
   return 0;
 }
@@ -818,7 +792,7 @@ VEC &Stokes<dim>::differential_components() const
 template <int dim>
 void Stokes<dim>::set_constrained_dofs_to_zero(VEC &v) const
 {
-  for (unsigned int i=0; i<global_partitioning.n_elements(); ++i)
+  for (unsigned int i = 0; i < global_partitioning.n_elements(); ++i)
     {
       auto j = global_partitioning.nth_index_in_set(i);
       if (constraints.is_constrained(j))
@@ -827,58 +801,48 @@ void Stokes<dim>::set_constrained_dofs_to_zero(VEC &v) const
 }
 
 template <int dim>
-void Stokes<dim>::run ()
+void Stokes<dim>::run()
 {
-
   make_grid_fe();
   setup_dofs(true);
 
   constraints.distribute(solution);
   constraints_dot.distribute(solution_dot);
 
-  ida.create_new_vector = [this]() ->shared_ptr<VEC>
-  {
+  ida.create_new_vector = [this]() -> shared_ptr<VEC> {
     return this->create_new_vector();
   };
   ida.residual = [this](const double t,
-                        const VEC &y,
-                        const VEC &y_dot,
-                        VEC &residual) ->int
-  {
-    return this->residual(t,y,y_dot,residual);
+                        const VEC &  y,
+                        const VEC &  y_dot,
+                        VEC &        residual) -> int {
+    return this->residual(t, y, y_dot, residual);
   };
 
   ida.setup_jacobian = [this](const double t,
-                              const VEC &y,
-                              const VEC &y_dot,
-                              const double alpha) ->int
-  {
-    return this->setup_jacobian(t,y,y_dot,alpha);
+                              const VEC &  y,
+                              const VEC &  y_dot,
+                              const double alpha) -> int {
+    return this->setup_jacobian(t, y, y_dot, alpha);
   };
 
-  ida.solver_should_restart = [this](const double t,
-                                     VEC &y,
-                                     VEC &y_dot) ->bool
-  {
-    return this->solver_should_restart(t,y,y_dot);
+  ida.solver_should_restart =
+    [this](const double t, VEC &y, VEC &y_dot) -> bool {
+    return this->solver_should_restart(t, y, y_dot);
   };
 
-  ida.solve_jacobian_system = [this](const VEC &rhs,
-                                     VEC &dst) ->int
-  {
-    return this->solve_jacobian_system(rhs,dst);
+  ida.solve_jacobian_system = [this](const VEC &rhs, VEC &dst) -> int {
+    return this->solve_jacobian_system(rhs, dst);
   };
 
-  ida.output_step = [this](const double t,
-                           const VEC &y,
-                           const VEC &y_dot,
-                           const unsigned int step_number)
-  {
-    this->output_step(t,y,y_dot,step_number);
+  ida.output_step = [this](const double       t,
+                           const VEC &        y,
+                           const VEC &        y_dot,
+                           const unsigned int step_number) {
+    this->output_step(t, y, y_dot, step_number);
   };
 
-  ida.differential_components = [this]() ->VEC &
-  {
+  ida.differential_components = [this]() -> VEC & {
     return this->differential_components();
   };
 

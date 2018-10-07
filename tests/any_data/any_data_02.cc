@@ -14,22 +14,24 @@
 //-----------------------------------------------------------
 
 
-#include "../tests.h"
-#include <deal2lkit/any_data.h>
 #include <deal.II/base/tensor.h>
+
+#include <deal2lkit/any_data.h>
+
+#include "../tests.h"
 
 
 
 using namespace deal2lkit;
 
-template<int dim, int spacedim>
+template <int dim, int spacedim>
 class Energy
 {
 public:
   template <typename Number>
   void fill_data(AnyData &d)
   {
-    Tensor<1,spacedim, Number> p;
+    Tensor<1, spacedim, Number> p;
     p[0] = 1.0;
     d.add_copy(p, "u");
   }
@@ -37,12 +39,13 @@ public:
   template <typename Number>
   Number energy(const AnyData &d) const
   {
-    const Tensor<1,spacedim,Number> &p = d.get<Tensor<1,spacedim,Number> >("u");
+    const Tensor<1, spacedim, Number> &p =
+      d.get<Tensor<1, spacedim, Number>>("u");
     return p.norm();
   }
 };
 
-template<int dim, int spacedim, class EnergyClass>
+template <int dim, int spacedim, class EnergyClass>
 class Problem
 {
 public:
@@ -54,16 +57,16 @@ public:
     AnyData d_int;
     e.template fill_data<double>(d_double);
     e.template fill_data<int>(d_int);
-    deallog << "Double: " <<  e.template energy<double>(d_double) << std::endl;
+    deallog << "Double: " << e.template energy<double>(d_double) << std::endl;
     deallog << "Int: " << e.template energy<int>(d_int) << std::endl;
   }
 };
 
 
-int main ()
+int main()
 {
   initlog();
 
-  Problem<1,1,Energy<1,1> > pb;
+  Problem<1, 1, Energy<1, 1>> pb;
   pb.run();
 }

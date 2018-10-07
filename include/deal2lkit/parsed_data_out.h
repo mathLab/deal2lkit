@@ -16,24 +16,27 @@
 #ifndef d2k_parsed_data_out_h
 #define d2k_parsed_data_out_h
 
-#include <deal2lkit/config.h>
-#include <fstream>
-
 #include <deal.II/base/config.h>
-#include <deal.II/dofs/dof_handler.h>
-#include <deal.II/grid/tria.h>
-#include <deal.II/numerics/data_out.h>
 
 #include <deal.II/base/logstream.h>
 #include <deal.II/base/parameter_handler.h>
 
+#include <deal.II/dofs/dof_handler.h>
+
+#include <deal.II/grid/tria.h>
+
+#include <deal.II/numerics/data_out.h>
+
+#include <deal2lkit/config.h>
 #include <deal2lkit/parameter_acceptor.h>
 #include <deal2lkit/utilities.h>
+
+#include <fstream>
 
 D2K_NAMESPACE_OPEN
 
 
-template <int dim, int spacedim=dim>
+template <int dim, int spacedim = dim>
 class ParsedDataOut : public ParameterAcceptor
 {
 public:
@@ -42,13 +45,13 @@ public:
       for every run. For istance if @p incremental_run_prefix = "sol/run"
       the function will create sol/run001 the first time the code is runned,
       sol/run002 the second time, and so on.*/
-  ParsedDataOut (const std::string &name="",
-                 const std::string &output_format="vtu",
-                 const unsigned int &subdivisions=1,
-                 const std::string &incremental_run_prefix="",
-                 const std::string &base_name_input="solution",
-                 const std::string &files_to_save="",
-                 const MPI_Comm &comm=MPI_COMM_WORLD);
+  ParsedDataOut(const std::string & name                   = "",
+                const std::string & output_format          = "vtu",
+                const unsigned int &subdivisions           = 1,
+                const std::string & incremental_run_prefix = "",
+                const std::string & base_name_input        = "solution",
+                const std::string & files_to_save          = "",
+                const MPI_Comm &    comm                   = MPI_COMM_WORLD);
 
   /** Initialize the given values for the paramter file. */
   virtual void declare_parameters(ParameterHandler &prm);
@@ -61,22 +64,23 @@ public:
       combination of the @p base_name, the optional @p suffix,
       eventually a processor number and the output suffix.  */
   void prepare_data_output(const DoFHandler<dim, spacedim> &dh,
-                           const std::string &suffix="");
+                           const std::string &              suffix = "");
 
   /** Add the given vector to the output file. Prior to calling this
       method, you have to call the prepare_data_output method. The
       string can be a comma separated list of components, or a single
       description. In this latter case, a progressive number per
       component is added in the end. */
-  template<typename VECTOR>
+  template <typename VECTOR>
   void add_data_vector(const VECTOR &data_vector, const std::string &desc);
 
 
   /**
    * Wrapper for the corrisponding function in dealii.
    */
-  template<typename VECTOR>
-  void add_data_vector(const VECTOR &data_vector, const DataPostprocessor<spacedim> &postproc);
+  template <typename VECTOR>
+  void add_data_vector(const VECTOR &                     data_vector,
+                       const DataPostprocessor<spacedim> &postproc);
 
 
   /** Actually write the file. Once the data_out has been prepared,
@@ -87,7 +91,8 @@ public:
       @p used_files is an optional variable that takes a list of useful files
       (ex. "parameter.prm time.dat") and copies these files
       in the @p incremental_run_prefix of the costructor function.*/
-  void write_data_and_clear(const Mapping<dim,spacedim> &mapping=StaticMappingQ1<dim,spacedim>::mapping);
+  void write_data_and_clear(const Mapping<dim, spacedim> &mapping =
+                              StaticMappingQ1<dim, spacedim>::mapping);
 
 private:
   /** Initialization flag.*/
@@ -142,7 +147,7 @@ private:
   std::ofstream output_file;
 
   /** Outputs only the data that refers to this process. */
-  shared_ptr<DataOut<dim, DoFHandler<dim, spacedim> > > data_out;
+  shared_ptr<DataOut<dim, DoFHandler<dim, spacedim>>> data_out;
 };
 
 
@@ -151,44 +156,48 @@ private:
 // ============================================================
 
 template <int dim, int spacedim>
-template<typename VECTOR>
-void ParsedDataOut<dim,spacedim>::add_data_vector(const VECTOR &data_vector,
-                                                  const std::string &desc)
+template <typename VECTOR>
+void ParsedDataOut<dim, spacedim>::add_data_vector(const VECTOR &data_vector,
+                                                   const std::string &desc)
 {
   AssertThrow(initialized, ExcNotInitialized());
   deallog.push("AddingData");
   std::vector<std::string> dd = Utilities::split_string_list(desc);
   if (data_out->default_suffix() != "")
     {
-      if (dd.size() ==1 )
+      if (dd.size() == 1)
         {
-          data_out->add_data_vector (data_vector, desc);
+          data_out->add_data_vector(data_vector, desc);
         }
       else
         {
           std::vector<std::string>::iterator sit = dd.begin();
-          std::vector<int> occurrances;
+          std::vector<int>                   occurrances;
 
-          for (; sit!=dd.end(); ++sit)
-            occurrances.push_back(std::count (dd.begin(), dd.end(), *sit));
+          for (; sit != dd.end(); ++sit)
+            occurrances.push_back(std::count(dd.begin(), dd.end(), *sit));
 
           std::vector<int>::iterator iit = occurrances.begin();
-          sit = dd.begin();
+          sit                            = dd.begin();
 
           std::vector<DataComponentInterpretation::DataComponentInterpretation>
-          data_component_interpretation;
+            data_component_interpretation;
 
-          for (; iit !=occurrances.end(); ++iit, ++sit)
+          for (; iit != occurrances.end(); ++iit, ++sit)
             {
               if (*iit > 1)
-                data_component_interpretation.push_back(DataComponentInterpretation::component_is_part_of_vector);
+                data_component_interpretation.push_back(
+                  DataComponentInterpretation::component_is_part_of_vector);
               else
-                data_component_interpretation.push_back(DataComponentInterpretation::component_is_scalar);
+                data_component_interpretation.push_back(
+                  DataComponentInterpretation::component_is_scalar);
             }
 
-          data_out->add_data_vector (data_vector, dd, DataOut<dim, DoFHandler<dim, spacedim> >::type_dof_data,
-                                     data_component_interpretation);
-
+          data_out->add_data_vector(
+            data_vector,
+            dd,
+            DataOut<dim, DoFHandler<dim, spacedim>>::type_dof_data,
+            data_component_interpretation);
         }
       deallog << "Added data: " << desc << std::endl;
     }
@@ -197,12 +206,13 @@ void ParsedDataOut<dim,spacedim>::add_data_vector(const VECTOR &data_vector,
 
 
 template <int dim, int spacedim>
-template<typename VECTOR>
-void ParsedDataOut<dim,spacedim>::add_data_vector(const VECTOR &data_vector,
-                                                  const DataPostprocessor<spacedim> &postproc)
+template <typename VECTOR>
+void ParsedDataOut<dim, spacedim>::add_data_vector(
+  const VECTOR &                     data_vector,
+  const DataPostprocessor<spacedim> &postproc)
 {
   AssertThrow(initialized, ExcNotInitialized());
-  data_out->add_data_vector(data_vector,postproc);
+  data_out->add_data_vector(data_vector, postproc);
 }
 
 D2K_NAMESPACE_CLOSE

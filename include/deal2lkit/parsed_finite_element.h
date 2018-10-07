@@ -16,11 +16,13 @@
 #ifndef d2k_parsed_finite_element_h
 #define d2k_parsed_finite_element_h
 
-#include <deal2lkit/config.h>
 #include <deal.II/base/parameter_handler.h>
+
 #include <deal.II/dofs/dof_tools.h>
+
 #include <deal.II/fe/fe.h>
 
+#include <deal2lkit/config.h>
 #include <deal2lkit/parameter_acceptor.h>
 #include <deal2lkit/utilities.h>
 
@@ -58,7 +60,7 @@ D2K_NAMESPACE_OPEN
  * you may have defined in your program. To make your own elements
  * known to this function, use the add_fe_name() function.
  */
-template <int dim, int spacedim=dim>
+template <int dim, int spacedim = dim>
 class ParsedFiniteElement : public ParameterAcceptor
 {
 public:
@@ -80,10 +82,10 @@ public:
    * to 0 (the default value), then any FiniteElement can be
    * generated, with arbitrary numbers of components.
    */
-  ParsedFiniteElement (const std::string &name="",
-                       const std::string &default_fe="FE_Q(1)",
-                       const std::string &default_component_names="u",
-                       const unsigned int n_components=0);
+  ParsedFiniteElement(const std::string &name                    = "",
+                      const std::string &default_fe              = "FE_Q(1)",
+                      const std::string &default_component_names = "u",
+                      const unsigned int n_components            = 0);
 
   /**
    * Declare possible parameters of this class.
@@ -136,7 +138,7 @@ public:
    * different from the number of components given at construction
    * time.
    */
-  std::unique_ptr< FiniteElement<dim,spacedim> > operator() () const;
+  std::unique_ptr<FiniteElement<dim, spacedim>> operator()() const;
 
   /**
    * Fill information about blocks after parsing the parameters.
@@ -232,4 +234,3 @@ protected:
 D2K_NAMESPACE_CLOSE
 
 #endif
-

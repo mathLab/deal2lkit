@@ -15,10 +15,12 @@
 
 
 
-#include "../tests.h"
 #include <deal.II/base/path_search.h>
-#include <deal2lkit/utilities.h>
+
 #include <deal2lkit/parameter_acceptor.h>
+#include <deal2lkit/utilities.h>
+
+#include "../tests.h"
 
 
 using namespace deal2lkit;
@@ -26,9 +28,8 @@ using namespace deal2lkit;
 class FirstClass : public ParameterAcceptor
 {
 public:
-  FirstClass(const std::string &name = "First Class"):
-    ParameterAcceptor(name)
-  {};
+  FirstClass(const std::string &name = "First Class") :
+    ParameterAcceptor(name){};
 
   virtual void declare_parameters(ParameterHandler &prm)
   {
@@ -48,9 +49,8 @@ private:
 class SecondClass : public ParameterAcceptor
 {
 public:
-  SecondClass(const std::string &name = "Second Class"):
-    ParameterAcceptor(name)
-  {};
+  SecondClass(const std::string &name = "Second Class") :
+    ParameterAcceptor(name){};
 
   virtual void declare_parameters(ParameterHandler &prm)
   {
@@ -67,21 +67,20 @@ private:
   std::string s_s;
 };
 
-int main ()
+int main()
 {
   initlog();
 
   FirstClass  f;
   SecondClass s;
   std::string output_name = "used_parameter_acceptor_11.custom";
-  ParameterAcceptor::initialize(SOURCE_DIR "/parameters/parameter_acceptor_11.prm", output_name);
+  ParameterAcceptor::initialize(
+    SOURCE_DIR "/parameters/parameter_acceptor_11.prm", output_name);
   ParameterAcceptor::prm.log_parameters(deallog);
-  std::ifstream file (output_name.c_str());
+  std::ifstream file(output_name.c_str());
 
   std::string str;
   deallog << "reading " << output_name << std::endl;
   while (std::getline(file, str))
     deallog << str << std::endl;
-
-
 }

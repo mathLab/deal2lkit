@@ -16,20 +16,22 @@
 #ifndef d2k_imex_stepper_h
 #define d2k_imex_stepper_h
 
-#include <deal2lkit/config.h>
 #include <deal.II/base/config.h>
-#include <deal.II/base/logstream.h>
-#include <deal.II/base/exceptions.h>
-#include <deal.II/base/parameter_handler.h>
+
 #include <deal.II/base/conditional_ostream.h>
+#include <deal.II/base/exceptions.h>
+#include <deal.II/base/logstream.h>
+#include <deal.II/base/parameter_handler.h>
+
+#include <deal2lkit/config.h>
 
 #ifdef D2K_WITH_SUNDIALS
-#include <deal2lkit/parameter_acceptor.h>
-#include <deal2lkit/kinsol_interface.h>
+#  include <deal2lkit/kinsol_interface.h>
+#  include <deal2lkit/parameter_acceptor.h>
 
-#ifdef DEAL_II_WITH_MPI
-#include "mpi.h"
-#endif
+#  ifdef DEAL_II_WITH_MPI
+#    include "mpi.h"
+#  endif
 
 D2K_NAMESPACE_OPEN
 
@@ -51,25 +53,23 @@ D2K_NAMESPACE_OPEN
  *  - vector_norm (if kinsol is not used).
  *
  */
-template<typename VEC=Vector<double> >
+template <typename VEC = Vector<double>>
 class IMEXStepper : public ParameterAcceptor
 {
 public:
-
-#ifdef DEAL_II_WITH_MPI
+#  ifdef DEAL_II_WITH_MPI
   /** Constructor for the IMEXStepper class.
-    * Takes a @p name for the section in parameter file
-    * and a mpi communicator.
-    */
-  IMEXStepper(std::string name="",
-              MPI_Comm comm = MPI_COMM_WORLD);
-#else
+   * Takes a @p name for the section in parameter file
+   * and a mpi communicator.
+   */
+  IMEXStepper(std::string name = "", MPI_Comm comm = MPI_COMM_WORLD);
+#  else
   /** Constructor for the IMEXStepper class.
-    * Takes a @p name for the section in parameter file.
-    */
-  IMEXStepper(std::string name="");
+   * Takes a @p name for the section in parameter file.
+   */
+  IMEXStepper(std::string name = "");
 
-#endif
+#  endif
 
   ~IMEXStepper();
 
@@ -83,9 +83,8 @@ public:
   /**
    * Compute initial conditions that satisfy \f$ F(y, \dot y, t)=0 \f$.
    */
-  void compute_consistent_initial_conditions(const double &t,
-                                             VEC &y,
-                                             VEC &y_dot);
+  void
+  compute_consistent_initial_conditions(const double &t, VEC &y, VEC &y_dot);
   /**
    * if initial time is different from final time (i.e.,
    * we are solving a time-dep problem and not a stationay
@@ -101,16 +100,16 @@ public:
   void set_initial_time(const double &t);
 
 private:
-
-#ifdef DEAL_II_WITH_MPI
+#  ifdef DEAL_II_WITH_MPI
   MPI_Comm communicator;
-#endif
+#  endif
   /**
    * kinsol solver
    */
   KINSOLInterface<VEC> kinsol;
 
-  void compute_y_dot(const VEC &y, const VEC &prev, const double alpha, VEC &y_dot);
+  void
+  compute_y_dot(const VEC &y, const VEC &prev, const double alpha, VEC &y_dot);
 
   /** Step size. */
   double step_size;
@@ -176,13 +175,13 @@ private:
    *  it returns the selected alpha and solution, solution_dot and
    *  residual are accordingly updated.
    */
-  double line_search_with_backtracking(const VEC &update,
-                                       const VEC &prev_sol,
+  double line_search_with_backtracking(const VEC &   update,
+                                       const VEC &   prev_sol,
                                        const double &alpha,
                                        const double &t,
-                                       VEC &sol,
-                                       VEC &sol_dot,
-                                       VEC &residual);
+                                       VEC &         sol,
+                                       VEC &         sol_dot,
+                                       VEC &         residual);
 
 
   /**
@@ -196,12 +195,12 @@ private:
    *
    * this function is called when KINSOL is NOT used
    */
-  void  do_newton (const double t,
-                   const double alpha,
-                   const bool update_Jacobian,
-                   const VEC &previous_solution,
-                   VEC &solution,
-                   VEC &solution_dot);
+  void do_newton(const double t,
+                 const double alpha,
+                 const bool   update_Jacobian,
+                 const VEC &  previous_solution,
+                 VEC &        solution,
+                 VEC &        solution_dot);
 
 
   /**
@@ -210,13 +209,12 @@ private:
    * @param sol_dot
    * @param alpha
    */
-  void compute_previous_solution(const VEC &sol,
-                                 const VEC &sol_dot,
+  void compute_previous_solution(const VEC &   sol,
+                                 const VEC &   sol_dot,
                                  const double &alpha,
-                                 VEC &prev);
+                                 VEC &         prev);
 
 public:
-
   /**
    * Return a shared_ptr<VEC>. A shared_ptr is needed in order
    * to keep the pointed vector alive, without the need to use a
@@ -227,18 +225,15 @@ public:
   /**
    * Compute residual.
    */
-  std::function<int(const double t,
-                    const VEC &y,
-                    const VEC &y_dot,
-                    VEC &res)> residual;
+  std::function<int(const double t, const VEC &y, const VEC &y_dot, VEC &res)>
+    residual;
 
   /**
    * Compute Jacobian.
    */
-  std::function<int(const double t,
-                    const VEC &y,
-                    const VEC &y_dot,
-                    const double alpha)> setup_jacobian;
+  std::function<
+    int(const double t, const VEC &y, const VEC &y_dot, const double alpha)>
+    setup_jacobian;
 
   /**
    * Solve linear system.
@@ -248,33 +243,32 @@ public:
   /**
    * Store solutions to file.
    */
-  std::function<void (const double t,
-                      const VEC &sol,
-                      const VEC &sol_dot,
-                      const unsigned int step_number)> output_step;
+  std::function<void(const double       t,
+                     const VEC &        sol,
+                     const VEC &        sol_dot,
+                     const unsigned int step_number)>
+    output_step;
 
   /**
    * Evaluate wether the mesh should be refined or not. If so, it
    * refines and interpolate the solutions from the old to the new
    * mesh.
    */
-  std::function<bool (const double t,
-                      VEC &sol,
-                      VEC &sol_dot)> solver_should_restart;
+  std::function<bool(const double t, VEC &sol, VEC &sol_dot)>
+    solver_should_restart;
 
   /**
    * Return the lumped mass matrix vector. It is used
    * by kinsol as scaling factor for the computations of
    * vector's norms.
    */
-  std::function<VEC&()> get_lumped_mass_matrix;
+  std::function<VEC &()> get_lumped_mass_matrix;
 
   /**
    * Compute the matrix-vector product Jacobian times @p src,
    * and the result is put in @p dst.
    */
-  std::function<int(const VEC &src,
-                    VEC &dst)> jacobian_vmult;
+  std::function<int(const VEC &src, VEC &dst)> jacobian_vmult;
 
   /**
    * Return the norm of @p vector. Note that Kinsol uses different
@@ -283,12 +277,11 @@ public:
   std::function<double(const VEC &vector)> vector_norm;
 
 private:
-
   /**
-   * Set the std::functions above to trigger an assert if they are not implemented.
+   * Set the std::functions above to trigger an assert if they are not
+   * implemented.
    */
   void set_functions_to_trigger_an_assert();
-
 };
 
 D2K_NAMESPACE_CLOSE
