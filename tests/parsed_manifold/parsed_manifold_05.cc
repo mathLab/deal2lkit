@@ -53,7 +53,6 @@ test(const std::string &name)
   input << "subsection Default" << std::endl
         << "  set Grid to generate = " << name << std::endl
         << "  set Colorize = false" << std::endl
-        << "  set Create default manifolds = true" << std::endl
         << "  set Optional int 1 = " << ncells << std::endl
         << "  set Optional double 3 = 1.0" << std::endl
         << "  set Optional Point<spacedim> 1= -1,0,0" << std::endl

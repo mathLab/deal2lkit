@@ -54,7 +54,6 @@ test(const std::string &name)
   input << "subsection Default" << std::endl
         << "  set Grid to generate = " << name << std::endl
         << "  set Colorize = false" << std::endl
-        << "  set Create default manifolds = true" << std::endl
         << "  set Optional int 1 = " << ncells << std::endl
         << "  set Optional int 2 = 6" << std::endl
         << "  set Copy material to manifold ids = true" << std::endl

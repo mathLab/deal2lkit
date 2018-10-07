@@ -2,7 +2,6 @@
 DEAL:parameters:Flagellum::Colorize: false
 DEAL:parameters:Flagellum::Copy boundary to manifold ids: false
 DEAL:parameters:Flagellum::Copy material to manifold ids: false
-DEAL:parameters:Flagellum::Create default manifolds: true
 DEAL:parameters:Flagellum::Grid to generate: rectangle
 DEAL:parameters:Flagellum::Input grid file name: 
 DEAL:parameters:Flagellum::Manifold descriptors: 
