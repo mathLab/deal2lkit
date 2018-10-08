@@ -17,6 +17,8 @@
 
 #include <deal2lkit/parsed_quadrature.h>
 
+using namespace dealii;
+
 D2K_NAMESPACE_OPEN
 
 template <int dim>

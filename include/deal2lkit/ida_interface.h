@@ -129,7 +129,7 @@ D2K_NAMESPACE_OPEN
  * its problem class from the SundialsInterface class, and
  * implement all pure virtual methods.
  */
-template <typename VEC = Vector<double>>
+template <typename VEC = dealii::Vector<double>>
 class IDAInterface : public ParameterAcceptor
 {
 public:
@@ -151,7 +151,7 @@ public:
 
   /** Declare parameters for this class to function properly. */
   virtual void
-  declare_parameters(ParameterHandler &prm);
+  declare_parameters(dealii::ParameterHandler &prm);
 
   /** Evolve. This function returns the final number of steps. */
   unsigned int
@@ -307,7 +307,7 @@ private:
 #  endif
 
   /** Output stream */
-  ConditionalOStream pcout;
+  dealii::ConditionalOStream pcout;
 
   unsigned int system_size;
 

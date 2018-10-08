@@ -62,7 +62,6 @@ DEAL_II_ENABLE_EXTRA_DIAGNOSTICS
 #include <string>
 #include <vector>
 
-using namespace dealii;
 
 D2K_NAMESPACE_OPEN
 
@@ -90,32 +89,33 @@ public:
 
   /** Initialize the given values for the paramter file. */
   virtual void
-  declare_parameters(ParameterHandler &prm);
+  declare_parameters(dealii::ParameterHandler &prm);
 
   /** Parse the given parameter handler. */
   virtual void
-  parse_parameters(ParameterHandler &prm);
+  parse_parameters(dealii::ParameterHandler &prm);
 
   /** Calculate the error of the numeric solution in variuous norms. Store
       the result in the given table. */
   template <typename DH, typename VEC>
   void
-  error_from_exact(const DH &                           vspace,
-                   const VEC &                          solution,
-                   const Function<DH::space_dimension> &exact,
-                   unsigned int                         table_no = 0,
-                   double                               dt       = 0.);
+  error_from_exact(const DH &                                   vspace,
+                   const VEC &                                  solution,
+                   const dealii::Function<DH::space_dimension> &exact,
+                   unsigned int                                 table_no = 0,
+                   double                                       dt       = 0.);
 
 
   /** Same as above, with different mapping. */
   template <typename DH, typename VEC>
   void
-  error_from_exact(const Mapping<DH::dimension, DH::space_dimension> &mapping,
-                   const DH &                                         vspace,
-                   const VEC &                                        solution,
-                   const Function<DH::space_dimension> &              exact,
-                   unsigned int table_no = 0,
-                   double       dt       = 0.);
+  error_from_exact(
+    const dealii::Mapping<DH::dimension, DH::space_dimension> &mapping,
+    const DH &                                                 vspace,
+    const VEC &                                                solution,
+    const dealii::Function<DH::space_dimension> &              exact,
+    unsigned int                                               table_no = 0,
+    double                                                     dt       = 0.);
 
 
   /** Call the given custom function to compute the custom error for
@@ -164,7 +164,8 @@ public:
   /** By default output first table. The output is according to
       to the condition of ConditionalOStream &pcout */
   void
-  output_table(ConditionalOStream &pcout, const unsigned int table_no = 0);
+  output_table(dealii::ConditionalOStream &pcout,
+               const unsigned int          table_no = 0);
 
 private:
   /** Value of solution names. */
@@ -174,7 +175,7 @@ private:
   const std::string list_of_error_norms;
 
   /** Error results.*/
-  std::vector<ConvergenceTable> tables;
+  std::vector<dealii::ConvergenceTable> tables;
 
   /** Headers for tables and output. Contains the name of the solution
       components. */
@@ -290,14 +291,15 @@ ErrorHandler<ntables>::difference(const DH &    dh,
                                   double        dt)
 {
   AssertThrow(solution1.size() == solution2.size(),
-              ExcDimensionMismatch(solution1.size(), solution2.size()));
+              dealii::ExcDimensionMismatch(solution1.size(), solution2.size()));
   VECTOR solution(solution1);
   solution -= solution2;
-  error_from_exact(dh,
-                   solution,
-                   ConstantFunction<DH::space_dimension>(0, headers.size()),
-                   table_no,
-                   dt);
+  error_from_exact(
+    dh,
+    solution,
+    dealii::ConstantFunction<DH::space_dimension>(0, headers.size()),
+    table_no,
+    dt);
 }
 
 
@@ -306,41 +308,42 @@ template <int ntables>
 template <typename DH, typename VECTOR>
 void
 ErrorHandler<ntables>::error_from_exact(
-  const DH &                           dh,
-  const VECTOR &                       solution,
-  const Function<DH::space_dimension> &exact,
-  unsigned int                         table_no,
-  double                               dt)
+  const DH &                                   dh,
+  const VECTOR &                               solution,
+  const dealii::Function<DH::space_dimension> &exact,
+  unsigned int                                 table_no,
+  double                                       dt)
 {
-  error_from_exact(StaticMappingQ1<DH::dimension, DH::space_dimension>::mapping,
-                   dh,
-                   solution,
-                   exact,
-                   table_no,
-                   dt);
+  error_from_exact(
+    dealii::StaticMappingQ1<DH::dimension, DH::space_dimension>::mapping,
+    dh,
+    solution,
+    exact,
+    table_no,
+    dt);
 }
 
 template <int ntables>
 template <typename DH, typename VECTOR>
 void
 ErrorHandler<ntables>::error_from_exact(
-  const Mapping<DH::dimension, DH::space_dimension> &mapping,
-  const DH &                                         dh,
-  const VECTOR &                                     solution,
-  const Function<DH::space_dimension> &              exact,
-  unsigned int                                       table_no,
-  double                                             dt)
+  const dealii::Mapping<DH::dimension, DH::space_dimension> &mapping,
+  const DH &                                                 dh,
+  const VECTOR &                                             solution,
+  const dealii::Function<DH::space_dimension> &              exact,
+  unsigned int                                               table_no,
+  double                                                     dt)
 {
   const int dim      = DH::dimension;
   const int spacedim = DH::space_dimension;
   if (compute_error)
     {
-      AssertThrow(initialized, ExcNotInitialized());
+      AssertThrow(initialized, dealii::ExcNotInitialized());
       AssertThrow(table_no < types.size(),
-                  ExcIndexRange(table_no, 0, names.size()));
+                  dealii::ExcIndexRange(table_no, 0, names.size()));
       AssertThrow(exact.n_components == types[table_no].size(),
-                  ExcDimensionMismatch(exact.n_components,
-                                       types[table_no].size()));
+                  dealii::ExcDimensionMismatch(exact.n_components,
+                                               types[table_no].size()));
 
       std::vector<std::vector<double>> error(exact.n_components,
                                              std::vector<double>(4));
@@ -381,13 +384,13 @@ ErrorHandler<ntables>::error_from_exact(
           NormFlags norm = types[table_no][component];
 
           // Select one Component
-          ComponentSelectFunction<spacedim> select_component(
+          dealii::ComponentSelectFunction<spacedim> select_component(
             component, 1., exact.n_components);
 
-          Vector<float> difference_per_cell(
+          dealii::Vector<float> difference_per_cell(
             dh.get_triangulation().n_global_active_cells());
 
-          QGauss<dim> q_gauss((dh.get_fe().degree + 1) * 2);
+          dealii::QGauss<dim> q_gauss((dh.get_fe().degree + 1) * 2);
 
           // The add bit is set
           add_this = (norm & AddUp);
@@ -404,14 +407,15 @@ ErrorHandler<ntables>::error_from_exact(
 
           if (compute_L2)
             {
-              VectorTools::integrate_difference(mapping,
-                                                dh,
-                                                solution,
-                                                exact,
-                                                difference_per_cell,
-                                                q_gauss,
-                                                VectorTools::L2_norm,
-                                                &select_component);
+              dealii::VectorTools::integrate_difference(
+                mapping,
+                dh,
+                solution,
+                exact,
+                difference_per_cell,
+                q_gauss,
+                dealii::VectorTools::L2_norm,
+                &select_component);
             }
 
           const double L2_error = difference_per_cell.l2_norm();
@@ -419,42 +423,45 @@ ErrorHandler<ntables>::error_from_exact(
 
           if (compute_H1)
             {
-              VectorTools::integrate_difference(mapping,
-                                                dh, // dof_handler,
-                                                solution,
-                                                exact,
-                                                difference_per_cell,
-                                                q_gauss,
-                                                VectorTools::H1_norm,
-                                                &select_component);
+              dealii::VectorTools::integrate_difference(
+                mapping,
+                dh, // dof_handler,
+                solution,
+                exact,
+                difference_per_cell,
+                q_gauss,
+                dealii::VectorTools::H1_norm,
+                &select_component);
             }
           const double H1_error = difference_per_cell.l2_norm();
           difference_per_cell   = 0;
 
           if (compute_W1infty)
             {
-              VectorTools::integrate_difference(mapping,
-                                                dh, // dof_handler,
-                                                solution,
-                                                exact,
-                                                difference_per_cell,
-                                                q_gauss,
-                                                VectorTools::W1infty_norm,
-                                                &select_component);
+              dealii::VectorTools::integrate_difference(
+                mapping,
+                dh, // dof_handler,
+                solution,
+                exact,
+                difference_per_cell,
+                q_gauss,
+                dealii::VectorTools::W1infty_norm,
+                &select_component);
             }
 
           const double W1inf_error = difference_per_cell.linfty_norm();
 
           if (compute_Linfty)
             {
-              VectorTools::integrate_difference(mapping,
-                                                dh, // dof_handler,
-                                                solution,
-                                                exact,
-                                                difference_per_cell,
-                                                q_gauss,
-                                                VectorTools::Linfty_norm,
-                                                &select_component);
+              dealii::VectorTools::integrate_difference(
+                mapping,
+                dh, // dof_handler,
+                solution,
+                exact,
+                difference_per_cell,
+                q_gauss,
+                dealii::VectorTools::Linfty_norm,
+                &select_component);
             }
 
           const double Linf_error = difference_per_cell.linfty_norm();
@@ -462,7 +469,7 @@ ErrorHandler<ntables>::error_from_exact(
           if (add_this)
             {
               AssertThrow(component,
-                          ExcMessage("Cannot add on first component!"));
+                          dealii::ExcMessage("Cannot add on first component!"));
 
               error[last_non_add][0] =
                 std::max(error[last_non_add][0], Linf_error);
@@ -558,9 +565,9 @@ ErrorHandler<ntables>::custom_error(
 {
   if (compute_error)
     {
-      AssertThrow(initialized, ExcNotInitialized());
+      AssertThrow(initialized, dealii::ExcNotInitialized());
       AssertThrow(table_no < types.size(),
-                  ExcIndexRange(table_no, 0, types.size()));
+                  dealii::ExcIndexRange(table_no, 0, types.size()));
 
       const unsigned int  n_components = types.size();
       std::vector<double> c_error(types[table_no].size());
@@ -613,7 +620,7 @@ ErrorHandler<ntables>::custom_error(
           if (add_this)
             {
               AssertThrow(component,
-                          ExcMessage("Cannot add on first component!"));
+                          dealii::ExcMessage("Cannot add on first component!"));
 
               c_error[last_non_add] += Custom_error;
             }

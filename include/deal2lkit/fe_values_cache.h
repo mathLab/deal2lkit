@@ -40,8 +40,8 @@ D2K_NAMESPACE_OPEN
  * FEValuesCache fev(mapping, fe, quad, flags, face_quad, face_flags);
  *
  * // A couple of extractors, to simplify things.
- * FEValuesExtractors::Vector velocity(0);
- * FEValuesExtractors::Vector pressure(dim);
+ * dealii::FEValuesExtractors::Vector velocity(0);
+ * dealii::FEValuesExtractors::Vector pressure(dim);
  *
  * for(auto cell : dh.active_cell_iterators()) {
  *   fev.reinit(cell);
@@ -54,7 +54,7 @@ D2K_NAMESPACE_OPEN
  *
  *   // get the values of the velocity and pressure
  *   // at the quadrature points
- *   std::vector<Tensor<1,dim> > &velocities
+ *   std::vector<dealii::Tensor<1,dim> > &velocities
  *      = fev.get_values("solution", "v", velocities, dummy);
  *
  *   std::vector<double> &divergences
@@ -68,13 +68,14 @@ D2K_NAMESPACE_OPEN
  * }
  * @endcode
  *
- * Internally, FEValuesCache creates unique objects of the right size and type,
- * whenever on of the get_* function is called. These objects are identified by
- * four things: the type of FEValues (either FEValues, or FEFaceValues),
- * the finite element vector identifier ("solution", in the example
- * above), the field type identifier ("v", "div_v", and "p" in the example
- * above), and the type of the dummy variable (used only to determine its type.
- * The value of the variable is ignored).
+ * Internally, FEValuesCache creates unique objects of the right size
+ * and type, whenever on of the get_* function is called. These objects are
+ * identified by four things: the type of dealii::FEValues (either
+ * dealii::FEValues, or dealii::FEFaceValues), the finite element vector
+ * identifier ("solution", in the example above), the field type identifier
+ * ("v", "div_v", and "p" in the example above), and the type of the dummy
+ * variable (used only to determine its type. The value of the variable is
+ * ignored).
  *
  * These objects are created the first time these functions are called with a
  * unique identifier, and reused by reference all subsequent times, saving you
@@ -100,12 +101,12 @@ public:
   /**
    * Explicit constructor.
    */
-  FEValuesCache(const Mapping<dim, spacedim> &      mapping,
-                const FiniteElement<dim, spacedim> &fe,
-                const Quadrature<dim> &             quadrature,
-                const UpdateFlags &                 update_flags,
-                const Quadrature<dim - 1> &         face_quadrature,
-                const UpdateFlags &                 face_update_flags)
+  FEValuesCache(const dealii::Mapping<dim, spacedim> &      mapping,
+                const dealii::FiniteElement<dim, spacedim> &fe,
+                const dealii::Quadrature<dim> &             quadrature,
+                const dealii::UpdateFlags &                 update_flags,
+                const dealii::Quadrature<dim - 1> &         face_quadrature,
+                const dealii::UpdateFlags &                 face_update_flags)
     : fe_values(mapping, fe, quadrature, update_flags)
     , fe_face_values(mapping, fe, face_quadrature, face_update_flags)
     , fe_subface_values(mapping, fe, face_quadrature, face_update_flags)
@@ -134,47 +135,50 @@ public:
 
 
   /**
-   * Initialize the internal FEValues to use the given @p cell.
+   * Initialize the internal dealii::FEValues to use the given @p cell.
    */
   void
-  reinit(const typename DoFHandler<dim, spacedim>::active_cell_iterator &cell)
+  reinit(const typename dealii::DoFHandler<dim, spacedim>::active_cell_iterator
+           &cell)
   {
     fe_values.reinit(cell);
     cell->get_dof_indices(local_dof_indices);
-    cache.template add_ref<FEValuesBase<dim, spacedim>>(fe_values,
-                                                        "FEValuesBase");
-  };
+    cache.template add_ref<dealii::FEValuesBase<dim, spacedim>>(fe_values,
+                                                                "FEValuesBase");
+  }
 
 
   /**
-   * Initialize the internal FEFaceValues to use the given @p face_no on the given
+   * Initialize the internal dealii::FEFaceValues to use the given @p face_no on the given
    * @p cell.
    */
   void
-  reinit(const typename DoFHandler<dim, spacedim>::active_cell_iterator &cell,
+  reinit(const typename dealii::DoFHandler<dim, spacedim>::active_cell_iterator
+           &                cell,
          const unsigned int face_no)
   {
     fe_face_values.reinit(cell, face_no);
     cell->get_dof_indices(local_dof_indices);
-    cache.template add_ref<FEValuesBase<dim, spacedim>>(fe_face_values,
-                                                        "FEValuesBase");
-  };
+    cache.template add_ref<dealii::FEValuesBase<dim, spacedim>>(fe_face_values,
+                                                                "FEValuesBase");
+  }
 
 
   /**
-   * Initialize the internal FESubFaceValues to use the given @p subface_no, on @p face_no,
+   * Initialize the internal dealii::FESubfaceValues to use the given @p subface_no, on @p face_no,
    * on the given @p cell.
    */
   void
-  reinit(const typename DoFHandler<dim, spacedim>::active_cell_iterator &cell,
+  reinit(const typename dealii::DoFHandler<dim, spacedim>::active_cell_iterator
+           &                cell,
          const unsigned int face_no,
          const unsigned int subface_no)
   {
     fe_subface_values.reinit(cell, face_no, subface_no);
     cell->get_dof_indices(local_dof_indices);
-    cache.template add_ref<FEValuesBase<dim, spacedim>>(fe_subface_values,
-                                                        "FEValuesBase");
-  };
+    cache.template add_ref<dealii::FEValuesBase<dim, spacedim>>(
+      fe_subface_values, "FEValuesBase");
+  }
 
   /**
    * @brief Get the reference to @p cache.
@@ -185,23 +189,24 @@ public:
   get_cache()
   {
     return cache;
-  };
+  }
 
   /**
-   * Get the currently initialized FEValues.
+   * Get the currently initialized dealii::FEValues.
    *
-   * This function will return the internal FEValues if the reinit(cell)
+   * This function will return the internal dealii::FEValues if the reinit(cell)
    * function was called last. If the reinit(cell, face_no) function was called,
-   * then this function returns the internal FEFaceValues.
+   * then this function returns the internal dealii::FEFaceValues.
    */
-  const FEValuesBase<dim, spacedim> &
+  const dealii::FEValuesBase<dim, spacedim> &
   get_current_fe_values()
   {
     Assert(cache.have("FEValuesBase"),
-           ExcMessage("You have to initialize the cache using one of the "
-                      "reinit function first!"));
-    FEValuesBase<dim, spacedim> &fev =
-      cache.template get<FEValuesBase<dim, spacedim>>("FEValuesBase");
+           dealii::ExcMessage(
+             "You have to initialize the cache using one of the "
+             "reinit function first!"));
+    dealii::FEValuesBase<dim, spacedim> &fev =
+      cache.template get<dealii::FEValuesBase<dim, spacedim>>("FEValuesBase");
     return fev;
   }
 
@@ -217,7 +222,7 @@ public:
 
     Assert(
       cache.have(dofs_name),
-      ExcMessage(
+      dealii::ExcMessage(
         "You did not call cache_local_solution_vector with the right types!"));
 
     return cache.template get<std::vector<Number>>(dofs_name);
@@ -225,9 +230,9 @@ public:
 
 
   /**
-   * Return the quadrature points of the internal FEValues object.
+   * Return the quadrature points of the internal dealii::FEValues object.
    */
-  const std::vector<Point<spacedim>> &
+  const std::vector<dealii::Point<spacedim>> &
   get_quadrature_points()
   {
     return get_current_fe_values().get_quadrature_points();
@@ -235,7 +240,7 @@ public:
 
 
   /**
-   * Return the JxW values of the internal FEValues object.
+   * Return the JxW values of the internal dealii::FEValues object.
    */
   const std::vector<double> &
   get_JxW_values()
@@ -308,13 +313,14 @@ public:
     const std::vector<Number> &independent_local_dofs =
       get_current_independent_local_dofs(prefix, dummy);
 
-    const FEValuesBase<dim, spacedim> &fev = get_current_fe_values();
+    const dealii::FEValuesBase<dim, spacedim> &fev = get_current_fe_values();
 
     const unsigned int n_q_points   = fev.n_quadrature_points;
     const unsigned int n_components = fev.get_fe().n_components();
 
     std::string name = prefix + "_all_values_q" +
-                       Utilities::int_to_string(n_q_points) + "_" + type(dummy);
+                       dealii::Utilities::int_to_string(n_q_points) + "_" +
+                       type(dummy);
 
     if (!cache.have(name))
       {
@@ -340,20 +346,21 @@ public:
    */
   template <typename Number>
   const std::vector<Number> &
-  get_values(const std::string &               prefix,
-             const std::string &               additional_prefix,
-             const FEValuesExtractors::Scalar &variable,
-             const Number                      dummy)
+  get_values(const std::string &                       prefix,
+             const std::string &                       additional_prefix,
+             const dealii::FEValuesExtractors::Scalar &variable,
+             const Number                              dummy)
   {
     const std::vector<Number> &independent_local_dofs =
       get_current_independent_local_dofs(prefix, dummy);
 
-    const FEValuesBase<dim, spacedim> &fev = get_current_fe_values();
+    const dealii::FEValuesBase<dim, spacedim> &fev = get_current_fe_values();
 
     const unsigned int n_q_points = fev.n_quadrature_points;
 
     std::string name = prefix + "_" + additional_prefix + "_scalar_values_q" +
-                       Utilities::int_to_string(n_q_points) + "_" + type(dummy);
+                       dealii::Utilities::int_to_string(n_q_points) + "_" +
+                       type(dummy);
 
     // Now build the return type
     typedef typename std::vector<Number> RetType;
@@ -377,25 +384,26 @@ public:
    * and with the same dummy type you use here.
    */
   template <typename Number>
-  const std::vector<Tensor<1, spacedim, Number>> &
-  get_values(const std::string &               prefix,
-             const std::string &               additional_prefix,
-             const FEValuesExtractors::Vector &vector_variable,
-             const Number                      dummy)
+  const std::vector<dealii::Tensor<1, spacedim, Number>> &
+  get_values(const std::string &                       prefix,
+             const std::string &                       additional_prefix,
+             const dealii::FEValuesExtractors::Vector &vector_variable,
+             const Number                              dummy)
   {
     const std::vector<Number> &independent_local_dofs =
       get_current_independent_local_dofs(prefix, dummy);
 
-    const FEValuesBase<dim, spacedim> &fev = get_current_fe_values();
+    const dealii::FEValuesBase<dim, spacedim> &fev = get_current_fe_values();
 
     const unsigned int n_q_points = fev.n_quadrature_points;
 
     std::string name = prefix + "_" + additional_prefix + "_vector_values_q" +
-                       Utilities::int_to_string(n_q_points) + "_" + type(dummy);
+                       dealii::Utilities::int_to_string(n_q_points) + "_" +
+                       type(dummy);
 
 
     // Now build the return type
-    typedef typename std::vector<Tensor<1, spacedim, Number>> RetType;
+    typedef typename std::vector<dealii::Tensor<1, spacedim, Number>> RetType;
 
     if (!cache.have(name))
       cache.add_copy(RetType(n_q_points), name);
@@ -416,20 +424,21 @@ public:
    */
   template <typename Number>
   const std::vector<Number> &
-  get_divergences(const std::string &               prefix,
-                  const std::string &               additional_prefix,
-                  const FEValuesExtractors::Vector &vector_variable,
-                  const Number                      dummy)
+  get_divergences(const std::string &                       prefix,
+                  const std::string &                       additional_prefix,
+                  const dealii::FEValuesExtractors::Vector &vector_variable,
+                  const Number                              dummy)
   {
     const std::vector<Number> &independent_local_dofs =
       get_current_independent_local_dofs(prefix, dummy);
 
-    const FEValuesBase<dim, spacedim> &fev = get_current_fe_values();
+    const dealii::FEValuesBase<dim, spacedim> &fev = get_current_fe_values();
 
     const unsigned int n_q_points = fev.n_quadrature_points;
 
     std::string name = prefix + "_" + additional_prefix + "_div_values_q" +
-                       Utilities::int_to_string(n_q_points) + "_" + type(dummy);
+                       dealii::Utilities::int_to_string(n_q_points) + "_" +
+                       type(dummy);
 
 
     // Now build the return type
@@ -456,24 +465,25 @@ public:
    * and with the same dummy type you use here.
    */
   template <typename Number>
-  const std::vector<Tensor<1, spacedim, Number>> &
-  get_gradients(const std::string &               prefix,
-                const std::string &               additional_prefix,
-                const FEValuesExtractors::Scalar &variable,
-                const Number                      dummy)
+  const std::vector<dealii::Tensor<1, spacedim, Number>> &
+  get_gradients(const std::string &                       prefix,
+                const std::string &                       additional_prefix,
+                const dealii::FEValuesExtractors::Scalar &variable,
+                const Number                              dummy)
   {
     const std::vector<Number> &independent_local_dofs =
       get_current_independent_local_dofs(prefix, dummy);
 
-    const FEValuesBase<dim, spacedim> &fev = get_current_fe_values();
+    const dealii::FEValuesBase<dim, spacedim> &fev = get_current_fe_values();
 
     const unsigned int n_q_points = fev.n_quadrature_points;
 
     std::string name = prefix + "_" + additional_prefix + "_grad_values_q" +
-                       Utilities::int_to_string(n_q_points) + "_" + type(dummy);
+                       dealii::Utilities::int_to_string(n_q_points) + "_" +
+                       type(dummy);
 
     // Now build the return type
-    typedef typename std::vector<Tensor<1, spacedim, Number>> RetType;
+    typedef typename std::vector<dealii::Tensor<1, spacedim, Number>> RetType;
 
     if (!cache.have(name))
       cache.add_copy(RetType(n_q_points), name);
@@ -493,24 +503,25 @@ public:
    * and with the same dummy type you use here.
    */
   template <typename Number>
-  const std::vector<Tensor<2, spacedim, Number>> &
-  get_gradients(const std::string &               prefix,
-                const std::string &               additional_prefix,
-                const FEValuesExtractors::Vector &variable,
-                const Number                      dummy)
+  const std::vector<dealii::Tensor<2, spacedim, Number>> &
+  get_gradients(const std::string &                       prefix,
+                const std::string &                       additional_prefix,
+                const dealii::FEValuesExtractors::Vector &variable,
+                const Number                              dummy)
   {
     const std::vector<Number> &independent_local_dofs =
       get_current_independent_local_dofs(prefix, dummy);
 
-    const FEValuesBase<dim, spacedim> &fev = get_current_fe_values();
+    const dealii::FEValuesBase<dim, spacedim> &fev = get_current_fe_values();
 
     const unsigned int n_q_points = fev.n_quadrature_points;
 
     std::string name = prefix + "_" + additional_prefix + "_grad2_values_q" +
-                       Utilities::int_to_string(n_q_points) + "_" + type(dummy);
+                       dealii::Utilities::int_to_string(n_q_points) + "_" +
+                       type(dummy);
 
     // Now build the return type
-    typedef typename std::vector<Tensor<2, spacedim, Number>> RetType;
+    typedef typename std::vector<dealii::Tensor<2, spacedim, Number>> RetType;
 
     if (!cache.have(name))
       cache.add_copy(RetType(n_q_points), name);
@@ -528,26 +539,27 @@ public:
    * and with the same dummy type you use here.
    */
   template <typename Number>
-  const std::vector<Tensor<1, (spacedim > 2 ? spacedim : 1), Number>> &
-  get_curls(const std::string &               prefix,
-            const std::string &               additional_prefix,
-            const FEValuesExtractors::Vector &variable,
-            const Number                      dummy)
+  const std::vector<dealii::Tensor<1, (spacedim > 2 ? spacedim : 1), Number>> &
+  get_curls(const std::string &                       prefix,
+            const std::string &                       additional_prefix,
+            const dealii::FEValuesExtractors::Vector &variable,
+            const Number                              dummy)
   {
     const std::vector<Number> &independent_local_dofs =
       get_current_independent_local_dofs(prefix, dummy);
 
-    const FEValuesBase<dim, spacedim> &fev = get_current_fe_values();
+    const dealii::FEValuesBase<dim, spacedim> &fev = get_current_fe_values();
 
     const unsigned int n_q_points = fev.n_quadrature_points;
 
     std::string name = prefix + "_" + additional_prefix + "_curl_values_q" +
-                       Utilities::int_to_string(n_q_points) + "_" + type(dummy);
+                       dealii::Utilities::int_to_string(n_q_points) + "_" +
+                       type(dummy);
 
     // Now build the return type
-    typedef
-      typename std::vector<Tensor<1, (spacedim > 2 ? spacedim : 1), Number>>
-        RetType;
+    typedef typename std::vector<
+      dealii::Tensor<1, (spacedim > 2 ? spacedim : 1), Number>>
+      RetType;
 
     if (!cache.have(name))
       cache.add_copy(RetType(n_q_points), name);
@@ -566,21 +578,21 @@ public:
    */
   template <typename Number>
   const std::vector<Number> &
-  get_laplacians(const std::string &               prefix,
-                 const std::string &               additional_prefix,
-                 const FEValuesExtractors::Scalar &variable,
-                 const Number                      dummy)
+  get_laplacians(const std::string &                       prefix,
+                 const std::string &                       additional_prefix,
+                 const dealii::FEValuesExtractors::Scalar &variable,
+                 const Number                              dummy)
   {
     const std::vector<Number> &independent_local_dofs =
       get_current_independent_local_dofs(prefix, dummy);
 
-    const FEValuesBase<dim, spacedim> &fev = get_current_fe_values();
+    const dealii::FEValuesBase<dim, spacedim> &fev = get_current_fe_values();
 
     const unsigned int n_q_points = fev.n_quadrature_points;
 
-    std::string name = prefix + "_" + additional_prefix +
-                       "_laplacian_values_q" +
-                       Utilities::int_to_string(n_q_points) + "_" + type(dummy);
+    std::string name =
+      prefix + "_" + additional_prefix + "_laplacian_values_q" +
+      dealii::Utilities::int_to_string(n_q_points) + "_" + type(dummy);
 
     // Now build the return type
     typedef typename std::vector<Number> RetType;
@@ -603,25 +615,25 @@ public:
    * and with the same dummy type you use here.
    */
   template <typename Number>
-  const std::vector<Tensor<1, spacedim, Number>> &
-  get_laplacians(const std::string &               prefix,
-                 const std::string &               additional_prefix,
-                 const FEValuesExtractors::Vector &variable,
-                 const Number                      dummy)
+  const std::vector<dealii::Tensor<1, spacedim, Number>> &
+  get_laplacians(const std::string &                       prefix,
+                 const std::string &                       additional_prefix,
+                 const dealii::FEValuesExtractors::Vector &variable,
+                 const Number                              dummy)
   {
     const std::vector<Number> &independent_local_dofs =
       get_current_independent_local_dofs(prefix, dummy);
 
-    const FEValuesBase<dim, spacedim> &fev = get_current_fe_values();
+    const dealii::FEValuesBase<dim, spacedim> &fev = get_current_fe_values();
 
     const unsigned int n_q_points = fev.n_quadrature_points;
 
-    std::string name = prefix + "_" + additional_prefix +
-                       "_laplacian2_values_q" +
-                       Utilities::int_to_string(n_q_points) + "_" + type(dummy);
+    std::string name =
+      prefix + "_" + additional_prefix + "_laplacian2_values_q" +
+      dealii::Utilities::int_to_string(n_q_points) + "_" + type(dummy);
 
     // Now build the return type
-    typedef typename std::vector<Tensor<1, spacedim, Number>> RetType;
+    typedef typename std::vector<dealii::Tensor<1, spacedim, Number>> RetType;
 
     if (!cache.have(name))
       cache.add_copy(RetType(n_q_points), name);
@@ -639,24 +651,25 @@ public:
    * and with the same dummy type you use here.
    */
   template <typename Number>
-  const std::vector<Tensor<2, spacedim, Number>> &
-  get_deformation_gradients(const std::string &               prefix,
-                            const std::string &               additional_prefix,
-                            const FEValuesExtractors::Vector &variable,
-                            const Number                      dummy)
+  const std::vector<dealii::Tensor<2, spacedim, Number>> &
+  get_deformation_gradients(const std::string &prefix,
+                            const std::string &additional_prefix,
+                            const dealii::FEValuesExtractors::Vector &variable,
+                            const Number                              dummy)
   {
     const std::vector<Number> &independent_local_dofs =
       get_current_independent_local_dofs(prefix, dummy);
 
-    const FEValuesBase<dim, spacedim> &fev = get_current_fe_values();
+    const dealii::FEValuesBase<dim, spacedim> &fev = get_current_fe_values();
 
     const unsigned int n_q_points = fev.n_quadrature_points;
 
     std::string name = prefix + "_" + additional_prefix + "_F_values_q" +
-                       Utilities::int_to_string(n_q_points) + "_" + type(dummy);
+                       dealii::Utilities::int_to_string(n_q_points) + "_" +
+                       type(dummy);
 
     // Now build the return type
-    typedef typename std::vector<Tensor<2, spacedim, Number>> RetType;
+    typedef typename std::vector<dealii::Tensor<2, spacedim, Number>> RetType;
 
     if (!cache.have(name))
       cache.add_copy(RetType(n_q_points), name);
@@ -679,24 +692,25 @@ public:
    * and with the same dummy type you use here.
    */
   template <typename Number>
-  const std::vector<Tensor<2, spacedim, Number>> &
-  get_symmetric_gradients(const std::string &               prefix,
-                          const std::string &               additional_prefix,
-                          const FEValuesExtractors::Vector &variable,
-                          const Number                      dummy)
+  const std::vector<dealii::Tensor<2, spacedim, Number>> &
+  get_symmetric_gradients(const std::string &prefix,
+                          const std::string &additional_prefix,
+                          const dealii::FEValuesExtractors::Vector &variable,
+                          const Number                              dummy)
   {
     const std::vector<Number> &independent_local_dofs =
       get_current_independent_local_dofs(prefix, dummy);
 
-    const FEValuesBase<dim, spacedim> &fev = get_current_fe_values();
+    const dealii::FEValuesBase<dim, spacedim> &fev = get_current_fe_values();
 
     const unsigned int n_q_points = fev.n_quadrature_points;
 
     std::string name = prefix + "_" + additional_prefix + "_sym_grad_values_q" +
-                       Utilities::int_to_string(n_q_points) + "_" + type(dummy);
+                       dealii::Utilities::int_to_string(n_q_points) + "_" +
+                       type(dummy);
 
     // Now build the return type
-    typedef typename std::vector<Tensor<2, spacedim, Number>> RetType;
+    typedef typename std::vector<dealii::Tensor<2, spacedim, Number>> RetType;
 
     if (!cache.have(name))
       cache.add_copy(RetType(n_q_points), name);
@@ -717,24 +731,25 @@ public:
    * and with the same dummy type you use here.
    */
   template <typename Number>
-  const std::vector<Tensor<2, spacedim, Number>> &
-  get_hessians(const std::string &               prefix,
-               const std::string &               additional_prefix,
-               const FEValuesExtractors::Scalar &variable,
-               const Number                      dummy)
+  const std::vector<dealii::Tensor<2, spacedim, Number>> &
+  get_hessians(const std::string &                       prefix,
+               const std::string &                       additional_prefix,
+               const dealii::FEValuesExtractors::Scalar &variable,
+               const Number                              dummy)
   {
     const std::vector<Number> &independent_local_dofs =
       get_current_independent_local_dofs(prefix, dummy);
 
-    const FEValuesBase<dim, spacedim> &fev = get_current_fe_values();
+    const dealii::FEValuesBase<dim, spacedim> &fev = get_current_fe_values();
 
     const unsigned int n_q_points = fev.n_quadrature_points;
 
     std::string name = prefix + "_" + additional_prefix + "_hessians_values_q" +
-                       Utilities::int_to_string(n_q_points) + "_" + type(dummy);
+                       dealii::Utilities::int_to_string(n_q_points) + "_" +
+                       type(dummy);
 
     // Now build the return type
-    typedef typename std::vector<Tensor<2, spacedim, Number>> RetType;
+    typedef typename std::vector<dealii::Tensor<2, spacedim, Number>> RetType;
 
     if (!cache.have(name))
       cache.add_copy(RetType(n_q_points), name);
@@ -752,25 +767,25 @@ public:
    * and with the same dummy type you use here.
    */
   template <typename Number>
-  const std::vector<Tensor<3, spacedim, Number>> &
-  get_hessians(const std::string &               prefix,
-               const std::string &               additional_prefix,
-               const FEValuesExtractors::Vector &variable,
-               const Number                      dummy)
+  const std::vector<dealii::Tensor<3, spacedim, Number>> &
+  get_hessians(const std::string &                       prefix,
+               const std::string &                       additional_prefix,
+               const dealii::FEValuesExtractors::Vector &variable,
+               const Number                              dummy)
   {
     const std::vector<Number> &independent_local_dofs =
       get_current_independent_local_dofs(prefix, dummy);
 
-    const FEValuesBase<dim, spacedim> &fev = get_current_fe_values();
+    const dealii::FEValuesBase<dim, spacedim> &fev = get_current_fe_values();
 
     const unsigned int n_q_points = fev.n_quadrature_points;
 
-    std::string name = prefix + "_" + additional_prefix +
-                       "_hessians2_values_q" +
-                       Utilities::int_to_string(n_q_points) + "_" + type(dummy);
+    std::string name =
+      prefix + "_" + additional_prefix + "_hessians2_values_q" +
+      dealii::Utilities::int_to_string(n_q_points) + "_" + type(dummy);
 
     // Now build the return type
-    typedef typename std::vector<Tensor<3, spacedim, Number>> RetType;
+    typedef typename std::vector<dealii::Tensor<3, spacedim, Number>> RetType;
 
     if (!cache.have(name))
       cache.add_copy(RetType(n_q_points), name);
@@ -781,11 +796,11 @@ public:
   }
 
 private:
-  AnyData                              cache;
-  FEValues<dim, spacedim>              fe_values;
-  FEFaceValues<dim, spacedim>          fe_face_values;
-  FESubfaceValues<dim, spacedim>       fe_subface_values;
-  std::vector<types::global_dof_index> local_dof_indices;
+  AnyData                                      cache;
+  dealii::FEValues<dim, spacedim>              fe_values;
+  dealii::FEFaceValues<dim, spacedim>          fe_face_values;
+  dealii::FESubfaceValues<dim, spacedim>       fe_subface_values;
+  std::vector<dealii::types::global_dof_index> local_dof_indices;
 };
 
 D2K_NAMESPACE_CLOSE

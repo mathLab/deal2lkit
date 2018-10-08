@@ -28,9 +28,6 @@
 #  include <deal2lkit/parsed_finite_element.h>
 #  include <deal2lkit/utilities.h>
 
-using namespace dealii;
-
-
 D2K_NAMESPACE_OPEN
 
 /**
@@ -39,8 +36,9 @@ D2K_NAMESPACE_OPEN
  * TrilinosWrappers::PreconditionJacobi which can be called in place
  * of the preconditioner.
  */
-class ParsedJacobiPreconditioner : public ParameterAcceptor,
-                                   public TrilinosWrappers::PreconditionJacobi
+class ParsedJacobiPreconditioner
+  : public ParameterAcceptor,
+    public dealii::TrilinosWrappers::PreconditionJacobi
 {
 public:
   /**
@@ -55,7 +53,7 @@ public:
    * Declare preconditioner options.
    */
   virtual void
-  declare_parameters(ParameterHandler &prm);
+  declare_parameters(dealii::ParameterHandler &prm);
 
   /**
    * Initialize the preconditioner using @p matrix.
@@ -64,7 +62,7 @@ public:
   void
   initialize_preconditioner(const Matrix &matrix);
 
-  using TrilinosWrappers::PreconditionJacobi::initialize;
+  using dealii::TrilinosWrappers::PreconditionJacobi::initialize;
 
 private:
   /**

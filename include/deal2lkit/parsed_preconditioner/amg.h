@@ -28,7 +28,6 @@
 #  include <deal2lkit/parsed_finite_element.h>
 #  include <deal2lkit/utilities.h>
 
-using namespace dealii;
 
 
 D2K_NAMESPACE_OPEN
@@ -40,7 +39,7 @@ D2K_NAMESPACE_OPEN
  * the preconditioner.
  */
 class ParsedAMGPreconditioner : public ParameterAcceptor,
-                                public TrilinosWrappers::PreconditionAMG
+                                public dealii::TrilinosWrappers::PreconditionAMG
 {
 public:
   /**
@@ -63,7 +62,7 @@ public:
    * Declare preconditioner options.
    */
   virtual void
-  declare_parameters(ParameterHandler &prm);
+  declare_parameters(dealii::ParameterHandler &prm);
 
   /**
    * Initialize the preconditioner using @p matrix. Constant modes are not computed.
@@ -80,9 +79,9 @@ public:
   void
   initialize_preconditioner(const Matrix &                            matrix,
                             const ParsedFiniteElement<dim, spacedim> &fe,
-                            const DoFHandler<dim, spacedim> &         dh);
+                            const dealii::DoFHandler<dim, spacedim> & dh);
 
-  using TrilinosWrappers::PreconditionAMG::initialize;
+  using dealii::TrilinosWrappers::PreconditionAMG::initialize;
 
 private:
   /**

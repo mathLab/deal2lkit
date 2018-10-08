@@ -31,7 +31,6 @@
 #include <typeinfo>
 #include <vector>
 
-using namespace dealii;
 
 
 D2K_NAMESPACE_OPEN
@@ -64,7 +63,7 @@ D2K_NAMESPACE_OPEN
  * @endcode
  */
 
-class AnyData : public Subscriptor
+class AnyData : public dealii::Subscriptor
 {
 public:
   /**

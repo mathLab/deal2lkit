@@ -30,7 +30,6 @@
 #include <deal2lkit/parameter_acceptor.h>
 #include <deal2lkit/utilities.h>
 
-using namespace dealii;
 
 D2K_NAMESPACE_OPEN
 
@@ -196,7 +195,7 @@ public:
    * Declare all parameters of this class.
    */
   virtual void
-  declare_parameters(ParameterHandler &prm);
+  declare_parameters(dealii::ParameterHandler &prm);
 
   /**
    * Return a pointer to a newly created serial Triangulation. It will
@@ -204,7 +203,7 @@ public:
    * is the user's responsability to destroy the created grid once it
    * is no longer needed.
    */
-  Triangulation<dim, spacedim> *
+  dealii::Triangulation<dim, spacedim> *
   serial();
 
   /**
@@ -346,7 +345,7 @@ public:
    *   - *Vector of dim int*: number of holes on each direction"
    */
   void
-  create(Triangulation<dim, spacedim> &tria);
+  create(dealii::Triangulation<dim, spacedim> &tria);
 
 #ifdef DEAL_II_WITH_MPI
 #  ifdef DEAL_II_WITH_P4EST
@@ -356,7 +355,7 @@ public:
    * occured. It is the user's responsability to destroy the created
    * grid once it is no longer needed.
    */
-  parallel::distributed::Triangulation<dim, spacedim> *
+  dealii::parallel::distributed::Triangulation<dim, spacedim> *
   distributed(MPI_Comm mpi_communicator);
 #  endif
 #endif
@@ -372,15 +371,15 @@ public:
    * GridOut method according to the extension of the file name.
    */
   void
-  write(const Triangulation<dim, spacedim> &tria,
-        const std::string &                 filename = "") const;
+  write(const dealii::Triangulation<dim, spacedim> &tria,
+        const std::string &                         filename = "") const;
 
 private:
   /**
    * Mesh smoothing. Parse the type of MeshSmoothing for the
    * generated Triangulation.
    */
-  typename Triangulation<dim, spacedim>::MeshSmoothing
+  typename dealii::Triangulation<dim, spacedim>::MeshSmoothing
   get_smoothing();
 
   /**
@@ -461,7 +460,8 @@ private:
   /**
    * A map of Manifold associated to the given manifold_ids.
    */
-  std::map<types::manifold_id, shared_ptr<Manifold<dim, spacedim>>>
+  std::map<dealii::types::manifold_id,
+           shared_ptr<dealii::Manifold<dim, spacedim>>>
     manifold_descriptors;
 
   /**
@@ -482,12 +482,12 @@ private:
   /**
    * Optional Point argument. First Option.
    */
-  Point<spacedim> point_option_one;
+  dealii::Point<spacedim> point_option_one;
 
   /**
    * Optional Point argument. Second Option.
    */
-  Point<spacedim> point_option_two;
+  dealii::Point<spacedim> point_option_two;
 
   /**
    * Optional int argument. First Option.

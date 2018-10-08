@@ -57,8 +57,8 @@ DEAL_II_ENABLE_EXTRA_DIAGNOSTICS
 
 
 #include <deal.II/base/index_set.h>
-using namespace dealii;
-using std_cxx11::shared_ptr;
+using std::shared_ptr;
+using std::unique_ptr;
 
 
 D2K_NAMESPACE_OPEN
@@ -113,7 +113,7 @@ public:
   {
     AssertThrow(
       num < times.size(),
-      ExcMessage(
+      dealii::ExcMessage(
         "Invalind number num. It is higher than the number of times."));
 
     return times[num];
@@ -484,7 +484,7 @@ print(const std::vector<Type> &list, const std::string sep = ",")
  */
 template <int dim>
 std::string
-print(const Point<dim> &point, const std::string sep = ",")
+print(const dealii::Point<dim> &point, const std::string sep = ",")
 {
   std::stringstream ret;
   ret << point[0];
@@ -570,32 +570,32 @@ vector_shift(VEC &in_vec, double a_scalar)
 
 #    ifdef DEAL_II_WITH_TRILINOS
 void
-copy(TrilinosWrappers::MPI::Vector &dst, const N_Vector &src);
+copy(dealii::TrilinosWrappers::MPI::Vector &dst, const N_Vector &src);
 void
-copy(N_Vector &dst, const TrilinosWrappers::MPI::Vector &src);
+copy(N_Vector &dst, const dealii::TrilinosWrappers::MPI::Vector &src);
 void
-copy(TrilinosWrappers::MPI::BlockVector &dst, const N_Vector &src);
+copy(dealii::TrilinosWrappers::MPI::BlockVector &dst, const N_Vector &src);
 void
-copy(N_Vector &dst, const TrilinosWrappers::MPI::BlockVector &src);
+copy(N_Vector &dst, const dealii::TrilinosWrappers::MPI::BlockVector &src);
 #    endif // DEAL_II_WITH_TRILINOS
 
 #    ifdef DEAL_II_WITH_PETSC
 void
-copy(PETScWrappers::MPI::Vector &dst, const N_Vector &src);
+copy(dealii::PETScWrappers::MPI::Vector &dst, const N_Vector &src);
 void
-copy(N_Vector &dst, const PETScWrappers::MPI::Vector &src);
+copy(N_Vector &dst, const dealii::PETScWrappers::MPI::Vector &src);
 void
-copy(PETScWrappers::MPI::BlockVector &dst, const N_Vector &src);
+copy(dealii::PETScWrappers::MPI::BlockVector &dst, const N_Vector &src);
 void
-copy(N_Vector &dst, const PETScWrappers::MPI::BlockVector &src);
+copy(N_Vector &dst, const dealii::PETScWrappers::MPI::BlockVector &src);
 #    endif // DEAL_II_WITH_PETSC
 
 #  endif
 
 void
-copy(BlockVector<double> &dst, const N_Vector &src);
+copy(dealii::BlockVector<double> &dst, const N_Vector &src);
 void
-copy(N_Vector &dst, const BlockVector<double> &src);
+copy(N_Vector &dst, const dealii::BlockVector<double> &src);
 
 #endif
 
@@ -616,11 +616,11 @@ public:
   TimeMonitor(const MPI_Comm &comm   = MPI_COMM_WORLD,
               std::ostream &  stream = std::cout)
     : outstream(stream)
-    , out(outstream, Utilities::MPI::this_mpi_process(comm) == 0)
+    , out(outstream, dealii::Utilities::MPI::this_mpi_process(comm) == 0)
     , dealii_timer(comm,
                    out,
-                   TimerOutput::never,
-                   TimerOutput::cpu_and_wall_times)
+                   dealii::TimerOutput::never,
+                   dealii::TimerOutput::cpu_and_wall_times)
   {}
 
   /**
@@ -643,9 +643,9 @@ public:
     /**
      * Start Trilinos and deal.II scoped monitors.
      */
-    Scope(Teuchos::Time &    trilinos_time,
-          TimerOutput &      dealii_timer_output,
-          const std::string &section)
+    Scope(Teuchos::Time &      trilinos_time,
+          dealii::TimerOutput &dealii_timer_output,
+          const std::string &  section)
       : trilinos_scoped_monitor(trilinos_time)
       , dealii_scoped_monitor(dealii_timer_output, section)
     {}
@@ -659,7 +659,7 @@ public:
     /**
      * Deal.II version of scoped monitor.
      */
-    TimerOutput::Scope dealii_scoped_monitor;
+    dealii::TimerOutput::Scope dealii_scoped_monitor;
   };
 
   /**
@@ -685,7 +685,7 @@ private:
   /**
    * Conditional output stream. Output is only generated on processor 0.
    */
-  ConditionalOStream out;
+  dealii::ConditionalOStream out;
 
   /**
    * A list of Trilinos timers.
@@ -695,7 +695,7 @@ private:
   /**
    * The deal.II TimeMonitor object.
    */
-  mutable TimerOutput dealii_timer;
+  mutable dealii::TimerOutput dealii_timer;
 };
 #endif
 

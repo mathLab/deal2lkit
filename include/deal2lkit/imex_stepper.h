@@ -53,7 +53,7 @@ D2K_NAMESPACE_OPEN
  *  - vector_norm (if kinsol is not used).
  *
  */
-template <typename VEC = Vector<double>>
+template <typename VEC = dealii::Vector<double>>
 class IMEXStepper : public ParameterAcceptor
 {
 public:
@@ -75,7 +75,7 @@ public:
 
   /** Declare parameters for this class to function properly. */
   virtual void
-  declare_parameters(ParameterHandler &prm);
+  declare_parameters(dealii::ParameterHandler &prm);
 
   /** Evolve. This function returns the final number of steps. */
   unsigned int
@@ -163,7 +163,7 @@ private:
   bool use_kinsol;
 
   /** Output stream */
-  ConditionalOStream pcout;
+  dealii::ConditionalOStream pcout;
 
   /** print useful informations */
   bool verbose;

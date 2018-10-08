@@ -33,9 +33,6 @@
 #include <map>
 
 
-using namespace dealii;
-
-
 D2K_NAMESPACE_OPEN
 
 /**
@@ -101,21 +98,22 @@ public:
    * constraint matrix
    */
   void
-  apply_zero_average_constraints(const DoFHandler<dim, spacedim> &dof_handler,
-                                 ConstraintMatrix &constraints) const;
+  apply_zero_average_constraints(
+    const dealii::DoFHandler<dim, spacedim> &dof_handler,
+    dealii::ConstraintMatrix &               constraints) const;
 
 
   /**
    * return the ComponentMask at boundary
    */
-  ComponentMask
+  dealii::ComponentMask
   get_boundary_mask() const;
 
 
   /**
    * return the ComponentMask
    */
-  ComponentMask
+  dealii::ComponentMask
   get_mask() const;
 
 
@@ -123,7 +121,7 @@ public:
    * declare_parameters is inherithed by ParameterAcceptor
    */
   virtual void
-  declare_parameters(ParameterHandler &prm);
+  declare_parameters(dealii::ParameterHandler &prm);
 
   /**
    * parse_parameters_call_back is inherithed by ParameterAcceptor
@@ -151,10 +149,10 @@ public:
 protected:
   void
   internal_zero_average_constraints(
-    const DoFHandler<dim, spacedim> &dof_handler,
-    const ComponentMask              mask,
-    const bool                       at_boundary,
-    ConstraintMatrix &               constraints) const;
+    const dealii::DoFHandler<dim, spacedim> &dof_handler,
+    const dealii::ComponentMask              mask,
+    const bool                               at_boundary,
+    dealii::ConstraintMatrix &               constraints) const;
 
   std::string              name;
   std::string              str_components;

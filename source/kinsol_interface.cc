@@ -35,6 +35,8 @@
 #  include <deal2lkit/utilities.h>
 #  include <kinsol/kinsol_dense.h>
 
+using namespace dealii;
+
 D2K_NAMESPACE_OPEN
 
 // protect the helper functions

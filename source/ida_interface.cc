@@ -37,9 +37,7 @@
 #  include <iomanip>
 #  include <iostream>
 
-
 using namespace dealii;
-
 
 D2K_NAMESPACE_OPEN
 
