@@ -38,7 +38,6 @@
 
 #  include <kinsol/kinsol_impl.h>
 
-using namespace dealii;
 
 D2K_NAMESPACE_OPEN
 
@@ -90,7 +89,7 @@ public:
    * Declare parameters for this class to function properly.
    */
   virtual void
-  declare_parameters(ParameterHandler &prm);
+  declare_parameters(dealii::ParameterHandler &prm);
 
   /**
    * Initializes the solver with the initial guess and the residual function.

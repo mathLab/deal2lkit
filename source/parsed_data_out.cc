@@ -38,6 +38,7 @@ DEAL_II_ENABLE_EXTRA_DIAGNOSTICS
 #include <string>
 #include <vector>
 
+using namespace dealii;
 
 D2K_NAMESPACE_OPEN
 

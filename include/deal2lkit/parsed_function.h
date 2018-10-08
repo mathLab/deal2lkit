@@ -21,7 +21,6 @@
 #include <deal2lkit/config.h>
 #include <deal2lkit/parameter_acceptor.h>
 
-using namespace dealii;
 
 D2K_NAMESPACE_OPEN
 
@@ -32,7 +31,7 @@ D2K_NAMESPACE_OPEN
  */
 template <int dim>
 class ParsedFunction : public ParameterAcceptor,
-                       public Functions::ParsedFunction<dim>
+                       public dealii::Functions::ParsedFunction<dim>
 {
 public:
   /**
@@ -57,13 +56,13 @@ public:
    * Calls the underlying function of ParsedFunction.
    */
   virtual void
-  declare_parameters(ParameterHandler &prm);
+  declare_parameters(dealii::ParameterHandler &prm);
 
   /**
    * Calls the underlying function of ParsedFunction.
    */
   virtual void
-  parse_parameters(ParameterHandler &prm);
+  parse_parameters(dealii::ParameterHandler &prm);
 
 
 private:

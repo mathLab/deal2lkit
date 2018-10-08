@@ -28,7 +28,6 @@
 #include <deal2lkit/parameter_acceptor.h>
 #include <deal2lkit/parsed_mapped_functions.h>
 
-using namespace dealii;
 
 D2K_NAMESPACE_OPEN
 
@@ -129,7 +128,7 @@ public:
    * these method calls the method of the Parent class
    */
   virtual void
-  declare_parameters(ParameterHandler &prm);
+  declare_parameters(dealii::ParameterHandler &prm);
 
   /**
    * these method calls the method of the Parent class
@@ -144,19 +143,9 @@ public:
    * deal.II library
    */
   void
-  interpolate_boundary_values(const DoFHandler<dim, spacedim> &dof_handler,
-                              ConstraintMatrix &constraints) const;
-
-  /**
-   * This function must be called in order to apply the boundary conditions
-   * to the ConstraintMatrix.
-   * It relies on the VectorTools::interpolate_boundary_values functions of the
-   * deal.II library
-   */
-  void
-  interpolate_boundary_values(const Mapping<dim, spacedim> &   mapping,
-                              const DoFHandler<dim, spacedim> &dof_handler,
-                              ConstraintMatrix &constraints) const;
+  interpolate_boundary_values(
+    const dealii::DoFHandler<dim, spacedim> &dof_handler,
+    dealii::ConstraintMatrix &               constraints) const;
 
   /**
    * This function must be called in order to apply the boundary conditions
@@ -166,8 +155,9 @@ public:
    */
   void
   interpolate_boundary_values(
-    const DoFHandler<dim, spacedim> &          dof_handler,
-    std::map<types::global_dof_index, double> &d_dofs) const;
+    const dealii::Mapping<dim, spacedim> &   mapping,
+    const dealii::DoFHandler<dim, spacedim> &dof_handler,
+    dealii::ConstraintMatrix &               constraints) const;
 
   /**
    * This function must be called in order to apply the boundary conditions
@@ -177,9 +167,20 @@ public:
    */
   void
   interpolate_boundary_values(
-    const Mapping<dim, spacedim> &             mapping,
-    const DoFHandler<dim, spacedim> &          dof_handler,
-    std::map<types::global_dof_index, double> &d_dofs) const;
+    const dealii::DoFHandler<dim, spacedim> &          dof_handler,
+    std::map<dealii::types::global_dof_index, double> &d_dofs) const;
+
+  /**
+   * This function must be called in order to apply the boundary conditions
+   * to the ConstraintMatrix.
+   * It relies on the VectorTools::interpolate_boundary_values functions of the
+   * deal.II library
+   */
+  void
+  interpolate_boundary_values(
+    const dealii::Mapping<dim, spacedim> &             mapping,
+    const dealii::DoFHandler<dim, spacedim> &          dof_handler,
+    std::map<dealii::types::global_dof_index, double> &d_dofs) const;
 
   /**
    * This function must be called in order to apply the boundary conditions
@@ -188,9 +189,9 @@ public:
    * deal.II library
    */
   void
-  project_boundary_values(const DoFHandler<dim, spacedim> &dof_handler,
-                          const Quadrature<dim - 1> &      quadrature,
-                          ConstraintMatrix &               constraints) const;
+  project_boundary_values(const dealii::DoFHandler<dim, spacedim> &dof_handler,
+                          const dealii::Quadrature<dim - 1> &      quadrature,
+                          dealii::ConstraintMatrix &constraints) const;
 
   /**
    * This function must be called in order to apply the boundary conditions
@@ -199,10 +200,10 @@ public:
    * deal.II library
    */
   void
-  project_boundary_values(const Mapping<dim, spacedim> &   mapping,
-                          const DoFHandler<dim, spacedim> &dof_handler,
-                          const Quadrature<dim - 1> &      quadrature,
-                          ConstraintMatrix &               constraints) const;
+  project_boundary_values(const dealii::Mapping<dim, spacedim> &   mapping,
+                          const dealii::DoFHandler<dim, spacedim> &dof_handler,
+                          const dealii::Quadrature<dim - 1> &      quadrature,
+                          dealii::ConstraintMatrix &constraints) const;
 
   /**
    * This function must be called in order to apply the boundary conditions
@@ -212,9 +213,9 @@ public:
    */
   void
   project_boundary_values(
-    const DoFHandler<dim, spacedim> &          dof_handler,
-    const Quadrature<dim - 1> &                quadrature,
-    std::map<types::global_dof_index, double> &projected_bv) const;
+    const dealii::DoFHandler<dim, spacedim> &          dof_handler,
+    const dealii::Quadrature<dim - 1> &                quadrature,
+    std::map<dealii::types::global_dof_index, double> &projected_bv) const;
 
   /**
    * This function must be called in order to apply the boundary conditions
@@ -224,10 +225,10 @@ public:
    */
   void
   project_boundary_values(
-    const Mapping<dim, spacedim> &             mapping,
-    const DoFHandler<dim, spacedim> &          dof_handler,
-    const Quadrature<dim - 1> &                quadrature,
-    std::map<types::global_dof_index, double> &projected_bv) const;
+    const dealii::Mapping<dim, spacedim> &             mapping,
+    const dealii::DoFHandler<dim, spacedim> &          dof_handler,
+    const dealii::Quadrature<dim - 1> &                quadrature,
+    std::map<dealii::types::global_dof_index, double> &projected_bv) const;
 
 
   /**
@@ -242,8 +243,8 @@ public:
    */
   void
   compute_no_normal_flux_constraints(
-    const DoFHandler<dim, spacedim> &dof_handler,
-    ConstraintMatrix &               constraints) const;
+    const dealii::DoFHandler<dim, spacedim> &dof_handler,
+    dealii::ConstraintMatrix &               constraints) const;
   /**
    * This function must be called in order to apply the homogeneous Dirichlet
    * boundary conditions to the normal components of the variables specified.
@@ -256,9 +257,9 @@ public:
    */
   void
   compute_no_normal_flux_constraints(
-    const DoFHandler<dim, spacedim> &dof_handler,
-    const Mapping<dim, spacedim> &   mapping,
-    ConstraintMatrix &               constraints) const;
+    const dealii::DoFHandler<dim, spacedim> &dof_handler,
+    const dealii::Mapping<dim, spacedim> &   mapping,
+    dealii::ConstraintMatrix &               constraints) const;
   /**
    * This function must be called in order to apply the Dirichlet
    * boundary conditions to the normal components of the variables specified.
@@ -274,8 +275,8 @@ public:
    */
   void
   compute_nonzero_normal_flux_constraints(
-    const DoFHandler<dim, spacedim> &dof_handler,
-    ConstraintMatrix &               constraints) const;
+    const dealii::DoFHandler<dim, spacedim> &dof_handler,
+    dealii::ConstraintMatrix &               constraints) const;
 
   /**
    * This function must be called in order to apply the Dirichlet
@@ -292,9 +293,9 @@ public:
    */
   void
   compute_nonzero_normal_flux_constraints(
-    const DoFHandler<dim, spacedim> &dof_handler,
-    const Mapping<dim, spacedim> &   mapping,
-    ConstraintMatrix &               constraints) const;
+    const dealii::DoFHandler<dim, spacedim> &dof_handler,
+    const dealii::Mapping<dim, spacedim> &   mapping,
+    dealii::ConstraintMatrix &               constraints) const;
 
 private:
   /**

@@ -15,6 +15,7 @@
 
 #include <deal2lkit/parsed_mapped_functions.h>
 
+using namespace dealii;
 
 D2K_NAMESPACE_OPEN
 

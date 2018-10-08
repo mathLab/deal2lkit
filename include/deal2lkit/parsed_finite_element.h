@@ -26,7 +26,6 @@
 #include <deal2lkit/parameter_acceptor.h>
 #include <deal2lkit/utilities.h>
 
-using namespace dealii;
 
 D2K_NAMESPACE_OPEN
 
@@ -130,7 +129,7 @@ public:
    * 1=DoFTools::always, 2=DoFTools::nonzero.
    */
   virtual void
-  declare_parameters(ParameterHandler &prm);
+  declare_parameters(dealii::ParameterHandler &prm);
 
   /**
    * Return a shared pointer to a newly created Finite Element. It
@@ -139,7 +138,7 @@ public:
    * different from the number of components given at construction
    * time.
    */
-  std::unique_ptr<FiniteElement<dim, spacedim>>
+  std::unique_ptr<dealii::FiniteElement<dim, spacedim>>
   operator()() const;
 
   /**

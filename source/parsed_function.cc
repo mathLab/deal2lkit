@@ -16,6 +16,7 @@
 #include <deal2lkit/parsed_function.h>
 #include <deal2lkit/utilities.h>
 
+using namespace dealii;
 
 D2K_NAMESPACE_OPEN
 
@@ -25,7 +26,7 @@ ParsedFunction<dim>::ParsedFunction(const std::string & name,
                                     const std::string & default_exp,
                                     const std::string & default_const)
   : ParameterAcceptor(name)
-  , Functions::ParsedFunction<dim>(n_components)
+  , dealii::Functions::ParsedFunction<dim>(n_components)
   , default_exp(default_exp)
   , default_const(default_const)
   , n_components(n_components)
@@ -34,9 +35,9 @@ ParsedFunction<dim>::ParsedFunction(const std::string & name,
 
 template <int dim>
 void
-ParsedFunction<dim>::declare_parameters(ParameterHandler &prm)
+ParsedFunction<dim>::declare_parameters(dealii::ParameterHandler &prm)
 {
-  Functions::ParsedFunction<dim>::declare_parameters(prm, n_components);
+  dealii::Functions::ParsedFunction<dim>::declare_parameters(prm, n_components);
   if (default_exp != "")
     prm.set("Function expression", default_exp);
   if (default_const != "")
@@ -46,9 +47,9 @@ ParsedFunction<dim>::declare_parameters(ParameterHandler &prm)
 
 template <int dim>
 void
-ParsedFunction<dim>::parse_parameters(ParameterHandler &prm)
+ParsedFunction<dim>::parse_parameters(dealii::ParameterHandler &prm)
 {
-  Functions::ParsedFunction<dim>::parse_parameters(prm);
+  dealii::Functions::ParsedFunction<dim>::parse_parameters(prm);
 }
 
 

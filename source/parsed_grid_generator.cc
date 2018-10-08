@@ -54,6 +54,8 @@ namespace
   }
 } // namespace
 
+using namespace dealii;
+
 D2K_NAMESPACE_OPEN
 
 

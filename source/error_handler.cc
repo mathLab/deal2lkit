@@ -35,6 +35,7 @@
 #include <string>
 #include <vector>
 
+using namespace dealii;
 
 D2K_NAMESPACE_OPEN
 

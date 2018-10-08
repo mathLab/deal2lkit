@@ -31,7 +31,6 @@
 #include <typeinfo>
 #include <vector>
 
-using namespace dealii;
 
 
 D2K_NAMESPACE_OPEN
@@ -64,7 +63,7 @@ D2K_NAMESPACE_OPEN
  * @endcode
  */
 
-class AnyData : public Subscriptor
+class AnyData : public dealii::Subscriptor
 {
 public:
   /**
@@ -131,12 +130,12 @@ public:
   print_info(STREAM &os);
 
   /// An entry with this name does not exist in the AnyData object.
-  DeclException1(ExcNameNotFound,
+  DeclException1(dealii::ExcNameNotFound,
                  std::string,
                  << "No entry with the name " << arg1 << " exists.");
 
   /// The requested type and the stored type are different
-  DeclException2(ExcTypeMismatch,
+  DeclException2(dealii::ExcTypeMismatch,
                  char *,
                  char *,
                  << "The requested type " << arg1 << " and the stored type "
@@ -166,7 +165,7 @@ template <typename type>
 type &
 AnyData::get(const std::string &name)
 {
-  Assert(mydata.find(name) != mydata.end(), ExcNameNotFound(name));
+  Assert(mydata.find(name) != mydata.end(), dealii::ExcNameNotFound(name));
 
   type *p = NULL;
 
@@ -181,7 +180,8 @@ AnyData::get(const std::string &name)
   else
     {
       Assert(false,
-             ExcTypeMismatch(typeid(type).name(), mydata[name].type().name()));
+             dealii::ExcTypeMismatch(typeid(type).name(),
+                                     mydata[name].type().name()));
     }
 
   return *p;
@@ -191,7 +191,7 @@ template <typename type>
 const type &
 AnyData::get(const std::string &name) const
 {
-  Assert(mydata.find(name) != mydata.end(), ExcNameNotFound(name));
+  Assert(mydata.find(name) != mydata.end(), dealii::ExcNameNotFound(name));
 
   typedef std::map<std::string, boost::any>::const_iterator it_type;
 
@@ -210,7 +210,8 @@ AnyData::get(const std::string &name) const
   else
     {
       Assert(false,
-             ExcTypeMismatch(typeid(type).name(), it->second.type().name()));
+             dealii::ExcTypeMismatch(typeid(type).name(),
+                                     it->second.type().name()));
       const type *p = NULL;
       return *p;
     }

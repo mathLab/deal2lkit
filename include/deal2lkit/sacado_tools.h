@@ -37,8 +37,6 @@ typedef Sacado::Fad::DFad<Sdouble> SSdouble;
 
 #  include <deal.II/base/tensor.h>
 
-using namespace dealii;
-
 
 
 D2K_NAMESPACE_OPEN

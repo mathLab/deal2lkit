@@ -28,9 +28,6 @@
 #  include <deal2lkit/parsed_finite_element.h>
 #  include <deal2lkit/utilities.h>
 
-using namespace dealii;
-
-
 D2K_NAMESPACE_OPEN
 
 /**
@@ -40,7 +37,7 @@ D2K_NAMESPACE_OPEN
  * of the preconditioner.
  */
 class ParsedILUPreconditioner : public ParameterAcceptor,
-                                public TrilinosWrappers::PreconditionILU
+                                public dealii::TrilinosWrappers::PreconditionILU
 {
 public:
   /**
@@ -56,7 +53,7 @@ public:
    * Declare preconditioner options.
    */
   virtual void
-  declare_parameters(ParameterHandler &prm);
+  declare_parameters(dealii::ParameterHandler &prm);
 
   /**
    * Initialize the preconditioner using @p matrix.
@@ -65,7 +62,7 @@ public:
   void
   initialize_preconditioner(const Matrix &matrix);
 
-  using TrilinosWrappers::PreconditionILU::initialize;
+  using dealii::TrilinosWrappers::PreconditionILU::initialize;
 
 private:
   /**
