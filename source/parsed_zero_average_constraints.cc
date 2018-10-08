@@ -17,7 +17,7 @@
 
 #include <deal2lkit/parsed_zero_average_constraints.h>
 
-
+using namespace dealii;
 
 D2K_NAMESPACE_OPEN
 

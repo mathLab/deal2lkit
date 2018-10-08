@@ -17,6 +17,8 @@
 
 #ifdef DEAL_II_WITH_TRILINOS
 
+using namespace dealii;
+
 D2K_NAMESPACE_OPEN
 
 ParsedILUPreconditioner::ParsedILUPreconditioner(const std::string & name,

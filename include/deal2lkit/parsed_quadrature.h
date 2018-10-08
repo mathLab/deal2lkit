@@ -20,7 +20,6 @@
 
 #include <deal2lkit/parameter_acceptor.h>
 
-using namespace dealii;
 
 
 D2K_NAMESPACE_OPEN
@@ -31,7 +30,8 @@ D2K_NAMESPACE_OPEN
  * dimension of the quadrature.
  */
 template <int dim>
-class ParsedQuadrature : public Quadrature<dim>, public ParameterAcceptor
+class ParsedQuadrature : public dealii::Quadrature<dim>,
+                         public ParameterAcceptor
 {
 public:
   /**
@@ -64,7 +64,7 @@ public:
    * Declare quadrature type and quadrature options.
    */
   virtual void
-  declare_parameters(ParameterHandler &prm);
+  declare_parameters(dealii::ParameterHandler &prm);
 
   /**
    * Fill information about blocks after parsing the parameters.

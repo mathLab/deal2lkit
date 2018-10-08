@@ -15,11 +15,9 @@
 
 #include <deal2lkit/parsed_dirichlet_bcs.h>
 
-
+using namespace dealii;
 
 D2K_NAMESPACE_OPEN
-
-
 
 template <int dim, int spacedim>
 ParsedDirichletBCs<dim, spacedim>::ParsedDirichletBCs(
@@ -126,28 +124,25 @@ ParsedDirichletBCs<dim, spacedim>::interpolate_boundary_values(
 // [TODO] Fix this in deal.II.
 
 template <>
-void ParsedDirichletBCs<1, 2>::project_boundary_values(
-  dealii::DoFHandler<1, 2> const &,
-  dealii::Quadrature<0> const &,
-  dealii::ConstraintMatrix &) const
+void ParsedDirichletBCs<1, 2>::project_boundary_values(DoFHandler<1, 2> const &,
+                                                       Quadrature<0> const &,
+                                                       ConstraintMatrix &) const
 {
   ExcImpossibleInDim(1);
 }
 
 template <>
-void ParsedDirichletBCs<1, 3>::project_boundary_values(
-  dealii::DoFHandler<1, 3> const &,
-  dealii::Quadrature<0> const &,
-  dealii::ConstraintMatrix &) const
+void ParsedDirichletBCs<1, 3>::project_boundary_values(DoFHandler<1, 3> const &,
+                                                       Quadrature<0> const &,
+                                                       ConstraintMatrix &) const
 {
   ExcImpossibleInDim(1);
 }
 
 template <>
-void ParsedDirichletBCs<2, 3>::project_boundary_values(
-  dealii::DoFHandler<2, 3> const &,
-  dealii::Quadrature<1> const &,
-  dealii::ConstraintMatrix &) const
+void ParsedDirichletBCs<2, 3>::project_boundary_values(DoFHandler<2, 3> const &,
+                                                       Quadrature<1> const &,
+                                                       ConstraintMatrix &) const
 {
   ExcNotImplemented();
 }
@@ -155,22 +150,20 @@ void ParsedDirichletBCs<2, 3>::project_boundary_values(
 
 template <>
 void
-ParsedDirichletBCs<1, 2>::project_boundary_values(
-  const Mapping<1, 2> &,
-  dealii::DoFHandler<1, 2> const &,
-  dealii::Quadrature<0> const &,
-  dealii::ConstraintMatrix &) const
+ParsedDirichletBCs<1, 2>::project_boundary_values(const Mapping<1, 2> &,
+                                                  DoFHandler<1, 2> const &,
+                                                  Quadrature<0> const &,
+                                                  ConstraintMatrix &) const
 {
   ExcImpossibleInDim(1);
 }
 
 template <>
 void
-ParsedDirichletBCs<1, 3>::project_boundary_values(
-  const Mapping<1, 3> &,
-  dealii::DoFHandler<1, 3> const &,
-  dealii::Quadrature<0> const &,
-  dealii::ConstraintMatrix &) const
+ParsedDirichletBCs<1, 3>::project_boundary_values(const Mapping<1, 3> &,
+                                                  DoFHandler<1, 3> const &,
+                                                  Quadrature<0> const &,
+                                                  ConstraintMatrix &) const
 {
   ExcImpossibleInDim(1);
 }
@@ -179,11 +172,10 @@ ParsedDirichletBCs<1, 3>::project_boundary_values(
 
 template <>
 void
-ParsedDirichletBCs<2, 3>::project_boundary_values(
-  const Mapping<2, 3> &,
-  dealii::DoFHandler<2, 3> const &,
-  dealii::Quadrature<1> const &,
-  dealii::ConstraintMatrix &) const
+ParsedDirichletBCs<2, 3>::project_boundary_values(const Mapping<2, 3> &,
+                                                  DoFHandler<2, 3> const &,
+                                                  Quadrature<1> const &,
+                                                  ConstraintMatrix &) const
 {
   ExcNotImplemented();
 }
@@ -404,7 +396,7 @@ ParsedDirichletBCs<1, 1>::compute_no_normal_flux_constraints(
 
 template <>
 void ParsedDirichletBCs<1, 1>::compute_nonzero_normal_flux_constraints(
-  dealii::DoFHandler<1, 1> const &,
+  DoFHandler<1, 1> const &,
   ConstraintMatrix &) const
 {
   Assert(false, ExcImpossibleInDim(1));
@@ -445,7 +437,7 @@ ParsedDirichletBCs<1, 2>::compute_no_normal_flux_constraints(
 
 template <>
 void ParsedDirichletBCs<1, 2>::compute_nonzero_normal_flux_constraints(
-  dealii::DoFHandler<1, 2> const &,
+  DoFHandler<1, 2> const &,
   ConstraintMatrix &) const
 {
   Assert(false, ExcImpossibleInDim(1));
@@ -485,7 +477,7 @@ ParsedDirichletBCs<1, 3>::compute_no_normal_flux_constraints(
 
 template <>
 void ParsedDirichletBCs<1, 3>::compute_nonzero_normal_flux_constraints(
-  dealii::DoFHandler<1, 3> const &,
+  DoFHandler<1, 3> const &,
   ConstraintMatrix &) const
 {
   Assert(false, ExcImpossibleInDim(1));
@@ -526,7 +518,7 @@ ParsedDirichletBCs<2, 3>::compute_no_normal_flux_constraints(
 
 template <>
 void ParsedDirichletBCs<2, 3>::compute_nonzero_normal_flux_constraints(
-  dealii::DoFHandler<2, 3> const &,
+  DoFHandler<2, 3> const &,
   ConstraintMatrix &) const
 {
   Assert(false, ExcImpossibleInDim(2));

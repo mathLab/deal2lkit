@@ -20,6 +20,8 @@
 
 #include <algorithm> // std::find
 
+using namespace dealii;
+
 D2K_NAMESPACE_OPEN
 
 template <int dim, int spacedim>

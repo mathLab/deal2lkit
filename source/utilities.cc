@@ -21,9 +21,9 @@
 #include <thread>
 #include <vector>
 
+using namespace dealii;
 
 D2K_NAMESPACE_OPEN
-
 
 std::string
 demangle(const char *name)

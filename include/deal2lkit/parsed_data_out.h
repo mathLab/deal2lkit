@@ -55,7 +55,7 @@ public:
 
   /** Initialize the given values for the paramter file. */
   virtual void
-  declare_parameters(ParameterHandler &prm);
+  declare_parameters(dealii::ParameterHandler &prm);
 
   /** Prepare names for output directories. */
   virtual void
@@ -66,8 +66,8 @@ public:
       combination of the @p base_name, the optional @p suffix,
       eventually a processor number and the output suffix.  */
   void
-  prepare_data_output(const DoFHandler<dim, spacedim> &dh,
-                      const std::string &              suffix = "");
+  prepare_data_output(const dealii::DoFHandler<dim, spacedim> &dh,
+                      const std::string &                      suffix = "");
 
   /** Add the given vector to the output file. Prior to calling this
       method, you have to call the prepare_data_output method. The
@@ -84,8 +84,8 @@ public:
    */
   template <typename VECTOR>
   void
-  add_data_vector(const VECTOR &                     data_vector,
-                  const DataPostprocessor<spacedim> &postproc);
+  add_data_vector(const VECTOR &                             data_vector,
+                  const dealii::DataPostprocessor<spacedim> &postproc);
 
 
   /** Actually write the file. Once the data_out has been prepared,
@@ -97,8 +97,8 @@ public:
       (ex. "parameter.prm time.dat") and copies these files
       in the @p incremental_run_prefix of the costructor function.*/
   void
-  write_data_and_clear(const Mapping<dim, spacedim> &mapping =
-                         StaticMappingQ1<dim, spacedim>::mapping);
+  write_data_and_clear(const dealii::Mapping<dim, spacedim> &mapping =
+                         dealii::StaticMappingQ1<dim, spacedim>::mapping);
 
 private:
   /** Initialization flag.*/
@@ -153,7 +153,7 @@ private:
   std::ofstream output_file;
 
   /** Outputs only the data that refers to this process. */
-  shared_ptr<DataOut<dim, DoFHandler<dim, spacedim>>> data_out;
+  shared_ptr<dealii::DataOut<dim, dealii::DoFHandler<dim, spacedim>>> data_out;
 };
 
 
@@ -167,9 +167,9 @@ void
 ParsedDataOut<dim, spacedim>::add_data_vector(const VECTOR &     data_vector,
                                               const std::string &desc)
 {
-  AssertThrow(initialized, ExcNotInitialized());
-  deallog.push("AddingData");
-  std::vector<std::string> dd = Utilities::split_string_list(desc);
+  AssertThrow(initialized, dealii::ExcNotInitialized());
+  dealii::deallog.push("AddingData");
+  std::vector<std::string> dd = dealii::Utilities::split_string_list(desc);
   if (data_out->default_suffix() != "")
     {
       if (dd.size() == 1)
@@ -187,28 +187,31 @@ ParsedDataOut<dim, spacedim>::add_data_vector(const VECTOR &     data_vector,
           std::vector<int>::iterator iit = occurrances.begin();
           sit                            = dd.begin();
 
-          std::vector<DataComponentInterpretation::DataComponentInterpretation>
+          std::vector<
+            dealii::DataComponentInterpretation::DataComponentInterpretation>
             data_component_interpretation;
 
           for (; iit != occurrances.end(); ++iit, ++sit)
             {
               if (*iit > 1)
                 data_component_interpretation.push_back(
-                  DataComponentInterpretation::component_is_part_of_vector);
+                  dealii::DataComponentInterpretation::
+                    component_is_part_of_vector);
               else
                 data_component_interpretation.push_back(
-                  DataComponentInterpretation::component_is_scalar);
+                  dealii::DataComponentInterpretation::component_is_scalar);
             }
 
           data_out->add_data_vector(
             data_vector,
             dd,
-            DataOut<dim, DoFHandler<dim, spacedim>>::type_dof_data,
+            dealii::DataOut<dim,
+                            dealii::DoFHandler<dim, spacedim>>::type_dof_data,
             data_component_interpretation);
         }
-      deallog << "Added data: " << desc << std::endl;
+      dealii::deallog << "Added data: " << desc << std::endl;
     }
-  deallog.pop();
+  dealii::deallog.pop();
 }
 
 
@@ -216,10 +219,10 @@ template <int dim, int spacedim>
 template <typename VECTOR>
 void
 ParsedDataOut<dim, spacedim>::add_data_vector(
-  const VECTOR &                     data_vector,
-  const DataPostprocessor<spacedim> &postproc)
+  const VECTOR &                             data_vector,
+  const dealii::DataPostprocessor<spacedim> &postproc)
 {
-  AssertThrow(initialized, ExcNotInitialized());
+  AssertThrow(initialized, dealii::ExcNotInitialized());
   data_out->add_data_vector(data_vector, postproc);
 }
 

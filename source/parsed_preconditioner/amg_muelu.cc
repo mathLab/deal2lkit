@@ -21,6 +21,7 @@
 
 #  include <deal.II/dofs/dof_tools.h>
 
+using namespace dealii;
 
 D2K_NAMESPACE_OPEN
 

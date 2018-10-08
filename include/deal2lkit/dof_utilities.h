@@ -28,8 +28,6 @@
 #include <sstream>
 #include <typeinfo>
 
-using namespace dealii;
-
 
 
 /**
@@ -58,9 +56,9 @@ namespace DOFUtilities
   template <typename Number, typename VEC>
   void
   extract_local_dofs(
-    const VEC &                                 global_vector,
-    const std::vector<types::global_dof_index> &local_dof_indices,
-    std::vector<Number> &                       independent_local_dofs)
+    const VEC &                                         global_vector,
+    const std::vector<dealii::types::global_dof_index> &local_dof_indices,
+    std::vector<Number> &                               independent_local_dofs)
   {
     AssertDimension(local_dof_indices.size(), independent_local_dofs.size());
 
@@ -90,7 +88,7 @@ namespace DOFUtilities
 #endif
         else
           {
-            Assert(false, ExcNotImplemented());
+            Assert(false, dealii::ExcNotImplemented());
           }
       }
   }
@@ -104,9 +102,9 @@ namespace DOFUtilities
    */
   template <int dim, int spacedim, typename Number>
   void
-  get_values(const FEValuesBase<dim, spacedim> &fe_values,
-             const std::vector<Number> &        independent_local_dof_values,
-             std::vector<std::vector<Number>> & us)
+  get_values(const dealii::FEValuesBase<dim, spacedim> &fe_values,
+             const std::vector<Number> &       independent_local_dof_values,
+             std::vector<std::vector<Number>> &us)
 
   {
     const unsigned int dofs_per_cell = fe_values.dofs_per_cell;
@@ -123,7 +121,7 @@ namespace DOFUtilities
         for (unsigned int i = 0; i < dofs_per_cell; ++i)
           for (unsigned int j = 0; j < n_components; ++j)
             {
-              FEValuesExtractors::Scalar s(j);
+              dealii::FEValuesExtractors::Scalar s(j);
               us[q][j] +=
                 independent_local_dof_values[i] * fe_values[s].value(i, q);
             }
@@ -133,17 +131,17 @@ namespace DOFUtilities
   /**
    *  Extract independent local dofs values of a vector_variable
    *  in a cell and store them in
-   *  std::vector<Tensor<1,spacedim,Number>> us
+   *  std::vector<dealii::Tensor<1,spacedim,Number>> us
    *  whose size is number of quadrature points in the cell.
    *
    */
   template <int dim, int spacedim, typename Number>
 
   void
-  get_values(const FEValuesBase<dim, spacedim> &fe_values,
-             const std::vector<Number> &        independent_local_dof_values,
-             const FEValuesExtractors::Vector & vector_variable,
-             std::vector<Tensor<1, spacedim, Number>> &us)
+  get_values(const dealii::FEValuesBase<dim, spacedim> &fe_values,
+             const std::vector<Number> &independent_local_dof_values,
+             const dealii::FEValuesExtractors::Vector &        vector_variable,
+             std::vector<dealii::Tensor<1, spacedim, Number>> &us)
 
   {
     const unsigned int dofs_per_cell = fe_values.dofs_per_cell;
@@ -172,10 +170,10 @@ namespace DOFUtilities
    */
   template <int dim, int spacedim, typename Number>
   void
-  get_values(const FEValuesBase<dim, spacedim> &fe_values,
-             const std::vector<Number> &        independent_local_dof_values,
-             const FEValuesExtractors::Scalar & scalar_variable,
-             std::vector<Number> &              us)
+  get_values(const dealii::FEValuesBase<dim, spacedim> &fe_values,
+             const std::vector<Number> &independent_local_dof_values,
+             const dealii::FEValuesExtractors::Scalar &scalar_variable,
+             std::vector<Number> &                     us)
 
   {
     const unsigned int dofs_per_cell = fe_values.dofs_per_cell;
@@ -203,10 +201,10 @@ namespace DOFUtilities
    */
   template <int dim, int spacedim, typename Number>
   void
-  get_divergences(const FEValuesBase<dim, spacedim> &fe_values,
+  get_divergences(const dealii::FEValuesBase<dim, spacedim> &fe_values,
                   const std::vector<Number> &independent_local_dof_values,
-                  const FEValuesExtractors::Vector &vector_variable,
-                  std::vector<Number> &             us)
+                  const dealii::FEValuesExtractors::Vector &vector_variable,
+                  std::vector<Number> &                     us)
 
   {
     const unsigned int dofs_per_cell = fe_values.dofs_per_cell;
@@ -228,16 +226,16 @@ namespace DOFUtilities
   /**
    *  Extract gradient values of a vector_variable
    *  on face of a cell and store them in
-   *  std::vector <Tensor <2, spacedim, Number> > grad_us
+   *  std::vector <dealii::Tensor <2, spacedim, Number> > grad_us
    *  whose size is number of quadrature points in the cell.
    *
    */
   template <int dim, int spacedim, typename Number>
   void
-  get_gradients(const FEValuesBase<dim, spacedim> &fe_values,
-                const std::vector<Number> &        independent_local_dof_values,
-                const FEValuesExtractors::Vector & vector_variable,
-                std::vector<Tensor<2, spacedim, Number>> &grad_us)
+  get_gradients(const dealii::FEValuesBase<dim, spacedim> &fe_values,
+                const std::vector<Number> &independent_local_dof_values,
+                const dealii::FEValuesExtractors::Vector &vector_variable,
+                std::vector<dealii::Tensor<2, spacedim, Number>> &grad_us)
   {
     const unsigned int dofs_per_cell = fe_values.dofs_per_cell;
     const unsigned int n_q_points    = fe_values.n_quadrature_points;
@@ -262,17 +260,18 @@ namespace DOFUtilities
   /**
    *  Extract curl values of a vector_variable
    *  on face or cell and store them in
-   *  std::vector <Tensor <1, spacedim, Number> > curl_us
+   *  std::vector <dealii::Tensor <1, spacedim, Number> > curl_us
    *  whose size is number of quadrature points in the cell.
    *
    */
   template <int dim, int spacedim, typename Number>
   void
   get_curls(
-    const FEValuesBase<dim, spacedim> &fe_values,
-    const std::vector<Number> &        independent_local_dof_values,
-    const FEValuesExtractors::Vector & vector_variable,
-    std::vector<Tensor<1, (spacedim > 2 ? spacedim : 1), Number>> &curl_us)
+    const dealii::FEValuesBase<dim, spacedim> &fe_values,
+    const std::vector<Number> &                independent_local_dof_values,
+    const dealii::FEValuesExtractors::Vector & vector_variable,
+    std::vector<dealii::Tensor<1, (spacedim > 2 ? spacedim : 1), Number>>
+      &curl_us)
   {
     const unsigned int dofs_per_cell = fe_values.dofs_per_cell;
     const unsigned int n_q_points    = fe_values.n_quadrature_points;
@@ -297,16 +296,16 @@ namespace DOFUtilities
   /**
    *  Extract gradient values of a scalar_variable
    *  on face of a cell and store them in
-   *  std::vector <Tensor <1, spacedim, Number> > grad_us
+   *  std::vector <dealii::Tensor <1, spacedim, Number> > grad_us
    *  whose size is number of quadrature points in the cell.
    *
    */
   template <int dim, int spacedim, typename Number>
   void
-  get_gradients(const FEValuesBase<dim, spacedim> &fe_values,
-                const std::vector<Number> &        independent_local_dof_values,
-                const FEValuesExtractors::Scalar & scalar_variable,
-                std::vector<Tensor<1, spacedim, Number>> &grad_us)
+  get_gradients(const dealii::FEValuesBase<dim, spacedim> &fe_values,
+                const std::vector<Number> &independent_local_dof_values,
+                const dealii::FEValuesExtractors::Scalar &scalar_variable,
+                std::vector<dealii::Tensor<1, spacedim, Number>> &grad_us)
   {
     const unsigned int dofs_per_cell = fe_values.dofs_per_cell;
     const unsigned int n_q_points    = fe_values.n_quadrature_points;
@@ -329,17 +328,17 @@ namespace DOFUtilities
   /**
    *  Compute the deformation gradient in each quadrature point
    *  of a cell and it is stored in
-   *  std::vector <Tensor <2, spacedim, Number> > Fs
+   *  std::vector <dealii::Tensor <2, spacedim, Number> > Fs
    *  whose size is number of quadrature points in the cell.
    *
    */
   template <int dim, int spacedim, typename Number>
   void
   get_deformation_gradients(
-    const FEValuesBase<dim, spacedim> &       fe_values,
-    const std::vector<Number> &               independent_local_dof_values,
-    const FEValuesExtractors::Vector &        vector_variable,
-    std::vector<Tensor<2, spacedim, Number>> &Fs)
+    const dealii::FEValuesBase<dim, spacedim> &fe_values,
+    const std::vector<Number> &                independent_local_dof_values,
+    const dealii::FEValuesExtractors::Vector & vector_variable,
+    std::vector<dealii::Tensor<2, spacedim, Number>> &Fs)
   {
     const unsigned int n_q_points = fe_values.n_quadrature_points;
 
@@ -358,17 +357,17 @@ namespace DOFUtilities
   /**
    *  Extract symmetric gradient values of a vector_variable
    *  on face of a cell and store them in
-   *  std::vector <Tensor <2, spacedim, Number> > grad_us
+   *  std::vector <dealii::Tensor <2, spacedim, Number> > grad_us
    *  whose size is number of quadrature points in the cell.
    *
    */
   template <int dim, int spacedim, typename Number>
   void
   get_symmetric_gradients(
-    const FEValuesBase<dim, spacedim> &       fe_values,
-    const std::vector<Number> &               independent_local_dof_values,
-    const FEValuesExtractors::Vector &        vector_variable,
-    std::vector<Tensor<2, spacedim, Number>> &grad_us)
+    const dealii::FEValuesBase<dim, spacedim> &fe_values,
+    const std::vector<Number> &                independent_local_dof_values,
+    const dealii::FEValuesExtractors::Vector & vector_variable,
+    std::vector<dealii::Tensor<2, spacedim, Number>> &grad_us)
   {
     const unsigned int n_q_points = fe_values.n_quadrature_points;
 
@@ -396,10 +395,10 @@ namespace DOFUtilities
   template <int dim, int spacedim, typename Number>
 
   void
-  get_laplacians(const FEValuesBase<dim, spacedim> &fe_values,
-                 const std::vector<Number> &       independent_local_dof_values,
-                 const FEValuesExtractors::Scalar &variable,
-                 std::vector<Number> &             us)
+  get_laplacians(const dealii::FEValuesBase<dim, spacedim> &fe_values,
+                 const std::vector<Number> &independent_local_dof_values,
+                 const dealii::FEValuesExtractors::Scalar &variable,
+                 std::vector<Number> &                     us)
 
   {
     const unsigned int dofs_per_cell = fe_values.dofs_per_cell;
@@ -421,17 +420,17 @@ namespace DOFUtilities
   /**
    *  Extract laplacians local dofs values of a vector variable
    *  in a cell and store them in
-   *  std::vector <Tensor<1,Number > > us
+   *  std::vector <dealii::Tensor<1,Number > > us
    *  whose size is number of quadrature points in the cell.
    *
    */
   template <int dim, int spacedim, typename Number>
 
   void
-  get_laplacians(const FEValuesBase<dim, spacedim> &fe_values,
-                 const std::vector<Number> &       independent_local_dof_values,
-                 const FEValuesExtractors::Vector &variable,
-                 std::vector<Tensor<1, spacedim, Number>> &us)
+  get_laplacians(const dealii::FEValuesBase<dim, spacedim> &fe_values,
+                 const std::vector<Number> &independent_local_dof_values,
+                 const dealii::FEValuesExtractors::Vector &        variable,
+                 std::vector<dealii::Tensor<1, spacedim, Number>> &us)
 
   {
     const unsigned int dofs_per_cell = fe_values.dofs_per_cell;
@@ -453,17 +452,17 @@ namespace DOFUtilities
   /**
    *  Extract hessians local dofs values of a scalar variable
    *  in a cell and store them in
-   *  std::vector <Tensor<2,Number > > us
+   *  std::vector <dealii::Tensor<2,Number > > us
    *  whose size is number of quadrature points in the cell.
    *
    */
   template <int dim, int spacedim, typename Number>
 
   void
-  get_hessians(const FEValuesBase<dim, spacedim> &fe_values,
-               const std::vector<Number> &        independent_local_dof_values,
-               const FEValuesExtractors::Scalar & variable,
-               std::vector<Tensor<2, spacedim, Number>> &us)
+  get_hessians(const dealii::FEValuesBase<dim, spacedim> &fe_values,
+               const std::vector<Number> &independent_local_dof_values,
+               const dealii::FEValuesExtractors::Scalar &        variable,
+               std::vector<dealii::Tensor<2, spacedim, Number>> &us)
 
   {
     const unsigned int dofs_per_cell = fe_values.dofs_per_cell;
@@ -486,17 +485,17 @@ namespace DOFUtilities
   /**
    *  Extract hessians local dofs values of a vector variable
    *  in a cell and store them in
-   *  std::vector <Tensor<3,Number > > us
+   *  std::vector <dealii::Tensor<3,Number > > us
    *  whose size is number of quadrature points in the cell.
    *
    */
   template <int dim, int spacedim, typename Number>
 
   void
-  get_hessians(const FEValuesBase<dim, spacedim> &fe_values,
-               const std::vector<Number> &        independent_local_dof_values,
-               const FEValuesExtractors::Vector & variable,
-               std::vector<Tensor<3, spacedim, Number>> &us)
+  get_hessians(const dealii::FEValuesBase<dim, spacedim> &fe_values,
+               const std::vector<Number> &independent_local_dof_values,
+               const dealii::FEValuesExtractors::Vector &        variable,
+               std::vector<dealii::Tensor<3, spacedim, Number>> &us)
 
   {
     const unsigned int dofs_per_cell = fe_values.dofs_per_cell;

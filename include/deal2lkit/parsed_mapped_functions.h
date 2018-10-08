@@ -29,7 +29,6 @@
 #include <algorithm>
 #include <map>
 
-using namespace dealii;
 
 
 D2K_NAMESPACE_OPEN
@@ -123,7 +122,7 @@ public:
   /**
    * return the ComponentMask corresponding to the given id
    */
-  ComponentMask
+  dealii::ComponentMask
   get_mapped_mask(const unsigned int &id) const;
 
   /**
@@ -143,7 +142,7 @@ public:
    * declare_parameters is inherithed by ParameterAcceptor
    */
   virtual void
-  declare_parameters(ParameterHandler &prm);
+  declare_parameters(dealii::ParameterHandler &prm);
 
   /**
    * parse_parameters_call_back is inherithed by ParameterAcceptor
@@ -214,22 +213,22 @@ protected:
   void
   set_normal_functions();
 
-  std::string                           name;
-  std::string                           str_id_components;
-  std::string                           str_id_functions;
-  std::string                           str_component_names;
-  std::string                           str_constants;
-  std::vector<std::string>              _component_names;
-  std::vector<std::string>              _normal_components;
-  std::vector<std::string>              _all_components;
-  std::vector<unsigned int>             ids;
-  std::vector<unsigned int>             normal_ids;
-  std::map<unsigned int, ComponentMask> id_components;
+  std::string                                   name;
+  std::string                                   str_id_components;
+  std::string                                   str_id_functions;
+  std::string                                   str_component_names;
+  std::string                                   str_constants;
+  std::vector<std::string>                      _component_names;
+  std::vector<std::string>                      _normal_components;
+  std::vector<std::string>                      _all_components;
+  std::vector<unsigned int>                     ids;
+  std::vector<unsigned int>                     normal_ids;
+  std::map<unsigned int, dealii::ComponentMask> id_components;
   std::map<unsigned int,
            shared_ptr<dealii::Functions::ParsedFunction<spacedim>>>
     id_functions;
   std::map<unsigned int,
-           std::pair<ComponentMask,
+           std::pair<dealii::ComponentMask,
                      shared_ptr<dealii::Functions::ParsedFunction<spacedim>>>>
     mapped_functions;
   std::map<std::string, std::pair<std::vector<unsigned int>, unsigned int>>

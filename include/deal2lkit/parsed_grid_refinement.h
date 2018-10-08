@@ -30,7 +30,6 @@
 #include <deal2lkit/config.h>
 #include <deal2lkit/parameter_acceptor.h>
 
-using namespace dealii;
 
 
 D2K_NAMESPACE_OPEN
@@ -54,7 +53,7 @@ public:
    * Declare local parameters.
    */
   virtual void
-  declare_parameters(ParameterHandler &prm);
+  declare_parameters(dealii::ParameterHandler &prm);
 
 
   /**
@@ -68,7 +67,8 @@ public:
    */
   template <int dim, class Vector, int spacedim>
   void
-  mark_cells(const Vector &criteria, Triangulation<dim, spacedim> &tria) const;
+  mark_cells(const Vector &                        criteria,
+             dealii::Triangulation<dim, spacedim> &tria) const;
 
 #ifdef DEAL_II_WITH_MPI
 #  ifdef DEAL_II_WITH_P4EST
@@ -85,8 +85,9 @@ public:
    */
   template <int dim, class Vector, int spacedim>
   void
-  mark_cells(const Vector &                                       criteria,
-             parallel::distributed::Triangulation<dim, spacedim> &tria) const;
+  mark_cells(
+    const Vector &                                               criteria,
+    dealii::parallel::distributed::Triangulation<dim, spacedim> &tria) const;
 #  endif
 #endif
 
@@ -108,39 +109,44 @@ private:
 template <int dim, class Vector, int spacedim>
 void
 ParsedGridRefinement::mark_cells(
-  const Vector &                                       criteria,
-  parallel::distributed::Triangulation<dim, spacedim> &tria) const
+  const Vector &                                               criteria,
+  dealii::parallel::distributed::Triangulation<dim, spacedim> &tria) const
 {
   if (strategy == "number")
-    parallel::distributed::GridRefinement::refine_and_coarsen_fixed_number(
-      tria,
-      criteria,
-      top_parameter,
-      bottom_parameter,
-      max_cells ? max_cells : std::numeric_limits<unsigned int>::max());
+    dealii::parallel::distributed::GridRefinement::
+      refine_and_coarsen_fixed_number(
+        tria,
+        criteria,
+        top_parameter,
+        bottom_parameter,
+        max_cells ? max_cells : std::numeric_limits<unsigned int>::max());
   else if (strategy == "fraction")
-    parallel::distributed::GridRefinement::refine_and_coarsen_fixed_fraction(
-      tria, criteria, top_parameter, bottom_parameter);
+    dealii::parallel::distributed::GridRefinement::
+      refine_and_coarsen_fixed_fraction(tria,
+                                        criteria,
+                                        top_parameter,
+                                        bottom_parameter);
   else
-    Assert(false, ExcInternalError());
+    Assert(false, dealii::ExcInternalError());
 }
 #  endif
 #endif
 
 template <int dim, class Vector, int spacedim>
 void
-ParsedGridRefinement::mark_cells(const Vector &                criteria,
-                                 Triangulation<dim, spacedim> &tria) const
+ParsedGridRefinement::mark_cells(
+  const Vector &                        criteria,
+  dealii::Triangulation<dim, spacedim> &tria) const
 {
   if (strategy == "number")
-    GridRefinement::refine_and_coarsen_fixed_number(
+    dealii::GridRefinement::refine_and_coarsen_fixed_number(
       tria,
       criteria,
       top_parameter,
       bottom_parameter,
       max_cells ? max_cells : std::numeric_limits<unsigned int>::max());
   else if (strategy == "fraction")
-    GridRefinement::refine_and_coarsen_fixed_fraction(
+    dealii::GridRefinement::refine_and_coarsen_fixed_fraction(
       tria,
       criteria,
       top_parameter,
@@ -150,7 +156,7 @@ ParsedGridRefinement::mark_cells(const Vector &                criteria,
   // else if(strategy == "optimize")
   //   GridRefinement::refine_and_coarsen_optimize (tria, order);
   else
-    Assert(false, ExcInternalError());
+    Assert(false, dealii::ExcInternalError());
 }
 
 D2K_NAMESPACE_CLOSE

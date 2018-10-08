@@ -37,8 +37,6 @@ typedef Sacado::Fad::DFad<Sdouble> SSdouble;
 
 #  include <deal.II/base/tensor.h>
 
-using namespace dealii;
-
 
 
 D2K_NAMESPACE_OPEN
@@ -47,13 +45,13 @@ namespace SacadoTools
 {
   /**
    * This function compute the scalar product
-   * between two tensors with rank 1 of different types
+   * between two dealii::Tensors with rank 1 of different types
    *  i.e., Number and double  returning a Number.
    */
   template <int dim, typename Number>
   Number
-  scalar_product(const Tensor<1, dim, Number> &T1,
-                 const Tensor<1, dim, double> &T2)
+  scalar_product(const dealii::Tensor<1, dim, Number> &T1,
+                 const dealii::Tensor<1, dim, double> &T2)
   {
     Number ret = 0;
     for (unsigned int i = 0; i < dim; ++i)
@@ -65,13 +63,13 @@ namespace SacadoTools
 
   /**
    * This function compute the scalar product
-   * between two tensors with rank 1 of different types
+   * between two dealii::Tensors with rank 1 of different types
    *  i.e., Number and double  returning a Number.
    */
   template <int dim, typename Number>
   Number
-  scalar_product(const Tensor<1, dim, double> &T1,
-                 const Tensor<1, dim, Number> &T2)
+  scalar_product(const dealii::Tensor<1, dim, double> &T1,
+                 const dealii::Tensor<1, dim, Number> &T2)
   {
     return SacadoTools::scalar_product(T2, T1);
   }
@@ -83,8 +81,8 @@ namespace SacadoTools
    */
   template <int dim>
   double
-  scalar_product(const Tensor<1, dim, double> &T1,
-                 const Tensor<1, dim, double> &T2)
+  scalar_product(const dealii::Tensor<1, dim, double> &T1,
+                 const dealii::Tensor<1, dim, double> &T2)
   {
     return T1 * T2;
   }
@@ -93,13 +91,13 @@ namespace SacadoTools
 
   /**
    * This function compute the scalar product
-   * between two tensors with rank 2 of different types
+   * between two dealii::Tensors with rank 2 of different types
    *  i.e., Number and double  returning a Number.
    */
   template <int dim, typename Number>
   Number
-  scalar_product(const Tensor<2, dim, Number> &T1,
-                 const Tensor<2, dim, double> &T2)
+  scalar_product(const dealii::Tensor<2, dim, Number> &T1,
+                 const dealii::Tensor<2, dim, double> &T2)
   {
     Number ret = 0;
     for (unsigned int i = 0; i < dim; ++i)
@@ -112,13 +110,13 @@ namespace SacadoTools
 
   /**
    * This function compute the scalar product
-   * between two tensors with rank 2 of different types
+   * between two dealii::Tensors with rank 2 of different types
    *  i.e., Number and double  returning a Number.
    */
   template <int dim, typename Number>
   Number
-  scalar_product(const Tensor<2, dim, double> &T1,
-                 const Tensor<2, dim, Number> &T2)
+  scalar_product(const dealii::Tensor<2, dim, double> &T1,
+                 const dealii::Tensor<2, dim, Number> &T2)
   {
     return SacadoTools::scalar_product(T2, T1);
   }
@@ -130,8 +128,8 @@ namespace SacadoTools
    */
   template <int dim>
   double
-  scalar_product(const Tensor<2, dim, double> &T1,
-                 const Tensor<2, dim, double> &T2)
+  scalar_product(const dealii::Tensor<2, dim, double> &T1,
+                 const dealii::Tensor<2, dim, double> &T2)
   {
     return dealii::scalar_product(T1, T2);
   }
@@ -164,14 +162,14 @@ namespace SacadoTools
 
 
   /**
-   * Downgrade from Tensor<index,dim,Sacado<number> > to
-   * Tensor<index,dim,number>
+   * Downgrade from dealii::Tensor<index,dim,Sacado<number> > to
+   * dealii::Tensor<index,dim,number>
    */
   template <int index, int dim, typename number>
-  Tensor<index, dim, number>
-  val(const Tensor<index, dim, Sacado::Fad::DFad<number>> &T)
+  dealii::Tensor<index, dim, number>
+  val(const dealii::Tensor<index, dim, Sacado::Fad::DFad<number>> &T)
   {
-    Tensor<index, dim, number> ret;
+    dealii::Tensor<index, dim, number> ret;
     for (unsigned int i = 0; i < dim; ++i)
       ret[i] = val(T[i]);
     return ret;
@@ -180,14 +178,15 @@ namespace SacadoTools
 
 
   /**
-   * Downgrade a std::vector<Tensor<index,dim,Sacado<number> > > to
-   * std::vector<Tensor<index,dim, number> >
+   * Downgrade a std::vector<dealii::Tensor<index,dim,Sacado<number> > > to
+   * std::vector<dealii::Tensor<index,dim, number> >
    */
   template <int index, int dim, typename number>
-  std::vector<Tensor<index, dim, number>>
-  val(const std::vector<Tensor<index, dim, Sacado::Fad::DFad<number>>> &T)
+  std::vector<dealii::Tensor<index, dim, number>>
+  val(
+    const std::vector<dealii::Tensor<index, dim, Sacado::Fad::DFad<number>>> &T)
   {
-    std::vector<Tensor<index, dim, number>> ret(T.size());
+    std::vector<dealii::Tensor<index, dim, number>> ret(T.size());
     for (unsigned int q = 0; q < T.size(); ++q)
       ret[q] = val(T[q]);
     return ret;
@@ -249,8 +248,8 @@ namespace SacadoTools
    * Do nothing, required for compatibility.
    */
   template <int index, int dim>
-  Tensor<index, dim>
-  to_double(const Tensor<index, dim> &t)
+  dealii::Tensor<index, dim>
+  to_double(const dealii::Tensor<index, dim> &t)
   {
     return t;
   }
@@ -258,14 +257,15 @@ namespace SacadoTools
 
 
   /**
-   * Return a Tensor<index,dim,double> given a Tensor<index,dim,Sdouble<number>
-   * > where T can be double, Sdouble, etc.
+   * Return a dealii::Tensor<index,dim,double> given a
+   * dealii::Tensor<index,dim,Sdouble<number> > where T can be double, Sdouble,
+   * etc.
    */
   template <int index, int dim, typename number>
-  Tensor<index, dim>
-  to_double(const Tensor<index, dim, Sacado::Fad::DFad<number>> &t)
+  dealii::Tensor<index, dim>
+  to_double(const dealii::Tensor<index, dim, Sacado::Fad::DFad<number>> &t)
   {
-    Tensor<index, dim> ret;
+    dealii::Tensor<index, dim> ret;
     for (unsigned int i = 0; i < dim; ++i)
       ret[i] = to_double(t[i]);
     return ret;
@@ -274,15 +274,16 @@ namespace SacadoTools
 
 
   /**
-   * Return a std::vector<Tensor<index,dim,double> > given a
-   * std::vector<Tensor<index,dim,Sdouble<T> > > where T can be
+   * Return a std::vector<dealii::Tensor<index,dim,double> > given a
+   * std::vector<dealii::Tensor<index,dim,Sdouble<T> > > where T can be
    * double, Sdouble etc.
    */
   template <int index, int dim, typename number>
-  std::vector<Tensor<index, dim>>
-  to_double(const std::vector<Tensor<index, dim, Sacado::Fad::DFad<number>>> &v)
+  std::vector<dealii::Tensor<index, dim>>
+  to_double(
+    const std::vector<dealii::Tensor<index, dim, Sacado::Fad::DFad<number>>> &v)
   {
-    std::vector<Tensor<index, dim>> ret(v.size());
+    std::vector<dealii::Tensor<index, dim>> ret(v.size());
     for (unsigned int q = 0; q < v.size(); ++q)
       ret[q] = to_double(v[q]);
     return ret;

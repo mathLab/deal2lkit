@@ -28,10 +28,6 @@
 
 #include <typeinfo>
 
-
-
-using namespace dealii;
-
 D2K_NAMESPACE_OPEN
 
 /**
@@ -380,7 +376,7 @@ D2K_NAMESPACE_OPEN
  * sensible on the first run, without having to change any parameter
  * file.
  */
-class ParameterAcceptor : public Subscriptor
+class ParameterAcceptor : public dealii::Subscriptor
 {
 public:
   /**
@@ -420,7 +416,7 @@ public:
    * all parameters that were added using add_parameter().
    */
   virtual void
-  parse_parameters(ParameterHandler &prm);
+  parse_parameters(dealii::ParameterHandler &prm);
 
   /**
    * Parse parameter call back. This function is called at the end
@@ -454,7 +450,8 @@ public:
    * and parsing of parameters into two functions.
    */
   virtual void
-  declare_parameters(ParameterHandler &){};
+  declare_parameters(dealii::ParameterHandler &)
+  {}
 
 
   /**
@@ -463,7 +460,7 @@ public:
    * and parses all parameters that were added using add_parameter().
    */
   static void
-  parse_all_parameters(ParameterHandler &prm = ParameterAcceptor::prm);
+  parse_all_parameters(dealii::ParameterHandler &prm = ParameterAcceptor::prm);
 
 
   /**
@@ -480,7 +477,8 @@ public:
    * parameters that were added using add_parameter().
    */
   static void
-  declare_all_parameters(ParameterHandler &prm = ParameterAcceptor::prm);
+  declare_all_parameters(
+    dealii::ParameterHandler &prm = ParameterAcceptor::prm);
 
 
   /**
@@ -506,22 +504,24 @@ public:
    */
   template <class T>
   void
-  add_parameter(ParameterHandler &           prm,
-                T *                          parameter,
-                const std::string &          entry,
-                const std::string &          default_value,
-                const Patterns::PatternBase &pattern = Patterns::Anything(),
-                const std::string &          documentation = std::string())
+  add_parameter(
+    dealii::ParameterHandler &           prm,
+    T *                                  parameter,
+    const std::string &                  entry,
+    const std::string &                  default_value,
+    const dealii::Patterns::PatternBase &pattern = dealii::Patterns::Anything(),
+    const std::string &                  documentation = std::string())
   {
     AssertThrow(std::is_const<T>::value == false,
-                ExcMessage("You tried to add a parameter using a const "
-                           "variable. This is not allowed, since these "
-                           "variables will be filled later on when "
-                           "parsing the parameter."));
+                dealii::ExcMessage("You tried to add a parameter using a const "
+                                   "variable. This is not allowed, since these "
+                                   "variables will be filled later on when "
+                                   "parsing the parameter."));
 
     prm.declare_entry(entry, default_value, pattern, documentation);
     parameters[entry] = boost::any(parameter);
-    patterns[entry]   = std::unique_ptr<Patterns::PatternBase>(pattern.clone());
+    patterns[entry] =
+      std::unique_ptr<dealii::Patterns::PatternBase>(pattern.clone());
   }
 
 
@@ -543,23 +543,24 @@ public:
    */
   template <class T>
   void
-  add_parameter(T &                          parameter,
-                const std::string &          entry,
-                const std::string &          documentation = std::string(),
-                const Patterns::PatternBase &pattern       = *to_pattern(T()),
-                ParameterHandler &           prm = ParameterAcceptor::prm)
+  add_parameter(T &                parameter,
+                const std::string &entry,
+                const std::string &documentation             = std::string(),
+                const dealii::Patterns::PatternBase &pattern = *to_pattern(T()),
+                dealii::ParameterHandler &prm = ParameterAcceptor::prm)
   {
     AssertThrow(std::is_const<T>::value == false,
-                ExcMessage("You tried to add a parameter using a const "
-                           "variable. This is not allowed, since these "
-                           "variables will be filled later on when "
-                           "parsing the parameter."));
+                dealii::ExcMessage("You tried to add a parameter using a const "
+                                   "variable. This is not allowed, since these "
+                                   "variables will be filled later on when "
+                                   "parsing the parameter."));
 
     enter_my_subsection(prm);
     prm.declare_entry(entry, to_string(parameter), pattern, documentation);
     leave_my_subsection(prm);
     parameters[entry] = boost::any(&parameter);
-    patterns[entry]   = std::unique_ptr<Patterns::PatternBase>(pattern.clone());
+    patterns[entry] =
+      std::unique_ptr<dealii::Patterns::PatternBase>(pattern.clone());
   }
 
   /**
@@ -567,21 +568,21 @@ public:
    * This function should be called when prm is in its root subsection.
    */
   void
-  enter_my_subsection(ParameterHandler &prm);
+  enter_my_subsection(dealii::ParameterHandler &prm);
 
   /**
    * This function undoes what the enter_my_subsection() function did. It only
    * makes sense if enter_my_subsection() is called before this one.
    */
   void
-  leave_my_subsection(ParameterHandler &prm);
+  leave_my_subsection(dealii::ParameterHandler &prm);
 
   /**
    * Given a class T, construct its default pattern to be used when declaring
    * parameters.
    */
   template <class T>
-  static std::shared_ptr<Patterns::PatternBase>
+  static std::shared_ptr<dealii::Patterns::PatternBase>
   to_pattern(const T &);
 
   /**
@@ -601,14 +602,14 @@ public:
   /**
    * Static parameter. This is used if the user does not provide one.
    */
-  static ParameterHandler prm;
+  static dealii::ParameterHandler prm;
 
 private:
   /**
    * A list containing all constructed classes of type
    * ParameterAcceptor.
    */
-  static std::vector<SmartPointer<ParameterAcceptor>> class_list;
+  static std::vector<dealii::SmartPointer<ParameterAcceptor>> class_list;
 
   /** The index of this specific class within the class list. */
   const unsigned int acceptor_id;
@@ -623,7 +624,7 @@ private:
    * A map of patterns that are initialized in this class with the
    * functions add_parameters.
    */
-  mutable std::map<std::string, std::unique_ptr<Patterns::PatternBase>>
+  mutable std::map<std::string, std::unique_ptr<dealii::Patterns::PatternBase>>
     patterns;
 
 

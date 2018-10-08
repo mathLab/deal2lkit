@@ -26,7 +26,6 @@ DEAL_II_DISABLE_EXTRA_DIAGNOSTICS
 #include <external/nanoflann.h>
 DEAL_II_ENABLE_EXTRA_DIAGNOSTICS
 
-using namespace dealii;
 
 D2K_NAMESPACE_OPEN
 
@@ -43,7 +42,8 @@ D2K_NAMESPACE_OPEN
  * raidius of a target point.
  */
 template <int dim>
-class ParsedKDTreeDistance : public ParameterAcceptor, public Function<dim>
+class ParsedKDTreeDistance : public ParameterAcceptor,
+                             public dealii::Function<dim>
 {
 public:
   /**
@@ -71,10 +71,10 @@ public:
    * your points, and do not call again set_points(), your results
    * will likely be wrong.
    */
-  ParsedKDTreeDistance(
-    const std::string &            name          = "",
-    const unsigned int &           max_leaf_size = 10,
-    const std::vector<Point<dim>> &pts           = std::vector<Point<dim>>());
+  ParsedKDTreeDistance(const std::string & name          = "",
+                       const unsigned int &max_leaf_size = 10,
+                       const std::vector<dealii::Point<dim>> &pts =
+                         std::vector<dealii::Point<dim>>());
 
 
   /**
@@ -94,14 +94,14 @@ public:
      * Reference to the vector of points from which we want to compute
      * the distance.
      */
-    const std::vector<Point<dim>>
+    const std::vector<dealii::Point<dim>>
       &points; //!< A const ref to the data set origin
 
 
     /**
      * The constrcutor needs the data set source.
      */
-    PointCloudAdaptor(const std::vector<Point<dim>> &_points)
+    PointCloudAdaptor(const std::vector<dealii::Point<dim>> &_points)
       : points(_points)
     {}
 
@@ -171,7 +171,7 @@ public:
    * Calls the underlying function of ParsedFunction.
    */
   virtual void
-  declare_parameters(ParameterHandler &prm);
+  declare_parameters(dealii::ParameterHandler &prm);
 
 
   /**
@@ -192,7 +192,7 @@ public:
    * with the constructor or with the method set_points()
    */
   virtual double
-  value(const Point<dim> &p, const unsigned int component = 0) const;
+  value(const dealii::Point<dim> &p, const unsigned int component = 0) const;
 
 
   /**
@@ -214,13 +214,13 @@ public:
    * @param pts: a collection of points
    */
   void
-  set_points(const std::vector<Point<dim>> &pts);
+  set_points(const std::vector<dealii::Point<dim>> &pts);
 
 
   /**
    * A const accessor to the underlying points.
    */
-  inline const Point<dim> &operator[](unsigned int i) const
+  inline const dealii::Point<dim> &operator[](unsigned int i) const
   {
     AssertIndexRange(i, size());
     return adaptor->points[i];
@@ -237,7 +237,7 @@ public:
       return adaptor->points.size();
     else
       return 0;
-  };
+  }
 
 
   /**
@@ -255,7 +255,7 @@ public:
    * @return number of points that are within the ball
    */
   unsigned int
-  get_points_within_ball(const Point<dim> &                            target,
+  get_points_within_ball(const dealii::Point<dim> &                    target,
                          const double &                                radius,
                          std::vector<std::pair<unsigned int, double>> &matches,
                          bool sorted = false) const;
@@ -272,7 +272,7 @@ public:
    * @param[out] distances: distances of the matching points
    */
   void
-  get_closest_points(const Point<dim> &         target,
+  get_closest_points(const dealii::Point<dim> & target,
                      std::vector<unsigned int> &indices,
                      std::vector<double> &      distances) const;
 

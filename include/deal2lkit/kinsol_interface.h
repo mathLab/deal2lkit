@@ -38,7 +38,6 @@
 
 #  include <kinsol/kinsol_impl.h>
 
-using namespace dealii;
 
 D2K_NAMESPACE_OPEN
 
@@ -51,7 +50,7 @@ D2K_NAMESPACE_OPEN
  * This is a general-purpose nonlinear system solver based on Newton-Krylov
  * solver technology. Developed with KINSOL v.2.8.0.
  */
-template <typename VEC = Vector<double>>
+template <typename VEC = dealii::Vector<double>>
 class KINSOLInterface : public ParameterAcceptor
 {
 public:
@@ -90,7 +89,7 @@ public:
    * Declare parameters for this class to function properly.
    */
   virtual void
-  declare_parameters(ParameterHandler &prm);
+  declare_parameters(dealii::ParameterHandler &prm);
 
   /**
    * Initializes the solver with the initial guess and the residual function.
@@ -249,7 +248,7 @@ private:
   /**
    * Output stream
    */
-  ConditionalOStream pcout;
+  dealii::ConditionalOStream pcout;
 
   /**
    * Kinsol memory object.

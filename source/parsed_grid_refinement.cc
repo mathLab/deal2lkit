@@ -15,7 +15,7 @@
 
 #include <deal2lkit/parsed_grid_refinement.h>
 
-
+using namespace dealii;
 
 D2K_NAMESPACE_OPEN
 
