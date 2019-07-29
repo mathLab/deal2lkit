@@ -18,6 +18,8 @@
 
 #include <deal.II/base/parameter_acceptor.h>
 
+#include <deal2lkit/config.h>
+
 
 D2K_NAMESPACE_OPEN
 
