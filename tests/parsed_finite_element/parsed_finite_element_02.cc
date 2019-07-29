@@ -39,7 +39,7 @@ main()
                                          "FE_DGQ(2)");
 
   dealii::ParameterAcceptor::initialize();
-  ParameterAcceptor::prm.log_parameters(deallog);
+  dealii::ParameterAcceptor::prm.log_parameters(deallog);
 
   auto fe11 = fe_builder11();
   auto fe22 = fe_builder22();

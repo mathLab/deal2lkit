@@ -31,5 +31,5 @@ main(int argc, char **argv)
 
   dealii::ParameterAcceptor::initialize();
 
-  ParameterAcceptor::prm.log_parameters(deallog);
+  dealii::ParameterAcceptor::prm.log_parameters(deallog);
 }

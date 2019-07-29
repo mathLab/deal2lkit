@@ -39,7 +39,7 @@ main()
                                "k=1");
 
   dealii::ParameterAcceptor::initialize();
-  ParameterAcceptor::prm.log_parameters(deallog);
+  dealii::ParameterAcceptor::prm.log_parameters(deallog);
 
   Point<2> p(2, 3);
 

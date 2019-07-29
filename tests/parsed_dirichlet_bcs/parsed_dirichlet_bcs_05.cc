@@ -106,7 +106,7 @@ main()
   deallog << std::setprecision(2);
   deallog << std::fixed;
   deallog.depth_console(0);
-  // ParameterAcceptor::prm.log_parameters(deallog);
+  // dealii::ParameterAcceptor::prm.log_parameters(deallog);
 
   test_hyper_cube<2>();
   test_hyper_cube<3>();

@@ -41,7 +41,7 @@ main()
   dealii::ParameterAcceptor::initialize(
     SOURCE_DIR "/parameters/parsed_mapped_functions_02.prm",
     "used_parameters.prm");
-  ParameterAcceptor::prm.log_parameters(deallog);
+  dealii::ParameterAcceptor::prm.log_parameters(deallog);
 
   Point<2> p(2, 3);
 

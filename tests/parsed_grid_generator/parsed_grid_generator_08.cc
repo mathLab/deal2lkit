@@ -46,7 +46,7 @@ main()
 
 
   dealii::ParameterAcceptor::initialize();
-  ParameterAcceptor::prm.log_parameters(deallog);
+  dealii::ParameterAcceptor::prm.log_parameters(deallog);
 
   deallog << "2D" << std::endl;
   test(a);

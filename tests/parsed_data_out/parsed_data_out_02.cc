@@ -44,7 +44,7 @@ main(int argc, char *argv[])
     "test", "vtu", 1, "solution/run", "solution", "", MPI_COMM_WORLD);
 
   dealii::ParameterAcceptor::initialize();
-  ParameterAcceptor::prm.log_parameters(deallog);
+  dealii::ParameterAcceptor::prm.log_parameters(deallog);
 
   std::system("touch solution/run000/test.txt");
   deallog << "exists ? = " << file_exists("solution/run000/test.txt")

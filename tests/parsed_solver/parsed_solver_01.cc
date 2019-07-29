@@ -42,7 +42,7 @@ main()
     identity_operator<Vector<double>>(default_reinit()));
   dealii::ParameterAcceptor::initialize();
 
-  ParameterAcceptor::prm.log_parameters(deallog);
+  dealii::ParameterAcceptor::prm.log_parameters(deallog);
 
   Vector<double> b(4);
   for (unsigned int i = 0; i < 4; ++i)

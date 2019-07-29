@@ -38,7 +38,7 @@ main()
                                "k=1");
 
   dealii::ParameterAcceptor::initialize();
-  ParameterAcceptor::prm.log_parameters(deallog);
+  dealii::ParameterAcceptor::prm.log_parameters(deallog);
 
   unsigned int id_true  = 0;
   unsigned int id_false = 7;

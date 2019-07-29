@@ -109,7 +109,7 @@ main()
                               "");
 
   dealii::ParameterAcceptor::initialize();
-  ParameterAcceptor::prm.log_parameters(deallog);
+  dealii::ParameterAcceptor::prm.log_parameters(deallog);
 
   deallog << "Unit Hyperball" << std::endl;
   test(a);

@@ -196,7 +196,7 @@ int
 main()
 {
   initlog();
-  ParameterAcceptor::prm.log_parameters(deallog);
+  dealii::ParameterAcceptor::prm.log_parameters(deallog);
 
   FindBug<2>().run();
   FindBug<3>().run();

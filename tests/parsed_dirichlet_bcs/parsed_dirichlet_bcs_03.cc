@@ -91,7 +91,7 @@ main()
 {
   initlog();
   deallog.depth_console(0);
-  ParameterAcceptor::prm.log_parameters(deallog);
+  dealii::ParameterAcceptor::prm.log_parameters(deallog);
 
   test<1>();
   test<2>();
