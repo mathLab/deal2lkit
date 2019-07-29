@@ -108,7 +108,7 @@ main()
                               "none",
                               "");
 
-  ParameterAcceptor::initialize();
+  dealii::ParameterAcceptor::initialize();
   ParameterAcceptor::prm.log_parameters(deallog);
 
   deallog << "Unit Hyperball" << std::endl;

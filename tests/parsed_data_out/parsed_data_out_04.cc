@@ -90,8 +90,8 @@ template <int dim, int spacedim>
 void
 Test<dim, spacedim>::make_grid_fe()
 {
-  ParameterAcceptor::initialize("parameters_new.prm",
-                                "used_parameters_new.prm");
+  dealii::ParameterAcceptor::initialize("parameters_new.prm",
+                                        "used_parameters_new.prm");
   // std::map< Triangulation<dim,spacedim>::cell_iterator,
   //      Triangulation<spacedim,spacedim>::face_iterator>
   //      surface_to_volume_mapping;

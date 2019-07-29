@@ -40,7 +40,7 @@ test()
   ParsedGridGenerator<dim, spacedim> pgg;
   ParsedGridRefinement               pgr("", "number");
 
-  ParameterAcceptor::initialize();
+  dealii::ParameterAcceptor::initialize();
 
   parallel::distributed::Triangulation<dim, spacedim> *tria =
     pgg.distributed(MPI_COMM_WORLD);

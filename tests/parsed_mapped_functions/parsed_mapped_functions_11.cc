@@ -37,7 +37,7 @@ main()
                                "0=x;y;0 % 1=0;0;0 % 6=y*k;0;k",
                                "k=1");
 
-  ParameterAcceptor::initialize();
+  dealii::ParameterAcceptor::initialize();
   ParameterAcceptor::prm.log_parameters(deallog);
 
   unsigned int id_true  = 0;

@@ -36,7 +36,7 @@ test()
   ParsedGridGenerator<dim, spacedim> pgg;
   ParsedGridRefinement               pgr;
 
-  ParameterAcceptor::initialize();
+  dealii::ParameterAcceptor::initialize();
 
   Triangulation<dim, spacedim> *tria = pgg.serial();
 

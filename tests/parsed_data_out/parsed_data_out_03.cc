@@ -86,8 +86,8 @@ template <int dim>
 void
 Test<dim>::make_grid_fe()
 {
-  ParameterAcceptor::initialize("parameters_ser.prm",
-                                "used_parameters_ser.prm");
+  dealii::ParameterAcceptor::initialize("parameters_ser.prm",
+                                        "used_parameters_ser.prm");
   triangulation = SP(tria_builder.serial());
   triangulation->refine_global(initial_refinement);
   dof_handler = SP(new DoFHandler<dim>(*triangulation));

@@ -32,9 +32,9 @@ main()
   initlog();
   ParsedMappedFunctions<3> pmf("Mapped functions", 4);
 
-  ParameterAcceptor::initialize(SOURCE_DIR
-                                "/parameters/parsed_mapped_functions_08.prm",
-                                "used_parameters.prm");
+  dealii::ParameterAcceptor::initialize(
+    SOURCE_DIR "/parameters/parsed_mapped_functions_08.prm",
+    "used_parameters.prm");
   ParameterAcceptor::prm.log_parameters(deallog);
 
   Point<3> p(2, 3, 5);

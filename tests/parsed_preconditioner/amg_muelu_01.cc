@@ -31,6 +31,6 @@ main(int argc, char *argv[])
 
   ParsedAMGMueLuPreconditioner AMGMueLu("AMGMueLu prec");
 
-  ParameterAcceptor::initialize();
+  dealii::ParameterAcceptor::initialize();
   ParameterAcceptor::prm.log_parameters(deallog);
 }

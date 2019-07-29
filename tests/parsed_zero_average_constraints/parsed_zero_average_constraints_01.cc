@@ -30,6 +30,6 @@ main()
   initlog();
   ParsedZeroAverageConstraints<2, 2> pnac("ciao", 1, "u", "u", "");
 
-  ParameterAcceptor::initialize();
+  dealii::ParameterAcceptor::initialize();
   ParameterAcceptor::prm.log_parameters(deallog);
 }

@@ -33,7 +33,7 @@ main()
                                     "u,u,p",
                                     1);
 
-  ParameterAcceptor::initialize("test_in.prm", "test_out.prm");
+  dealii::ParameterAcceptor::initialize("test_in.prm", "test_out.prm");
   // Should fail because fe_name has 3 components
   return 0;
 }

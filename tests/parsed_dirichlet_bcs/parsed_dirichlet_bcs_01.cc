@@ -31,6 +31,6 @@ main()
 
   ParsedDirichletBCs<2, 2> pf("Dirichlet", 1, "u", "0=ALL", "0=0");
 
-  ParameterAcceptor::initialize();
+  dealii::ParameterAcceptor::initialize();
   ParameterAcceptor::prm.log_parameters(deallog);
 }

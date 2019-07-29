@@ -71,7 +71,7 @@ test(const Triangulation<dim> &tr, const FiniteElement<dim> &fe)
                 "0=u.N % 1=u.N % 2=u.N % 3=u.N % 4=u.N % 5=u.N"));
 
 
-  ParameterAcceptor::initialize();
+  dealii::ParameterAcceptor::initialize();
   parsed_dirichlet.compute_no_normal_flux_constraints(dof, cm);
 
   cm.print(deallog.get_file_stream());

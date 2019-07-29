@@ -59,7 +59,7 @@ test(const Triangulation<dim> &tr, const FiniteElement<dim> &fe)
 
 
 
-  ParameterAcceptor::initialize();
+  dealii::ParameterAcceptor::initialize();
   pnac.apply_zero_average_constraints(dof, cm);
 
   cm.print(deallog.get_file_stream());

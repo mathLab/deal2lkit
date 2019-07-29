@@ -31,6 +31,6 @@ main(int argc, char *argv[])
 
   ParsedILUPreconditioner ILU("ILU prec");
 
-  ParameterAcceptor::initialize();
+  dealii::ParameterAcceptor::initialize();
   ParameterAcceptor::prm.log_parameters(deallog);
 }

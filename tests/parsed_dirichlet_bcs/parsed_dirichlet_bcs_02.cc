@@ -130,13 +130,13 @@ FindBug<dim>::dirichlet_conditions()
                                                 (dim == 2 ? "0=13;13;13" :
                                                             "0=13;13;13;13"));
   //  if (dim ==2)
-  //    ParameterAcceptor::initialize(SOURCE_DIR
+  //    dealii::ParameterAcceptor::initialize(SOURCE_DIR
   //    "/parameters/parsed_dirichlet_bcs_02_2D.prm", "used_parameters.prm");
   //  else
-  //    ParameterAcceptor::initialize(SOURCE_DIR
+  //    dealii::ParameterAcceptor::initialize(SOURCE_DIR
   //    "/parameters/parsed_dirichlet_bcs_02_3D.prm", "used_parameters.prm");
 
-  ParameterAcceptor::initialize();
+  dealii::ParameterAcceptor::initialize();
   parsed_dirichlet.interpolate_boundary_values(dof_handler, dirichlet_dofs);
 
 

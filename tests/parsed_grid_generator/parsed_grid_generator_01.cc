@@ -48,7 +48,7 @@ main()
   ParsedGridGenerator<2, 3> d;
   ParsedGridGenerator<3, 3> e;
 
-  ParameterAcceptor::initialize();
+  dealii::ParameterAcceptor::initialize();
 
   test(a);
   test(b);

@@ -28,7 +28,7 @@ main()
 
   ParsedQuadrature<2> quadrature("", "gauss", 3, 1);
 
-  ParameterAcceptor::initialize();
+  dealii::ParameterAcceptor::initialize();
   ParameterAcceptor::prm.log_parameters(deallog);
 
   QGauss<2> quad(3);

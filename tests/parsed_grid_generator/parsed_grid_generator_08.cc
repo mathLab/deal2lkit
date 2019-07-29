@@ -45,7 +45,7 @@ main()
   ParsedGridGenerator<3, 3> b("Cube", "rectangle", "", "7,8,9", "15,16,16");
 
 
-  ParameterAcceptor::initialize();
+  dealii::ParameterAcceptor::initialize();
   ParameterAcceptor::prm.log_parameters(deallog);
 
   deallog << "2D" << std::endl;

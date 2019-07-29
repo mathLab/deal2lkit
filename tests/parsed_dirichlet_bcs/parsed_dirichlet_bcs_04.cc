@@ -86,7 +86,7 @@ test()
                 (dim == 2 ? "10=x^2+y^2 % 20=x^2+y^2" :
                             "10=x^2+y^2+z^2 % 20=x^2+y^2+z^2")));
 
-  ParameterAcceptor::initialize();
+  dealii::ParameterAcceptor::initialize();
   std::map<types::global_dof_index, double> boundary_values;
   parsed_dirichlet.project_boundary_values(mapping,
                                            dof_handler,

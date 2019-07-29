@@ -44,7 +44,7 @@ main()
   ParsedGridGenerator<3, 3> b("Cube");
 
 
-  ParameterAcceptor::initialize();
+  dealii::ParameterAcceptor::initialize();
   ParameterAcceptor::prm.log_parameters(deallog);
 
   test(a);

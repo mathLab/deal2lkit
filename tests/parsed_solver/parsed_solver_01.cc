@@ -40,7 +40,7 @@ main()
     1e-6,
     identity_operator<Vector<double>>(default_reinit()),
     identity_operator<Vector<double>>(default_reinit()));
-  ParameterAcceptor::initialize();
+  dealii::ParameterAcceptor::initialize();
 
   ParameterAcceptor::prm.log_parameters(deallog);
 

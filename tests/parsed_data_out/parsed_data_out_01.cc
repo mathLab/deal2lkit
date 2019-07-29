@@ -29,7 +29,7 @@ main(int argc, char **argv)
   initlog();
   ParsedDataOut<2, 2> pp("Test", "gnuplot");
 
-  ParameterAcceptor::initialize();
+  dealii::ParameterAcceptor::initialize();
 
   ParameterAcceptor::prm.log_parameters(deallog);
 }

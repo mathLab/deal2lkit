@@ -95,8 +95,8 @@ template <int dim, int spacedim>
 void
 Test<dim, spacedim>::make_grid_fe()
 {
-  ParameterAcceptor::initialize("parameters_new.prm",
-                                "used_parameters_new.prm");
+  dealii::ParameterAcceptor::initialize("parameters_new.prm",
+                                        "used_parameters_new.prm");
 
   triangulation = SP(new Triangulation<dim, spacedim>);
 

@@ -42,7 +42,7 @@ main()
 {
   initlog();
   ParsedGridGenerator<1, 3> a("Flagellum", "rectangle");
-  ParameterAcceptor::initialize();
+  dealii::ParameterAcceptor::initialize();
   ParameterAcceptor::prm.log_parameters(deallog);
 
   deallog << "flagellum" << std::endl;

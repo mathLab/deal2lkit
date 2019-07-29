@@ -38,7 +38,7 @@ main()
   ParsedFiniteElement<3, 3> fe_builder33("ParsedFiniteElement<2,3>",
                                          "FE_DGQ(2)");
 
-  ParameterAcceptor::initialize();
+  dealii::ParameterAcceptor::initialize();
   ParameterAcceptor::prm.log_parameters(deallog);
 
   auto fe11 = fe_builder11();
