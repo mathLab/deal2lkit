@@ -31,7 +31,6 @@
 #include <deal2lkit/parameter_acceptor.h>
 
 
-
 D2K_NAMESPACE_OPEN
 /**
  * A wrapper for refinement strategies.

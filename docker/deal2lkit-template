@@ -13,9 +13,8 @@ RUN \
     cmake -DCMAKE_INSTALL_PREFIX=$HOME/libs/deal2lkit-$VER\
           -DCMAKE_BUILD_TYPE=$BUILD_TYPE \
 	  -DD2K_COMPONENT_DOCUMENTATION=OFF \
-	  -GNinja \
           ../ && \
-    ninja -j4 && ninja install && \
+    make -j4 && make install && \
     cd $HOME/deal2lkit-$VER-src/ && \ 
     ($KEEP_SOURCE && rm -rf build .git) || \
     cd $HOME && rm -rf deal2lkit-$VER-src

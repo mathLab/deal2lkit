@@ -63,70 +63,6 @@ using std::unique_ptr;
 
 D2K_NAMESPACE_OPEN
 
-
-/** Demangle c++ names. */
-std::string
-demangle(const char *name);
-
-/**
- * This function collects some time utilities.
- *
- *  All measures are stored in seconds.
- *  Usage: get_start_time() should be used before get_end_time() and viceversa.
- */
-class TimeUtilities
-{
-public:
-  TimeUtilities()
-    : status(true)
-    , times()
-  {}
-
-  /**
-   * It freezes the thread for t milliseconds.
-   */
-  void
-  sleep(unsigned int t);
-
-  /**
-   * It sets the start time for a measure.
-   */
-  void
-  get_start_time();
-
-  /**
-   * It sets the end time for a measure.
-   */
-  void
-  get_end_time();
-
-  /**
-   * It returns the number of measures done
-   */
-  int
-  get_num_measures();
-
-  /**
-   * An overload of the operator [] is provided to access to all measures.
-   */
-  double &operator[](const unsigned int num)
-  {
-    AssertThrow(
-      num < times.size(),
-      dealii::ExcMessage(
-        "Invalind number num. It is higher than the number of times."));
-
-    return times[num];
-  };
-
-private:
-  bool status; // This is used to check whether we are taking a start time or
-  // and end time.
-  std::chrono::high_resolution_clock::time_point t_start;
-  std::chrono::high_resolution_clock::time_point t_end;
-  std::vector<double>                            times;
-};
-
 /**
  * This function copy the text contained in @p in_file to the file
  * @p out_file .
@@ -147,7 +83,7 @@ get_next_available_index_directory_name(const std::string &base,
                                         unsigned int       index_max = 1000);
 
 /**
- * A function that return the name of the first non existing folder matching
+ * A function that returns the name of the first non existing folder matching
  * a pattern make by @p base and @p n_digits number. (base000, base001, base002, ...)
  * The research of the index starts from the value @p start and ends when @p index_max
  * is reached.
@@ -259,7 +195,7 @@ public:
   {
     class QueryStreambuf : public std::streambuf
     {
-      // Implement a minimalistic stream buffer that only stores the fact
+      // Implement a minimalistic stream buffer that only stores
       // whether overflow or sync was called
     public:
       QueryStreambuf()
@@ -495,62 +431,6 @@ print(const dealii::Point<dim> &point, const std::string sep = ",")
   return ret.str();
 }
 
-
-
-/**
- * Return a human readable name of the type passed as argument.
- */
-template <class T>
-std::string
-type(const T &t)
-{
-  return demangle(typeid(t).name());
-}
-
-/**
- *  Construct a shared pointer to a non const class T. This is a
- *  convenience function to simplify the construction of shared
- *  pointers (which should replace dealii::SmartPointers):
- *
- *  @code
- *
- *  std_cxx11::shared_ptr<MyClass> my_ptr;
- *
- *  ...
- *
- *  my_ptr = SP(new MyClass);
- *
- *  @endcode
- */
-template <class T>
-inline shared_ptr<T>
-SP(T *t)
-{
-  return shared_ptr<T>(t);
-}
-
-/**
- *  Construct a shared pointer to a const class T. This is a
- *  convenience function to simplify the construction of shared
- *  pointers (which should replace dealii::SmartPointers):
- *
- *  @code
- *
- *  std_cxx11::shared_ptr<const MyClass> my_ptr;
- *
- *  ...
- *  const MyClass * p = new MyClass;
- *  my_ptr = SP(p);
- *
- *  @endcode
- */
-template <class T>
-inline shared_ptr<const T>
-SP(const T *t)
-{
-  return shared_ptr<const T>(t);
-}
-
 /**
  *  A simple class to shift a vector by a scalar.
  *  This function is deprecated in deal but needed in many codes
@@ -564,40 +444,7 @@ vector_shift(VEC &in_vec, double a_scalar)
     in_vec[i] += a_scalar;
 }
 
-#ifdef D2K_WITH_SUNDIALS
 
-#  ifdef DEAL_II_WITH_MPI
-
-#    ifdef DEAL_II_WITH_TRILINOS
-void
-copy(dealii::TrilinosWrappers::MPI::Vector &dst, const N_Vector &src);
-void
-copy(N_Vector &dst, const dealii::TrilinosWrappers::MPI::Vector &src);
-void
-copy(dealii::TrilinosWrappers::MPI::BlockVector &dst, const N_Vector &src);
-void
-copy(N_Vector &dst, const dealii::TrilinosWrappers::MPI::BlockVector &src);
-#    endif // DEAL_II_WITH_TRILINOS
-
-#    ifdef DEAL_II_WITH_PETSC
-void
-copy(dealii::PETScWrappers::MPI::Vector &dst, const N_Vector &src);
-void
-copy(N_Vector &dst, const dealii::PETScWrappers::MPI::Vector &src);
-void
-copy(dealii::PETScWrappers::MPI::BlockVector &dst, const N_Vector &src);
-void
-copy(N_Vector &dst, const dealii::PETScWrappers::MPI::BlockVector &src);
-#    endif // DEAL_II_WITH_PETSC
-
-#  endif
-
-void
-copy(dealii::BlockVector<double> &dst, const N_Vector &src);
-void
-copy(N_Vector &dst, const dealii::BlockVector<double> &src);
-
-#endif
 
 #ifdef DEAL_II_WITH_TRILINOS
 /**
