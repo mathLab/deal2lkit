@@ -30,7 +30,14 @@ class ParameterAcceptor : public dealii::ParameterAcceptor
 {
 public:
   ParameterAcceptor(const std::string &section_name = "")
-    : dealii::ParameterAcceptor(section_name){};
+    : dealii::ParameterAcceptor(section_name)
+  {
+    dealii::ParameterAcceptor::declare_parameters_call_back.connect(
+      [&]() { this->declare_parameters_call_back(); });
+
+    dealii::ParameterAcceptor::parse_parameters_call_back.connect(
+      [&]() { this->parse_parameters_call_back(); });
+  };
 
   /**
    * Add a parameter the given parameter list. A pointer to the
@@ -81,6 +88,18 @@ public:
     dealii::ParameterAcceptor::add_parameter(
       entry, parameter, documentation, prm, pattern);
   }
+
+  /**
+   * Empty call back functions, compatible with deal2lkit implementation.
+   */
+  virtual void
+  declare_parameters_call_back(){};
+
+  /**
+   * Empty call back functions, compatible with deal2lkit implementation.
+   */
+  virtual void
+  parse_parameters_call_back(){};
 };
 
 D2K_NAMESPACE_CLOSE

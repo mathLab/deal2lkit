@@ -381,13 +381,13 @@ ParsedGridGenerator<dim, spacedim>::declare_parameters(ParameterHandler &prm)
 #ifdef DEAL_II_WITH_MPI
 #  ifdef DEAL_II_WITH_P4EST
 template <int dim, int spacedim>
-parallel::distributed::Triangulation<dim, spacedim> *
+std::unique_ptr<dealii::parallel::distributed::Triangulation<dim, spacedim>>
 ParsedGridGenerator<dim, spacedim>::distributed(MPI_Comm comm)
 {
   Assert(grid_name != "", ExcNotInitialized());
-  parallel::distributed::Triangulation<dim, spacedim> *tria =
-    new parallel::distributed::Triangulation<dim, spacedim>(
-      comm); //, get_smoothing());
+  auto tria = std::make_unique<
+    dealii::parallel::distributed::Triangulation<dim, spacedim>>(
+    comm); //, get_smoothing());
 
   create(*tria);
   return tria;
@@ -397,12 +397,11 @@ ParsedGridGenerator<dim, spacedim>::distributed(MPI_Comm comm)
 
 
 template <int dim, int spacedim>
-Triangulation<dim, spacedim> *
+std::unique_ptr<dealii::Triangulation<dim, spacedim>>
 ParsedGridGenerator<dim, spacedim>::serial()
 {
   Assert(grid_name != "", ExcNotInitialized());
-  Triangulation<dim, spacedim> *tria =
-    new Triangulation<dim, spacedim>(get_smoothing());
+  auto tria = std::make_unique<Triangulation<dim, spacedim>>(get_smoothing());
   create(*tria);
   return tria;
 }

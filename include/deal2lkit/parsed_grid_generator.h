@@ -198,12 +198,10 @@ public:
   declare_parameters(dealii::ParameterHandler &prm);
 
   /**
-   * Return a pointer to a newly created serial Triangulation. It will
-   * throw an exception if called before any parsing has occured. It
-   * is the user's responsability to destroy the created grid once it
-   * is no longer needed.
+   * Return a unique pointer to a newly created serial Triangulation. It will
+   * throw an exception if called before any parsing has occured.
    */
-  dealii::Triangulation<dim, spacedim> *
+  std::unique_ptr<dealii::Triangulation<dim, spacedim>>
   serial();
 
   /**
@@ -355,7 +353,7 @@ public:
    * occured. It is the user's responsability to destroy the created
    * grid once it is no longer needed.
    */
-  dealii::parallel::distributed::Triangulation<dim, spacedim> *
+  std::unique_ptr<dealii::parallel::distributed::Triangulation<dim, spacedim>>
   distributed(MPI_Comm mpi_communicator);
 #  endif
 #endif

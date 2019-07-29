@@ -1,6 +1,6 @@
 // ---------------------------------------------------------------------
 //
-// Copyright (C) 2004 - 2017 by the deal.II authors
+// Copyright (C) 2004 - 2019 by the deal.II authors
 //
 // This file is part of the deal.II library.
 //
@@ -8,8 +8,8 @@
 // it, and/or modify it under the terms of the GNU Lesser General
 // Public License as published by the Free Software Foundation; either
 // version 2.1 of the License, or (at your option) any later version.
-// The full text of the license can be found in the file LICENSE at
-// the top level of the deal.II distribution.
+// The full text of the license can be found in the file LICENSE.md at
+// the top level directory of deal.II.
 //
 // ---------------------------------------------------------------------
 
@@ -20,11 +20,14 @@
 
 #include <deal.II/base/config.h>
 
+#include <deal.II/base/cuda.h>
 #include <deal.II/base/exceptions.h>
 #include <deal.II/base/job_identifier.h>
 #include <deal.II/base/logstream.h>
 #include <deal.II/base/mpi.h>
 #include <deal.II/base/multithread_info.h>
+#include <deal.II/base/patterns.h>
+#include <deal.II/base/point.h>
 #include <deal.II/base/thread_management.h>
 #include <deal.II/base/utilities.h>
 
@@ -66,8 +69,47 @@ struct DisableWindowsDebugRuntimeDialog
 using namespace dealii;
 
 
-// ------------------------------ Utility functions used in tests
-// -----------------------
+// ------------------------- Utility functions used in tests ------------------
+
+/**
+ * Go through the input stream @p in and filter out binary data for the key @p key .
+ * The filtered stream is returned in @p out.
+ */
+void
+filter_out_xml_key(std::istream &in, const std::string &key, std::ostream &out)
+{
+  std::string       line;
+  bool              found   = false;
+  const std::string opening = "<" + key;
+  const std::string closing = "</" + key;
+  while (std::getline(in, line))
+    {
+      if (line.find(opening) != std::string::npos &&
+          line.find("binary") != std::string::npos)
+        {
+          found = true;
+          // remove everything after ">" but keep things after "</"
+          const auto pos = line.find(closing);
+          if (pos != std::string::npos)
+            {
+              line  = line.substr(0, line.find(">", 0) + 1) + line.substr(pos);
+              found = false;
+            }
+          else
+            line = line.substr(0, line.find(">", 0) + 1);
+          out << line << std::endl;
+        }
+      else if (line.find(closing) != std::string::npos)
+        {
+          found = false;
+          // remove everything before "<"
+          line = line.substr(line.find("<", 0));
+          out << line << std::endl;
+        }
+      else if (!found)
+        out << line << std::endl;
+    }
+}
 
 /**
  * A function to return real part of the number and check that
@@ -105,22 +147,59 @@ get_real_assert_zero_imag(const number &a)
 // namespace to not conflict with stdlib
 namespace Testing
 {
+  /**
+   * This function defines how to deal with signed overflow, which is undefined
+   * behavior otherwise, in sums. Since unsigned overflow is well-defined there
+   * is no reason to resort to this function.
+   * The way we want to define the overflow is the following:
+   * The value after the maximal value is the minimal one and the value
+   * before the minimal one is the maximal one. Hence, we have to distinguish
+   * three cases:
+   * 1. $a+b>max$: This can only happen if both @p a and @p b are positive. By
+   *               adding $min-max-1$ we are mapping $max+n$ to $min+n-1$ for
+   *               $n>1$.
+   * 2. $a+b<min$: This can only happen if both @p a and @p b are negative. By
+   *               adding $max-min+1$ we are mapping $min-n$ to $max-n+1$ for
+   *               $n>1$.
+   * 3. $min<=a+b<=max$: No overflow.
+   */
+  template <typename Number>
+  Number
+  nonoverflow_add(Number a, Number b)
+  {
+    constexpr Number max = std::numeric_limits<Number>::max();
+    constexpr Number min = std::numeric_limits<Number>::min();
+    if (b > 0 && a > max - b)
+      return (min + a) + (b - max) - 1;
+    if (b < 0 && a < min - b)
+      return (max + a) + (b - min) + 1;
+    return a + b;
+  }
+
   int
   rand(const bool reseed = false, const int seed = 1)
   {
     static int  r[32];
     static int  k;
     static bool inited = false;
+
     if (!inited || reseed)
       {
         // srand treats a seed 0 as 1 for some reason
-        r[0] = (seed == 0) ? 1 : seed;
+        r[0]          = (seed == 0) ? 1 : seed;
+        long int word = r[0];
 
         for (int i = 1; i < 31; i++)
           {
-            r[i] = (16807LL * r[i - 1]) % 2147483647;
-            if (r[i] < 0)
-              r[i] += 2147483647;
+            // This does:
+            //   r[i] = (16807 * r[i-1]) % 2147483647;
+            // but avoids overflowing 31 bits.
+            const long int hi = word / 127773;
+            const long int lo = word % 127773;
+            word              = 16807 * lo - 2836 * hi;
+            if (word < 0)
+              word += 2147483647;
+            r[i] = word;
           }
         k = 31;
         for (int i = 31; i < 34; i++)
@@ -131,18 +210,19 @@ namespace Testing
 
         for (int i = 34; i < 344; i++)
           {
-            r[k % 32] = r[(k + 32 - 31) % 32] + r[(k + 32 - 3) % 32];
-            k         = (k + 1) % 32;
+            r[k % 32] =
+              nonoverflow_add(r[(k + 32 - 31) % 32], r[(k + 32 - 3) % 32]);
+            k = (k + 1) % 32;
           }
         inited = true;
         if (reseed == true)
           return 0; // do not generate new no
       }
 
-    r[k % 32] = r[(k + 32 - 31) % 32] + r[(k + 32 - 3) % 32];
+    r[k % 32] = nonoverflow_add(r[(k + 32 - 31) % 32], r[(k + 32 - 3) % 32]);
     int ret   = r[k % 32];
     k         = (k + 1) % 32;
-    return (unsigned int)ret >> 1;
+    return static_cast<unsigned int>(ret) >> 1;
   }
 
   // reseed our random number generator
@@ -152,6 +232,32 @@ namespace Testing
     rand(true, seed);
   }
 } // namespace Testing
+
+
+
+// Get a uniformly distributed random value between min and max
+template <typename T = double>
+T
+random_value(const T &min = static_cast<T>(0), const T &max = static_cast<T>(1))
+{
+  return min + (max - min) *
+                 (static_cast<T>(Testing::rand()) / static_cast<T>(RAND_MAX));
+}
+
+
+
+// Construct a uniformly distributed random point, with each coordinate
+// between min and max
+template <int dim>
+inline Point<dim>
+random_point(const double &min = 0.0, const double &max = 1.0)
+{
+  Assert(max >= min, ExcMessage("Make sure max>=min"));
+  Point<dim> p;
+  for (unsigned int i = 0; i < dim; ++i)
+    p[i] = random_value(min, max);
+  return p;
+}
 
 
 
@@ -209,7 +315,7 @@ checksum(const IT &begin, const IT &end)
 
   while (it != end)
     {
-      a = (a + (unsigned char)*it) % 65521;
+      a = (a + static_cast<unsigned char>(*it)) % 65521;
       b = (a + b) % 65521;
       ++it;
     }
@@ -220,7 +326,7 @@ checksum(const IT &begin, const IT &end)
 
 
 /*
- * Replace all occurences of ' &' by '& ' from the given file to hopefully be
+ * Replace all occurrences of ' &' by '& ' from the given file to hopefully be
  * more compiler independent with respect to __PRETTY_FUNCTION__
  *
  * Also, while GCC prepends the name by "virtual " if the function is virtual,
@@ -274,9 +380,23 @@ unify_pretty_function(const std::string &text)
       }                                                              \
   }
 
+/*
+ * Allow a test program to define a number that is very small to a given
+ * tolerance to be output as zero. This is used e.g. for the output of float
+ * numbers where roundoff difference can make the error larger than what we
+ * have set for numdiff (that is appropriate for double variables).
+ */
+template <typename Number>
+Number
+filter_out_small_numbers(const Number number, const double tolerance)
+{
+  if (std::abs(number) < tolerance)
+    return Number();
+  else
+    return number;
+}
 
-// ------------------------------ Functions used in initializing subsystems
-// -------------------
+// ---------------- Functions used in initializing subsystems -----------------
 
 
 /*
@@ -288,7 +408,7 @@ unify_pretty_function(const std::string &text)
 inline unsigned int
 testing_max_num_threads()
 {
-  return 5;
+  return 3;
 }
 
 struct LimitConcurrency
@@ -353,22 +473,26 @@ namespace
 //
 // This will open the correct output file, divert log output there and
 // switch off screen output. If screen output is desired, provide the
-// optional second argument as 'true'.
+// optional first argument as 'true'.
 std::string   deallogname;
 std::ofstream deallogfile;
 
 void
-initlog(bool console = false)
+initlog(bool                          console = false,
+        const std::ios_base::fmtflags flags   = std::ios::showpoint |
+                                              std::ios::left)
 {
   deallogname = "output";
   deallogfile.open(deallogname.c_str());
-  deallog.attach(deallogfile);
+  deallog.attach(deallogfile, true, flags);
   deallog.depth_console(console ? 10 : 0);
 }
 
 
 inline void
-mpi_initlog(bool console = false)
+mpi_initlog(const bool                    console = false,
+            const std::ios_base::fmtflags flags   = std::ios::showpoint |
+                                                  std::ios::left)
 {
 #ifdef DEAL_II_WITH_MPI
   unsigned int myid = Utilities::MPI::this_mpi_process(MPI_COMM_WORLD);
@@ -376,11 +500,12 @@ mpi_initlog(bool console = false)
     {
       deallogname = "output";
       deallogfile.open(deallogname.c_str());
-      deallog.attach(deallogfile);
+      deallog.attach(deallogfile, true, flags);
       deallog.depth_console(console ? 10 : 0);
     }
 #else
   (void)console;
+  (void)flags;
   // can't use this function if not using MPI
   Assert(false, ExcInternalError());
 #endif
@@ -396,43 +521,43 @@ mpi_initlog(bool console = false)
  */
 struct MPILogInitAll
 {
-  MPILogInitAll(const bool console = false)
+  MPILogInitAll(const bool                    console = false,
+                const std::ios_base::fmtflags flags   = std::ios::showpoint |
+                                                      std::ios::left)
   {
 #ifdef DEAL_II_WITH_MPI
     const unsigned int myid = Utilities::MPI::this_mpi_process(MPI_COMM_WORLD);
+#else
+    constexpr unsigned int myid = 0;
+#endif
     if (myid == 0)
       {
         if (!deallog.has_file())
           {
             deallogfile.open("output");
-            deallog.attach(deallogfile);
+            deallog.attach(deallogfile, true, flags);
           }
       }
     else
       {
         deallogname = "output" + Utilities::int_to_string(myid);
         deallogfile.open(deallogname.c_str());
-        deallog.attach(deallogfile);
+        deallog.attach(deallogfile, true, flags);
       }
 
     deallog.depth_console(console ? 10 : 0);
 
     deallog.push(Utilities::int_to_string(myid));
-#else
-    (void)console;
-    // can't use this function if not using MPI
-    Assert(false, ExcInternalError());
-#endif
   }
 
   ~MPILogInitAll()
   {
+    // pop the prefix for the MPI rank of the current process
+    deallog.pop();
+
 #ifdef DEAL_II_WITH_MPI
     const unsigned int myid  = Utilities::MPI::this_mpi_process(MPI_COMM_WORLD);
     const unsigned int nproc = Utilities::MPI::n_mpi_processes(MPI_COMM_WORLD);
-
-    // pop the prefix for the MPI rank of the current process
-    deallog.pop();
 
     if (myid != 0)
       {
@@ -456,13 +581,62 @@ struct MPILogInitAll
           }
       }
     MPI_Barrier(MPI_COMM_WORLD);
-
-#else
-    // can't use this function if not using MPI
-    Assert(false, ExcInternalError());
 #endif
   }
 };
+
+
+#ifdef DEAL_II_COMPILER_CUDA_AWARE
+// By default, all the ranks will try to access the device 0.
+// If we are running with MPI support it is better to address different graphic
+// cards for different processes even if only one node is used. The choice below
+// is based on the MPI process id.
+// MPI needs to be initialized before using this function.
+void
+init_cuda(const bool use_mpi = false)
+{
+#  ifndef DEAL_II_WITH_MPI
+  Assert(use_mpi == false, ExcInternalError());
+#  endif
+  const unsigned int my_id =
+    use_mpi ? Utilities::MPI::this_mpi_process(MPI_COMM_WORLD) : 0;
+  int         n_devices       = 0;
+  cudaError_t cuda_error_code = cudaGetDeviceCount(&n_devices);
+  AssertCuda(cuda_error_code);
+  const int device_id = my_id % n_devices;
+  cuda_error_code     = cudaSetDevice(device_id);
+  AssertCuda(cuda_error_code);
+
+  // In principle, we should be able to distribute the load better by
+  // choosing a random graphics card. For some reason, this produces timeouts
+  // on the tester we use mainly for the CUDA tests so we don't use the
+  // following optimization by default.
+
+  /*
+  # ifndef DEAL_II_WITH_MPI
+    Assert(use_mpi == false, ExcInternalError());
+  #  endif
+    const unsigned int my_id =
+      use_mpi ? Utilities::MPI::this_mpi_process(MPI_COMM_WORLD) : 0;
+    int         device_id       = 0;
+    int         n_devices       = 0;
+    cudaError_t cuda_error_code = cudaGetDeviceCount(&n_devices);
+    AssertCuda(cuda_error_code);
+    if (my_id == 0)
+      {
+        Testing::srand(std::time(nullptr));
+        device_id = Testing::rand() % n_devices;
+      }
+  #  ifdef DEAL_II_WITH_MPI
+    if (use_mpi)
+      MPI_Bcast(&device_id, 1, MPI_INT, 0, MPI_COMM_WORLD);
+  #  endif
+    device_id       = (device_id + my_id) % n_devices;
+    cuda_error_code = cudaSetDevice(device_id);
+    AssertCuda(cuda_error_code);
+  */
+}
+#endif
 
 
 
@@ -475,8 +649,10 @@ struct MPILogInitAll
 DEAL_II_NAMESPACE_OPEN
 namespace deal_II_exceptions
 {
-  extern bool abort_on_exception;
-  extern bool show_stacktrace;
+  namespace internals
+  {
+    extern bool show_stacktrace;
+  }
 } // namespace deal_II_exceptions
 DEAL_II_NAMESPACE_CLOSE
 
@@ -494,8 +670,8 @@ new_tbb_assertion_handler(const char *file,
   std::cerr << "Detailed description: " << comment << std::endl;
 
   // Reenable abort and stacktraces:
-  deal_II_exceptions::abort_on_exception = true;
-  deal_II_exceptions::show_stacktrace    = true;
+  deal_II_exceptions::internals::allow_abort_on_exception = true;
+  deal_II_exceptions::internals::show_stacktrace          = true;
 
   // And abort with a deal.II exception:
   Assert(false, ExcMessage("TBB Exception, see above"));
@@ -512,8 +688,7 @@ struct SetTBBAssertionHandler
 #endif /*TBB_DO_ASSERT*/
 
 
-// ------------------------------ Adjust global variables in deal.II
-// -----------------------
+// ---------------------- Adjust global variables in deal.II ------------------
 
 
 DEAL_II_NAMESPACE_OPEN
@@ -554,11 +729,11 @@ struct EnableFPE
 
 namespace internal
 {
-  namespace Vector
+  namespace VectorImplementation
   {
     extern unsigned int minimum_parallel_grain_size;
   }
-  namespace SparseMatrix
+  namespace SparseMatrixImplementation
   {
     extern unsigned int minimum_parallel_grain_size;
   }
@@ -568,8 +743,8 @@ struct SetGrainSizes
 {
   SetGrainSizes()
   {
-    internal::Vector::minimum_parallel_grain_size       = 2;
-    internal::SparseMatrix::minimum_parallel_grain_size = 2;
+    internal::VectorImplementation::minimum_parallel_grain_size       = 2;
+    internal::SparseMatrixImplementation::minimum_parallel_grain_size = 2;
   }
 } set_grain_sizes;
 

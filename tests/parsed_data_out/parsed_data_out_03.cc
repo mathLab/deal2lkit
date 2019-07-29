@@ -36,7 +36,7 @@
 using namespace deal2lkit;
 
 template <int dim>
-class Test : public ParameterAcceptor
+class Test : public deal2lkit::ParameterAcceptor
 {
 public:
   Test();
@@ -65,7 +65,7 @@ private:
 
 template <int dim>
 Test<dim>::Test()
-  : ParameterAcceptor("Global parameters")
+  : deal2lkit::ParameterAcceptor("Global parameters")
   , tria_builder("Triangulation")
   , fe_builder("FE_Q", "FESystem[FE_Q(2)^dim-FE_Q(1)]", "u,u,p")
   , data_out("Data out", "vtk", 1, "", "output")
