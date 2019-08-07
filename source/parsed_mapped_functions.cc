@@ -286,23 +286,26 @@ void
 ParsedMappedFunctions<spacedim>::declare_parameters(ParameterHandler &prm)
 {
   if (str_component_names != "")
-    prm.add_parameter(
-      "Known component names",
-      _component_names,
-      "These variables can be used to set the corrisponding component mask, "
-      "instead of specifying each component number");
+    {
+      _component_names =
+        Patterns::Tools::Convert<decltype(_component_names)>::to_value(
+          str_component_names);
+      prm.add_parameter(
+        "Known component names",
+        _component_names,
+        "These variables can be used to set the corrisponding component mask, "
+        "instead of specifying each component number");
+    }
 
   else
     {
-      std::vector<std::string> cn(n_components, "u");
-      add_parameter(
-        prm,
-        &_component_names,
+      _component_names.resize(n_components, "u");
+      prm.add_parameter(
         "Known component names",
-        print(cn),
-        Patterns::List(Patterns::Anything(), 1, n_components, ","),
+        _component_names,
         "These variables can be used to set the corrisponding component mask, "
-        "instead of specifying each component number");
+        "instead of specifying each component number",
+        Patterns::List(Patterns::Anything(), 1, n_components, ","));
     }
   add_parameter(prm,
                 &str_id_components,

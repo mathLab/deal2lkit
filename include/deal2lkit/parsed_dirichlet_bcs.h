@@ -245,6 +245,7 @@ public:
   compute_no_normal_flux_constraints(
     const dealii::DoFHandler<dim, spacedim> &dof_handler,
     dealii::AffineConstraints<double> &      constraints) const;
+
   /**
    * This function must be called in order to apply the homogeneous Dirichlet
    * boundary conditions to the normal components of the variables specified.
@@ -260,6 +261,7 @@ public:
     const dealii::DoFHandler<dim, spacedim> &dof_handler,
     const dealii::Mapping<dim, spacedim> &   mapping,
     dealii::AffineConstraints<double> &      constraints) const;
+
   /**
    * This function must be called in order to apply the Dirichlet
    * boundary conditions to the normal components of the variables specified.

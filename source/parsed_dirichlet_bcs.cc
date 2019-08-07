@@ -27,14 +27,12 @@ ParsedDirichletBCs<dim, spacedim>::ParsedDirichletBCs(
   const std::string & parsed_id_components,
   const std::string & parsed_id_functions,
   const std::string & parsed_constants)
-  :
-
-  ParsedMappedFunctions<spacedim>(parsed_name,
-                                  n_components,
-                                  parsed_component_names,
-                                  parsed_id_components,
-                                  parsed_id_functions,
-                                  parsed_constants)
+  : ParsedMappedFunctions<spacedim>(parsed_name,
+                                    n_components,
+                                    parsed_component_names,
+                                    parsed_id_components,
+                                    parsed_id_functions,
+                                    parsed_constants)
   , n_components(n_components)
 {}
 
