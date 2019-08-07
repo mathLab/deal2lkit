@@ -59,12 +59,12 @@ private:
 
   ParsedFiniteElement<dim, spacedim> fe_builder;
 
-  unsigned int                             initial_refinement;
-  shared_ptr<Triangulation<dim, spacedim>> triangulation;
-  shared_ptr<FiniteElement<dim, spacedim>> fe;
-  shared_ptr<DoFHandler<dim, spacedim>>    dof_handler;
-  BlockVector<double>                      solution;
-  ParsedDataOut<dim, spacedim>             data_out;
+  unsigned int                                  initial_refinement;
+  std::unique_ptr<Triangulation<dim, spacedim>> triangulation;
+  std::unique_ptr<FiniteElement<dim, spacedim>> fe;
+  std::unique_ptr<DoFHandler<dim, spacedim>>    dof_handler;
+  BlockVector<double>                           solution;
+  ParsedDataOut<dim, spacedim>                  data_out;
 };
 
 template <int dim, int spacedim>
@@ -98,12 +98,12 @@ Test<dim, spacedim>::make_grid_fe()
   dealii::ParameterAcceptor::initialize("parameters_new.prm",
                                         "used_parameters_new.prm");
 
-  triangulation = SP(new Triangulation<dim, spacedim>);
+  triangulation = std::make_unique<Triangulation<dim, spacedim>>();
 
   GridGenerator::extract_boundary_mesh(*tria_builder.serial(), *triangulation);
   triangulation->refine_global(initial_refinement);
-  dof_handler = SP(new DoFHandler<dim, spacedim>(*triangulation));
-  fe          = SP(fe_builder());
+  dof_handler = std::make_unique<DoFHandler<dim, spacedim>>(*triangulation);
+  fe          = fe_builder();
 }
 
 template <int dim, int spacedim>

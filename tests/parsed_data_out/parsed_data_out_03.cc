@@ -56,9 +56,9 @@ private:
   ParsedFiniteElement<dim>                 fe_builder;
   ParsedGridGenerator<dim, dim>            tria_builder;
   unsigned int                             initial_refinement;
-  shared_ptr<Triangulation<dim>>           triangulation;
+  std::unique_ptr<Triangulation<dim>>      triangulation;
   std::unique_ptr<FiniteElement<dim, dim>> fe;
-  shared_ptr<DoFHandler<dim>>              dof_handler;
+  std::unique_ptr<DoFHandler<dim>>         dof_handler;
   BlockVector<double>                      solution;
   ParsedDataOut<dim, dim>                  data_out;
 };
@@ -88,9 +88,9 @@ Test<dim>::make_grid_fe()
 {
   dealii::ParameterAcceptor::initialize("parameters_ser.prm",
                                         "used_parameters_ser.prm");
-  triangulation = SP(tria_builder.serial());
+  triangulation = tria_builder.serial();
   triangulation->refine_global(initial_refinement);
-  dof_handler = SP(new DoFHandler<dim>(*triangulation));
+  dof_handler = std::make_unique<DoFHandler<dim>>(*triangulation);
   fe          = fe_builder();
 }
 
