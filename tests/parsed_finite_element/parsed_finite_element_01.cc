@@ -45,10 +45,11 @@ main()
   auto fe23 = fe_builder23();
   auto fe33 = fe_builder33();
 
-  deallog << "Generated fe11: " << type(*fe11) << std::endl
-          << "Generated fe12: " << type(*fe12) << std::endl
-          << "Generated fe13: " << type(*fe13) << std::endl
-          << "Generated fe22: " << type(*fe22) << std::endl
-          << "Generated fe23: " << type(*fe23) << std::endl
-          << "Generated fe33: " << type(*fe33) << std::endl;
+  deallog << "Generated fe11: " << Utilities::type_to_string(*fe11) << std::endl
+          << "Generated fe12: " << Utilities::type_to_string(*fe12) << std::endl
+          << "Generated fe13: " << Utilities::type_to_string(*fe13) << std::endl
+          << "Generated fe22: " << Utilities::type_to_string(*fe22) << std::endl
+          << "Generated fe23: " << Utilities::type_to_string(*fe23) << std::endl
+          << "Generated fe33: " << Utilities::type_to_string(*fe33)
+          << std::endl;
 }

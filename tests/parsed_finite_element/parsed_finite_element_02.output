@@ -1,11 +1,11 @@
 
 DEAL:parameters:ParsedFiniteElement<1,1>::Blocking of the finite element: u
 DEAL:parameters:ParsedFiniteElement<1,1>::Finite element space: FE_Q(2)
-DEAL:parameters:ParsedFiniteElement<2,2>::Blocking of the finite element: u,u
+DEAL:parameters:ParsedFiniteElement<2,2>::Blocking of the finite element: u, u
 DEAL:parameters:ParsedFiniteElement<2,2>::Finite element space: FESystem[FE_Q(2)^d]
 DEAL:parameters:ParsedFiniteElement<2,3>::Blocking of the finite element: u
 DEAL:parameters:ParsedFiniteElement<2,3>::Finite element space: FE_DGQ(2)
 DEAL::Generated fe11: FE_Q<1>(2)
 DEAL::Generated fe22: FESystem<2>[FE_Q<2>(2)^2]
-DEAL::Generated fe23: FE_DGQ<2,3>(2)
+DEAL::Generated fe23: FESystem<2,3>[FE_Q<2,3>(2)^2-FE_DGP<2,3>(1)]
 DEAL::Generated fe33: FE_DGQ<3>(2)
