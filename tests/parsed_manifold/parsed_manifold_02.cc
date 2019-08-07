@@ -59,7 +59,7 @@ test(const std::string &name)
   prm.parse_input_from_string(input.str().c_str());
   ParameterAcceptor::parse_all_parameters(prm);
 
-  shared_ptr<Triangulation<dim, spacedim>> tria = SP(pgg.serial());
+  auto tria = pgg.serial();
   tria->refine_global(1);
 
   GridOut go;

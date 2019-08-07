@@ -85,16 +85,9 @@ main()
   prm.parse_input_from_string(input.str().c_str());
   ParameterAcceptor::parse_all_parameters(prm);
 
-  shared_ptr<Triangulation<3, 3>> tria = SP(pgg.serial());
+  auto tria = pgg.serial();
   tria->refine_global(1);
 
   GridOut go;
   go.write_msh(*tria, deallog.get_file_stream());
-
-  // tria->refine_global(1);
-  // std::ofstream
-  // out(("/tmp/"+name+std::to_string(dim)+std::to_string(spacedim)+".msh").c_str());
-  // go.write_msh(*tria, out);
-
-  return 0;
 }
