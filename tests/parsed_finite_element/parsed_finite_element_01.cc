@@ -34,8 +34,8 @@ main()
   ParsedFiniteElement<3, 3> fe_builder33;
 
   ParameterHandler prm;
-  ParameterAcceptor::declare_all_parameters(prm);
-  ParameterAcceptor::parse_all_parameters(prm);
+  dealii::ParameterAcceptor::declare_all_parameters(prm);
+  dealii::ParameterAcceptor::parse_all_parameters(prm);
   prm.log_parameters(deallog);
 
   auto fe11 = fe_builder11();
