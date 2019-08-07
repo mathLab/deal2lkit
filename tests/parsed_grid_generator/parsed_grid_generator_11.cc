@@ -49,7 +49,7 @@ main()
 
   ParameterAcceptor::parse_all_parameters(prm);
 
-  auto t = SP(a.serial());
+  auto t = a.serial();
   t->refine_global(1);
   t->begin_active()->set_refine_flag();
   t->execute_coarsening_and_refinement();
@@ -68,7 +68,7 @@ main()
                               "end\n");
 
   ParameterAcceptor::parse_all_parameters(prm);
-  auto t2 = SP(a.serial());
+  auto t2 = a.serial();
   a.write(*t2, "grid2.ar");
   deallog << std::endl
           << "========================================" << std::endl;
