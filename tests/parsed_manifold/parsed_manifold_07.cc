@@ -56,7 +56,7 @@ main()
 {
   initlog();
 
-  std::string name = "NormalProjectionBoundary";
+  std::string name = "NormalProjectionManifold";
 
   const unsigned int dim      = 3;
   const unsigned int spacedim = 3;
@@ -78,7 +78,7 @@ main()
         << "  set Copy boundary to manifold ids = true" << std::endl
         << "  set Copy material to manifold ids = false" << std::endl
         << "  set Colorize = false" << std::endl
-        << "  set Manifold descriptors = 0=NormalProjectionBoundary:"
+        << "  set Manifold descriptors = 0=NormalProjectionManifold:"
         << SOURCE_DIR "/iges_files/sphere.iges" << std::endl
         << "end" << std::endl;
 

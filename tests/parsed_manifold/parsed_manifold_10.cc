@@ -53,7 +53,7 @@ main()
 {
   initlog();
 
-  std::string name = "NormalTomeshProjectionBoundary";
+  std::string name = "NormalTomeshProjectionManifold";
 
   const unsigned int dim      = 2;
   const unsigned int spacedim = 3;
@@ -71,7 +71,7 @@ main()
         << "  set Optional int 1 = 0 " << std::endl
         << "  set Copy material to manifold ids = true" << std::endl
         << "  set Manifold descriptors = "
-        << "0=NormalToMeshProjectionBoundary:"
+        << "0=NormalToMeshProjectionManifold:"
         << SOURCE_DIR "/iges_files/wigley.iges" << std::endl
         << "end" << std::endl;
 
@@ -83,11 +83,4 @@ main()
 
   GridOut go;
   go.write_msh(*tria, deallog.get_file_stream());
-
-  // tria->refine_global(4);
-  // std::ofstream
-  // out(("/tmp/"+name+std::to_string(dim)+std::to_string(spacedim)+".msh").c_str());
-  // go.write_msh(*tria, out);
-
-  return 0;
 }

@@ -57,7 +57,7 @@ main()
 {
   initlog();
 
-  std::string name = "NormalProjectionBoundary";
+  std::string name = "NormalProjectionManifold";
 
   const unsigned int dim      = 2;
   const unsigned int spacedim = 3;
@@ -72,9 +72,9 @@ main()
         << "  set Copy boundary to manifold ids = true" << std::endl
         << "  set Colorize = true" << std::endl
         << "  set Manifold descriptors = "
-        << "0=NormalProjectionBoundary:"
+        << "0=NormalProjectionManifold:"
         << SOURCE_DIR "/iges_files/edge.iges % "
-        << "1=NormalProjectionBoundary:" << SOURCE_DIR "/iges_files/edge.iges "
+        << "1=NormalProjectionManifold:" << SOURCE_DIR "/iges_files/edge.iges "
         << std::endl
         << "end" << std::endl;
 
@@ -86,11 +86,4 @@ main()
 
   GridOut go;
   go.write_msh(*tria, deallog.get_file_stream());
-
-  // tria->refine_global(4);
-  // std::ofstream
-  // out(("/tmp/"+name+std::to_string(dim)+std::to_string(spacedim)+".msh").c_str());
-  // go.write_msh(*tria, out);
-
-  return 0;
 }

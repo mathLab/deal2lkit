@@ -53,7 +53,7 @@ main()
 {
   initlog();
 
-  std::string name = "NormalProjectionBoundary";
+  std::string name = "NormalProjectionManifold";
 
   const unsigned int dim      = 2;
   const unsigned int spacedim = 3;
@@ -71,7 +71,7 @@ main()
         << "  set Optional int 1 = 0 " << std::endl
         << "  set Copy material to manifold ids = true" << std::endl
         << "  set Manifold descriptors = "
-        << "0=NormalProjectionBoundary:" << SOURCE_DIR "/iges_files/wigley.iges"
+        << "0=NormalProjectionManifold:" << SOURCE_DIR "/iges_files/wigley.iges"
         << std::endl
         << "end" << std::endl;
 
