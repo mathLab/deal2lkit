@@ -38,7 +38,7 @@ test()
 
   dealii::ParameterAcceptor::initialize();
 
-  Triangulation<dim, spacedim> *tria = pgg.serial();
+  auto tria = pgg.serial();
 
   tria->refine_global(3);
 
@@ -58,8 +58,6 @@ test()
                        Utilities::int_to_string(spacedim) + ".msh")
                         .c_str());
   go.write_msh(*tria, ofile);
-
-  delete tria;
 }
 
 int
