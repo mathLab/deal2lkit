@@ -155,7 +155,7 @@ private:
   /**
    * The actual solver.
    */
-  shared_ptr<dealii::Solver<VECTOR>> solver;
+  std::unique_ptr<dealii::Solver<VECTOR>> solver;
 };
 
 // ============================================================
@@ -211,7 +211,7 @@ template <typename MySolver>
 void
 ParsedSolver<VECTOR>::initialize_solver(MySolver *s)
 {
-  solver = SP(s);
+  solver.reset(s);
   (dealii::LinearOperator<VECTOR, VECTOR> &)(*this) =
     dealii::inverse_operator(op, *s, prec);
 }
