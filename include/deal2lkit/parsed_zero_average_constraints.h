@@ -23,7 +23,7 @@
 
 #include <deal.II/fe/component_mask.h>
 
-#include <deal.II/lac/constraint_matrix.h>
+#include <deal.II/lac/affine_constraints.h>
 
 #include <deal2lkit/config.h>
 #include <deal2lkit/parameter_acceptor.h>

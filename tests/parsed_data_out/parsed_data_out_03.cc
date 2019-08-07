@@ -86,8 +86,7 @@ template <int dim>
 void
 Test<dim>::make_grid_fe()
 {
-  dealii::ParameterAcceptor::initialize("parameters_ser.prm",
-                                        "used_parameters_ser.prm");
+  dealii::ParameterAcceptor::initialize();
   triangulation = tria_builder.serial();
   triangulation->refine_global(initial_refinement);
   dof_handler = std::make_unique<DoFHandler<dim>>(*triangulation);
@@ -153,6 +152,4 @@ main(int argc, char *argv[])
 
   Test<dim> test;
   test.run();
-
-  // return 0;
 }
