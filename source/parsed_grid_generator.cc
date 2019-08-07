@@ -20,7 +20,6 @@
 #include <deal.II/grid/grid_out.h>
 #include <deal.II/grid/grid_tools.h>
 #include <deal.II/grid/manifold_lib.h>
-#include <deal.II/grid/tria_boundary_lib.h>
 
 #include <deal.II/opencascade/boundary_lib.h>
 #include <deal.II/opencascade/utilities.h>
