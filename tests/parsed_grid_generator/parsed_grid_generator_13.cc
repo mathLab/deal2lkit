@@ -33,7 +33,6 @@ test(ParsedGridGenerator<dim, spacedim> &pgg)
   auto    tria = pgg.serial();
   GridOut go;
   go.write_msh(*tria, deallog.get_file_stream());
-  delete tria;
 }
 
 

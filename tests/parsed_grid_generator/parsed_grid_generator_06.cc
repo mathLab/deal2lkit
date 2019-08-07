@@ -60,7 +60,7 @@ main()
 
   int_string_2 = print(int_vec_2);
   int_string_3 = print(int_vec_3);
-  ParameterAcceptor::declare_all_parameters(prm);
+  dealii::ParameterAcceptor::declare_all_parameters(prm);
 
   string3 = ""
             "subsection Subdivided HyperCube\n"
@@ -85,7 +85,7 @@ main()
   prm.parse_input_from_string(string3.c_str());
   prm.parse_input_from_string(string2.c_str());
 
-  ParameterAcceptor::parse_all_parameters(prm);
+  dealii::ParameterAcceptor::parse_all_parameters(prm);
 
   test(a);
   test(b);

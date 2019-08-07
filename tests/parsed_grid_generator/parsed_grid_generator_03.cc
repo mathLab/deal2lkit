@@ -44,7 +44,7 @@ main()
   ParsedGridGenerator<2, 2> b("Cube");
 
   ParameterHandler prm;
-  ParameterAcceptor::declare_all_parameters(prm);
+  dealii::ParameterAcceptor::declare_all_parameters(prm);
 
   prm.parse_input_from_string(""
                               "subsection Rectangle\n"
@@ -60,7 +60,7 @@ main()
                               "  set Optional Point<spacedim> 2 =  1.,  1. \n"
                               "end\n");
 
-  ParameterAcceptor::parse_all_parameters(prm);
+  dealii::ParameterAcceptor::parse_all_parameters(prm);
 
   test(a);
   test(b);

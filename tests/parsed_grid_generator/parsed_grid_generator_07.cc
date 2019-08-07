@@ -43,7 +43,6 @@ main()
   ParsedGridGenerator<2, 2> a("Rectangle");
   ParsedGridGenerator<3, 3> b("Cube");
 
-
   dealii::ParameterAcceptor::initialize();
   dealii::ParameterAcceptor::prm.log_parameters(deallog);
 

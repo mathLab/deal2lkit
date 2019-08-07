@@ -55,7 +55,7 @@ main()
 
   string1 = print(p1);
   string2 = print(p2);
-  ParameterAcceptor::declare_all_parameters(prm);
+  dealii::ParameterAcceptor::declare_all_parameters(prm);
 
   prm.parse_input_from_string(""
                               "subsection Rectangle\n"
@@ -76,7 +76,7 @@ main()
             "end\n";
   prm.parse_input_from_string(string3.c_str());
 
-  ParameterAcceptor::parse_all_parameters(prm);
+  dealii::ParameterAcceptor::parse_all_parameters(prm);
 
   test(a);
   test(b);

@@ -42,7 +42,7 @@ main()
   ParsedGridGenerator<2, 2> a("Cube");
 
   ParameterHandler prm;
-  ParameterAcceptor::declare_all_parameters(prm);
+  dealii::ParameterAcceptor::declare_all_parameters(prm);
 
   prm.parse_input_from_string(""
                               "subsection Cube\n"
@@ -52,7 +52,7 @@ main()
                               "end\n");
 
   // prm.log_parameters(deallog);
-  ParameterAcceptor::parse_all_parameters(prm);
+  dealii::ParameterAcceptor::parse_all_parameters(prm);
 
   test(a);
 }

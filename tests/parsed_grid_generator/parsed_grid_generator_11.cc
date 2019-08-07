@@ -40,14 +40,14 @@ main()
   ParsedGridGenerator<2, 2> a("Grid");
 
   ParameterHandler prm;
-  ParameterAcceptor::declare_all_parameters(prm);
+  dealii::ParameterAcceptor::declare_all_parameters(prm);
 
   prm.parse_input_from_string(""
                               "subsection Grid\n"
                               "  set Output grid file name = grid.ar\n"
                               "end\n");
 
-  ParameterAcceptor::parse_all_parameters(prm);
+  dealii::ParameterAcceptor::parse_all_parameters(prm);
 
   auto t = a.serial();
   t->refine_global(1);
@@ -67,7 +67,7 @@ main()
                               "  set Input grid file name = grid.ar\n"
                               "end\n");
 
-  ParameterAcceptor::parse_all_parameters(prm);
+  dealii::ParameterAcceptor::parse_all_parameters(prm);
   auto t2 = a.serial();
   a.write(*t2, "grid2.ar");
   deallog << std::endl
