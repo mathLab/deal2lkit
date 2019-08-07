@@ -56,7 +56,7 @@ main()
 {
   initlog();
 
-  std::string name = "NormalProjectionBoundary";
+  std::string name = "NormalProjectionManifold";
 
   const unsigned int dim      = 3;
   const unsigned int spacedim = 3;
@@ -71,30 +71,23 @@ main()
   ParsedGridGenerator<3, 3> pgg("Default");
 
   ParameterHandler prm;
-  ParameterAcceptor::declare_all_parameters(prm);
+  dealii::ParameterAcceptor::declare_all_parameters(prm);
   std::stringstream input;
 
   input << "subsection Default" << std::endl
         << "  set Copy boundary to manifold ids = true" << std::endl
         << "  set Copy material to manifold ids = false" << std::endl
         << "  set Colorize = false" << std::endl
-        << "  set Manifold descriptors = 0=NormalProjectionBoundary:"
+        << "  set Manifold descriptors = 0=NormalProjectionManifold:"
         << SOURCE_DIR "/iges_files/sphere.iges" << std::endl
         << "end" << std::endl;
 
   prm.parse_input_from_string(input.str().c_str());
-  ParameterAcceptor::parse_all_parameters(prm);
+  dealii::ParameterAcceptor::parse_all_parameters(prm);
 
-  shared_ptr<Triangulation<3, 3>> tria = SP(pgg.serial());
+  auto tria = pgg.serial();
   tria->refine_global(1);
 
   GridOut go;
   go.write_msh(*tria, deallog.get_file_stream());
-
-  // tria->refine_global(1);
-  // std::ofstream
-  // out(("/tmp/"+name+std::to_string(dim)+std::to_string(spacedim)+".msh").c_str());
-  // go.write_msh(*tria, out);
-
-  return 0;
 }

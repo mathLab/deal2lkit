@@ -20,7 +20,6 @@
 #include <deal.II/grid/grid_out.h>
 #include <deal.II/grid/grid_tools.h>
 #include <deal.II/grid/manifold_lib.h>
-#include <deal.II/grid/tria_boundary_lib.h>
 
 #include <deal.II/opencascade/boundary_lib.h>
 #include <deal.II/opencascade/utilities.h>
@@ -381,13 +380,13 @@ ParsedGridGenerator<dim, spacedim>::declare_parameters(ParameterHandler &prm)
 #ifdef DEAL_II_WITH_MPI
 #  ifdef DEAL_II_WITH_P4EST
 template <int dim, int spacedim>
-parallel::distributed::Triangulation<dim, spacedim> *
+std::unique_ptr<dealii::parallel::distributed::Triangulation<dim, spacedim>>
 ParsedGridGenerator<dim, spacedim>::distributed(MPI_Comm comm)
 {
   Assert(grid_name != "", ExcNotInitialized());
-  parallel::distributed::Triangulation<dim, spacedim> *tria =
-    new parallel::distributed::Triangulation<dim, spacedim>(
-      comm); //, get_smoothing());
+  auto tria = std::make_unique<
+    dealii::parallel::distributed::Triangulation<dim, spacedim>>(
+    comm); //, get_smoothing());
 
   create(*tria);
   return tria;
@@ -397,12 +396,11 @@ ParsedGridGenerator<dim, spacedim>::distributed(MPI_Comm comm)
 
 
 template <int dim, int spacedim>
-Triangulation<dim, spacedim> *
+std::unique_ptr<dealii::Triangulation<dim, spacedim>>
 ParsedGridGenerator<dim, spacedim>::serial()
 {
   Assert(grid_name != "", ExcNotInitialized());
-  Triangulation<dim, spacedim> *tria =
-    new Triangulation<dim, spacedim>(get_smoothing());
+  auto tria = std::make_unique<Triangulation<dim, spacedim>>(get_smoothing());
   create(*tria);
   return tria;
 }
@@ -727,14 +725,14 @@ struct PGGHelper
   {
     if (name == "CylinderManifoldOnAxis")
       {
-        return SP(new CylindricalManifold<3>(p->un_int_option_one,
-                                             p->double_option_one));
+        return std::make_shared<CylindricalManifold<3>>(p->un_int_option_one,
+                                                        p->double_option_one);
       }
     else if (name == "GeneralCylinderManifold")
       {
-        return SP(new CylindricalManifold<3>(p->point_option_one,
-                                             p->point_option_two,
-                                             p->double_option_one));
+        return std::make_shared<CylindricalManifold<3>>(p->point_option_one,
+                                                        p->point_option_two,
+                                                        p->double_option_one);
       }
     // else if (name=="ConeBoundary")
     //   {
@@ -753,30 +751,31 @@ struct PGGHelper
         if (subnames[0] == "ArclengthProjectionLineManifold")
           {
             AssertDimension(subnames.size(), 2);
-            return SP(
-              new OpenCASCADE::ArclengthProjectionLineManifold<dim, spacedim>(
-                PGGHelper::readOCC(subnames[1], p->double_option_one)));
+            return std::make_shared<
+              OpenCASCADE::ArclengthProjectionLineManifold<dim, spacedim>>(
+              PGGHelper::readOCC(subnames[1], p->double_option_one));
           }
-        else if (subnames[0] == "DirectionalProjectionBoundary")
+        else if (subnames[0] == "DirectionalProjectionManifold")
           {
             AssertDimension(subnames.size(), 2);
-            return SP(
-              new OpenCASCADE::DirectionalProjectionBoundary<dim, spacedim>(
-                PGGHelper::readOCC(subnames[1], p->double_option_one),
-                (Tensor<1, spacedim>)p->point_option_one));
+            return std::make_shared<
+              OpenCASCADE::DirectionalProjectionManifold<dim, spacedim>>(
+              PGGHelper::readOCC(subnames[1], p->double_option_one),
+              (Tensor<1, spacedim>)p->point_option_one);
           }
-        else if (subnames[0] == "NormalProjectionBoundary")
+        else if (subnames[0] == "NormalProjectionManifold")
           {
             AssertDimension(subnames.size(), 2);
-            return SP(new OpenCASCADE::NormalProjectionBoundary<dim, spacedim>(
-              PGGHelper::readOCC(subnames[1], p->double_option_one)));
+            return std::make_shared<
+              OpenCASCADE::NormalProjectionManifold<dim, spacedim>>(
+              PGGHelper::readOCC(subnames[1], p->double_option_one));
           }
-        else if (subnames[0] == "NormalToMeshProjectionBoundary")
+        else if (subnames[0] == "NormalToMeshProjectionManifold")
           {
             AssertDimension(subnames.size(), 2);
-            return SP(
-              new OpenCASCADE::NormalToMeshProjectionBoundary<dim, spacedim>(
-                PGGHelper::readOCC(subnames[1], p->double_option_one)));
+            return std::make_shared<
+              OpenCASCADE::NormalToMeshProjectionManifold<dim, spacedim>>(
+              PGGHelper::readOCC(subnames[1], p->double_option_one));
           }
 #endif
 
@@ -789,8 +788,8 @@ struct PGGHelper
   {
     if (name == "TorusBoundary")
       {
-        return SP(
-          new TorusManifold<2>(p->double_option_one, p->double_option_two));
+        return std::make_shared<TorusManifold<2>>(p->double_option_one,
+                                                  p->double_option_two);
       }
     else
       {
@@ -802,30 +801,31 @@ struct PGGHelper
         if (subnames[0] == "ArclengthProjectionLineManifold")
           {
             AssertDimension(subnames.size(), 2);
-            return SP(
-              new OpenCASCADE::ArclengthProjectionLineManifold<dim, spacedim>(
-                PGGHelper::readOCC(subnames[1], p->double_option_one)));
+            return std::make_shared<
+              OpenCASCADE::ArclengthProjectionLineManifold<dim, spacedim>>(
+              PGGHelper::readOCC(subnames[1], p->double_option_one));
           }
-        else if (subnames[0] == "DirectionalProjectionBoundary")
+        else if (subnames[0] == "DirectionalProjectionManifold")
           {
             AssertDimension(subnames.size(), 2);
-            return SP(
-              new OpenCASCADE::DirectionalProjectionBoundary<dim, spacedim>(
-                PGGHelper::readOCC(subnames[1], p->double_option_one),
-                (Tensor<1, spacedim>)p->point_option_one));
+            return std::make_shared<
+              OpenCASCADE::DirectionalProjectionManifold<dim, spacedim>>(
+              PGGHelper::readOCC(subnames[1], p->double_option_one),
+              (Tensor<1, spacedim>)p->point_option_one);
           }
-        else if (subnames[0] == "NormalProjectionBoundary")
+        else if (subnames[0] == "NormalProjectionManifold")
           {
             AssertDimension(subnames.size(), 2);
-            return SP(new OpenCASCADE::NormalProjectionBoundary<dim, spacedim>(
-              PGGHelper::readOCC(subnames[1], p->double_option_one)));
+            return std::make_shared<
+              OpenCASCADE::NormalProjectionManifold<dim, spacedim>>(
+              PGGHelper::readOCC(subnames[1], p->double_option_one));
           }
-        else if (subnames[0] == "NormalToMeshProjectionBoundary")
+        else if (subnames[0] == "NormalToMeshProjectionManifold")
           {
             AssertDimension(subnames.size(), 2);
-            return SP(
-              new OpenCASCADE::NormalToMeshProjectionBoundary<dim, spacedim>(
-                PGGHelper::readOCC(subnames[1], p->double_option_one)));
+            return std::make_shared<
+              OpenCASCADE::NormalToMeshProjectionManifold<dim, spacedim>>(
+              PGGHelper::readOCC(subnames[1], p->double_option_one));
           }
 #endif
         return default_create_manifold(p, name);
@@ -842,18 +842,8 @@ struct PGGHelper
   {
     if (name == "SphericalManifold")
       {
-        return SP(new SphericalManifold<dim>(p->point_option_one));
+        return std::make_shared<SphericalManifold<dim>>(p->point_option_one);
       }
-    // else if (name == "HyperShellBoundary")
-    //   {
-    //     return SP(new SphericalManifold<dim>(p->point_option_one));
-    //   }
-    // else if (name == "HalfHyperShellBoundary")
-    //   {
-    //     return SP(new HalfHyperShellBoundary<dim>(p->point_option_one,
-    //                                               p->double_option_two,
-    //                                               p->double_option_one));
-    //   }
     else
       return default_create_manifold(p, name);
   }
@@ -899,13 +889,9 @@ struct PGGHelper
   {
     if (name == "SphericalManifold")
       {
-        return SP(new SphericalManifold<dim, spacedim>(p->point_option_one));
+        return std::make_shared<SphericalManifold<dim, spacedim>>(
+          p->point_option_one);
       }
-    // else if (name=="SphericalManifold")
-    //   {
-    //     return SP(new
-    //     SphericalManifold<dim,spacedim>(p->point_option_one));
-    //   }
     else
       {
         // Try splitting the name at ":" and see if this is a more complicated
@@ -914,15 +900,15 @@ struct PGGHelper
         if (subnames[0] == "FunctionManifold0")
           {
             AssertDimension(subnames.size(), 3);
-            return SP(new FunctionManifold<dim, spacedim, dim>(subnames[1],
-                                                               subnames[2]));
+            return std::make_shared<FunctionManifold<dim, spacedim, dim>>(
+              subnames[1], subnames[2]);
           }
         else if (subnames[0] == "FunctionManifold1")
           {
             AssertDimension(subnames.size(), 3);
-            return SP(
-              new FunctionManifold<dim, spacedim, (dim > 1 ? dim - 1 : dim)>(
-                subnames[1], subnames[2]));
+            return std::make_shared<
+              FunctionManifold<dim, spacedim, (dim > 1 ? dim - 1 : dim)>>(
+              subnames[1], subnames[2]);
           }
         AssertThrow(false,
                     ExcInternalError(name +
@@ -939,15 +925,17 @@ struct PGGHelper
     typename std::enable_if<(spacedim == 3), void *>::type = 0)
   {
     if (name == "SphericalManifold")
-      return SP(new SphericalManifold<dim, spacedim>(p->point_option_one));
+      return std::make_shared<SphericalManifold<dim, spacedim>>(
+        p->point_option_one);
     else if (name == "CylindricalManifoldOnAxis")
       {
-        return SP(new CylindricalManifold<dim, spacedim>(p->un_int_option_one));
+        return std::make_shared<CylindricalManifold<dim, spacedim>>(
+          p->un_int_option_one);
       }
     else if (name == "GeneralCylindricalManifold")
       {
-        return SP(new CylindricalManifold<dim, spacedim>(p->point_option_one,
-                                                         p->point_option_two));
+        return std::make_shared<CylindricalManifold<dim, spacedim>>(
+          p->point_option_one, p->point_option_two);
       }
     else
       {
@@ -957,15 +945,15 @@ struct PGGHelper
         if (subnames[0] == "FunctionManifold0")
           {
             AssertDimension(subnames.size(), 3);
-            return SP(new FunctionManifold<dim, spacedim, dim>(subnames[1],
-                                                               subnames[2]));
+            return std::make_shared<FunctionManifold<dim, spacedim, dim>>(
+              subnames[1], subnames[2]);
           }
         else if (subnames[0] == "FunctionManifold1")
           {
             AssertDimension(subnames.size(), 3);
-            return SP(
-              new FunctionManifold<dim, spacedim, (dim > 1 ? dim - 1 : dim)>(
-                subnames[1], subnames[2]));
+            return std::make_shared<
+              FunctionManifold<dim, spacedim, (dim > 1 ? dim - 1 : dim)>>(
+              subnames[1], subnames[2]);
           }
         AssertThrow(false,
                     ExcInternalError(name +

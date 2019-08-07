@@ -23,7 +23,7 @@
 
 #include <deal.II/fe/component_mask.h>
 
-#include <deal.II/lac/constraint_matrix.h>
+#include <deal.II/lac/affine_constraints.h>
 
 #include <deal2lkit/config.h>
 #include <deal2lkit/parameter_acceptor.h>
@@ -37,7 +37,7 @@ D2K_NAMESPACE_OPEN
 
 /**
  * ParsedZeroAverageConstraints class. It allows you to set a zero
- * average constraint to a ConstraintMatrix. The variable to be
+ * average constraint to a AffineConstraints<double> . The variable to be
  * constrained (e.g. the pressure for Stokes problem) can be specified
  * in the parameter file either by its component name (e.g. "p") or by
  * the component number.
@@ -48,7 +48,7 @@ D2K_NAMESPACE_OPEN
  * A typical usage of this class is as follows:
  *
  * @code
- * ConstraintMatrix cm;
+ * AffineConstraints<double>  cm;
  * ParsedZeroAverageConstraints<dim> pnac("Parsed Zero Average Constraints",
  *              dim+1,
  *            (dim==2?"u,u,p":"u,u,u,p"),
@@ -100,7 +100,7 @@ public:
   void
   apply_zero_average_constraints(
     const dealii::DoFHandler<dim, spacedim> &dof_handler,
-    dealii::ConstraintMatrix &               constraints) const;
+    dealii::AffineConstraints<double> &      constraints) const;
 
 
   /**
@@ -152,7 +152,7 @@ protected:
     const dealii::DoFHandler<dim, spacedim> &dof_handler,
     const dealii::ComponentMask              mask,
     const bool                               at_boundary,
-    dealii::ConstraintMatrix &               constraints) const;
+    dealii::AffineConstraints<double> &      constraints) const;
 
   std::string              name;
   std::string              str_components;

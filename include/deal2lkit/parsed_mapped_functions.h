@@ -23,7 +23,6 @@
 
 #include <deal2lkit/config.h>
 #include <deal2lkit/parameter_acceptor.h>
-#include <deal2lkit/parsed_function.h>
 #include <deal2lkit/utilities.h>
 
 #include <algorithm>
@@ -72,7 +71,7 @@ D2K_NAMESPACE_OPEN
  */
 
 template <int spacedim>
-class ParsedMappedFunctions : public ParameterAcceptor
+class ParsedMappedFunctions : public deal2lkit::ParameterAcceptor
 {
 public:
   /**
@@ -90,7 +89,7 @@ public:
    * applied, which is a string with the following pattern boundary_id =
    * component;other_component % other_id = comp; other_comp
    *
-   * - a list of ids and exprssions defined over the ids
+   * - a list of ids and expressions defined over the ids
    * (if this string is left empty, ZeroFunction is imposed on the above
    * specified ids and components)
    *
@@ -113,7 +112,6 @@ public:
   /**
    * return a shared_ptr to the ParsedFunction corresponding to the given id
    * the function has spacedim components
-   *
    */
   shared_ptr<dealii::Functions::ParsedFunction<spacedim>>
   get_mapped_normal_function(const unsigned int &id,

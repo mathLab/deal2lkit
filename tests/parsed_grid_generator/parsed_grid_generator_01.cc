@@ -30,8 +30,8 @@ template <int dim, int spacedim>
 void
 test(ParsedGridGenerator<dim, spacedim> &pgg)
 {
-  Triangulation<dim, spacedim> *tria = pgg.serial();
-  GridOut                       go;
+  auto    tria = pgg.serial();
+  GridOut go;
   go.write_msh(*tria, deallog.get_file_stream());
   std::ofstream ofile(("/tmp/mesh_" + Utilities::int_to_string(dim) +
                        Utilities::int_to_string(spacedim) + ".msh")
@@ -48,7 +48,7 @@ main()
   ParsedGridGenerator<2, 3> d;
   ParsedGridGenerator<3, 3> e;
 
-  ParameterAcceptor::initialize();
+  dealii::ParameterAcceptor::initialize();
 
   test(a);
   test(b);

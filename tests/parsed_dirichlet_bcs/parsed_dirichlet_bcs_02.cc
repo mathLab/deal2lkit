@@ -25,9 +25,9 @@
 
 #include <deal.II/grid/grid_generator.h>
 #include <deal.II/grid/grid_refinement.h>
+#include <deal.II/grid/manifold_lib.h>
 #include <deal.II/grid/tria.h>
 #include <deal.II/grid/tria_accessor.h>
-#include <deal.II/grid/tria_boundary_lib.h>
 #include <deal.II/grid/tria_iterator.h>
 
 #include <deal.II/lac/vector.h>
@@ -130,13 +130,13 @@ FindBug<dim>::dirichlet_conditions()
                                                 (dim == 2 ? "0=13;13;13" :
                                                             "0=13;13;13;13"));
   //  if (dim ==2)
-  //    ParameterAcceptor::initialize(SOURCE_DIR
+  //    dealii::ParameterAcceptor::initialize(SOURCE_DIR
   //    "/parameters/parsed_dirichlet_bcs_02_2D.prm", "used_parameters.prm");
   //  else
-  //    ParameterAcceptor::initialize(SOURCE_DIR
+  //    dealii::ParameterAcceptor::initialize(SOURCE_DIR
   //    "/parameters/parsed_dirichlet_bcs_02_3D.prm", "used_parameters.prm");
 
-  ParameterAcceptor::initialize();
+  dealii::ParameterAcceptor::initialize();
   parsed_dirichlet.interpolate_boundary_values(dof_handler, dirichlet_dofs);
 
 
@@ -196,7 +196,7 @@ int
 main()
 {
   initlog();
-  ParameterAcceptor::prm.log_parameters(deallog);
+  dealii::ParameterAcceptor::prm.log_parameters(deallog);
 
   FindBug<2>().run();
   FindBug<3>().run();

@@ -30,8 +30,8 @@ template <int dim, int spacedim>
 void
 test(ParsedGridGenerator<dim, spacedim> &pgg)
 {
-  Triangulation<dim, spacedim> *tria = pgg.serial();
-  GridOut                       go;
+  auto    tria = pgg.serial();
+  GridOut go;
   go.write_msh(*tria, deallog.get_file_stream());
 }
 
@@ -42,7 +42,7 @@ main()
   ParsedGridGenerator<2, 2> a("Read");
 
   ParameterHandler prm;
-  ParameterAcceptor::declare_all_parameters(prm);
+  dealii::ParameterAcceptor::declare_all_parameters(prm);
   prm.parse_input_from_string(""
                               "subsection Read\n"
                               "  set Grid to generate = file \n"
@@ -50,7 +50,7 @@ main()
                               "/grids/mesh_22.msh\n"
                               "end\n");
 
-  ParameterAcceptor::parse_all_parameters(prm);
+  dealii::ParameterAcceptor::parse_all_parameters(prm);
 
   test(a);
 }

@@ -18,6 +18,7 @@
 
 #include <deal.II/base/quadrature.h>
 
+#include <deal2lkit/config.h>
 #include <deal2lkit/parameter_acceptor.h>
 
 

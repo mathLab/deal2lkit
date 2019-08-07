@@ -180,8 +180,8 @@ ParsedMappedFunctions<spacedim>::split_id_functions(
           ParameterHandler internal_prm;
           dealii::Functions::ParsedFunction<spacedim>::declare_parameters(
             internal_prm, n_components);
-          ptr =
-            SP(new dealii::Functions::ParsedFunction<spacedim>(n_components));
+          ptr = std::make_shared<dealii::Functions::ParsedFunction<spacedim>>(
+            n_components);
           ptr->parse_parameters(internal_prm);
 
           id_functions[ids[i]] = ptr;
@@ -219,8 +219,8 @@ ParsedMappedFunctions<spacedim>::split_id_functions(
             internal_prm, n_components);
           internal_prm.set("Function expression", id_func[1]);
           internal_prm.set("Function constants", constants);
-          ptr =
-            SP(new dealii::Functions::ParsedFunction<spacedim>(n_components));
+          ptr = std::make_shared<dealii::Functions::ParsedFunction<spacedim>>(
+            n_components);
           ptr->parse_parameters(internal_prm);
 
           id_functions[id] = ptr;
@@ -286,26 +286,26 @@ void
 ParsedMappedFunctions<spacedim>::declare_parameters(ParameterHandler &prm)
 {
   if (str_component_names != "")
-    add_parameter(
-      prm,
-      &_component_names,
-      "Known component names",
-      str_component_names,
-      Patterns::List(Patterns::Anything(), 1, n_components, ","),
-      "These variables can be used to set the corrisponding component mask, "
-      "instead of specifying each component number");
+    {
+      _component_names =
+        Patterns::Tools::Convert<decltype(_component_names)>::to_value(
+          str_component_names);
+      prm.add_parameter(
+        "Known component names",
+        _component_names,
+        "These variables can be used to set the corrisponding component mask, "
+        "instead of specifying each component number");
+    }
 
   else
     {
-      std::vector<std::string> cn(n_components, "u");
-      add_parameter(
-        prm,
-        &_component_names,
+      _component_names.resize(n_components, "u");
+      prm.add_parameter(
         "Known component names",
-        print(cn),
-        Patterns::List(Patterns::Anything(), 1, n_components, ","),
+        _component_names,
         "These variables can be used to set the corrisponding component mask, "
-        "instead of specifying each component number");
+        "instead of specifying each component number",
+        Patterns::List(Patterns::Anything(), 1, n_components, ","));
     }
   add_parameter(prm,
                 &str_id_components,
@@ -402,7 +402,8 @@ ParsedMappedFunctions<spacedim>::set_normal_functions()
           normal_prm.set("Function expression", str_normal_func);
           normal_prm.set("Function constants", str_constants);
           normal_ptr =
-            SP(new dealii::Functions::ParsedFunction<spacedim>(spacedim));
+            std::make_shared<dealii::Functions::ParsedFunction<spacedim>>(
+              spacedim);
           normal_ptr->parse_parameters(normal_prm);
           std::pair<unsigned int, unsigned int> id_fcv(normal_ids[i], fcv);
           _normal_functions[id_fcv] = normal_ptr;

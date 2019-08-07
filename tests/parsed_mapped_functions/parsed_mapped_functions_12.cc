@@ -38,8 +38,8 @@ main()
                                "0=t;y;0 % 1=t;0;0 % 6=t;0;k",
                                "k=1");
 
-  ParameterAcceptor::initialize();
-  ParameterAcceptor::prm.log_parameters(deallog);
+  dealii::ParameterAcceptor::initialize();
+  dealii::ParameterAcceptor::prm.log_parameters(deallog);
 
   Point<2> p(2, 3);
 

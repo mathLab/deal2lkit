@@ -65,7 +65,7 @@ main()
   ParsedGridGenerator<dim, spacedim> pgg("Default");
 
   ParameterHandler prm;
-  ParameterAcceptor::declare_all_parameters(prm);
+  dealii::ParameterAcceptor::declare_all_parameters(prm);
   std::stringstream input;
 
   input << "subsection Default" << std::endl
@@ -79,9 +79,9 @@ main()
         << "end" << std::endl;
 
   prm.parse_input_from_string(input.str().c_str());
-  ParameterAcceptor::parse_all_parameters(prm);
+  dealii::ParameterAcceptor::parse_all_parameters(prm);
 
-  shared_ptr<Triangulation<dim, spacedim>> tria = SP(pgg.serial());
+  auto tria = pgg.serial();
   tria->refine_global(1);
 
   GridOut go;

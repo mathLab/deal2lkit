@@ -30,8 +30,8 @@ template <int dim, int spacedim>
 void
 test(ParsedGridGenerator<dim, spacedim> &pgg)
 {
-  Triangulation<dim, spacedim> *tria = pgg.serial();
-  GridOut                       go;
+  auto    tria = pgg.serial();
+  GridOut go;
   go.write_msh(*tria, deallog.get_file_stream());
   std::ofstream ofile(("/tmp/mesh_" + Utilities::int_to_string(dim) +
                        Utilities::int_to_string(spacedim) + ".msh")
@@ -60,7 +60,7 @@ main()
 
   int_string_2 = print(int_vec_2);
   int_string_3 = print(int_vec_3);
-  ParameterAcceptor::declare_all_parameters(prm);
+  dealii::ParameterAcceptor::declare_all_parameters(prm);
 
   string3 = ""
             "subsection Subdivided HyperCube\n"
@@ -85,7 +85,7 @@ main()
   prm.parse_input_from_string(string3.c_str());
   prm.parse_input_from_string(string2.c_str());
 
-  ParameterAcceptor::parse_all_parameters(prm);
+  dealii::ParameterAcceptor::parse_all_parameters(prm);
 
   test(a);
   test(b);

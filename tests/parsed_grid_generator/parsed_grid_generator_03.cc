@@ -30,8 +30,8 @@ template <int dim, int spacedim>
 void
 test(ParsedGridGenerator<dim, spacedim> &pgg)
 {
-  Triangulation<dim, spacedim> *tria = pgg.serial();
-  GridOut                       go;
+  auto    tria = pgg.serial();
+  GridOut go;
   go.write_msh(*tria, deallog.get_file_stream());
 }
 
@@ -44,7 +44,7 @@ main()
   ParsedGridGenerator<2, 2> b("Cube");
 
   ParameterHandler prm;
-  ParameterAcceptor::declare_all_parameters(prm);
+  dealii::ParameterAcceptor::declare_all_parameters(prm);
 
   prm.parse_input_from_string(""
                               "subsection Rectangle\n"
@@ -60,7 +60,7 @@ main()
                               "  set Optional Point<spacedim> 2 =  1.,  1. \n"
                               "end\n");
 
-  ParameterAcceptor::parse_all_parameters(prm);
+  dealii::ParameterAcceptor::parse_all_parameters(prm);
 
   test(a);
   test(b);

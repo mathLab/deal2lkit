@@ -14,8 +14,8 @@
 //
 // ---------------------------------------------------------------------
 
-#ifndef _d2k_config_h
-#define _d2k_config_h
+#ifndef d2k_config_h
+#define d2k_config_h
 
 /***********************************************************************
  * Information about deal2lkit:
@@ -32,8 +32,6 @@
 /***********************************************************************
  * Configured deal2lkit features:
  */
-
-#cmakedefine D2K_WITH_SUNDIALS
 
 /***********************************************************************
  * Various macros for version number query and comparison:

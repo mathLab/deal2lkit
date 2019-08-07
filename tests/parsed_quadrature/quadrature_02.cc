@@ -28,9 +28,10 @@ main()
 
   ParsedQuadrature<2> quadrature;
 
-  ParameterAcceptor::initialize(SOURCE_DIR "/parameters/quadrature_02.prm",
-                                "used_parameters.prm");
-  ParameterAcceptor::prm.log_parameters(deallog);
+  dealii::ParameterAcceptor::initialize(SOURCE_DIR
+                                        "/parameters/quadrature_02.prm",
+                                        "used_parameters.prm");
+  dealii::ParameterAcceptor::prm.log_parameters(deallog);
 
   QSimpson<2> quad;
 

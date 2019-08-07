@@ -38,10 +38,10 @@ main()
                                "",
                                "0=0;1 % 5=ALL % 3=ALL");
 
-  ParameterAcceptor::initialize(SOURCE_DIR
-                                "/parameters/parsed_mapped_functions_09.prm",
-                                "used_parameters.prm");
-  ParameterAcceptor::prm.log_parameters(deallog);
+  dealii::ParameterAcceptor::initialize(
+    SOURCE_DIR "/parameters/parsed_mapped_functions_09.prm",
+    "used_parameters.prm");
+  dealii::ParameterAcceptor::prm.log_parameters(deallog);
 
   Point<3> p(2, 3, 5);
 

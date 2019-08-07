@@ -32,7 +32,7 @@
 
 #include <deal.II/grid/grid_generator.h>
 
-#include <deal.II/lac/constraint_matrix.h>
+#include <deal.II/lac/affine_constraints.h>
 #include <deal.II/lac/vector.h>
 
 #include <deal.II/numerics/vector_tools.h>
@@ -75,7 +75,7 @@ test(const Triangulation<dim> &tr, const FiniteElement<dim> &fe)
        "0=0;0;0;0 % 1=1;1;1;0 % 2=2;2;2;0 % 3=3;3;3;0 % 4=4;4;4;0 % 5=5;5;5;0"));
 
 
-  ParameterAcceptor::initialize();
+  dealii::ParameterAcceptor::initialize();
   parsed_dirichlet.compute_nonzero_normal_flux_constraints(dof, cm);
 
   cm.print(deallog.get_file_stream());
@@ -109,7 +109,7 @@ main()
   initlog();
   deallog << std::setprecision(2);
   deallog << std::fixed;
-  // ParameterAcceptor::prm.log_parameters(deallog);
+  // dealii::ParameterAcceptor::prm.log_parameters(deallog);
 
   test_hyper_cube<2>();
   test_hyper_cube<3>();

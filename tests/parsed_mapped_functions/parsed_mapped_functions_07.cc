@@ -37,10 +37,10 @@ main()
                                "0=x;y;0 % 1=0;0;0 % 6=y*k;beta*y;k",
                                "k=1,beta=2");
 
-  ParameterAcceptor::initialize(SOURCE_DIR
-                                "/parameters/parsed_mapped_functions_07.prm",
-                                "used_parameters.prm");
-  ParameterAcceptor::prm.log_parameters(deallog);
+  dealii::ParameterAcceptor::initialize(
+    SOURCE_DIR "/parameters/parsed_mapped_functions_07.prm",
+    "used_parameters.prm");
+  dealii::ParameterAcceptor::prm.log_parameters(deallog);
 
   Point<2> p(2, 3);
 

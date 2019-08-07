@@ -32,7 +32,7 @@ main()
                                        "FESystem[FE_Q(2)^d-FE_DGP(1)]",
                                        "u,u,p");
 
-  ParameterAcceptor::initialize();
+  dealii::ParameterAcceptor::initialize();
   auto fe = fe_builder();
 
   deallog << "N components: " << fe_builder.n_components()

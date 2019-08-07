@@ -36,7 +36,7 @@
 using namespace deal2lkit;
 
 template <int dim>
-class Test : public ParameterAcceptor
+class Test : public deal2lkit::ParameterAcceptor
 {
 public:
   Test();
@@ -56,16 +56,16 @@ private:
   ParsedFiniteElement<dim>                 fe_builder;
   ParsedGridGenerator<dim, dim>            tria_builder;
   unsigned int                             initial_refinement;
-  shared_ptr<Triangulation<dim>>           triangulation;
+  std::unique_ptr<Triangulation<dim>>      triangulation;
   std::unique_ptr<FiniteElement<dim, dim>> fe;
-  shared_ptr<DoFHandler<dim>>              dof_handler;
+  std::unique_ptr<DoFHandler<dim>>         dof_handler;
   BlockVector<double>                      solution;
   ParsedDataOut<dim, dim>                  data_out;
 };
 
 template <int dim>
 Test<dim>::Test()
-  : ParameterAcceptor("Global parameters")
+  : deal2lkit::ParameterAcceptor("Global parameters")
   , tria_builder("Triangulation")
   , fe_builder("FE_Q", "FESystem[FE_Q(2)^dim-FE_Q(1)]", "u,u,p")
   , data_out("Data out", "vtk", 1, "", "output")
@@ -86,11 +86,10 @@ template <int dim>
 void
 Test<dim>::make_grid_fe()
 {
-  ParameterAcceptor::initialize("parameters_ser.prm",
-                                "used_parameters_ser.prm");
-  triangulation = SP(tria_builder.serial());
+  dealii::ParameterAcceptor::initialize();
+  triangulation = tria_builder.serial();
   triangulation->refine_global(initial_refinement);
-  dof_handler = SP(new DoFHandler<dim>(*triangulation));
+  dof_handler = std::make_unique<DoFHandler<dim>>(*triangulation);
   fe          = fe_builder();
 }
 
@@ -153,6 +152,4 @@ main(int argc, char *argv[])
 
   Test<dim> test;
   test.run();
-
-  // return 0;
 }

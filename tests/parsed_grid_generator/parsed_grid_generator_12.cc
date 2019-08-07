@@ -36,8 +36,8 @@ template <int dim, int spacedim>
 void
 test(ParsedGridGenerator<dim, spacedim> &pgg)
 {
-  Triangulation<dim, spacedim> *tria = pgg.serial();
-  GridOut                       go;
+  auto    tria = pgg.serial();
+  GridOut go;
   go.write_msh(*tria, deallog.get_file_stream());
 }
 
@@ -48,16 +48,16 @@ main()
   ParsedGridGenerator<2, 2> a("Grid");
 
   ParameterHandler prm;
-  ParameterAcceptor::declare_all_parameters(prm);
+  dealii::ParameterAcceptor::declare_all_parameters(prm);
 
   prm.parse_input_from_string(""
                               "subsection Grid\n"
                               "  set Output grid file name = grid.ar\n"
                               "end\n");
 
-  ParameterAcceptor::parse_all_parameters(prm);
+  dealii::ParameterAcceptor::parse_all_parameters(prm);
 
-  auto t = SP(a.serial());
+  auto t = a.serial();
   t->refine_global(1);
   t->begin_active()->set_refine_flag();
   t->execute_coarsening_and_refinement();
@@ -76,8 +76,8 @@ main()
                               "  set Output grid file name = grid2.ar\n"
                               "end\n");
 
-  ParameterAcceptor::parse_all_parameters(prm);
-  auto t2 = SP(a.serial());
+  dealii::ParameterAcceptor::parse_all_parameters(prm);
+  auto t2 = a.serial();
   a.write(*t2);
   deallog << std::endl
           << "========================================" << std::endl;

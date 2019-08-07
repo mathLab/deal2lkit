@@ -53,7 +53,7 @@ main()
 {
   initlog();
 
-  std::string name = "NormalProjectionBoundary";
+  std::string name = "NormalProjectionManifold";
 
   const unsigned int dim      = 2;
   const unsigned int spacedim = 3;
@@ -61,7 +61,7 @@ main()
   ParsedGridGenerator<dim, spacedim> pgg("Default");
 
   ParameterHandler prm;
-  ParameterAcceptor::declare_all_parameters(prm);
+  dealii::ParameterAcceptor::declare_all_parameters(prm);
   std::stringstream input;
 
   input << "subsection Default" << std::endl
@@ -71,14 +71,14 @@ main()
         << "  set Optional int 1 = 0 " << std::endl
         << "  set Copy material to manifold ids = true" << std::endl
         << "  set Manifold descriptors = "
-        << "0=NormalProjectionBoundary:" << SOURCE_DIR "/iges_files/wigley.iges"
+        << "0=NormalProjectionManifold:" << SOURCE_DIR "/iges_files/wigley.iges"
         << std::endl
         << "end" << std::endl;
 
   prm.parse_input_from_string(input.str().c_str());
-  ParameterAcceptor::parse_all_parameters(prm);
+  dealii::ParameterAcceptor::parse_all_parameters(prm);
 
-  shared_ptr<Triangulation<dim, spacedim>> tria = SP(pgg.serial());
+  auto tria = pgg.serial();
   tria->refine_global(1);
 
   GridOut go;

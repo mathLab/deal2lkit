@@ -27,14 +27,12 @@ ParsedDirichletBCs<dim, spacedim>::ParsedDirichletBCs(
   const std::string & parsed_id_components,
   const std::string & parsed_id_functions,
   const std::string & parsed_constants)
-  :
-
-  ParsedMappedFunctions<spacedim>(parsed_name,
-                                  n_components,
-                                  parsed_component_names,
-                                  parsed_id_components,
-                                  parsed_id_functions,
-                                  parsed_constants)
+  : ParsedMappedFunctions<spacedim>(parsed_name,
+                                    n_components,
+                                    parsed_component_names,
+                                    parsed_id_components,
+                                    parsed_id_functions,
+                                    parsed_constants)
   , n_components(n_components)
 {}
 
@@ -55,8 +53,8 @@ ParsedDirichletBCs<dim, spacedim>::parse_parameters_call_back()
 template <int dim, int spacedim>
 void
 ParsedDirichletBCs<dim, spacedim>::interpolate_boundary_values(
-  const DoFHandler<dim, spacedim> &dof_handler,
-  ConstraintMatrix &               constraints) const
+  const DoFHandler<dim, spacedim> &  dof_handler,
+  dealii::AffineConstraints<double> &constraints) const
 {
   std::vector<unsigned int> ids = this->get_mapped_ids();
   for (unsigned int i = 0; i < ids.size(); ++i)
@@ -71,9 +69,9 @@ ParsedDirichletBCs<dim, spacedim>::interpolate_boundary_values(
 template <int dim, int spacedim>
 void
 ParsedDirichletBCs<dim, spacedim>::interpolate_boundary_values(
-  const Mapping<dim, spacedim> &   mapping,
-  const DoFHandler<dim, spacedim> &dof_handler,
-  ConstraintMatrix &               constraints) const
+  const Mapping<dim, spacedim> &     mapping,
+  const DoFHandler<dim, spacedim> &  dof_handler,
+  dealii::AffineConstraints<double> &constraints) const
 {
   std::vector<unsigned int> ids = this->get_mapped_ids();
   for (unsigned int i = 0; i < ids.size(); ++i)
@@ -124,25 +122,28 @@ ParsedDirichletBCs<dim, spacedim>::interpolate_boundary_values(
 // [TODO] Fix this in deal.II.
 
 template <>
-void ParsedDirichletBCs<1, 2>::project_boundary_values(DoFHandler<1, 2> const &,
-                                                       Quadrature<0> const &,
-                                                       ConstraintMatrix &) const
+void ParsedDirichletBCs<1, 2>::project_boundary_values(
+  DoFHandler<1, 2> const &,
+  Quadrature<0> const &,
+  AffineConstraints<double> &) const
 {
   ExcImpossibleInDim(1);
 }
 
 template <>
-void ParsedDirichletBCs<1, 3>::project_boundary_values(DoFHandler<1, 3> const &,
-                                                       Quadrature<0> const &,
-                                                       ConstraintMatrix &) const
+void ParsedDirichletBCs<1, 3>::project_boundary_values(
+  DoFHandler<1, 3> const &,
+  Quadrature<0> const &,
+  AffineConstraints<double> &) const
 {
   ExcImpossibleInDim(1);
 }
 
 template <>
-void ParsedDirichletBCs<2, 3>::project_boundary_values(DoFHandler<2, 3> const &,
-                                                       Quadrature<1> const &,
-                                                       ConstraintMatrix &) const
+void ParsedDirichletBCs<2, 3>::project_boundary_values(
+  DoFHandler<2, 3> const &,
+  Quadrature<1> const &,
+  AffineConstraints<double> &) const
 {
   ExcNotImplemented();
 }
@@ -150,20 +151,22 @@ void ParsedDirichletBCs<2, 3>::project_boundary_values(DoFHandler<2, 3> const &,
 
 template <>
 void
-ParsedDirichletBCs<1, 2>::project_boundary_values(const Mapping<1, 2> &,
-                                                  DoFHandler<1, 2> const &,
-                                                  Quadrature<0> const &,
-                                                  ConstraintMatrix &) const
+ParsedDirichletBCs<1, 2>::project_boundary_values(
+  const Mapping<1, 2> &,
+  DoFHandler<1, 2> const &,
+  Quadrature<0> const &,
+  AffineConstraints<double> &) const
 {
   ExcImpossibleInDim(1);
 }
 
 template <>
 void
-ParsedDirichletBCs<1, 3>::project_boundary_values(const Mapping<1, 3> &,
-                                                  DoFHandler<1, 3> const &,
-                                                  Quadrature<0> const &,
-                                                  ConstraintMatrix &) const
+ParsedDirichletBCs<1, 3>::project_boundary_values(
+  const Mapping<1, 3> &,
+  DoFHandler<1, 3> const &,
+  Quadrature<0> const &,
+  AffineConstraints<double> &) const
 {
   ExcImpossibleInDim(1);
 }
@@ -172,10 +175,11 @@ ParsedDirichletBCs<1, 3>::project_boundary_values(const Mapping<1, 3> &,
 
 template <>
 void
-ParsedDirichletBCs<2, 3>::project_boundary_values(const Mapping<2, 3> &,
-                                                  DoFHandler<2, 3> const &,
-                                                  Quadrature<1> const &,
-                                                  ConstraintMatrix &) const
+ParsedDirichletBCs<2, 3>::project_boundary_values(
+  const Mapping<2, 3> &,
+  DoFHandler<2, 3> const &,
+  Quadrature<1> const &,
+  AffineConstraints<double> &) const
 {
   ExcNotImplemented();
 }
@@ -188,12 +192,12 @@ ParsedDirichletBCs<dim, spacedim>::project_boundary_values(
   const Mapping<dim, spacedim> &   mapping,
   const DoFHandler<dim, spacedim> &dof_handler,
   const Quadrature<dim - 1> &      quadrature,
-  ConstraintMatrix &               constraints) const
+  AffineConstraints<double> &      constraints) const
 {
   std::vector<unsigned int> ids = this->get_mapped_ids();
   for (unsigned int i = 0; i < ids.size(); ++i)
     {
-      typename FunctionMap<spacedim>::type boundary_map;
+      std::map<types::boundary_id, const Function<dim> *> boundary_map;
 
       Function<spacedim> *f;
       f                    = &(*(this->get_mapped_function(ids[i])));
@@ -220,12 +224,12 @@ void
 ParsedDirichletBCs<dim, spacedim>::project_boundary_values(
   const DoFHandler<dim, spacedim> &dof_handler,
   const Quadrature<dim - 1> &      quadrature,
-  ConstraintMatrix &               constraints) const
+  AffineConstraints<double> &      constraints) const
 {
   std::vector<unsigned int> ids = this->get_mapped_ids();
   for (unsigned int i = 0; i < ids.size(); ++i)
     {
-      typename FunctionMap<spacedim>::type boundary_map;
+      std::map<types::boundary_id, const Function<dim> *> boundary_map;
 
       Function<spacedim> *f;
       f                    = &(*(this->get_mapped_function(ids[i])));
@@ -287,7 +291,7 @@ ParsedDirichletBCs<dim, spacedim>::project_boundary_values(
   std::vector<unsigned int> ids = this->get_mapped_ids();
   for (unsigned int i = 0; i < ids.size(); ++i)
     {
-      typename FunctionMap<spacedim>::type boundary_map;
+      std::map<types::boundary_id, const Function<dim> *> boundary_map;
 
       Function<spacedim> *f;
       f                    = &(*(this->get_mapped_function(ids[i])));
@@ -353,7 +357,7 @@ ParsedDirichletBCs<dim, spacedim>::project_boundary_values(
   std::vector<unsigned int> ids = this->get_mapped_ids();
   for (unsigned int i = 0; i < ids.size(); ++i)
     {
-      typename FunctionMap<spacedim>::type boundary_map;
+      std::map<types::boundary_id, const Function<dim> *> boundary_map;
 
       Function<spacedim> *f;
       f                    = &(*(this->get_mapped_function(ids[i])));
@@ -377,7 +381,7 @@ template <>
 void
 ParsedDirichletBCs<1, 1>::compute_no_normal_flux_constraints(
   const DoFHandler<1, 1> &,
-  ConstraintMatrix &) const
+  AffineConstraints<double> &) const
 {
   Assert(false, ExcImpossibleInDim(1));
 }
@@ -387,7 +391,7 @@ void
 ParsedDirichletBCs<1, 1>::compute_no_normal_flux_constraints(
   const DoFHandler<1, 1> &,
   const Mapping<1, 1> &,
-  ConstraintMatrix &) const
+  AffineConstraints<double> &) const
 {
   Assert(false, ExcImpossibleInDim(1));
 }
@@ -397,7 +401,7 @@ ParsedDirichletBCs<1, 1>::compute_no_normal_flux_constraints(
 template <>
 void ParsedDirichletBCs<1, 1>::compute_nonzero_normal_flux_constraints(
   DoFHandler<1, 1> const &,
-  ConstraintMatrix &) const
+  AffineConstraints<double> &) const
 {
   Assert(false, ExcImpossibleInDim(1));
 }
@@ -407,7 +411,7 @@ void
 ParsedDirichletBCs<1, 1>::compute_nonzero_normal_flux_constraints(
   const DoFHandler<1, 1> &,
   const Mapping<1, 1> &,
-  ConstraintMatrix &) const
+  AffineConstraints<double> &) const
 {
   Assert(false, ExcImpossibleInDim(1));
 }
@@ -418,7 +422,7 @@ template <>
 void
 ParsedDirichletBCs<1, 2>::compute_no_normal_flux_constraints(
   const DoFHandler<1, 2> &,
-  ConstraintMatrix &) const
+  AffineConstraints<double> &) const
 {
   Assert(false, ExcImpossibleInDim(1));
 }
@@ -428,7 +432,7 @@ void
 ParsedDirichletBCs<1, 2>::compute_no_normal_flux_constraints(
   const DoFHandler<1, 2> &,
   const Mapping<1, 2> &,
-  ConstraintMatrix &) const
+  AffineConstraints<double> &) const
 {
   Assert(false, ExcImpossibleInDim(1));
 }
@@ -438,7 +442,7 @@ ParsedDirichletBCs<1, 2>::compute_no_normal_flux_constraints(
 template <>
 void ParsedDirichletBCs<1, 2>::compute_nonzero_normal_flux_constraints(
   DoFHandler<1, 2> const &,
-  ConstraintMatrix &) const
+  AffineConstraints<double> &) const
 {
   Assert(false, ExcImpossibleInDim(1));
 }
@@ -448,7 +452,7 @@ void
 ParsedDirichletBCs<1, 2>::compute_nonzero_normal_flux_constraints(
   const DoFHandler<1, 2> &,
   const Mapping<1, 2> &,
-  ConstraintMatrix &) const
+  AffineConstraints<double> &) const
 {
   Assert(false, ExcImpossibleInDim(1));
 }
@@ -458,7 +462,7 @@ template <>
 void
 ParsedDirichletBCs<1, 3>::compute_no_normal_flux_constraints(
   const DoFHandler<1, 3> &,
-  ConstraintMatrix &) const
+  AffineConstraints<double> &) const
 {
   Assert(false, ExcImpossibleInDim(1));
 }
@@ -468,7 +472,7 @@ void
 ParsedDirichletBCs<1, 3>::compute_no_normal_flux_constraints(
   const DoFHandler<1, 3> &,
   const Mapping<1, 3> &,
-  ConstraintMatrix &) const
+  AffineConstraints<double> &) const
 {
   Assert(false, ExcImpossibleInDim(1));
 }
@@ -478,7 +482,7 @@ ParsedDirichletBCs<1, 3>::compute_no_normal_flux_constraints(
 template <>
 void ParsedDirichletBCs<1, 3>::compute_nonzero_normal_flux_constraints(
   DoFHandler<1, 3> const &,
-  ConstraintMatrix &) const
+  AffineConstraints<double> &) const
 {
   Assert(false, ExcImpossibleInDim(1));
 }
@@ -488,7 +492,7 @@ void
 ParsedDirichletBCs<1, 3>::compute_nonzero_normal_flux_constraints(
   const DoFHandler<1, 3> &,
   const Mapping<1, 3> &,
-  ConstraintMatrix &) const
+  AffineConstraints<double> &) const
 {
   Assert(false, ExcImpossibleInDim(1));
 }
@@ -499,7 +503,7 @@ template <>
 void
 ParsedDirichletBCs<2, 3>::compute_no_normal_flux_constraints(
   const DoFHandler<2, 3> &,
-  ConstraintMatrix &) const
+  AffineConstraints<double> &) const
 {
   Assert(false, ExcImpossibleInDim(2));
 }
@@ -509,7 +513,7 @@ void
 ParsedDirichletBCs<2, 3>::compute_no_normal_flux_constraints(
   const DoFHandler<2, 3> &,
   const Mapping<2, 3> &,
-  ConstraintMatrix &) const
+  AffineConstraints<double> &) const
 {
   Assert(false, ExcImpossibleInDim(2));
 }
@@ -519,7 +523,7 @@ ParsedDirichletBCs<2, 3>::compute_no_normal_flux_constraints(
 template <>
 void ParsedDirichletBCs<2, 3>::compute_nonzero_normal_flux_constraints(
   DoFHandler<2, 3> const &,
-  ConstraintMatrix &) const
+  AffineConstraints<double> &) const
 {
   Assert(false, ExcImpossibleInDim(2));
 }
@@ -529,7 +533,7 @@ void
 ParsedDirichletBCs<2, 3>::compute_nonzero_normal_flux_constraints(
   const DoFHandler<2, 3> &,
   const Mapping<2, 3> &,
-  ConstraintMatrix &) const
+  AffineConstraints<double> &) const
 {
   Assert(false, ExcImpossibleInDim(2));
 }
@@ -539,7 +543,7 @@ template <int dim, int spacedim>
 void
 ParsedDirichletBCs<dim, spacedim>::compute_no_normal_flux_constraints(
   const DoFHandler<dim, spacedim> &dof_handler,
-  ConstraintMatrix &               constraints) const
+  AffineConstraints<double> &      constraints) const
 {
   std::set<types::boundary_id> no_normal_flux_boundaries;
 
@@ -569,7 +573,7 @@ void
 ParsedDirichletBCs<dim, spacedim>::compute_no_normal_flux_constraints(
   const DoFHandler<dim, spacedim> &dof_handler,
   const Mapping<dim, spacedim> &   mapping,
-  ConstraintMatrix &               constraints) const
+  AffineConstraints<double> &      constraints) const
 {
   std::set<types::boundary_id> no_normal_flux_boundaries;
 
@@ -600,7 +604,7 @@ template <int dim, int spacedim>
 void
 ParsedDirichletBCs<dim, spacedim>::compute_nonzero_normal_flux_constraints(
   const DoFHandler<dim, spacedim> &dof_handler,
-  ConstraintMatrix &               constraints) const
+  AffineConstraints<double> &      constraints) const
 {
   std::set<types::boundary_id> no_normal_flux_boundaries;
 
@@ -612,7 +616,7 @@ ParsedDirichletBCs<dim, spacedim>::compute_nonzero_normal_flux_constraints(
        it != this->mapped_normal_components.end();
        ++it)
     {
-      typename FunctionMap<spacedim>::type boundary_map;
+      std::map<types::boundary_id, const Function<dim> *> boundary_map;
 
       std::vector<unsigned int> normal_ids = (it->second).first;
       unsigned int              fcv =
@@ -636,7 +640,7 @@ void
 ParsedDirichletBCs<dim, spacedim>::compute_nonzero_normal_flux_constraints(
   const DoFHandler<dim, spacedim> &dof_handler,
   const Mapping<dim, spacedim> &   mapping,
-  ConstraintMatrix &               constraints) const
+  AffineConstraints<double> &      constraints) const
 {
   std::set<types::boundary_id> no_normal_flux_boundaries;
 
@@ -648,7 +652,7 @@ ParsedDirichletBCs<dim, spacedim>::compute_nonzero_normal_flux_constraints(
        it != this->mapped_normal_components.end();
        ++it)
     {
-      typename FunctionMap<spacedim>::type boundary_map;
+      std::map<types::boundary_id, const Function<dim> *> boundary_map;
 
       std::vector<unsigned int> normal_ids = (it->second).first;
       unsigned int              fcv =

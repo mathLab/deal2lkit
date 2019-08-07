@@ -37,30 +37,17 @@ ParsedILUPreconditioner::ParsedILUPreconditioner(const std::string & name,
 void
 ParsedILUPreconditioner::declare_parameters(ParameterHandler &prm)
 {
-  add_parameter(prm,
-                &ilu_fill,
-                "Fill-in",
-                std::to_string(ilu_fill),
-                Patterns::Integer(0),
-                "Additional fill-in.");
-  add_parameter(prm,
-                &ilu_atol,
-                "ILU atol",
-                std::to_string(ilu_atol),
-                Patterns::Double(0.0),
-                "The amount of perturbation to add to diagonal entries.");
-  add_parameter(prm,
-                &ilu_rtol,
-                "ILU rtol",
-                std::to_string(ilu_rtol),
-                Patterns::Double(0.0),
-                "Scaling factor for diagonal entries.");
-  add_parameter(prm,
-                &overlap,
-                "Overlap",
-                std::to_string(overlap),
-                Patterns::Integer(0),
-                "Overlap between processors.");
+  prm.add_parameter("Fill-in", ilu_fill, "Additional fill-in.");
+
+  prm.add_parameter("ILU atol",
+                    ilu_atol,
+                    "The amount of perturbation to add to diagonal entries.");
+
+  prm.add_parameter("ILU rtol",
+                    ilu_rtol,
+                    "Scaling factor for diagonal entries.");
+
+  prm.add_parameter("Overlap", overlap, "Overlap between processors.");
 }
 
 template <typename Matrix>

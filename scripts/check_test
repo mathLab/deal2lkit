@@ -10,7 +10,7 @@ cwdiff, and give you the opportunity to accept new results.
     exit 0
 fi
 
-FILE=`ctest -N | grep $1 | head -n 1 | awk '{print $NF}'`
+FILE=tests/`ctest -N | grep $1 | head -n 1 | awk '{print $NF}'`
 
 if [ -z "$FILE" ]; then
     echo "Using $1, I could not find any corresponding test..."

@@ -31,6 +31,6 @@ main(int argc, char *argv[])
 
   ParsedJacobiPreconditioner Jacobi("Jacobi prec");
 
-  ParameterAcceptor::initialize();
-  ParameterAcceptor::prm.log_parameters(deallog);
+  dealii::ParameterAcceptor::initialize();
+  dealii::ParameterAcceptor::prm.log_parameters(deallog);
 }

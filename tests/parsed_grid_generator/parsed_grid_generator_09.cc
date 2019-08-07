@@ -30,10 +30,9 @@ template <int dim, int spacedim>
 void
 test(ParsedGridGenerator<dim, spacedim> &pgg)
 {
-  Triangulation<dim, spacedim> *tria = pgg.serial();
-  GridOut                       go;
+  auto    tria = pgg.serial();
+  GridOut go;
   go.write_msh(*tria, deallog.get_file_stream());
-  delete tria;
 }
 
 
@@ -108,8 +107,8 @@ main()
                               "none",
                               "");
 
-  ParameterAcceptor::initialize();
-  ParameterAcceptor::prm.log_parameters(deallog);
+  dealii::ParameterAcceptor::initialize();
+  dealii::ParameterAcceptor::prm.log_parameters(deallog);
 
   deallog << "Unit Hyperball" << std::endl;
   test(a);

@@ -161,7 +161,7 @@ ParsedZeroAverageConstraints<1, 1>::internal_zero_average_constraints(
   const DoFHandler<1, 1> &,
   const ComponentMask,
   const bool,
-  ConstraintMatrix &) const
+  AffineConstraints<double> &) const
 {
   ExcImpossibleInDim(1);
 }
@@ -172,7 +172,7 @@ ParsedZeroAverageConstraints<1, 2>::internal_zero_average_constraints(
   const DoFHandler<1, 2> &,
   const ComponentMask,
   const bool,
-  ConstraintMatrix &) const
+  AffineConstraints<double> &) const
 {
   ExcImpossibleInDim(1);
 }
@@ -183,7 +183,7 @@ ParsedZeroAverageConstraints<1, 3>::internal_zero_average_constraints(
   const DoFHandler<1, 3> &,
   const ComponentMask,
   const bool,
-  ConstraintMatrix &) const
+  AffineConstraints<double> &) const
 {
   ExcImpossibleInDim(1);
 }
@@ -195,7 +195,7 @@ ParsedZeroAverageConstraints<dim, spacedim>::internal_zero_average_constraints(
   const DoFHandler<dim, spacedim> &dof_handler,
   const ComponentMask              mask,
   const bool                       at_boundary,
-  ConstraintMatrix &               constraints) const
+  AffineConstraints<double> &      constraints) const
 {
   std::vector<bool> constrained_dofs(dof_handler.n_dofs(), false);
 
@@ -220,7 +220,7 @@ template <int dim, int spacedim>
 void
 ParsedZeroAverageConstraints<dim, spacedim>::apply_zero_average_constraints(
   const DoFHandler<dim, spacedim> &dof_handler,
-  ConstraintMatrix &               constraints) const
+  AffineConstraints<double> &      constraints) const
 {
   for (unsigned int i = 0; i < n_components; ++i)
     {

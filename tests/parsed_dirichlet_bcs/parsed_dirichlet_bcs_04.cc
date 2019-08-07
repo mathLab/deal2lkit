@@ -29,9 +29,9 @@
 
 #include <deal.II/grid/grid_generator.h>
 #include <deal.II/grid/grid_refinement.h>
+#include <deal.II/grid/manifold_lib.h>
 #include <deal.II/grid/tria.h>
 #include <deal.II/grid/tria_accessor.h>
-#include <deal.II/grid/tria_boundary_lib.h>
 #include <deal.II/grid/tria_iterator.h>
 
 #include <deal.II/lac/vector.h>
@@ -86,7 +86,7 @@ test()
                 (dim == 2 ? "10=x^2+y^2 % 20=x^2+y^2" :
                             "10=x^2+y^2+z^2 % 20=x^2+y^2+z^2")));
 
-  ParameterAcceptor::initialize();
+  dealii::ParameterAcceptor::initialize();
   std::map<types::global_dof_index, double> boundary_values;
   parsed_dirichlet.project_boundary_values(mapping,
                                            dof_handler,
@@ -109,7 +109,7 @@ main()
 {
   initlog();
   deallog.depth_console(0);
-  ParameterAcceptor::prm.log_parameters(deallog);
+  dealii::ParameterAcceptor::prm.log_parameters(deallog);
 
   test<1>();
   test<2>();

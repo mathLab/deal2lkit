@@ -21,8 +21,8 @@
 #include <deal.II/grid/grid_generator.h>
 #include <deal.II/grid/grid_out.h>
 #include <deal.II/grid/grid_tools.h>
+#include <deal.II/grid/manifold_lib.h>
 #include <deal.II/grid/tria.h>
-#include <deal.II/grid/tria_boundary_lib.h>
 
 #include <deal.II/lac/block_vector.h>
 
@@ -38,7 +38,7 @@
 using namespace deal2lkit;
 
 template <int dim, int spacedim>
-class Test : public ParameterAcceptor
+class Test : public deal2lkit::ParameterAcceptor
 {
 public:
   Test();
@@ -60,9 +60,9 @@ private:
   ParsedFiniteElement<dim, spacedim> fe_builder;
 
   unsigned int                                  initial_refinement;
-  shared_ptr<Triangulation<dim, spacedim>>      triangulation;
+  std::unique_ptr<Triangulation<dim, spacedim>> triangulation;
   std::unique_ptr<FiniteElement<dim, spacedim>> fe;
-  shared_ptr<DoFHandler<dim, spacedim>>         dof_handler;
+  std::unique_ptr<DoFHandler<dim, spacedim>>    dof_handler;
   BlockVector<double>                           solution;
   ParsedDataOut<dim, spacedim>                  data_out;
 };
@@ -90,17 +90,23 @@ template <int dim, int spacedim>
 void
 Test<dim, spacedim>::make_grid_fe()
 {
-  ParameterAcceptor::initialize("parameters_new.prm",
-                                "used_parameters_new.prm");
+  try
+    {
+      dealii::ParameterAcceptor::initialize("parameters_new.prm",
+                                            "used_parameters_new.prm");
+    }
+  catch (...)
+    {
+      dealii::ParameterAcceptor::initialize("parameters_new.prm",
+                                            "used_parameters_new.prm");
+    }
   // std::map< Triangulation<dim,spacedim>::cell_iterator,
   //      Triangulation<spacedim,spacedim>::face_iterator>
   //      surface_to_volume_mapping;
-
-  triangulation = SP(new Triangulation<dim, spacedim>);
-
+  triangulation = std::make_unique<Triangulation<dim, spacedim>>();
   GridGenerator::extract_boundary_mesh(*tria_builder.serial(), *triangulation);
   triangulation->refine_global(initial_refinement);
-  dof_handler = SP(new DoFHandler<dim, spacedim>(*triangulation));
+  dof_handler = std::make_unique<DoFHandler<dim, spacedim>>(*triangulation);
   fe          = fe_builder();
 }
 
