@@ -20,7 +20,27 @@
 
 #include <deal.II/dofs/dof_handler.h>
 
-#include <deal.II/lac/affine_constraints.h>
+// old versions of dealii use ConstraintMatrix but the new versions
+// have switched to AffineConstraints<double>
+#if DEAL_II_VERSION_GTE(9, 1, 0)
+#  include <deal.II/lac/affine_constraints.h>
+#else
+#  include <deal.II/lac/constraint_matrix.h>
+namespace dealii
+{
+  template <typename Number>
+  struct ConstraintsHelper;
+
+  template <>
+  struct ConstraintsHelper<double>
+  {
+    using type = ConstraintMatrix;
+  };
+
+  template <typename Number>
+  using AffineConstraints = typename ConstraintsHelper<Number>::type;
+} // namespace dealii
+#endif
 
 #include <deal.II/numerics/vector_tools.h>
 
