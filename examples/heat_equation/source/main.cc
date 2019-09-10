@@ -13,6 +13,8 @@
 //
 //-----------------------------------------------------------
 
+#include <deal.II/base/logstream.h>
+
 #include <deal2lkit/parameter_acceptor.h>
 #include <deal2lkit/utilities.h>
 
@@ -20,12 +22,13 @@
 
 #include "heat_ida.h"
 
+using namespace dealii;
+
 int
 main(int argc, char **argv)
 {
   deallog.depth_console(0);
 
-#ifdef D2K_WITH_SUNDIALS
   Utilities::MPI::MPI_InitFinalize mpi_initialization(
     argc, argv, numbers::invalid_unsigned_int);
 
@@ -35,18 +38,8 @@ main(int argc, char **argv)
 
   Heat<2> solver(comm);
 
-  ParameterAcceptor::initialize("../source/heat_ida.prm",
-                                "used_parameters.prm");
+  dealii::ParameterAcceptor::initialize("../source/heat_ida.prm",
+                                        "used_parameters.prm");
 
   solver.run();
-
-  return 0;
-
-#else
-  std::cout << "This example requires that the option \n"
-            << "D2K_WITH_SUNDIALS is set to ON. \n"
-            << "Please recompile the deal2lkit library \n"
-            << "with the option -DD2K_WITH_SUNDIALS=ON " << std::endl;
-  return 1;
-#endif
 }

@@ -11,7 +11,7 @@ locks/base.%: Dockerfile.base.%
 	touch locks/base.$*
 
 locks/deal2lkit.%: Dockerfile.deal2lkit.%
-	docker build -t mathlab/deal2lkit:$*-debugrelease -f Dockerfile.deal2lkit.$* .
+	docker build --build-arg VER=$* -t mathlab/deal2lkit:$*-debugrelease -f Dockerfile.deal2lkit.$* .
 	touch locks/deal2lkit.$*
 
 push-%: locks/base.% locks/deal2lkit.%
