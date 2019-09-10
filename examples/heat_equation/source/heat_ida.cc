@@ -15,31 +15,29 @@
 
 #include "heat_ida.h"
 
-#ifdef D2K_WITH_SUNDIALS
+#include <deal.II/distributed/solution_transfer.h>
 
-#  include <deal.II/distributed/solution_transfer.h>
+#include <deal.II/dofs/dof_accessor.h>
+#include <deal.II/dofs/dof_renumbering.h>
+#include <deal.II/dofs/dof_tools.h>
 
-#  include <deal.II/dofs/dof_accessor.h>
-#  include <deal.II/dofs/dof_renumbering.h>
-#  include <deal.II/dofs/dof_tools.h>
+#include <deal.II/lac/packaged_operation.h>
+#include <deal.II/lac/parallel_vector.h>
+#include <deal.II/lac/sparsity_tools.h>
 
-#  include <deal.II/lac/packaged_operation.h>
-#  include <deal.II/lac/parallel_vector.h>
-#  include <deal.II/lac/sparsity_tools.h>
+#include <deal.II/numerics/error_estimator.h>
+#include <deal.II/numerics/matrix_tools.h>
+#include <deal.II/numerics/solution_transfer.h>
+#include <deal.II/numerics/vector_tools.h>
 
-#  include <deal.II/numerics/error_estimator.h>
-#  include <deal.II/numerics/matrix_tools.h>
-#  include <deal.II/numerics/solution_transfer.h>
-#  include <deal.II/numerics/vector_tools.h>
-
-#  include <nvector/nvector_parallel.h>
+#include <nvector/nvector_parallel.h>
 //#include <deal.II/base/index_set.h>
-#  include <deal.II/distributed/grid_refinement.h>
-#  include <deal.II/distributed/tria.h>
+#include <deal.II/distributed/grid_refinement.h>
+#include <deal.II/distributed/tria.h>
 
-#  include <nvector/nvector_parallel.h>
-#  include <sundials/sundials_math.h>
-#  include <sundials/sundials_types.h>
+#include <nvector/nvector_parallel.h>
+#include <sundials/sundials_math.h>
+#include <sundials/sundials_types.h>
 
 template <int dim>
 Heat<dim>::Heat(const MPI_Comm communicator)
@@ -48,41 +46,32 @@ Heat<dim>::Heat(const MPI_Comm communicator)
   , timer_outfile("timer.txt")
   , tcout(timer_outfile, (Utilities::MPI::this_mpi_process(comm) == 0))
   , computing_timer(comm, tcout, TimerOutput::summary, TimerOutput::wall_times)
-  ,
-
-  eh("Error Tables", "u", "L2,H1")
-  ,
-
-  pgg("Domain")
+  , pgg("Domain")
   , pgr("Refinement")
   , fe_builder("Finite Element")
-  ,
-
-  exact_solution("Exact solution", 1)
+  , exact_solution("Exact solution", 1)
   , forcing_term("Forcing term", 1)
   , initial_solution("Initial solution", 1)
   , initial_solution_dot("Initial solution_dot", 1)
   , dirichlet_bcs("Dirichlet BCs", 1, "u", "0=u")
-  ,
-
-  data_out("Output Parameters", "vtu")
+  , data_out("Output Parameters", "vtu")
   , Ainv("Solver",
          "cg",
          /* iter= */ 1000,
          /* reduction= */ 1e-8,
          linear_operator<VEC>(jacobian_matrix))
-  , ida("IDA Solver Parameters", comm)
+  , ida(ida_parameters, comm)
 {}
 
 template <int dim>
 void
 Heat<dim>::declare_parameters(ParameterHandler &prm)
 {
-  add_parameter(prm,
-                &initial_global_refinement,
-                "Initial global refinement",
-                "1",
-                Patterns::Integer(0));
+  prm.enter_subsection("Sundials IDA parameters");
+  ida_parameters.add_parameters(prm);
+  prm.leave_subsection();
+
+  prm.add_parameter("Initial global refinement", initial_global_refinement);
 
   add_parameter(prm,
                 &max_time_iterations,
@@ -119,9 +108,9 @@ template <int dim>
 void
 Heat<dim>::make_grid_fe()
 {
-  triangulation = SP(pgg.distributed(comm));
-  dof_handler   = SP(new DoFHandler<dim>(*triangulation));
-  fe            = SP(fe_builder());
+  triangulation = pgg.distributed(comm);
+  dof_handler   = std::make_unique<DoFHandler<dim>>(*triangulation);
+  fe            = fe_builder();
   triangulation->refine_global(initial_global_refinement);
 }
 
@@ -134,7 +123,7 @@ Heat<dim>::setup_dofs(const bool &first_run)
 
   dof_handler->distribute_dofs(*fe);
 
-  mapping = SP(new MappingQ<dim>(1));
+  mapping = std::make_unique<MappingQ<dim>>(1);
 
   const unsigned int n_dofs = dof_handler->n_dofs();
 
@@ -392,8 +381,7 @@ template <int dim>
 shared_ptr<VEC>
 Heat<dim>::create_new_vector() const
 {
-  shared_ptr<VEC> ret = SP(new VEC(solution));
-  return ret;
+  return std::make_shared<VEC>(solution);
 }
 
 template <int dim>
@@ -437,10 +425,10 @@ Heat<dim>::output_step(const double       t,
   data_out.add_data_vector(distributed_solution_dot, print(sol_dot_names, ","));
 
   data_out.write_data_and_clear(*mapping);
-  eh.error_from_exact(*mapping,
-                      *dof_handler,
-                      distributed_solution,
-                      exact_solution);
+  convergence_table.error_from_exact(*mapping,
+                                     *dof_handler,
+                                     distributed_solution,
+                                     exact_solution);
 
   computing_timer.exit_section();
 }
@@ -462,7 +450,7 @@ Heat<dim>::solver_should_restart(const double, VEC &solution, VEC &solution_dot)
       KellyErrorEstimator<dim>::estimate(
         *dof_handler,
         QGauss<dim - 1>(fe->degree + 1),
-        typename FunctionMap<dim>::type(),
+        {},
         distributed_solution,
         estimated_error_per_cell,
         ComponentMask(),
@@ -597,9 +585,9 @@ Heat<dim>::run()
 
   constraints.distribute(solution);
 
-  ida.create_new_vector = [this]() -> shared_ptr<VEC> {
-    return this->create_new_vector();
-  };
+  //  ida.create_new_vector = [this]() -> shared_ptr<VEC> {
+  //    return this->create_new_vector();
+  //  };
   ida.residual = [this](const double t,
                         const VEC &  y,
                         const VEC &  y_dot,
@@ -629,22 +617,21 @@ Heat<dim>::run()
                            const unsigned int step_number) {
     this->output_step(t, y, y_dot, step_number);
   };
-  ida.differential_components = [this]() -> VEC & {
-    return this->differential_components();
-  };
+  //  ida.differential_components = [this]() -> VEC & {
+  //    return this->differential_components();
+  //  };
 
   ida.solve_dae(solution, solution_dot);
-  eh.error_from_exact(*mapping,
-                      *dof_handler,
-                      distributed_solution,
-                      exact_solution);
+  convergence_table.error_from_exact(*mapping,
+                                     *dof_handler,
+                                     distributed_solution,
+                                     exact_solution);
 
-  eh.output_table(pcout);
+  if (pcout.is_active())
+    convergence_table.output_table(pcout.get_stream());
 
   computing_timer.print_summary();
   timer_outfile.close();
 }
 
 template class Heat<2>;
-
-#endif
