@@ -72,11 +72,12 @@ struct PGGHelper;
  *
  *   // Construct a serial mesh following the indications in "file.prm"
  *   // in the section "2D mesh"
- *   Triangulation<2,2> *tria_serial  = tria_builder_2d.serial();
+ *   std::unique_ptr<Triangulation<2,2>> tria_serial =
+ *         tria_builder_2d.serial();
  *
  *   // Construct a parallel::distributed::Triangulation following the
  *   // indications in "file.prm'', in the section "3D mesh"
- *   parallel::distributed::Triangulation<3,3> *tria_mpi =
+ *   std::unique_ptr<parallel::distributed::Triangulation<3,3>> tria_mpi =
  *         tria_builder_3d.distributed(MPI_COMM_WORLD);
  * \endcode
  *
