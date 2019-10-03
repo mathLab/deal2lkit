@@ -307,43 +307,35 @@ ParsedMappedFunctions<spacedim>::declare_parameters(ParameterHandler &prm)
         "instead of specifying each component number",
         Patterns::List(Patterns::Anything(), 1, n_components, ","));
     }
-  add_parameter(prm,
-                &str_id_components,
-                "IDs and component masks",
-                str_id_components,
-                Patterns::Anything(),
-                "Pattern to be used "
-                "id followed by '=' component masks separated by ';' "
-                "each couple of id and mask is separated by '%' "
-                "0=0;1;2 % 4=u;p % 2=3 % 5=ALL "
-                "You can specify the components either by numbers "
-                "or by the corrisponding variable name, which are parsed at "
-                "construction time. "
-                "The keyword 'ALL' means all the components. "
-                "Normal component is referred with suffix N "
-                "e.g. uN means the normal component of u. "
-                "note that the normal component can be set only "
-                "for a vector variable.");
+  prm.add_parameter(
+    "IDs and component masks",
+    str_id_components,
+    "Pattern to be used "
+    "id followed by '=' component masks separated by ';' "
+    "each couple of id and mask is separated by '%' "
+    "0=0;1;2 % 4=u;p % 2=3 % 5=ALL "
+    "You can specify the components either by numbers "
+    "or by the corrisponding variable name, which are parsed at "
+    "construction time. "
+    "The keyword 'ALL' means all the components. "
+    "Normal component is referred with suffix N "
+    "e.g. uN means the normal component of u. "
+    "note that the normal component can be set only "
+    "for a vector variable.");
 
-  add_parameter(
-    prm,
-    &str_id_functions,
+  prm.add_parameter(
     "IDs and expressions",
     str_id_functions,
-    Patterns::Anything(),
     "Pattern to be used  "
     "id followed by '=' component separated by ';' "
     "each couple of id and expression _id_functions separated by '%' "
     "0=x;y;k;0 % 4=sin(x);cos(y);2*k;1 % 2=0;0;0;0 "
     "If it is left empty, a ZeroFunction<dim>(n_components) "
-    "is applied on the parsed ids in the components. ");
+    "is applied on the parsed ids in the components.");
 
-  add_parameter(
-    prm,
-    &str_constants,
+  prm.add_parameter(
     "Used constants",
     str_constants,
-    Patterns::Anything(),
     "Costants which are employed in the definitions of the function expressions. "
     "The pattern to be used is "
     "constant_name=value , other_constant=other_value");
