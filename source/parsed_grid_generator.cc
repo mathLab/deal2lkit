@@ -405,6 +405,35 @@ ParsedGridGenerator<dim, spacedim>::serial()
   return tria;
 }
 
+#ifdef DEAL_II_WITH_OPENCASCADE
+/**
+ * Define backward compatible Manifold types.
+ */
+namespace Manifolds
+{
+  using namespace OpenCASCADE;
+#  if DEAL_II_VERSION_GTE(9, 1, 0)
+  template <int dim, int spacedim>
+  using DirectionalProjection = DirectionalProjectionManifold<dim, spacedim>;
+
+  template <int dim, int spacedim>
+  using NormalProjection = NormalProjectionManifold<dim, spacedim>;
+
+  template <int dim, int spacedim>
+  using NormalToMeshProjection = NormalToMeshProjectionManifold<dim, spacedim>;
+#  else
+  template <int dim, int spacedim>
+  using DirectionalProjection = DirectionalProjectionBoundary<dim, spacedim>;
+
+  template <int dim, int spacedim>
+  using NormalProjection = NormalProjectionBoundary<dim, spacedim>;
+
+  template <int dim, int spacedim>
+  using NormalToMeshProjection = NormalToMeshProjectionBoundary<dim, spacedim>;
+#  endif
+} // namespace Manifolds
+#endif
+
 /**
  * Parsed Grid Generator Helper. This class only contains static members and
  * is declared friend of ParsedGridGenerator, to allow creation of grids in
@@ -759,22 +788,21 @@ struct PGGHelper
           {
             AssertDimension(subnames.size(), 2);
             return std::make_shared<
-              OpenCASCADE::DirectionalProjectionManifold<dim, spacedim>>(
+              Manifolds::DirectionalProjection<dim, spacedim>>(
               PGGHelper::readOCC(subnames[1], p->double_option_one),
               (Tensor<1, spacedim>)p->point_option_one);
           }
         else if (subnames[0] == "NormalProjectionManifold")
           {
             AssertDimension(subnames.size(), 2);
-            return std::make_shared<
-              OpenCASCADE::NormalProjectionManifold<dim, spacedim>>(
+            return std::make_shared<Manifolds::NormalProjection<dim, spacedim>>(
               PGGHelper::readOCC(subnames[1], p->double_option_one));
           }
         else if (subnames[0] == "NormalToMeshProjectionManifold")
           {
             AssertDimension(subnames.size(), 2);
             return std::make_shared<
-              OpenCASCADE::NormalToMeshProjectionManifold<dim, spacedim>>(
+              Manifolds::NormalToMeshProjection<dim, spacedim>>(
               PGGHelper::readOCC(subnames[1], p->double_option_one));
           }
 #endif
@@ -809,22 +837,21 @@ struct PGGHelper
           {
             AssertDimension(subnames.size(), 2);
             return std::make_shared<
-              OpenCASCADE::DirectionalProjectionManifold<dim, spacedim>>(
+              Manifolds::DirectionalProjection<dim, spacedim>>(
               PGGHelper::readOCC(subnames[1], p->double_option_one),
               (Tensor<1, spacedim>)p->point_option_one);
           }
         else if (subnames[0] == "NormalProjectionManifold")
           {
             AssertDimension(subnames.size(), 2);
-            return std::make_shared<
-              OpenCASCADE::NormalProjectionManifold<dim, spacedim>>(
+            return std::make_shared<Manifolds::NormalProjection<dim, spacedim>>(
               PGGHelper::readOCC(subnames[1], p->double_option_one));
           }
         else if (subnames[0] == "NormalToMeshProjectionManifold")
           {
             AssertDimension(subnames.size(), 2);
             return std::make_shared<
-              OpenCASCADE::NormalToMeshProjectionManifold<dim, spacedim>>(
+              Manifolds::NormalToMeshProjection<dim, spacedim>>(
               PGGHelper::readOCC(subnames[1], p->double_option_one));
           }
 #endif
