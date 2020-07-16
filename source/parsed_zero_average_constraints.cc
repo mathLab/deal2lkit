@@ -197,22 +197,30 @@ ParsedZeroAverageConstraints<dim, spacedim>::internal_zero_average_constraints(
   const bool                       at_boundary,
   AffineConstraints<double> &      constraints) const
 {
-  std::vector<bool> constrained_dofs(dof_handler.n_dofs(), false);
-
   if (at_boundary)
-    DoFTools::extract_boundary_dofs(dof_handler, mask, constrained_dofs);
+    {
+      std::vector<bool> constrained_dofs(dof_handler.n_dofs(), false);
+      DoFTools::extract_boundary_dofs(dof_handler, mask, constrained_dofs);
+
+      const unsigned int first_dof = std::distance(
+        constrained_dofs.begin(),
+        std::find(constrained_dofs.begin(), constrained_dofs.end(), true));
+
+      constraints.add_line(first_dof);
+      for (unsigned int i = first_dof + 1; i < dof_handler.n_dofs(); ++i)
+        if (constrained_dofs[i] == true)
+          constraints.add_entry(first_dof, i, -1);
+    }
   else
-    DoFTools::extract_dofs(dof_handler, mask, constrained_dofs);
+    {
+      const auto constrained_dofs = DoFTools::extract_dofs(dof_handler, mask);
+      auto       first_dof        = constrained_dofs.begin();
 
-
-  const unsigned int first_dof = std::distance(
-    constrained_dofs.begin(),
-    std::find(constrained_dofs.begin(), constrained_dofs.end(), true));
-
-  constraints.add_line(first_dof);
-  for (unsigned int i = first_dof + 1; i < dof_handler.n_dofs(); ++i)
-    if (constrained_dofs[i] == true)
-      constraints.add_entry(first_dof, i, -1);
+      constraints.add_line(*first_dof);
+      for (auto i : constrained_dofs)
+        if (i != *first_dof)
+          constraints.add_entry(*first_dof, i, -1);
+    }
 }
 
 
