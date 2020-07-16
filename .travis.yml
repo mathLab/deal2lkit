@@ -12,7 +12,7 @@ notifications:
 language: cpp 
 
 before_install:
-  - test -d build-travis || mkdir build-travis; sudo chown -R $(id -u $USER):$(id -g $USER) build-travis
+  - test -d build-travis || mkdir build-travis; sudo chown -R 1000:1000 build-travis
   - ./scripts/dr.sh "./scripts/check_indentation.sh"
 
 script:
