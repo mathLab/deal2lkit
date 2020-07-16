@@ -18,7 +18,6 @@
 
 #include <deal.II/base/exceptions.h>
 #include <deal.II/base/smartpointer.h>
-#include <deal.II/base/std_cxx11/shared_ptr.h>
 #include <deal.II/base/timer.h>
 #include <deal.II/base/utilities.h>
 
