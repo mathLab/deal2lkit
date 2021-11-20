@@ -153,7 +153,7 @@ private:
   std::ofstream output_file;
 
   /** Outputs only the data that refers to this process. */
-  shared_ptr<dealii::DataOut<dim, dealii::DoFHandler<dim, spacedim>>> data_out;
+  shared_ptr<dealii::DataOut<dim, spacedim>> data_out;
 };
 
 
@@ -205,8 +205,7 @@ ParsedDataOut<dim, spacedim>::add_data_vector(const VECTOR &     data_vector,
           data_out->add_data_vector(
             data_vector,
             dd,
-            dealii::DataOut<dim,
-                            dealii::DoFHandler<dim, spacedim>>::type_dof_data,
+            dealii::DataOut<dim, spacedim>::type_dof_data,
             data_component_interpretation);
         }
       dealii::deallog << "Added data: " << desc << std::endl;

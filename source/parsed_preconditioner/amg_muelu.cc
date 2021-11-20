@@ -16,7 +16,7 @@
 
 #include <deal2lkit/parsed_preconditioner/amg_muelu.h>
 
-#ifdef DEAL_II_WITH_TRILINOS
+#if defined(DEAL_II_WITH_TRILINOS) && defined(DEAL_II_TRILINOS_WITH_MUELU)
 
 
 #  include <deal.II/dofs/dof_tools.h>
@@ -217,13 +217,13 @@ ParsedAMGMueLuPreconditioner::initialize_preconditioner(
       if (is_vec)
         {
           FEValuesExtractors::Vector components(pos);
-          DoFTools::extract_constant_modes<DoFHandler<dim, spacedim>>(
+          DoFTools::extract_constant_modes(
             dh, dh.get_fe().component_mask(components), constant_modes);
         }
       else
         {
           FEValuesExtractors::Scalar components(pos);
-          DoFTools::extract_constant_modes<DoFHandler<dim, spacedim>>(
+          DoFTools::extract_constant_modes(
             dh, dh.get_fe().component_mask(components), constant_modes);
         }
       data.constant_modes = constant_modes;
