@@ -143,7 +143,7 @@ ParsedDataOut<dim, spacedim>::prepare_data_output(
   const std::string &              suffix)
 {
   deallog.push("PrepareOutput");
-  data_out = std::make_shared<DataOut<dim, DoFHandler<dim, spacedim>>>();
+  data_out = std::make_shared<DataOut<dim, spacedim>>();
   data_out->set_default_format(DataOutBase::parse_output_format(output_format));
 
   current_name = path_solution_dir + base_name + suffix;
@@ -215,10 +215,9 @@ ParsedDataOut<dim, spacedim>::write_data_and_clear(
   deallog.push("WritingData");
   if (data_out->default_suffix() != "")
     {
-      data_out->build_patches(
-        mapping,
-        subdivisions,
-        DataOut<dim, DoFHandler<dim, spacedim>>::curved_inner_cells);
+      data_out->build_patches(mapping,
+                              subdivisions,
+                              DataOut<dim, spacedim>::curved_inner_cells);
       data_out->write(output_file);
       deallog << "Wrote output file." << std::endl;
 

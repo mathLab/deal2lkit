@@ -20,7 +20,7 @@
 
 #include <deal2lkit/config.h>
 
-#ifdef DEAL_II_WITH_TRILINOS
+#if defined(DEAL_II_WITH_TRILINOS) && defined(DEAL_II_TRILINOS_WITH_MUELU)
 
 #  include <deal.II/lac/trilinos_precondition.h>
 
@@ -172,6 +172,6 @@ private:
 
 D2K_NAMESPACE_CLOSE
 
-#endif // DEAL_II_WITH_TRILINOS
+#endif
 
 #endif

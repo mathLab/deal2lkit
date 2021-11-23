@@ -229,13 +229,13 @@ ParsedAMGPreconditioner::initialize_preconditioner(
       if (is_vec)
         {
           FEValuesExtractors::Vector components(pos);
-          DoFTools::extract_constant_modes<DoFHandler<dim, spacedim>>(
+          DoFTools::extract_constant_modes(
             dh, dh.get_fe().component_mask(components), constant_modes);
         }
       else
         {
           FEValuesExtractors::Scalar components(pos);
-          DoFTools::extract_constant_modes<DoFHandler<dim, spacedim>>(
+          DoFTools::extract_constant_modes(
             dh, dh.get_fe().component_mask(components), constant_modes);
         }
       data.constant_modes = constant_modes;

@@ -55,8 +55,9 @@ public:
     const dealii::Patterns::PatternBase &pattern = dealii::Patterns::Anything(),
     const std::string &                  documentation = std::string())
   {
-    *parameter = dealii::Patterns::Tools::Convert<T>::to_value(default_value,
-                                                               pattern.clone());
+    *parameter =
+      dealii::Patterns::Tools::Convert<T>::to_value(default_value,
+                                                    *(pattern.clone()));
     prm.add_parameter(entry, *parameter, documentation, pattern);
   }
 
